@@ -100,3 +100,4 @@ mp.events.addCommand("mod", (player, _, modType, modIndex) => {
         `Mod Type ${modType} with Mod Index ${modIndex} applied.`
     );
 });
+

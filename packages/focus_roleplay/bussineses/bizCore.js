@@ -5,10 +5,10 @@ global.allBussineses = [];
 module.exports = {
     type: function () {
         var types = [
-            { type: 0, interior: 11, name: "24/7 Market" },
-            { type: 1, interior: 22, name: "Clothing Store" },
-            { type: 2, interior: 33, name: "Cafe Bar" },
-            { type: 3, interior: 44, name: "Gas Station" },
+            { type: 0, interior: 11, blip: 52, name: "24/7 Market" },
+            { type: 1, interior: 22, blip: 366, name: "Clothing Store" },
+            { type: 2, interior: 33, blip: 93, name: "Cafe Bar" },
+            { type: 3, interior: 44, blip: 361, name: "Gas Station" },
         ];
         return types;
     },
@@ -37,10 +37,15 @@ module.exports = {
     },
 
     loadAll: async function () {
+        var typesArray = this.type();
         var result = await db.aQuery("SELECT * FROM `bussineses`");
         result.forEach(function (res) {
             var bizPos = JSON.parse(res.entrance);
             var biz = new BussinesModel(res.ID, res.name, res.type, res.owner, res.price, bizPos);
+
+            var r = typesArray.find( ({ type }) => type === res.type );
+            let blipNumber = r.blip;
+
             let label = mp.labels.new( `~r~FOR SALE !~s~ ~n~ ${res.name} ~n~ Price ~g~${res.price} $`, new mp.Vector3(bizPos.x, bizPos.y, bizPos.z),
             {
                 los: true,
@@ -48,6 +53,14 @@ module.exports = {
                 drawDistance: 4,
             });
             label.biz = res.ID;
+
+            let blip = mp.blips.new(blipNumber, new mp.Vector3(bizPos.x, bizPos.y, 0),
+            {
+                    name: res.name,
+                    color: 4,
+                    shortRange: true,
+            });
+            blip.biz = res.ID;
         });
         core.terminal(3, `${result.length} businesses were loaded !`);
     },
@@ -63,6 +76,12 @@ module.exports = {
             if (label.biz === bID)
             { 
                 label.destroy()
+            }
+        });
+        mp.blips.forEach((blip) => {
+            if (blip.biz === bID)
+            { 
+                blip.destroy()
             }
         });
     },
