@@ -1,9 +1,10 @@
-global.conf = require("./core/configuration");
-global.core = require("./core/main");
-global.db = require("./core/database");
-global.house = require("./houses/core");
-global.account = require("./accounts/accounts");
-global.biz = require("./bussineses/bizCore");
+global.conf = require('./core/configuration');
+global.core = require('./core/main');
+global.db = require('./core/database');
+global.house = require('./houses/core');
+global.account = require('./accounts/accounts');
+global.veh = require('./vehicles/vehicleCore')
+global.biz = require('./bussineses/bizCore');
 
 var dbStructure = require("./core/databaseStructure");
 var playerEvents = require("./accounts/playerEvents");
@@ -13,6 +14,17 @@ core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 
 biz.loadAll();
 
+// var pl = 1,
+//     i = 2,
+//     m = 'elegy',
+//     l = true,
+//     o = -1,
+//     p = 3000,
+//     po = {x: 300, y: 200, z: 400},
+//     rg = {r: 2, g: 3, b: 4},
+//     rg2 = {r: 5, g: 6, b: 7},
+//     mo = {one: 345, two: 324, thre: 43};
+// veh.create(pl, i, m, l, o, p, po, rg, rg2, mo)
  //setInterval(() => { console.log(allBussineses)  }, 10000);
 
 /* EVENTI

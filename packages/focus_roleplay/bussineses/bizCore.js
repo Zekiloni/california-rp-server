@@ -1,4 +1,4 @@
-var BussinesModel = require("./bizModel");
+var BussinesModel = require('./bizModel');
 
 global.allBussineses = [];
 
