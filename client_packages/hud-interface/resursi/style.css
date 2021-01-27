@@ -1,0 +1,41 @@
+html, body {
+    font-family: Helvetica Neue, Helvetica, sans-serif !important; 
+    height: 100%; 
+    background: transparent !important; 
+    overflow: hidden; 
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+
+.server { width: 100%; position: absolute; top: 0; padding-top: 5px; text-align: center; display: none; }
+.server .sajt {text-transform: uppercase;font-size: 25px;font-weight: 200 !important;letter-spacing: 2px;color: whitesmoke;text-shadow: 1px 1px 3px rgba(0,0,0,0.75);}
+.server .sajt .focus-rp { background: -webkit-linear-gradient(90deg, #40a9eb, #7dcec8); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.server .online::before {
+    content:"";
+    display: block;
+    margin: 0 auto;
+    height: 1px;
+    width: 300px;
+    background: rgb(245 245 245 / 44%);
+    margin-bottom: 5px;
+    box-shadow: 1px 1px 3px rgb(0 0 0 / 27%);
+}
+.server .online {display: block;color: #f7f7f7;font-size: 19px;font-weight: 300;text-shadow: 1px 1px 3px rgba(0,0,0,0.75);letter-spacing: 2px;}
+
+.igrac { right: 2%; top: 2%; position: absolute; width: 300px; }
+.igrac .novac {text-align: right;font-weight: 500;color: #84b879;font-sizE: 28px;text-shadow: 0px 1px 1.5px rgb(0 0 0 / 93%);letter-spacing: 0.6px;}
+
+.donji-ugao { left: 10%; bottom: 1%; position: absolute; width: 400px; height: 150px; }
+.vozilo { display: none; left: 17%; bottom: 1%; position: relative; width: 400px; height: auto; }
+.vozilo .brzinometar { width: 50%; text-align: center; }
+.vozilo .brzinometar .brzina { font-weight: 400; color: whitesmoke; text-shadow: 2px 2px 2px rgb(0 0 0 / 93%); }
+.vozilo .brzinometar .merna-jedinica { text-transform: uppercase; font-size: 13px; margin-top: -5%; font-weight: 300; color: whitesmoke; text-shadow: 2px 2px 2px rgb(0 0 0 / 93%);  }
+
+.lokacija {left: 30%;bottom: 1px;position: absolute;width: 400px;/* text-align: center; */padding: 5px 10px;}
+.lokacija .trenutni-smer {margin: 0;font-size: 27px;letter-spacing: 1px;font-weight: 400;color: whitesmoke;text-shadow: 2px 2px 2px rgb(0 0 0 / 93%);}
+.lokacija .trenutna-lokacija {margin: 0;font-size: 17px;letter-spacing: 1px;font-weight: 300;color: whitesmoke;text-shadow: 2px 2px 2px rgb(0 0 0 / 93%);}
+
+

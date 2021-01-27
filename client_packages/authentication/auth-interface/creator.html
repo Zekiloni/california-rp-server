@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Auth Page">
+        <meta name="author" content="Zekiloni">
+        <title>Focus Roleplay - Kreator UI</title>
+        <link rel="stylesheet" type="text/css" href="resursi/stil.css">
+        <link rel="stylesheet" type="text/css" href="resursi/vendor/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <script src="resursi/vendor/js/jquery-3.2.1.js"></script>
+        <script src="resursi/vendor/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="zid">
+            <div class="forma">
+                <h3 class="naslov">Informacije karaktera</h3>
+                <div class="row justify-content-around">
+                    <div class="polje col-md-4">
+                        <input type="text" id="ime_karaktera" placeholder="Ime">
+                    </div>
+                    <div class="polje col-md-4">
+                        <input type="text" id="prezime_karaktera" placeholder="Prezime">
+                    </div>
+                </div>
+                <div class="row justify-content-around">
+                    <div class="polje col-md-4">
+                        <label for="godine_karaktera">Godine Karaktera</label>
+                        <input type="number" min="18" value="19" max="100" id="godine_karaktera" placeholder="Ime">
+                    </div>
+                    <div class="polje col-md-4">
+                        <label for="pol_karaktera">Pol Karaktera</label>
+                        <br>
+                        <select name="pol" id="pol">
+                            <option value="0">Muško</option>
+                            <option value="1">Žensko</option>
+                        </select>                      
+                    </div>
+                </div>
+            </div>
+            <div class="kreator">
+                <h3 class="kr-naslov">Pojava karaktera</h3>
+                <hr>
+                <div class="form-group">
+                    <label for="rotacija">Rotacija Karaktera</label>
+                    <input type="range" min="0" max="360" value="0" class="rotacija" id="rotacija">
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#stranica-1">Stranica 1</a></li>
+                    <li><a data-toggle="tab" href="#stranica-2">Stranica 2</a></li>
+                    <li><a data-toggle="tab" href="#stranica-3">Stranica 3</a></li>
+                    <li><a data-toggle="tab" href="#stranica-4">Stranica 4</a></li>
+                  </ul>                
+                  <div class="tab-content">
+                    <div id="stranica-1" class="tab-pane active">
+                    </div>
+                    <div id="stranica-2" class="tab-pane fade">
+                    </div>
+                    <div id="stranica-3" class="tab-pane fade">
+                    </div>
+                    <div id="stranica-4" class="tab-pane fade">
+                    </div>
+                  </div>
+            </div>
+            <div class="potvrda-registracije">
+                <p class="info-text">Kreirate vašeg karaktera na <b>Focus Roleplay</b>. <br>Molimo ispunite sva polja.</p>
+                <button type="button" class="login" onclick="registracija();">Kreiraj</button>
+            </div>
+        </div>
+        <div class="upozorenje" id="upozorenje"></div>
+        <script src="resursi/funkcije.js"></script>
+    </body>
+</html>
