@@ -24,11 +24,11 @@ mp.keys.bind(0x45, true, function() {
 });
 
 playerNearATM = (player) => {
-   var atm = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 3424098598, false, true, true);
-	var atm2 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 3168729781, false, true, true);
-	var atm3 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 2930269768, false, true, true);
-   var atm4 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 506770882, false, true, true);
-   if (atm || atm2 || atm3 || atm4) {
+   var atm_1 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 3424098598, false, true, true);
+	var atm_2 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 3168729781, false, true, true);
+	var atm_3 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 2930269768, false, true, true);
+   var atm_4 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 2, 506770882, false, true, true);
+   if (atm_1 || atm_2 || atm_3 || atm_4) {
       return true;
    }
    else { 
