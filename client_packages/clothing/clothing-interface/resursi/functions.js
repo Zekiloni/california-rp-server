@@ -32,7 +32,7 @@ clothingMenu(male)
 
 $('.slajder').on('input', function () {
     var value = this.value;
-    var index = this.id
+    var index = this.id;
     $(`#vrednost-${this.id}`).html(this.value)
     mp.trigger("client:clothingPreview", parseInt(index), parseInt(value));
 });

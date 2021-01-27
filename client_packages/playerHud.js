@@ -1,6 +1,6 @@
 
-let player = mp.players.local,
-	playerHUD;
+const player = mp.players.local;
+var playerHUD;
 
 
 mp.events.add('client:showPlayerHUD', (show) => {

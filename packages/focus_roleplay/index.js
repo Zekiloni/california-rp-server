@@ -102,6 +102,7 @@ mp.events.addCommand("weapon", (player, fullText, weapon, ammo) => {
     player.giveWeapon(weaponHash, parseInt(ammo) || 10000);
 });
 
+
 mp.events.addCommand("mod", (player, _, modType, modIndex) => {
     if (!player.vehicle)
         return player.outputChatBox(
