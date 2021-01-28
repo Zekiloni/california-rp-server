@@ -5,7 +5,7 @@ var inventoryCEF, opened = false;
 
 mp.events.add({
    'client:openInventory': () => {
-      inventoryCEF = mp.browsers.new('inv');
+      inventoryCEF = mp.browsers.new('package://inventory/inventory-interface/inventory.html');
       setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
   },
 
