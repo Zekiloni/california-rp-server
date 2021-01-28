@@ -42,7 +42,24 @@ module.exports = {
             }
         })
         return playerInv;
-    }
+    },
+
+    nearItem: function (player) {
+        var nearItem = null;
+        inventoryItems.forEach((item) => {
+            let itemPos = new mp.Vector3(item.position.x, item.position.y, item.position.z );
+            if(item.entity ==  -1) {
+                if (player.dist(itemPos) < 2.5) {
+                    nearItem = item;
+                }
+            }
+        });
+        if (nearItem != null) {
+            return nearItem;
+        } else {
+            return false;
+        }
+    },
 
 
 }
