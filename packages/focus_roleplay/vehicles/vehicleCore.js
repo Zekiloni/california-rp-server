@@ -4,11 +4,23 @@ global.allVehicles = [];
 
 module.exports = {
 
-   create: function (player, id, model, locked, owner, price, pos, rgb, rgb2, mods) {
+   create: function (player, id, model, locked, owner, price, pos, rgb, rgb2, mods, ebts) {
+      //let spawnPos = new mp.Vector3(pos.x, pos.y, pos.z);
       if(owner == -1){
-         let veh = new VehicleModel(id, model, locked, owner, price, pos, rgb, rgb2, mods)
+         let veh = new VehicleModel(id, model, locked, owner, price, pos, 100, rgb, rgb2, mods, ebts);
          console.log(veh.info());
-         player.outputChatBox(`Stvorili ste jednokratno vozilo. Model: ${model}`);
+         //let vehicleName = mp.game.vehicle.getDisplayNameFromVehicleModel(model);
+         veh = mp.vehicles.new(model, pos,
+         {
+            numberPlate: 'NP-00-BG',
+            alpha: 255,
+            color: [[rgb.r, rgb.g, rgb.b], [rgb2.r, rgb2.g, rgb2.b]],
+            locked: locked,
+            engine: false,
+            dimension: 0
+         });
+         player.outputChatBox(`Stvorili ste jednokratno vozilo. Model: ${veh.model}`);
+         player.putIntoVehicle(veh, 0);  
       }
       else{
          if(locked < 0 || locked > 1) return;

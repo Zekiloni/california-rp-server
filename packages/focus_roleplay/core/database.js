@@ -1,22 +1,22 @@
 var mysql = require('mysql');
 
-
-var db = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'focus'
+var db = mysql.createPool({
+     connectionLimit: 100,
+     host     : 'localhost',
+     user     : 'root',
+     password : '',
+     database : 'focus'
 });
 
 
-try {
-     db.connect(function(err) {
-          if (err) throw main.terminal(1, `Connection to database failed, ${err}`)
-          core.terminal(3, 'Connection with MySQL succesfull !')
-     });
-} catch (error) {
-     core.terminal(1, error)
-}
+// try {
+//      db.connect(function(err) {
+//           if (err) throw main.terminal(1, `Connection to database failed, ${err}`)
+//           core.terminal(3, 'Connection with MySQL succesfull !')
+//      });
+// } catch (error) {
+//      core.terminal(1, error)
+// }
 
 db.aQuery = (query, values) => { 
      return new Promise(data => {

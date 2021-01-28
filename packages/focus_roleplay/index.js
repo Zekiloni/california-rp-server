@@ -10,8 +10,8 @@ var dbStructure = require("./core/databaseStructure");
 var playerEvents = require("./accounts/playerEvents");
 var huntingAnimals = require("./hunting/animals");
 
-core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 
+core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 
 /*
@@ -75,6 +75,15 @@ mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     veh.engine = true;
     veh.dead = false;
     player.putIntoVehicle(veh, 0);
+});
+
+mp.events.addCommand("aveh", (player, full, hash, rr, gg, bb, rr2, gg2, bb2) => {
+    var model = mp.joaat(hash);
+    let position = player.position;
+    let rgb = {r: rr, g: gg, b: bb}
+    let rgb2 = {r: rr2, g: gg2, b: bb2}
+    let locked = false;
+    veh.create(player, 1, model, locked, -1, 1, position, rgb, rgb2, 0, 0);
 });
 
 mp.events.addCommand("createbiz", (player, fullText, type, price) => {

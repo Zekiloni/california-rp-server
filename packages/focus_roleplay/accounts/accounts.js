@@ -93,7 +93,7 @@ module.exports = {
     },
 
     buyBiz: function (player, b) {
-        db.query("SELECT * FROM `bussiness` WHERE `ID` = ?", [b.id], function (error, results, fields) {
+        db.query("SELECT * FROM `business` WHERE `ID` = ?", [b.id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             if (results && results.length) {
                 if (player.cash < results[0].price) return player.notify("Nemate dovoljno novca.");
