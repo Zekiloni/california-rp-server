@@ -17,7 +17,8 @@ mp.events.add({
 
 
 mp.keys.bind(0x45, true, function() {
-   if(playerNearATM(player)) { 
+   if(playerNearATM(player)) {
+      if (mp.players.local.isTypingInTextChat) return; 
       mp.events.call('client:showATM'); 
    }
 });

@@ -14,9 +14,10 @@ var huntingAnimals = require("./hunting/animals");
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
+inv.loadItems();
 
 console.log(items)
- //setInterval(() => { console.log(allBussineses)  }, 10000);
+// setInterval(() => { console.log(inventoryItems)  }, 10000);
 
 /* EVENTI
      mp.events.callRemote('eventName', args); // poziva iz clienta SERVER EVENT

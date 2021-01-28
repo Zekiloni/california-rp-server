@@ -16,6 +16,7 @@ mp.events.add({
 
 mp.keys.bind(0x4D, false, function() {
    if(opened == false) {
+      if (mp.players.local.isTypingInTextChat) return;
       opened = true;
       mp.events.call('client:showInteractions');
    }
