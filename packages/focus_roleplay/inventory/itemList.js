@@ -10,7 +10,7 @@ const itemTypes = {
 }
 
 const allItems = [ 
-   { name: 'Digl', hash: 'aaa' }
+   { name: 'M4 Carbien Rifle', hash: 'w_ar_carbinerifle' }
 ]
 
 const itemEntities = [ 
