@@ -6,8 +6,9 @@ var charClohing = require('./clothing/clothing')
 var charCustomization = require('./char-customization/customization')
 var playerDamage = require('./playerDamage')
 var customChat = require('./chat/index')
-var interactionsMenu = require('./interactions-menu/interactions')
+//var interactionsMenu = require('./interactions-menu/interactions')
 var bankingATM = require('./banking/atm')
+var screenEffects = require('./screenEffect')
 
 
 

@@ -1,6 +1,6 @@
 
 let accountsTable = `create table if not exists accounts (
-  ID int(11) NOT NULL,
+  ID int(11) NOT NULL AUTO_INCREMENT,
   username varchar(48) NOT NULL,
   password varchar(256) NOT NULL,
   registerDate timestamp NULL DEFAULT NULL,
@@ -16,7 +16,7 @@ db.query(accountsTable, function(err, results, fields) {
 });
 
 let businessTable =  `CREATE TABLE IF NOT EXISTS business (
-  ID int(11) NOT NULL,
+  ID int(11) NOT NULL AUTO_INCREMENT,
   type int(1) NOT NULL DEFAULT 0,
   name varchar(64) NOT NULL DEFAULT 0,
   owner int(11) NOT NULL DEFAULT -1,
@@ -31,7 +31,7 @@ db.query(businessTable, function(err, results, fields) {
 });
 
 let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
-  ID int(11) NOT NULL,
+  ID int(11) NOT NULL AUTO_INCREMENT,
   model varchar(24) NOT NULL,
   locked tinyint(1) NOT NULL,
   owner varchar(128) NOT NULL,
@@ -46,6 +46,26 @@ let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
 db.query(vehicleTable, function(err, results, fields) {
     if (err) { core.terminal(1, err.message) }
     core.terminal(3, `Checking vehicleTable  | MySQL`);
+});
+
+
+let inventoryTable = `CREATE TABLE IF NOT EXISTS inventory (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  itemName varchar(64) NOT NULL,
+  itemType varchar(24) NOT NULL,
+  itemHash varchar(128) NOT NULL,
+  itemWeight double(3,3) NOT NULL,
+  itemQuantity int(4) NOT NULL,
+  itemEntity int(2) NOT NULL,
+  itemOwner int(11) NOT NULL,
+  itemDimension int(11) NOT NULL,
+  itemPos text NOT NULL,
+  itemSpecs text NOT NULL,
+  PRIMARY KEY(ID))`;
+
+db.query(inventoryTable, function(err, results, fields) {
+    if (err) { core.terminal(1, err.message) }
+    core.terminal(3, `Checking inventoryTable  | MySQL`);
 });
 
 

@@ -5,6 +5,7 @@ global.house = require('./houses/core');
 global.account = require('./accounts/accounts');
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./bussineses/bizCore');
+global.inv = require('./inventory/inventoryCore')
 
 var dbStructure = require("./core/databaseStructure");
 var playerEvents = require("./accounts/playerEvents");
@@ -14,6 +15,8 @@ var huntingAnimals = require("./hunting/animals");
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 
+
+console.log(items)
 /*
 var pl = 1,
     i = 2,
@@ -122,6 +125,10 @@ mp.events.addCommand("mod", (player, _, modType, modIndex) => {
     player.outputChatBox(
         `Mod Type ${modType} with Mod Index ${modIndex} applied.`
     );
+});
+
+mp.events.addCommand("item", (player, full, name, hash, quant) => {
+    inv.create(name, 'gun', hash, 0.12, quant, -1, -1, player.dimension, player.position);
 });
 
 function TryParseInt(str,defaultValue) {

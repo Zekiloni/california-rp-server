@@ -6,7 +6,7 @@ var playerHUD;
 mp.events.add('client:showPlayerHUD', (show) => {
 	if(show)  {
 		playerHUD = mp.browsers.new('package://hud-interface/index.html');
-		setInterval(() => { updatePlayerHud() }, 500);
+		setInterval(() => { updatePlayerHud() }, 1000);
 	}
 	else { 
 		playerHUD.destroy()
