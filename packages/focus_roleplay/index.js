@@ -3,13 +3,13 @@ global.conf = require('./core/configuration');
 global.core = require('./core/main');
 global.db = require('./core/database');
 global.house = require('./houses/core');
-global.account = require('./accounts/accounts');
+global.account = require('./player/playerCore');
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.inv = require('./inventory/inventoryCore')
 
 var dbStructure = require("./core/databaseStructure");
-var playerEvents = require("./accounts/playerEvents");
+var playerEvents = require("./player/playerEvents");
 var huntingAnimals = require("./hunting/animals");
 
 
