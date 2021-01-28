@@ -33,6 +33,17 @@ module.exports = {
         });
     },
 
+    destroy: function(player, item) { 
+        let itemID = item.id;
+        db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, results, fields) {
+            if (error) return core.terminal(1, error);
+            let index = inventoryItems.findIndex((el) => el.id === itemID);
+            inventoryItems.splice(index, 1);
+            item.label.destroy();
+            item.object.destroy();
+        });
+    },
+
     playerInventory: function(player) { 
         let id = player.databaseID;
         let playerInv = [];

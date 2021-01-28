@@ -91,7 +91,4 @@ document.addEventListener("keyup", function(e) {
     if (event.keyCode === 27) {
         closeInventory();
     }
-    else if (event.keyCode == 73) {
-        closeInventory();
-    }
 })

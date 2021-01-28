@@ -32,7 +32,7 @@ module.exports = {
         player.cash = result[0].cash;
         player.loggedIn = true;
 
-        inv.load(player)
+        //inv.load(player)
 
         var lastPos = JSON.parse(result[0].lastPosition);
         player.position = new mp.Vector3(lastPos.x, lastPos.y, lastPos.z);

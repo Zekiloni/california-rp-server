@@ -121,6 +121,14 @@ mp.events.addCommand("item", (player, full, name, hash, quant) => {
     inv.create(name, 'gun', hash, 0.12, quant, -1, -1, player.dimension, player.position);
 });
 
+mp.events.addCommand("destroyitem", (player, text) => {
+    let item = inv.nearItem(player);
+    if (item) {
+        player.outputChatBox(`Nearest item ${item.id} !`);
+        inv.destroy(player, item);
+    }
+});
+
 function TryParseInt(str,defaultValue) {
     var retValue = defaultValue;
     if(str !== null) {
