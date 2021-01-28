@@ -18,6 +18,8 @@ inv.loadItems();
 
 console.log(items)
 // setInterval(() => { console.log(inventoryItems)  }, 10000);
+// setInterval(() => { inv.playerInventory(-1)  }, 3000);
+
 
 /* EVENTI
      mp.events.callRemote('eventName', args); // poziva iz clienta SERVER EVENT

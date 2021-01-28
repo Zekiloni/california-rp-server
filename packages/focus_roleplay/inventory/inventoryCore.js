@@ -33,8 +33,15 @@ module.exports = {
         });
     },
 
-    load: function(player) { 
-        //var r = typesArray.find( ({ type }) => type === res.type );
+    playerInventory: function(player) { 
+        let id = player.databaseID;
+        let playerInv = [];
+        inventoryItems.forEach(function (r) {
+            if(r.owner == id) {
+                playerInv.push(r)
+            }
+        })
+        return playerInv;
     }
 
 
