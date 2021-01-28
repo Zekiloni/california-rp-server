@@ -22,45 +22,18 @@ module.exports = {
         db.query("INSERT INTO `business` (name, type, price, interior, entrance) VALUES (?, ?, ?, ?, ?)", [name, type, price, int, entrance], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             player.outputChatBox(`Biznis kreiran tip: ${type} sa cenom ${price} $`);
-            let id = results.insertId;
-            let labelPos = player.position;
-            var posArr = {x: player.position.x, z: player.position.z, y: player.position.y};
-            var biz = new BussinesModel(id, name, type, -1, price, posArr);
-            let label = mp.labels.new(`~r~FOR SALE !~s~ ~n~${name}~n~ Price ~g~${price} $`, new mp.Vector3(labelPos.x, labelPos.y, labelPos.z),
-            {
-                los: true,
-                font: 0,
-                drawDistance: 4,
-            }); 
-            label.biz = id;
+            let id = results.insertId; // PROVERITI OVO
+            let bPos = player.position; // PROVERITI OVO
+            let posArr = { x: bPos.x, y: bPos.y, z: bPos.z }; // PROVERITI OVO
+            var biz = new BussinesModel(id, name, type, -1, price, posArr); // PROVERITI OVO
         });
     },
 
     loadAll: async function () {
-        var typesArray = this.type();
         var result = await db.aQuery("SELECT * FROM `business`");
         result.forEach(function (res) {
-            var bizPos = JSON.parse(res.entrance);
-            var biz = new BussinesModel(res.ID, res.name, res.type, res.owner, res.price, bizPos);
-
-            var r = typesArray.find( ({ type }) => type === res.type );
-            let blipNumber = r.blip;
-
-            let label = mp.labels.new( `~r~FOR SALE !~s~ ~n~ ${res.name} ~n~ Price ~g~${res.price} $`, new mp.Vector3(bizPos.x, bizPos.y, bizPos.z),
-            {
-                los: true,
-                font: 0,
-                drawDistance: 4,
-            });
-            label.biz = res.ID;
-
-            let blip = mp.blips.new(blipNumber, new mp.Vector3(bizPos.x, bizPos.y, 0),
-            {
-                    name: res.name,
-                    color: 4,
-                    shortRange: true,
-            });
-            blip.biz = res.ID;
+            let bizPos = JSON.parse(res.entrance);
+            let biz = new BussinesModel(res.ID, res.name, res.type, res.owner, res.price, bizPos);
         });
         core.terminal(3, `${result.length} business were loaded !`);
     },
@@ -71,18 +44,8 @@ module.exports = {
             if (error) return core.terminal(1, error);
             let index = allBussineses.findIndex((el) => el.id === biz.id);
             allBussineses.splice(index, 1);
-        });
-        mp.labels.forEach((label) => {
-            if (label.biz === bID)
-            { 
-                label.destroy()
-            }
-        });
-        mp.blips.forEach((blip) => {
-            if (blip.biz === bID)
-            { 
-                blip.destroy()
-            }
+            biz.label.destroy(); 
+            biz.blip.destroy();  
         });
     },
 

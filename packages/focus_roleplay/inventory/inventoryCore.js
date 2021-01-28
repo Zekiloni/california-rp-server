@@ -1,5 +1,7 @@
 
+
 var itemModel = require('./itemModel');
+var invCommands = require('./inventoryCmds')
 
 global.items = require('./itemList')
 global.inventoryItems = [];
@@ -23,7 +25,7 @@ module.exports = {
         core.terminal(3, `${result.length} items were loaded !`);
     },
    
-    create: function(name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) { 
+    createItem: function(name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) { 
         db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemWeight, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, weight, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, res, fields) {
             if (error) return core.terminal(1, error);
             let id = res.insertId;
@@ -33,7 +35,7 @@ module.exports = {
         });
     },
 
-    destroy: function(player, item) { 
+    destroyItem: function(player, item) { 
         let itemID = item.id;
         db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, results, fields) {
             if (error) return core.terminal(1, error);

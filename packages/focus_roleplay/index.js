@@ -1,3 +1,4 @@
+
 global.conf = require('./core/configuration');
 global.core = require('./core/main');
 global.db = require('./core/database');
@@ -20,6 +21,10 @@ console.log(items)
 // setInterval(() => { console.log(inventoryItems)  }, 10000);
 // setInterval(() => { inv.playerInventory(-1)  }, 3000);
 
+/* ZAVRSENE STVARI
+    player.call("client:showClothing"); // CHAR CLOTHING !
+    player.call("client:showCustomization"); // CHAR CUSTOMIZATION
+*/
 
 /* EVENTI
      mp.events.callRemote('eventName', args); // poziva iz clienta SERVER EVENT
@@ -117,17 +122,7 @@ mp.events.addCommand("mod", (player, _, modType, modIndex) => {
     );
 });
 
-mp.events.addCommand("item", (player, full, name, hash, quant) => {
-    inv.create(name, 'gun', hash, 0.12, quant, -1, -1, player.dimension, player.position);
-});
 
-mp.events.addCommand("destroyitem", (player, text) => {
-    let item = inv.nearItem(player);
-    if (item) {
-        player.outputChatBox(`Nearest item ${item.id} !`);
-        inv.destroy(player, item);
-    }
-});
 
 function TryParseInt(str,defaultValue) {
     var retValue = defaultValue;
