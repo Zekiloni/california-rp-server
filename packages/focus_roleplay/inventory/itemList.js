@@ -13,16 +13,18 @@ const allItems = [
    { name: 'M4 Carbien Rifle', hash: 'w_ar_carbinerifle' }
 ]
 
-const itemEntities = [ 
-   { ITEM_ENTITY_GROUND: -1 , name: 'Pod' },
-   { ITEM_ENTITY_PLAYER: 0, name: 'Igrac' },
-   { ITEM_ENTITY_VEHICLE: 1, name: 'Vozilo' },
-   { ITEM_ENTITY_HOUSE: 2, name: 'Kuca' },
-   { ITEM_ENTITY_WHEEL: 3, name: 'Wheel' },
-   { ITEM_ENTITY_LEFT_HAND: 4, name: 'Leva ruka' },
-   { ITEM_ENTITY_RIGHT_HAND: 5, name: 'Desna ruka' },
-]
+const ITEM_ENTITY_GROUND = -1,
+   ITEM_ENTITY_PLAYER = 0,
+   ITEM_ENTITY_VEHICLE = 1,
+   ITEM_ENTITY_HOUSE = 2,
+   ITEM_ENTITY_WHEEL = 3,
+   ITEM_ENTITY_LEFT_HAND = 4,
+   ITEM_ENTITY_RIGHT_HAND = 5;
 
 const ITEM_OPEN_BEER_AMOUNT = 6;
 
-module.exports = { allItems, itemTypes, ITEM_OPEN_BEER_AMOUNT, itemEntities};
+module.exports = { allItems, itemTypes, 
+                  ITEM_OPEN_BEER_AMOUNT, ITEM_ENTITY_GROUND, 
+                  ITEM_ENTITY_PLAYER, ITEM_ENTITY_VEHICLE, 
+                  ITEM_ENTITY_HOUSE, ITEM_ENTITY_WHEEL, 
+                  ITEM_ENTITY_LEFT_HAND, ITEM_ENTITY_RIGHT_HAND};

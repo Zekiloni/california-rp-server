@@ -5,7 +5,7 @@ global.db = require('./core/database');
 global.house = require('./houses/core');
 global.account = require('./accounts/accounts');
 global.veh = require('./vehicles/vehicleCore')
-global.biz = require('./bussineses/bizCore');
+global.biz = require('./business/bizCore');
 global.inv = require('./inventory/inventoryCore')
 
 var dbStructure = require("./core/databaseStructure");
