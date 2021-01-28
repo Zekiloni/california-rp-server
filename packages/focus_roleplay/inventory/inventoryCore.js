@@ -36,4 +36,6 @@ module.exports = {
     load: function(player) { 
         //var r = typesArray.find( ({ type }) => type === res.type );
     }
+
+
 }
