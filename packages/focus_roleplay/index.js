@@ -84,18 +84,7 @@ mp.events.addCommand("aveh", (player, full, hash, rr, gg, bb, rr2, gg2, bb2) => 
     veh.create(player, 1, model, locked, -1, 1, position, rgb, rgb2, 0, 0);
 });
 
-mp.events.addCommand("createbiz", (player, fullText, type, price) => {
-    if (player.admin < 4) return player.outputChatBox("Nisi admin");
-    biz.create(player, type, price);
-});
 
-mp.events.addCommand("deletebiz", (player, text) => {
-    var bussines = biz.nearby(player);
-    if (bussines) {
-        player.outputChatBox(`Nearest biz ${bussines.id} !`);
-        biz.delete(player, bussines);
-    }
-});
 
 mp.events.addCommand("buy", (player, text) => {
      var bussines = biz.nearby(player);
