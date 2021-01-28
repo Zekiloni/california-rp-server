@@ -30,6 +30,7 @@ module.exports = {
         player.admin = result[0].admin;
         player.databaseID = result[0].ID;
         player.cash = result[0].cash;
+        player.loggedIn = true;
 
         var lastPos = JSON.parse(result[0].lastPosition);
         player.position = new mp.Vector3(lastPos.x, lastPos.y, lastPos.z);
@@ -46,39 +47,39 @@ module.exports = {
     },
 
     updateClothing: function (id, skin) {
-        db.query("UPDATE accounts SET clothing = ? WHERE ID = ?", [skin, id], function (error, results, fields) {
+        db.query("UPDATE `accounts` SET `clothing` = ? WHERE ID = ?", [skin, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
         });
     },
 
     updateOverlays: function (id, overlays) {
-        db.query("UPDATE accounts SET headOverlays = ? WHERE ID = ?", [overlays, id], function (error, results, fields) {
+        db.query("UPDATE `accounts` SET `headOverlays` = ? WHERE ID = ?", [overlays, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
         });
     },
 
     updateFaceFeatures: function (id, face) {
-        db.query("UPDATE accounts SET faceFeatures = ? WHERE ID = ?", [face, id], function (error, results, fields) {
+        db.query("UPDATE `accounts` SET `faceFeatures` = ? WHERE ID = ?", [face, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
         });
     },
 
     status: function (username, status) {
         if (status == 1) {
-            db.aQuery("UPDATE accounts SET lastLogin = current_timestamp(), online = 1 WHERE username = ?", username);
+            db.aQuery("UPDATE `accounts` SET `lastLogin` = current_timestamp(), `online` = 1 WHERE `username` = ?", username);
         } else if (status == 0) {
-            db.aQuery("UPDATE accounts SET online = 0 WHERE username = ?", username);
+            db.aQuery("UPDATE `accounts` SET `online` = 0 WHERE `username` = ?", username);
         }
     },
 
     lastPosition: function (id, playerPos) {
-        db.query("UPDATE accounts SET lastPosition = ? WHERE ID = ?", [playerPos, id], function (error, results, fields) {
+        db.query("UPDATE `accounts` SET `lastPosition` = ? WHERE `ID` = ?", [playerPos, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
         });
     },
 
     lastIP: function (id, ip) {
-        db.query("UPDATE accounts SET ipAddress = ? WHERE ID = ?", [ip, id], function (error, results, fields) {
+        db.query("UPDATE `accounts` SET `ipAddress` = ? WHERE `ID` = ?", [ip, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
         });
     },
@@ -92,7 +93,7 @@ module.exports = {
     },
 
     buyBiz: function (player, b) {
-        db.query("SELECT * FROM bussineses WHERE ID = ?", [b.id], function (error, results, fields) {
+        db.query("SELECT * FROM `bussiness` WHERE `ID` = ?", [b.id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             if (results && results.length) {
                 if (player.cash < results[0].price) return player.notify("Nemate dovoljno novca.");
@@ -108,4 +109,16 @@ module.exports = {
             }
         });
     },
+
+    getPlayer: function(targetString) {
+        if(mp.players.exists(targetString)) {
+            let player = mp.players.at(targetString);
+            if(player.loggedIn) {
+                return player;
+            }
+            else {
+                return false;
+            }           
+        }
+    }
 };

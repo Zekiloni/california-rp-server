@@ -32,5 +32,9 @@ mp.events.add({
     'server:updatePlayerCustomization': (player, overlaysFinished, faceFeatures) => {
         account.updateOverlays(player.databaseID, overlaysFinished);
         account.updateFaceFeatures(player.databaseID, faceFeatures)
+    },
+
+    'playerCommand': (player, command) => {
+        if(!player.loggedIn) return player.ouputChatBox('Morate biti ulogovani da biste koristili komande');
     }
 });

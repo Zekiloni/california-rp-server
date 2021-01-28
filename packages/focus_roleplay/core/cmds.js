@@ -1,3 +1,5 @@
+const accounts = require("../accounts/accounts");
+
 module.exports =
 {
 	"a": (player, args) =>
@@ -49,5 +51,25 @@ module.exports =
     {
         if(!player.admin) return player.outputChatBox("<span style='color:#ff2d00'>(!) Nu esti administrator!");
         player.outputChatBox(player.position.x + " " + player.position.y + " " + player.position.z);
+    },
+
+    "agun": (player, args) =>
+    {
+        if(!player.admin) return player.notify("Niste ovlasceni da koristite ovu komandu.");
+        var arguments = args.split(' ');
+        if(arguments.length != 3) return player.ouputChatBox("KORISCENJE: /agun [ID-igraca] [Ime oruzja] [Metkovi]");
+        var targetPlayer = accounts.getPlayerById(arguments[0]);        
+        
+        if(targetPlayer != null)
+        {
+            var weaponHash = mp.joaat(arguments[1]);
+            var ammo = parseInt(arguments[2]);
+            player.giveWeapon(weaponHash, ammo);
+            player.notify("Dobili ste oruzje.");
+        }
+        else
+        {
+            player.ouputChatBox("Taj igrac nije konektovan na server.");
+        }
     }
 }

@@ -19,7 +19,7 @@ module.exports = {
         var name = info[type].name;
         let int = info[type].interior;
         let entrance = JSON.stringify(player.position);
-        db.query("INSERT INTO bussineses (name, type, price, interior, entrance) VALUES (?, ?, ?, ?, ?)", [name, type, price, int, entrance], function (error, results, fields) {
+        db.query("INSERT INTO `business` (name, type, price, interior, entrance) VALUES (?, ?, ?, ?, ?)", [name, type, price, int, entrance], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             player.outputChatBox(`Biznis kreiran tip: ${type} sa cenom ${price} $`);
             let id = results.insertId;
@@ -38,7 +38,7 @@ module.exports = {
 
     loadAll: async function () {
         var typesArray = this.type();
-        var result = await db.aQuery("SELECT * FROM `bussineses`");
+        var result = await db.aQuery("SELECT * FROM `business`");
         result.forEach(function (res) {
             var bizPos = JSON.parse(res.entrance);
             var biz = new BussinesModel(res.ID, res.name, res.type, res.owner, res.price, bizPos);
@@ -62,12 +62,12 @@ module.exports = {
             });
             blip.biz = res.ID;
         });
-        core.terminal(3, `${result.length} businesses were loaded !`);
+        core.terminal(3, `${result.length} business were loaded !`);
     },
 
     delete: function (player, biz) {
         let bID = biz.id;
-        db.query("DELETE FROM bussineses WHERE ID = ?", [biz.id], function (error, results, fields) {
+        db.query("DELETE FROM `business` WHERE `ID` = ?", [biz.id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let index = allBussineses.findIndex((el) => el.id === biz.id);
             allBussineses.splice(index, 1);
@@ -105,19 +105,19 @@ module.exports = {
         let index = allBussineses.findIndex((el) => el.id === id);
         if (changeType == 'name') { 
             allBussineses[index].name = value; 
-            db.query("UPDATE bussineses SET name = ? WHERE ID = ?", [value, id], function (error, results, fields) {
+            db.query("UPDATE `business` SET `name` = ? WHERE `ID` = ?", [value, id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });
         }
         else if (changeType == 'owner') { 
             allBussineses[index].owner = value; 
-            db.query("UPDATE bussineses SET owner = ? WHERE ID = ?", [value, id], function (error, results, fields) {
+            db.query("UPDATE `business` SET owner = ? WHERE `ID` = ?", [value, id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });
         }
         else if (changeType == 'price') { 
             allBussineses[index].price = value;
-            db.query("UPDATE bussineses SET price = ? WHERE ID = ?", [value, id], function (error, results, fields) {
+            db.query("UPDATE `business` SET price = ? WHERE `ID` = ?", [value, id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });
         }

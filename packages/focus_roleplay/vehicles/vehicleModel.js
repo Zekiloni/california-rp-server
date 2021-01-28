@@ -1,7 +1,7 @@
 
 
 module.exports = class VehicleModel { 
-   constructor(id, model, locked, owner, price, pos, fuel, rgb, rgb2, mods, engine, brakes, transmission, suspension) {
+   constructor(id, model, locked, owner, price, pos, fuel, rgb, rgb2, mods, ebts) {
        this.id = id;
        this.model = model;
        this.locked = locked || true;
@@ -11,10 +11,8 @@ module.exports = class VehicleModel {
        this.fuel = fuel;
        this.color = [rgb, rgb2];
        this.mods = mods;
-       this.engine = engine || -1;
-       this.brakes = brakes || -1;
-       this.transmission = transmission || -1;
-       this.suspension = suspension || -1;
+       this.ebts = ebts;
+       
        allVehicles.push(this);
    }
 

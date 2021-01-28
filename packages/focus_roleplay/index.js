@@ -14,6 +14,7 @@ core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 
 biz.loadAll();
 
+/*
 var pl = 1,
     i = 2,
     m = 'elegy',
@@ -24,7 +25,7 @@ var pl = 1,
     rg = {r: 2, g: 3, b: 4},
     rg2 = {r: 5, g: 6, b: 7},
     mo = {one: 345, two: 324, thre: 43};
-veh.create(pl, i, m, l, o, p, po, rg, rg2, mo)
+veh.create(pl, i, m, l, o, p, po, rg, rg2, mo)*/
  //setInterval(() => { console.log(allBussineses)  }, 10000);
 
 /* EVENTI
@@ -114,3 +115,14 @@ mp.events.addCommand("mod", (player, _, modType, modIndex) => {
     );
 });
 
+function TryParseInt(str,defaultValue) {
+    var retValue = defaultValue;
+    if(str !== null) {
+        if(str.length > 0) {
+            if (!isNaN(str)) {
+                retValue = parseInt(str);
+            }
+        }
+    }
+    return retValue;
+}
