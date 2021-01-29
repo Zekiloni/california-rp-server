@@ -20,6 +20,7 @@ biz.loadAll();
 inv.loadItems();
 
 console.log(items)
+console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
 // setInterval(() => { console.log(inventoryItems)  }, 10000);
 // setInterval(() => { inv.playerInventory(-1)  }, 3000);
 
