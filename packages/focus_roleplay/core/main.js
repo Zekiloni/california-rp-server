@@ -1,4 +1,7 @@
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 module.exports = { 
      terminal: function(status, text) {
           var colors = [
@@ -32,6 +35,14 @@ module.exports = {
                if (error) return core.terminal(1, error);
                let id = results.insertId;    
           });
-     }
+     },
+
+     hash: function(string, result) { 
+          bcrypt.genSalt(saltRounds, function(err, salt) {
+               bcrypt.hash(string, salt, function(err, hash) {
+                    result(hash);
+               });
+          });
+     },
 }
 

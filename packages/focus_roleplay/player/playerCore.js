@@ -15,6 +15,9 @@ module.exports = {
     login: async function (username, password) {
         var result = await db.aQuery("SELECT * FROM `accounts` WHERE `username` = ?", username);
         if(result[0].password) {
+            // core.hash('vucko', function(err, data) { // primer callbacka / povratne informacije kroz funkciju
+            //     if (err) return console.log(err)
+            // })
             if (result[0].password == password) {
                 this.status(username, 1);
                 return true;

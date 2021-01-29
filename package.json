@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "mysql": "^2.18.1"
   },
   "devDependencies": {
