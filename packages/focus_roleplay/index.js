@@ -31,10 +31,10 @@ console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
 */
 
 /* EVENTI
-     mp.events.callRemote('eventName', args); // poziva iz clienta SERVER EVENT
-     player.call('eventName', [arg1, arg2]); poziva iz servera CLIENT EVENT
-     mp.trigger('eventName', args); // poziva iz cefa CLIENT EVENT
-     mp.events.call('eventName', args); // poziva lokalni event
+    mp.events.callRemote('eventName', args); // poziva iz clienta SERVER EVENT
+    player.call('eventName', [arg1, arg2]); poziva iz servera CLIENT EVENT
+    mp.trigger('eventName', args); // poziva iz cefa CLIENT EVENT
+    mp.events.call('eventName', args); // poziva lokalni event
 */
 
 mp.events.addCommand("tp", (player) => {
