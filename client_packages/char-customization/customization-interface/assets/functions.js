@@ -49,7 +49,7 @@ var customization = [
     ]
 ];
 
-cusomizationMenu = (menu, menu_2, menu_3) => { 
+customizationMenu = (menu, menu_2, menu_3) => { 
     $(".sadrzaj").text(" ");
     $.each(menu, function(i, item) { 
         var price = Math.round(item.length * 0.65) * 1;
@@ -82,7 +82,7 @@ cusomizationMenu = (menu, menu_2, menu_3) => {
     });
 }
 
-cusomizationMenu(setHeadBlendData, setHeadOverlay, setFaceFeature) 
+customizationMenu(setHeadBlendData, setHeadOverlay, setFaceFeature) 
 
 $('.slajder').on('input', function () {
     var value = this.value;

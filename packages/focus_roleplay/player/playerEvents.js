@@ -1,13 +1,5 @@
 
 
-mp.events.add('playerJoin', (player) => {
-  player.call('client:showLogin');
-});
-
-mp.events.add("playerQuit", (player) => {
-  account.playerQuit(player)
-})
-
 mp.events.add("server:playerDamage", (player, healthLoss, armorLoss) => {
   // armorLoss - hp
 });
@@ -25,6 +17,25 @@ mp.events.add('server:handleLogin', async (player, username, password) => {
 })
 
 mp.events.add({
+
+    'playerJoin': (player) => {
+      player.call('client:showLogin');
+    },
+
+    'playerQuit': (player) => {
+      account.playerQuit(player)
+    },
+
+    'playerDeath': (player, reason, killer) => {
+      setTimeout(() => {
+          player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544))
+      }, 3000)
+    },
+
+    'playerChat': (player, text) => {
+      account.sendProxMessage(player, 7.2, `${player.name}: ${text}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA');
+    },
+
     'server:updatePlayerClothing': (player, clothingFinished) => {
         account.updateClothing(player.databaseID, clothingFinished);
     },

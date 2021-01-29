@@ -38,17 +38,59 @@ mp.events.addCommand({
       player.outputChatBox(`Teleportovani ste se do ${recipient.name} !`);
    },
 
-   'setmoney': (player, fullText) => {
-      if(player.admin < 4) return;
+   'revive': (player, fullText, target) => { 
+      if(player.admin < 2) return;
+      if(!target) return player.outputChatBox('Koriscenje /revive [igrac]'); 
+
+      let recipient = account.findPlayer(target);
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      recipient.resurrect();
+      recipient.outputChatBox(`${player.name} vas je oziveo !`);
+      player.outputChatBox(`Oziveli ste ${recipient.name} !`);
    },
 
-   'givemoney': (player, fullText) => {
+   'setmoney': (player, fullText, target, money) => {
       if(player.admin < 4) return;
+
+      let cash = parseInt(money);
+      let recipient = account.findPlayer(target);
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      recipient.cash = cash;
+      recipient.outputChatBox(`${player.name} vam je dao oruzije ${weapon} sa ${ammo} metaka`);
+      player.outputChatBox(`Dali ste igracu ${recipient.name} oruzije ${weapon} sa ${ammo} metaka`);
+   },
+
+   'givemoney': (player, fullText, target, money) => {
+      if(player.admin < 4) return;
+
+      let recipient = account.findPlayer(target);
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      let cash = parseInt(money);
+
+      recipient.cash += cash;
+      recipient.outputChatBox(`${player.name} vam je dao novca ${cash} $.`);
+      player.outputChatBox(`Dali ste igracu ${recipient.name} novca ${cash}.`);
+   },
+
+   'cash': (player, fullText) => { 
+      player.outputChatBox(`pare kola kucke ${player.cash}.`);
    },
 
    'pos': (player, fullText) => {
       if(player.admin < 2) return;
-      player.outputChatBox(`Trenutna pozicija: {X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z}}.`);
+      player.outputChatBox(`Trenutna pozicija: { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`);
    },
 
    'givegun': (player, fullText, target, weapon, ammo) => {
@@ -80,7 +122,7 @@ mp.events.addCommand({
       player.call("client:showClothing");
    },
 
-   'veh': (player, fullText, hash, rr, gg, bb, rr2, gg2, bb2) => {
+   'createveh': (player, fullText, hash, rr, gg, bb, rr2, gg2, bb2) => {
       if(player.admin < 3) return;
       let model = mp.joaat(hash), 
          position = player.position, rgb = {r: rr, g: gg, b: bb}, rgb2 = {r: rr2, g: gg2, b: bb2}, locked = false;

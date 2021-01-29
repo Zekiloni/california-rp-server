@@ -8,6 +8,10 @@ let accountsTable = `create table if not exists accounts (
   ipAddress varchar(64) NOT NULL,
   online int(1) NOT NULL DEFAULT 0,
   admin int(2) NOT NULL DEFAULT 0,
+  clothing text NOT NULL DEFAULT 0,
+  headOverlays text NOT NULL DEFAULT 0,
+  faceFeatures text NOT NULL DEFAULT 0,
+  lastPosition text NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 
 db.query(accountsTable, function(err, results, fields) {

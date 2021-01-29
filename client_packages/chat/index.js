@@ -1,4 +1,7 @@
-// mp.gui.chat.show(false); //Disables default RageMP Chat
-// let chatbox = mp.browsers.new('package://chat/chat-interface/index.html');
 
-// chatbox.markAsChat();
+
+mp.events.add("client:initCustomChat", () => {
+   mp.gui.chat.show(false);
+   const chatbox = mp.browsers.new('package://chat/chat-ui/index.html');
+   chatbox.markAsChat();
+})

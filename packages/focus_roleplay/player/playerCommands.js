@@ -23,9 +23,12 @@ mp.events.addCommand({
    },
 
    'me': (player, fullText) => {
+      if (!player.loggedIn) return;
+      account.sendProxMessage(player, 7.2, `** ${player.name} ${fullText}`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
    },
 
    'do': (player, fullText) => {
+      if (!player.loggedIn) return;
+      account.sendProxMessage(player, 7.2, `** ${fullText} (( ${player.name} ))`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
    },
-
 });

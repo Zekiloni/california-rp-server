@@ -37,35 +37,52 @@ module.exports = {
 
         //inv.load(player)
 
-        var lastPos = JSON.parse(result[0].lastPosition);
-        player.position = new mp.Vector3(lastPos.x, lastPos.y, lastPos.z);
+        if (result[0].lastPosition != 0) { 
+            let lastPos = JSON.parse(result[0].lastPosition);
+            player.position = new mp.Vector3(lastPos.x, lastPos.y, lastPos.z);
+        }
+        if (result[0].clothing != 0) {
+            let playerClothing = JSON.parse(result[0].clothing);
+            playerClothing.forEach((item) => {
+                player.setClothes(parseInt(item.index), parseInt(item.value), 0, 2);
+            });
+        }
+        if (result[0].headOverlays != 0) {
+            let playerOverlays = JSON.parse(result[0].headOverlays);
+            playerOverlays.forEach((item) => {
+                player.setHeadOverlay(parseInt(item.index), [parseInt(item.value), 1.0, parseInt(item.color), 0,]);
+            });
+        }
 
-        var playerClothing = JSON.parse(result[0].clothing);
-        playerClothing.forEach((item) => {
-            player.setClothes(parseInt(item.index), parseInt(item.value), 0, 2);
-        });
-
-        var playerOverlays = JSON.parse(result[0].headOverlays);
-        playerOverlays.forEach((item) => {
-            player.setHeadOverlay(parseInt(item.index), [parseInt(item.value), 1.0, parseInt(item.color), 0,]);
-        });
     },
 
     updateClothing: function (id, skin) {
         db.query("UPDATE `accounts` SET `clothing` = ? WHERE ID = ?", [skin, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
+            let clothing = JSON.parse(skin);
+            clothing.forEach((item) => {
+                player.setClothes(parseInt(item.index), parseInt(item.value), 0, 2);
+            });
         });
     },
 
     updateOverlays: function (id, overlays) {
         db.query("UPDATE `accounts` SET `headOverlays` = ? WHERE ID = ?", [overlays, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
+            let headOverlays = JSON.parse(overlays);
+            headOverlays.forEach((item) => {
+                player.setHeadOverlay(parseInt(item.index), [parseInt(item.value), 1.0, parseInt(item.color), 0,]);
+            });
         });
     },
 
     updateFaceFeatures: function (id, face) {
         db.query("UPDATE `accounts` SET `faceFeatures` = ? WHERE ID = ?", [face, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
+            let faceFeatures = JSON.parse(face);
+            faceFeatures.forEach((item) => {
+                player.setFaceFeature(parseInt(item.index), parseFloat(item.value));
+            });
         });
     },
 
@@ -127,7 +144,7 @@ module.exports = {
         }
     },
 
-    findPlayer: function(playerName) {
+    findPlayer: function (playerName) {
         let foundPlayer = null;
         if (playerName == parseInt(playerName)) {
             foundPlayer = mp.players.at(playerName);
@@ -140,5 +157,18 @@ module.exports = {
           });
         }
         return foundPlayer;
-    }
+    },
+
+    sendProxMessage: function (player, radius, message, color_1, color_2, color_3, color_4) {
+        player.outputChatBox(`!{${color_1}}${message}`)
+        mp.players.forEach(
+             (target, id) => {
+              if (target.dist(player.position) < radius / 16) { } 
+              else if (target.dist(player.position) < radius / 6) { target.outputChatBox(`!{${color_1}}${message}`); } 
+              else if (target.dist(player.position) < radius / 4) { target.outputChatBox(`!{${color_2}}${message}`); } 
+              else if (target.dist(player.position) < radius / 2) { target.outputChatBox(`!{${color_3}}${message}`); } 
+              else if (target.dist(player.position) < radius) { target.outputChatBox(`!{${color_4}}${message}`)}
+             }
+        );
+     }
 };

@@ -49,7 +49,7 @@ document.addEventListener("keyup", function(event) {
         $(".slajder").each(function(index) {
             clothingFinished.push({index: this.id, value: this.value})
         });
-        var skinJSON = JSON.stringify(clothingFinished)
+        let skinJSON = JSON.stringify(clothingFinished)
         mp.trigger('client:disableClothingPreview', skinJSON)
       }
 })
