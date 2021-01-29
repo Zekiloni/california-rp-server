@@ -1,6 +1,7 @@
 
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+var bcrypt = require('bcryptjs');
+var salt = bcrypt.genSaltSync(10);
+
 
 module.exports = { 
      terminal: function(status, text) {
@@ -37,12 +38,14 @@ module.exports = {
           });
      },
 
-     hash: function(string, result) { 
-          bcrypt.genSalt(saltRounds, function(err, salt) {
-               bcrypt.hash(string, salt, function(err, hash) {
-                    result(hash);
-               });
-          });
+     hash: function(string) { 
+          let hash = bcrypt.hashSync(string, salt);
+          return hash;
      },
+
+     compareHash: function(string, compareString) { 
+          let result = bcrypt.compareSync(string, compareString);
+          return result;
+     }
 }
 

@@ -37,12 +37,12 @@ mp.events.add({
     },
 
     'server:updatePlayerClothing': (player, clothingFinished) => {
-        account.updateClothing(player.databaseID, clothingFinished);
+        account.updateClothing(player, clothingFinished);
     },
 
     'server:updatePlayerCustomization': (player, overlaysFinished, faceFeatures) => {
-        account.updateOverlays(player.databaseID, overlaysFinished);
-        account.updateFaceFeatures(player.databaseID, faceFeatures)
+        account.updateOverlays(player, overlaysFinished);
+        account.updateFaceFeatures(player, faceFeatures)
     },
 
     'playerCommand': (player, command) => {

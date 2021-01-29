@@ -35,7 +35,6 @@ module.exports = {
         player.cash = result[0].cash;
         player.loggedIn = true;
 
-        //inv.load(player)
 
         if (result[0].lastPosition != 0) { 
             let lastPos = JSON.parse(result[0].lastPosition);
@@ -56,8 +55,8 @@ module.exports = {
 
     },
 
-    updateClothing: function (id, skin) {
-        db.query("UPDATE `accounts` SET `clothing` = ? WHERE ID = ?", [skin, id], function (error, results, fields) {
+    updateClothing: function (player, skin) {
+        db.query("UPDATE `accounts` SET `clothing` = ? WHERE ID = ?", [skin, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let clothing = JSON.parse(skin);
             clothing.forEach((item) => {
@@ -66,8 +65,8 @@ module.exports = {
         });
     },
 
-    updateOverlays: function (id, overlays) {
-        db.query("UPDATE `accounts` SET `headOverlays` = ? WHERE ID = ?", [overlays, id], function (error, results, fields) {
+    updateOverlays: function (player, overlays) {
+        db.query("UPDATE `accounts` SET `headOverlays` = ? WHERE ID = ?", [overlays, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let headOverlays = JSON.parse(overlays);
             headOverlays.forEach((item) => {
@@ -76,8 +75,8 @@ module.exports = {
         });
     },
 
-    updateFaceFeatures: function (id, face) {
-        db.query("UPDATE `accounts` SET `faceFeatures` = ? WHERE ID = ?", [face, id], function (error, results, fields) {
+    updateFaceFeatures: function (player, face) {
+        db.query("UPDATE `accounts` SET `faceFeatures` = ? WHERE ID = ?", [face, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let faceFeatures = JSON.parse(face);
             faceFeatures.forEach((item) => {
