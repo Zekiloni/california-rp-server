@@ -125,18 +125,17 @@ module.exports = {
     },
 
     findPlayer: function(playerName) {
-        if (playerName == parseInt(playerName))  {
-            return mp.players.at(playerName);
+        let foundPlayer = null;
+        if (playerName == parseInt(playerName)) {
+            foundPlayer = mp.players.at(playerName);
         }
-        else {
-            let foundPlayer = null;
-    
-            mp.players.forEach((_player) => {
-              if (_player.name === playerName) {
+        if (!foundPlayer) {
+          mp.players.forEach((_player) => {
+            if (_player.name === playerName) {
                 foundPlayer = _player;
-              }
-            });
-            return foundPlayer;
+            }
+          });
         }
+        return foundPlayer;
     }
 };

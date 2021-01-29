@@ -8,9 +8,11 @@ global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.inv = require('./inventory/inventoryCore')
 
-var dbStructure = require("./core/databaseStructure");
-var playerEvents = require("./player/playerEvents");
-var huntingAnimals = require("./hunting/animals");
+var dbStructure = require('./core/databaseStructure');
+var playerEvents = require('./player/playerEvents');
+var huntingAnimals = require('./hunting/animals');
+var playerCommands = require('./player/playerCommands')
+var adminCommands = require('./player/adminCommands')
 
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
@@ -75,17 +77,6 @@ mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     player.putIntoVehicle(veh, 0);
 });
 
-mp.events.addCommand("aveh", (player, full, hash, rr, gg, bb, rr2, gg2, bb2) => {
-    var model = mp.joaat(hash);
-    let position = player.position;
-    let rgb = {r: rr, g: gg, b: bb}
-    let rgb2 = {r: rr2, g: gg2, b: bb2}
-    let locked = false;
-    veh.create(player, 1, model, locked, -1, 1, position, rgb, rgb2, 0, 0);
-});
-
-
-
 mp.events.addCommand("buy", (player, text) => {
      var bussines = biz.nearby(player);
      if (bussines) {
@@ -94,33 +85,6 @@ mp.events.addCommand("buy", (player, text) => {
      }
  });
 
-mp.events.addCommand("weapon", (player, fullText, weapon, ammo) => {
-    let weaponHash = mp.joaat(weapon);
-    player.giveWeapon(weaponHash, parseInt(ammo) || 10000);
-});
-
-
-mp.events.addCommand("mod", (player, _, modType, modIndex) => {
-    if (!player.vehicle)
-        return player.outputChatBox(
-            "You need to be in a vehicle to use this command."
-        );
-    player.vehicle.setMod(parseInt(modType), parseInt(modIndex));
-    player.outputChatBox(
-        `Mod Type ${modType} with Mod Index ${modIndex} applied.`
-    );
-});
 
 
 
-function TryParseInt(str,defaultValue) {
-    var retValue = defaultValue;
-    if(str !== null) {
-        if(str.length > 0) {
-            if (!isNaN(str)) {
-                retValue = parseInt(str);
-            }
-        }
-    }
-    return retValue;
-}
