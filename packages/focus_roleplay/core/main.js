@@ -24,5 +24,14 @@ module.exports = {
                     current.getUTCDate()].join('-');
                     
           return `${date} ${time}`;
-     } 
+     },
+
+     createLog: function (type, account = 0, play = 0, target = 0, message = 'empty', data = 'empty') { 
+          let info = JSON.stringify(data)
+          db.query("INSERT INTO `logs` (type, account, player, target, message, data, dateTime) VALUES (?, ?, ?, ?, ?, ?, current_timestamp())", [type, account, play, target, message, info], function (error, results, fields) {
+               if (error) return core.terminal(1, error);
+               let id = results.insertId;    
+          });
+     }
 }
+

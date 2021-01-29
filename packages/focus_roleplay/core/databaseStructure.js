@@ -26,8 +26,8 @@ let businessTable =  `CREATE TABLE IF NOT EXISTS business (
   PRIMARY KEY(ID))`;
 
 db.query(businessTable, function(err, results, fields) {
-    if (err) { core.terminal(1, err.message) }
-    core.terminal(3, `Checking businessTable | MySQL`);
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking businessTable | MySQL`);
 });
 
 let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
@@ -44,8 +44,8 @@ let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   PRIMARY KEY(ID))`;
 
 db.query(vehicleTable, function(err, results, fields) {
-    if (err) { core.terminal(1, err.message) }
-    core.terminal(3, `Checking vehicleTable  | MySQL`);
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking vehicleTable  | MySQL`);
 });
 
 
@@ -64,8 +64,24 @@ let inventoryTable = `CREATE TABLE IF NOT EXISTS inventory (
   PRIMARY KEY(ID))`;
 
 db.query(inventoryTable, function(err, results, fields) {
-    if (err) { core.terminal(1, err.message) }
-    core.terminal(3, `Checking inventoryTable  | MySQL`);
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking inventoryTable  | MySQL`);
+});
+
+let logsTable = `create table if not exists logs (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  type int(2) NOT NULL,
+  account int(11) NOT NULL,
+  player varchar(128) NOT NULL,
+  target int(11) NOT NULL,
+  message varchar(128) NOT NULL,
+  data text NOT NULL,
+  dateTime timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY(ID))`;
+
+db.query(logsTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking logsTable  | MySQL`);
 });
 
 

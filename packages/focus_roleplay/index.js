@@ -26,6 +26,7 @@ console.log(items)
 /* ZAVRSENE STVARI
     player.call("client:showClothing"); // CHAR CLOTHING !
     player.call("client:showCustomization"); // CHAR CUSTOMIZATION
+    core.createLog(type, account, player, target, message, data); // LOGS
 */
 
 /* EVENTI
