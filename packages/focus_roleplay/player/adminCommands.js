@@ -1,8 +1,4 @@
 mp.events.addCommand({
-  
-   'goto': (player, fullText) => {
-      if(player.admin < 1) return;
-   },
 
    'kick': (player, fullText) => {
       if(player.admin < 1) return;
@@ -12,8 +8,34 @@ mp.events.addCommand({
       if(player.admin < 2) return;
    },
 
-   'gethere': (player, fullText) => {
+   'gethere': (player, fullText, target) => {
       if(player.admin < 2) return;
+      if(!target) return player.outputChatBox('Koriscenje /gethere [igrac]'); 
+
+      let recipient = account.findPlayer(target);
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      recipient.position = player.position;
+      recipient.outputChatBox(`${player.name} vas je teleportovao do njega !`);
+      player.outputChatBox(`Teleportovali ste ${recipient.name} do sebe !`);
+   },
+
+   'goto': (player, fullText, target) => {
+      if(player.admin < 1) return;
+      if(!target) return player.outputChatBox('Koriscenje /gethere [igrac]'); 
+
+      let recipient = account.findPlayer(target);
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      player.position = recipient.position;
+      recipient.outputChatBox(`${player.name} se teleportovao do vas !`);
+      player.outputChatBox(`Teleportovani ste se do ${recipient.name} !`);
    },
 
    'setmoney': (player, fullText) => {
@@ -24,10 +46,14 @@ mp.events.addCommand({
       if(player.admin < 4) return;
    },
 
+   'pos': (player, fullText) => {
+      if(player.admin < 2) return;
+      player.outputChatBox(`Trenutna pozicija: {X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z}}.`);
+   },
+
    'givegun': (player, fullText, target, weapon, ammo) => {
       if(player.admin < 4) return;
       let weaponHash = mp.joaat(weapon);
-      player.outputChatBox(`${target} / ${weapon} / ${ammo}`)
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 
@@ -63,9 +89,9 @@ mp.events.addCommand({
 
    'vehtune': (player, fullText, modType, modIndex) => {
       if(player.admin < 3) return;
-      if (!player.vehicle) return player.outputChatBox("You need to be in a vehicle to use this command.");
+      if (!player.vehicle) return player.outputChatBox(`Morate biti u vozilu za koriscenje ove komande.`);
       player.vehicle.setMod(parseInt(modType), parseInt(modIndex));
-      player.outputChatBox(`Mod Type ${modType} with Mod Index ${modIndex} applied.`);
+      player.outputChatBox(`Tip moda ${modType} sa indeksom moda ${modIndex} je postavljen.`);
    },
 
 });
