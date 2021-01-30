@@ -8,6 +8,7 @@ global.account = require('./player/playerCore');
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.inv = require('./inventory/inventoryCore')
+global. fac = require('./factions/factionsCore')
 
 var dbStructure = require('./core/databaseStructure');
 var playerEvents = require('./player/playerEvents');
@@ -20,8 +21,9 @@ core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 inv.loadItems();
 
-console.log(items)
-console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
+//console.log(items)
+console.log(FACTION_POLICE)
+//console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
 // setInterval(() => { console.log(inventoryItems)  }, 10000);
 // setInterval(() => { inv.playerInventory(-1)  }, 3000);
 

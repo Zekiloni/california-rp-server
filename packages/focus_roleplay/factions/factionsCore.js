@@ -1,0 +1,2 @@
+
+let factionsConst = require('./factionsConst')
