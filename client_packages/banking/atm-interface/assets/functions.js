@@ -1,7 +1,7 @@
 
 
 
-playerInfo = (name, cash) => { 
+playerInfo = (name, cash, id) => { 
     $('.player-name').text(name)
     $('.player-money').text(moneyFormat(cash))
 }

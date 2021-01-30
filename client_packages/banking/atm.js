@@ -2,10 +2,10 @@ const player = mp.players.local;
 var atmCEF;
 
 mp.events.add({
-   'client:showATM': (name, cash) => {
+   'client:showATM': (name, cash, id) => {
       player.freezePosition(true);
       atmCEF = mp.browsers.new('package://banking/atm-interface/atm.html');
-      atmCEF.execute(`playerInfo(\"${name}\", \"${cash}\");`); 
+      atmCEF.execute(`playerInfo(\"${name}\", \"${cash}\", \"${id}\");`); 
       mp.gui.chat.push(` pare kola ${cash}`)
       setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
   },

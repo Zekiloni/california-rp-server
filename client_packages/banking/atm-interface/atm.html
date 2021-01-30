@@ -20,27 +20,52 @@
             </div>
             <div class="content">
                 <div id="general">
-                    <div class="welcome-box">
-                        <h4>Welcome <span class="player-name">Player Name</span></h4>
-                        <h5>Account Balance <br> <span class="money"><b>&dollar;</b><span class="player-money">401,342</span></h5>
+                    <div class="pInfo">
+                        <div class="welcome-box">
+                            <h4>Dobrodošli <span class="player-name"></span></h4>
+                            <h5><i class="icon fas fa-chart-bar"></i> balans računa <br> <span class="money"><b>&dollar;</b><span class="player-money"></span></h5>
+                            <h6>štedni račun <br> <span class="savings"><b>&dollar;</b><span class="player-savings">0.00</span></h6>
+                            <h6>isplata kredita <br> <span class="credit"><b>&dollar;</b><span class="player-credit">0.00</span></h6>
+                        </div>
+                        <ul class="navigation">
+                            <li onclick="menu('deposit');"> 
+                                <i class="far fa-money-bill-alt"></i> Depozit Novca 
+                                <small>na vaš račun</small>
+                                <i class="icon far fa-money-bill-alt"></i>
+                            </li>
+                            <li onclick="menu('withdraw');"> 
+                                <i class="far fa-credit-card"></i> Podizanje Novca 
+                                <small>sa vašeg računa</small>
+                                <i class="icon far fa-credit-card"></i>
+                            </li>
+                            <li onclick="menu('transfer');"> 
+                                <i class="fas fa-exchange-alt"></i> Transfer Novca 
+                                <small>transfer osobi / drugom računu</small>
+                                <i class="icon fas fa-exchange-alt"></i>
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="navigation">
-                        <li onclick="menu('deposit');"> 
-                            <i class="far fa-money-bill-alt"></i> Depozit Novca 
-                            <small>na vaš račun</small>
-                            <i class="icon far fa-money-bill-alt"></i>
-                        </li>
-                        <li onclick="menu('withdraw');"> 
-                            <i class="far fa-credit-card"></i> Podizanje Novca 
-                            <small>sa vašeg računa</small>
-                            <i class="icon far fa-credit-card"></i>
-                        </li>
-                        <li onclick="menu('transfer');"> 
-                            <i class="fas fa-exchange-alt"></i> Transfer Novca 
-                            <small>transfer osobi / drugom računu</small>
-                            <i class="icon fas fa-exchange-alt"></i>
-                        </li>
-                    </ul>
+
+                    <div class="stats">
+                        <div class="row justify-content-around">
+                            <div class="box">
+                                <h5>Tekući računi</h5>
+                                <i class="icon far fa-credit-card"></i>
+                                <p>Upravljajte svojim vremenom i novcem otvorite tekući račun u našoj Banci, uz jednostavnu proceduru. Očekujemo Vas u svim našim poslovnicama ! </p>
+                            </div>
+                            <div class="box">
+                                <h5>Štednja</h5>
+                                <i class="icon fas fa-piggy-bank"></i>
+                                <p>Neka Banka radi za Vas. Oročite novac, uz besplatno otvaranje i vođenje štednog računa. Bilo da želite kreditnu ili deviznu štednju, očekujemo Vas u svim našim poslovnicama. </p>
+                            </div>
+                            <div class="box">
+                                <h5>Krediti</h5>
+                                <i class="icon fa fa-credit-card" aria-hidden="true"></i>
+                                <p>Obezbedite dodatni novac ili refinansirajte postojeće obaveze, a mi ćemo Vam pomoći u pravom izboru kredita. Ispunite svoje želje i ostvarite planove, uz našu direktnu podršku.</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div id="deposit">
