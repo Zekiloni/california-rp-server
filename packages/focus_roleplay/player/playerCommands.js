@@ -100,19 +100,13 @@ mp.events.addCommand({
                player.outputChatBox(`Uspesno ste se pridruzili fakciji !`);
                break;
             case 'info':
-               player.outputChatBox(`BIZ INFO !`);
-               break;
-            case 'sell':
-               player.outputChatBox(`BIZ sell !`);
-               break;
-            case 'products':
-               player.outputChatBox(`BIZ sell !`);
+               player.outputChatBox(`accept INFO !`);
                break;
             default:
-               player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`);
+               player.outputChatBox(`Komanda nema argumente /accept (invite, ...) !`);
             }
       }
-      else {  player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`); }
+      else {  player.outputChatBox(`Komanda nema argumente /accept (invite, ...) !`); }
    }
 
 });

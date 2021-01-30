@@ -1,3 +1,6 @@
+const fs = require("fs");
+const savedPosition = "savedPositions.txt";
+
 mp.events.addCommand({
 
    'kick': (player, fullText) => {
@@ -104,9 +107,19 @@ mp.events.addCommand({
       player.outputChatBox(`pare kola kucke ${player.cash}.`);
    },
 
-   'pos': (player, fullText) => {
+   'pos': (player, name = 'unnamed position') => {
       if(player.admin < 2) return;
-      player.outputChatBox(`Trenutna pozicija: { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`);
+      let pos = (player.vehicle) ? player.vehicle.position : player.position;
+      let rot = (player.vehicle) ? player.vehicle.rotation : player.heading;
+  
+      fs.appendFile(savedPosition, `Position: ${pos.x}, ${pos.y}, ${pos.z} | ${(player.vehicle) ? `Rotation: ${rot.x}, ${rot.y}, ${rot.z}` : `Heading: ${rot}`} | ${(player.vehicle) ? "InCar" : "OnFoot"} - ${name}\r\n`, (err) => {
+          if (err) {
+              core.terminal(1, `Saving Position Error: ${err.message}`);
+          } else {
+              player.outputChatBox(`Trenutna pozicija: ${name} { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`);
+          }
+      });
+      
    },
 
    'givegun': (player, fullText, target, weapon = 'weapon_unarmed', ammo = 0) => {

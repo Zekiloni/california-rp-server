@@ -20,11 +20,11 @@ var adminCommands = require('./player/adminCommands')
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 inv.loadItems();
+fac.initFactions();
 setInterval(() => { core.savePlayers()  }, 65000);
 
 
 //console.log(items)
-fac.getLeader(1)
 //console.log(FACTION_POLICE)
 //console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
 
