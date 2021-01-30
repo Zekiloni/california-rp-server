@@ -1,9 +1,9 @@
 
 
 
-playerInfo = (player) => { 
-    $('.player-name').text(player.name)
-    $('.player-money').text(player.cash)
+playerInfo = (name, cash) => { 
+    $('.player-name').text(name)
+    $('.player-money').text(moneyFormat(cash))
 }
 
 document.addEventListener("keyup", function(e) {
@@ -43,7 +43,7 @@ transfer = () => {
 }
 
 
-formatNovca = (x) => {
+moneyFormat = (x) => {
     return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 

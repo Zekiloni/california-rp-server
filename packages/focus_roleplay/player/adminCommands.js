@@ -109,7 +109,7 @@ mp.events.addCommand({
       player.outputChatBox(`Trenutna pozicija: { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`);
    },
 
-   'givegun': (player, fullText, target, weapon, ammo) => {
+   'givegun': (player, fullText, target, weapon = 'weapon_unarmed', ammo = 0) => {
       if(player.admin < 4) return;
       let weaponHash = mp.joaat(weapon);
       let recipient = account.findPlayer(target);
