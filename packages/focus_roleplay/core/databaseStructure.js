@@ -19,7 +19,7 @@ let accountsTable = `create table if not exists accounts (
   lastPosition text NOT NULL DEFAULT 0,
   job int(2) NOT NULL DEFAULT 0,
   faction int(2) NOT NULL DEFAULT 0,
-  factionRank varchar(64) NOT NULL DEFAULT 0,
+  factionRank varchar(64) NOT NULL DEFAULT 'no',
   PRIMARY KEY(ID))`;
 
 db.query(accountsTable, function(err, results, fields) {
@@ -95,5 +95,17 @@ db.query(logsTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
   core.terminal(3, `Checking logsTable  | MySQL`);
 });
+
+let leadersTable = `create table if not exists factions (
+  faction int(11) NOT NULL,
+  leader int(11) NOT NULL DEFAULT 0,
+  budget int(11) NOT NULL DEFAULT 0)`;
+
+db.query(leadersTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking logsTable  | MySQL`);
+});
+
+
 
 

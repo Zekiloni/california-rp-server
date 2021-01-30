@@ -34,7 +34,9 @@ module.exports = {
         player.databaseID = result[0].ID;
         player.cash = result[0].cash;
         player.loggedIn = true;
-
+        player.faction = result[0].faction;
+        player.rank = result[0].factionRank;
+        player.inviteRequest = 0;
 
         if (result[0].lastPosition != 0) { 
             let lastPos = JSON.parse(result[0].lastPosition);

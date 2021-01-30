@@ -1,3 +1,5 @@
+const factionsCore = require("../factions/factionsCore");
+
 mp.events.addCommand({
   
    'pm': (player, fullText) => {
@@ -73,6 +75,44 @@ mp.events.addCommand({
     'b': (player, fullText) => { 
       if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.OOC, `(( ${player.name} [${player.id}]: ${fullText} ))`, 'A6BFBF', 'A0B8B8', '97ADAD', '95ABAB', '90A6A6');
+   },
+
+   'invite': async (player, fullText, target) => { 
+      if (!player.loggedIn) return;
+      if (!target) return player.outputChatBox('Koriscenje /invite [igrac]'); 
+      fac.invite(player, target);
+   },
+
+   'uninvite': async (player, fullText, target) => { 
+      if (!player.loggedIn) return;
+      if (!target) return player.outputChatBox('Koriscenje /invite [igrac]'); 
+      fac.uninvite(player, target);
+   },
+
+   'accept': (player, fullText) => {
+      if(fullText) { 
+            let args = fullText.split(" ");
+            switch(args[0]) {
+            case 'invite':
+               if(player.faction != 0) return player.outputChatBox(`Vec ste u nekoj fakciji !`);
+               if (!player.inviteRequest) return player.outputChatBox(`Niko vam nije poslao zahtev za pridruzivanje fakciji !`);
+               player.faction = player.inviteRequest;
+               player.outputChatBox(`Uspesno ste se pridruzili fakciji !`);
+               break;
+            case 'info':
+               player.outputChatBox(`BIZ INFO !`);
+               break;
+            case 'sell':
+               player.outputChatBox(`BIZ sell !`);
+               break;
+            case 'products':
+               player.outputChatBox(`BIZ sell !`);
+               break;
+            default:
+               player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`);
+            }
+      }
+      else {  player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`); }
    }
 
 });

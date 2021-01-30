@@ -10,7 +10,7 @@ global.FACTION_POLICE = {
    SPAWN_POINT: new mp.Vector3(0, 0, 0),
    GARAGE_POINT: new mp.Vector3(0, 0, 0),
    VEH_POINT: new mp.Vector3(0, 0, 0),
-}; Object.freeze(FACTION_POLICE)
+}; 
 
 global.FACTION_LSFD = {
    ID: 0,
@@ -21,4 +21,4 @@ global.FACTION_LSFD = {
    SPAWN_POINT: new mp.Vector3(0, 0, 0),
    GARAGE_POINT: new mp.Vector3(0, 0, 0),
    VEH_POINT: new mp.Vector3(0, 0, 0),
-}; Object.freeze(FACTION_POLICE)
+}; Object.freeze(FACTION_LSFD)
