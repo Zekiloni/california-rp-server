@@ -1,4 +1,3 @@
-
 var player =  mp.players.local, customizationCEF;
 
 mp.events.add({
@@ -10,9 +9,9 @@ mp.events.add({
         mp.events.call('client:setCameraInfrontPlayer', true);
     },
 
-    'client:disableCustomizationPreview': (headOverlays, faceFeatures) => {
+    'client:disableCustomizationPreview': (headOverlays, faceFeatures, blendData) => {
         mp.game.ui.displayRadar(true);
-        mp.events.callRemote('server:updatePlayerCustomization', headOverlays, faceFeatures);
+        mp.events.callRemote('server:updatePlayerCustomization', headOverlays, faceFeatures, blendData);
         customizationCEF.destroy();
         setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
         player.freezePosition(false);
@@ -90,6 +89,4 @@ mp.events.add({
 //     ]
 //   ]
 // }
-
-
 

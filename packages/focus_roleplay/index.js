@@ -2,6 +2,7 @@
 global.conf = require('./core/configuration');
 global.core = require('./core/main');
 global.db = require('./core/database');
+global.globals = require('./core/globals')
 global.house = require('./houses/core');
 global.account = require('./player/playerCore');
 global.veh = require('./vehicles/vehicleCore')

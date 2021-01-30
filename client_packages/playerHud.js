@@ -2,6 +2,7 @@
 const player = mp.players.local;
 var playerHUD;
 
+mp.game.gameplay.setFadeOutAfterDeath(false);
 
 mp.events.add('client:showPlayerHUD', (show) => {
 	if(show)  {

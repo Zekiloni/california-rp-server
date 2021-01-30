@@ -32,7 +32,6 @@ mp.events.add('client:disableLoginCamera', () => {
   loginCam.destroy();
   mp.gui.chat.activate(true);
   mp.gui.chat.show(true); 
-  //mp.events.call('client:initCustomChat'); // not using, using default
   mp.game.ui.displayRadar(true);
   setTimeout(() => { 
     mp.gui.cursor.show(false, false); 

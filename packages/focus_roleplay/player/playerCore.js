@@ -40,6 +40,12 @@ module.exports = {
             let lastPos = JSON.parse(result[0].lastPosition);
             player.position = new mp.Vector3(lastPos.x, lastPos.y, lastPos.z);
         }
+        if(result[0].headBlendData != 0) { 
+            let blendData = JSON.parse(result[0].headBlendData);
+            player.setHeadBlend(parseInt(blendData.shapeFirst), parseInt(blendData.shapeSecond), 0, 
+                                parseInt(blendData.skinFirst), parseInt(blendData.skinSecond), 0, 
+                                parseFloat(blendData.shapeMix), parseFloat(blendData.skinMix), 0);
+        }
         if (result[0].clothing != 0) {
             let playerClothing = JSON.parse(result[0].clothing);
             playerClothing.forEach((item) => {
@@ -49,7 +55,7 @@ module.exports = {
         if (result[0].headOverlays != 0) {
             let playerOverlays = JSON.parse(result[0].headOverlays);
             playerOverlays.forEach((item) => {
-                player.setHeadOverlay(parseInt(item.index), [parseInt(item.value), 1.0, parseInt(item.color), 0,]);
+                player.setHeadOverlay(parseInt(item.index), [parseInt(item.value), 1.0, parseInt(item.color), 0]);
             });
         }
 
@@ -70,7 +76,7 @@ module.exports = {
             if (error) return core.terminal(1, error);
             let headOverlays = JSON.parse(overlays);
             headOverlays.forEach((item) => {
-                player.setHeadOverlay(parseInt(item.index), [parseInt(item.value), 1.0, parseInt(item.color), 0,]);
+                player.setHeadOverlay(parseInt(item.index), [parseInt(item.value), 1.0, parseInt(item.color), 0]);
             });
         });
     },
@@ -82,6 +88,16 @@ module.exports = {
             faceFeatures.forEach((item) => {
                 player.setFaceFeature(parseInt(item.index), parseFloat(item.value));
             });
+        });
+    },
+
+    updateBlendData: function (player, blendData) {
+        db.query("UPDATE `accounts` SET `headBlendData` = ? WHERE ID = ?", [blendData, player.databaseID], function (error, results, fields) {
+            if (error) return core.terminal(1, error);
+            let blend = JSON.parse(blendData);
+            player.setHeadBlend(parseInt(blend.shapeFirst), parseInt(blend.shapeSecond), 0, 
+            parseInt(blend.skinFirst), parseInt(blend.skinSecond), 0, 
+            parseFloat(blend.shapeMix), parseFloat(blend.skinMix), 0);
         });
     },
 
@@ -158,15 +174,20 @@ module.exports = {
         return foundPlayer;
     },
 
-    sendProxMessage: function (player, radius, message, color_1, color_2, color_3, color_4) {
+    playerNearTarget: function (player, target) { 
+        if (player.dist(target.position) < 2.5) { return true; } 
+        else return false;
+    },
+
+    sendProxMessage: function (player, radius, message, color_1, color_2, color_3, color_4, color_5) {
         player.outputChatBox(`!{${color_1}}${message}`)
         mp.players.forEach(
              (target, id) => {
-              if (target.dist(player.position) < radius / 16) { } 
-              else if (target.dist(player.position) < radius / 6) { target.outputChatBox(`!{${color_1}}${message}`); } 
-              else if (target.dist(player.position) < radius / 4) { target.outputChatBox(`!{${color_2}}${message}`); } 
-              else if (target.dist(player.position) < radius / 2) { target.outputChatBox(`!{${color_3}}${message}`); } 
-              else if (target.dist(player.position) < radius) { target.outputChatBox(`!{${color_4}}${message}`)}
+              if (target.dist(player.position) < radius / 8) { } 
+              else if (target.dist(player.position) < radius / 6) { target.outputChatBox(`!{${color_2}}${message}`); } 
+              else if (target.dist(player.position) < radius / 4) { target.outputChatBox(`!{${color_3}}${message}`); } 
+              else if (target.dist(player.position) < radius / 2) { target.outputChatBox(`!{${color_4}}${message}`); } 
+              else if (target.dist(player.position) < radius) { target.outputChatBox(`!{${color_5}}${message}`)}
              }
         );
      }

@@ -25,7 +25,7 @@ mp.events.addCommand({
 
    'goto': (player, fullText, target) => {
       if(player.admin < 1) return;
-      if(!target) return player.outputChatBox('Koriscenje /gethere [igrac]'); 
+      if(!target) return player.outputChatBox('Koriscenje /goto [igrac]'); 
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
@@ -48,9 +48,25 @@ mp.events.addCommand({
          return false; 
       } 
 
-      recipient.resurrect();
+      let position = recipient.position;
+      clearTimeout(recipient.respawnTimer)
+      recipient.isDead = false;
+      setTimeout(() => { recipient.spawn(position); }, 700)
       recipient.outputChatBox(`${player.name} vas je oziveo !`);
       player.outputChatBox(`Oziveli ste ${recipient.name} !`);
+   },
+
+   'makeadmin': (player, fullText, target, adminLevel) => { 
+      let level = parseInt(adminLevel);
+      let recipient = account.findPlayer(target);
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      recipient.admin = level;
+      recipient.outputChatBox(`${player.name} vam je dao admina level ${level}.`);
+      player.outputChatBox(`Dali ste igracu ${recipient.name} admina level ${level}.`);
    },
 
    'setmoney': (player, fullText, target, money) => {

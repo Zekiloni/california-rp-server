@@ -27,22 +27,25 @@ mp.events.add({
     },
 
     'playerDeath': (player, reason, killer) => {
-      setTimeout(() => {
-          player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544))
-      }, 3000)
+      player.isDead = true;
+      player.respawnTimer = setTimeout(() => {
+          player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544));
+          player.isDead = false;
+      }, 60000)
     },
 
     'playerChat': (player, text) => {
-      account.sendProxMessage(player, 7.2, `${player.name}: ${text}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA');
+      account.sendProxMessage(player, 6.5, `${player.name}: ${text}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
     },
 
     'server:updatePlayerClothing': (player, clothingFinished) => {
         account.updateClothing(player, clothingFinished);
     },
 
-    'server:updatePlayerCustomization': (player, overlaysFinished, faceFeatures) => {
+    'server:updatePlayerCustomization': (player, overlaysFinished, faceFeatures, blendData) => {
         account.updateOverlays(player, overlaysFinished);
         account.updateFaceFeatures(player, faceFeatures)
+        account.updateBlendData(player, blendData);
     },
 
     'playerCommand': (player, command) => {

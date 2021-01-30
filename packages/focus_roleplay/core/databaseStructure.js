@@ -11,6 +11,7 @@ let accountsTable = `create table if not exists accounts (
   clothing text NOT NULL DEFAULT 0,
   headOverlays text NOT NULL DEFAULT 0,
   faceFeatures text NOT NULL DEFAULT 0,
+  headBlendData text NOT NULL DEFAULT 0,
   lastPosition text NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 

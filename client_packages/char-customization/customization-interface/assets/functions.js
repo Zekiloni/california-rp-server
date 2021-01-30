@@ -119,26 +119,36 @@ $('.rotacija').on('input', function () {
     mp.trigger("client:rotateCharacter", parseFloat(value));
 });
 
+finishCustomization = () => { 
+    var overlaysFinished = [],
+        faceFeatures = [];
+    var shapeFirst = $('#-6').val(),
+        shapeSecond = $('#-5').val(),
+        skinFirst = $('#-4').val(),
+        skinSecond = $('#-3').val(),
+        shapeMix = $('#-2').val(),
+        skinMix = $('#-1').val();
 
-document.addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-        var overlaysFinished = [],
-            faceFeatures = [];
+    $(".slajder").each(function(index) {
+        if(this.id >= 0 && this.id <= 12) {
+            var colorVal = $(this).nextAll('#color').val();
+            overlaysFinished.push({index: this.id, value: this.value, color: colorVal})
+        }
 
-        $(".slajder").each(function(index) {
-            if(this.id >= 0 && this.id <= 12) {
-                var colorVal = $(this).nextAll('#color').val();
-                overlaysFinished.push({index: this.id, value: this.value, color: colorVal})
-            }
+        if(this.id.includes("face")) { 
+            var realIndex = this.id.replace('face-',' ');
+            faceFeatures.push({index: realIndex, value: parseFloat(this.value)})
+        }
+    });
+    var headOverlays = JSON.stringify(overlaysFinished);
+    var faceFinished = JSON.stringify(faceFeatures);
+    var blendData = { shapeFirst: shapeFirst, shapeSecond: shapeSecond, skinFirst: skinFirst, skinSecond: skinSecond, shapeMix: shapeMix, skinMix: skinMix};
+    var blendFinished = JSON.stringify(blendData);
+    mp.trigger('client:disableCustomizationPreview', headOverlays, faceFinished, blendFinished);
+}
 
-            if(this.id.includes("face")) { 
-                var realIndex = this.id.replace('face-',' ');
-                faceFeatures.push({index: realIndex, value: parseFloat(this.value)})
-            }
-        });
-        var headOverlays = JSON.stringify(overlaysFinished)
-        var faceFinished = JSON.stringify(faceFeatures)
-        mp.trigger('client:disableCustomizationPreview', headOverlays, faceFinished)
-      }
+$(document).keyup(function(event) {
+    if (event.keyCode == 13) { 
+        finishCustomization();
+    }
 })
-
