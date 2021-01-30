@@ -4,7 +4,7 @@ var salt = bcrypt.genSaltSync(10);
 
 
 module.exports = { 
-     terminal: function(status, text) {
+     terminal: function (status, text) {
           var colors = [
               red = "\x1b[31m",
               yellow = "\x1b[33m",
@@ -20,7 +20,7 @@ module.exports = {
            }
       },
      
-     timeDate: function() {
+     timeDate: function () {
           var current = new Date(), 
           time = current.getHours() + ':' + current.getMinutes() + ':' + current.getSeconds(),         
           date = [ current.getUTCFullYear(),
@@ -38,14 +38,27 @@ module.exports = {
           });
      },
 
-     hash: function(string) { 
+     hash: function (string) { 
           let hash = bcrypt.hashSync(string, salt);
           return hash;
      },
 
-     compareHash: function(string, compareString) { 
+     compareHash: function (string, compareString) { 
           let result = bcrypt.compareSync(string, compareString);
           return result;
+     },
+
+     savePlayers: function () { 
+          let counter = 0;
+          mp.players.forEach(
+               (player) => {
+                    if (player.loggedIn) { 
+                         account.save(player);
+                         counter ++;
+                    }
+               }
+          );
+          this.terminal(3, `Saved Accounts ${counter}`)
      }
 }
 

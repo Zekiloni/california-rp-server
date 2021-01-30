@@ -61,6 +61,25 @@ module.exports = {
 
     },
 
+    save: function (player) { 
+        let PlayerPos = JSON.stringify(player.position);
+        var values = {
+            ipAddress: player.ip,
+            admin: player.admin,
+            cash: player.cash,
+            bank: player.bank,
+            savings: player.savings,
+            credit: player.credit,
+            lastPosition: PlayerPos,
+            job: player.job,
+            faction: player.faction,
+            factionRank: player.rank
+        };
+        db.query("UPDATE accounts SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
+            if (error) return core.terminal(1, `Saving Account ${error}`);
+        });
+    },
+
     updateClothing: function (player, skin) {
         db.query("UPDATE `accounts` SET `clothing` = ? WHERE ID = ?", [skin, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
@@ -124,9 +143,7 @@ module.exports = {
     playerQuit: function (player) {
         core.terminal(2, `${player.name} je napustio server.`);
         this.status(player.name, 0);
-        let PlayerPos = player.position;
-        this.lastPosition(player.databaseID, JSON.stringify(PlayerPos));
-        this.lastIP(player.databaseID, player.ip);
+        this.save(player);
     },
 
     buyBiz: function (player, b) {

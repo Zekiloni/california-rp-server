@@ -9,11 +9,17 @@ let accountsTable = `create table if not exists accounts (
   online int(1) NOT NULL DEFAULT 0,
   admin int(2) NOT NULL DEFAULT 0,
   cash int(11) NOT NULL DEFAULT 800,
+  bank int(11) NOT NULL DEFAULT 1000,
+  savings int(11) NOT NULL DEFAULT 0,
+  credit int(10) NOT NULL DEFAULT 0,
   clothing text NOT NULL DEFAULT 0,
   headOverlays text NOT NULL DEFAULT 0,
   faceFeatures text NOT NULL DEFAULT 0,
   headBlendData text NOT NULL DEFAULT 0,
   lastPosition text NOT NULL DEFAULT 0,
+  job int(2) NOT NULL DEFAULT 0,
+  faction int(2) NOT NULL DEFAULT 0,
+  factionRank varchar(64) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 
 db.query(accountsTable, function(err, results, fields) {

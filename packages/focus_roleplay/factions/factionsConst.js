@@ -7,7 +7,17 @@ global.FACTION_POLICE = {
    SHORT: 'LSPD',
    EMS: 911,
    TYPE: 0,
-   LEADER: null,
+   SPAWN_POINT: new mp.Vector3(0, 0, 0),
+   GARAGE_POINT: new mp.Vector3(0, 0, 0),
+   VEH_POINT: new mp.Vector3(0, 0, 0),
+}; Object.freeze(FACTION_POLICE)
+
+global.FACTION_LSFD = {
+   ID: 0,
+   NAME: 'Los Santos Fire Department',
+   SHORT: 'LSFD',
+   EMS: 911,
+   TYPE: 0,
    SPAWN_POINT: new mp.Vector3(0, 0, 0),
    GARAGE_POINT: new mp.Vector3(0, 0, 0),
    VEH_POINT: new mp.Vector3(0, 0, 0),

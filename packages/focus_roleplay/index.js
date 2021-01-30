@@ -20,17 +20,20 @@ var adminCommands = require('./player/adminCommands')
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 inv.loadItems();
+setInterval(() => { core.savePlayers()  }, 65000);
 
 //console.log(items)
 console.log(FACTION_POLICE)
 //console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
-// setInterval(() => { console.log(inventoryItems)  }, 10000);
+
 // setInterval(() => { inv.playerInventory(-1)  }, 3000);
 
 /* ZAVRSENE STVARI
     player.call("client:showClothing"); // CHAR CLOTHING !
     player.call("client:showCustomization"); // CHAR CUSTOMIZATION
     core.createLog(type, account, player, target, message, data); // LOGS
+    account.save(player) // SAVING ACCOUNT
+
 */
 
 /* EVENTI
@@ -82,13 +85,18 @@ mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     player.putIntoVehicle(veh, 0);
 });
 
+mp.events.addCommand("save", (player, full) => {
+    // account.save(player);
+    core.savePlayers()
+});
+
 mp.events.addCommand("buy", (player, text) => {
      var bussines = biz.nearby(player);
      if (bussines) {
          player.outputChatBox(`Nearest biz ${bussines.id} !`);
          account.buyBiz(player, bussines);
-     }
- });
+    }
+});
 
 
 
