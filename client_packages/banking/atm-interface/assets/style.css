@@ -1,0 +1,63 @@
+html, body {
+  background-color: transparent !important; 
+  font-family: Helvetica Neue, Helvetica, sans-serif !important;
+  height: 100%;
+  overflow: hidden; 
+  display: grid;
+  /* background: url('images/2021.01.27-16.55.png'); */
+}
+
+.box {width: 50%;height: 50%;margin: auto;position: relative;box-shadow: 0 14px 25px rgba(0,0,0,.16);background: rgb(0 0 0 / 35%);}
+.box .header { width: 100%; padding: 10px 20px; background: linear-gradient(90deg, rgb(103 35 118 / 81%), rgb(4 149 232 / 74%)); }
+.box .header .close {position: absolute;right: 15px;top: 5px;padding: 5px 7px;cursor: pointer;color: whitesmoke;background: rgb(0 0 0 / 14%);font-size: 20px;margin: 7px;border-radius: 5px;text-align: center;transition: all 0.5s ease;}
+.box .header .close:hover { opacity: 0.5; }
+.box .content { padding: 20px; text-shadow: 1px 1px 1px rgb(0 0 0 / 25%); }
+
+.box .welcome-box {
+  width: 45%;
+  height: 240px;
+  background-color: rgb(255 255 255 / 6%);
+  background-image: url('images/curve.png');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  box-shadow: 0px 0px 40px 0px rgb(0 0 0 / 14%);
+  padding: 10px 20px;
+  float: left;
+}
+
+.box .welcome-box h4 { color: whitesmoke; font-weight: 200; letter-spacing: 1.2px; }
+.box .welcome-box h5 { color: #cdcdcd; text-transform: uppercase; margin-top: 20px; letter-spacing: 1.2px;}
+.player-name { font-weight: 400; }
+.money { font-size: 22px; color: #e1e0e0; }
+.player-money { font-weight: 200; }
+
+.box .navigation { width: 45%; height: 183px; padding: 10px; float: right; list-style: none; }
+.box .navigation li {overflow: hidden;position: relative;width: 100%;padding: 15px 10px;text-align: center;background: rgb(255 255 255 / 8%);margin-top: 0.5%;color: whitesmoke;font-weight: 600 !important;cursor: pointer;transition: all 0.5s ease;text-transform: uppercase;font-family: "vision-heavy", sans-serif;}
+.box .navigation li:hover { opacity: 0.5; }
+.box .navigation li:hover .icon { transform: rotate(0deg); font-size: 150px; }
+.box .navigation li .icon {  position: absolute; transform: rotate(10deg); font-size: 130px; left: -19%; top: -34%; opacity: 0.1; transition-duration: 0.3s; }
+.box .navigation li small { display: block; text-transform: uppercase; color: #cdcdcd; }
+
+a { font-size: 14px; text-decoration: none; outline: 0; transition: all 0.3s ease; }
+a:hover { opacity: 0.5; color: white; text-decoration: none; }
+
+.back-to-home { width: 40%; margin: 0 auto; color: whitesmoke; text-transform: uppercase; cursor: pointer; text-align: center; font-family: "vision-heavy", sans-serif; transition: all 0.5s ease; border-bottom: 2px solid transparent; }
+.back-to-home:hover { border-color: #cdcdcd; color: #cdcdcd; }
+
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track {background: rgb(0 0 0 / 26%); }
+::-webkit-scrollbar-thumb { background: linear-gradient(0deg, rgba(124,71,160,1) 0%, rgba(3,104,162,1) 100%); border-radius: 50px; }
+
+#withdraw { display: none; }
+#deposit { display: none; }
+#transfer { display: none; }
+
+.page-title { text-transform: uppercase; color: #cdcdcd; padding: 5px 10px; text-align: center; }
+
+.confirm { cursor: pointer; padding: 12px 50px; font-size: 22px; color:white; border: 0; outline: 0; position: relative; overflow: hidden; background: #683679; }
+.confirm .icon {  position: absolute; transform: rotate(10deg); font-size: 130px; left: -19%; top: -34%; opacity: 0.1; transition-duration: 0.3s; }
+.confirm:hover .icon { transform: rotate(0deg); font-size: 150px; }
+
+button:focus { outline:0; }
+
+.notification {bottom: 5px;position: absolute;width:  100%;text-align: center;color: white;font-size: 22px;}

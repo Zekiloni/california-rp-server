@@ -8,6 +8,7 @@ let accountsTable = `create table if not exists accounts (
   ipAddress varchar(64) NOT NULL,
   online int(1) NOT NULL DEFAULT 0,
   admin int(2) NOT NULL DEFAULT 0,
+  cash int(11) NOT NULL DEFAULT 800,
   clothing text NOT NULL DEFAULT 0,
   headOverlays text NOT NULL DEFAULT 0,
   faceFeatures text NOT NULL DEFAULT 0,

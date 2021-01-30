@@ -17,4 +17,4 @@ const CHAT_RADIUS = {
    'SHOUT': 4 
 }; Object.freeze(CHAT_COLORS)
 
-module.exports = { CHAT_COLORS, CHAT_RADIUS};
+module.exports = { CHAT_COLORS, CHAT_RADIUS };

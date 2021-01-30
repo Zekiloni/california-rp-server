@@ -2,9 +2,11 @@ const player = mp.players.local;
 var atmCEF;
 
 mp.events.add({
-   'client:showATM': () => {
+   'client:showATM': (playerInfo) => {
       player.freezePosition(true);
       atmCEF = mp.browsers.new('package://banking/atm-interface/atm.html');
+      atmCEF.execute(`playerInfo(\"${playerInfo}\");`); 
+      mp.gui.chat.push(` pare kola ${playerInfo.cash}`)
       setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
   },
 
@@ -19,7 +21,8 @@ mp.events.add({
 mp.keys.bind(0x45, true, function() {
    if(playerNearATM(player)) {
       if (mp.players.local.isTypingInTextChat) return; 
-      mp.events.call('client:showATM'); 
+      // mp.events.call('client:showATM'); 
+      mp.events.callRemote('server:playerBanking');
    }
 });
 

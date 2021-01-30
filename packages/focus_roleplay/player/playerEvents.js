@@ -50,5 +50,9 @@ mp.events.add({
 
     'playerCommand': (player, command) => {
         if(!player.loggedIn) return player.ouputChatBox('Morate biti ulogovani da biste koristili komande');
+    },
+
+    'server:playerBanking': (player) => { 
+      player.call(`client:showATM`, [player]);
     }
 });
