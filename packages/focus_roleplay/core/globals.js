@@ -1,20 +1,18 @@
 
 
-const CHAT_COLORS = { 
-   'FADE_!': -1, 
-   'FADE_2': 0, 
-   'ITEM_ENTITY_VEHICLE': 1, 
-   'ITEM_ENTITY_HOUSE': 2, 
-   'ITEM_ENTITY_WHEEL':3, 
-   'ITEM_ENTITY_LEFT_HAND': 4, 
-   'ITEM_ENTITY_RIGHT_HAND': 5 
+global.CHAT_COLORS = { 
+   WHITE_0: 'FFFFFF', 
+   WHITE_1: 'E6E6E6', 
+   WHITE_3: 'C8C8C8', 
+   WHITE_4: 'AAAAAA', 
+   WHITE_5: '6E6E6E', 
 }; Object.freeze(CHAT_COLORS)
 
-const CHAT_RADIUS = { 
-   'OOC!': -1, 
-   'IC': 0,
-   'LOW': 3,
-   'SHOUT': 4 
-}; Object.freeze(CHAT_COLORS)
-
-module.exports = { CHAT_COLORS, CHAT_RADIUS };
+global.CHAT_RADIUS = { 
+   OOC: 4.0, 
+   IC: 6.2,
+   LOW: 2.8,
+   SHOUT: 12.0, 
+   DO: 6.5,
+   ME: 6.5,
+}; Object.freeze(CHAT_RADIUS)

@@ -24,24 +24,24 @@ mp.events.addCommand({
 
    'me': (player, fullText) => {
       if (!player.loggedIn) return;
-      account.sendProxMessage(player, 6.5, `** ${player.name} ${fullText}`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+      account.sendProxMessage(player, CHAT_RADIUS.ME, `** ${player.name} ${fullText}`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
    },
 
    'do': (player, fullText) => {
       if (!player.loggedIn) return;
-      account.sendProxMessage(player, 6.5, `** ${fullText} (( ${player.name} ))`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+      account.sendProxMessage(player, CHAT_RADIUS.DO, `** ${fullText} (( ${player.name} ))`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
    },
 
    // shout
    's': (player, fullText) => {
       if (!player.loggedIn) return;
-      account.sendProxMessage(player, 12.0, `${player.name} vice: ${fullText}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
+      account.sendProxMessage(player, CHAT_RADIUS.SHOUT, `${player.name} vice: ${fullText}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
    },
 
    // low
    'l': (player, fullText) => {
       if (!player.loggedIn) return;
-      account.sendProxMessage(player, 3.2, `${player.name} tiho: ${fullText}`, 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E', '6E6E6E');
+      account.sendProxMessage(player, CHAT_RADIUS.LOW, `${player.name} tiho: ${fullText}`, 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E', '6E6E6E');
    },
 
    // whisper
@@ -72,7 +72,7 @@ mp.events.addCommand({
     // ooc chat
     'b': (player, fullText) => { 
       if (!player.loggedIn) return;
-      account.sendProxMessage(player, 3.2, `(( ${player.name} [${player.id}]: ${fullText} ))`, 'A6BFBF', 'A0B8B8', '97ADAD', '95ABAB', '90A6A6');
+      account.sendProxMessage(player, CHAT_RADIUS.OOC, `(( ${player.name} [${player.id}]: ${fullText} ))`, 'A6BFBF', 'A0B8B8', '97ADAD', '95ABAB', '90A6A6');
    }
 
 });

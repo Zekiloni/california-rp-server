@@ -35,7 +35,7 @@ mp.events.add({
     },
 
     'playerChat': (player, text) => {
-      account.sendProxMessage(player, 6.5, `${player.name}: ${text}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
+      account.sendProxMessage(player, CHAT_RADIUS.IC, `${player.name}: ${text}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
     },
 
     'server:updatePlayerClothing': (player, clothingFinished) => {

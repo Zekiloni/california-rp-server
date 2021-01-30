@@ -2,7 +2,6 @@
 global.conf = require('./core/configuration');
 global.core = require('./core/main');
 global.db = require('./core/database');
-global.globals = require('./core/globals')
 global.house = require('./houses/core');
 global.account = require('./player/playerCore');
 global.veh = require('./vehicles/vehicleCore')
@@ -11,6 +10,7 @@ global.inv = require('./inventory/inventoryCore')
 global. fac = require('./factions/factionsCore')
 
 var dbStructure = require('./core/databaseStructure');
+var globals = require('./core/globals')
 var playerEvents = require('./player/playerEvents');
 var huntingAnimals = require('./hunting/animals');
 var playerCommands = require('./player/playerCommands')
