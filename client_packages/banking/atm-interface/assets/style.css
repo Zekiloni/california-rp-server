@@ -31,7 +31,7 @@ html, body {
 .box .welcome-box h4 { color: whitesmoke; font-weight: 200; letter-spacing: 1.2px; }
 .box .welcome-box h5 { color: #cdcdcd; text-transform: uppercase; margin-top: 20px; letter-spacing: 1.2px;}
 .box .welcome-box h6 { color: #cdcdcd; text-transform: uppercase; margin-top: 20px; letter-spacing: 1.2px;}
-.box .welcome-box  span { color: #f1f1f1; }
+.box .welcome-box span { color: #f1f1f1; }
 
 .player-name { font-weight: 400; }
 .money { font-size: 22px; color: #e1e0e0; }
@@ -41,7 +41,7 @@ html, body {
 .box .navigation li {overflow: hidden;position: relative;width: 100%;padding: 15px 10px;text-align: center;background: rgb(255 255 255 / 8%);margin-top: 0.5%;color: whitesmoke;font-weight: 600 !important;cursor: pointer;transition: all 0.5s ease;text-transform: uppercase;font-family: "vision-heavy", sans-serif;}
 .box .navigation li:hover { opacity: 0.5; }
 .box .navigation li:hover .icon { transform: rotate(0deg); font-size: 150px; }
-.box .navigation li .icon {  position: absolute; transform: rotate(10deg); font-size: 130px; left: -19%; top: -34%; opacity: 0.1; transition-duration: 0.3s; }
+.box .navigation li .icon {position: absolute;transform: rotate(10deg);font-size: 130px;left: -19%;top: -34%;color: #533d7b;opacity: 0.15;transition-duration: 0.3s;}
 .box .navigation li small { display: block; text-transform: uppercase; color: #cdcdcd; }
 
 .pInfo{ display: flex; justify-content: space-around; }
@@ -71,11 +71,15 @@ button:focus { outline:0; }
 .notification {bottom: 5px;position: absolute;width:  100%;text-align: center;color: white;font-size: 22px; }
 
 .stats { display: block; margin-top: 3%; text-shadow: 1px 1px 1px rgb(0 0 0 / 25%); }
-.stats .box {background-color: rgb(255 255 255 / 10%);width: 250px;height: 210px;position: relative;overflow: hidden;box-shadow: 0px 0px 40px 0px rgb(0 0 0 / 27%);padding: 10px 10px;}
+.stats .box { transition: all 0.3s ease; background-color: rgb(255 255 255 / 10%); width: 250px; height: 210px; position: relative; overflow: hidden; 
+    box-shadow: 0px 0px 40px 0px rgb(0 0 0 / 27%); padding: 10px 10px; }
 .stats .box h5 { color: whitesmoke; text-transform: uppercase; letter-spacing: 5px; font-weight: 400; font-size: 19px; 
     background: linear-gradient(0deg, rgb(76 58 126) 0%, rgb(21 169 255) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stats .box p { color: #cdcdcd; }
+.stats .box p { color: #cdcdcd; z-index: 999; }
+.stats .box:hover { backdrop-filter: brightness(1.05); cursor: pointer; }
+.stats .box:hover .icon { transform: rotate(0deg); font-size: 150px; }
+.stats .box .icon {z-index: -1; position: absolute;transform: rotate(10deg);font-size: 130px;left: -19%;color: #1ea9fb;top: -14%;opacity: 0.2;transition-duration: 0.3s; }
 
-.stats .box .icon {position: absolute;transform: rotate(10deg);font-size: 130px;left: -19%;color: #1ea9fb;top: -14%;opacity: 0.2;transition-duration: 0.3s;}
+* { user-select: none; }
 
 
