@@ -8,6 +8,7 @@ global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.house = require('./houses/core');
 global.inv = require('./inventory/inventoryCore');
+global.radio = require('./player/radioCore');
 global.fac = require('./factions/factionsCore');
 
 var dbStructure = require('./core/databaseStructure');
@@ -24,6 +25,8 @@ inv.loadItems();
 fac.initFactions();
 setInterval(() => { core.savePlayers()  }, 65000);
 
+let exist = radio.exist(911);
+    
 
 //console.log(items)
 //console.log(FACTION_POLICE)

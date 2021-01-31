@@ -75,7 +75,7 @@ mp.events.addCommand({
    },
 
     // ooc chat
-    'b': (player, fullText) => { 
+   'b': (player, fullText) => { 
       if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.OOC, `(( ${player.name} [${player.id}]: ${fullText} ))`, 'A6BFBF', 'A0B8B8', '97ADAD', '95ABAB', '90A6A6');
    },
@@ -90,6 +90,30 @@ mp.events.addCommand({
       if (!player.loggedIn) return;
       if (!target) return player.outputChatBox('Koriscenje /uninvite [igrac]'); 
       fac.uninvite(player, target);
+   },
+
+   'giverank': async (player, fullText) => { 
+      if(fullText) { 
+         let args = fullText.split(" ");
+         if (args.length < 2 || !args[0].length || !args[1].length) {
+            player.outputChatBox('Koriscenje /giverank [igrac] [rank]');
+            return false;
+         }
+
+         let recipient = account.findPlayer(args[0]);
+      
+         if(!recipient) { 
+            player.outputChatBox('Korisnik nije pronadjen'); 
+            return false; 
+         } 
+         let newRank = args.slice(1).join(' '); 
+         fac.setRank(player, recipient, newRank);
+      } else return player.outputChatBox('Koriscenje /giverank [igrac] [rank]');
+   },
+
+   'f': (player, fullText) => { 
+      if (!player.loggedIn) return;
+      account.sendFactionMessage(player, fullText);
    },
 
    'accept': (player, fullText) => {
@@ -110,6 +134,33 @@ mp.events.addCommand({
             }
       }
       else {  player.outputChatBox(`Komanda nema argumente /accept (invite, ...) !`); }
+   },
+
+   'frequency': (player, fullText) => {
+      if(fullText) { 
+            let args = fullText.split(" ");
+            switch(args[0]) {
+            case 'set':
+               if(player.radioFreq != 0) return player.outputChatBox(`Vec ste u nekoj frekvenciji (/frequency leave da izadjete) !`);
+               break;
+            case 'create':
+               let freq = args[1];
+               let pw = args[2];
+               radio.create(player, freq, pw)
+               break;
+            case 'leave':
+               if(player.radioFreq == 0) return player.outputChatBox(`Niste ni u jednoj frekvenciji !`);
+               player.radioFreq = 0;
+               player.outputChatBox(`Uspesno ste napustili frekvenciju.`);
+               break;
+            case 'delete':
+               player.outputChatBox(`freq delete !`);
+               break;
+            default:
+               player.outputChatBox(`Komanda nema argumente /frequency (set, ...) !`);
+            }
+      }
+      else {  player.outputChatBox(`Komanda nema argumente /frequency (set, ...) !`); }
    }
 
 });

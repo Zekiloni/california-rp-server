@@ -20,6 +20,7 @@ let accountsTable = `create table if not exists accounts (
   job int(2) NOT NULL DEFAULT 0,
   faction int(2) NOT NULL DEFAULT 0,
   factionRank varchar(64) NOT NULL DEFAULT 'no',
+  radioFreq int(6) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 
 db.query(accountsTable, function(err, results, fields) {
@@ -27,7 +28,7 @@ db.query(accountsTable, function(err, results, fields) {
   core.terminal(3, `Checking accountsTable | MySQL`);
 });
 
-let businessTable =  `CREATE TABLE IF NOT EXISTS business (
+let businessTable = `CREATE TABLE IF NOT EXISTS business (
   ID int(11) NOT NULL AUTO_INCREMENT,
   type int(1) NOT NULL DEFAULT 0,
   name varchar(64) NOT NULL DEFAULT 0,
@@ -103,7 +104,20 @@ let leadersTable = `create table if not exists factions (
 
 db.query(leadersTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking logsTable  | MySQL`);
+  core.terminal(3, `Checking leadersTable  | MySQL`);
+});
+
+
+let freqTable = `CREATE TABLE IF NOT EXISTS radio_frequencies (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  frequency int(11) NOT NULL,
+  password varchar(64) DEFAULT 0,
+  owner int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY(ID))`;
+
+db.query(freqTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking freqTable | MySQL`);
 });
 
 

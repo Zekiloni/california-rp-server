@@ -103,8 +103,10 @@ mp.events.add({
           mp.game.cam.renderScriptCams(true, false, 0, true, false);
         }
         else { 
-          frontPlayerCamera.destroy();
-          mp.game.cam.renderScriptCams(false, false, 0, false, false);
+            var camExist = frontPlayerCamera.doesExist()
+            if(camExist)
+                frontPlayerCamera.destroy();
+                mp.game.cam.renderScriptCams(false, false, 0, false, false);
         }
     },
 

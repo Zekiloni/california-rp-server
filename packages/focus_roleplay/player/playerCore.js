@@ -1,15 +1,11 @@
 module.exports = {
     exist: function (username) {
-        db.query(
-            "SELECT * FROM accounts WHERE username = ?",
-            [username],
-            function (error, results, fields) {
-                if (error) return core.terminal(1, error);
+        db.query("SELECT * FROM accounts WHERE username = ?", [username], function (error, results, fields) {
+            if (error) return core.terminal(1, error);
 
-                if (results && results.length) return true;
-                else return false;
-            }
-        );
+            if (results && results.length) return true;
+            else return false;
+        });
     },
 
     login: async function (username, password) {
@@ -40,6 +36,7 @@ module.exports = {
         player.job = result[0].job;
         player.faction = result[0].faction;
         player.rank = result[0].factionRank;
+        player.radioFreq = result[0].radioFreq;
         player.inviteRequest = 0;
 
         if (result[0].lastPosition != 0) { 
@@ -79,7 +76,8 @@ module.exports = {
             lastPosition: PlayerPos,
             job: player.job,
             faction: player.faction,
-            factionRank: player.rank
+            factionRank: player.rank,
+            radioFreq: player.radioFreq
         };
         db.query("UPDATE accounts SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, `Saving Account ${error}`);
@@ -210,9 +208,19 @@ module.exports = {
               else if (target.dist(player.position) < radius / 6) { target.outputChatBox(`!{${color_2}}${message}`); } 
               else if (target.dist(player.position) < radius / 4) { target.outputChatBox(`!{${color_3}}${message}`); } 
               else if (target.dist(player.position) < radius / 2) { target.outputChatBox(`!{${color_4}}${message}`); } 
-              else if (target.dist(player.position) < radius) { target.outputChatBox(`!{${color_5}}${message}`)}
+              else if (target.dist(player.position) < radius) { target.outputChatBox(`!{${color_5}}${message}`); }
              }
         );
+    },
+
+    sendFactionMessage: function (player, message) {
+        if(player.faction == 0) player.outputChatBox('Niste ni u jednoj fakciji.');
+        mp.players.forEach(
+            (target, id) => {
+             if (target.faction == player.faction) { 
+                target.outputChatBox(`!{${CHAT_COLORS.FACTION}}(( ${player.rank} ${player.name} [${player.id}]: ${message} ))`);
+             } 
+        })
     },
 
     sendChatBuble: function (player, radius, message) {

@@ -65,6 +65,16 @@ module.exports = {
       player.outputChatBox(`Izbacili ste ${recipient.name} iz fakcije !`);
    },
 
+   setRank: async function (player, target, rank) { 
+      let isLeader = await this.isFactionLeader(player, player.faction);
+      if (!isLeader) { player.outputChatBox('Niste lider ove fakcije.'); return false; }
+      if (target.faction != player.faction) { player.outputChatBox('Taj korisnik nije u vasoj fakciji.'); return false } 
+
+      target.rank = rank;
+      target.outputChatBox(`${player.name} vam je postavio rank na ${rank}.`);
+      player.outputChatBox(`Postavili ste ${target.name} rank na ${rank} !`);
+   },
+
    isFactionLeader: async function (player, faction) { 
       let result = await db.aQuery("SELECT * FROM `factions` WHERE `faction` = ?", faction)
       if(result[0].leader == player.databaseID) { 
