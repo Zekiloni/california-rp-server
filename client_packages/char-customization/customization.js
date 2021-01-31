@@ -12,7 +12,8 @@ mp.events.add({
     'client:disableCustomizationPreview': (headOverlays, faceFeatures, blendData) => {
         mp.game.ui.displayRadar(true);
         mp.events.callRemote('server:updatePlayerCustomization', headOverlays, faceFeatures, blendData);
-        customizationCEF.destroy();
+        if (mp.browsers.exists(customizationCEF)) { customizationCEF.destroy() }
+        //customizationCEF.destroy();
         setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
         player.freezePosition(false);
         mp.events.call('client:setCameraInfrontPlayer', false);

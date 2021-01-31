@@ -1,5 +1,3 @@
-const notice = require("../core/notice");
-const factionsCore = require("../factions/factionsCore");
 
 mp.events.addCommand({
   
@@ -47,6 +45,10 @@ mp.events.addCommand({
       account.sendProxMessage(player, CHAT_RADIUS.LOW, `${player.name} tiho: ${fullText}`, 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E', '6E6E6E');
    },
 
+   'ame': (player, fullText) => {
+      account.sendChatBuble(player, 4.0, fullText);
+   },
+
    // whisper
    'w': (player, fullText) => { 
       if(fullText) { 
@@ -82,10 +84,6 @@ mp.events.addCommand({
       if (!player.loggedIn) return;
       if (!target) return player.outputChatBox('Koriscenje /invite [igrac]'); 
       fac.invite(player, target);
-   },
-
-   'notice': (player, fullText) => { 
-      notice.SendSuccessMessage(player, 'Ekstra');
    },
 
    'uninvite': async (player, fullText, target) => { 

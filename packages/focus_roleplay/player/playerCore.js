@@ -213,5 +213,16 @@ module.exports = {
               else if (target.dist(player.position) < radius) { target.outputChatBox(`!{${color_5}}${message}`)}
              }
         );
-     }
+    },
+
+    sendChatBuble: function (player, radius, message) {
+        console.log('sendChatBuble pozvan')
+        mp.players.forEach(
+            (target, id) => {
+             if (target.dist(player.position) < radius) { 
+                console.log('igrac')
+                target.call('client:sendChatBubble', [radius, message, player]);
+             } 
+        })
+    }
 };

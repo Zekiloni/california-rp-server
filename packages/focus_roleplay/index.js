@@ -1,7 +1,7 @@
 
 global.conf = require('./core/configuration');
 global.core = require('./core/main');
-global.notice = require('./core/notice');
+// global.notice = require('./core/notice');
 global.db = require('./core/database');
 global.account = require('./player/playerCore');
 global.veh = require('./vehicles/vehicleCore')
