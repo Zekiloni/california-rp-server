@@ -1,17 +1,23 @@
 
 const db = require('../core/database')
 let factionsConst = require('./factionsConst')
+let factionsEvents = require('./factionsEvents')
 
 module.exports = { 
 
    initFactions: function () {
       let counter = 0;
       FACTIONS.forEach(function (f) {
-         //let labelPos = JSON.parse(f.LABEL_POS)
          let label = mp.labels.new(`${f.NAME}~n~${f.DESC}`, new mp.Vector3(f.LABEL_POINT_X, f.LABEL_POINT_Y, f.LABEL_POINT_Z), { los: true, font: 0, drawDistance: 4});
          let blip = mp.blips.new(f.BLIP, new mp.Vector3(f.BLIP_POINT_X, f.BLIP_POINT_Y, f.BLIP_POINT_Z ), { name: f.NAME, color: 4, shortRange: true, });
+         
+         let equipMarker = mp.markers.new(27, new mp.Vector3(f.EQUIP_POINT_X, f.EQUIP_POINT_Y, f.EQUIP_POINT_Z - 0.99), 0.8,
+         { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [f.COLOR_R, f.COLOR_G, f.COLOR_B, 255], visible: true, dimension: 0 });
+         let equipCol = mp.colshapes.newRectangle(f.EQUIP_POINT_X, f.EQUIP_POINT_Y, 1.5, 2, 0)
+         //mp.colshapes.newTube(, f.EQUIP_POINT_Z - 0.9, 2, 3)
+         equipCol.name = 'weapon';
+
          counter ++;
-         console.log(f.LABEL_POINT_X)
      });
      core.terminal(3, `${counter} Factions Loaded !`)
    },

@@ -1,4 +1,5 @@
-var player =  mp.players.local, customizationCEF;
+const player =  mp.players.local;
+var customizationCEF;
 
 mp.events.add({
     'client:showCustomization': () => {
