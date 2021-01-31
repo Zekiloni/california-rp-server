@@ -121,7 +121,7 @@ mp.events.addCommand({
             let args = fullText.split(" ");
             switch(args[0]) {
             case 'invite':
-               if(player.faction != 0) return player.outputChatBox(`Vec ste u nekoj fakciji !`);
+               if (player.faction != 0) return player.outputChatBox(`Vec ste u nekoj fakciji !`);
                if (!player.inviteRequest) return player.outputChatBox(`Niko vam nije poslao zahtev za pridruzivanje fakciji !`);
                player.faction = player.inviteRequest;
                player.outputChatBox(`Uspesno ste se pridruzili fakciji !`);

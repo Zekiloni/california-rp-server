@@ -32,12 +32,13 @@ module.exports = {
         player.data.bank = result[0].bank;
         player.data.savings = result[0].savings;
         player.data.credit = result[0].credit;
-        player.loggedIn = true;
         player.job = result[0].job;
         player.faction = result[0].faction;
         player.rank = result[0].factionRank;
         player.radioFreq = result[0].radioFreq;
         player.inviteRequest = 0;
+        player.loggedIn = true;
+        player.duty = false;
 
         if (result[0].lastPosition != 0) { 
             let lastPos = JSON.parse(result[0].lastPosition);

@@ -133,12 +133,22 @@ mp.events.addCommand({
       } 
 
       recipient.giveWeapon(weaponHash, parseInt(ammo) || 500);
-      recipient.outputChatBox(`${player.name} vam je dao oruzije ${weapon} sa ${ammo} metaka`);
+      recipient.outputChatBox(`${player.name} vam je dao oruzije ${weapon} sa ${ammo} metaka.`);
       player.outputChatBox(`Dali ste igracu ${recipient.name} oruzije ${weapon} sa ${ammo} metaka`);
    },
 
-   'disarm': (player, fullText) => {
+   'disarm': (player, fullText, target) => {
       if(player.admin < 3) return;
+      let recipient = account.findPlayer(target);
+
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      recipient.removeAllWeapons();
+      recipient.outputChatBox(`${player.name} vam je oduzeo vasa oruzija.`);
+      player.outputChatBox(`Oduzeli ste sva oruzija ${recipient.name}.`);
    },
 
    'customization': (player, fullText) => {
