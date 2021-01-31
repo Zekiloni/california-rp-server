@@ -6,7 +6,8 @@ global.CHAT_COLORS = {
    WHITE_3: 'C8C8C8', 
    WHITE_4: 'AAAAAA', 
    WHITE_5: '6E6E6E', 
-   FACTION: 'BDF38B'
+   FACTION: 'BDF38B',
+   RADIO: 'FFFF99'
 }; Object.freeze(CHAT_COLORS)
 
 global.CHAT_RADIUS = { 

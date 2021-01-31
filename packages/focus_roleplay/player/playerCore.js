@@ -231,6 +231,6 @@ module.exports = {
                 console.log('igrac')
                 target.call('client:sendChatBubble', [radius, message, player]);
              } 
-        })
+        });
     }
 };
