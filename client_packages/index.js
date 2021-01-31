@@ -9,6 +9,8 @@ var inventory = require('./inventory/inventory')
 // var interactionsMenu = require('./interactions-menu/interactions')
 var bankingATM = require('./banking/atm')
 var screenEffects = require('./screenEffect')
+let menu;
+var notice = reuire('./notice/notify')
 
 
 

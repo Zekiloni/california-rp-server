@@ -1,13 +1,14 @@
 
 global.conf = require('./core/configuration');
 global.core = require('./core/main');
+global.notice = require('./core/notice');
 global.db = require('./core/database');
-global.house = require('./houses/core');
 global.account = require('./player/playerCore');
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
-global.inv = require('./inventory/inventoryCore')
-global.fac = require('./factions/factionsCore')
+global.house = require('./houses/core');
+global.inv = require('./inventory/inventoryCore');
+global.fac = require('./factions/factionsCore');
 
 var dbStructure = require('./core/databaseStructure');
 var globals = require('./core/globals')
