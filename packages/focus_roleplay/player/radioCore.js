@@ -1,31 +1,66 @@
 
 module.exports = { 
-   create: function (player, freq, password = 0) { 
-      db.query("INSERT INTO `radio_frequencies` (frequency, password, owner) VALUES (?, ?, ?)", [freq, password, player.databaseID], function (error, results, fields) {
-         if (error) return core.terminal(1, error);
-         let pw;
-         if(freq < 222 || freq > 4000) { 
-            player.outputChatBox(`Frekvencije se krecu od 222 do 999 !`);
-            return false;
-         } 
-         if(isNaN(freq)) { 
-            player.outputChatBox(`Frekvencije su samo brojevi !`);
-            return false;
+   create: async function (player, freq, password = 0) { 
+      let already = await this.exist(freq);
+      if (!already) { 
+         db.query("INSERT INTO `radio_frequencies` (frequency, password, owner) VALUES (?, ?, ?)", [freq, password, player.databaseID], function (error, results, fields) {
+            if (error) return core.terminal(1, error);
+            let pw;
+            if(freq < 222 || freq > 4000) { 
+               player.outputChatBox(`Frekvencije se krecu od 222 do 999 !`);
+               return false;
+            } 
+            if(isNaN(freq)) { 
+               player.outputChatBox(`Frekvencije su samo brojevi !`);
+               return false;
+            }
+            if (password == 0 ) { pw = 'nema'; }
+            else { 
+               pw = password;
+            }
+            player.outputChatBox(`Radio frekvencija kreirana ${freq} sa sifrom ${pw}.`);
+            player.radioFreq = freq;
+         });
+      } else { player.outputChatBox(`Radio frekvencija ${freq} vec postoji.`); }
+
+   },
+
+   exist: async function (freq) { 
+      try { 
+         let result = await db.aQuery("SELECT * FROM `radio_frequencies` WHERE `frequency` = ?", freq)
+         if(result[0].frequency == freq) { 
+            return true;
          }
-         if (password == 0 ) { pw = 'nema'; }
          else { 
-            pw = password;
+            return false;
          }
-         player.outputChatBox(`Radio frekvencija kreirana ${freq} sa sifrom ${pw}.`);
-         player.radioFreq = freq;
-      });
+      } catch (e) {
+         return false;
+      }
    },
 
-   exist: function (freq) { 
+   isOwner: async function (playerSQL, freq) { 
+      try { 
+         let result = await db.aQuery("SELECT * FROM `radio_frequencies` WHERE `frequency` = ?", freq)
+         if(result[0].owner == playerSQL) { 
+            return true;
+         }
+         else { 
+            return false;
+         }
+      } catch (e) {
+         return false;
+      }
    },
 
-   delete: function (player, freq) { 
-
+   delete: async function (player, freq) { 
+      let isOwner = await this.isOwner(player.databaseID, freq);
+      if(isOwner) { 
+         db.query("DELETE FROM `radio_frequencies` WHERE `frequency` = ?", [freq], function (error, result, fields) {
+            if (error) return core.terminal(1, error)
+            player.outputChatBox(`Uspesno ste izbrisali frekvenciju ${freq}.`);
+         });
+      }
    },
 
    join: function (player, freq, password = 0) { 

@@ -18,3 +18,7 @@ global.CHAT_RADIUS = {
    DO: 6.5,
    ME: 6.5,
 }; Object.freeze(CHAT_RADIUS)
+
+global.SERVER_COLOR = { 
+   R: 5, G: 149, B: 232
+}; Object.freeze(SERVER_COLOR)

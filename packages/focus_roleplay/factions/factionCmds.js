@@ -5,7 +5,8 @@ mp.events.addCommand({
       if (player.faction == 0) return player.outputChatBox(`Niste ni u jednoj fakciji !`);
       let faction = fac.getFaction(player.faction);
       if (!faction.TYPE == FACTIONS_TYPES.LAW) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
-      let dutyPos = new mp.Vector3(faction.EQUIP_POINT_X, faction.EQUIP_POINT_Y, faction.EQUIP_POINT_Z)
+      let dPos = faction.EQUIP_POINT;
+      let dutyPos = new mp.Vector3(dPos.x, dPos.y, dPos.z)
       if (player.dist(dutyPos) > 2) return player.outputChatBox(`Ne nalazite se u blizini ormarica !`);
 
       let meText = ``;

@@ -24,12 +24,9 @@ biz.loadAll();
 inv.loadItems();
 fac.initFactions();
 setInterval(() => { core.savePlayers()  }, 65000);
-
-let exist = radio.exist(911);
     
-
 //console.log(items)
-//console.log(FACTION_POLICE)
+//console.log(FACTIONS[0].GARAGE_POINT)
 //console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
 
 // setInterval(() => { inv.playerInventory(-1)  }, 3000);

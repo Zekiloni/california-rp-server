@@ -9,17 +9,29 @@ module.exports = {
    initFactions: function () {
       let counter = 0;
       FACTIONS.forEach(function (f) {
-         let label = mp.labels.new(`${f.NAME}~n~${f.DESC}`, new mp.Vector3(f.LABEL_POINT_X, f.LABEL_POINT_Y, f.LABEL_POINT_Z), { los: true, font: 0, drawDistance: 4});
-         let blip = mp.blips.new(f.BLIP, new mp.Vector3(f.BLIP_POINT_X, f.BLIP_POINT_Y, f.BLIP_POINT_Z ), { name: f.NAME, color: 4, shortRange: true, });
          
-         let weaponMarker = mp.markers.new(27, new mp.Vector3(f.WEAPON_POINT_X, f.WEAPON_POINT_Y, f.WEAPON_POINT_Z - 0.99), 0.8,
-         { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [f.COLOR_R, f.COLOR_G, f.COLOR_B, 255], visible: true, dimension: 0 });
-         let weaponCol = mp.colshapes.newRectangle(f.WEAPON_POINT_X, f.WEAPON_POINT_Y, 1.5, 2, 0)
+         let labPos = f.LABEL_POINT, 
+            bliPos = f.BLIP_POINT, 
+            garagePos = f.GARAGE_POINT,
+            weaPos = f.WEAPON_POINT,
+            equPos = f.EQUIP_POINT;
+
+         let label = mp.labels.new(`${f.NAME}~n~${f.DESC}`, new mp.Vector3(labPos.x, labPos.y, labPos.z), { los: true, font: 0, drawDistance: 4});
+         let blip = mp.blips.new(f.BLIP, new mp.Vector3(bliPos.x, bliPos.y, bliPos.z), { name: f.NAME, color: 4, shortRange: true, });
+         
+         mp.markers.new(27, new mp.Vector3(weaPos.x, weaPos.y, weaPos.z - 0.99), 0.8,
+         { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 255], visible: true, dimension: 0 });
+         let weaponCol = mp.colshapes.newRectangle(weaPos.x, weaPos.y, 1.5, 2, 0)
          weaponCol.name = 'weapon';
 
-         let equipMarker = mp.markers.new(27, new mp.Vector3(f.EQUIP_POINT_X, f.EQUIP_POINT_Y, f.EQUIP_POINT_Z - 0.99), 0.8,
-         { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [f.COLOR_R, f.COLOR_G, f.COLOR_B, 255], visible: true, dimension: 0 });
+         let equipMarker = mp.markers.new(27, new mp.Vector3(equPos.x, equPos.y, equPos.z - 0.99), 0.8,
+         { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 255], visible: true, dimension: 0 });
          equipMarker.name = 'duty';
+
+         let garageMarker = mp.markers.new(27, new mp.Vector3(garagePos.x, garagePos.y, garagePos.z - 0.99), 0.8,
+         { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 255], visible: true, dimension: 0 });
+         let garageCol = mp.colshapes.newRectangle(weaPos.x, weaPos.y, 1.5, 2, 0)
+         garageCol.name = 'garage';
 
          counter ++;
      });

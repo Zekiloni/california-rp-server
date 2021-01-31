@@ -138,30 +138,35 @@ mp.events.addCommand({
 
    'frequency': (player, fullText) => {
       if(fullText) { 
-            let args = fullText.split(" ");
-            let freq = args[1];
-            let pw = args[2];
-            switch(args[0]) {
+         let args = fullText.split(" ");
+         let freq = args[1];
+         let pw = args[2];
+         switch(args[0]) {
             case 'set':
                if (!freq) return player.outputChatBox(`Polje frekvencije je obavezno.`);
                if (player.radioFreq != 0) return player.outputChatBox(`Vec ste u nekoj frekvenciji (/frequency leave da izadjete) !`); 
                radio.join(player, freq, pw)
                break;
+               
             case 'create':
-               if(!freq) return player.outputChatBox(`Polje frekvencije je obavezno polje !`);
+               if (!freq) return player.outputChatBox(`Polje frekvencije je obavezno polje !`);
                radio.create(player, freq, pw)
                break;
+
             case 'leave':
-               if(player.radioFreq == 0) return player.outputChatBox(`Niste ni u jednoj frekvenciji !`);
+               if (player.radioFreq == 0) return player.outputChatBox(`Niste ni u jednoj frekvenciji !`);
                player.radioFreq = 0;
                player.outputChatBox(`Uspesno ste napustili frekvenciju.`);
                break;
+
             case 'delete':
-               player.outputChatBox(`freq delete !`);
+               if (player.radioFreq == 0) return player.outputChatBox(`Niste ni u jednoj frekvenciji !`);
+               radio.delete(player, player.radioFreq);
                break;
+
             default:
                player.outputChatBox(`Komanda nema argumente /frequency (set, ...) !`);
-            }
+         }
       }
       else {  player.outputChatBox(`Komanda nema argumente /frequency (set, ...) !`); }
    },
