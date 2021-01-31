@@ -14,6 +14,7 @@ module.exports = {
     
     SendErrorMessage: function(player, message, time = 1000, place = "bottomRight") {
         player.call('ReceiveNotification', message, "error", time, place);
+        console.log('pozvan')
     },
     
     SendSuccessMessage: function(player, message, time = 1000, place = "bottomRight") {

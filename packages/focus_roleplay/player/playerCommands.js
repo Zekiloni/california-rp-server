@@ -1,3 +1,4 @@
+const notice = require("../core/notice");
 const factionsCore = require("../factions/factionsCore");
 
 mp.events.addCommand({
@@ -81,6 +82,10 @@ mp.events.addCommand({
       if (!player.loggedIn) return;
       if (!target) return player.outputChatBox('Koriscenje /invite [igrac]'); 
       fac.invite(player, target);
+   },
+
+   'notice': (player, fullText) => { 
+      notice.SendSuccessMessage(player, 'Ekstra');
    },
 
    'uninvite': async (player, fullText, target) => { 

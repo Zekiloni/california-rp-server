@@ -3,7 +3,7 @@ var nofiyUI = mp.browsers.new("package://notice/notify-interface/notice.html");
 
 mp.events.add(
 {
-	"ReceiveNotification": (message, type, time, layout) => 
+	'ReceiveNotification': (message, type, time, layout) => 
 	{
 		if(nofiyUI != null) {
 			notifCount++;
@@ -11,11 +11,11 @@ mp.events.add(
 		
 		}
 		else {
-			nofiyUI = mp.browsers.new("package://ui/Notify/html/notif.html");
+			nofiyUI = mp.browsers.new("package://notice/notify-interface/notif.html");
 			mp.events.call("ReceiveNotification", message, type, time, layout);
 		}
 	},
-	"DisplayingComplete": () => 
+	'DisplayingComplete': () => 
 	{
 		if(nofiyUI == null) return;
 
