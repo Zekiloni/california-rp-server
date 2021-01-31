@@ -122,19 +122,6 @@ mp.events.addCommand({
       
    },
 
-   'voice': (player, fullText, target) => { 
-
-      let recipient = account.findPlayer(target);
-
-      if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
-         return false; 
-      } 
-      player.enableVoiceTo(recipient);
-      recipient.enableVoiceTo(player);
-   },
-
-
    'givegun': (player, fullText, target, weapon = 'weapon_unarmed', ammo = 0) => {
       if(player.admin < 4) return;
       let weaponHash = mp.joaat(weapon);

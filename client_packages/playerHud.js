@@ -4,11 +4,6 @@ var playerHUD;
 
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
-mp.voiceChat.muted != false; 
-player.voiceAutoVolume = true;
-player.voiceVolume = 1.0;
-player.voice3d = true;
-
 mp.events.add('client:showPlayerHUD', (show) => {
 	if(show)  {
 		playerHUD = mp.browsers.new('package://hud-interface/index.html');

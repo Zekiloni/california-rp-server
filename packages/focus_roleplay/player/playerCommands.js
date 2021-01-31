@@ -85,7 +85,7 @@ mp.events.addCommand({
 
    'uninvite': async (player, fullText, target) => { 
       if (!player.loggedIn) return;
-      if (!target) return player.outputChatBox('Koriscenje /invite [igrac]'); 
+      if (!target) return player.outputChatBox('Koriscenje /uninvite [igrac]'); 
       fac.uninvite(player, target);
    },
 
