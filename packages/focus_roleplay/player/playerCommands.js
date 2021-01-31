@@ -147,7 +147,7 @@ mp.events.addCommand({
                if (player.radioFreq != 0) return player.outputChatBox(`Vec ste u nekoj frekvenciji (/frequency leave da izadjete) !`); 
                radio.join(player, freq, pw)
                break;
-               
+
             case 'create':
                if (!freq) return player.outputChatBox(`Polje frekvencije je obavezno polje !`);
                radio.create(player, freq, pw)
@@ -165,10 +165,10 @@ mp.events.addCommand({
                break;
 
             default:
-               player.outputChatBox(`Komanda nema argumente /frequency (set, ...) !`);
+               player.outputChatBox(`Komanda nema argumente /frequency (set, create, leave, delete) !`);
          }
       }
-      else {  player.outputChatBox(`Komanda nema argumente /frequency (set, ...) !`); }
+      else {  player.outputChatBox(`Komanda nema argumente /frequency (set, create, leave, delete) !`); }
    },
 
    'r': (player, fullText) => { 
