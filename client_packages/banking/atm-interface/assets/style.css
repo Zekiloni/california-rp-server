@@ -76,7 +76,7 @@ button:focus { outline:0; }
 .stats .box h5 { color: whitesmoke; text-transform: uppercase; letter-spacing: 5px; font-weight: 400; font-size: 19px; 
     background: linear-gradient(0deg, rgb(76 58 126) 0%, rgb(21 169 255) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .stats .box p { color: #cdcdcd; z-index: 999; }
-.stats .box:hover { backdrop-filter: brightness(1.05); cursor: pointer; }
+.stats .box:hover { backdrop-filter: brightness(1.05); }
 .stats .box:hover .icon { transform: rotate(0deg); font-size: 150px; }
 .stats .box .icon {z-index: -1; position: absolute;transform: rotate(10deg);font-size: 130px;left: -19%;color: #1ea9fb;top: -14%;opacity: 0.2;transition-duration: 0.3s; }
 

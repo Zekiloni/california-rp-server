@@ -33,9 +33,9 @@ module.exports = {
         player.admin = result[0].admin;
         player.databaseID = result[0].ID;
         player.data.cash = result[0].cash;
-        player.bank = result[0].bank;
-        player.savings = result[0].savings;
-        player.credit = result[0].credit;
+        player.data.bank = result[0].bank;
+        player.data.savings = result[0].savings;
+        player.data.credit = result[0].credit;
         player.loggedIn = true;
         player.job = result[0].job;
         player.faction = result[0].faction;
@@ -73,9 +73,9 @@ module.exports = {
             ipAddress: player.ip,
             admin: player.admin,
             cash: player.data.cash,
-            bank: player.bank,
-            savings: player.savings,
-            credit: player.credit,
+            bank: player.data.bank,
+            savings: player.data.savings,
+            credit: player.data.credit,
             lastPosition: PlayerPos,
             job: player.job,
             faction: player.faction,

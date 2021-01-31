@@ -1,12 +1,32 @@
 const player = mp.players.local;
 var atmCEF;
 
+mp.events.addDataHandler({
+   'bank': (entity, newBank, oldBank) => {
+      if (entity && entity.remoteId === player.remoteId && newBank !== oldBank) {
+         player.bank = newBank;
+      }
+   },
+
+   'savings': (entity, newSavings, oldSavings) => {
+      if (entity && entity.remoteId === player.remoteId && newSavings !== oldSavings) {
+         player.savings = newSavings;
+      }
+   },
+
+   'credit': (entity, newCredit, oldCredit) => {
+      if (entity && entity.remoteId === player.remoteId && newCredit !== oldCredit) {
+         player.credit = newCredit;
+      }
+   }
+})
+
+
 mp.events.add({
    'client:showATM': (name, cash, id) => {
       player.freezePosition(true);
       atmCEF = mp.browsers.new('package://banking/atm-interface/atm.html');
-      atmCEF.execute(`playerInfo(\"${name}\", \"${cash}\", \"${id}\");`); 
-      mp.gui.chat.push(` pare kola ${cash}`)
+      atmCEF.execute(`playerInfo(\"${name}\", \"${cash}\", \"${id}\", \"${player.savings}\", \"${player.credit}\");`); 
       setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
   },
 
@@ -16,7 +36,6 @@ mp.events.add({
       setTimeout(() => { mp.gui.cursor.show(false, false); }, 600);
   },
 })
-
 
 mp.keys.bind(0x45, true, function() {
    if(playerNearATM(player)) {

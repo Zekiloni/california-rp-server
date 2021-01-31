@@ -1,9 +1,11 @@
 
 
 
-playerInfo = (name, cash, id) => { 
+playerInfo = (name, cash, id, savings, credit) => { 
     $('.player-name').text(name)
     $('.player-money').text(moneyFormat(cash))
+    $('.player-savings').text(moneyFormat(savings))
+    $('.player-credit').text(moneyFormat(credit))
 }
 
 document.addEventListener("keyup", function(e) {
