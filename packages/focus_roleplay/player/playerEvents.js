@@ -53,6 +53,6 @@ mp.events.add({
     },
 
     'server:playerBanking': (player) => { 
-      player.call(`client:showATM`, [player.name, player.cash, player.databaseID]);
+      player.call(`client:showATM`, [player.name, player.data.cash, player.databaseID]);
     }
 });

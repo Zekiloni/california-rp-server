@@ -8,7 +8,7 @@ module.exports = {
       let counter = 0;
       FACTIONS.forEach(function (f) {
          //let labelPos = JSON.parse(f.LABEL_POS)
-         let label = mp.labels.new(`${f.NAME}~n~${f.DESC}`, new mp.Vector3(f.LABEL_POINT_X, f.LABEL_POINT_X, f.LABEL_POINT_Z), { los: true, font: 0, drawDistance: 4});
+         let label = mp.labels.new(`${f.NAME}~n~${f.DESC}`, new mp.Vector3(f.LABEL_POINT_X, f.LABEL_POINT_Y, f.LABEL_POINT_Z), { los: true, font: 0, drawDistance: 4});
          let blip = mp.blips.new(f.BLIP, new mp.Vector3(f.BLIP_POINT_X, f.BLIP_POINT_Y, f.BLIP_POINT_Z ), { name: f.NAME, color: 4, shortRange: true, });
          counter ++;
          console.log(f.LABEL_POINT_X)

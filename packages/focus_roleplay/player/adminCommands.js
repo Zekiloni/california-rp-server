@@ -82,9 +82,9 @@ mp.events.addCommand({
          return false; 
       } 
 
-      recipient.cash = cash;
-      recipient.outputChatBox(`${player.name} vam je dao oruzije ${weapon} sa ${ammo} metaka`);
-      player.outputChatBox(`Dali ste igracu ${recipient.name} oruzije ${weapon} sa ${ammo} metaka`);
+      recipient.data.cash = cash;
+      recipient.outputChatBox(`${player.name} vam je ostavio novac na ${money}$.`);
+      player.outputChatBox(`Postavili ste ${recipient.name} novac na ${money}$.`);
    },
 
    'givemoney': (player, fullText, target, money) => {
@@ -98,13 +98,13 @@ mp.events.addCommand({
 
       let cash = parseInt(money);
 
-      recipient.cash += cash;
+      recipient.data.cash += cash;
       recipient.outputChatBox(`${player.name} vam je dao novca ${cash} $.`);
       player.outputChatBox(`Dali ste igracu ${recipient.name} novca ${cash}.`);
    },
 
    'cash': (player, fullText) => { 
-      player.outputChatBox(`pare kola kucke ${player.cash}.`);
+      player.outputChatBox(`pare kola kucke ${player.data.cash}.`);
    },
 
    'pos': (player, name = 'unnamed position') => {
@@ -121,6 +121,19 @@ mp.events.addCommand({
       });
       
    },
+
+   'voice': (player, fullText, target) => { 
+
+      let recipient = account.findPlayer(target);
+
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+      player.enableVoiceTo(recipient);
+      recipient.enableVoiceTo(player);
+   },
+
 
    'givegun': (player, fullText, target, weapon = 'weapon_unarmed', ammo = 0) => {
       if(player.admin < 4) return;

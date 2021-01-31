@@ -4,13 +4,24 @@ var playerHUD;
 
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
+mp.voiceChat.muted != false; 
+player.voiceAutoVolume = true;
+player.voiceVolume = 1.0;
+player.voice3d = true;
+
 mp.events.add('client:showPlayerHUD', (show) => {
 	if(show)  {
 		playerHUD = mp.browsers.new('package://hud-interface/index.html');
-		setInterval(() => { updatePlayerHud() }, 1000);
+		setInterval(() => { updatePlayerHud(); }, 1000);
 	}
 	else { 
 		playerHUD.destroy()
+	}
+})
+
+mp.events.addDataHandler('cash', (entity, newCash, oldCash) => {
+	if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
+		player.cash = newCash;
 	}
 })
 
@@ -19,9 +30,9 @@ updatePlayerHud = () => {
 	let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
 	let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
 	let heading = getPlayerHeading();
-	let money = player.cash;
-	playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${money}\");`); 
+	playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${player.cash}\");`); 
 }
+
 
 getPlayerHeading = () => { 
 	var heading = player.getHeading();

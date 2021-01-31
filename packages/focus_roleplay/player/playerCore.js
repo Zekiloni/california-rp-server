@@ -32,8 +32,12 @@ module.exports = {
         player.name = username;
         player.admin = result[0].admin;
         player.databaseID = result[0].ID;
-        player.cash = result[0].cash;
+        player.data.cash = result[0].cash;
+        player.bank = result[0].bank;
+        player.savings = result[0].savings;
+        player.credit = result[0].credit;
         player.loggedIn = true;
+        player.job = result[0].job;
         player.faction = result[0].faction;
         player.rank = result[0].factionRank;
         player.inviteRequest = 0;
@@ -68,7 +72,7 @@ module.exports = {
         var values = {
             ipAddress: player.ip,
             admin: player.admin,
-            cash: player.cash,
+            cash: player.data.cash,
             bank: player.bank,
             savings: player.savings,
             credit: player.credit,
@@ -152,7 +156,7 @@ module.exports = {
         db.query("SELECT * FROM `business` WHERE `ID` = ?", [b.id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             if (results && results.length) {
-                if (player.cash < results[0].price) return player.notify("Nemate dovoljno novca.");
+                if (player.data.cash < results[0].price) return player.notify("Nemate dovoljno novca.");
                 if (results[0].owner != -1) return player.notify("Ovaj biznis vec ima vlasnika.");
                 try { 
                     biz.update(b.id, 'owner', player.databaseID);

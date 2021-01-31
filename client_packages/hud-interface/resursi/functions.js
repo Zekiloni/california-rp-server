@@ -40,6 +40,11 @@ informacijeVozila = function(bool) {
 UpdateHud = function(street, zone, heading, money) {
     $('.trenutna-lokacija').html(`${street}<br>${zone}`);
     $('.trenutni-smer').html(`${heading}`); 
+	$('.kolicina-novca').html(formatNovca(money))
+    
+}
+
+UpdateHudMoney = function(money) {
     $('.kolicina-novca').html(formatNovca(money))
 }
 
