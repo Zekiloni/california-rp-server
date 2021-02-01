@@ -2,8 +2,12 @@
 
 mp.events.add({
    'playerEnterColshape': (player, shape) => {
-      if(player.faction == FACTION_POLICE) { 
+      if(player.faction == FACTION_LSPD.ID) { 
          switch(shape.name) {
+            case 'equip':
+               player.call('client:showPoliceEquipment');
+               break;
+
             case 'weapon':
                player.call('client:showPoliceWeaponary');
                break;

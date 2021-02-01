@@ -2,7 +2,7 @@
 mp.events.addCommand({
   
    'pm': (player, fullText) => {
-      if(fullText) { 
+      if (fullText) { 
          let args = fullText.split(" ");
          if (args.length < 2 || !args[0].length || !args[1].length) {
             player.outputChatBox('Koriscenje /pm [igrac] [poruka]');
@@ -104,6 +104,20 @@ mp.events.addCommand({
             account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} zakljucava vozilo.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
          }
       } else { player.outputChatBox('U vasoj blizini se ne nalazi nista sto bi se moglo zakljucati.');  }
+   },
+
+   'windows': (player, fullText) => { 
+      if (fullText) { 
+         if (!player.vehicle) return player.outputChatBox('Ne nalazite se u vozilu.');
+         let args = fullText.split(" ");
+         let index = args[0], veh = player.vehicle;
+         if (!index) return player.outputChatBox('Koriscenje /windows [broj prozora]'); 
+
+         // napraviti event clientSide i foreach svih igraca i spustiti prozor vozilu
+         // Vehicle.rollDownWindow(index)
+         // Vehicle.rollUpWindow(index)
+         // isWindowIntact(index) da li je slomljen ili nije 
+      }
    },
 
    'giverank': async (player, fullText) => { 
