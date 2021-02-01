@@ -43,6 +43,7 @@ module.exports = {
         player.duty = false;
         player.drag = false;
         player.dragTarget = 0;
+        player.cuffed = false;
 
         if (result[0].lastPosition != 0) { 
             let lastPos = JSON.parse(result[0].lastPosition);

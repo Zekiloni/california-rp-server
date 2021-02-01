@@ -38,7 +38,17 @@ mp.events.add({
       }
       else
          player.clearTasks();
-   }
+   },
+
+   'client:playerCuff': () => {
+      player.setEnableHandcuffs(true);
+      player.cuffed = true;
+   },
+
+   'client:playerUncuff': (name, weapon, ammo) => {
+      player.setEnableHandcuffs(false);
+      player.cuffed = false;
+   },
 
 })
 
