@@ -116,6 +116,12 @@ mp.events.addCommand({
       account.sendFactionMessage(player, fullText);
    },
 
+   'paycheck': (player, fullText) => { 
+      if (!player.loggedIn) return;
+      let timeToPayCheck = 60 - player.xp;
+      player.outputChatBox(`Jos ${timeToPayCheck} minuta do sledece plate.`);
+   },
+
    'accept': (player, fullText) => {
       if(fullText) { 
             let args = fullText.split(" ");

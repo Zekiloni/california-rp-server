@@ -27,6 +27,8 @@ module.exports = {
         var result = await db.aQuery("SELECT * FROM `accounts` WHERE `username` = ?", username);
         player.name = username;
         player.admin = result[0].admin;
+        player.xp = result[0].xp;
+        player.hours = result[0].hours;
         player.databaseID = result[0].ID;
         player.data.cash = result[0].cash;
         player.data.bank = result[0].bank;
@@ -69,6 +71,8 @@ module.exports = {
         let PlayerPos = JSON.stringify(player.position);
         var values = {
             ipAddress: player.ip,
+            xp: player.xp,
+            hours: player.hours,
             admin: player.admin,
             cash: player.data.cash,
             bank: player.data.bank,

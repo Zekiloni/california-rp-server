@@ -48,13 +48,18 @@ module.exports = {
           return result;
      },
 
-     savePlayers: function () { 
+     checkEverything: function () { 
           let counter = 0;
           mp.players.forEach(
                (player) => {
                     if (player.loggedIn) { 
                          account.save(player);
                          counter ++;
+                         player.xp ++;
+                         if (player.xp >= 60) { 
+                              player.hours ++; 
+                              player.xp = 0; 
+                         }
                     }
                }
           );

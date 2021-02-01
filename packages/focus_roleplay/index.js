@@ -23,7 +23,7 @@ core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 inv.loadItems();
 fac.initFactions();
-setInterval(() => { core.savePlayers()  }, 65000);
+setInterval(() => { core.checkEverything()  }, 65000);
     
 //console.log(items)
 //console.log(FACTIONS[0].GARAGE_POINT)
