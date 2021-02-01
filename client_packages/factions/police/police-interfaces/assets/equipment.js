@@ -1,10 +1,11 @@
 
 
-var basic_patrol = [ {index: 1, value: 2}, {index: 2, value: 3}]
+const skins = {
+    
+} 
+    
+//data: 
 
-var skins = [
-    { name: 'Osnovna Patrolna Uniforma', data: basic_patrol },
-]
 
 
 vehiclesMenu = () => {
@@ -15,12 +16,13 @@ vehiclesMenu = () => {
 
 vehiclesMenu()
 
-choseEquipment = (skin) => { 
-    //let data = JSON.parse(skin)
-    console.log(skin); 
-    /* mp.trigger('client:chosePoliceEquipment', skin); */
+choseEquipment = (receivedData) => { 
+    console.log(receivedData); 
 }
+
 
 closeEquipment = () => { mp.trigger('client:hidePoliceEquipment'); }
 
 $(window).on('load', function() { $('.menu').fadeIn(700) })
+
+
