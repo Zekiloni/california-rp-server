@@ -100,9 +100,11 @@ module.exports = {
    nearFactionVehicle: function (player) { 
       mp.vehicles.forEach(
 			(vehicle) => {
-				if (player.dist(vehicle.position) < 2.5) {
+				if (player.dist(vehicle.position) < 2.0) {
                if(player.faction == vehicle.faction) { 
                   return vehicle;
+               } else {
+                  return false;
                }
             }
 			}
