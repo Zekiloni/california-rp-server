@@ -27,6 +27,8 @@ module.exports = {
          let equipMarker = mp.markers.new(27, new mp.Vector3(equPos.x, equPos.y, equPos.z - 0.99), 0.8,
          { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 255], visible: true, dimension: 0 });
          equipMarker.name = 'duty';
+         let equipCol = mp.colshapes.newRectangle(equPos.x, equPos.y, 1.5, 2, 0)
+         equipCol.name = 'equip';
 
          let garageMarker = mp.markers.new(27, new mp.Vector3(garagePos.x, garagePos.y, garagePos.z - 0.99), 0.8,
          { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 255], visible: true, dimension: 0 });
@@ -97,9 +99,34 @@ module.exports = {
       player.outputChatBox(`Postavili ste ${target.name} rank na ${rank} !`);
    },
 
+   nearFactionVehicle: function (player) { 
+      var result;
+      mp.vehicles.forEach (
+			(vehicle) => {
+				if (player.dist(vehicle.position) < 2.0) {
+               if(player.faction == vehicle.faction) { 
+                  result =  vehicle;
+               } 
+            }
+			}
+      );
+      return result;
+   },
+
    isFactionLeader: async function (player, faction) { 
       let result = await db.aQuery("SELECT * FROM `factions` WHERE `faction` = ?", faction)
       if(result[0].leader == player.databaseID) { 
+         return true;
+      }
+      else { 
+         return false;
+      }
+   },
+
+   isPlayerFactionType: function (player, type) { 
+      if (player.faction == 0) return player.outputChatBox(`Niste ni u jednoj fakciji !`);
+      let faction = fac.getFaction(player.faction);
+      if (faction.TYPE == type) { 
          return true;
       }
       else { 

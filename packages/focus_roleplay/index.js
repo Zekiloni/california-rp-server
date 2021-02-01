@@ -23,8 +23,10 @@ core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 inv.loadItems();
 fac.initFactions();
-setInterval(() => { core.savePlayers()  }, 65000);
+setInterval(() => { core.checkEverything()  }, 65000);
     
+
+
 //console.log(items)
 //console.log(FACTIONS[0].GARAGE_POINT)
 //console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
@@ -36,6 +38,13 @@ setInterval(() => { core.savePlayers()  }, 65000);
     player.call("client:showCustomization"); // CHAR CUSTOMIZATION
     core.createLog(type, account, player, target, message, data); // LOGS
     account.save(player) // SAVING ACCOUNT
+
+*/
+
+/*  URADITI
+    /breaklock
+    LISTA IGRACA
+    INTERAKCIONI MENI (animacije, facijalne ekspresije [zavrsiti], raspolozenja, stilovi hodanja)
 
 */
 

@@ -7,6 +7,8 @@ let accountsTable = `create table if not exists accounts (
   lastLogin timestamp NOT NULL DEFAULT current_timestamp(),
   ipAddress varchar(64) NOT NULL,
   online int(1) NOT NULL DEFAULT 0,
+  xp int(2) NOT NULL DEFAULT 0,
+  hours int(11) NOT NULL DEFAULT 0,
   admin int(2) NOT NULL DEFAULT 0,
   cash int(11) NOT NULL DEFAULT 800,
   bank int(11) NOT NULL DEFAULT 1000,

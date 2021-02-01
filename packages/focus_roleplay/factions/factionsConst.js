@@ -1,10 +1,9 @@
 
 global.FACTIONS_TYPES = { LAW: 0, FMD: 1, GOV: 2, NEWS: 3, GANG: 4, MAFIA: 5, PARTY: 6}
 
-global.FACTION_POLICE = 1;
 global.FACTIONS = [
    // LSPD
-   { ID: 1, NAME: 'Los Santos Police Department', DESC: 'To protect & serve', SHORT: 'LSPD', EMS: 911, TYPE: 0, BLIP: 60,
+   FACTION_LSPD = { ID: 1, NAME: 'Los Santos Police Department', DESC: 'To protect & serve', SHORT: 'LSPD', EMS: 911, TYPE: 0, BLIP: 60,
    LABEL_POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610), 
    BLIP_POINT: new mp.Vector3(433.91, -981.98, 0), 
    GARAGE_POINT: new mp.Vector3(455.4101, -1017.44616, 28.41552), 

@@ -1,6 +1,6 @@
 
 const player =  mp.players.local;
-var vehiclesCEF, weaponCEF;
+var vehiclesCEF, weaponCEF, equipCEF;
 
 mp.events.add({
    'client:showPoliceVehicles': () => {
@@ -29,6 +29,33 @@ mp.events.add({
 
    'client:policeGiveWeapon': (name, weapon, ammo) => {
       mp.events.callRemote('server:policeGiveWeapon', name, weapon, ammo);
+   },
+
+   'client:showPoliceEquipment': () => {
+      equipCEF = mp.browsers.new('package://factions/police/police-interfaces/equipment.html');
+      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
+   },
+
+   'client:hidePoliceEquipment': () => {
+      equipCEF.destroy();
+      setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
+   },
+
+   'client:policeDragPlayer': (target, toggle) => { 
+      if (toggle) {
+         if (target && mp.players.exists(target))
+            player.taskFollowToOffsetOf(target.handle, 0, -1, 0, 1.0, -1, 1.0, true)
+      }
+      else
+         player.clearTasks();
+   },
+
+   'client:playerCuff': () => {
+      player.setEnableHandcuffs(true);
+   },
+
+   'client:playerUncuff': () => {
+      player.setEnableHandcuffs(false);
    },
 
 })
