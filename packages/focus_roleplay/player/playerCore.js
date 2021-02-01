@@ -215,7 +215,7 @@ module.exports = {
     },
 
     sendFactionMessage: function (player, message) {
-        if(player.faction == 0) player.outputChatBox('Niste ni u jednoj fakciji.');
+        if(player.faction == 0) return player.outputChatBox('Niste ni u jednoj fakciji.');
         mp.players.forEach(
             (target, id) => {
              if (target.faction == player.faction) { 
