@@ -92,18 +92,18 @@ mp.events.addCommand({
       fac.uninvite(player, target);
    },
 
-   'lock:': (player, fullText) => { 
+   'lock': (player, fullText) => { 
       let veh = fac.nearFactionVehicle(player);
       if (veh) { 
          if(veh.locked) { 
-            veh.lcoked == false;
+            veh.locked = false;
             account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} otkljucava vozilo.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
          }
          else { 
-            veh.locked == true;
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `** ${player.name} zakljucava vozilo.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+            veh.locked = true;
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} zakljucava vozilo.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
          }
-      }
+      } else { player.outputChatBox('U vasoj blizini se ne nalazi nista sto bi se moglo zakljucati.');  }
    },
 
    'giverank': async (player, fullText) => { 

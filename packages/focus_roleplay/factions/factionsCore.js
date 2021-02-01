@@ -98,17 +98,17 @@ module.exports = {
    },
 
    nearFactionVehicle: function (player) { 
-      mp.vehicles.forEach(
+      var result;
+      mp.vehicles.forEach (
 			(vehicle) => {
 				if (player.dist(vehicle.position) < 2.0) {
                if(player.faction == vehicle.faction) { 
-                  return vehicle;
-               } else {
-                  return false;
-               }
+                  result =  vehicle;
+               } 
             }
 			}
-		);
+      );
+      return result;
    },
 
    isFactionLeader: async function (player, faction) { 
