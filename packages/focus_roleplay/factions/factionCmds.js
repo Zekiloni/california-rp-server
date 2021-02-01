@@ -35,15 +35,15 @@ mp.events.addCommand({
          return false; 
       } 
 
-      if(!recipient.cuffed) { 
+      if (!recipient.cuffed) { 
          recipient.call('client:playerCuff');
-         player.cuffed = true;
+         recipient.cuffed = true;
          meText = `uzima par ZIP lisica sa pojasa te ih stavlja ${recipient.name}`;
          recipient.playAnimation('mp_arresting', 'idle', 1, 49);
       }
       else { 
          recipient.call('client:playerUncuff');
-         player.cuffed = false;
+         recipient.cuffed = false;
          meText = `je skinuo lisice ${recipient.name}`;
          recipient.stopAnimation();
       }

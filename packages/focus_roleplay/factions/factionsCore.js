@@ -97,6 +97,18 @@ module.exports = {
       player.outputChatBox(`Postavili ste ${target.name} rank na ${rank} !`);
    },
 
+   nearFactionVehicle: function (player) { 
+      mp.vehicles.forEach(
+			(vehicle) => {
+				if (player.dist(vehicle.position) < 2.5) {
+               if(player.faction == vehicle.faction) { 
+                  return vehicle;
+               }
+            }
+			}
+		);
+   },
+
    isFactionLeader: async function (player, faction) { 
       let result = await db.aQuery("SELECT * FROM `factions` WHERE `faction` = ?", faction)
       if(result[0].leader == player.databaseID) { 

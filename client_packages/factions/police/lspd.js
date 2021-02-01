@@ -42,12 +42,10 @@ mp.events.add({
 
    'client:playerCuff': () => {
       player.setEnableHandcuffs(true);
-      player.cuffed = true;
    },
 
    'client:playerUncuff': () => {
       player.setEnableHandcuffs(false);
-      player.cuffed = false;
    },
 
 })
