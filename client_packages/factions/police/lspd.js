@@ -1,16 +1,20 @@
 
 const player =  mp.players.local;
-var equipmentCEF, weaponCEF;
+var vehiclesCEF, weaponCEF;
 
 mp.events.add({
-   'client:showPoliceEquipment': () => {
-      equipmentCEF = mp.browsers.new('package://factions/police/police-interfaces/equip.html');
+   'client:showPoliceVehicles': () => {
+      vehiclesCEF = mp.browsers.new('package://factions/police/police-interfaces/vehicles.html');
       setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
    },
 
-   'client:hidePoliceEquipment': () => {
-      equipmentCEF.destroy();
+   'client:hidePoliceVehicles': () => {
+      vehiclesCEF.destroy();
       setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
+   },
+
+   'client:spawnPoliceVehicle': (name, model) => {
+      mp.events.callRemote('server:policeSpawnVehicle', name, model);
    },
 
    'client:showPoliceWeaponary': () => {
@@ -25,5 +29,7 @@ mp.events.add({
 
    'client:policeGiveWeapon': (name, weapon, ammo) => {
       mp.events.callRemote('server:policeGiveWeapon', name, weapon, ammo);
-   }
+   },
+
 })
+

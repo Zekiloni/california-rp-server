@@ -10,9 +10,9 @@ global.FACTIONS = [
    GARAGE_POINT: new mp.Vector3(455.4101, -1017.44616, 28.41552), 
    EQUIP_POINT: new mp.Vector3(452.97064, -992.0955, 30.6896), 
    WEAPON_POINT: new mp.Vector3(452.0938415, -980.22052, 30.68961), 
+   VEH_POINT: new mp.Vector3(439.02337, -1019.7479, 28.72946), 
    COLOR_R: 141, COLOR_G: 141, COLOR_B: 255,
-   SPAWN_POINT: 0, 
-   VEH_POINT: 0 },
+   SPAWN_POINT: 0},
 
    // // LSFD
    // { ID: 1, NAME: 'Los Santos Fire Department', DESC: 'Gasimo Pozare', SHORT: 'LSFD', EMS: 911, TYPE: 1, BLIP: 153,

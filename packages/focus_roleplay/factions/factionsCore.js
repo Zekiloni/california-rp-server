@@ -30,7 +30,7 @@ module.exports = {
 
          let garageMarker = mp.markers.new(27, new mp.Vector3(garagePos.x, garagePos.y, garagePos.z - 0.99), 0.8,
          { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 255], visible: true, dimension: 0 });
-         let garageCol = mp.colshapes.newRectangle(weaPos.x, weaPos.y, 1.5, 2, 0)
+         let garageCol = mp.colshapes.newRectangle(garagePos.x, garagePos.y, 1.5, 2, 0)
          garageCol.name = 'garage';
 
          counter ++;
