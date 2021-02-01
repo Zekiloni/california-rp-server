@@ -19,7 +19,11 @@ var weapons = [
 
 weaponsMenu = () => {
     $.each(weapons, function(i, item) { 
-        $('.weapons-list').append(`<li onclick='giveWeapon(\"${item.name}\", \"${item.model}\", \"${item.ammo}\")' id='${item.model}'><b>${i + 1}</b> ${item.name} </li>`);
+        $('.weapons-list').append(`
+        <li onclick='giveWeapon(\"${item.name}\", \"${item.model}\", \"${item.ammo}\")' id='${item.model}'>
+            <img class='weap-icon' src='assets/images/locker_Weapons/${item.model}.png'>
+            <b>${i + 1}</b> ${item.name} 
+        </li>`);
     });
 }
 

@@ -41,6 +41,8 @@ module.exports = {
         player.inviteRequest = 0;
         player.loggedIn = true;
         player.duty = false;
+        player.drag = false;
+        player.dragTarget = 0;
 
         if (result[0].lastPosition != 0) { 
             let lastPos = JSON.parse(result[0].lastPosition);

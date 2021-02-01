@@ -26,4 +26,30 @@ mp.events.addCommand({
       //radio.send(player, 911)
    },
 
+   'cuff': (player, fullText, taget) => { 
+      if(!fac.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
+      let recipient = account.findPlayer(target);
+
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      recipient.removeAllWeapons();
+      recipient.outputChatBox(`${player.name} vam je oduzeo vasa oruzija.`);
+      player.outputChatBox(`Oduzeli ste sva oruzija ${recipient.name}.`);
+   },
+
+   'drag': (player, fullText, target) => { 
+      if(!fac.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
+      let recipient = account.findPlayer(target);
+
+      if(!recipient) { 
+         player.outputChatBox('Korisnik nije pronadjen'); 
+         return false; 
+      } 
+
+      recipient.call('client:policeDragPlayer', [player, true])
+   }
+
 });

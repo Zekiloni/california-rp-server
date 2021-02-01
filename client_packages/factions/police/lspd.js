@@ -31,5 +31,14 @@ mp.events.add({
       mp.events.callRemote('server:policeGiveWeapon', name, weapon, ammo);
    },
 
+   'client:policeDragPlayer': (target, toggle) => { 
+      if (toggle) {
+         if (target && mp.players.exists(target))
+            player.taskFollowToOffsetOf(target.handle, 0, -1, 0, 1.0, -1, 1.0, true)
+      }
+      else
+         player.clearTasks();
+   }
+
 })
 

@@ -105,5 +105,16 @@ module.exports = {
       else { 
          return false;
       }
+   },
+
+   isPlayerFactionType: function (player, type) { 
+      if (player.faction == 0) return player.outputChatBox(`Niste ni u jednoj fakciji !`);
+      let faction = fac.getFaction(player.faction);
+      if (faction.TYPE == type) { 
+         return true;
+      }
+      else { 
+         return false;
+      }
    }
 }
