@@ -1,16 +1,11 @@
 const player = mp.players.local;
 var playerAimingAt;
 
-mp.events.add('render', (nametags) => {
-
-    if(player.isAiming)
+mp.events.add('render', () => {
+    playerAimingAt = mp.game.player.getEntityIsFreeAimingAt();
+    if(playerAimingAt != undefined && playerAimingAt.handle)
     {
-        playerAimingAt = mp.game.player.getEntityIsFreeAimingAt();
-        if(playerAimingAt != undefined && playerAimingAt == 'vehicle' && playerAimingAt.handle)
-        {
-            if(player.aimTarget)
-                mp.gui.chat.push(`Ciljate u ${player.aimTarget}`);
-        }
-    }
-    
+        if(player.aimTarget)
+            mp.gui.chat.push(`Ciljate u ${player.aimTarget}`);
+    }  
 });
