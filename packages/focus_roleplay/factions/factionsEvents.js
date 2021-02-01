@@ -30,7 +30,7 @@ mp.events.add({
       let vehPos = new mp.Vector3(vPos.x, vPos.y, vPos.z)
       let hash = mp.joaat(model);
       let numberPlate = Math.floor(1000 + Math.random() * 9000);
-      let vehicle = mp.vehicles.new(hash, vehPos, { numberPlate: `LSPD ${numberPlate}`, color: [[0, 255, 0],[0, 255, 0]], locked: false, dimension: 0 });
+      let vehicle = mp.vehicles.new(hash, vehPos, { numberPlate: `LSPD ${numberPlate}`, color: [[255, 255, 246], [0, 255, 0]], locked: false, dimension: 0 });
       vehicle.faction = player.faction;
    },
 
