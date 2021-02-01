@@ -45,7 +45,7 @@ mp.events.add({
       player.cuffed = true;
    },
 
-   'client:playerUncuff': (name, weapon, ammo) => {
+   'client:playerUncuff': () => {
       player.setEnableHandcuffs(false);
       player.cuffed = false;
    },
