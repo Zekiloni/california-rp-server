@@ -167,7 +167,7 @@ mp.events.addCommand({
       let model = mp.joaat(hash), 
          position = player.position, rgb = {r: rr, g: gg, b: bb}, rgb2 = {r: rr2, g: gg2, b: bb2}, locked = false;
       veh.create(player, 1, model, locked, -1, 1, position, rgb, rgb2, 0, 0);
-   },
+   }, 
 
    'vehtune': (player, fullText, modType, modIndex) => {
       if(player.admin < 3) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);

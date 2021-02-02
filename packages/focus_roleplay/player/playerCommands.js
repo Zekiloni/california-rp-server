@@ -58,7 +58,7 @@ mp.events.addCommand({
             return false;
           }
           let recipient = account.findPlayer(args[0]);
-      
+       
          if(!recipient) { 
             account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
             return false; 

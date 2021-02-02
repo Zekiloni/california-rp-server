@@ -35,7 +35,7 @@ mp.events.add({
           break;
         case 'kicked':
           account.sendProxMessage(player, 7, `(( ${player.name} je kikovan/banovan sa servera. ))`, '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E');
-          break;
+          break; 
       }
     },
 

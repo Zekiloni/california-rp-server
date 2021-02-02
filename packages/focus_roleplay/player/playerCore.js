@@ -136,7 +136,7 @@ module.exports = {
     },
 
     status: function (username, status) {
-        if (status == 1) {
+        if (status == 1) { 
             db.aQuery("UPDATE `accounts` SET `lastLogin` = current_timestamp(), `online` = 1 WHERE `username` = ?", username);
         } else if (status == 0) {
             db.aQuery("UPDATE `accounts` SET `online` = 0 WHERE `username` = ?", username);

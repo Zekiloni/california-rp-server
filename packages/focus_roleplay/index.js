@@ -21,7 +21,7 @@ var adminCommands = require('./player/adminCommands')
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
-inv.loadItems();
+inv.loadItems(); 
 fac.initFactions();
 setInterval(() => { core.checkEverything()  }, 60000);
 
