@@ -4,7 +4,7 @@ module.exports = class itemModel {
     constructor(itemID, itemName, itemType, itemHash, itemWeight, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs, itemObject, itemLabel) {
         this.id = itemID;
         this.name = itemName;
-        this.type = itemType || 'mare';
+        this.type = itemType || 'Item';
         this.hash = itemHash;
         this.weight = itemWeight || 0.15;
         this.quantity = itemQuantity || 1;
@@ -22,7 +22,7 @@ module.exports = class itemModel {
             {
                 los: true,
                 font: 0,
-                drawDistance: 3,
+                drawDistance: 3
             });
 
             this.object = mp.objects.new(this.hash, pos,

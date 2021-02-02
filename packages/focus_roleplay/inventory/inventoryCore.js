@@ -5,7 +5,7 @@ global.items = require('./itemList');
 global.inventoryItems = [];
 
 module.exports = { 
-    loadItems: async function() { 
+    loadItems: async() => { 
         var result = await db.aQuery("SELECT * FROM `inventory`");
         result.forEach(function (res) {
             let itemPos = JSON.parse(res.itemPos);
@@ -23,7 +23,7 @@ module.exports = {
         core.terminal(3, `${result.length} items were loaded !`);
     },
    
-    createItem: function(name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) { 
+    createItem: (name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) => { 
         db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, res, fields) {
             if (error) return core.terminal(1, error);
             let id = res.insertId;
@@ -33,7 +33,7 @@ module.exports = {
         });
     },
 
-    destroyItem: function(player, item) { 
+    destroyItem: (player, item) => { 
         let itemID = item.id;
         db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
@@ -44,7 +44,7 @@ module.exports = {
         });
     },
 
-    deleteItem: function(itemID) { 
+    deleteItem: (itemID) => { 
         db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let index = inventoryItems.findIndex((el) => el.id === itemID);
@@ -52,7 +52,7 @@ module.exports = {
         });
     },
     // name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs
-    addItem: function(player, item, quantity) {
+    addItem: (player, item, quantity) => {
         let playerCurrentItems = this.getPlayerInventory(player);
         let currentItem = playerCurrentItems.find( ({ name }) => name === item );
         let inventoryItem = INVENTORY_ITEMS.find( ({name}) => name === item);
@@ -86,7 +86,7 @@ module.exports = {
         
     },
 
-    findItem: function (item) { 
+    findItem: (item) => { 
         let res = null;
         INVENTORY_ITEMS.forEach(function (i) {
             if (i.name.includes(item)) { 
@@ -99,7 +99,7 @@ module.exports = {
         return res;
     },
 
-    updateItem: function (itemModel) {
+    updateItem: (itemModel) => {
         if(itemModel != null) {
             db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
@@ -107,7 +107,7 @@ module.exports = {
         }
     },
 
-    getPlayerInventory: function(player) { 
+    getPlayerInventory: (player) => { 
         let id = player.databaseID;
         let playerInv = [];
         inventoryItems.forEach(function (r) {
@@ -118,7 +118,7 @@ module.exports = {
         return playerInv;
     },
 
-    nearItem: function (player) {
+    nearItem: (player) => {
         let nearItem = null;
         inventoryItems.forEach((item) => {
             let itemPos = new mp.Vector3(item.position.x, item.position.y, item.position.z );
@@ -136,5 +136,43 @@ module.exports = {
         }
     },
 
+    pickUpItem: (player) => {
+        let pickUpObject = this.nearItem(player);
+        if(pickUpObject) {
+            pickUpObject.entity = ITEM_ENTITY_PLAYER;
+            pickUpObject.owner = player.name;
+            pickUpObject.label.destroy();
+            pickUpObject.object.destroy();
+            this.updateItem(pickUpObject);
+            account.notification(player, `Podigli ste <b>${pickupobject.name} [${pickUpObject.quantity}]</b> sa poda.`, NOTIFY_SUCCESS, 4);
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} podize ${pickupobject.name} sa poda.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
 
+        }
+        else {
+            account.notification(player, "Nisi u blizini ni jednog predmeta.", NOTIFY_ERROR, 4);
+        }
+    },
+
+    dropItem: (player, itemID) =>  {
+        let dropObject = INVENTORY_ITEMS.find( ({id}) => id === itemID);
+        if(dropObject) {
+            dropObject.object = mp.objects.new(dropObject.hash, player.position,
+            {   rotation: new mp.Vector3(-90, 0, 0),
+                alpha: 255,
+                dimension: player.dimension
+            });
+            dropObject.label = mp.labels.new(`${dropObject.name}~n~~h~${dropObject.quantity}`, player.position,
+            {   los: true,
+                font: 0,
+                drawDistance: 3
+            });
+            dropObject.entity = ITEM_ENTITY_GROUND;
+            dropObject.owner = 0;
+            dropObject.position = player.position;
+            dropObject.dimension = player.dimension;
+            this.updateItem(dropObject);
+            account.notification(player, `Bacili ste <b>${pickupobject.name} [${pickUpObject.quantity}]</b> na pod.`, NOTIFY_SUCCESS, 4);
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} baca ${pickupobject.name} na pod.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+        }
+    }
 }
