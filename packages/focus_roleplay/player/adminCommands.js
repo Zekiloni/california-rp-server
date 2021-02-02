@@ -192,15 +192,18 @@ mp.events.addCommand({
    },
 
    'giveitem': (player, fullText) => {
-      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
-      let args = fullText.split(' ');
-      let quantity = args[0];
-      let itemNameFull = args.slice(1).join(' ');
-      
-      inventoryCore.addItem(player, itemNameFull, quantity);
+      if (fullText) { 
+         if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
+         let args = fullText.split(' ');
+         let quantity = args[0];
+         let itemNameFull = args.slice(1).join(' ');
+         
+         console.log(`ime predmeta za davanje je ${itemNameFull}, kolicina ${quantity}`)
+         inventoryCore.addItem(player, itemNameFull, quantity);
+      }
    },
 
-   'freeze': (player, fullText, recipient) => {
+   'freeze': (player, fullText, target) => {
       if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
 
       let recipient = account.findPlayer(target);

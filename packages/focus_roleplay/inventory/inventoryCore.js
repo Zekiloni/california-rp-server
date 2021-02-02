@@ -53,16 +53,20 @@ module.exports = {
     },
     // name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs
     addItem: function(player, item, quantity) {
-        let playerCurrentItems = this.getPlayerInventory();
+        let playerCurrentItems = this.getPlayerInventory(player);
         let currentItem = playerCurrentItems.find( ({ name }) => name === item );
         let inventoryItem = INVENTORY_ITEMS.find( ({name}) => name === item);
         if(quantity > 0) {
+            console.log('quant veci od 0')
             if(currentItem) { 
+                console.log('ima taj predmet')
                 currentItem.quantity += quantity;
                 this.updateItem(currentItem);
             }
             else {
-                if(inventoryItem) {
+                console.log('nema taj predmet')
+                if (inventoryItem) {
+                    console.log('taj predmet postoji u listi predmeta')
                     let itemToGive = new itemModel();
                     itemToGive.name = inventoryItem.name;
                     itemToGive.type = inventoryItem.type;
@@ -76,6 +80,7 @@ module.exports = {
             }
         }
         else if(quantity < 0) {
+            console.log('quant manji od 0')
             if(currentItem.quantity <= 0) {
                 this.deleteItem(currentItem.ID);
             }

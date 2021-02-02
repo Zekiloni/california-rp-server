@@ -9,7 +9,7 @@ const itemTypes = {
 }
 
 global.INVENTORY_ITEMS = [
-   CARBINE_RIFLE = { name: 'M4 Carbien Rifle', hash: 'w_ar_carbinerifle', weight: 1.2 },
+   CARBINE_RIFLE = { name: 'M4 Carbine Rifle', hash: 'w_ar_carbinerifle', weight: 1.2 },
 ]; Object.freeze(INVENTORY_ITEMS);
 
 global.ITEM_ENTITES = [

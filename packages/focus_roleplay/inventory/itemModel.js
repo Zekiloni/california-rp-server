@@ -11,12 +11,12 @@ module.exports = class itemModel {
         this.entity = itemEntity || -1;
         this.owner = itemOwner || -1;
         this.dimension = itemDimension || 0;
-        this.position = itemPos;
+        this.position = itemPos || 0;
         this.specs = itemSpecs || 0;
-        this.object = itemObject || 0;
+        this.object = 0;
         this.label = itemLabel || 0;
 
-        if(this.entity == -1) {
+        if (itemEntity == -1) {
             let pos = new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93);
             this.label = mp.labels.new(`${this.name}~n~~h~${this.quantity}`, pos,
             {
