@@ -34,8 +34,18 @@ html, body {
 .vozilo .brzinometar .brzina { font-weight: 400; color: whitesmoke; text-shadow: 2px 2px 2px rgb(0 0 0 / 93%); }
 .vozilo .brzinometar .merna-jedinica { text-transform: uppercase; font-size: 13px; margin-top: -5%; font-weight: 300; color: whitesmoke; text-shadow: 2px 2px 2px rgb(0 0 0 / 93%);  }
 
-.lokacija {left: 34%;bottom: 1px;position: absolute;width: 400px;/* text-align: center; */padding: 5px 10px;}
-.lokacija .trenutni-smer {margin: 0;font-size: 27px;letter-spacing: 1px;font-weight: 400;color: whitesmoke;text-shadow: 2px 2px 2px rgb(0 0 0 / 93%);}
-.lokacija .trenutna-lokacija {margin: 0;font-size: 17px;letter-spacing: 1px;font-weight: 300;color: whitesmoke;text-shadow: 2px 2px 2px rgb(0 0 0 / 93%);}
+.lokacija {left: 34%;bottom: 1px;position: absolute;width: 400px;padding: 5px 10px;}
+.lokacija .trenutni-smer {margin: 0;font-size: 28px;letter-spacing: 1px;font-weight: 400;color: whitesmoke;text-shadow: 0px 1px 1px rgb(0 0 0);}
+.lokacija .trenutna-lokacija {margin: 0;font-size: 18px;letter-spacing: 1px;font-weight: 300;color: whitesmoke;text-shadow: 0px 1px 1px rgb(0 0 0 / 93%);}
 
+.notif { left: 1%; bottom: 245px; width: 300px; min-height: 50px; height: auto;position: absolute;}
+.notif .notifikacija { margin-top: 10px; word-wrap: break-word; font-family: "Roboto";box-shadow: 0 12px 18px rgb(0 0 0 / 8%);background: rgb(0 0 0 / 35%);height: auto;padding: 10px;font-weight: 400;font-size: 18px;text-shadow: 0px 0.5px 0.5px rgb(0 0 0 / 32%);color: white;animation: slide 1.5s;border-left: 10px solid transparent;}
+.greska { border-color: #d9534f !important;   }
+.uspesno { border-color: #5cb85c !important;}
+.info { border-color: #0495e8 !important; }
 
+@keyframes slide {
+  from { transform: translateX(-200px); }
+  50% { transform: translateX(60px); } 
+  to { transform: translateX(0); }
+}

@@ -31,7 +31,7 @@ mp.events.addCommand({
       let meText;
 
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -56,7 +56,7 @@ mp.events.addCommand({
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4) 
          return false; 
       } 
 

@@ -14,6 +14,10 @@ mp.events.add('client:showPlayerHUD', (show) => {
 	}
 })
 
+mp.events.add('client:showNotification', (message, type, time) => {
+	playerHUD.execute(`notification(\"${message}\", \"${type}\", \"${time}\");`); 
+})
+
 mp.events.addDataHandler('cash', (entity, newCash, oldCash) => {
 	if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
 		player.cash = newCash;
@@ -42,7 +46,6 @@ getPlayerHeading = () => {
 	else if (heading >= 315 && heading <= 360) { headingString = "NW"; }
 	return headingString;
 }
-
 
 mp.events.add('render', function() { // hiding default GTA Hud
 	mp.game.ui.hideHudComponentThisFrame(7); // HUD_AREA_NAME

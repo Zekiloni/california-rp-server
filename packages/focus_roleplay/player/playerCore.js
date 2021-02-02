@@ -237,9 +237,12 @@ module.exports = {
         mp.players.forEach(
             (target, id) => {
              if (target.dist(player.position) < radius) { 
-                console.log('igrac')
                 target.call('client:sendChatBubble', [radius, message, player]);
              } 
         });
+    },
+
+    notification: function (player, message, type, time) { 
+        player.call('client:showNotification', [message, type, time]);
     }
 };

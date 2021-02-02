@@ -97,9 +97,12 @@ mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     player.putIntoVehicle(veh, 0);
 });
 
-mp.events.addCommand("save", (player, full) => {
-    // account.save(player);
-    core.savePlayers()
+mp.events.addCommand("clot", (player, full, comp, draw, text, pal) => {
+    player.setClothes(parseInt(comp), parseInt(draw), parseInt(text), parseInt(pal));
+});
+
+mp.events.addCommand("prop", (player, full, comp, draw, text) => {
+    player.setProp(parseInt(comp), parseInt(draw), parseInt(text));
 });
 
 mp.events.addCommand("buy", (player, text) => {

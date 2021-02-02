@@ -4,20 +4,20 @@ const savedPosition = "savedPositions.txt";
 mp.events.addCommand({
 
    'kick': (player, fullText) => {
-      if(player.admin < 1) return;
+      if(player.admin < 1) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
    },
 
    'ban': (player, fullText) => {
-      if(player.admin < 2) return;
+      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
    },
 
    'gethere': (player, fullText, target) => {
-      if(player.admin < 2) return;
+      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       if(!target) return player.outputChatBox('Koriscenje /gethere [igrac]'); 
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -27,12 +27,12 @@ mp.events.addCommand({
    },
 
    'goto': (player, fullText, target) => {
-      if(player.admin < 1) return;
+      if(player.admin < 1) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       if(!target) return player.outputChatBox('Koriscenje /goto [igrac]'); 
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -42,12 +42,12 @@ mp.events.addCommand({
    },
 
    'revive': (player, fullText, target) => { 
-      if(player.admin < 2) return;
-      if(!target) return player.outputChatBox('Koriscenje /revive [igrac]'); 
+      if (player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
+      if (!target) return player.outputChatBox('Koriscenje /revive [igrac]'); 
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -63,7 +63,7 @@ mp.events.addCommand({
       let level = parseInt(adminLevel);
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -73,12 +73,12 @@ mp.events.addCommand({
    },
 
    'setmoney': (player, fullText, target, money) => {
-      if(player.admin < 4) return;
+      if(player.admin < 4) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
 
       let cash = parseInt(money);
       let recipient = account.findPlayer(target);
-      if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+      if (!recipient) { 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -88,11 +88,11 @@ mp.events.addCommand({
    },
 
    'givemoney': (player, fullText, target, money) => {
-      if(player.admin < 4) return;
+      if(player.admin < 4) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -108,7 +108,7 @@ mp.events.addCommand({
    },
 
    'pos': (player, name = 'unnamed position') => {
-      if(player.admin < 2) return;
+      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       let pos = (player.vehicle) ? player.vehicle.position : player.position;
       let rot = (player.vehicle) ? player.vehicle.rotation : player.heading;
   
@@ -123,12 +123,12 @@ mp.events.addCommand({
    },
 
    'givegun': (player, fullText, target, weapon = 'weapon_unarmed', ammo = 0) => {
-      if(player.admin < 4) return;
+      if(player.admin < 4) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       let weaponHash = mp.joaat(weapon);
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -138,11 +138,11 @@ mp.events.addCommand({
    },
 
    'disarm': (player, fullText, target) => {
-      if(player.admin < 3) return;
+      if(player.admin < 3) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 
-         player.outputChatBox('Korisnik nije pronadjen'); 
+         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
          return false; 
       } 
 
@@ -152,25 +152,26 @@ mp.events.addCommand({
    },
 
    'customization': (player, fullText) => {
-      if(player.admin < 3) return;
+      if(player.admin < 3) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       player.call("client:showCustomization");
    },
 
    'clothing': (player, fullText) => {
-      if(player.admin < 3) return;
+      if(player.admin < 3) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       player.call("client:showClothing");
    },
 
    'createveh': (player, fullText, hash, rr, gg, bb, rr2, gg2, bb2) => {
-      if(player.admin < 3) return;
+      if(player.admin < 3) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
       let model = mp.joaat(hash), 
          position = player.position, rgb = {r: rr, g: gg, b: bb}, rgb2 = {r: rr2, g: gg2, b: bb2}, locked = false;
       veh.create(player, 1, model, locked, -1, 1, position, rgb, rgb2, 0, 0);
    },
 
    'vehtune': (player, fullText, modType, modIndex) => {
-      if(player.admin < 3) return;
-      if (!player.vehicle) return player.outputChatBox(`Morate biti u vozilu za koriscenje ove komande.`);
+      if(player.admin < 3) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
+      if (!player.vehicle) return account.notification(player, 'Morate biti u vozilu za koriscenje ove komande.', 'error', 4)
+      
       player.vehicle.setMod(parseInt(modType), parseInt(modIndex));
       player.outputChatBox(`Tip moda ${modType} sa indeksom moda ${modIndex} je postavljen.`);
    },
