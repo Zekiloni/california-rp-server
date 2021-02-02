@@ -38,7 +38,7 @@ mp.events.addCommand({
       if (!recipient.cuffed) { 
          recipient.call('client:playerCuff');
          recipient.cuffed = true;
-         meText = `uzima par ZIP lisica sa pojasa te ih stavlja ${recipient.name}`;
+         meText = `uzima par lisica sa pojasa te ih stavlja ${recipient.name}`;
          recipient.playAnimation('mp_arresting', 'idle', 1, 49);
       }
       else { 

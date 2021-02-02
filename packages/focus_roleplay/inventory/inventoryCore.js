@@ -46,7 +46,25 @@ module.exports = {
         });
     },
 
-    playerInventory: function(player) { 
+    addItem: function(player, item, quantity) {
+        let itemType = item.itemType;
+        let playerCurrentItems = this.getPlayerInventory();
+        let item = playerCurrentItems.find( ({ name }) => name === item );
+        if(quantity > 0) {
+            if(item) { 
+                item.quantity += quantity;
+            }
+            else {
+                
+            }
+        }
+        else if(quantity < 0){
+
+        }
+        
+    },
+
+    getPlayerInventory: function(player) { 
         let id = player.databaseID;
         let playerInv = [];
         inventoryItems.forEach(function (r) {
@@ -58,7 +76,7 @@ module.exports = {
     },
 
     nearItem: function (player) {
-        var nearItem = null;
+        let nearItem = null;
         inventoryItems.forEach((item) => {
             let itemPos = new mp.Vector3(item.position.x, item.position.y, item.position.z );
             if(item.entity ==  -1) {
