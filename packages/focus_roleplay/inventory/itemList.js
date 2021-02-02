@@ -13,6 +13,9 @@ const allItems = [
    { name: 'M4 Carbien Rifle', hash: 'w_ar_carbinerifle' }
 ]
 
+global.INVENTORY_ITEMS = [
+   CARBINE_RIFLE = { name: 'M4 Carbien Rifle', hash: 'w_ar_carbinerifle', weight: 1.2 },
+]; Object.freeze(INVENTORY_ITEMS);
 
 const itemsEntities = { 
    'ITEM_ENTITY_GROUND': -1, 'ITEM_ENTITY_PLAYER': 0, 
