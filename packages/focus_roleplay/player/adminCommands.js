@@ -179,7 +179,7 @@ mp.events.addCommand({
 
    'createitem': (player, full, name, hash, quant) => {
       if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      inv.createItem(name, 'gun', hash, 0.12, quant, -1, -1, player.dimension, player.position);
+      inv.createItemOnGround(name, 'gun', hash, 0.12, quant, -1, -1, player.dimension, player.position);
    },
    
    'destroyitem': (player, text) => {
