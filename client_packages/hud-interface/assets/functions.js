@@ -45,12 +45,29 @@ UpdateHud = function(street, zone, heading, money) {
 }
 
 UpdateHudMoney = function(money) {
-    $('.kolicina-novca').html(formatNovca(money))
+    $('.kolicina-novca').html(cashFormat(money))
 }
 
-function formatNovca(x) {
+cashFormat = (x) => {
     return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
+
 brzinaVozila = function(kolicina) {
     $('.brzina').html(parseInt(kolicina))
+}
+
+
+notification = (message, type, time = 3) => { 
+    var msTime = time * 1000;
+    var border = 'info';
+    if (type == 'success') { border = 'uspesno'; }
+    else if (type == 'error') { border = 'greska'; }
+    else if (type == 'info') { border = 'info'; }
+
+    $('.notif').append(`<div class='notifikacija ${border}'>${message}</div>`)
+    setTimeout(function() { 
+        $('.notifikacija').fadeOut(3000, function() {
+            setTimeout(function() { $('.notifikacija').remove(); }, 1500);
+        });
+     }, parseInt(msTime));
 }

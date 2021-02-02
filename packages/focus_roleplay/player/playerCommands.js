@@ -11,7 +11,7 @@ mp.events.addCommand({
           let recipient = account.findPlayer(args[0]);
       
          if(!recipient) { 
-            player.outputChatBox('Korisnik nije pronadjen'); 
+            account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
             return false; 
          } 
    
@@ -60,7 +60,7 @@ mp.events.addCommand({
           let recipient = account.findPlayer(args[0]);
       
          if(!recipient) { 
-            player.outputChatBox('Korisnik nije pronadjen'); 
+            account.notification(player, 'Korisnik nije pronadjen !', 'error', 4) 
             return false; 
          } 
 
@@ -131,7 +131,7 @@ mp.events.addCommand({
          let recipient = account.findPlayer(args[0]);
       
          if(!recipient) { 
-            player.outputChatBox('Korisnik nije pronadjen'); 
+            account.notification(player, 'Korisnik nije pronadjen !', 'error', 4)
             return false; 
          } 
          let newRank = args.slice(1).join(' '); 

@@ -1,12 +1,11 @@
 
 
-const skins = {
-    
-} 
-    
-//data: 
 
-
+var skins = [ 
+    { model: 'my_cloth', name: 'Vaša odeća'},
+    { model: 'basic_patrol', name: 'Osnovna Patrolna Uniforma'},
+    { model: 'basic_patrol', name: 'Osnovna Patrolna Uniforma'}
+]
 
 vehiclesMenu = () => {
     $.each(skins, function(i, item) { 
@@ -17,7 +16,7 @@ vehiclesMenu = () => {
 vehiclesMenu()
 
 choseEquipment = (receivedData) => { 
-    console.log(receivedData); 
+    console.log(receivedData)
 }
 
 
