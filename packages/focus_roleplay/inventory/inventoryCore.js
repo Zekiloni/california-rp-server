@@ -1,9 +1,7 @@
 
-
 var itemModel = require('./itemModel');
-var invCommands = require('./inventoryCmds')
 
-global.items = require('./itemList')
+global.items = require('./itemList');
 global.inventoryItems = [];
 
 module.exports = { 
@@ -46,24 +44,50 @@ module.exports = {
         });
     },
 
+    deleteItem: function(itemID) { 
+        db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, results, fields) {
+            if (error) return core.terminal(1, error);
+            let index = inventoryItems.findIndex((el) => el.id === itemID);
+            inventoryItems.splice(index, 1);
+        });
+    },
+    // name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs
     addItem: function(player, item, quantity) {
         let playerCurrentItems = this.getPlayerInventory();
-        let item = playerCurrentItems.find( ({ name }) => name === item );
+        let currentItem = playerCurrentItems.find( ({ name }) => name === item );
         let inventoryItem = INVENTORY_ITEMS.find( ({name}) => name === item);
         if(quantity > 0) {
-            if(item) { 
-                item.quantity += quantity;
+            if(currentItem) { 
+                currentItem.quantity += quantity;
+                this.updateItem(currentItem);
             }
             else {
                 if(inventoryItem) {
                     let itemToGive = new itemModel();
                     itemToGive.name = inventoryItem.name;
-                    itemToGive.entity = 0;
+                    itemToGive.type = inventoryItem.type;
+                    itemToGive.hash = inventoryItem.hash;
+                    itemToGive.weight = inventoryItem.weight;
+                    itemToGive.quantity = quantity;
+                    itemToGive.entity = ITEM_ENTITY_PLAYER;
+                    itemToGive.owner = player.databaseID;
+                    console.log(itemToGive);
                 }
             }
         }
-        else if(quantity < 0){
+        else if(quantity < 0) {
+            if(currentItem.quantity <= 0) {
+                this.deleteItem(currentItem.ID);
+            }
+        }
+        
+    },
 
+    updateItem: function(itemModel) {
+        if(itemModel != null) {
+            db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (error, results, fields) {
+                if (error) return core.terminal(1, error);
+            });
         }
         
     },
