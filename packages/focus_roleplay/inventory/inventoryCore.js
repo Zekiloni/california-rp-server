@@ -56,17 +56,13 @@ module.exports = {
         let playerCurrentItems = this.getPlayerInventory(player);
         let currentItem = playerCurrentItems.find( ({ name }) => name === item );
         let inventoryItem = INVENTORY_ITEMS.find( ({name}) => name === item);
-        if(quantity > 0) {
-            console.log('quant veci od 0')
+        if (quantity > 0) {
             if(currentItem) { 
-                console.log('ima taj predmet')
                 currentItem.quantity += quantity;
                 this.updateItem(currentItem);
             }
             else {
-                console.log('nema taj predmet')
                 if (inventoryItem) {
-                    console.log('taj predmet postoji u listi predmeta')
                     let itemToGive = new itemModel();
                     itemToGive.name = inventoryItem.name;
                     itemToGive.type = inventoryItem.type;
@@ -79,16 +75,25 @@ module.exports = {
                 }
             }
         }
-        else if(quantity < 0) {
-            console.log('quant manji od 0')
-            if(currentItem.quantity <= 0) {
+        else if (quantity < 0) {
+            if (currentItem.quantity <= 0) {
                 this.deleteItem(currentItem.ID);
             }
         }
         
     },
 
-    updateItem: function(itemModel) {
+    findItem: function (item) { 
+        let res = null;
+        INVENTORY_ITEMS.forEach(function (i) {
+            if (i.name.includes(item)) { 
+                res = i;
+            }
+        })
+        return res;
+    },
+
+    updateItem: function (itemModel) {
         if(itemModel != null) {
             db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);

@@ -24,8 +24,6 @@ biz.loadAll();
 inv.loadItems();
 fac.initFactions();
 setInterval(() => { core.checkEverything()  }, 60000);
-    
-console.log(ITEM_ENTITY_VEHICLE);
 
 //console.log(items)
 //console.log(FACTIONS[0].GARAGE_POINT)
