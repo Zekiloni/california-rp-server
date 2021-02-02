@@ -5,8 +5,8 @@ global.items = require('./itemList');
 global.inventoryItems = [];
 
 module.exports = { 
-    loadItems: async function() { 
-        var result = await db.aQuery("SELECT * FROM `inventory`");
+    loadItems: async function() {
+        var result = await db.query("SELECT * FROM `inventory`");
         result.forEach(function (res) {
             let itemPos = JSON.parse(res.itemPos);
             let itemSpecs = JSON.parse(res.itemSpecs);
@@ -23,8 +23,8 @@ module.exports = {
         core.terminal(3, `${result.length} items were loaded !`);
     },
    
-    createItemOnGround: async function(name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) { 
-        await db.aQuery("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, weight, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (fields) {
+    createItemOnGround: function(name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) { 
+        await db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, weight, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, resoult, fields) {
             if (error) return core.terminal(1, error);
             let id = res.insertId;
             var posArr = {x: pos.x, y: pos.y, z: pos.z};
@@ -33,9 +33,9 @@ module.exports = {
         });
     },
 
-    destroyItem: async function(player, item) { 
+    destroyItem: function(player, item) { 
         let itemID = item.id;
-        await db.aQuery("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (results) {
+            db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, resoult, fields) {
             if (error) return core.terminal(1, error);
             let index = inventoryItems.findIndex((el) => el.id === itemID);
             inventoryItems.splice(index, 1);
@@ -44,30 +44,30 @@ module.exports = {
         });
     },
 
-    deleteItem: async function(itemID) { 
-        await db.aQuery("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (results) {
+    deleteItem: function(itemID) { 
+            db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, resoult, fields) {
             if (error) return core.terminal(1, error);
             let index = inventoryItems.findIndex((el) => el.id === itemID);
             inventoryItems.splice(index, 1);
         });
     },
 
-    updateItem: async function (itemModel) {
+    updateItem: function (itemModel) {
         if(itemModel != null) {
-            await db.aQuery("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (results) {
+             db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (error, resoult, fields) {
                 if (error) return core.terminal(1, error);
             });
         }
     },
 
-    addItem: async function(player, item, quantity) {
+    addItem: function(player, item, quantity) {
         let playerCurrentItems = this.getPlayerInventory(player);
         let currentItem = playerCurrentItems.find( ({ name }) => name === item );
         let inventoryItem = INVENTORY_ITEMS.find( ({name}) => name === item);
         if (quantity > 0) {
             if(currentItem) { 
                 currentItem.quantity += quantity;
-                await this.updateItem(currentItem);
+                this.updateItem(currentItem);
             }
             else {
                 if (inventoryItem) {
@@ -80,7 +80,7 @@ module.exports = {
                     itemToGive.entity = ITEM_ENTITY_PLAYER;
                     itemToGive.owner = player.databaseID;
                     console.log(itemToGive);
-                    await db.aQuery("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [itemToGive.name, itemToGive.type, itemToGive.hash, itemToGive.quantity, itemToGive.entity, itemToGive.owner, itemToGive.dimension, 0, 0], function (fields) {
+                    db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [itemToGive.name, itemToGive.type, itemToGive.hash, itemToGive.quantity, itemToGive.entity, itemToGive.owner, itemToGive.dimension, 0, 0], function (error, resoult, fields) {
                         if (error) return core.terminal(1, error);
                     });
                 }
@@ -88,7 +88,7 @@ module.exports = {
         }
         else if (quantity < 0) {
             if (currentItem.quantity <= 0) {
-                await this.deleteItem(currentItem.ID);
+             this.deleteItem(currentItem.ID);
             }
         }
         
