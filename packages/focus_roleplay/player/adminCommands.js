@@ -1,4 +1,5 @@
 const fs = require("fs");
+const inventoryCore = require("../inventory/inventoryCore");
 const savedPosition = "savedPositions.txt";
 
 mp.events.addCommand({
@@ -176,4 +177,44 @@ mp.events.addCommand({
       player.outputChatBox(`Tip moda ${modType} sa indeksom moda ${modIndex} je postavljen.`);
    },
 
+   'createitem': (player, full, name, hash, quant) => {
+      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
+      inv.createItem(name, 'gun', hash, 0.12, quant, -1, -1, player.dimension, player.position);
+   },
+   
+   'destroyitem': (player, text) => {
+      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
+      let item = inv.nearItem(player);
+      if (item) {
+          player.outputChatBox(`Nearest item ${item.id} !`);
+          inv.destroyItem(player, item);
+      }
+   },
+
+   'giveitem': (player, fullText) => {
+      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
+      let args = fullText.split(' ');
+      let quantity = args[0];
+      let itemNameFull = args.slice(1).join(' ');
+      
+      inventoryCore.addItem(player, itemNameFull, quantity);
+   },
+
+   'freeze': (player, fullText, recipient) => {
+      if(player.admin < 2) return account.notification(player, 'Nije vam dozvoljeno !', 'error', 4);
+
+      let recipient = account.findPlayer(target);
+      if(!recipient) return account.notification(player, 'Korisnik nije pronadjen !', 'error', 4);
+      if(recipient.frozen) {
+         recipient.frozen = false;
+         recipient.call("client:freezePlayer", [false]);
+         account.notification(player, `Odmrznuli ste igraca ${recipient.name}`, 'success', 4);
+      }
+      else {
+         recipient.frozen = true;
+         recipient.call("client:freezePlayer", [true]);
+         account.notification(player, `Zamrznuli ste igraca ${recipient.name}`, 'success', 4);
+      }
+   }
+   
 });

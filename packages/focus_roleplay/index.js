@@ -23,7 +23,7 @@ core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 inv.loadItems();
 fac.initFactions();
-setInterval(() => { core.checkEverything()  }, 65000);
+setInterval(() => { core.checkEverything()  }, 60000);
     
 console.log(ITEM_ENTITY_VEHICLE);
 

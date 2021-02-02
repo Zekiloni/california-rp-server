@@ -34,7 +34,7 @@ module.exports = {
           let info = JSON.stringify(data)
           db.query("INSERT INTO `logs` (type, account, player, target, message, data, dateTime) VALUES (?, ?, ?, ?, ?, ?, current_timestamp())", [type, account, play, target, message, info], function (error, results, fields) {
                if (error) return core.terminal(1, error);
-               let id = results.insertId;    
+               let id = results.insertId;
           });
      },
 
