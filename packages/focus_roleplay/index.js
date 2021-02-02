@@ -59,14 +59,6 @@ mp.events.addCommand("tp", (player) => {
     player.giveWeapon([3220176749, 2210333304], 1000); // Assault Rifle, Carbine Rifle
 });
 
-mp.events.addCommand("clothing", (player) => {
-    player.call("client:showClothing");
-});
-
-mp.events.addCommand("customization", (player) => {
-    player.call("client:showCustomization");
-});
-
 
 mp.events.addCommand("peds", (player) => {
     const playerPos = player.position;

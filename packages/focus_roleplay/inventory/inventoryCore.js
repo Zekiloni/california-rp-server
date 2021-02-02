@@ -140,7 +140,7 @@ module.exports = {
         let pickUpObject = this.nearItem(player);
         if(pickUpObject) {
             pickUpObject.entity = ITEM_ENTITY_PLAYER;
-            pickUpObject.owner = player.name;
+            pickUpObject.owner = player.databaseID;
             pickUpObject.label.destroy();
             pickUpObject.object.destroy();
             this.updateItem(pickUpObject);
