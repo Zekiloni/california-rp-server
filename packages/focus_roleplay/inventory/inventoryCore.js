@@ -41,7 +41,7 @@ module.exports = {
             inventoryItems.splice(index, 1);
             item.label.destroy();
             item.object.destroy();
-        });
+        }); 
     },
 
     deleteItem: function(itemID) { 
