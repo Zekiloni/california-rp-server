@@ -179,16 +179,16 @@ module.exports = {
         });
     },
 
-    getPlayer: function(targetString) {
-        if(mp.players.exists(targetString)) {
-            let player = mp.players.at(targetString);
-            if(player.loggedIn) {
-                return player;
+     getPlayersNearPlayer:  function(player, radius) {
+        const returnPlayers = [];
+        
+        mp.players.forEachInRange(player.position, radius,
+            (player) => {
+                returnPlayers.push(player);
             }
-            else {
-                return false;
-            }           
-        }
+        );
+        
+        return returnPlayers;
     },
 
     findPlayer: function (playerName) {
@@ -214,7 +214,7 @@ module.exports = {
     sendProxMessage: function (player, radius, message, color_1, color_2, color_3, color_4, color_5) {
         player.outputChatBox(`!{${color_1}}${message}`)
         mp.players.forEach(
-             (target, id) => {
+             (target) => {
               if (target.dist(player.position) < radius / 8) { } 
               else if (target.dist(player.position) < radius / 6) { target.outputChatBox(`!{${color_2}}${message}`); } 
               else if (target.dist(player.position) < radius / 4) { target.outputChatBox(`!{${color_3}}${message}`); } 
@@ -227,7 +227,7 @@ module.exports = {
     sendFactionMessage: function (player, message) {
         if(player.faction == 0) return player.outputChatBox('Niste ni u jednoj fakciji.');
         mp.players.forEach(
-            (target, id) => {
+            (target) => {
              if (target.faction == player.faction) { 
                 target.outputChatBox(`!{${CHAT_COLORS.FACTION}}(( ${player.rank} ${player.name} [${player.id}]: ${message} ))`);
              } 

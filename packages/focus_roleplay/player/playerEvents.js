@@ -16,14 +16,39 @@ mp.events.add('server:handleLogin', async (player, username, password) => {
   }
 })
 
+function playerQuitHandler(player, exitType, reason) {
+  let str = player.name;
+
+  if (exitType != "kicked") {
+    str += " quit.";
+  } else {
+    str = ` kicked. Reason: ${reason}.`;
+  }
+
+  console.log(str);
+}
+
 mp.events.add({
 
     'playerJoin': (player) => {
       player.call('client:showLogin');
     },
 
-    'playerQuit': (player) => {
-      account.playerQuit(player)
+    'playerQuit': (player, exitType) => {
+      account.playerQuit(player);
+
+      switch(exitType)
+      {
+        case 'disconnect':
+          account.sendProxMessage(player, 7, `(( ${player.name} je samovoljno napustio server. ))`, '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E');
+          break;
+        case 'timeout':
+          account.sendProxMessage(player, 7, `(( ${player.name} je izgubio konekciju sa serverom. ))`, '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E');
+          break;
+        case 'kicked':
+          account.sendProxMessage(player, 7, `(( ${player.name} je kikovan/banovan sa servera. ))`, '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E', '6E6E6E');
+          break;
+      }
     },
 
     'playerDeath': (player, reason, killer) => {
