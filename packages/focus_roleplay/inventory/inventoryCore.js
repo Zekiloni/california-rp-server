@@ -5,8 +5,8 @@ global.items = require('./itemList');
 global.inventoryItems = [];
 
 module.exports = { 
-    loadItems: async function() {
-        var result = await db.query("SELECT * FROM `inventory`");
+    loadItems: async function() { 
+        var result = await db.aQuery("SELECT * FROM `inventory`");
         result.forEach(function (res) {
             let itemPos = JSON.parse(res.itemPos);
             let itemSpecs = JSON.parse(res.itemSpecs);
@@ -23,8 +23,8 @@ module.exports = {
         core.terminal(3, `${result.length} items were loaded !`);
     },
    
-    createItemOnGround: function(name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) { 
-        db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, weight, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, resoult, fields) {
+    createItemOnGround: function(name, type, hash, quant = 1, entity, owner, dimension, pos, specs = 0) { 
+        db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, result, fields) {
             if (error) return core.terminal(1, error);
             let id = res.insertId;
             var posArr = {x: pos.x, y: pos.y, z: pos.z};
@@ -35,7 +35,7 @@ module.exports = {
 
     destroyItem: function(player, item) { 
         let itemID = item.id;
-            db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, resoult, fields) {
+            db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, result, fields) {
             if (error) return core.terminal(1, error);
             let index = inventoryItems.findIndex((el) => el.id === itemID);
             inventoryItems.splice(index, 1);
@@ -45,7 +45,7 @@ module.exports = {
     },
 
     deleteItem: function(itemID) { 
-            db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, resoult, fields) {
+            db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, result, fields) {
             if (error) return core.terminal(1, error);
             let index = inventoryItems.findIndex((el) => el.id === itemID);
             inventoryItems.splice(index, 1);
@@ -54,7 +54,7 @@ module.exports = {
 
     updateItem: function (itemModel) {
         if(itemModel != null) {
-             db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (error, resoult, fields) {
+             db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (error, result, fields) {
                 if (error) return core.terminal(1, error);
             });
         }
@@ -71,17 +71,18 @@ module.exports = {
             }
             else {
                 if (inventoryItem) {
-                    let itemToGive = new itemModel();
-                    itemToGive.name = inventoryItem.name;
-                    itemToGive.type = inventoryItem.type;
-                    itemToGive.hash = inventoryItem.hash;
-                    itemToGive.weight = inventoryItem.weight;
-                    itemToGive.quantity = quantity;
-                    itemToGive.entity = ITEM_ENTITY_PLAYER;
-                    itemToGive.owner = player.databaseID;
                     console.log(itemToGive);
-                    db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [itemToGive.name, itemToGive.type, itemToGive.hash, itemToGive.quantity, itemToGive.entity, itemToGive.owner, itemToGive.dimension, 0, 0], function (error, resoult, fields) {
+                    db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [itemToGive.name, itemToGive.type, itemToGive.hash, itemToGive.quantity, itemToGive.entity, itemToGive.owner, itemToGive.dimension, 0, 0], function (error, result, fields) {
                         if (error) return core.terminal(1, error);
+                        let itemToGive = new itemModel();
+                        itemToGive.id = result.insertId;
+                        itemToGive.name = inventoryItem.name;
+                        itemToGive.type = inventoryItem.type;
+                        itemToGive.hash = inventoryItem.hash;
+                        itemToGive.weight = inventoryItem.weight;
+                        itemToGive.quantity = quantity;
+                        itemToGive.entity = ITEM_ENTITY_PLAYER;
+                        itemToGive.owner = player.databaseID;
                     });
                 }
             }
