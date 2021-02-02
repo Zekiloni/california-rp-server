@@ -12,15 +12,16 @@ global.INVENTORY_ITEMS = [
    CARBINE_RIFLE = { name: 'M4 Carbien Rifle', hash: 'w_ar_carbinerifle', weight: 1.2 },
 ]; Object.freeze(INVENTORY_ITEMS);
 
-global.ITEM_ENTITES = {
-   ITEM_ENTITY_GROUND: -1, 
-   ITEM_ENTITY_PLAYER: 0, 
-   ITEM_ENTITY_VEHICLE: 1, 
-   ITEM_ENTITY_HOUSE: 2, 
-   ITEM_ENTITY_WHEEL:3, 
-   ITEM_ENTITY_LEFT_HAND: 4, 
-   ITEM_ENTITY_RIGHT_HAND: 5
-};
+global.ITEM_ENTITES = [
+   ITEM_ENTITY_GROUND =-1, 
+   ITEM_ENTITY_PLAYER = 0, 
+   ITEM_ENTITY_VEHICLE = 1, 
+   ITEM_ENTITY_HOUSE = 2, 
+   ITEM_ENTITY_WHEEL = 3, 
+   ITEM_ENTITY_LEFT_HAND = 4, 
+   ITEM_ENTITY_RIGHT_HAND = 5
+]; Object.freeze(ITEM_ENTITES);
+
 
 const ITEM_OPEN_BEER_AMOUNT = 6;
 

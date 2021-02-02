@@ -48,7 +48,7 @@ module.exports = {
 
     addItem: function(player, item, quantity) {
         let playerCurrentItems = this.getPlayerInventory();
-        let item = playerCurrentItems.find( ({ name }) => name === item );
+        //let item = playerCurrentItems.find( ({ name }) => name === item );
         let inventoryItem = INVENTORY_ITEMS.find( ({name}) => name === item);
         if(quantity > 0) {
             if(item) { 
