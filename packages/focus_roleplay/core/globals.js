@@ -19,6 +19,17 @@ global.CHAT_RADIUS = {
    ME: 6.5,
 }; Object.freeze(CHAT_RADIUS)
 
+global.MESSAGES = [ 
+   MSG_NOT_ALLOWED = 'Niste ovlašteni za korišćenje ove komande.',
+   MSG_USER_NOT_FOUND = 'Korisnik nije pronadjen.',
+]; Object.freeze(MESSAGES)
+
+global.NOFITICATION_TYPES = [
+   NOTIFY_SUCCESS = 'success',
+   NOTIFY_ERROR = 'error',
+   NOTIFY_INFO = 'info'
+];
+
 global.SERVER_COLOR = { 
    R: 5, G: 149, B: 232
 }; Object.freeze(SERVER_COLOR)

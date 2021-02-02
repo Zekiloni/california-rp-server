@@ -24,7 +24,7 @@ module.exports = {
     },
    
     createItem: function(name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) { 
-        db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemWeight, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, weight, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, res, fields) {
+        db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, weight, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, res, fields) {
             if (error) return core.terminal(1, error);
             let id = res.insertId;
             var posArr = {x: pos.x, y: pos.y, z: pos.z};

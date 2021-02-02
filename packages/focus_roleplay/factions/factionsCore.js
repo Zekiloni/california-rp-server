@@ -58,7 +58,7 @@ module.exports = {
    invite: async function (player, target) { 
       let recipient = account.findPlayer(target);
       if (!recipient) { 
-         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4) 
+         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
          return false; 
       } 
 
@@ -75,7 +75,7 @@ module.exports = {
    uninvite: async function (player, target) { 
       let recipient = account.findPlayer(target);
       if (!recipient) { 
-         account.notification(player, 'Korisnik nije pronadjen !', 'error', 4) 
+         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
          return false; 
       } 
 
