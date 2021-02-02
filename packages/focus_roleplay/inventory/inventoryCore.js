@@ -92,6 +92,9 @@ module.exports = {
             if (i.name.includes(item)) { 
                 res = i;
             }
+            else { 
+                return false;
+            }
         })
         return res;
     },

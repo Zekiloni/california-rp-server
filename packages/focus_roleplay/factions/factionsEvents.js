@@ -36,6 +36,7 @@ mp.events.add({
       let numberPlate = Math.floor(1000 + Math.random() * 9000);
       let vehicle = mp.vehicles.new(hash, vehPos, { numberPlate: `LSPD ${numberPlate}`, heading: 90,color: [[255, 255, 246], [0, 255, 0]], locked: false, dimension: 0 });
       vehicle.faction = player.faction;
+      vehicle.callsign = null;
    },
 
 });

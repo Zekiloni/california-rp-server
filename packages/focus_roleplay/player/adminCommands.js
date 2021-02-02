@@ -177,9 +177,15 @@ mp.events.addCommand({
       player.outputChatBox(`Tip moda ${modType} sa indeksom moda ${modIndex} je postavljen.`);
    },
 
-   'createitem': (player, full, name, hash, quant) => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      inv.createItem(name, 'gun', hash, 0.12, quant, -1, -1, player.dimension, player.position);
+   'createitem': (player, full, name, quant) => {
+      if (player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      let foundItem = inv.findItem(name);
+      if (foundItem) { 
+         inv.createItem(foundItem.name, 'gun', foundItem.hash, 0.12, quant, -1, -1, player.dimension, player.position);
+      } else { 
+         account.notification(player, MSG_ITEM_DOESNT_EXIST, NOTIFY_ERROR, 4);
+      }
+         
    },
    
    'destroyitem': (player, text) => {

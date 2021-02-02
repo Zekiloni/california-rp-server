@@ -20,8 +20,15 @@ mp.events.addCommand({
    },
 
    'callsign': (player, fullText) => {
-
-      //radio.send(player, 911)
+      if (!fac.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return account.notification(player, MSG_NOT_IN_SPEC_FACTION, NOTIFY_ERROR, 4);
+      if (player.vehicle) { 
+         let vehicle = player.vehicle;
+         if (vehicle.callsign == null) { 
+            vehicle.callsign = mp.labels.new(`LSPD callsign`, new mp.Vector3(vehicle.position.x, vehicle.position.y, vehicle.position.z), { los: true, font: 0, drawDistance: 5 });
+         }
+      } else { 
+         account.notification(player, MSG_NOT_IN_VEHICLE, NOTIFY_ERROR, 4);
+      }
    },
 
    'cuff': (player, fullText, target) => { 

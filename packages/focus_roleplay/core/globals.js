@@ -22,6 +22,9 @@ global.CHAT_RADIUS = {
 global.MESSAGES = [ 
    MSG_NOT_ALLOWED = 'Niste ovlašteni za korišćenje ove komande.',
    MSG_USER_NOT_FOUND = 'Korisnik nije pronadjen.',
+   MSG_ITEM_DOESNT_EXIST = 'Taj predmet ne postoji.',
+   MSG_NOT_IN_VEHICLE = 'Ne nalazite se u vozilu.',
+   MSG_NOT_IN_SPEC_FACTION = 'Niste član odredjene fakcije.'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [
