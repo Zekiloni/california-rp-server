@@ -1,5 +1,5 @@
 
-let accountsTable = `create table if not exists accounts (
+let accountsTable = `CREATE TABLE IF NOT EXISTS accounts (
   ID int(11) NOT NULL AUTO_INCREMENT,
   username varchar(48) NOT NULL,
   password varchar(256) NOT NULL,
@@ -83,7 +83,7 @@ db.query(inventoryTable, function(err, results, fields) {
   core.terminal(3, `Checking inventoryTable  | MySQL`);
 });
 
-let logsTable = `create table if not exists logs (
+let logsTable = `CREATE TABLE IF NOT EXISTS logs (
   ID int(11) NOT NULL AUTO_INCREMENT,
   type int(2) NOT NULL,
   account int(11) NOT NULL,
@@ -99,7 +99,7 @@ db.query(logsTable, function(err, results, fields) {
   core.terminal(3, `Checking logsTable  | MySQL`);
 });
 
-let leadersTable = `create table if not exists factions (
+let leadersTable = `CREATE TABLE IF NOT EXISTS factions (
   faction int(11) NOT NULL,
   leader int(11) NOT NULL DEFAULT 0,
   budget int(11) NOT NULL DEFAULT 0)`;

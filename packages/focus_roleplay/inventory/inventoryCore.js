@@ -89,7 +89,6 @@ module.exports = {
                 if (error) return core.terminal(1, error);
             });
         }
-        
     },
 
     getPlayerInventory: function(player) { 
@@ -115,7 +114,8 @@ module.exports = {
         });
         if (nearItem != null) {
             return nearItem;
-        } else {
+        } 
+        else {
             return false;
         }
     },
