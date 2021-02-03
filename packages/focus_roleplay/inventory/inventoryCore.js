@@ -41,6 +41,7 @@ module.exports = {
             inventoryItems.splice(index, 1);
             item.label.destroy();
             item.object.destroy();
+            inv.deleteItem(itemID)
         });
     },
 
@@ -59,7 +60,7 @@ module.exports = {
         if (quantity > 0) {
             if (currentItem) { 
                 currentItem.quantity += quantity;
-                this.updateItem(currentItem);
+                this.itemUpdate(currentItem);
             }
             else {
                 if (inventoryItem) {
@@ -99,14 +100,6 @@ module.exports = {
         return res;
     },
 
-    updateItem: (itemModel) => {
-        if(itemModel != null) {
-            db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ?, WHEERE `ID` = ?", [itemModel.itemQuantity, itemModel.itemOwner, itemModel.itemEntity, itemModel.itemDimension, itemModel.itemPos, itemModel.id], function (error, results, fields) {
-                if (error) return core.terminal(1, error);
-            });
-        }
-    },
-
     getPlayerInventory: (player) => { 
         let id = player.databaseID;
         let playerInv = [];
@@ -118,7 +111,56 @@ module.exports = {
         return playerInv;
     },
 
-    nearItem: (player) => {
+    pickUpItem: (player, pickUpObject) => {
+        if (pickUpObject) {
+            pickUpObject.entity = ITEM_ENTITY_PLAYER;
+            pickUpObject.owner = player.databaseID;
+            pickUpObject.label.destroy();
+            pickUpObject.object.destroy();
+            inv.itemUpdate(pickUpObject);
+            account.notification(player, `Podigli ste <b>${pickUpObject.name} [${pickUpObject.quantity}]</b> sa poda.`, NOTIFY_SUCCESS, 4);
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} podize ${pickUpObject.name} sa poda.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+            
+        }
+        else {
+            account.notification(player, "Nisi u blizini ni jednog predmeta.", NOTIFY_ERROR, 4);
+        }
+    },
+
+    dropItem: function (player, itemID) {
+        let dropObject = inventoryItems.find( ({ id }) => id === parseInt(itemID) );
+        if (dropObject) {
+            let objPos = new mp.Vector3(player.position.x, player.position.y, player.position.z - 0.93);
+            dropObject.object = mp.objects.new(dropObject.hash, objPos,
+            {   rotation: new mp.Vector3(-90, 0, 0),
+                alpha: 255,
+                dimension: player.dimension
+            });
+            dropObject.label = mp.labels.new(`${dropObject.name}~n~~h~${dropObject.quantity}`, objPos,
+            {   los: true,
+                font: 0,
+                drawDistance: 3
+            });
+            dropObject.entity = ITEM_ENTITY_GROUND;
+            dropObject.owner = 0;
+            dropObject.position = objPos;
+            dropObject.dimension = player.dimension;
+            inv.itemUpdate(dropObject);
+            account.notification(player, `Bacili ste <b>${dropObject.name} [${dropObject.quantity}]</b> na pod.`, NOTIFY_SUCCESS, 4);
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} baca ${dropObject.name} na pod.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+        }
+    },
+
+    itemUpdate: function (itemModel) {
+        if (itemModel != null) {
+            let pos = JSON.stringify(itemModel.position)
+            db.query("UPDATE `inventory`SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ? WHERE `ID` = ?", [itemModel.quantity, itemModel.owner, itemModel.entity, itemModel.dimension, pos, itemModel.id], function (error, results, fields) {
+                if (error) return core.terminal(1, error);
+            });
+        }
+    },
+
+    nearItem: function (player) {
         let nearItem = null;
         inventoryItems.forEach((item) => {
             let itemPos = new mp.Vector3(item.position.x, item.position.y, item.position.z );
@@ -135,44 +177,4 @@ module.exports = {
             return false;
         }
     },
-
-    pickUpItem: (player) => {
-        let pickUpObject = this.nearItem(player);
-        if(pickUpObject) {
-            pickUpObject.entity = ITEM_ENTITY_PLAYER;
-            pickUpObject.owner = player.databaseID;
-            pickUpObject.label.destroy();
-            pickUpObject.object.destroy();
-            this.updateItem(pickUpObject);
-            account.notification(player, `Podigli ste <b>${pickupobject.name} [${pickUpObject.quantity}]</b> sa poda.`, NOTIFY_SUCCESS, 4);
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} podize ${pickupobject.name} sa poda.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
-
-        }
-        else {
-            account.notification(player, "Nisi u blizini ni jednog predmeta.", NOTIFY_ERROR, 4);
-        }
-    },
-
-    dropItem: (player, itemID) =>  {
-        let dropObject = INVENTORY_ITEMS.find( ({id}) => id === itemID);
-        if(dropObject) {
-            dropObject.object = mp.objects.new(dropObject.hash, player.position,
-            {   rotation: new mp.Vector3(-90, 0, 0),
-                alpha: 255,
-                dimension: player.dimension
-            });
-            dropObject.label = mp.labels.new(`${dropObject.name}~n~~h~${dropObject.quantity}`, player.position,
-            {   los: true,
-                font: 0,
-                drawDistance: 3
-            });
-            dropObject.entity = ITEM_ENTITY_GROUND;
-            dropObject.owner = 0;
-            dropObject.position = player.position;
-            dropObject.dimension = player.dimension;
-            this.updateItem(dropObject);
-            account.notification(player, `Bacili ste <b>${pickupobject.name} [${pickUpObject.quantity}]</b> na pod.`, NOTIFY_SUCCESS, 4);
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} baca ${pickupobject.name} na pod.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
-        }
-    }
 }

@@ -30,6 +30,11 @@ setInterval(() => { core.checkEverything()  }, 60000);
 //console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
 
 // setInterval(() => { inv.playerInventory(-1)  }, 3000);
+// setTimeout(() => { 
+//     let re = inventoryItems.find( ({ id }) => id === 11 );
+//     console.log(re)  
+// }, 2000);
+
 
 /* ZAVRSENE STVARI
     player.call("client:showClothing"); // CHAR CLOTHING !
@@ -102,6 +107,16 @@ mp.events.addCommand("buy", (player, text) => {
          account.buyBiz(player, bussines);
     }
 });
+
+mp.events.addCommand("pickup", (player) => { 
+    var pickUpObject = inv.nearItem(player);
+    inv.pickUpItem(player, pickUpObject);
+})
+
+mp.events.addCommand("drop", (player, fullText, itemid) => { 
+    inv.dropItem(player, itemid);
+})
+
 
 
 
