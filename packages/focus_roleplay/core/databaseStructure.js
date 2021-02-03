@@ -67,9 +67,7 @@ db.query(vehicleTable, function(err, results, fields) {
 let inventoryTable = `CREATE TABLE IF NOT EXISTS inventory (
   ID int(11) NOT NULL AUTO_INCREMENT,
   itemName varchar(64) NOT NULL,
-  itemType varchar(24) NOT NULL,
   itemHash varchar(128) NOT NULL,
-  itemWeight double(3,3) NOT NULL,
   itemQuantity int(4) NOT NULL,
   itemEntity int(2) NOT NULL,
   itemOwner int(11) NOT NULL,

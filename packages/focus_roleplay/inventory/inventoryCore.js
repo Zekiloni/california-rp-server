@@ -10,11 +10,12 @@ module.exports = {
         result.forEach(function (res) {
             let itemPos = JSON.parse(res.itemPos);
             let itemSpecs = JSON.parse(res.itemSpecs);
+            let itemData = INVENTORY_ITEMS.find( ({name}) => name === res.itemName);
 
             let item = new itemModel(
                 res.ID, res.itemName,
-                res.itemType, res.itemHash,
-                res.itemWeight, res.itemQuantity,
+                itemData.type, itemData.hash,
+                itemData.weight, res.itemQuantity,
                 res.itemEntity, res.itemOwner,
                 res.itemDimension, itemPos, itemSpecs,
                 0, 0
@@ -24,12 +25,11 @@ module.exports = {
     },
    
     createItem: (name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) => { 
-        db.query("INSERT INTO `inventory` (itemName, itemType, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [name, type, hash, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, res, fields) {
+        db.query("INSERT INTO `inventory` (itemName, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [name, hash, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, res, fields) {
             if (error) return core.terminal(1, error);
             let id = res.insertId;
             var posArr = {x: pos.x, y: pos.y, z: pos.z};
             let item = new itemModel(id, name, type, hash, weight, quant, entity, owner, dimension, posArr)
-            console.log(item.info())
         });
     },
 

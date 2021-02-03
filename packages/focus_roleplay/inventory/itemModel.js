@@ -20,7 +20,7 @@ module.exports = class itemModel {
             let pos = new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93);
             this.label = mp.labels.new(`${this.name}~n~~h~${this.quantity}`, pos,
             {
-                los: true,
+                los: false,
                 font: 0,
                 drawDistance: 3
             });
