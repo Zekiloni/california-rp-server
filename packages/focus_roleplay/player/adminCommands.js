@@ -292,6 +292,11 @@ mp.events.addCommand({
       if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       biz.create(player, type, price);
    },
+
+   'createhouse': (player, fullText, type, price) => {
+      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      house.create(player, type, price);
+   },
    
    'destroybiz': (player, fullText) => {
       if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);

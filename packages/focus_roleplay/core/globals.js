@@ -27,7 +27,8 @@ global.MESSAGES = [
    MSG_NOT_IN_SPEC_FACTION = 'Niste član odredjene fakcije.',
    MSG_ALREADY_EMPLOYED = 'Već ste zaposleni.',
    MSG_UNEMPLOYED = 'Niste zaposleni.',
-   MSG_QUITJOB = 'Dali ste otkaz.'
+   MSG_QUITJOB = 'Dali ste otkaz.',
+   MSG_NOT_IN_FREQ = 'Niste ni u jednoj frekvenciji.',
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

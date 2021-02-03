@@ -86,7 +86,7 @@ module.exports = {
    },
 
    send: function (player, freq, message) { 
-      if(freq == 0) return  player.outputChatBox(`Niste ni u jednoj frekvenciji.`);
+      if(freq == 0) return account.notification(player, MSG_NOT_IN_FREQ, NOTIFY_ERROR, 4);
       mp.players.forEach((target) => {
          if (target.radioFreq == freq) { 
             target.outputChatBox(`!{${CHAT_COLORS.RADIO}}** [CH: ${freq}] ${player.name}: ${message}`);
