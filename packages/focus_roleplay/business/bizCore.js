@@ -1,7 +1,6 @@
 
 
 var BussinesModel = require('./bizModel');
-var bizCommands = require('./bizCmds')
 global.allBussineses = [];
 
 module.exports = {

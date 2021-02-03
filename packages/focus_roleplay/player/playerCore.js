@@ -250,5 +250,13 @@ module.exports = {
 
     notification: function (player, message, type, time) { 
         player.call('client:showNotification', [message, type, time]);
-    }
+    },
+
+    sendAdminMessage: function (message) { 
+        mp.players.forEach((target) => {
+           if (target.admin > 0) { 
+              target.outputChatBox(`!${"0080FF"} A | !${"FFFFFF"} ${message}`);
+           } 
+        })
+     }
 };

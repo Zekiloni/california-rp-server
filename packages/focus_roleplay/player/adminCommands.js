@@ -285,15 +285,30 @@ mp.events.addCommand({
 
    'a': (player, fullText) => { 
       if(player.admin < 1) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      sendMessageToAdmins(fullText);
+      account.sendAdminMessage(fullText);
    },
 
-   sendMessageToAdmins: function (message) { 
-      mp.players.forEach((target) => {
-         if (target.admin > 0) { 
-            target.outputChatBox(`!${"0080FF"} A | !${"FFFFFF"} ${message}`);
-         } 
-      })
-   }
+   'createbiz': (player, fullText, type, price) => {
+      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      biz.create(player, type, price);
+   },
+   
+   'destroybiz': (player, fullText) => {
+      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      let bussines = biz.nearby(player);
+      if (bussines) {
+          player.outputChatBox(`Nearest biz ${bussines.id} !`);
+          biz.delete(player, bussines);
+      }
+   },
+
+   'editbiz': (player, fullText) => { 
+      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      let bussines = biz.nearby(player);
+      if(bussines) {
+
+      }
+   },
+
 });
 

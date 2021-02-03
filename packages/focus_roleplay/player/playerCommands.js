@@ -210,11 +210,38 @@ mp.events.addCommand({
    'id': (player, fullText, target) => { 
       let recipient = account.findPlayer(target);
       if(recipient) {
-         player.outputChatBox(`[${recipient.id}] ${recipient.Name}`)
+         player.outputChatBox(`[${recipient.id}] ${recipient.name}`)
       }
       else {
          account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
       }
    },
+
+   'business': (player, fullText) => {
+      if(fullText) { 
+         let bussines = biz.nearby(player);
+         if (bussines && bussines.owner == player.databaseID) { 
+             let args = fullText.split(" ");
+             switch(args[0]) {
+               case 'help':
+                  player.outputChatBox(`BIZ HELP !`);
+                  break;
+               case 'info':
+                  player.outputChatBox(`BIZ INFO !`);
+                  break;
+               case 'sell':
+                  player.outputChatBox(`BIZ sell !`);
+                  break;
+               case 'products':
+                  player.outputChatBox(`BIZ sell !`);
+                  break;
+               default:
+                  player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`);
+             }
+         }
+         else { player.outputChatBox(`Niste u blizini niti jednog vaseg biznisa ! `); }
+      }
+      else {  player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`); }
+   }
 
 });
