@@ -18,7 +18,7 @@ mp.events.add({
 
 // inventory opening on and closing if opened I
 mp.keys.bind(0x49, false, function() {
-   if(player.loggedIn) { 
+   if (player.loggedIn) { 
       if(opened == false) {
          if (mp.players.local.isTypingInTextChat) return;
             opened = true;

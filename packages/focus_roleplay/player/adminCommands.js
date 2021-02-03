@@ -226,7 +226,6 @@ mp.events.addCommand({
       }
    },
    'kill': (player, fullText, target) => { 
-      if (!player.loggedIn) return;
       let recipient = account.findPlayer(target);
       if(recipient) {
          recipient.health = 0;
@@ -241,7 +240,6 @@ mp.events.addCommand({
    },
 
    'sethp': (player, fullText, target, health) => { 
-      if (!player.loggedIn) return;
       let recipient = account.findPlayer(target);
       let healthToSet = parseInt(health);
       if(healthToSet > 0 && healthToSet <= 100 ) {
@@ -259,7 +257,7 @@ mp.events.addCommand({
    },
 
    'setarmour': (player, fullText, target, armour) => { 
-      if (!player.loggedIn) return;
+
       let recipient = account.findPlayer(target);
       let armourToSet = parseInt(armour);
       if(armourToSet > 0 && armourToSet <= 100 ) {

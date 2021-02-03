@@ -24,24 +24,20 @@ mp.events.addCommand({
    },
 
    'me': (player, fullText) => {
-      if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.ME, `** ${player.name} ${fullText}`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
    },
 
    'do': (player, fullText) => {
-      if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.DO, `** ${fullText} (( ${player.name} ))`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
    },
 
    // shout
    's': (player, fullText) => {
-      if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.SHOUT, `${player.name} vice: ${fullText}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
    },
 
    // low
    'l': (player, fullText) => {
-      if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.LOW, `${player.name} tiho: ${fullText}`, 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E', '6E6E6E');
    },
 
@@ -76,18 +72,15 @@ mp.events.addCommand({
 
     // ooc chat
    'b': (player, fullText) => { 
-      if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.OOC, `(( ${player.name} [${player.id}]: ${fullText} ))`, 'A6BFBF', 'A0B8B8', '97ADAD', '95ABAB', '90A6A6');
    },
 
    'invite': async (player, fullText, target) => { 
-      if (!player.loggedIn) return;
       if (!target) return player.outputChatBox('Koriscenje /invite [igrac]'); 
       factions.invite(player, target);
    },
 
    'uninvite': async (player, fullText, target) => { 
-      if (!player.loggedIn) return;
       if (!target) return player.outputChatBox('Koriscenje /uninvite [igrac]'); 
       factions.uninvite(player, target);
    },
@@ -140,18 +133,15 @@ mp.events.addCommand({
    },
 
    'f': (player, fullText) => { 
-      if (!player.loggedIn) return;
       account.sendFactionMessage(player, fullText);
    },
 
    'paycheck': (player, fullText) => { 
-      if (!player.loggedIn) return;
       let timeToPayCheck = 60 - player.xp;
       player.outputChatBox(`Jos ${timeToPayCheck} minuta do sledece plate.`);
    },
 
    'quitjob': (player, fullText) => { 
-      if (!player.loggedIn) return;
       if (player.job == 0) return account.notification(player, MSG_UNEMPLOYED, NOTIFY_ERROR, 4)
 
       player.job = 0;
@@ -214,12 +204,10 @@ mp.events.addCommand({
    },
 
    'r': (player, fullText) => { 
-      if (!player.loggedIn) return;
       radio.send(player, player.radioFreq, fullText);
    },
 
    'id': (player, fullText, target) => { 
-      if (!player.loggedIn) return;
       let recipient = account.findPlayer(target);
       if(recipient) {
          player.outputChatBox(`[${recipient.id}] ${recipient.Name}`)
