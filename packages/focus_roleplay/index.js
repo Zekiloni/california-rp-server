@@ -4,6 +4,7 @@ global.core = require('./core/main');
 // global.notice = require('./core/notice');
 global.db = require('./core/database');
 global.account = require('./player/playerCore');
+global.anims = require('./player/animations')
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.house = require('./houses/core');
@@ -115,6 +116,10 @@ mp.events.addCommand("pickup", (player) => {
 
 mp.events.addCommand("drop", (player, fullText, itemid) => { 
     inv.dropItem(player, itemid);
+})
+
+mp.events.addCommand("dzok", (player, fullText, dict, anim) => { 
+    player.playAnimation(dict, anim, 5, 0)
 })
 
 
