@@ -104,5 +104,20 @@ mp.events.add({
       let job = JOBS.find( ({ID}) => ID === jobID);
       player.job = jobID;
       account.notification(player, `Uspešno ste se zaposlili kao ${job.NAME}.`, NOTIFY_SUCCESS, 4);
-    }
+    },
+
+    "playerEnterCheckpoint": (player, checkpoint) => {
+      if(player.checkpoint == checkpoint) {
+        player.checkpoint ++;
+        mp.gui.chat.push(`[debug] Usao si u checkpont ID: ${checkpoint.ID}, ukupno: ${player.checkpoint}`);
+        if(player.checkpoint >= player.maxCheckpoints) {
+          player.checkpoint = 0;
+          player.maxCheckpoints = 0;
+          account.notification(player, `Uspešno ste se završili rutu.`, NOTIFY_SUCCESS, 4);
+        }
+        else {
+          account.notification(player, `Sačekajte da se putnici ukrcaju.`, NOTIFY_SUCCESS, 4);
+        }
+      }
+     }
 });

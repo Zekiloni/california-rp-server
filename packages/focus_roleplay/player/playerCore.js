@@ -17,7 +17,8 @@ module.exports = {
             if (result[0].password == password) {
                 this.status(username, 1);
                 return true;
-            } else {
+            } 
+            else {
                 return false;
             }
         }
@@ -47,12 +48,14 @@ module.exports = {
         player.cuffed = false;
         player.tased = false;
         player.frozen = false;
+        player.checkpoint = 0;
+        player.maxCheckpoints = 0;
 
         if (result[0].lastPosition != 0) { 
             let lastPos = JSON.parse(result[0].lastPosition);
             player.position = new mp.Vector3(lastPos.x, lastPos.y, lastPos.z);
         }
-        if(result[0].headBlendData != 0) { 
+        if(result[0].headBlendData != 0) {
             let blendData = JSON.parse(result[0].headBlendData);
             player.setHeadBlend(parseInt(blendData.shapeFirst), parseInt(blendData.shapeSecond), 0, 
                                 parseInt(blendData.skinFirst), parseInt(blendData.skinSecond), 0, 
@@ -173,7 +176,8 @@ module.exports = {
                     console.log(e)
                 }
                 player.notify(`Kupio si biznis ~h~ ${results[0].name} ~h~ za ~g~${results[0].price}$ ~s~ .`);
-            } else {
+            } 
+            else {
                 player.notify("Doslo je do greske.");
             }
         });

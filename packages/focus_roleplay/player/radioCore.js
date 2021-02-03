@@ -6,7 +6,7 @@ module.exports = {
          db.query("INSERT INTO `radio_frequencies` (frequency, password, owner) VALUES (?, ?, ?)", [freq, password, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let pw;
-            if(freq < 222 || freq > 4000) { 
+            if(freq < 222 || freq > 999) { 
                player.outputChatBox(`Frekvencije se krecu od 222 do 999 !`);
                return false;
             } 
@@ -21,7 +21,8 @@ module.exports = {
             player.outputChatBox(`Radio frekvencija kreirana ${freq} sa sifrom ${pw}.`);
             player.radioFreq = freq;
          });
-      } else { player.outputChatBox(`Radio frekvencija ${freq} vec postoji.`); }
+      } 
+      else { player.outputChatBox(`Radio frekvencija ${freq} vec postoji.`); }
 
    },
 
@@ -34,7 +35,8 @@ module.exports = {
          else { 
             return false;
          }
-      } catch (e) {
+      } 
+      catch (e) {
          return false;
       }
    },
@@ -76,7 +78,8 @@ module.exports = {
                   player.outputChatBox(`Sifra frekvencije nije tacna.`);
                }
             }
-         } else { 
+         } 
+         else { 
             player.outputChatBox(`Frekvencija ne postoji.`);
          }
       });
@@ -84,7 +87,7 @@ module.exports = {
 
    send: function (player, freq, message) { 
       if(freq == 0) return  player.outputChatBox(`Niste ni u jednoj frekvenciji.`);
-      mp.players.forEach((target, id) => {
+      mp.players.forEach((target) => {
          if (target.radioFreq == freq) { 
             target.outputChatBox(`!{${CHAT_COLORS.RADIO}}** [CH: ${freq}] ${player.name}: ${message}`);
          } 

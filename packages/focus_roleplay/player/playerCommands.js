@@ -218,4 +218,15 @@ mp.events.addCommand({
       radio.send(player, player.radioFreq, fullText);
    },
 
+   'id': (player, fullText, target) => { 
+      if (!player.loggedIn) return;
+      let recipient = account.findPlayer(target);
+      if(recipient) {
+         player.outputChatBox(`[${recipient.id}] ${recipient.Name}`)
+      }
+      else {
+         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+      }
+   },
+
 });

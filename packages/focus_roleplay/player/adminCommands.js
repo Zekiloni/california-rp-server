@@ -224,6 +224,78 @@ mp.events.addCommand({
          recipient.call("client:freezePlayer", [true]);
          account.notification(player, `Zamrznuli ste igraca ${recipient.name}`, NOTIFY_SUCCESS, 4);
       }
+   },
+   'kill': (player, fullText, target) => { 
+      if (!player.loggedIn) return;
+      let recipient = account.findPlayer(target);
+      if(recipient) {
+         recipient.health = 0;
+         recipient.outputChatBox('Ubijeni ste od strane administratora.');
+
+         player.outputChatBox(`Ubili ste igraca ${recipient.name}`);
+      }
+      else {
+         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+      }
+      
+   },
+
+   'sethp': (player, fullText, target, health) => { 
+      if (!player.loggedIn) return;
+      let recipient = account.findPlayer(target);
+      let healthToSet = parseInt(health);
+      if(healthToSet > 0 && healthToSet <= 100 ) {
+         if(recipient) {
+            recipient.health = healthToSet;
+            recipient.outputChatBox(`Administrator vam je podesio helte na ${healthToSet}.`);
+         }
+         else { 
+            account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+         }
+      }
+      else {
+         account.notification(player, 'Minimalna vrednost 1 a maksimalna 100.', NOTIFY_ERROR, 4);
+      }
+   },
+
+   'setarmour': (player, fullText, target, armour) => { 
+      if (!player.loggedIn) return;
+      let recipient = account.findPlayer(target);
+      let armourToSet = parseInt(armour);
+      if(armourToSet > 0 && armourToSet <= 100 ) {
+         if(recipient) {
+            recipient.armour = armourToSet;
+            recipient.outputChatBox(`Administrator vam je podesio armor na ${armourToSet}.`);
+         }
+         else { 
+            account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+         }
+      }
+      else {
+         account.notification(player, 'Minimalna vrednost 1 a maksimalna 100.', NOTIFY_ERROR, 4);
+      }
+   },
+
+   'fixveh': (player, fullText) => {
+      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      let vehToFix = player.vehicle;
+      if(!vehToFix) 
+         return account.notification(player, 'Morate biti u vozilu.', NOTIFY_ERROR, 4);
+      else
+         vehToFix.repair();
+   },
+
+   'a': (player, fullText) => { 
+      if(player.admin < 1) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      sendMessageToAdmins(fullText);
+   },
+
+   sendMessageToAdmins: function (message) { 
+      mp.players.forEach((target) => {
+         if (target.admin > 0) { 
+            target.outputChatBox(`!${"0080FF"} A | !${"FFFFFF"} ${message}`);
+         } 
+      })
    }
-   
 });
+

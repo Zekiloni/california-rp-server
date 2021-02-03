@@ -25,12 +25,20 @@ module.exports = {
      });
      core.terminal(3, `${counter} Jobs Loaded !`)
    },
-   
-   createBusRoute: function (name) { 
+
+   loadBusRoutes: function (name) { 
       let rawdata = fs.readFileSync(routesDir + `${name}.json`);
       let stations = JSON.parse(rawdata);
+      busRoute.push(stations);
+      let index = player.checkpoint;
       stations.Stations.forEach((station) => {
-         console.log(station)
+         player.maxCheckpoints ++;
       })
+      
+   },
+
+   createBusRouteCheckpoint: function() {
+      player.call('client:createCheckpoint', busRoute[index].X, busRoute[index].Y, busRoute[index].Z);
    }
 }
+var busRoute = [];
