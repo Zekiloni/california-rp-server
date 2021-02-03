@@ -217,12 +217,12 @@ mp.events.addCommand({
       if(recipient.frozen) {
          recipient.frozen = false;
          recipient.call("client:freezePlayer", [false]);
-         account.notification(player, `Odmrznuli ste igraca ${recipient.name}`, 'success', 4);
+         account.notification(player, `Odmrznuli ste igraca ${recipient.name}`, NOTIFY_SUCCESS, 4);
       }
       else {
          recipient.frozen = true;
          recipient.call("client:freezePlayer", [true]);
-         account.notification(player, `Zamrznuli ste igraca ${recipient.name}`, 'success', 4);
+         account.notification(player, `Zamrznuli ste igraca ${recipient.name}`, NOTIFY_SUCCESS, 4);
       }
    }
    

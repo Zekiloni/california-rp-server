@@ -24,7 +24,10 @@ global.MESSAGES = [
    MSG_USER_NOT_FOUND = 'Korisnik nije pronadjen.',
    MSG_ITEM_DOESNT_EXIST = 'Taj predmet ne postoji.',
    MSG_NOT_IN_VEHICLE = 'Ne nalazite se u vozilu.',
-   MSG_NOT_IN_SPEC_FACTION = 'Niste član odredjene fakcije.'
+   MSG_NOT_IN_SPEC_FACTION = 'Niste član odredjene fakcije.',
+   MSG_ALREADY_EMPLOYED = 'Već ste zaposleni.',
+   MSG_UNEMPLOYED = 'Niste zaposleni.',
+   MSG_QUITJOB = 'Dali ste otkaz.'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

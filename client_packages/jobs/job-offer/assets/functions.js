@@ -10,9 +10,7 @@ jobOffer = (jobID, jobName, jobLoc, jobDesc) => {
 
 jobOffer(1, 'Vozac Autobusa', 'Los Santos Autobuska Stanica', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas erat sem, congue id metus ut, ultrices dapibus lorem. Fusce quis nibh ut diam porta porta vel vitae leo.')
 
-
 $(window).on('load', function() { $('.box').fadeIn(1000) })
-
 
 document.addEventListener("keyup", function(e) {
     if (e.keyCode === 27) {

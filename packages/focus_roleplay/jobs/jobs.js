@@ -24,12 +24,12 @@ global.JOBS = [
 
    JOB_TAXI = { 
       ID: 5, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
-      POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
+      POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610)
    },
 
    JOB_BUS_DRIVER = { 
       ID: 6, NAME: 'Vozac Autobusa', LOC: 'Autobuska Stanica Los Santos', DESC: 'Los Santos Autobuska stanica. Vozac autobusa na gradskim i van-gradskim linijama.', 
-      POINT: new mp.Vector3(435.52148, -644.5684, 28.73636) 
+      POINT: new mp.Vector3(435.52148, -644.5684, 28.73636) , BLIP: 67
    },
 
 ]; Object.freeze(JOBS);

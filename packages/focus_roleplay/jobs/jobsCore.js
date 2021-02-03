@@ -12,7 +12,12 @@ module.exports = {
          let marker = mp.markers.new(27, new mp.Vector3(markerPos.x, markerPos.y, markerPos.z - 0.99), 1,
          { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 255], visible: true, dimension: 0 });
          let jobPoint = mp.colshapes.newRectangle(markerPos.x, markerPos.y, 1.5, 2, 0)
-         jobPoint.job = job.id;
+         jobPoint.job = job.ID;
+
+         if (job.BLIP) { 
+            let jobBlip = mp.blips.new(job.BLIP, new mp.Vector3(markerPos.x, markerPos.y, markerPos.z), { name: job.NAME, color: 11, shortRange: false });
+         }
+         
 
          counter ++;
      });

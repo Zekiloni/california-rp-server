@@ -58,13 +58,15 @@ mp.events.add({
                return false;
           }
       }
-      else if (player.job == 0) {
-        if (shape.job != 0) { 
+
+      if (shape.job != 0) {
+        if (player.job == 0) { 
           let jobData = JOBS.find( ({ID}) => ID === shape.job);
-          player.call('client:showJobOffer' [jobData.ID, jobData.NAME, jobData.LOC, jobData.DESC]);
+          player.call('client:showJobOffer', [jobData.ID, jobData.NAME, jobData.LOC, jobData.DESC]);
+        } else { 
+          account.notification(player, MSG_ALREADY_EMPLOYED, NOTIFY_ERROR, 4);
         }
       }
-      
    },
 
     'playerDeath': (player, reason, killer) => {
@@ -96,4 +98,11 @@ mp.events.add({
     'server:playerBanking': (player) => { 
       player.call(`client:showATM`, [player.name, player.data.cash, player.databaseID]);
     },
+
+    'server:acceptJobOffer': (player, jobID) => { 
+      console.log(`prihvatio ponudu ${jobID}`)
+      let job = JOBS.find( ({ID}) => ID === jobID);
+      player.job = jobID;
+      account.notification(player, `Uspešno ste se zaposlili kao ${job.NAME}.`, NOTIFY_SUCCESS, 4);
+    }
 });

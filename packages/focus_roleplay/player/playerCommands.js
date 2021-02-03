@@ -150,6 +150,14 @@ mp.events.addCommand({
       player.outputChatBox(`Jos ${timeToPayCheck} minuta do sledece plate.`);
    },
 
+   'quitjob': (player, fullText) => { 
+      if (!player.loggedIn) return;
+      if (player.job == 0) return account.notification(player, MSG_UNEMPLOYED, NOTIFY_ERROR, 4)
+
+      player.job = 0;
+      account.notification(player, MSG_QUITJOB, NOTIFY_SUCCESS, 4)
+   },
+
    'accept': (player, fullText) => {
       if(fullText) { 
             let args = fullText.split(" ");

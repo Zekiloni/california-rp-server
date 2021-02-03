@@ -1,16 +1,15 @@
 html, body {
-  /* background-color: transparent !important; */
+  background-color: transparent !important; 
   font-family: Helvetica Neue, Helvetica, sans-serif !important;
   height: 100%;
   overflow: hidden; 
   display: grid;
-  background: grey;
 }
 
 a { font-size: 14px; text-decoration: none; outline: 0; transition: all 0.3s ease; }
 a:hover { opacity: 0.5; color: white; text-decoration: none; }
 
-.box {padding: 10px 20px;margin: auto;width: 23%;min-height: 30%; height: auto;display: none;box-shadow: 0 14px 25px rgba(0,0,0,.16);background: rgb(0 0 0 / 35%);overflow: hidden;position: relative;}
+.box {padding: 10px 20px;margin: auto;width: 23%;min-height: 20%; height: auto;display: none;box-shadow: 0 14px 25px rgba(0,0,0,.16);background: rgb(0 0 0 / 35%);overflow: hidden;position: relative;}
 .box h3 { color: whitesmoke; color: #f3f3f3; letter-spacing: 2px; font-weight: 200; }
 .box p { color: #e0e0e0; }
 .box ul { color: #cdcdcd; }
