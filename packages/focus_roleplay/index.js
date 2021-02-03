@@ -8,6 +8,7 @@ global.anims = require('./player/animations')
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.house = require('./houses/core');
+global.jobs = require('./jobs/jobsCore')
 global.inv = require('./inventory/inventoryCore');
 global.radio = require('./player/radioCore');
 global.fac = require('./factions/factionsCore');
@@ -24,6 +25,7 @@ core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
 setTimeout(() => { inv.loadItems(); }, 1500); 
 fac.initFactions();
+jobs.initJobs();
 setInterval(() => { core.checkEverything()  }, 60000);
 
 //console.log(items)
