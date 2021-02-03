@@ -1,26 +1,6 @@
 
 
 mp.events.add({
-   'playerEnterColshape': (player, shape) => {
-      if(player.faction == FACTION_LSPD.ID) { 
-         switch(shape.name) {
-            case 'equip':
-               player.call('client:showPoliceEquipment');
-               break;
-
-            case 'weapon':
-               player.call('client:showPoliceWeaponary');
-               break;
-   
-            case 'garage':
-               player.call('client:showPoliceVehicles');
-               break;
-   
-            default:
-               return false;
-          }
-      }
-   },
 
    'server:policeGiveWeapon': (player, name, weapon, ammo) => {
       let weaponHash = mp.joaat(weapon);

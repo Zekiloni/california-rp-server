@@ -39,6 +39,34 @@ mp.events.add({
       }
     },
 
+    'playerEnterColshape': (player, shape) => {
+      if (player.faction == FACTION_LSPD.ID) { 
+         switch(shape.name) {
+            case 'equip':
+               player.call('client:showPoliceEquipment');
+               break;
+
+            case 'weapon':
+               player.call('client:showPoliceWeaponary');
+               break;
+   
+            case 'garage':
+               player.call('client:showPoliceVehicles');
+               break;
+   
+            default:
+               return false;
+          }
+      }
+      else if (player.job == 0) {
+        if (shape.job != 0) { 
+          let jobData = JOBS.find( ({ID}) => ID === shape.job);
+          player.call('client:showJobOffer' [jobData.ID, jobData.NAME, jobData.LOC, jobData.DESC]);
+        }
+      }
+      
+   },
+
     'playerDeath': (player, reason, killer) => {
       player.isDead = true;
       player.respawnTimer = setTimeout(() => {
