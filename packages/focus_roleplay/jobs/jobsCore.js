@@ -1,5 +1,7 @@
 
+const fs = require("fs");
 let jobs = require('./jobs')
+let routesDir = 'packages/focus_roleplay/jobs/bus-routes/';
 
 module.exports = { 
 
@@ -23,4 +25,12 @@ module.exports = {
      });
      core.terminal(3, `${counter} Jobs Loaded !`)
    },
+   
+   createBusRoute: function (name) { 
+      let rawdata = fs.readFileSync(routesDir + `${name}.json`);
+      let stations = JSON.parse(rawdata);
+      stations.Stations.forEach((station) => {
+         console.log(station)
+      })
+   }
 }
