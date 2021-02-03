@@ -83,17 +83,17 @@ mp.events.addCommand({
    'invite': async (player, fullText, target) => { 
       if (!player.loggedIn) return;
       if (!target) return player.outputChatBox('Koriscenje /invite [igrac]'); 
-      fac.invite(player, target);
+      factions.invite(player, target);
    },
 
    'uninvite': async (player, fullText, target) => { 
       if (!player.loggedIn) return;
       if (!target) return player.outputChatBox('Koriscenje /uninvite [igrac]'); 
-      fac.uninvite(player, target);
+      factions.uninvite(player, target);
    },
 
    'lock': (player, fullText) => { 
-      let veh = fac.nearFactionVehicle(player);
+      let veh = factions.nearFactionVehicle(player);
       if (veh) { 
          if(veh.locked) { 
             veh.locked = false;
@@ -135,7 +135,7 @@ mp.events.addCommand({
             return false; 
          } 
          let newRank = args.slice(1).join(' '); 
-         fac.setRank(player, recipient, newRank);
+         factions.setRank(player, recipient, newRank);
       } else return player.outputChatBox('Koriscenje /giverank [igrac] [rank]');
    },
 

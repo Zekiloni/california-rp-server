@@ -78,6 +78,7 @@ mp.events.add({
     },
 
     'playerChat': (player, text) => {
+      if (!player.loggedIn) return;
       account.sendProxMessage(player, CHAT_RADIUS.IC, `${player.name}: ${text}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
     },
 
@@ -92,7 +93,7 @@ mp.events.add({
     },
 
     'playerCommand': (player, command) => {
-        if(!player.loggedIn) return player.ouputChatBox('Morate biti ulogovani da biste koristili komande');
+        if (!player.loggedIn) return player.ouputChatBox('Morate biti ulogovani da biste koristili komande');
     },
 
     'server:playerBanking': (player) => { 

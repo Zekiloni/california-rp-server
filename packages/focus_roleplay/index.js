@@ -8,9 +8,9 @@ global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.house = require('./houses/houseModel');
 global.jobs = require('./jobs/jobsCore')
-global.inv = require('./inventory/inventoryCore');
+global.inventory = require('./inventory/inventoryCore');
 global.radio = require('./player/radioCore');
-global.fac = require('./factions/factionsCore');
+global.factions = require('./factions/factionsCore');
 
 var dbStructure = require('./core/databaseStructure');
 var globals = require('./core/globals')
@@ -23,8 +23,8 @@ var playerAnimations = require('./player/animations')
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
-setTimeout(() => { inv.loadItems(); }, 1500); 
-fac.initFactions();
+setTimeout(() => { inventory.loadItems(); }, 1500); 
+factions.initFactions();
 jobs.initJobs();
 setInterval(() => { core.checkEverything()  }, 60000);
 
@@ -34,7 +34,7 @@ jobs.createBusRoute('Morningwood')
 //console.log(FACTIONS[0].GARAGE_POINT)
 //console.log(items.itemsEntities.ITEM_ENTITY_WHEEL)
 
-// setInterval(() => { inv.playerInventory(-1)  }, 3000);
+// setInterval(() => { inventory.playerInventory(-1)  }, 3000);
 // setTimeout(() => { 
 //     let re = inventoryItems.find( ({ id }) => id === 11 );
 //     console.log(re)  
@@ -114,12 +114,12 @@ mp.events.addCommand("buy", (player, text) => {
 });
 
 mp.events.addCommand("pickup", (player) => { 
-    var pickUpObject = inv.nearItem(player);
-    inv.pickUpItem(player, pickUpObject);
+    var pickUpObject = inventory.nearItem(player);
+    inventory.pickUpItem(player, pickUpObject);
 })
 
 mp.events.addCommand("drop", (player, fullText, itemid) => { 
-    inv.dropItem(player, itemid);
+    inventory.dropItem(player, itemid);
 })
 
 mp.events.addCommand("dzok", (player, fullText, dict, anim) => { 

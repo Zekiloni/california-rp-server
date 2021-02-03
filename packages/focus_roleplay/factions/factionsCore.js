@@ -66,7 +66,7 @@ module.exports = {
       if (!isLeader) { player.outputChatBox('Niste lider ove fakcije.'); return false; }
       if (recipient.faction != 0) { player.outputChatBox('Korisnik je vec u fakciji.'); return false } 
 
-      let faction = fac.getFaction(player.faction)
+      let faction = factions.getFaction(player.faction)
       recipient.inviteRequest = player.faction;
       recipient.outputChatBox(`${player.name} vam je poslao zahtev da se pridruzite ${faction.NAME} !`);
       player.outputChatBox(`Poslali ste ${recipient.name} zahtev za invite !`);
@@ -125,7 +125,7 @@ module.exports = {
 
    isPlayerFactionType: function (player, type) { 
       if (player.faction == 0) return player.outputChatBox(`Niste ni u jednoj fakciji !`);
-      let faction = fac.getFaction(player.faction);
+      let faction = factions.getFaction(player.faction);
       if (faction.TYPE == type) { 
          return true;
       }

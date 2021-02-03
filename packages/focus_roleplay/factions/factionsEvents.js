@@ -9,7 +9,7 @@ mp.events.add({
    },
 
    'server:policeSpawnVehicle': (player, name, model) => {
-      let faction = fac.getFaction(player.faction);
+      let faction = factions.getFaction(player.faction);
       let vPos = faction.VEH_POINT;
       let vehPos = new mp.Vector3(vPos.x, vPos.y, vPos.z)
       let hash = mp.joaat(model);

@@ -179,9 +179,9 @@ mp.events.addCommand({
 
    'createitem': (player, full, name, quant) => {
       if (player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let foundItem = inv.findItem(name);
+      let foundItem = inventory.findItem(name);
       if (foundItem) { 
-         inv.createItem(foundItem.name, foundItem.type, foundItem.hash, 0.12, quant, -1, -1, player.dimension, player.position);
+         inventory.createItem(foundItem.name, foundItem.type, foundItem.hash, 0.12, quant, -1, -1, player.dimension, player.position);
       } else { 
          account.notification(player, MSG_ITEM_DOESNT_EXIST, NOTIFY_ERROR, 4);
       }
@@ -190,10 +190,10 @@ mp.events.addCommand({
    
    'destroyitem': (player, text) => {
       if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let item = inv.nearItem(player);
+      let item = inventory.nearItem(player);
       if (item) {
           player.outputChatBox(`Nearest item ${item.id} !`);
-          inv.destroyItem(player, item);
+          inventory.destroyItem(player, item);
       }
    },
 

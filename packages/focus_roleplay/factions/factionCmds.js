@@ -1,8 +1,8 @@
 mp.events.addCommand({
   
    'duty': (player, fullText) => {
-      if (!fac.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
-      let faction = fac.getFaction(player.faction);
+      if (!factions.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
+      let faction = factions.getFaction(player.faction);
       let dPos = faction.EQUIP_POINT;
       let dutyPos = new mp.Vector3(dPos.x, dPos.y, dPos.z)
       if (player.dist(dutyPos) > 2) return player.outputChatBox(`Ne nalazite se u blizini ormarica !`);
@@ -20,7 +20,7 @@ mp.events.addCommand({
    },
 
    'callsign': (player, fullText) => {
-      if (!fac.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return account.notification(player, MSG_NOT_IN_SPEC_FACTION, NOTIFY_ERROR, 4);
+      if (!factions.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return account.notification(player, MSG_NOT_IN_SPEC_FACTION, NOTIFY_ERROR, 4);
       if (player.vehicle) { 
          let vehicle = player.vehicle;
          if (vehicle.callsign == null) { 
@@ -32,7 +32,7 @@ mp.events.addCommand({
    },
 
    'cuff': (player, fullText, target) => { 
-      if (!fac.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
+      if (!factions.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
       if (!target) return player.outputChatBox(`Koriscenje /cuff [igrac] !`);
       let recipient = account.findPlayer(target);
       let meText;
@@ -59,7 +59,7 @@ mp.events.addCommand({
    },
 
    'drag': (player, fullText, target) => { 
-      if(!fac.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
+      if (!factions.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.outputChatBox(`Vasa fakcija nije odgovarajuceg tipa !`);
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 

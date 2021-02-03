@@ -41,7 +41,7 @@ module.exports = {
             inventoryItems.splice(index, 1);
             item.label.destroy();
             item.object.destroy();
-            inv.deleteItem(itemID)
+            inventory.deleteItem(itemID)
         });
     },
 
@@ -117,7 +117,7 @@ module.exports = {
             pickUpObject.owner = player.databaseID;
             pickUpObject.label.destroy();
             pickUpObject.object.destroy();
-            inv.itemUpdate(pickUpObject);
+            inventory.itemUpdate(pickUpObject);
             account.notification(player, `Podigli ste <b>${pickUpObject.name} [${pickUpObject.quantity}]</b> sa poda.`, NOTIFY_SUCCESS, 4);
             account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} podize ${pickUpObject.name} sa poda.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
             
@@ -145,7 +145,7 @@ module.exports = {
             dropObject.owner = 0;
             dropObject.position = objPos;
             dropObject.dimension = player.dimension;
-            inv.itemUpdate(dropObject);
+            inventory.itemUpdate(dropObject);
             account.notification(player, `Bacili ste <b>${dropObject.name} [${dropObject.quantity}]</b> na pod.`, NOTIFY_SUCCESS, 4);
             account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} baca ${dropObject.name} na pod.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
             player.playAnimation(DROPING_ANIM.DICT, DROPING_ANIM.ANIM, 1, 0);
