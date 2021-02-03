@@ -11,6 +11,7 @@ var bankingATM = require('./banking/atm')
 var screenEffects = require('./screenEffect')
 var chatBubble = require('./chatBubble')
 var police = require('./factions/police/lspd')
+var jobs =require('./jobs/jobs')
 
 
 

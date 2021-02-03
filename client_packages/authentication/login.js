@@ -14,7 +14,6 @@ mp.events.add('client:showLogin', () => {
   mp.game.ui.displayRadar(false);
   mp.events.call('client:enableLoginCamera');
   mp.game.graphics.transitionToBlurred(1000);
-  mp.events.call("client:screenEffect", "MP_job_load", 100000);
 });
 
 mp.events.add('client:enableLoginCamera', () => {
@@ -40,7 +39,7 @@ mp.events.add('client:disableLoginCamera', () => {
   mp.game.cam.renderScriptCams(false, false, 0, false, false);
   mp.players.local.freezePosition(false);
   mp.game.graphics.transitionFromBlurred(1000);
-  mp.events.call("client:screenEffect", "MP_job_load", 1);
+  mp.discord.update(`Focus Roleplay`, `Igra kao ${player.name}`)
 });
 
 mp.events.add('client:sendLoginToServer',  (userName, password) => {

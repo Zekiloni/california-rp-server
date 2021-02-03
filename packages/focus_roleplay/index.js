@@ -4,7 +4,6 @@ global.core = require('./core/main');
 // global.notice = require('./core/notice');
 global.db = require('./core/database');
 global.account = require('./player/playerCore');
-global.anims = require('./player/animations')
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
 global.house = require('./houses/core');
@@ -19,6 +18,7 @@ var playerEvents = require('./player/playerEvents');
 var huntingAnimals = require('./hunting/animals');
 var playerCommands = require('./player/playerCommands')
 var adminCommands = require('./player/adminCommands')
+var playerAnimations = require('./player/animations')
 
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
