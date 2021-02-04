@@ -11,7 +11,7 @@ module.exports = {
             { type: 2, interior: 33, blip: 93, name: "Cafe Bar" },
             { type: 3, interior: 44, blip: 361, name: "Gas Station" },
         ];
-        return types;
+        return types;  
     },
 
     create: function (player, type, price) {

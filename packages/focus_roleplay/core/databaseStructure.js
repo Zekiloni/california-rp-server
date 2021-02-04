@@ -9,7 +9,7 @@ let playersTable = `CREATE TABLE IF NOT EXISTS players (
   online int(1) NOT NULL DEFAULT 0,
   xp int(2) NOT NULL DEFAULT 0,
   donator int(2) NOT NULL DEFAULT 0,
-  hours int(11) NOT NULL DEFAULT 0,
+  hours int(11) NOT NULL DEFAULT 0, 
   admin int(2) NOT NULL DEFAULT 0,
   cash int(11) NOT NULL DEFAULT 800,
   bank int(11) NOT NULL DEFAULT 1000,

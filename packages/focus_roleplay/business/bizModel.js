@@ -9,7 +9,7 @@ module.exports = class BussinesModel {
         this.price = price;
         this.entrance = pos;
         this.interior = int;
-        this.dimension = dimension || id;
+        this.dimension = dimension || id; 
         this.products = products || 60;
 
         let labelText;

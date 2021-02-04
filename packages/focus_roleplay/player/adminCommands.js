@@ -289,7 +289,7 @@ mp.events.addCommand({
       let item = inventory.nearItem(player);
       if (item) {
           inventory.destroyItem(player, item);
-      }
+      } 
    },
 
    'createhouse': (player, fullText, type, price) => {
