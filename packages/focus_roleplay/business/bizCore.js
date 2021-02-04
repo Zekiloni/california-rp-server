@@ -40,7 +40,6 @@ module.exports = {
     },
 
     delete: function (player, biz) {
-        let bID = biz.id;
         db.query("DELETE FROM `business` WHERE `ID` = ?", [biz.id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let index = allBussineses.findIndex((el) => el.id === biz.id);
@@ -75,6 +74,7 @@ module.exports = {
         }
         else if (changeType == 'owner') { 
             allBussineses[index].owner = value; 
+            allBussineses[index].updateBiz();
             db.query("UPDATE `business` SET owner = ? WHERE `ID` = ?", [value, id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });

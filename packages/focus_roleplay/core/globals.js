@@ -29,6 +29,9 @@ global.MESSAGES = [
    MSG_UNEMPLOYED = 'Niste zaposleni.',
    MSG_QUITJOB = 'Dali ste otkaz.',
    MSG_NOT_IN_FREQ = 'Niste ni u jednoj frekvenciji.',
+   MSG_NOT_ENOGUTH_MONEY = 'Nemate dovoljno novca.',
+   MSG_ALREADY_OWNED = 'Neko već poseduje ovaj objekat.',
+   MSG_ERROR = 'Došlo je do greške.'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

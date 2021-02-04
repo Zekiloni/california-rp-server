@@ -13,7 +13,7 @@ module.exports = class BussinesModel {
         this.products = products || 60;
 
         let labelText;
-        if(this.owner == -1) { labelText = `~r~FOR SALE !~s~ ~n~ ${this.name} ~n~ Price ~g~${this.price} $`; }
+        if (owner == -1) { labelText = `~r~FOR SALE !~s~ ~n~ ${this.name} ~n~ Price ~g~${this.price} $`; }
         else { labelText = `${this.name} Opened !`; }
         var typesArray = biz.type();
         var r = typesArray.find( ({ type }) => type === this.type );
@@ -25,6 +25,12 @@ module.exports = class BussinesModel {
         allBussineses.push(this);
     }
     
+    updateBiz () { 
+        let string, blipC;
+        if (this.owner == -1) { string = `~r~FOR SALE !~s~ ~n~ ${this.name} ~n~ Price ~g~${this.price} $`;  }  
+        else { string = `${this.name} Opened !`; }
+        this.label.text = string;
+    }
 
     info () {
         console.log(this)

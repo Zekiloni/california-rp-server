@@ -183,6 +183,21 @@ module.exports = {
         });
     },
 
+    buyHouse: function (player, h) {
+        db.query("SELECT * FROM `houses` WHERE `ID` = ?", [h.id], function (error, results, fields) {
+            if (error) return core.terminal(1, error);
+            if (results && results.length) {
+                if (player.data.cash < results[0].price) return account.notification(player, MSG_NOT_ENOGUTH_MONEY, NOTIFY_ERROR, 4); 
+                if (results[0].owner != -1) return account.notification(player, MSG_ALREADY_OWNED, NOTIFY_ERROR, 4);
+                house.update(h.id, 'owner', player.databaseID);
+                account.notification(player, `Čestitamo!<br>Uspešno ste kupili kuću za <b>${results[0].price}$</b>.`, NOTIFY_SUCCESS, 5);
+            } 
+            else {
+                account.notification(player, MSG_ERROR, NOTIFY_ERROR, 5);
+            }
+        });
+    },
+
      getPlayersNearPlayer:  function(player, radius) {
         const returnPlayers = [];
         

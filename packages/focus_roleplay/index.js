@@ -22,6 +22,7 @@ var playerAnimations = require('./player/animations')
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
+house.loadAll();
 setTimeout(() => { inventory.loadItems(); }, 1500); 
 factions.initFactions();
 jobs.initJobs();
@@ -105,13 +106,6 @@ mp.events.addCommand("prop", (player, full, comp, draw, text) => {
     player.setProp(parseInt(comp), parseInt(draw), parseInt(text));
 });
 
-mp.events.addCommand("buy", (player, text) => {
-     var bussines = biz.nearby(player);
-     if (bussines) {
-         player.outputChatBox(`Nearest biz ${bussines.id} !`);
-         account.buyBiz(player, bussines);
-    }
-});
 
 mp.events.addCommand("pickup", (player) => { 
     var pickUpObject = inventory.nearItem(player);

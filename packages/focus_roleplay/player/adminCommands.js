@@ -288,7 +288,6 @@ mp.events.addCommand({
       if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let item = inventory.nearItem(player);
       if (item) {
-          player.outputChatBox(`Nearest item ${item.id} !`);
           inventory.destroyItem(player, item);
       }
    },
@@ -298,6 +297,14 @@ mp.events.addCommand({
       house.create(player, type, price, player.position);
    },
    
+   'destroyhouse': (player, fullText) => {
+      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      let h = house.nearby(player);
+      if (h) {
+         house.delete(player, h);
+      }
+   },
+
    'destroybiz': (player, fullText) => {
       if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let bussines = biz.nearby(player);

@@ -217,6 +217,13 @@ mp.events.addCommand({
       }
    },
 
+   'buy': (player, fullText, target) => { 
+      let nearBiz = biz.nearby(player);
+      let nearHouse = house.nearby(player);
+      if (nearBiz) { account.buyBiz(player, nearBiz); }
+      if (nearHouse) { account.buyHouse(player, nearHouse); }
+   },
+
    'business': (player, fullText) => {
       if(fullText) { 
          let bussines = biz.nearby(player);
