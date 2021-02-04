@@ -7,6 +7,18 @@ global.HOUSES_TYPES = [
 ]
 
 module.exports = {
+
+    loadAll: async function () { 
+        var result = await db.aQuery("SELECT * FROM `houses`");
+        result.forEach(function (res) {
+            let entrancePos = JSON.parse(res.entrance);
+            let interiorPos = JSON.parse(res.interior);
+            let house = new HouseModel(res.ID, res.type, res.owner, res.price, res.dimension, entrancePos, interiorPos);
+        });
+
+        core.terminal(3, `${result.length} houses were loaded !`);
+    },
+
     create: function (player, type, price, pos) {
         let entrance = JSON.stringify(player.position);
         db.query("INSERT INTO `houses` (type, price, entrance, interior) VALUES (?, ?, ?, ?)", [type, price, entrance, entrance], function (error, results, fields) {
