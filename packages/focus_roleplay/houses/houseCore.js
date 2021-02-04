@@ -7,19 +7,15 @@ global.HOUSES_TYPES = [
 ]
 
 module.exports = {
-    create: function (player, type, price) {
-        let info = this.type();
-        if (type > info.length) return player.notify(`Maksimalni tip biznisa je ${info.length}`);
-        var name = info[type].name;
-        let int = info[type].interior;
+    create: function (player, type, price, pos) {
         let entrance = JSON.stringify(player.position);
-        db.query("INSERT INTO `business` (name, type, price, interior, entrance) VALUES (?, ?, ?, ?, ?)", [name, type, price, int, entrance], function (error, results, fields) {
+        db.query("INSERT INTO `houses` (type, price, entrance, interior) VALUES (?, ?, ?, ?)", [type, price, entrance, entrance], function (error, results, fields) {
             if (error) return core.terminal(1, error);
-            player.outputChatBox(`Biznis kreiran tip: ${type} sa cenom ${price} $`);
-            let id = results.insertId; // PROVERITI OVO
-            let bPos = player.position; // PROVERITI OVO
-            let posArr = { x: bPos.x, y: bPos.y, z: bPos.z }; // PROVERITI OVO
-            var biz = new BussinesModel(id, name, type, -1, price, posArr); // PROVERITI OVO
+            account.notification(player, `Kuca kreirana tip ${type} sa cenom ${price}$.`, NOTIFY_SUCCESS, 4);
+            let id = results.insertId; 
+            var posArr = {x: pos.x, y: pos.y, z: pos.z};
+            let house = new HouseModel(id, type, -1, price, player.dimension, posArr, posArr);
+
         });
     },
 }

@@ -126,14 +126,11 @@ let housesTable = `CREATE TABLE IF NOT EXISTS houses (
   type int(2) NOT NULL DEFAULT 0,
   price int(10) DEFAULT 25000,
   owner int(11) DEFAULT -1,
-  position text NOT NULL,
+  entrance text NOT NULL,
   interior text NOT NULL,
   ipl text NOT NULL,
   dimension int(11) NOT NULL,
-  PRIMARY KEY(ID), 
-  FOREIGN KEY (owner) 
-    REFERENCES accounts(ID)
-    ON DELETE NO ACTION)`;
+  PRIMARY KEY(ID))`;
 
 db.query(housesTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
