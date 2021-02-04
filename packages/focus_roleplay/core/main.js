@@ -63,7 +63,7 @@ module.exports = {
                     }
                }
           );
-          this.terminal(3, `Saved Accounts ${counter}`)
+          this.terminal(3, `Saved Players Accounts ${counter}`)
      }
 }
 

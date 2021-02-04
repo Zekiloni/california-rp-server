@@ -1,6 +1,6 @@
 module.exports = {
     exist: function (username) {
-        db.query("SELECT * FROM accounts WHERE username = ?", [username], function (error, results, fields) {
+        db.query("SELECT * FROM players WHERE username = ?", [username], function (error, results, fields) {
             if (error) return core.terminal(1, error);
 
             if (results && results.length) return true;
@@ -9,7 +9,7 @@ module.exports = {
     },
 
     login: async function (username, password) {
-        var result = await db.aQuery("SELECT * FROM `accounts` WHERE `username` = ?", username);
+        var result = await db.aQuery("SELECT * FROM `players` WHERE `username` = ?", username);
         if(result[0].password) {
             // core.hash('vucko', function(err, data) { // primer callbacka / povratne informacije kroz funkciju
             //     if (err) return console.log(err)
@@ -25,7 +25,7 @@ module.exports = {
     },
 
     load: async function (player, username) {
-        var result = await db.aQuery("SELECT * FROM `accounts` WHERE `username` = ?", username);
+        var result = await db.aQuery("SELECT * FROM `players` WHERE `username` = ?", username);
         player.name = username;
         player.admin = result[0].admin;
         player.xp = result[0].xp;
@@ -93,13 +93,13 @@ module.exports = {
             factionRank: player.rank,
             radioFreq: player.radioFreq
         };
-        db.query("UPDATE accounts SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
+        db.query("UPDATE `players` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, `Saving Account ${error}`);
         });
     },
 
     updateClothing: function (player, skin) {
-        db.query("UPDATE `accounts` SET `clothing` = ? WHERE ID = ?", [skin, player.databaseID], function (error, results, fields) {
+        db.query("UPDATE `players` SET `clothing` = ? WHERE ID = ?", [skin, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let clothing = JSON.parse(skin);
             clothing.forEach((item) => {
@@ -109,7 +109,7 @@ module.exports = {
     },
 
     updateOverlays: function (player, overlays) {
-        db.query("UPDATE `accounts` SET `headOverlays` = ? WHERE ID = ?", [overlays, player.databaseID], function (error, results, fields) {
+        db.query("UPDATE `players` SET `headOverlays` = ? WHERE ID = ?", [overlays, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let headOverlays = JSON.parse(overlays);
             headOverlays.forEach((item) => {
@@ -119,7 +119,7 @@ module.exports = {
     },
 
     updateFaceFeatures: function (player, face) {
-        db.query("UPDATE `accounts` SET `faceFeatures` = ? WHERE ID = ?", [face, player.databaseID], function (error, results, fields) {
+        db.query("UPDATE `players` SET `faceFeatures` = ? WHERE ID = ?", [face, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let faceFeatures = JSON.parse(face);
             faceFeatures.forEach((item) => {
@@ -129,7 +129,7 @@ module.exports = {
     },
 
     updateBlendData: function (player, blendData) {
-        db.query("UPDATE `accounts` SET `headBlendData` = ? WHERE ID = ?", [blendData, player.databaseID], function (error, results, fields) {
+        db.query("UPDATE `players` SET `headBlendData` = ? WHERE ID = ?", [blendData, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             let blend = JSON.parse(blendData);
             player.setHeadBlend(parseInt(blend.shapeFirst), parseInt(blend.shapeSecond), 0, 
@@ -140,20 +140,20 @@ module.exports = {
 
     status: function (username, status) {
         if (status == 1) { 
-            db.aQuery("UPDATE `accounts` SET `lastLogin` = current_timestamp(), `online` = 1 WHERE `username` = ?", username);
+            db.aQuery("UPDATE `players` SET `lastLogin` = current_timestamp(), `online` = 1 WHERE `username` = ?", username);
         } else if (status == 0) {
-            db.aQuery("UPDATE `accounts` SET `online` = 0 WHERE `username` = ?", username);
+            db.aQuery("UPDATE `players` SET `online` = 0 WHERE `username` = ?", username);
         }
     },
 
     lastPosition: function (id, playerPos) {
-        db.query("UPDATE `accounts` SET `lastPosition` = ? WHERE `ID` = ?", [playerPos, id], function (error, results, fields) {
+        db.query("UPDATE `players` SET `lastPosition` = ? WHERE `ID` = ?", [playerPos, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
         });
     },
 
     lastIP: function (id, ip) {
-        db.query("UPDATE `accounts` SET `ipAddress` = ? WHERE `ID` = ?", [ip, id], function (error, results, fields) {
+        db.query("UPDATE `players` SET `ipAddress` = ? WHERE `ID` = ?", [ip, id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
         });
     },

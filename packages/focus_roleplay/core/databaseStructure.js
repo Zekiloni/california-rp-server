@@ -1,5 +1,5 @@
 
-let accountsTable = `CREATE TABLE IF NOT EXISTS accounts (
+let playersTable = `CREATE TABLE IF NOT EXISTS players (
   ID int(11) NOT NULL AUTO_INCREMENT,
   username varchar(48) NOT NULL,
   password varchar(256) NOT NULL,
@@ -8,6 +8,7 @@ let accountsTable = `CREATE TABLE IF NOT EXISTS accounts (
   ipAddress varchar(64) NOT NULL,
   online int(1) NOT NULL DEFAULT 0,
   xp int(2) NOT NULL DEFAULT 0,
+  donator int(2) NOT NULL DEFAULT 0,
   hours int(11) NOT NULL DEFAULT 0,
   admin int(2) NOT NULL DEFAULT 0,
   cash int(11) NOT NULL DEFAULT 800,
@@ -25,9 +26,9 @@ let accountsTable = `CREATE TABLE IF NOT EXISTS accounts (
   radioFreq int(6) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 
-db.query(accountsTable, function(err, results, fields) {
+db.query(playersTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking accountsTable | MySQL`);
+  core.terminal(3, `Checking playersTable | MySQL`);
 });
 
 let businessTable = `CREATE TABLE IF NOT EXISTS business (
