@@ -3,7 +3,15 @@
 var BussinesModel = require('./bizModel');
 global.allBussineses = [];
 
+global.BIZ_TYPES = [ 
+    BIZ_TYPE_MARKET = { type: 0, interior: 11, blip: 52, name: "24/7 Market" },
+    BIZ_TYPE_CLOTHING = { type: 1, interior: 22, blip: 366, name: "Clothing Store" },
+    BIZ_TYPE_CAFE =  { type: 2, interior: 33, blip: 93, name: "Cafe Bar" },
+    BIZ_TYPE_GAS = { type: 3, interior: 44, blip: 361, name: "Gas Station" },
+];
+
 module.exports = {
+
     type: function () {
         var types = [
             { type: 0, interior: 11, blip: 52, name: "24/7 Market" },
@@ -23,10 +31,13 @@ module.exports = {
         db.query("INSERT INTO `business` (name, type, price, interior, entrance) VALUES (?, ?, ?, ?, ?)", [name, type, price, int, entrance], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             player.outputChatBox(`Biznis kreiran tip: ${type} sa cenom ${price} $`);
-            let id = results.insertId; // PROVERITI OVO
-            let bPos = player.position; // PROVERITI OVO
-            let posArr = { x: bPos.x, y: bPos.y, z: bPos.z }; // PROVERITI OVO
-            var biz = new BussinesModel(id, name, type, -1, price, posArr); // PROVERITI OVO
+            try { 
+                let id = results.insertId; // PROVERITI OVO
+                let bPos = player.position; // PROVERITI OVO
+                let posArr = { x: bPos.x, y: bPos.y, z: bPos.z }; // PROVERITI OVO
+                var biz = new BussinesModel(id, name, type, -1, price, posArr); // PROVERITI OVO
+            } catch (e) { console.log(e) }
+
         });
     },
 
