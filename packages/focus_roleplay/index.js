@@ -26,7 +26,7 @@ house.loadAll();
 setTimeout(() => { inventory.loadItems(); }, 1500); 
 factions.initFactions();
 jobs.initJobs();
-setInterval(() => { core.checkEverything()  }, 60000);
+setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 
 

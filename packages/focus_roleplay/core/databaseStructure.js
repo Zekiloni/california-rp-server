@@ -24,6 +24,9 @@ let playersTable = `CREATE TABLE IF NOT EXISTS players (
   faction int(2) NOT NULL DEFAULT 0,
   factionRank varchar(64) NOT NULL DEFAULT 'no',
   radioFreq int(6) NOT NULL DEFAULT 0,
+  thirst int(4) NOT NULL DEFAULT 100,
+  hunger int(4) NOT NULL DEFAULT 100,
+  stress int(4) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 
 db.query(playersTable, function(err, results, fields) {

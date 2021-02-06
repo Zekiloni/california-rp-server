@@ -48,18 +48,40 @@ module.exports = {
           return result;
      },
 
-     checkEverything: function () { 
+     onMinuteSpent: function () { 
           let counter = 0;
           mp.players.forEach(
                (player) => {
                     if (player.loggedIn) { 
-                         account.save(player);
+                         player.hunger --;
+                         player.thirst --;
+                         if(player.hunger <= 10 && player.hunger >= 5) {
+                              account.notification(player, "Gladni ste, ukoliko ne pojedete nešto počećete da osećate posledice.", NOTIFY_ERROR, 4);
+                         }
+                         else if (player.hunger >= 1 && player.hunger < 5) {
+                              account.notification(player, "Veoma ste gladni, ukoliko uskoro ne pojedte nešto umrećete.", NOTIFY_ERROR, 4);
+                              player.call("client:screenEffect", 'FocusOut', 2000);
+                         }    
+                         else {
+                              account.notification(player, "Umro si od gladi.", NOTIFY_ERROR, 4);
+                         }
+                         if(player.thirst <= 10 && player.thirst >= 5) {
+                              account.notification(player, "Žedni ste, ukoliko ne popijete neku tečnost uskoro počećete da osećate posledice.", NOTIFY_ERROR, 4);
+                         }
+                         else if (player.thirst >= 1 && player.thirst < 5) {
+                              account.notification(player, "Veoma ste žedni, ukoliko uskoro ne popijete nešto umrećete.", NOTIFY_ERROR, 4);
+                              player.call("client:screenEffect", 'FocusOut', 2000);
+                         }    
+                         else {
+                              account.notification(player, "Umro si od žeđi.", NOTIFY_ERROR, 4);
+                         }
                          counter ++;
                          player.xp ++;
                          if (player.xp >= 60) { 
                               player.hours ++; 
                               player.xp = 0; 
                          }
+                         account.save(player);
                     }
                }
           );

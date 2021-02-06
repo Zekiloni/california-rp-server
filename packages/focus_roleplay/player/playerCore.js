@@ -39,6 +39,9 @@ module.exports = {
         player.faction = result[0].faction;
         player.rank = result[0].factionRank;
         player.radioFreq = result[0].radioFreq;
+        player.hunger = result[0].hunger;
+        player.thirst = result[0].thirst;
+        player.stress = result[0].stress;
 
         player.inviteRequest = 0;
         player.loggedIn = true;
