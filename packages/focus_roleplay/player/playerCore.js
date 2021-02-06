@@ -42,6 +42,7 @@ module.exports = {
         player.hunger = result[0].hunger;
         player.thirst = result[0].thirst;
         player.stress = result[0].stress;
+        player.weaponSkill = result[0].weaponSkill;
 
         player.inviteRequest = 0;
         player.loggedIn = true;
@@ -94,7 +95,11 @@ module.exports = {
             job: player.job,
             faction: player.faction,
             factionRank: player.rank,
-            radioFreq: player.radioFreq
+            radioFreq: player.radioFreq,
+            hunger: player.hunger,
+            thirst: player.thirst,
+            stress: player.stress,
+            weaponSkill: player.weaponSkill
         };
         db.query("UPDATE `players` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
             if (error) return core.terminal(1, `Saving Account ${error}`);

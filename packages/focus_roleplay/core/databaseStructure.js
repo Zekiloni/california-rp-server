@@ -27,6 +27,7 @@ let playersTable = `CREATE TABLE IF NOT EXISTS players (
   thirst int(4) NOT NULL DEFAULT 100,
   hunger int(4) NOT NULL DEFAULT 100,
   stress int(4) NOT NULL DEFAULT 0,
+  weaponSkill int(2) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 
 db.query(playersTable, function(err, results, fields) {
