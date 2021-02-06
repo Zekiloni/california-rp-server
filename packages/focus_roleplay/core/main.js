@@ -64,6 +64,7 @@ module.exports = {
                          }    
                          else {
                               account.notification(player, "Umro si od gladi.", NOTIFY_ERROR, 4);
+                              player.health = 0;
                          }
                          if(player.thirst <= 10 && player.thirst >= 5) {
                               account.notification(player, "Žedni ste, ukoliko ne popijete neku tečnost uskoro počećete da osećate posledice.", NOTIFY_ERROR, 4);
@@ -74,6 +75,7 @@ module.exports = {
                          }    
                          else {
                               account.notification(player, "Umro si od žeđi.", NOTIFY_ERROR, 4);
+                              player.health = 0;
                          }
                          counter ++;
                          player.xp ++;
