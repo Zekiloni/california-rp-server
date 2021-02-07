@@ -16,8 +16,9 @@ module.exports = class itemModel {
         this.object = 0;
         this.label = itemLabel || 0;
 
+        // Z = Z - 0.93 //
         if (itemEntity == -1) {
-            let pos = new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93);
+            let pos = new mp.Vector3(this.position.x, this.position.y, this.position.z);
             this.label = mp.labels.new(`${this.name}~n~~h~${this.quantity}`, pos,
             {
                 los: false,

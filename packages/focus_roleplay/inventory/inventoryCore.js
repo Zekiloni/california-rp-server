@@ -25,10 +25,12 @@ module.exports = {
     },
    
     createItem: (name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs = 0) => { 
-        db.query("INSERT INTO `inventory` (itemName, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [name, hash, quant, entity, owner, dimension, JSON.stringify(pos), specs], function (error, res, fields) {
+        var posArr = {x: pos.x, y: pos.y, z: pos.z - 0.93};
+        let position = JSON.stringify(posArr)
+        db.query("INSERT INTO `inventory` (itemName, itemHash, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [name, hash, quant, entity, owner, dimension, position, specs], function (error, res, fields) {
             if (error) return core.terminal(1, error);
             let id = res.insertId;
-            var posArr = {x: pos.x, y: pos.y, z: pos.z};
+            var posArr = {x: pos.x, y: pos.y, z: pos.z - 0.93};
             let item = new itemModel(id, name, type, hash, weight, quant, entity, owner, dimension, posArr)
         });
     },
