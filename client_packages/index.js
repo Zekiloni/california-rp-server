@@ -10,6 +10,7 @@ var inventory = require('./inventory/inventory')
 var bankingATM = require('./banking/atm')
 var screenEffects = require('./screenEffect')
 var chatBubble = require('./chatBubble')
+var playerList = require('./player-list/playerList')
 var police = require('./factions/police/lspd')
 var jobs = require('./jobs/jobs')
 

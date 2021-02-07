@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Player List Page">
+        <meta name="author" content="Zekiloni">
+        <title>Focus Roleplay - Player List UI</title>
+        <link rel="stylesheet" type="text/css" href="assets/vendor/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/style.css">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <script src="assets/vendor/js/jquery-3.5.1.js"></script>
+        <script src="assets/vendor/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="box"> 
+            <h5>Lista Online Igrača <i onclick="closePlayerList()" class="close fa fa-times" aria-hidden="true"></i></h5> 
+            <input type="text" class="search" placeholder="Pretraga igrača..." onkeyup="searchPlayer(this.value);" tabindex="-1">
+            <table class="player-list">
+                <thead>
+                  <tr>
+                    <th width="10">ID</th>
+                    <th>Ime</th>
+                    <th width="10">Ping</th>
+                  </tr>
+                </thead>
+                <tbody id="player-list"></tbody>
+              </table>
+        </div>
+
+        <script src="assets/functions.js"></script>
+    </body>
+</html>
