@@ -119,22 +119,26 @@ mp.events.add({
     'server:processInventoryItem': (player, item_id, status) => { 
       let item = inventoryItems.find( ({ id }) => id === parseInt(item_id) );
 
+      console.log('uso u event')
       if (status == 'use') { 
-        switch(item.type) { 
-          case ITEM_TYPE_WEAPON: 
-            player.giveWeapon();
-            break;
+        //player.ouputChatBox(`iskoristio si predmet ${item.name}`);
+        console.log(`iskoristio si predmet ${item.name}`)
+        // switch(item.type) { 
+        //   case ITEM_TYPE_WEAPON: 
+        //     player.ouputChatBox(`iskoristio si predmet `)
+        //     break;
 
-          case ITEM_TYPE_AMMO:
-              break;
-              
-          default: 
-            return false;
-        }
+        //   case ITEM_TYPE_AMMO:
+        //       break;
+
+        //   default: 
+        //     return false;
+        // }
       }
 
       else if (status == 'drop') {
-
+        console.log(`bacio  si predmet ${item.name}`)
+        inventory.dropItem(player, item_id);
       }
 
       else if (status == 'give') { 

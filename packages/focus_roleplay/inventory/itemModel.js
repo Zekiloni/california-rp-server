@@ -33,6 +33,7 @@ module.exports = class itemModel {
             });
         }
 
+       
         inventoryItems.push(this)
    }
 

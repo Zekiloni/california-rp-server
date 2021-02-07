@@ -142,7 +142,7 @@ module.exports = {
                 drawDistance: 3
             });
             dropObject.entity = ITEM_ENTITY_GROUND;
-            dropObject.owner = 0;
+            dropObject.owner = -1;
             dropObject.position = objPos;
             dropObject.dimension = player.dimension;
             inventory.itemUpdate(dropObject);
