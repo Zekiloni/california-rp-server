@@ -4,9 +4,12 @@ var inventoryCEF, opened = false;
 
 
 mp.events.add({
-   'client:openInventory': () => {
+   'client:openInventory': (inventory) => {
+      var items = JSON.stringify(inventory)
       inventoryCEF = mp.browsers.new('package://inventory/inventory-interface/inventory.html');
+      inventoryCEF.execute(`populateInventory(${items});`); 
       setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
+      opened = true;
   },
 
   'client:closeInventory': () => {
@@ -15,19 +18,14 @@ mp.events.add({
   },
 })
 
-
-// inventory opening on and closing if opened I
 mp.keys.bind(0x49, false, function() {
-   if (player.loggedIn) { 
-      if(opened == false) {
-         if (mp.players.local.isTypingInTextChat) return;
-            opened = true;
-            mp.events.call('client:openInventory');
-      }
-      else { 
-         opened = false;
-         mp.events.call('client:closeInventory');
-      }
+   if(opened == false) {
+      if (mp.players.local.isTypingInTextChat) return;
+         mp.events.callRemote('server:getPlayerInventory');
+   }
+   else { 
+      opened = false;
+      mp.events.call('client:closeInventory');
    }
 });
 

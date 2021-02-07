@@ -1,78 +1,60 @@
-// By Zeki
 
-var odabranPredmet = null;
+var modal = document.getElementById('dajPredmet');
+var currentItem = null;
 
-inventoriPredmeti = (json) => {
-	$("#inventar").text(" ");
-    $.each(json, function(i, predmet) {
-		if(predmet.amount > 0) {
-		$("#inventar").append(
-            `<div class='col-md-1 predmet' onclick='opcijePredmeta(${predmet.id})'> 
-                <img class='slika-predmeta' src='resursi/slike/predmeti/${predmet.hash}.png'/> 
-                <b class='kolicina-predmeta'>${predmet.amount}</b> 
+populateInventory = (inventoryItems) => { 
+    $("#inventar").text('');
+    $.each(inventoryItems, function(i, item) {
+        $("#inventar").append(
+            `<div class='col-md-1 predmet' onclick='selectItem(${item.id})'> 
+                <img class='slika-predmeta' src='resursi/slike/predmeti/${item.hash}.png'/> 
+                <b class='kolicina-predmeta'>${item.quantity}</b> 
             <div>
-            <ul class='opcije-predmeta-${predmet.id}''>
-                <li onclick='koristiPredmet(${predmet.id})'>Koristi predmet</li>
-                <li onclick='opcijeDavanja(${predmet.id})'>Daj predmet</li>
-                <li onclick='baciPredmet(${predmet.id})'>Baci predmet</li>
+            <ul class='opcije-predmeta-${item.id}''>
+                <li onclick='useItem(${item.id})'>Koristi predmet</li>
+                <li onclick='nearPlayersToGive(${item.id})'>Daj predmet</li>
+                <li onclick='dropItem(${item.id})'>Baci predmet</li>
             </ul>` 
         );
-		}
     });
 }
 
-var otvoreno = 0;
+closeInventory = () => {  mp.trigger('client:closeInventory'); }
 
-opcijePredmeta = (id) => {
-    if(otvoreno == 0) {
-        $(`.opcije-predmeta-${id}`).slideDown();
-        otvoreno = 1;
-    }
-    else { $(`.opcije-predmeta-${id}`).slideUp(); otvoreno = 0; } 
+var opened = false;
+selectItem = (id) => {
+    if (opened == false) { $(`.opcije-predmeta-${id}`).slideDown(); opened = true; }
+    else { $(`.opcije-predmeta-${id}`).slideUp(); opened = false; } 
 }
 
-koristiPredmet = (id) => { 
-	mp.trigger("ProcessInventoryActions", id, "consume");
+useItem = (id) => {  mp.trigger('client:processInventoryItem', id, 'use'); }
+baciPredmet = (id) => { mp.trigger('client:processInventoryItem', id, 'drop'); }
+
+giveItem = (id, target) => { 
+    var quant = $(".kolicina").val();
+
 }
+
+closeGiveItem = () => { $('#dajPredmet').fadeOut(); }
 
 blizinaIgraci = (json) => {
     $(".lista-igraca").text(" ");
     $.each(json, function(i, igrac) {
 		$(".lista-igraca").append(
-            "<li class='igrac' onclick='dajPredmet(\""+ igrac.id +"\", \""+ odabranPredmet +"\")'>"+ igrac.ime + " [" + igrac.id +"] </li>"
+            "<li class='igrac' onclick='dajPredmet(\""+ player.id +"\", \""+ currentItem +"\")'>"+ player.name + " [" + igrac.id +"] </li>"
         );
 		
     });
 }
 
-var modal = document.getElementById("dajPredmet");
 
-
-dajPredmet = (igrac) => {
-    // ovo ti je predmet: odabranPredmet, i kolicina
-    var kolicina = $(".kolicina").val();
-    mp.trigger("ProcessInventoryActions", id, "give"); // odkomentarisi kad zavrsis zekirija
+window.onclick = function(event) { 
+    if (event.target == modal) { modal.style.display = "none"; }
 }
 
-opcijeDavanja = (id) => {
-    $('#dajPredmet').fadeIn();
-    odabranPredmet = id;
-}
-
-zatvori = () => {
-    $('#dajPredmet').fadeOut();
-}
-  
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-baciPredmet = (id) => {
-	mp.trigger("ProcessInventoryActions", id, "drop");
-}
-
+document.addEventListener('keyup', function(e) {
+    if (event.keyCode === 27) { closeInventory(); }
+})
 
 function Upozorenje(tekst) {
     document.getElementById('upozorenje').innerHTML = tekst;
@@ -83,12 +65,4 @@ function Upozorenje(tekst) {
 }
 
 
-closeInventory = () => { 
-    mp.trigger('client:closeInventory');
-}
 
-document.addEventListener("keyup", function(e) {
-    if (event.keyCode === 27) {
-        closeInventory();
-    }
-})

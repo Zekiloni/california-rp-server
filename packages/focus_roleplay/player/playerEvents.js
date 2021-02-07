@@ -86,6 +86,15 @@ mp.events.add({
         account.updateClothing(player, clothingFinished);
     },
 
+    'server:getPlayerInventory': (player) => { 
+      if (player.loggedIn) { 
+        let pInventory = inventory.getPlayerInventory(player)
+        player.call('client:openInventory', [pInventory])
+      } else { 
+        return false; 
+      }
+    },
+
     'server:updatePlayerCustomization': (player, overlaysFinished, faceFeatures, blendData) => {
         account.updateOverlays(player, overlaysFinished);
         account.updateFaceFeatures(player, faceFeatures)

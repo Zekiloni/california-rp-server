@@ -105,7 +105,7 @@ module.exports = {
         let playerInv = [];
         inventoryItems.forEach(function (r) {
             if(r.owner == id) {
-                playerInv.push(r)
+                playerInv.push({ id: r.id, name: r.name, quantity: r.quantity, hash: r.hash})
             }
         })
         return playerInv;

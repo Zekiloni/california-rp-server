@@ -55,27 +55,27 @@ module.exports = {
                     if (player.loggedIn) { 
                          player.hunger --;
                          player.thirst --;
-                         if(player.hunger <= 10 && player.hunger >= 5) {
+                         if (player.hunger > 5 && player.hunger < 10) {
                               account.notification(player, "Gladni ste, ukoliko ne pojedete nešto počećete da osećate posledice.", NOTIFY_ERROR, 4);
                          }
                          else if (player.hunger >= 1 && player.hunger < 5) {
                               account.notification(player, "Veoma ste gladni, ukoliko uskoro ne pojedte nešto umrećete.", NOTIFY_ERROR, 4);
                               player.call("client:screenEffect", 'FocusOut', 2000);
                          }    
-                         else {
+                         else if (player.hunger <= 2) {
                               account.notification(player, "Umro si od gladi.", NOTIFY_ERROR, 4);
-                              player.health = 0;
+                              //player.health = 0;
                          }
-                         if(player.thirst <= 10 && player.thirst >= 5) {
+                         if (player.thirst >= 5 && player.thirst <= 10) {
                               account.notification(player, "Žedni ste, ukoliko ne popijete neku tečnost uskoro počećete da osećate posledice.", NOTIFY_ERROR, 4);
                          }
                          else if (player.thirst >= 1 && player.thirst < 5) {
                               account.notification(player, "Veoma ste žedni, ukoliko uskoro ne popijete nešto umrećete.", NOTIFY_ERROR, 4);
                               player.call("client:screenEffect", 'FocusOut', 2000);
                          }    
-                         else {
+                         else if (player.thirst <= 2) {
                               account.notification(player, "Umro si od žeđi.", NOTIFY_ERROR, 4);
-                              player.health = 0;
+                              //player.health = 0;
                          }
                          counter ++;
                          player.xp ++;
