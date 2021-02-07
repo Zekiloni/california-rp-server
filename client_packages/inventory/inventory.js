@@ -16,6 +16,10 @@ mp.events.add({
       inventoryCEF.destroy();
       setTimeout(() => { mp.gui.cursor.show(false, false); }, 600);
   },
+
+  'client:processInventoryItem': (item, status) => { 
+      mp.events.callRemote('server:processInventoryItem', item, status);
+  },
 })
 
 mp.keys.bind(0x49, false, function() {

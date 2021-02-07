@@ -116,7 +116,33 @@ mp.events.add({
       account.notification(player, `Uspešno ste se zaposlili kao ${job.NAME}.`, NOTIFY_SUCCESS, 4);
     },
 
-    "playerEnterCheckpoint": (player, checkpoint) => {
+    'server:processInventoryItem': (player, item_id, status) => { 
+      let item = inventoryItems.find( ({ id }) => id === parseInt(item_id) );
+
+      if (status == 'use') { 
+        switch(item.type) { 
+          case ITEM_TYPE_WEAPON: 
+            player.giveWeapon();
+            break;
+
+          case ITEM_TYPE_AMMO:
+              break;
+              
+          default: 
+            return false;
+        }
+      }
+
+      else if (status == 'drop') {
+
+      }
+
+      else if (status == 'give') { 
+
+      }
+    },
+
+    'playerEnterCheckpoint': (player, checkpoint) => {
       if(player.checkpoint == checkpoint) {
         player.checkpoint ++;
         mp.gui.chat.push(`[debug] Usao si u checkpont ID: ${checkpoint.ID}, ukupno: ${player.checkpoint}`);
@@ -129,5 +155,5 @@ mp.events.add({
           account.notification(player, `Sačekajte da se putnici ukrcaju.`, NOTIFY_SUCCESS, 4);
         }
       }
-     }
+    }
 });

@@ -19,21 +19,12 @@ populateInventory = (inventoryItems) => {
     });
 }
 
-// var items = [
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
-//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'}
-// ]
-// populateInventory(items)
+var items = [
+    { id: 1, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+    { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+    { id: 3, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+]
+populateInventory(items)
 
 closeInventory = () => {  mp.trigger('client:closeInventory'); }
 
