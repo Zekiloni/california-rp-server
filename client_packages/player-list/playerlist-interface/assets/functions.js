@@ -1,6 +1,6 @@
 
 
-$(window).on('load', function() { $('.box').fadeIn(1000) })
+$(window).on('load', function() { $('.box').fadeIn(100) })
 
 closePlayerList = () => { mp.trigger('client:hidePlayerList'); }
 

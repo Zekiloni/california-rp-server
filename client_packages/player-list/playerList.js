@@ -13,13 +13,13 @@ mp.events.add({
 
       var plays = JSON.stringify(onlines)
       playerListCEF.execute(`onlinePlayers(${plays});`); 
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
+      setTimeout(() => { mp.gui.cursor.show(true, true); }, 200);
   },
 
   'client:hidePlayerList': () => {
       playerListCEF.destroy();
       onlines = [];
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 600);
+      setTimeout(() => { mp.gui.cursor.show(false, false); }, 200);
   },
 })
 
@@ -35,4 +35,3 @@ mp.keys.bind(0x50, false, function() {
    }
 });
 
-// player.ping // player.name // player.id

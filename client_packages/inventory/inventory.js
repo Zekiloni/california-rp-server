@@ -8,13 +8,13 @@ mp.events.add({
       var items = JSON.stringify(inventory)
       inventoryCEF = mp.browsers.new('package://inventory/inventory-interface/inventory.html');
       inventoryCEF.execute(`populateInventory(${items});`); 
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
+      setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       opened = true;
   },
 
   'client:closeInventory': () => {
       inventoryCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 600);
+      setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
   },
 
   'client:processInventoryItem': (item, status) => { 
