@@ -24,20 +24,23 @@ html, body {
 .crnilo {width: 100%;height: 100%;display: grid;backdrop-filter: blur(10px);background: rgba(0 0 0 / 45%);}
 .inventar {
     color: grey;
-    width: 70%;
-    height: 75%;
+    width: 60%;
+    height: 55%;
     position: relative;
     box-shadow: 0 14px 25px rgb(0 0 0 / 16%);
     background: rgb(0 0 0 / 35%);
     margin: auto;
     }
 .inventar .naslov {color: #cdcdcd;letter-spacing: 3px;padding: 10px 20px;text-transform: uppercase;font-weight: 200;background: linear-gradient( 90deg , rgb(103 35 118 / 81%), rgb(4 149 232 / 74%));}
-#inventar { margin-top: 2%; }
+#inventar {margin-top: 2%;display: flex;/* overflow-y: scroll; */flex-wrap: wrap;}
 
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track {background: rgb(0 0 0 / 26%); }
+::-webkit-scrollbar-thumb { background: linear-gradient(0deg, rgba(124,71,160,1) 0%, rgba(3,104,162,1) 100%); border-radius: 50px; }
 
-.inventar .predmet { z-index: 1; cursor: pointer; transition: all 0.5s ease; border-radius: 10px;text-align: center;background: rgb(0 0 0 / 14%);padding: 10px;margin: 0 auto;border: 1px solid rgb(0 0 0 / 17%);margin: 10px;}
+.inventar .predmet {z-index: 1;cursor: pointer;transition: all 0.5s ease;border-radius: 10px;text-align: center;width: 100px;position: relative;height: 90px;background: rgb(255 255 255 / 8%);padding: 10px;border: 1px solid rgb(0 0 0 / 17%);margin: 10px;}
 .inventar .predmet:hover {border: 1px solid rgb(255 255 255 / 17%); }
-.inventar .predmet .slika-predmeta { width: 70%; display: block; margin: 0 auto; }
+.inventar .predmet .slika-predmeta {width: 100%;padding-top: 20px;display: block;margin: 0 auto;}
 .inventar .predmet .kolicina-predmeta { position: absolute; bottom: 5px; right: 5px; }
 
 [class*="opcije-predmeta-"] {
@@ -93,18 +96,7 @@ input { display: block; background: transparent; outline: none; border: none; bo
 .igrac { cursor: pointer; transition: all 0.5s ease; margin-bottom: 5px; }
 .igrac:hover { opacity: 0.5; }
 
-.naslov .zatvori {     position: absolute;
-    right: 15px;
-    top: 5px;
-    padding: 5px 7px;
-    cursor: pointer;
-    color: whitesmoke;
-    background: rgb(0 0 0 / 14%);
-    font-size: 20px;
-    margin: 7px;
-    border-radius: 5px;
-    text-align: center;
-    transition: all 0.5s ease; }
+.naslov .zatvori { position: absolute; right: 15px; top: 5px; padding: 5px 7px; cursor: pointer; color: whitesmoke; background: rgb(0 0 0 / 14%); font-size: 20px; margin: 7px; border-radius: 5px; text-align: center; transition: all 0.5s ease; }
 .naslov .zatvori:hover { opacity: 0.5; }
 
 

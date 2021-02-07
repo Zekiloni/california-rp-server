@@ -6,8 +6,8 @@ populateInventory = (inventoryItems) => {
     $("#inventar").text('');
     $.each(inventoryItems, function(i, item) {
         $("#inventar").append(
-            `<div class='col-md-1 predmet' onclick='selectItem(${item.id})'> 
-                <img class='slika-predmeta' src='resursi/slike/predmeti/${item.hash}.png'/> 
+            `<div class='predmet' onclick='selectItem(${item.id})'> 
+                <img class='slika-predmeta' src='assets/images/items/${item.hash}.png'/> 
                 <b class='kolicina-predmeta'>${item.quantity}</b> 
             <div>
             <ul class='opcije-predmeta-${item.id}''>
@@ -18,6 +18,22 @@ populateInventory = (inventoryItems) => {
         );
     });
 }
+
+// var items = [
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'},
+//     { id: 2, name: 'M4 Carbine Rifle', quantity: 1, hash: 'w_ar_carbinerifle'}
+// ]
+// populateInventory(items)
 
 closeInventory = () => {  mp.trigger('client:closeInventory'); }
 
