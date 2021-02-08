@@ -42,4 +42,4 @@ setInterval(() => {
   .catch(function(err){
     core.terminal(1, `Server Weather, there was a problem fetching weather, ${err}.`)
   }); 
-}, 60000)
+}, 600000)

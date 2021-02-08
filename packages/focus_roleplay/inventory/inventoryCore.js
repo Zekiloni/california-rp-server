@@ -8,8 +8,10 @@ module.exports = {
     loadItems: async() => { 
         var result = await db.aQuery("SELECT * FROM `inventory`");
         result.forEach(function (res) {
-            let itemPos = JSON.parse(res.itemPos);
-            let itemSpecs = JSON.parse(res.itemSpecs);
+            let itemPos, itemSpecs;
+            if (res.itemPos) { JSON.parse(res.itemPos); }
+            if (res.itemSpecs) { JSON.parse(res.itemSpecs); }
+            
             let itemData = INVENTORY_ITEMS.find( ({name}) => name === res.itemName);
 
             let item = new itemModel(
@@ -56,13 +58,13 @@ module.exports = {
     },
     // name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs
     addItem: (player, item, quantity) => {
-        let playerCurrentItems = this.getPlayerInventory(player);
+        let playerCurrentItems = inventory.getPlayerInventory(player);
         let currentItem = playerCurrentItems.find( ({ name }) => name === item );
         let inventoryItem = INVENTORY_ITEMS.find( ({name}) => name === item);
         if (quantity > 0) {
             if (currentItem) { 
                 currentItem.quantity += quantity;
-                this.itemUpdate(currentItem);
+                inventory.itemUpdate(currentItem);
             }
             else {
                 if (inventoryItem) {
@@ -83,7 +85,7 @@ module.exports = {
         }
         else if (quantity < 0) {
             if (currentItem.quantity <= 0) {
-                this.deleteItem(currentItem.ID);
+                inventory.deleteItem(currentItem.ID);
             }
         }
         
@@ -160,6 +162,22 @@ module.exports = {
             db.query("UPDATE `inventory`SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ? WHERE `ID` = ?", [itemModel.quantity, itemModel.owner, itemModel.entity, itemModel.dimension, pos, itemModel.id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });
+        }
+    },
+
+    giveItem: function (player, item, target, quantity) { // sada ovde imamo igraca, objekat predmeta, primaoca i kolicinu
+        let targetInventory = inventory.getPlayerInventory(target); 
+        let targetItem = targetInventory.find( ({name}) => name === item.name);
+
+        if (targetItem) { 
+            console.log('predmet vec postoji dodana kolicina')
+            targetItem.quantity = targetItem.quantity + parseInt(quantity);
+            targetItem.owner = target.databaseID;
+            console.log(`nova kolicina ${targetItem.quantity}`)
+            inventory.itemUpdate(targetItem)
+        } else { 
+            console.log('ne postoji kreiran je')
+            inventory.addItem(target, item.name, quantity);
         }
     },
 

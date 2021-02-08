@@ -10,10 +10,10 @@ mp.events.add({
 
       mp.players.forEachInRange(player.position, 2,
          (p) => {
-            if (p.id == player.id) return false; 
-            else { 
+            // if (p.id == player.id) return false; 
+            // else { 
                nearbyPlayers.push({id: p.id, name: p.name})
-            }
+           // }
          }
       );
       var nearPlayers = JSON.stringify(nearbyPlayers)

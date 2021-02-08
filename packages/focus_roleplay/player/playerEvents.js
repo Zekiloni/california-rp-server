@@ -142,7 +142,9 @@ mp.events.add({
       }
 
       else if (status == 'give') { 
-
+        let recipient = account.findPlayer(target);
+        if (!recipient) return account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
+        inventory.giveItem(player, item, recipient, quantity) 
       }
     },
 
