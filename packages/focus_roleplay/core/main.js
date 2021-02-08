@@ -52,7 +52,7 @@ module.exports = {
           let counter = 0;
           mp.players.forEach(
                (player) => {
-                    if (player.loggedIn) { 
+                    if (player.data.loggedIn) { 
                          player.hunger --;
                          player.thirst --;
                          if (player.hunger > 5 && player.hunger < 10) {

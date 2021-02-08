@@ -45,7 +45,7 @@ module.exports = {
         player.weaponSkill = result[0].weaponSkill;
 
         player.inviteRequest = 0;
-        player.loggedIn = true;
+        player.data.loggedIn = true;
         player.duty = false;
         player.drag = false;
         player.dragTarget = 0;

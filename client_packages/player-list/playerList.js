@@ -3,6 +3,14 @@
 const player = mp.players.local;
 var playerListCEF, opened = false, onlines = [];
 
+mp.events.addDataHandler({
+   'loggedIn': (entity, newValue, oldValue) => {
+      if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
+         player.loggedIn = newValue;
+      }
+   },
+});
+
 
 mp.events.add({
    'client:openPlayerList': () => {
@@ -24,6 +32,8 @@ mp.events.add({
 })
 
 mp.keys.bind(0x50, false, function() {
+   if (!player.loggedIn) return false;
+
    if(opened == false) {
       if (mp.players.local.isTypingInTextChat) return;
       mp.events.call('client:openPlayerList')
