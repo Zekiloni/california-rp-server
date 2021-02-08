@@ -171,9 +171,11 @@ module.exports = {
 
         if (targetItem) { 
             console.log('predmet vec postoji dodana kolicina')
-            targetItem.quantity = targetItem.quantity + parseInt(quantity);
+            console.log(`trenutna kolicina ${targetItem.quantity}, dodana kolicina je ${quantity}`)
+            targetItem.quantity += quantity;
             targetItem.owner = target.databaseID;
-            console.log(`nova kolicina ${targetItem.quantity}`)
+            targetItem.entity = ITEM_ENTITY_PLAYER;
+            console.log(`nova kolicina ${quantity}`)
             inventory.itemUpdate(targetItem)
         } else { 
             console.log('ne postoji kreiran je')
