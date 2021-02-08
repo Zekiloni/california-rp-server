@@ -45,16 +45,15 @@ giveItem = (id, target) => {
 
 closeGiveItem = () => { $('#dajPredmet').fadeOut(); }
 
-blizinaIgraci = (json) => {
+nearPlayers = (players) => {
     $(".lista-igraca").text(" ");
-    $.each(json, function(i, igrac) {
+    $.each(players, function(i, player) {
 		$(".lista-igraca").append(
-            "<li class='igrac' onclick='dajPredmet(\""+ player.id +"\", \""+ currentItem +"\")'>"+ player.name + " [" + igrac.id +"] </li>"
+            "<li class='igrac' onclick='dajPredmet(\""+ player.id +"\", \""+ currentItem +"\")'>"+ player.name + " [" + player.id +"] </li>"
         );
 		
     });
 }
-
 
 window.onclick = function(event) { 
     if (event.target == modal) { modal.style.display = "none"; }
