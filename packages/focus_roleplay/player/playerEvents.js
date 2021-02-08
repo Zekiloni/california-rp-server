@@ -59,7 +59,7 @@ mp.events.add({
           }
       }
 
-      if (shape.job != 0) {
+      if (shape.job) {
         if (player.job == 0) { 
           let jobData = JOBS.find( ({ID}) => ID === shape.job);
           player.call('client:showJobOffer', [jobData.ID, jobData.NAME, jobData.LOC, jobData.DESC]);

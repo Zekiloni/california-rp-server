@@ -18,6 +18,7 @@ var huntingAnimals = require('./hunting/animals');
 var playerCommands = require('./player/playerCommands')
 var adminCommands = require('./player/adminCommands')
 var playerAnimations = require('./player/animations')
+var realTimeWeather = require('./core/weather')
 
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
