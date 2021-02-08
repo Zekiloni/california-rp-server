@@ -15,6 +15,12 @@ dropItem = (id) => {
     refreshInventory();
 }
 
+giveItem = (target, item) => { 
+    var quant = $(".quantity").val();
+    if (!quant) { $('.quantity').css('borderColor', 'tomato'); $('.player-list').hide(); }
+    mp.trigger('client:processInventoryItem', item, 'give', parseInt(target), parseInt(quant));
+}
+
 refreshInventory = () => { 
     $("#inventar").text('');
     $.each(playerInventory, function(i, item) {
@@ -41,16 +47,12 @@ selectItem = (id) => {
     else { $(`.opcije-predmeta-${id}`).slideUp(); opened = false; } 
 }
 
-
-giveItem = (id, target) => { 
-    var quant = $(".kolicina").val();
-}
-
 itemGiveValue = (value) => { 
     var givingItem = playerInventory.find( ({ id }) => id === parseInt(currentItem) );
     var quant = parseInt(value)
-    if (quant > givingItem.quantity) { $('.quantity').css("borderColor", "red"); }
-    else { $('.quantity').css("borderColor", "rgb(0 0 0 / 22%)"); }
+    if (quant > givingItem.quantity) { $('.quantity').css('borderColor', 'tomato'); $('.player-list').fadeOut(); }
+    else if (quant == 0) { $('.quantity').css('borderColor', 'tomato'); $('.player-list').hide(); $('.quantity').val(''); }
+    else { $('.quantity').css('borderColor', 'rgb(0 0 0 / 22%)'); $('.player-list').show(); }
 }
 
 closeGiveItem = () => { $('#giveItem').fadeOut(); }
@@ -58,16 +60,16 @@ openGiveItem = (id) => {
     currentItem = id;
     $('#giveItem').fadeIn();
     var item = playerInventory.find( ({ id }) => id === parseInt(currentItem) );
-    $('#give-item-desc').html(`Predmet koji dajete <b>${item.name}</b>, imate <b>${item.quantity}</b>`)
-    $(".lista-igraca").text(" ");
+    $('#give-item-desc').html(`Predmet koji dajete <b>${item.name}</b> <br><small> Kolčina koju posedujete <b>${item.quantity}</b></small>`)
+    $(".player-list").text(" ");
     $.each(nearPlayers, function(i, player) {
-		$(".lista-igraca").append(
+		$(".player-list").append(
             `<li class='igrac' onclick='giveItem(\"${player.id}\", \"${currentItem}\")'>${player.name} [${player.id}] </li>`
         );
     });
 }
 
-window.onclick = function(event) {  if (event.target == modal) { modal.style.display = "none"; } }
+window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
 document.addEventListener('keyup', function(e) { if (event.keyCode === 27) { closeInventory(); } })
 
 

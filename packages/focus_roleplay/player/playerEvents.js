@@ -116,7 +116,7 @@ mp.events.add({
       account.notification(player, `Uspešno ste se zaposlili kao ${job.NAME}.`, NOTIFY_SUCCESS, 4);
     },
 
-    'server:processInventoryItem': (player, item_id, status) => { 
+    'server:processInventoryItem': (player, item_id, status, target, quantity) => { 
       let item = inventoryItems.find( ({ id }) => id === parseInt(item_id) );
 
       console.log('uso u event')
