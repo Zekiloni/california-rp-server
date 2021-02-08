@@ -2,30 +2,30 @@
 
 
 global.JOBS = [
-   JOB_GARBAGE = { 
-      ID: 1, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
-      POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
-   },
+   // JOB_GARBAGE = { 
+   //    ID: 1, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
+   //    POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
+   // },
 
-   JOB_TRUCKER = { 
-      ID: 2, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
-      POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
-   },
+   // JOB_TRUCKER = { 
+   //    ID: 2, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
+   //    POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
+   // },
 
-   JOB_POSTAL = { 
-      ID: 3, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
-      POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
-   },
+   // JOB_POSTAL = { 
+   //    ID: 3, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
+   //    POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
+   // },
 
-   JOB_ELECTRIC = { 
-      ID: 4, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
-      POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
-   },
+   // JOB_ELECTRIC = { 
+   //    ID: 4, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
+   //    POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610) 
+   // },
 
-   JOB_TAXI = { 
-      ID: 5, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
-      POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610)
-   },
+   // JOB_TAXI = { 
+   //    ID: 5, NAME: 'Gradska Cistoca', DESC: 'Cisti grad', 
+   //    POINT: new mp.Vector3(434.080078125, -981.913879, 30.7093181610)
+   // },
 
    JOB_BUS_DRIVER = { 
       ID: 6, NAME: 'Vozac Autobusa', LOC: 'Autobuska Stanica Los Santos', DESC: 'Los Santos Autobuska stanica. Vozac autobusa na gradskim i van-gradskim linijama.', 

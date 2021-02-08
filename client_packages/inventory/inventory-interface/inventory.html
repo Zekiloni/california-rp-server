@@ -18,19 +18,17 @@
                 <h2 class="naslov">vaš inventar <i onclick="closeInventory()" class="zatvori fa fa-times" aria-hidden="true"></i></h2>
                 <div id="inventar"></div>
             </div>
-            <div id="dajPredmet" class="modal">
+            <div id="giveItem" class="modal">
                 <div class="modal-kutija">
                     <h2 class="naslov">daj predmet <i onclick="closeGiveItem()" class="zatvori fa fa-times" aria-hidden="true"></i></h2>
-                    <div class="unos-kolicine">
-                        <input type="number" placeholder="Količina" class="kolicina" max="50">
-                    </div>
+                    <h4 id="give-item-desc"></h4>
+                    <input type="number" onkeyup="itemGiveValue(this.value)" placeholder="Količina" class="quantity" min="1" max="50">
                     <h5 class="podnaslov">Lista Igrača</h5>
                     <ul class="lista-igraca">
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="upozorenje" id="upozorenje"></div>
         <script src="assets/functions.js"></script>
     </body>
 </html>
