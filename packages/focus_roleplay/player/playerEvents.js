@@ -148,6 +148,16 @@ mp.events.add({
       }
     },
 
+    'server:vehicleEngine': (player, vehicle) => { 
+      if (vehicle.engine) { 
+        vehicle.engine = false;
+        account.notification(player, MSG_ENGINE_OFF, NOTIFY_SUCCESS, 4); 
+      } else { 
+        vehicle.engine = true;
+        account.notification(player, MSG_ENGINE_ON, NOTIFY_ERROR, 4);
+      }
+    },
+
     'playerEnterCheckpoint': (player, checkpoint) => {
       if(player.checkpoint == checkpoint) {
         player.checkpoint ++;

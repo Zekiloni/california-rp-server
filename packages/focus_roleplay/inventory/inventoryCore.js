@@ -172,8 +172,8 @@ module.exports = {
         if (targetItem) { 
             console.log('predmet vec postoji dodana kolicina')
             console.log(`trenutna kolicina ${targetItem.quantity}, dodana kolicina je ${quantity}`)
-            targetItem.quantity += quantity;
-            targetItem.owner = target.databaseID;
+            targetItem.quantity += quantity; // OVO POGLEDAJ
+            targetItem.owner = target.databaseID; 
             targetItem.entity = ITEM_ENTITY_PLAYER;
             console.log(`nova kolicina ${quantity}`)
             inventory.itemUpdate(targetItem)

@@ -31,7 +31,9 @@ global.MESSAGES = [
    MSG_NOT_IN_FREQ = 'Niste ni u jednoj frekvenciji.',
    MSG_NOT_ENOGUTH_MONEY = 'Nemate dovoljno novca.',
    MSG_ALREADY_OWNED = 'Neko već poseduje ovaj objekat.',
-   MSG_ERROR = 'Došlo je do greške.'
+   MSG_ERROR = 'Došlo je do greške.',
+   MSG_ENGINE_ON = 'Upalili ste motor vozila.',
+   MSG_ENGINE_OFF = 'Ugasili ste motor vozila.'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [
