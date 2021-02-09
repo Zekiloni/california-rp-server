@@ -183,7 +183,7 @@ module.exports = {
     itemUpdate: function (itemModel) {
         if (itemModel != null) {
             let pos = JSON.stringify(itemModel.position)
-            db.query("UPDATE `inventory`SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ? WHERE `ID` = ?", [itemModel.quantity, itemModel.owner, itemModel.entity, itemModel.dimension, pos, itemModel.id], function (error, results, fields) {
+            db.query("UPDATE `inventory` SET itemQuantity = ?, itemOwner = ?, itemEntity = ?, itemDimension = ?, itemPos = ? WHERE `ID` = ?", [itemModel.quantity, itemModel.owner, itemModel.entity, itemModel.dimension, pos, itemModel.id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });
         }
@@ -195,8 +195,11 @@ module.exports = {
 
         if (targetItem) { 
             console.log('predmet vec postoji dodana kolicina')
-            console.log(`trenutna kolicina ${targetItem.quantity}, dodana kolicina je ${quantity}`)
-            targetItem.quantity += quantity; // OVO POGLEDAJ
+            console.log(`trenutna kolicina ${targetItem.quantity}, dodana kolicina je ${quantity}`);
+            console.log("targetItem.quantity" + targetItem.quantity);
+            targetItem.quantity = targetItem.quantity + quantity; // OVO POGLEDAJ
+            console.log("quantity" + quantity);
+            console.log("ukupno:" + targetItem.quantity)
             targetItem.owner = target.databaseID; 
             targetItem.entity = ITEM_ENTITY_PLAYER;
             console.log(`nova kolicina ${quantity}`)
