@@ -9,8 +9,8 @@ module.exports = {
         var result = await db.aQuery("SELECT * FROM `inventory`");
         result.forEach(function (res) {
             let itemPos, itemSpecs;
-            if (res.itemPos) { JSON.parse(res.itemPos); }
-            if (res.itemSpecs) { JSON.parse(res.itemSpecs); }
+            if (res.itemPos) { itemPos = JSON.parse(res.itemPos); }
+            if (res.itemSpecs) { itemSpecs = JSON.parse(res.itemSpecs); }
             
             let itemData = INVENTORY_ITEMS.find( ({name}) => name === res.itemName);
 
@@ -19,8 +19,7 @@ module.exports = {
                 itemData.type, itemData.hash,
                 itemData.weight, res.itemQuantity,
                 res.itemEntity, res.itemOwner,
-                res.itemDimension, itemPos, itemSpecs,
-                0, 0
+                res.itemDimension, itemPos, itemSpecs
             )
         });
         core.terminal(3, `${result.length} items were loaded !`);
@@ -154,6 +153,31 @@ module.exports = {
             account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} baca ${dropObject.name} na pod.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
             player.playAnimation(DROPING_ANIM.DICT, DROPING_ANIM.ANIM, 1, 0);
         }
+    },
+
+    useItem: (player, itemID) => { 
+        let item = inventoryItems.find( ({id}) => id === parseInt(itemID));
+        let string = '';
+        if (item) { 
+            if (item.type == ITEM_TYPE_FOOD) { 
+                player.playAnimation('amb@code_human_wander_eating_donut@male@idle_a', 'idle_c', 1, 49);
+                setTimeout(() => { player.stopAnimation(); }, 7000)
+                string = `You eated ${item.name}`;
+            } 
+            else if (item.type == ITEM_TYPE_WEAPON) { 
+                let weap = INVENTORY_ITEMS.find( ({name}) => name === item.name);
+                player.giveWeapon(mp.joaat(weap.weapon), 300);
+                string = `You took the ${item.name} from inventory`;
+            } // .... and moreee and moree
+            else if (item.type == ITEM_TYPE_DRINK) { 
+                player.playAnimation('amb@world_human_drinking@beer@male@idle_a', 'idle_c', 1, 49);
+                setTimeout(() => { player.stopAnimation(); }, 7000)
+            }
+
+            inventory.deleteItem(itemID)
+            player.outputChatBox(string);
+
+        } else { player.outputChatBox(`Item doesn't exist.`); }
     },
 
     itemUpdate: function (itemModel) {

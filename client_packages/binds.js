@@ -1,7 +1,7 @@
 const player = mp.players.local;
 
 // L - ZAKLJUCAVANJE // 0x4C
-// E - MOTOR VOZILA // 0x45
+// Y - MOTOR VOZILA // 0x59
 // I - INVENTORY // 0x49 // in inventory System
 // O - LISTA IGRACA // 0x4F // in playerList
 // M - INTERAKCIONI MENI // i interactions-menu
@@ -17,7 +17,7 @@ mp.keys.bind(0x4C, false, function() {
 
 });
 
-mp.keys.bind(0x45, false, function() {
+mp.keys.bind(0x59, false, function() {
    if (!player.loggedIn) return false;
    if (!player.vehicle) return false;
    mp.events.callRemote('server:vehicleEngine', player.vehicle);

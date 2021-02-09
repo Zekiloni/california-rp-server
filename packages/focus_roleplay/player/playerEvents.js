@@ -118,43 +118,33 @@ mp.events.add({
 
     'server:processInventoryItem': (player, item_id, status, target, quantity) => { 
       let item = inventoryItems.find( ({ id }) => id === parseInt(item_id) );
+      switch(status) { 
+        case 'drop': 
+            inventory.dropItem(player, item_id);
+            break;
 
-      console.log('uso u event')
-      if (status == 'use') { 
-        //player.ouputChatBox(`iskoristio si predmet ${item.name}`);
-        console.log(`iskoristio si predmet ${item.name}`)
-        // switch(item.type) { 
-        //   case ITEM_TYPE_WEAPON: 
-        //     player.ouputChatBox(`iskoristio si predmet `)
-        //     break;
+        case 'give': 
+            let recipient = account.findPlayer(target);
+            if (!recipient) return account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
+            inventory.giveItem(player, item, recipient, quantity) 
+            break;
 
-        //   case ITEM_TYPE_AMMO:
-        //       break;
+        case 'use': 
+            inventory.useItem(player, item_id);
+            break;
 
-        //   default: 
-        //     return false;
-        // }
-      }
-
-      else if (status == 'drop') {
-        console.log(`bacio  si predmet ${item.name}`)
-        inventory.dropItem(player, item_id);
-      }
-
-      else if (status == 'give') { 
-        let recipient = account.findPlayer(target);
-        if (!recipient) return account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
-        inventory.giveItem(player, item, recipient, quantity) 
+        default:
+            return false;
       }
     },
 
     'server:vehicleEngine': (player, vehicle) => { 
       if (vehicle.engine) { 
         vehicle.engine = false;
-        account.notification(player, MSG_ENGINE_OFF, NOTIFY_SUCCESS, 4); 
+        account.notification(player, MSG_ENGINE_OFF, NOTIFY_ERROR, 4); 
       } else { 
-        vehicle.engine = true;
-        account.notification(player, MSG_ENGINE_ON, NOTIFY_ERROR, 4);
+        setTimeout(() => { vehicle.engine = true; }, 2500); 
+        account.notification(player, MSG_ENGINE_ON, NOTIFY_SUCCESS, 4);
       }
     },
 

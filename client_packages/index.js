@@ -15,6 +15,7 @@ var chatBubble = require('./chatBubble')
 var playerList = require('./player-list/playerList')
 var police = require('./factions/police/lspd')
 var jobs = require('./jobs/jobs')
+var cayoPerico = require('./cayo-perico/heistisland')
 
 
 

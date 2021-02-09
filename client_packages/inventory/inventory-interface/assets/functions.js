@@ -7,7 +7,14 @@ var nearPlayers;
 populateInventory = (inventoryItems) => {  playerInventory = inventoryItems; refreshInventory(); }
 populateNearPlayers = (players) => { nearPlayers = players; }
 
-useItem = (id) => {  mp.trigger('client:processInventoryItem', id, 'use'); }
+useItem = (id) => { 
+     mp.trigger('client:processInventoryItem', id, 'use'); 
+     playerInventory.splice(index, 1);
+     var index = playerInventory.findIndex((el) => el.id === id);
+     playerInventory.splice(index, 1);
+     refreshInventory();
+}
+
 dropItem = (id) => { 
     mp.trigger('client:processInventoryItem', id, 'drop'); 
     var index = playerInventory.findIndex((el) => el.id === id);
