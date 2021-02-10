@@ -16,6 +16,7 @@ var playerList = require('./player-list/playerList')
 var police = require('./factions/police/lspd')
 var jobs = require('./jobs/jobs')
 var cayoPerico = require('./heistisland')
+var nameTags = require('./nametags')
 
 
 

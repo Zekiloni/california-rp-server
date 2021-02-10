@@ -163,22 +163,32 @@ module.exports = {
                 player.playAnimation('amb@code_human_wander_eating_donut@male@idle_a', 'idle_c', 1, 49);
                 setTimeout(() => { player.stopAnimation(); }, 7000)
                 string = `You eated ${item.name}`;
-                player.call('client:playerEating', [item.hash])
+                mp.players.forEachInRange(player.position, 20,
+                    (p) => {
+                        p.call('client:playerHandAction', [player, item.hash]);
+                    }
+                );
+                
             } 
+
             else if (item.type == ITEM_TYPE_WEAPON) { 
                 let weap = INVENTORY_ITEMS.find( ({name}) => name === item.name);
                 player.giveWeapon(mp.joaat(weap.weapon), 300);
                 string = `You took the ${item.name} from inventory`;
-            } // .... and moreee and moree
+            } 
+
             else if (item.type == ITEM_TYPE_DRINK) { 
                 player.playAnimation('amb@world_human_drinking@beer@male@idle_a', 'idle_c', 1, 49);
                 setTimeout(() => { player.stopAnimation(); }, 7000);
-                player.call('client:playerDrinking', [item.hash])
+                mp.players.forEachInRange(player.position, 20,
+                    (p) => {
+                        p.call('client:playerHandAction', [player, item.hash])
+                    }
+                );
             }
 
             inventory.deleteItem(itemID)
             player.outputChatBox(string);
-
         } else { player.outputChatBox(`Item doesn't exist.`); }
     },
 

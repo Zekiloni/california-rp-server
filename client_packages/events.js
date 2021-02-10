@@ -23,42 +23,21 @@ mp.events.add({
       });
    },
 
-   'client:playerEating': (object) => { 
-      eatObject = mp.objects.new(object, player.position,
+   'client:playerHandAction': (target, object) => { 
+      eatObject = mp.objects.new(object, target.position,
       {
-         rotation: player.rotation,
+         rotation: target.rotation,
          alpha: 250,
-         dimension: player.dimension
+         dimension: target.dimension
       });
-      eatObject.name = 'eat';
       eatObject.notifyStreaming = true;
-   },
 
-   'client:playerDrinking': (object) => { 
-      drinkObject = mp.objects.new(object, player.position,
-      {
-         rotation: player.rotation,
-         alpha: 250,
-         dimension: player.dimension
-      });
-      drinkObject.name = 'drink';
-      drinkObject.notifyStreaming = true;
-   },
-
-   'entityStreamIn': (obj) => { 
-      if (obj.name == 'eat') { 
+      setTimeout(() => {  
          var bone = mp.players.local.getBoneIndex(6286);
-         var position = new mp.Vector3(-0.0, -0.00, 0.01);
+         var position = new mp.Vector3(0.05, -0.02, 0.01);
          var rotation = new mp.Vector3(20, 0, -15);
-         obj.attachTo(player.handle, bone, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, true, false, false, true, 2, false);
-         setTimeout(() => { obj.destroy(); }, 7000)
-      } 
-      else if (obj.name == 'drink') { 
-         var bone = mp.players.local.getBoneIndex(6286);
-         var position = new mp.Vector3(+0.7, -0.05, 0.01);
-         var rotation = new mp.Vector3(-90, 0, -15);
-         obj.attachTo(player.handle, bone, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, true, false, false, true, 2, true);
-         setTimeout(() => { obj.destroy(); }, 7000)
-      }
-   }
+         eatObject.attachTo(target.handle, bone, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, true, false, false, true, 2, false);
+         setTimeout(() => { eatObject.destroy(); }, 7000)
+      }, 300)
+   },
 });
