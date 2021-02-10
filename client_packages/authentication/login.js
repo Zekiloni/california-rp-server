@@ -54,6 +54,6 @@ mp.events.add('client:LoginStatus', (status) => {
     mp.events.call('client:disableLoginCamera');
   }
   else if (status == 2) {
-    loginCEF.execute(`Upozorenje("cao");`);
+    loginCEF.execute(`error('Šifra koju ste uneli nije tačna.', '#user-password')`);
   }
 })

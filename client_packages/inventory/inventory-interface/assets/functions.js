@@ -45,7 +45,7 @@ refreshInventory = () => {
     });
 }
 
-populateInventory([{ id: 1, quantity: 1, hash: 'ng_proc_beerbottle_01a'}, { id: 2, quantity: 2, hash: 'w_ar_carbinerifle' } ])
+// populateInventory([{ id: 1, quantity: 1, hash: 'ng_proc_beerbottle_01a'}, { id: 2, quantity: 2, hash: 'w_ar_carbinerifle' } ])
 closeInventory = () => {  mp.trigger('client:closeInventory'); }
 
 var opened = false;

@@ -5,47 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="Auth Page">
         <meta name="author" content="Zekiloni">
-        <title>Focus Roleplay - Autorizacija UI</title>
-        <link rel="stylesheet" type="text/css" href="resursi/stil.css">
-        <link rel="stylesheet" type="text/css" href="resursi/vendor/css/bootstrap.min.css">
+        <title>Focus Roleplay - Auth Page UI</title>
+        <link rel="stylesheet" type="text/css" href="assets/vendor/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/style.css">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <script src="resursi/vendor/js/jquery-3.2.1.js"></script>
-        <script src="resursi/vendor/js/bootstrap.min.js"></script>
+        <script src="assets/vendor/js/jquery-3.2.1.js"></script>
+        <script src="assets/vendor/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div id="login-form" class="loggin-in">
-            <div class="logo">
-                <img src="resursi/slike/logo.png" class="img img-responsive logo" >
-            </div>
-            <div class="login-form row justify-content-around">
-                <div class="col-md-4">
-                    <input type="text" id="korisnicko_ime" placeholder="Korisničko ime">
+        <div class="login">
+            <div class="header">  <h4>Focus Roleplay <small>Mesto gde igra postaje stvarnost !</small></h4>  </div>
+
+            <div class="auth-form">
+                <h5 class="error"></h5>
+                <div class="holder">
+                    <input type="text" id="user-name" placeholder="korisničko ime">
+                    <input type="password" id="user-password" placeholder="korisnička sifra">
+                    <button type="button" onclick="login();">
+                        <i class="icon fa fa-sign-in" aria-hidden="true"></i> Prijava
+                    </button>
                 </div>
-                <div class="col-md-4">
-                    <input type="password" id="korisnicka_sifra" placeholder="Korisnička šifra">
+                <div class="footer">
+                    <p>U slučaju gubitka ili zaboravljene lozinke, možete je povratiti na <b>kontrolnom panelu</b>.</p>
                 </div>
             </div>
-            <div class="login-btn">
-                <p class="info-text">Dobrodošli na <b>Focus Roleplay</b>. <br>Molimo prijavite se na vaš račun.</p>
-                <button type="button" class="login" onclick="loginUser();">Prijava</button>
-            </div>
+            <img class="logo" src="assets/images/logo.png">
         </div>
-        <div id="character-select" class="container">
-			<div class="player-box">
-				<h4 class="player-name">ime karaktera</h4>
-				<div class="row justify-content-around">
-					<div class="col-3 arrows"> <i onclick="OnLeft()" class="fas fa-angle-left arrow"></i> </div>
-					<div class="col-3 arrows" style="display:none;" id="characterPlus"><i onclick="characterCreator()" class="fas fa-plus plus"></i></div>
-					<div class="col-3 arrows"> <i onclick="OnRight()" class="fas fa-angle-right arrow"></i> </div>
-				</div>
-				<div class="select-character">
-					<button onclick="zavrsiIzborKaraktera(1);" class="login">IGRAJ <i class="fas fa-play-circle" aria-hidden="true"></i></button>
-					<p class="info-text"><b>Focus Roleplay</b>. <br>Molimo izaberite vašeg karaktera.</p>
-					<h5 class="site-link">www.f-rp.online</h5>
-				</div>
-			</div>
-        </div>
-        <div class="upozorenje" id="upozorenje"></div>
-        <script src="resursi/funkcije.js"></script>
+
+        <script src="assets/functions.js"></script>
     </body>
 </html>
