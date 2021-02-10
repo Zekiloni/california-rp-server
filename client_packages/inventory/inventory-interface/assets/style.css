@@ -1,5 +1,5 @@
 html, body {
-    background-color: transparent !important;
+    background: rgba(0 0 0 / 35%);
     font-family: Helvetica Neue, Helvetica, sans-serif !important; 
     height: 100%; 
     overflow: hidden; 
@@ -7,39 +7,23 @@ html, body {
     user-select:  none;
 }
 
-.crnilo {width: 100%;height: 100%;display: grid;backdrop-filter: blur(10px);background: rgba(0 0 0 / 45%);}
-.inventar {
-    color: grey;
-    width: 60%;
-    height: 55%;
-    position: relative;
-    box-shadow: 0 14px 25px rgb(0 0 0 / 16%);
-    background: rgb(0 0 0 / 35%);
-    margin: auto;
-    }
-.inventar .naslov {color: #cdcdcd;letter-spacing: 3px;padding: 10px 20px;text-transform: uppercase;font-weight: 200;background: linear-gradient( 90deg , rgb(103 35 118 / 81%), rgb(4 149 232 / 74%));}
-#inventar {margin-top: 2%;display: flex;/* overflow-y: scroll; */flex-wrap: wrap;}
+.inventory { color: grey; width: 60%; height: 55%; position: relative; box-shadow: 0 14px 25px rgb(0 0 0 / 16%); background: rgb(0 0 0 / 35%); margin: auto; }
+.inventory h2 {color: #cdcdcd;letter-spacing: 3px;padding: 10px 20px;text-transform: uppercase;font-weight: 200;background: linear-gradient( 90deg , rgb(103 35 118 / 81%), rgb(4 149 232 / 74%));}
+#inventory {margin-top: 2%;display: flex;/* overflow-y: scroll; */flex-wrap: wrap;}
 
 ::-webkit-scrollbar { width: 7px; }
 ::-webkit-scrollbar-track {background: rgb(0 0 0 / 26%); }
 ::-webkit-scrollbar-thumb { background: linear-gradient(0deg, rgba(124,71,160,1) 0%, rgba(3,104,162,1) 100%); border-radius: 50px; }
 
-.inventar .predmet {z-index: 1;cursor: pointer;transition: all 0.5s ease;border-radius: 10px;text-align: center;width: 100px;position: relative;height: 90px;background: rgb(255 255 255 / 8%);padding: 10px;border: 1px solid rgb(0 0 0 / 17%);margin: 10px;}
-.inventar .predmet:hover {border: 1px solid rgb(255 255 255 / 17%); }
-.inventar .predmet .slika-predmeta {width: 100%;padding-top: 20px;display: block;margin: 0 auto;}
-.inventar .predmet .kolicina-predmeta { position: absolute; bottom: 5px; right: 5px; }
+.inventory .predmet {z-index: 1;cursor: pointer;transition: all 0.5s ease;border-radius: 10px;text-align: center;width: 115px;vertical-align: middle;display: grid;position: relative;height: 105px;background: rgb(255 255 255 / 8%);padding: 10px;border: 1px solid rgb(0 0 0 / 17%);margin: 10px;}
+.inventory .predmet:hover {border: 1px solid rgb(255 255 255 / 17%); }
+.inventory .predmet:hover img { transform: rotate(15deg); width: 92%; }
+.inventory .predmet img {width: 80%; margin: auto; transition: all 0.5s ease; }
+.inventory .predmet .kolicina-predmeta { position: absolute; bottom: 5px; right: 5px; }
 
-[class*="opcije-predmeta-"] {
-    display: none;
-    padding: 0;
-    position: absolute;
-    list-style: none;
-    margin-left: 10%; width: 100%;; 
-    z-index: 999999;
-}
-
-[class*="opcije-predmeta-"] li {  font-size: 13px; padding: 2px 4px; border-radius: 5px; background: rgb(0 0 0 / 0.4); margin-top: 5px; transition: all 0.5s ease; }
-[class*="opcije-predmeta-"] li:hover {  opacity: 0.5;  }
+[class*="item-options-"] { display: none; padding: 0; position: absolute; list-style: none; margin-left: 10%; width: 100%;;  z-index: 999999; }
+[class*="item-options-"] li {  font-size: 13px; padding: 2px 4px; border-radius: 5px; background: rgb(0 0 0 / 0.4); margin-top: 5px; transition: all 0.5s ease; }
+[class*="item-options-"] li:hover {  opacity: 0.5;  }
 
 .modal {
     display: none; 

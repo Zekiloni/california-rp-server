@@ -19,6 +19,7 @@ global.INVENTORY_ITEMS = [
    DRUG_JOINT = { name: 'Srolani dzoint', hash: 'p_amb_joint_01', weight: 0.2, type: ITEM_TYPE_DRUG },
    DRUG_MARIJUANA = { name: 'Marihuana', hash: 'p_amb_joint_01', weight: 0.1, type: ITEM_TYPE_MISC },
    MISC_RAW_PAPER = { name: 'RAW Papir za rolanje', hash: 'p_amb_joint_01', weight: 0.1, type: ITEM_TYPE_MISC },
+   DRINK_WATER = { name: 'Flasica vode', hash: 'ng_proc_beerbottle_01a', weight: 0.3, type: ITEM_TYPE_DRINK }
 ]; Object.freeze(INVENTORY_ITEMS);
 
 global.ITEM_ENTITES = [

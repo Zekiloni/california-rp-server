@@ -19,6 +19,7 @@ mp.events.add({
       var nearPlayers = JSON.stringify(nearbyPlayers)
       inventoryCEF.execute(`populateNearPlayers(${nearPlayers});`)
       inventoryCEF.execute(`populateInventory(${items});`); 
+      mp.game.graphics.transitionToBlurred(300);
       setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       opened = true;
   },
@@ -26,6 +27,7 @@ mp.events.add({
   'client:closeInventory': () => {
       inventoryCEF.destroy();
       nearbyPlayers = [];
+      mp.game.graphics.transitionFromBlurred(300);
       setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
   },
 
