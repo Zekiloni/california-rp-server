@@ -16,7 +16,7 @@ mp.events.add({
    'client:openPlayerList': () => {
       playerListCEF = mp.browsers.new('package://player-list/playerlist-interface/player-list.html');
       mp.players.forEach(p => {
-         onlines.push({id: p.id, name: p.name})
+         onlines.push({id: p.remoteId, name: p.name})
       }); 
 
       var plays = JSON.stringify(onlines)
