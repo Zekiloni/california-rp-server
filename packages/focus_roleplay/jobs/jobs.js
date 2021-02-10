@@ -32,6 +32,11 @@ global.JOBS = [
       POINT: new mp.Vector3(435.52148, -644.5684, 28.73636) , BLIP: 67
    },
 
+   // JOB_MINER = { 
+   //    ID: 7, NAME: 'Rudar', LOC: 'Autobuska Stanica Los Santos', DESC: 'Los Santos Autobuska stanica. Vozac autobusa na gradskim i van-gradskim linijama.', 
+   //    POINT: new mp.Vector3(435.52148, -644.5684, 28.73636) , BLIP: 67
+   // }
+
 ]; Object.freeze(JOBS);
 
 global.BUS_SPAWN_POINTS = [ 

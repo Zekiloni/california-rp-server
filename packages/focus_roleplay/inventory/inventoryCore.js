@@ -163,6 +163,7 @@ module.exports = {
                 player.playAnimation('amb@code_human_wander_eating_donut@male@idle_a', 'idle_c', 1, 49);
                 setTimeout(() => { player.stopAnimation(); }, 7000)
                 string = `You eated ${item.name}`;
+                player.call('client:playerEating', [item.hash])
             } 
             else if (item.type == ITEM_TYPE_WEAPON) { 
                 let weap = INVENTORY_ITEMS.find( ({name}) => name === item.name);
@@ -171,7 +172,8 @@ module.exports = {
             } // .... and moreee and moree
             else if (item.type == ITEM_TYPE_DRINK) { 
                 player.playAnimation('amb@world_human_drinking@beer@male@idle_a', 'idle_c', 1, 49);
-                setTimeout(() => { player.stopAnimation(); }, 7000)
+                setTimeout(() => { player.stopAnimation(); }, 7000);
+                player.call('client:playerDrinking', [item.hash])
             }
 
             inventory.deleteItem(itemID)

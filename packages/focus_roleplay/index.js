@@ -89,6 +89,10 @@ mp.events.addCommand("peds", (player) => {
     console.log(peds);
 });
 
+mp.events.addCommand('eating', (player, full) => { 
+    //player.position = new mp.Vector3(2962.40, 2746.20, 42.39);
+})
+
 mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
     veh.dimension = player.dimension;
