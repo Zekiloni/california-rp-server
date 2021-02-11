@@ -1,7 +1,8 @@
 var vehicles = null,
     bussinesInfo = null,
     customMenu = false,
-    colorPreview = 1,
+    firstColor,
+    secondColor
     vehIndex = 0;
 
 
@@ -15,7 +16,8 @@ colorPicker = new ColorPicker.Default('#color-picker', {
 });
 
 colorPicker.on('change', function (color) {
-    mp.trigger('client:vehicleColorPreview', colorPreview, color.hex);
+    var rgb = hexToRgb(color.hex)
+    mp.trigger('client:vehicleColorPreview', colorPreview, rgb);
 });
 
 $(window).on('load', function() { $('.box').fadeIn(1000); })
@@ -44,6 +46,7 @@ vehInfo = (index) => {
         vehName = vehicles[index].name;
     $('#veh-model').text(vehName)
     $('#veh-price').text(vehPrice)
+    mp.trigger('client:vehiclePreview', vehicles[index].model)
 }
 
 vehPreview = (n) => { 
@@ -65,3 +68,12 @@ changeColor = (el, n) => {
 }
 
 cashFormat = (x) => { return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","); }
+
+hexToRgb = (hex) => {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
