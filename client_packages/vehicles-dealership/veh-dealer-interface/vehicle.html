@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Vehicle Dealership Page">
+        <meta name="author" content="Zekiloni">
+        <title>Focus Roleplay - Vehicle Dealership UI</title>
+        <link rel="stylesheet" type="text/css" href="assets/vendor/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/vendor/css/light.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/style.css">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <script src="assets/vendor/js/jquery-3.5.1.js"></script>
+        <script src="assets/vendor/js/bootstrap.min.js"></script>
+        <script src="assets/vendor/js/default-picker.min.js"></script>
+    </head>
+    <body>
+        <i onclick="closeVehicleDealership()" class="close fa fa-times" aria-hidden="true"></i>
+
+        <div id="header">
+            <div class="box">
+                <h2 id="bussines-name">Ime salona Vozila<small id="dealer-type">tip salona</small></h2>
+            </div>
+        </div>
+        <div id="bottom">
+            <div class="box"> 
+                <h4>Informacije o vozilu</h4> 
+                <ul id="veh-info">
+                    <li><b>Model Vozila</b> <span id="veh-model"></span></li>
+                    <li><b>Cena Vozila</b> <span id="veh-price"></span> </li>
+                </ul>
+                <i class="far fa-angle-right" onclick="vehPreview(1)"></i>
+                <i class="far fa-angle-left" onclick="vehPreview(-1)"></i>
+            </div>
+        </div>
+
+        <div id="right">
+            <div class="box">
+                <h4 onclick="customizationMenu();">Boja vozila <small>otvori padajući meni</small></h4>
+                <div id="veh-customization">
+                    <div class="color" onclick="changeColor(this, 1)">Primarna</div>
+                    <div class="color" onclick="changeColor(this, 2)">Sekundarna</div>
+                    <input id="color-picker" type="text" data-id="1">
+                </div>
+            </div>
+        </div>
+
+
+        <script src="assets/functions.js"></script>
+    </body>
+</html>

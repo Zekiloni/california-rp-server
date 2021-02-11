@@ -1,5 +1,5 @@
-module.exports = [
-   motorcycles = [
+global.DEALERSHIP_VEHICLES = [ 
+   MOTORCYCLES = [
       { model: 'akuma', price: 3000, name: 'Akuma' },
       { model: 'avarus', price: 3000, name: 'Avarus' },
       { model: 'bagger', price: 3000, name: 'Bagger' },
@@ -49,11 +49,11 @@ module.exports = [
       { model: 'manchez2', price: 3000, name: 'Manchez Scout' },
    ],
 
-   offroads = [ 
+   OFFROADS = [ 
 
    ],
 
-   cycles = [ 
+   CYCLES = [ 
       { model: 'bmx', price: 3000, name: 'BMX' },
       { model: 'cruiser', price: 3000, name: 'Cruiser' },
       { model: 'fixter', price: 3000, name: 'Fixter' },
@@ -63,3 +63,4 @@ module.exports = [
       { model: 'tribike3', price: 3000, name: 'Tri-Cycles Race Bike' }
    ]
 ]
+   

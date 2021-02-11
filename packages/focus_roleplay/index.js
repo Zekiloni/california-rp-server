@@ -19,6 +19,7 @@ var playerCommands = require('./player/playerCommands')
 var adminCommands = require('./player/adminCommands')
 var playerAnimations = require('./player/animations')
 var realTimeWeather = require('./core/weather')
+var dealershipVehicles = require('./vehicles/vehicleList')
 
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
@@ -123,6 +124,10 @@ mp.events.addCommand("drop", (player, fullText, itemid) => {
 
 mp.events.addCommand("dzok", (player, fullText, dict, anim) => { 
     player.playAnimation(dict, anim, 5, 0)
+})
+
+mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => { 
+    player.call('client:showVehicleDealership', [MOTORCYCLES])
 })
 
 
