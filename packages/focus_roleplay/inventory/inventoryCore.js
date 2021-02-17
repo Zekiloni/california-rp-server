@@ -122,7 +122,7 @@ module.exports = {
             pickUpObject.object.destroy();
             inventory.itemUpdate(pickUpObject);
             account.notification(player, `Podigli ste <b>${pickUpObject.name} [${pickUpObject.quantity}]</b> sa poda.`, NOTIFY_SUCCESS, 4);
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} podize ${pickUpObject.name} sa poda.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} podize ${pickUpObject.name} sa poda.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
             
         }
         else {
@@ -150,7 +150,7 @@ module.exports = {
             dropObject.dimension = player.dimension;
             inventory.itemUpdate(dropObject);
             account.notification(player, `Bacili ste <b>${dropObject.name} [${dropObject.quantity}]</b> na pod.`, NOTIFY_SUCCESS, 4);
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} baca ${dropObject.name} na pod.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} baca ${dropObject.name} na pod.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
             player.playAnimation(DROPING_ANIM.DICT, DROPING_ANIM.ANIM, 1, 0);
         }
     },

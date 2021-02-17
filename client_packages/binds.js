@@ -19,6 +19,7 @@ mp.keys.bind(0x4C, false, function() {
 
 mp.keys.bind(0x59, false, function() {
    if (!player.loggedIn) return false;
+   if (mp.players.local.isTypingInTextChat) return false;
    if (!player.vehicle) return false;
    mp.events.callRemote('server:vehicleEngine', player.vehicle);
 });

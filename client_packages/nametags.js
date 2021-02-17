@@ -30,9 +30,9 @@ drawMpGamerTag = (player, name, x, y) => {
    var dist = mp.game.system.vdist(localPos.x, localPos.y, localPos.z, playerPos.x, playerPos.y, playerPos.z);
    if (dist > distance) return;
 
-   if (player.vehicle) {
-       y += 0.07;
-   }
+//    if (player.vehicle) {
+//        y += 0.07;
+//    }
 
    resolution = mp.game.graphics.getScreenActiveResolution(0, 0);
    y -= scale * (0.005 * (resolution.y / 1080));

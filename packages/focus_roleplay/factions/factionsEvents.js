@@ -5,7 +5,7 @@ mp.events.add({
    'server:policeGiveWeapon': (player, name, weapon, ammo) => {
       let weaponHash = mp.joaat(weapon);
       player.giveWeapon(weaponHash, parseInt(ammo) || 15);
-      account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} uzima ${name} iz ormarica.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+      account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} uzima ${name} iz ormarica.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
    },
 
    'server:policeSpawnVehicle': (player, name, model) => {

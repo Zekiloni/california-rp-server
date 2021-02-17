@@ -16,7 +16,7 @@ mp.events.addCommand({
          player.duty = false;
          meText = `skida svoju uniformu i vraca znacku u ormaric`;
       }
-      account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} ${meText}.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+      account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} ${meText}.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
    },
 
    'callsign': (player, fullText) => {
@@ -55,7 +55,7 @@ mp.events.addCommand({
          recipient.stopAnimation();
       }
 
-      account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} ${meText}.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+      account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} ${meText}.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
    },
 
    'drag': (player, fullText, target) => { 

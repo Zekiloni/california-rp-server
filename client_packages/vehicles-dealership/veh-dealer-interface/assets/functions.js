@@ -2,8 +2,9 @@ var vehicles = null,
     bussinesInfo = null,
     customMenu = false,
     firstColor,
-    secondColor
-    vehIndex = 0;
+    secondColor,
+    vehIndex = 0,
+    colorPreview = 1;
 
 
 colorPicker = new ColorPicker.Default('#color-picker', {
@@ -16,8 +17,7 @@ colorPicker = new ColorPicker.Default('#color-picker', {
 });
 
 colorPicker.on('change', function (color) {
-    var rgb = hexToRgb(color.hex)
-    mp.trigger('client:vehicleColorPreview', colorPreview, rgb);
+    mp.trigger('client:vehicleColorPreview', colorPreview, color.hex);
 });
 
 $(window).on('load', function() { $('.box').fadeIn(1000); })
@@ -76,4 +76,4 @@ hexToRgb = (hex) => {
       g: parseInt(result[2], 16),
       b: parseInt(result[3], 16)
     } : null;
-  }
+}

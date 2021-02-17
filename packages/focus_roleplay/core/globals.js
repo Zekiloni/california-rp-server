@@ -1,14 +1,21 @@
 
 
-global.CHAT_COLORS = { 
-   WHITE_0: 'FFFFFF', 
-   WHITE_1: 'E6E6E6', 
-   WHITE_3: 'C8C8C8', 
-   WHITE_4: 'AAAAAA', 
-   WHITE_5: '6E6E6E', 
-   FACTION: 'BDF38B',
-   RADIO: 'FFFF99'
-}; Object.freeze(CHAT_COLORS)
+global.CHAT_COLORS = [
+   WHITE_1 ='FFFFFF', 
+   WHITE_2 ='E6E6E6', 
+   WHITE_3 ='C8C8C8', 
+   WHITE_4 ='AAAAAA', 
+   WHITE_5 = '6E6E6E', 
+   FACTION = 'BDF38B',
+   PURPLE_1 = 'F9B7FF',
+   PURPLE_2 = 'E6A9EC',
+   PURPLE_3 = 'C38EC7',
+   PURPLE_4 = 'D2B9D3',
+   PURPLE_5 = 'D2B9D3',
+   RADIO = 'FFFF99',
+   PM_FROM = 'FFD500',
+   PM_TO = 'FCBD00',
+]; Object.freeze(CHAT_COLORS)
 
 global.CHAT_RADIUS = { 
    OOC: 4.0, 
@@ -33,7 +40,8 @@ global.MESSAGES = [
    MSG_ALREADY_OWNED = 'Neko već poseduje ovaj objekat.',
    MSG_ERROR = 'Došlo je do greške.',
    MSG_ENGINE_ON = 'Upalili ste motor vozila.',
-   MSG_ENGINE_OFF = 'Ugasili ste motor vozila.'
+   MSG_ENGINE_OFF = 'Ugasili ste motor vozila.',
+   MSG_CMD_SYNTAX = '<b>[KOMANDA]</b> '
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

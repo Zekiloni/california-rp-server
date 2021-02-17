@@ -16,29 +16,29 @@ mp.events.addCommand({
          } 
    
          let message = args.slice(1).join(' '); 
-         let to = `!{FCBD00}(( PM za ${recipient.name} [${recipient.id}]: ${message} ))`;
-         let from = `!{FFD500}(( PM od ${player.name} [${player.id}]: ${message} ))`;
+         let to = `!{${PM_TO}}(( PM za ${recipient.name} [${recipient.id}]: ${message} ))`;
+         let from = `!{${PM_FROM}}(( PM od ${player.name} [${player.id}]: ${message} ))`;
          recipient.outputChatBox(from);
          player.outputChatBox(to);
       } else return player.outputChatBox('Koriscenje /pm [igrac] [poruka]');
    },
 
    'me': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.ME, `** ${player.name} ${fullText}`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+      account.sendProxMessage(player, CHAT_RADIUS.ME, `** ${player.name} ${fullText}`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
    },
 
    'do': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.DO, `** ${fullText} (( ${player.name} ))`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+      account.sendProxMessage(player, CHAT_RADIUS.DO, `** ${fullText} (( ${player.name} ))`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
    },
 
    // shout
    's': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.SHOUT, `${player.name} vice: ${fullText}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
+      account.sendProxMessage(player, CHAT_RADIUS.SHOUT, `${player.name} vice: ${fullText}`, WHITE_1, WHITE_1, WHITE_2, WHITE_2, WHITE_3);
    },
 
    // low
    'l': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.LOW, `${player.name} tiho: ${fullText}`, 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E', '6E6E6E');
+      account.sendProxMessage(player, CHAT_RADIUS.LOW, `${player.name} tiho: ${fullText}`, WHITE_2, WHITE_2, WHITE_3, WHITE_4, WHITE_5);
    },
 
    'ame': (player, fullText) => {
@@ -90,11 +90,11 @@ mp.events.addCommand({
       if (veh) { 
          if(veh.locked) { 
             veh.locked = false;
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} otkljucava vozilo.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} otkljucava vozilo.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
          }
          else { 
             veh.locked = true;
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} zakljucava vozilo.`, 'F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3');
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} zakljucava vozilo.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
          }
       } else { player.outputChatBox('U vasoj blizini se ne nalazi nista sto bi se moglo zakljucati.');  }
    },
@@ -117,7 +117,7 @@ mp.events.addCommand({
       if(fullText) { 
          let args = fullText.split(" ");
          if (args.length < 2 || !args[0].length || !args[1].length) {
-            player.outputChatBox('Koriscenje /giverank [igrac] [rank]');
+            account.notification(player, MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
             return false;
          }
 
@@ -129,7 +129,7 @@ mp.events.addCommand({
          } 
          let newRank = args.slice(1).join(' '); 
          factions.setRank(player, recipient, newRank);
-      } else return player.outputChatBox('Koriscenje /giverank [igrac] [rank]');
+      } else return account.notification(player, MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
    },
 
    'f': (player, fullText) => { 
@@ -162,10 +162,11 @@ mp.events.addCommand({
                player.outputChatBox(`accept INFO !`);
                break;
             default:
-               player.outputChatBox(`Komanda nema argumente /accept (invite, ...) !`);
+               account.notification(player, MSG_CMD_SYNTAX + '/accept (invite, ...)', NOTIFY_INFO, 6)
             }
       }
-      else {  player.outputChatBox(`Komanda nema argumente /accept (invite, ...) !`); }
+      else { account.notification(player, MSG_CMD_SYNTAX + '/accept (invite, ...)', NOTIFY_INFO, 6) }
+      
    },
 
    'frequency': (player, fullText) => {
