@@ -49,8 +49,10 @@ global.DEALERSHIP_VEHICLES = [
       { model: 'manchez2', price: 3000, name: 'Manchez Scout' },
    ],
 
-   OFFROADS = [ 
-
+   OFFROADS = [
+      { model: 'dubsta3', name: 'Dubsta 6x6 Wagoon', price: 120000 },
+      { model: 'riata', name: 'Riata Wagoon', price: 17820 },
+      { model: 'vagrant', name: 'Vagrant Wagoon', price: 14000 }
    ],
 
    CYCLES = [ 
@@ -61,6 +63,12 @@ global.DEALERSHIP_VEHICLES = [
       { model: 'tribike', price: 3000, name: 'Whippet Race Bike' },
       { model: 'tribike2', price: 3000, name: 'Endurex Race Bike' },
       { model: 'tribike3', price: 3000, name: 'Tri-Cycles Race Bike' }
+   ],
+
+   SALOONS = [ 
+      { model: 'elegy', price: 45000, name: 'Elegy Brzi' }
    ]
+
+
 ]
    

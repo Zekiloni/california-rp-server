@@ -1,13 +1,14 @@
 
 
 const player = mp.players.local;
-var dealershipCEF, dealerCam, lastPos, testVeh;
+var dealershipCEF, dealerCam, lastPos, testVeh, dealerCamFov = 40;
+let vehicleDoors = [{0: false}, {1: false}, {2: false}, {3: false}, {4: false}, { 5: false }]
 
 mp.events.add({
 
    'client:showVehicleDealership': (vehicles) => {
       var vehicleMenu = JSON.stringify(vehicles)
-      lastPos = player.pisition;
+      lastPos = player.position;
       mp.gui.chat.activate(false);
       dealershipCEF = mp.browsers.new('package://vehicles-dealership/veh-dealer-interface/vehicle.html');
       dealershipCEF.execute(`vehicleList(${vehicleMenu});`); 
@@ -61,6 +62,72 @@ mp.events.add({
 
 });
 
+
+// CAMERA ZOOM
+mp.keys.bind(0x26, true, function() {
+   if (dealershipCEF.active) { 
+      dealerCamFov ++;
+      if (dealerCamFov >= 50) { dealerCamFov = 20; }
+      dealerCam.setFov(dealerCamFov);
+   }
+});
+
+mp.keys.bind(0x28, true, function() {
+   if (dealershipCEF.active) { 
+      dealerCamFov --;
+      if (dealerCamFov <= 20) { dealerCamFov = 40; }
+      dealerCam.setFov(dealerCamFov);
+   }
+});
+
+
+// VEHICLE ROTATION 
+mp.keys.bind(0x27, true, function() {
+   if (dealershipCEF.active) { 
+      let heading = testVeh.getHeading();;
+      testVeh.setHeading(heading - 15);
+   }
+});
+
+mp.keys.bind(0x25, true, function() {
+   if (dealershipCEF.active) { 
+      let heading = testVeh.getHeading();;
+      testVeh.setHeading(heading + 15);
+   }
+});
+
+
+// vehicle controls // 0x60 = 0 // 0x61 = 1 // 0x62 = 2 // 0x63 = 3 // 0x64 = 4 // 0x65 = 5 // 0x66 = 6 // 0x67 = 7
+
+mp.keys.bind(0x60, true, function() { 
+   if (dealershipCEF.active) {  vehicleTestDoors(0) }
+});
+
+mp.keys.bind(0x61, true, function() { 
+   if (dealershipCEF.active) {  vehicleTestDoors(1) }
+});
+
+mp.keys.bind(0x62, true, function() { 
+   if (dealershipCEF.active) {  vehicleTestDoors(2) }
+});
+
+mp.keys.bind(0x63, true, function() { 
+   if (dealershipCEF.active) { vehicleTestDoors(3) }
+});
+
+mp.keys.bind(0x64, true, function() { 
+   if (dealershipCEF.active) { vehicleTestDoors(4) }
+});
+
+mp.keys.bind(0x65, true, function() { // trunk control
+   if (dealershipCEF.active) {  vehicleTestDoors(5) }
+});
+
+
+vehicleTestDoors = (doorIndex) => { 
+   vehicleDoors[doorIndex] = !vehicleDoors[doorIndex];
+   vehicleDoors[doorIndex] ? testVeh.setDoorOpen(doorIndex, false, false) : testVeh.setDoorShut(doorIndex, false);
+}
 
 hexToRgb = (hex) => {
    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

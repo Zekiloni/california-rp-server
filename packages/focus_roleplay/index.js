@@ -127,7 +127,7 @@ mp.events.addCommand("dzok", (player, fullText, dict, anim) => {
 })
 
 mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => { 
-    player.call('client:showVehicleDealership', [MOTORCYCLES])
+    player.call('client:showVehicleDealership', [OFFROADS])
 })
 
 
