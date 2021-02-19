@@ -49,4 +49,5 @@ html, body {
 .vehicle .veh-info {position: absolute;bottom: 60px;width: 110px;text-align: center;left: 195px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}
 .vehicle .veh-info h1 { color: white; margin: 0; padding: 0; } 
 .vehicle .veh-info h4 {color: #f4f4f4;text-transform: uppercase;letter-spacing: 2px;margin: 0;padding: 0;letter-spacing: 4px;font-size: 13px;}
-.vehicle .fuel-icon {width: 18px;position: absolute;right: 88px;bottom: 22px;}
+.vehicle .fuel-icon {width: 18px;position: absolute;right: 120px;bottom: 22px;}
+.vehicle .lights-icon {width: 18px;position: absolute;right: 160px;bottom: 22px;}

@@ -36,8 +36,10 @@ UpdateHud = function(street, zone, heading, money, online) {
 }
 
 vehicleInfo = function(speed, lights) {
+    var lightsState = parseInt(lights)
     $('.vehicle-speed').html(parseInt(speed))
     speedo.set(parseInt(speed));
+    $('.lights-icon').attr(`src`,`assets/images/lights-${lightsState}.png`);
 }
 
 cashFormat = (x) => {
