@@ -47,5 +47,9 @@ mp.events.add({
          posY = parseInt(y),
          posZ = parseInt(z);
       mp.game.object.doorControl(model, posX, posY, posZ, state, 0.0, 50.0, 0)
+   },
+
+   'client:screenEffect': (effect, duration) => {
+      mp.game.graphics.startScreenEffect(effect, parseInt(duration), false);
    }
 });

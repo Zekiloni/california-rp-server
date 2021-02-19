@@ -1,4 +1,5 @@
 ﻿
-// mp.gui.chat.show(false);
-var chatUI = mp.browsers.new('package://chat-ui/index.html');
-chatUI.markAsChat();
+mp.gui.chat.show(false);
+var chatAPI = mp.browsers.new('package://chat-ui/index.html');
+chatAPI.markAsChat();
+

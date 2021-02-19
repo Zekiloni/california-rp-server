@@ -152,6 +152,20 @@ mp.events.add({
       if (seat == 0) { player.call('client:showVehicleHUD', [true]); }
     },
 
+    'server:vehicleIndicators': (player, indicatorID) => {
+      let vehicle = player.vehicle;
+      if (vehicle && player.seat == 0) {
+        switch (indicatorID) {
+          case 0:
+            vehicle.data.IndicatorRight = !vehicle.data.IndicatorRight; // right
+            break;
+          case 1:
+            vehicle.data.IndicatorLeft = !vehicle.data.IndicatorLeft; // left
+            break;
+        }
+      }
+    },
+
     'playerExitVehicle': (player, vehicle) => { 
       player.call('client:showVehicleHUD', [false])
     },

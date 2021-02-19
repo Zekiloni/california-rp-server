@@ -9,7 +9,7 @@ mp.events.add({
     mp.players.local.freezePosition(true);
     //mp.game.ui.setMinimapVisible(true);
     mp.gui.chat.activate(false);
-     mp.gui.chat.show(false); 
+    //mp.gui.chat.show(false); 
     setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
     mp.game.ui.displayRadar(false);
     mp.events.call('client:enableLoginCamera');
@@ -30,7 +30,7 @@ mp.events.add({
     loginCEF.destroy();
     loginCam.destroy();
     mp.gui.chat.activate(true);
-    mp.gui.chat.show(true); 
+    //mp.gui.chat.show(true); 
     mp.game.ui.displayRadar(true);
     setTimeout(() => { 
       mp.gui.cursor.show(false, false); 

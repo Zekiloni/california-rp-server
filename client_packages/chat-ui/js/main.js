@@ -105,6 +105,14 @@ var chatAPI =
 	}
 };
 
+let api = {"chat:push": chatAPI.push, "chat:clear": chatAPI.clear, "chat:activate": chatAPI.activate, "chat:show": chatAPI.show}; 
+
+for(let fn in api)
+{
+	mp.events.add(fn, api[fn]);
+}
+
+
 $(document).ready(function()
 {
 	chat.container = $("#chat ul#chat_messages");
