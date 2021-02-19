@@ -41,7 +41,9 @@ global.MESSAGES = [
    MSG_ERROR = 'Došlo je do greške.',
    MSG_ENGINE_ON = 'Upalili ste motor vozila.',
    MSG_ENGINE_OFF = 'Ugasili ste motor vozila.',
-   MSG_CMD_SYNTAX = '<b>[KOMANDA]</b> '
+   MSG_CMD_SYNTAX = '<b>[KOMANDA]</b> ',
+   MSG_DOORS_LOCKED = 'Zaključali ste vrata',
+   MSG_DOORS_UNLOCKED = 'Otključali ste vrata'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

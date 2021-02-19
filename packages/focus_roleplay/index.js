@@ -10,6 +10,7 @@ global.jobs = require('./jobs/jobsCore')
 global.inventory = require('./inventory/inventoryCore');
 global.radio = require('./player/radioCore');
 global.factions = require('./factions/factionsCore');
+global.doors = require('./core/doors')
 
 var dbStructure = require('./core/databaseStructure');
 var globals = require('./core/globals')
@@ -19,7 +20,7 @@ var playerCommands = require('./player/playerCommands')
 var adminCommands = require('./player/adminCommands')
 var playerAnimations = require('./player/animations')
 var realTimeWeather = require('./core/weather')
-var dealershipVehicles = require('./vehicles/vehicleList')
+var dealershipVehicles = require('./vehicles/vehicleList');
 
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);

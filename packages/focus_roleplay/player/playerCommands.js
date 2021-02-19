@@ -1,3 +1,4 @@
+const doors = require("../core/doors");
 
 mp.events.addCommand({
   
@@ -97,6 +98,10 @@ mp.events.addCommand({
             account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} zakljucava vozilo.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
          }
       } else { player.outputChatBox('U vasoj blizini se ne nalazi nista sto bi se moglo zakljucati.');  }
+   },
+
+   'dl': (player, fullText) => { 
+      doors.controlNearDoor(player)
    },
 
    'windows': (player, fullText) => { 

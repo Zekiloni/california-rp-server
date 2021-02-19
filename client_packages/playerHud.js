@@ -1,6 +1,7 @@
 
 const player = mp.players.local;
-var playerHUD;
+let onlinePlayers = mp.players.length;
+var playerHUD, isDriving = false;
 
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
@@ -29,7 +30,7 @@ updatePlayerHud = () => {
 	let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
 	let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
 	let heading = getPlayerHeading();
-	playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${player.cash}\");`); 
+	playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${player.cash}\", \"${onlinePlayers}\");`); 
 }
 
 
@@ -47,21 +48,45 @@ getPlayerHeading = () => {
 	return headingString;
 }
 
-mp.events.add('render', function() { // hiding default GTA Hud
-	mp.game.ui.hideHudComponentThisFrame(7); // HUD_AREA_NAME
-	mp.game.ui.hideHudComponentThisFrame(9); // HUD_STREET_NAME
-	mp.game.ui.hideHudComponentThisFrame(6); // HUD_VEHICLE_NAME
-	mp.game.ui.hideHudComponentThisFrame(2); // HUD_WEAPON_ICON
-	mp.game.ui.hideHudComponentThisFrame(3); // HUD_CASH
-	mp.game.ui.hideHudComponentThisFrame(4); // HUD_MP_CASH
-	mp.game.ui.hideHudComponentThisFrame(14); // CROSSHAIR
- 
-  mp.game.invoke('0x9E4CFFF989258472');
-  mp.game.invoke('0xF4F2C0D4EE209E20');
+mp.events.add({
+	'render': () => { // hiding default GTA Hud
+		mp.game.ui.hideHudComponentThisFrame(7); // HUD_AREA_NAME
+		mp.game.ui.hideHudComponentThisFrame(9); // HUD_STREET_NAME
+		mp.game.ui.hideHudComponentThisFrame(6); // HUD_VEHICLE_NAME
+		mp.game.ui.hideHudComponentThisFrame(2); // HUD_WEAPON_ICON
+		mp.game.ui.hideHudComponentThisFrame(3); // HUD_CASH
+		mp.game.ui.hideHudComponentThisFrame(4); // HUD_MP_CASH
+		mp.game.ui.hideHudComponentThisFrame(14); // CROSSHAIR
+	
+		mp.game.invoke('0x9E4CFFF989258472');
+		mp.game.invoke('0xF4F2C0D4EE209E20');
 
-	// show Crosshair if player is aiming with AWP
-	let playerWeapon = player.weapon;
-	if(playerWeapon == '0x05FC3C11' || playerWeapon == '0x0C472FE2' || playerWeapon == '0xA914799' || playerWeapon == '0xC734385A' || playerWeapon == '0x6A6C02E0') {
-		mp.game.ui.showHudComponentThisFrame(14);
-	}
+		// show Crosshair if player is aiming with AWP
+		let playerWeapon = player.weapon;
+		if (playerWeapon == '0x05FC3C11' || playerWeapon == '0x0C472FE2' || playerWeapon == '0xA914799' || playerWeapon == '0xC734385A' || playerWeapon == '0x6A6C02E0') {
+			mp.game.ui.showHudComponentThisFrame(14);
+		}
+
+
+		// update veh speed if driver
+		if (isDriving) { vehicle() }
+	},
+
+	'client:showVehicleHUD': (toggle) => { 
+		playerHUD.execute(`showVehicle(${toggle});`); 
+		isDriving = toggle;
+	},
 })
+
+vehicle = () => { 
+	let vehicle = player.vehicle,
+		vehicleSpeed = vehicle.getSpeed(),
+		lights = vehicle.getLightsState(1, 1),
+		lightsStatus = 0;
+	vehicleSpeed = vehicleSpeed * 3.6;
+	playerHUD.execute(`vehicleInfo(\"${vehicleSpeed}\");`); 
+
+	if (lights.lightsOn == 0 && lights.highbeamsOn == 0) { lightsStatus = 0; }
+	else if (lights.lightsOn == 1) { lightsStatus = 1; }
+	else if (lights.highbeamsOn == 1) { lightsStatus = 2;}
+}

@@ -148,6 +148,14 @@ mp.events.add({
       }
     },
 
+    'playerEnterVehicle': (player, vehicle, seat) => { 
+      if (seat == 0) { player.call('client:showVehicleHUD', [true]); }
+    },
+
+    'playerExitVehicle': (player, vehicle) => { 
+      player.call('client:showVehicleHUD', [false])
+    },
+
     'playerEnterCheckpoint': (player, checkpoint) => {
       if(player.checkpoint == checkpoint) {
         player.checkpoint ++;

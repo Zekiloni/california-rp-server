@@ -1,45 +1,39 @@
 html, body {
-    font-family: Helvetica Neue, Helvetica, sans-serif !important; 
-    height: 100%; 
-    background: transparent !important; 
-    overflow: hidden; 
-	-webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none;
+  height: 100%; 
+  background: transparent !important; 
+  overflow: hidden; 
+-webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+     -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none;
 }
 
-.server { width: 100%; position: absolute; top: 0; padding-top: 5px; text-align: center; display: none; }
-.server .sajt {text-transform: uppercase;font-size: 25px;font-weight: 200 !important;letter-spacing: 2px;color: whitesmoke;text-shadow: 1px 1px 3px rgba(0,0,0,0.75);}
-.server .sajt .focus-rp { background: -webkit-linear-gradient(90deg, #40a9eb, #7dcec8); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.server .online::before {
-    content:"";
-    display: block;
-    margin: 0 auto;
-    height: 1px;
-    width: 300px;
-    background: rgb(245 245 245 / 44%);
-    margin-bottom: 5px;
-    box-shadow: 1px 1px 3px rgb(0 0 0 / 27%);
-}
-.server .online {display: block;color: #f7f7f7;font-size: 19px;font-weight: 300;text-shadow: 1px 1px 3px rgba(0,0,0,0.75);letter-spacing: 2px;}
+.server {width: 100%;position: absolute;bottom: 0;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);padding-top: 5px;text-align: center;display: none;}
+.server .site {text-transform: uppercase;font-size: 25px;font-weight: 200 !important;letter-spacing: 3px;color: whitesmoke;}
+.server .site .focus-rp {background: linear-gradient( 90deg , rgb(156 45 181), rgb(4 149 232 / 74%));background-clip: text;-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-weight: 700;text-shadow: none;filter: drop-shadow(0px 1px #000);}
+.server .online::before { content:""; display: block; margin: 0 auto; height: 1px; width: 300px; background: rgb(245 245 245 / 44%); margin-bottom: 5px; box-shadow: 1px 1px 3px rgb(0 0 0 / 48%); }
+.server .online {display: block;color: #f7f7f7;font-size: 19px;font-weight: 300;letter-spacing: 2px;}
+.server .online .icon { color: #868686;}
 
-.igrac { right: 2%; top: 2%; position: absolute; width: 300px; }
-.igrac .novac {text-align: right;font-weight: 500;color: #84b879;font-sizE: 28px;text-shadow: 0px 1px 1.5px rgb(0 0 0 / 93%);letter-spacing: 0.6px;}
+.player { right: 2%; top: 2%; position: absolute; width: 300px; }
+.player .money {text-align: right;font-weight: 700;color: #84b879;font-size: 35px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);letter-spacing: -1.5px;}
 
-.donji-ugao { left: 10%; bottom: 1%; position: absolute; width: 400px; height: 150px; }
-.vozilo { display: none; left: 17%; bottom: 1%; position: relative; width: 400px; height: auto; }
-.vozilo .brzinometar { width: 50%; text-align: center; }
-.vozilo .brzinometar .brzina { font-weight: 400; color: whitesmoke; text-shadow: 2px 2px 2px rgb(0 0 0 / 93%); }
-.vozilo .brzinometar .merna-jedinica { text-transform: uppercase; font-size: 13px; margin-top: -5%; font-weight: 300; color: whitesmoke; text-shadow: 2px 2px 2px rgb(0 0 0 / 93%);  }
+.donji-ugao {left: 10%;bottom: 1%;position: absolute;width: 400px;/* height: 150px; */}
 
-.lokacija {left: 34%;bottom: 1px;position: absolute;width: 400px;padding: 5px 10px;}
-.lokacija .trenutni-smer {margin: 0;font-size: 28px;letter-spacing: 1px;font-weight: 400;color: whitesmoke;text-shadow: 0px 1px 1px rgb(0 0 0);}
-.lokacija .trenutna-lokacija {margin: 0;font-size: 18px;letter-spacing: 1px;font-weight: 300;color: whitesmoke;text-shadow: 0px 1px 1px rgb(0 0 0 / 93%);}
+.location { letter-spacing: 1px; left: 31%;bottom: 1px;position: relative;width: 400px;padding: 5px 30px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}
+.location .icon {position: absolute;left: 0;top: 35px;color: #868782;width: 20px;}
+.location .current-heading {margin: 0;font-size: 24px;letter-spacing: 1px;font-weight: 400;color: whitesmoke;}
+.location .current-zone {margin: 0;font-size: 18px; font-weight: 500;color: whitesmoke;}
+.location .current-street {margin: 0;font-size: 17px;font-weight: 400;color: #c7c7c7;}
 
-.notif { left: 1%; bottom: 245px; width: 300px; min-height: 50px; height: auto;position: absolute;}
-.notif .notifikacija { margin-top: 10px; word-wrap: break-word; font-family: "Roboto";box-shadow: 0 12px 18px rgb(0 0 0 / 18%);background: rgb(0 0 0 / 35%);height: auto;padding: 10px;font-weight: 400;font-size: 18px;text-shadow: 0px 0.5px 0.5px rgb(0 0 0 / 32%);color: white;animation: slide 1.5s;border-left: 10px solid transparent;}
+.date-time {left: 31%; padding: 5px 30px; position: relative; letter-spacing: 1px; text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%); }
+.date-time .icon {position: absolute;left: 0;top: 16px;color: #868782;width: 20px;}
+.date-time .current-time { margin: 0; font-size: 18px; font-weight: 500; color: whitesmoke; }
+.date-time .current-date { margin: 0; font-size: 17px; font-weight: 400; color: #c7c7c7; }
+
+.notif {left: 1.1%;bottom: 245px;width: 300px;min-height: 50px;height: auto;position: absolute;}
+.notif .notification {margin-top: 10px;word-wrap: break-word;font-family: "Roboto";box-shadow: 0 12px 18px rgb(0 0 0 / 18%);background: rgb(0 0 0 / 35%);height: auto;padding: 10px 15px;font-weight: 400;font-size: 16px;border-radius: 2px;text-shadow: 0px 0.5px 0.5px rgb(0 0 0 / 32%);color: white;animation: slide 1.5s;border-left: 7px solid transparent;}
 .greska { border-color: #d9534f !important;   }
 .uspesno { border-color: #5cb85c !important;}
 .info { border-color: #0495e8 !important; }
@@ -49,3 +43,10 @@ html, body {
   50% { transform: translateX(60px); } 
   to { transform: translateX(0); }
 }
+
+.vehicle { display: none; right: 1%;bottom: 1%;position: absolute;width: 400px;height: auto; }
+.vehicle #speedo {right: 0;bottom: 10px;position: absolute;}
+.vehicle .veh-info {position: absolute;bottom: 60px;width: 110px;text-align: center;left: 195px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}
+.vehicle .veh-info h1 { color: white; margin: 0; padding: 0; } 
+.vehicle .veh-info h4 {color: #f4f4f4;text-transform: uppercase;letter-spacing: 2px;margin: 0;padding: 0;letter-spacing: 4px;font-size: 13px;}
+.vehicle .fuel-icon {width: 18px;position: absolute;right: 88px;bottom: 22px;}

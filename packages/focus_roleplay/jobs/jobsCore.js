@@ -34,11 +34,11 @@ module.exports = {
       stations.Stations.forEach((station) => {
          player.maxCheckpoints ++;
       })
-      
    },
 
    createBusRouteCheckpoint: function() {
       player.call('client:createCheckpoint', busRoute[index].X, busRoute[index].Y, busRoute[index].Z);
-   }
+   },
+   
 }
 var busRoute = [];

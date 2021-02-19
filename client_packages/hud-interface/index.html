@@ -8,32 +8,43 @@
         <title>Focus Roleplay - Hud UI</title>
         <link rel="stylesheet" type="text/css" href="assets/style.css">
         <link rel="stylesheet" type="text/css" href="assets/vendor/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="assets/vendor/css/font-awesome.css">
         <script src="assets/vendor/js/jquery-3.2.1.js"></script>
+        <script src="assets/vendor/js/gauge.min.js"></script>
         <script src="assets/vendor/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="server">
-            <h3 class="sajt">www.<b class="focus-rp">focus-rp</b>.com</h3>
-            <h6 class="online">online <b class="broj-online-igraca">127</b></h6>
+            <h3 class="site">www.<b class="focus-rp">focus-rp</b>.com</h3>
+            <h6 class="online">online <b class="online-players">127</b> <i class="icon fa fa-users" aria-hidden="true"></i></h6>
         </div>  
 
         <div class="notif"></div>
 
-        <div class="igrac">
-            <h4 class="novac"><b>&dollar;</b><span class="kolicina-novca">33</span></h4>
+        <div class="player">
+            <h4 class="money"><b>&dollar;</b><span class="player-money">33</span></h4>
         </div>
         
-        <div class="donji-ugao">
-            <div class="vozilo">
-                <div class="brzinometar">
-                    <h1 class="brzina">74</h1>
-                    <h4 class="merna-jedinica">km / h</h4>
-                </div>
+        <div class="vehicle">
+            <canvas id="speedo">guage</canvas>
+            <div class="veh-info">
+                <h1 class="vehicle-speed">74</h1>
+                <h4>km/h</h4>
             </div>
-            <div class="lokacija">
-				<h4 class="trenutni-smer">N</h4>
-                <h4 class="trenutna-lokacija">Ime Ulice u Gradu<br>Zona</h4>
+            <img class="fuel-icon" src="assets/images/veh-fuel.png">
+        </div>
+
+        <div class="donji-ugao">
+            <div class="date-time">
+                <img class="icon" src="assets/images/current-time.png">
+                <h4 class="current-time">21:00</h4>
+                <h4 class="current-date">18. Feb 2021</h4>
+            </div>
+            <div class="location">
+                <img class="icon" src="assets/images/current-location.png">
+				<h4 class="current-heading">N</h4>
+                <h4 class="current-zone">Ime Ulice u Gradu</h4>
+                <h5 class="current-street">aaa</h5>
             </div>
         </div>
 

@@ -40,4 +40,12 @@ mp.events.add({
          setTimeout(() => { eatObject.destroy(); }, 7000)
       }, 300)
    },
+
+   'client:syncDoorsState': (model, x, y, z, state) => { 
+      mp.gui.chat.push(`${model}, x ${x}, y ${y}, state ${state}`)
+      let posX = parseInt(x),
+         posY = parseInt(y),
+         posZ = parseInt(z);
+      mp.game.object.doorControl(model, posX, posY, posZ, state, 0.0, 50.0, 0)
+   }
 });
