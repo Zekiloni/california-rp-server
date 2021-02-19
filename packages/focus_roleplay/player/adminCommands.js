@@ -205,7 +205,9 @@ mp.events.addCommand({
          account.notification(player, `Zamrznuli ste igraca ${recipient.name}`, NOTIFY_SUCCESS, 4);
       }
    },
+
    'kill': (player, fullText, target) => { 
+      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let recipient = account.findPlayer(target);
       if(recipient) {
          recipient.health = 0;
@@ -219,7 +221,13 @@ mp.events.addCommand({
       
    },
 
+   'time': (player, fulltext, hour, minute, second) => {
+      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      mp.world.time.set(hour, minute, second);
+   }, 
+
    'sethp': (player, fullText, target, health) => { 
+      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let recipient = account.findPlayer(target);
       let healthToSet = parseInt(health);
       if(healthToSet > 0 && healthToSet <= 100 ) {
@@ -237,7 +245,7 @@ mp.events.addCommand({
    },
 
    'setarmour': (player, fullText, target, armour) => { 
-
+      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let recipient = account.findPlayer(target);
       let armourToSet = parseInt(armour);
       if(armourToSet > 0 && armourToSet <= 100 ) {

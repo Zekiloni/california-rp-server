@@ -35,7 +35,7 @@ UpdateHud = function(street, zone, heading, money, online) {
     $('.current-time').html(time)
 }
 
-vehicleInfo = function(speed) {
+vehicleInfo = function(speed, lights) {
     $('.vehicle-speed').html(parseInt(speed))
     speedo.set(parseInt(speed));
 }

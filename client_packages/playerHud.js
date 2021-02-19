@@ -84,9 +84,10 @@ vehicle = () => {
 		lights = vehicle.getLightsState(1, 1),
 		lightsStatus = 0;
 	vehicleSpeed = vehicleSpeed * 3.6;
-	playerHUD.execute(`vehicleInfo(\"${vehicleSpeed}\");`); 
 
 	if (lights.lightsOn == 0 && lights.highbeamsOn == 0) { lightsStatus = 0; }
 	else if (lights.lightsOn == 1) { lightsStatus = 1; }
-	else if (lights.highbeamsOn == 1) { lightsStatus = 2;}
+	else if (lights.highbeamsOn == 1) { lightsStatus = 2; }
+
+	playerHUD.execute(`vehicleInfo(\"${vehicleSpeed}\", \"${lightsStatus}\");`); 
 }
