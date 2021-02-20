@@ -36,6 +36,7 @@ module.exports = {
         player.data.savings = result[0].savings;
         player.data.credit = result[0].credit;
         player.job = result[0].job;
+        player.salary = result[0].salary;
         player.faction = result[0].faction;
         player.rank = result[0].factionRank;
         player.radioFreq = result[0].radioFreq;
@@ -50,11 +51,12 @@ module.exports = {
         player.drag = false;
         player.dragTarget = 0;
         player.cuffed = false;
-        player.salary = 0;
+        player.jobCount = 0;
         player.tased = false;
         player.frozen = false;
         player.checkpoint = 0;
         player.maxCheckpoints = 0;
+        player.data.container = false;
 
         if (result[0].lastPosition != 0) { 
             let lastPos = JSON.parse(result[0].lastPosition);
@@ -100,6 +102,7 @@ module.exports = {
             hunger: player.hunger,
             thirst: player.thirst,
             stress: player.stress,
+            salary: player.salary,
             weaponSkill: player.weaponSkill
         };
         db.query("UPDATE `players` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {

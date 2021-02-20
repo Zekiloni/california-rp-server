@@ -2,7 +2,8 @@
 
 const HANDLER_VEH_POINT = { position: [851.60418, -2942.36010, 5.22658], rotation: [-0.0529914, 0.009985, -94.208023] },
    DOWN_OFFSET = 0.5,
-   UP_OFFSET = 3;
+   UP_OFFSET = 3,
+   DROPZONE_POINT = [1119.51806, -3142.53393, 5.26680];
 
 let portContainers = new Map([ 
    [1, { position: [858.7689, -2926.11914, 5.2264], rotation: [0.0467959, 0.01862500, -92.3342] }],
@@ -15,8 +16,11 @@ let portContainers = new Map([
    [8, { position: [867.2453, -2914.49121, 5.2176], rotation: [-0.1004520, -0.000604, 90.34505] }]
 ])
 
+global.dropZoneContainers = [];
+
 const CONTAINER_TYPES = ['Maloprodajne Zalihe', 'Oprema za Oruzije i Municija', 'Namestaj i Pokucstvo'],
-      refreshInterval = 1200 * 1000; // 20 minutes
+      refreshInterval = 1200 * 1000,
+      MAX_CONTAINERS_PER_PLAYER = 5; // 20 minutes
 
 
 var container = { 
@@ -56,21 +60,20 @@ var container = {
    },
 
    delete: (container) => { 
-      container.object.destroy();
-      container.label.destroy();
       container.exist = false;
       container.type = null;
       container.attached = false;
    },
 
-   attach: (player, container) => { 
-      container.attached = player.id;
-      container.object.destroy();
-      container.label.destroy();
-      console.log(container)
+   attach: (player, cont) => { 
+      if (player.data.container) return account.notification(player, 'Već imate zakačen kontenjer.', NOTIFY_ERROR, 4)
+      cont.attached = player.id;
+      player.data.container = cont;
+      cont.object.destroy();
+      cont.label.destroy();
 
-      mp.players.forEachInRange(player.position, 100,  (target) => { 
-         target.call('client:syncHandlerContainer', player)
+      mp.players.forEachInRange(player.position, 100, (target) => { 
+         target.call('client:syncHandlerContainer', [player, 'prop_container_03a'])
       })
    },
 
@@ -83,8 +86,37 @@ var container = {
       return nearContainer;
    },
 
-   deliver: (player, cont) => { 
-      container.delete(cont);
+   deliver: (player) => { 
+      let dropZone = new mp.Vector3(DROPZONE_POINT[0], DROPZONE_POINT[1], DROPZONE_POINT[2])
+      if (player.dist(dropZone) > 20) return account.notification(player, 'Ne nalazite se u zoni za dostavu.', NOTIFY_ERROR, 4)
+      
+      mp.players.forEachInRange(player.position, 100, (target) => { 
+         target.call('client:detachHandlerContainer', [player])
+      })
+
+      let rC = Math.floor(Math.random() * 15),
+         rr = Math.floor(Math.random() * 20)
+         pos = new mp.Vector3(DROPZONE_POINT[0] + rC, DROPZONE_POINT[1] + rC, DROPZONE_POINT[2] - DOWN_OFFSET),
+         labelPos = new mp.Vector3(pos.x, pos.y, pos.z + UP_OFFSET),
+         rot = new mp.Vector3(0, 0, rC * rr)
+      
+      let dropCont =  [
+         type = player.data.container.type,
+         object = mp.objects.new('prop_container_03a', pos, { rotation: rot, alpha: 255, dimension: 0 }),
+         label = mp.labels.new(player.data.container.type, labelPos, { los: false, font: 0, drawDistance: 10 })
+      ]
+         
+      dropZoneContainers.push({dropCont})
+      console.log(dropZoneContainers)
+
+      container.delete(player.data.container)
+      setTimeout(() => { player.data.container = false; }, 500);
+      
+      player.jobCount ++;
+      player.salary += 50;
+      if (player.jobCount >= MAX_CONTAINERS_PER_PLAYER) { 
+         port.finish(player)
+      }
    },
 }
 
@@ -114,13 +146,13 @@ var port = {
    stop: (player) => { 
       if (!player.duty) return false;
       player.duty = false;
-      if (player.earnings > 0) { 
+      if (player.jobCount > 0) { 
 
       } else return false;
    },
 
    finish: (player) => { 
-
+   
    },
 }
 
@@ -155,7 +187,9 @@ mp.events.add({
          console.log('oh no')
          return false;
       }
-   }
+   },
+
+   'server:dettachContainer': (player) => {  container.deliver(player) },
 })
 
 

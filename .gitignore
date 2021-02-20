@@ -5,4 +5,5 @@
 /node_modules
 /plugins
 /dotnet
+/client_packages/game_resources/dlcpacks/
 /ragemp-server.exe

@@ -16,6 +16,7 @@ let playersTable = `CREATE TABLE IF NOT EXISTS players (
   cash int(11) NOT NULL DEFAULT 800,
   bank int(11) NOT NULL DEFAULT 1000,
   savings int(11) NOT NULL DEFAULT 0,
+  salary int(6) NOT NULL DEFAULT 0,
   credit int(10) NOT NULL DEFAULT 0,
   clothing text NOT NULL DEFAULT 0,
   headOverlays text NOT NULL DEFAULT 0,

@@ -89,7 +89,29 @@ module.exports = {
                          if (player.xp >= 60) { 
                               player.hours ++; 
                               player.xp = 0; 
+                              
+                              let oldValue = player.data.bank, newValue;
+                              setTimeout(() => {
+                                   let earnings = 0;
+                                   if (player.salary > 0) { 
+                                        earnings += player.salary;
+                                        player.salary = 0;
+                                   } 
+
+                                   if (player.job != 0) { earnings += 120; }
+                                   if (player.hours < 8) { earnings += 1200; }
+
+                                   player.data.bank += earnings;
+                                   newValue = oldValue + earnings;
+                              }, 500);
+
+                              
+                              let message = `<b> Primili ste platu ! </b> <br> Staro stanje: <b>${oldValue}$</b> <br>, Novo stanje <b>${newValue}$</b>`
+                              account.notification(player, message, NOTIFY_INFO, 10);
+                              
+                     
                          }
+
                          account.save(player);
                     }
                }
