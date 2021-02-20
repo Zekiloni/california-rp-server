@@ -65,9 +65,11 @@ var container = {
 
    attach: (player, container) => { 
       container.attached = player.id;
+      container.object.destroy();
+      container.label.destroy();
       console.log(container)
 
-      mp.players.forEachInRange(player.position, 50,  (target) => { 
+      mp.players.forEachInRange(player.position, 100,  (target) => { 
          target.call('client:syncHandlerContainer', player)
       })
    },
