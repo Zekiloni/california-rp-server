@@ -1,5 +1,7 @@
 
 
+var airportTugDriver = require('./jobs/port')
+
 const player = mp.players.local;
 var jobOfferCEF;
 
@@ -18,5 +20,35 @@ mp.events.add({
 
    'client:acceptJobOffer': (jobId) => { 
       mp.events.callRemote('server:acceptJobOffer', parseInt(jobId));
-   }
+   },
+
+   'client:createjobWaypoint': (position) => { 
+        mp.game.ui.setNewWaypoint(position.x, position.y);
+   },
+
+   'client:createJobMarker': (type = 1, position, radius = 10, color, dimension = 0) => { 
+       let pos = position;
+        mp.checkpoints.new(type, new mp.Vector3(pos.x, pos.y, pos.z - 1.5), radius,
+        {
+            color: [ color.r, color.g, color.b, color.a ],
+            visible: true,
+            dimension: dimension
+        });
+   },
+
+    'client:destroyJobMarker': (marker) => { marker.destroy(); },
+
+    'client:createJobBlip': (sprite = 1, position, name = 'A321', color = 36, alpha = 255, shortRange, rotation = 0, dimension = 0) => { 
+        let jobBlip = mp.blips.new(sprite, new mp.Vector3(position.x, position.y, 0),
+        {
+            name: name,
+            color: color,
+            alpha, alpha,
+            shortRange: shortRange,
+            rotation: rotation,
+            dimension: dimension,
+        });
+    },
+
+    'client:destroyJobBlip': (blip) => { blip.destroy(); }
 });

@@ -2,6 +2,8 @@
 let playersTable = `CREATE TABLE IF NOT EXISTS players (
   ID int(11) NOT NULL AUTO_INCREMENT,
   username varchar(48) NOT NULL,
+  first_Name varchar(32) NOT NULL,
+  last_Name varchar(32) NOT NULL,
   password varchar(256) NOT NULL,
   registerDate timestamp NULL DEFAULT NULL,
   lastLogin timestamp NOT NULL DEFAULT current_timestamp(),

@@ -17,6 +17,8 @@ global.CHAT_COLORS = [
    PM_TO = 'FCBD00',
 ]; Object.freeze(CHAT_COLORS)
 
+global.SERVER_MARKER = { r: 3, g: 105, b: 163, a: 150}
+
 global.CHAT_RADIUS = { 
    OOC: 4.0, 
    IC: 6.2,
@@ -43,7 +45,9 @@ global.MESSAGES = [
    MSG_ENGINE_OFF = 'Ugasili ste motor vozila.',
    MSG_CMD_SYNTAX = '<b>[KOMANDA]</b> ',
    MSG_DOORS_LOCKED = 'Zaključali ste vrata',
-   MSG_DOORS_UNLOCKED = 'Otključali ste vrata'
+   MSG_DOORS_UNLOCKED = 'Otključali ste vrata',
+   MSG_NOT_ON_DUTY = 'Niste na dužnosti.',
+   MSG_ALREADY_WORKING = 'Već radite.'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

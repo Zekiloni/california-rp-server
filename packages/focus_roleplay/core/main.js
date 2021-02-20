@@ -48,6 +48,13 @@ module.exports = {
           return result;
      },
 
+     randomRGB: () => { 
+          let rr = Math.floor(Math.random() * 255),
+               gg = Math.floor(Math.random() * 256),
+               bb = Math.floor(Math.random() * 256);
+          return {r: rr, g: gg, b: bb}
+     },
+
      onMinuteSpent: function () { 
           let counter = 0;
           mp.players.forEach(

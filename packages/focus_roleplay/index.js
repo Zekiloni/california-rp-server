@@ -1,4 +1,5 @@
 
+
 global.conf = require('./core/configuration');
 global.core = require('./core/main');
 global.db = require('./core/database');
@@ -12,8 +13,8 @@ global.radio = require('./player/radioCore');
 global.factions = require('./factions/factionsCore');
 global.doors = require('./core/doors')
 
-var dbStructure = require('./core/databaseStructure');
 var globals = require('./core/globals')
+var dbStructure = require('./core/databaseStructure');
 var playerEvents = require('./player/playerEvents');
 var huntingAnimals = require('./hunting/animals');
 var playerCommands = require('./player/playerCommands')
@@ -131,7 +132,17 @@ mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => {
     player.call('client:showVehicleDealership', [OFFROADS])
 })
 
+mp.events.addCommand("cobject", (player, fullText, model) => { 
+    let position = new mp.Vector3(player.position.x, player.position.z + 10, player.position.y)
+    try { 
+        mp.objects.new(model, player.position,
+            {
+                alpha: 255,
+                dimension: player.dimension
+            });
+    } catch(e) { console.log(e) }
 
+})
 
 
 

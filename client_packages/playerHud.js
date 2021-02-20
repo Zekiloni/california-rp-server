@@ -79,10 +79,10 @@ mp.events.add({
 })
 
 vehicle = () => { 
-	let vehicle = player.vehicle,
-		vehicleSpeed = vehicle.getSpeed(),
-		lights = vehicle.getLightsState(1, 1),
-		lightsStatus = 0;
+	let vehicle = player.vehicle;
+	let vehicleSpeed = vehicle.getSpeed();
+	let lights = vehicle.getLightsState(1, 1);
+	let lightsStatus = 0;
 	vehicleSpeed = vehicleSpeed * 3.6;
 
 	if (lights.lightsOn == 0 && lights.highbeamsOn == 0) { lightsStatus = 0; }

@@ -37,3 +37,4 @@ mp.keys.bind(0x27, false, () => {
    let vehicle = mp.players.local.vehicle;
    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicleIndicators', 0);
 });
+

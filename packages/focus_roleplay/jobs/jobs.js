@@ -28,8 +28,13 @@ global.JOBS = [
    // },
 
    JOB_BUS_DRIVER = { 
-      ID: 6, NAME: 'Vozac Autobusa', LOC: 'Autobuska Stanica Los Santos', DESC: 'Los Santos Autobuska stanica. Vozac autobusa na gradskim i van-gradskim linijama.', 
+      ID: 6, NAME: 'Vozac Autobusa', LOC: 'Los Santos Bus Centre', DESC: 'Los Santos Autobuska stanica. Vozac autobusa na gradskim i van-gradskim linijama.', 
       POINT: new mp.Vector3(435.52148, -644.5684, 28.73636) , BLIP: 67
+   },
+
+   JOB_LS_PORT = { 
+      ID: 7, NAME: 'Kuac', LOC: 'Los Santos Port', DESC: 'Los Santos Port, vozač tegljača, čistač i kontrolor.', 
+      POINT: new mp.Vector3(816.988, -2977.546, 6.0206) , BLIP: 569, MAX_WORKERS: 8
    },
 
    // JOB_MINER = { 

@@ -147,7 +147,8 @@ mp.events.addCommand({
    },
 
    'quitjob': (player, fullText) => { 
-      if (player.job == 0) return account.notification(player, MSG_UNEMPLOYED, NOTIFY_ERROR, 4)
+      if (player.job == 0) return account.notification(player, MSG_UNEMPLOYED, NOTIFY_ERROR, 4);
+      if (player.duty) return account.notification(player, 'Morate prvo stopirati rad.', NOTIFY_ERROR, 4)
 
       player.job = 0;
       account.notification(player, MSG_QUITJOB, NOTIFY_SUCCESS, 4)

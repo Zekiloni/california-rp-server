@@ -26,7 +26,7 @@ module.exports = {
 
     load: async function (player, username) {
         var result = await db.aQuery("SELECT * FROM `players` WHERE `username` = ?", username);
-        player.name = username;
+        player.name = result[0].first_Name + ' ' + result[0].last_Name;
         player.admin = result[0].admin;
         player.xp = result[0].xp;
         player.hours = result[0].hours;
@@ -50,6 +50,7 @@ module.exports = {
         player.drag = false;
         player.dragTarget = 0;
         player.cuffed = false;
+        player.salary = 0;
         player.tased = false;
         player.frozen = false;
         player.checkpoint = 0;
@@ -226,6 +227,8 @@ module.exports = {
         if (!foundPlayer) {
           mp.players.forEach((_player) => {
             if (_player.name === playerName) {
+                foundPlayer = _player;
+            } else if (_player.name.includes(playerName)) { 
                 foundPlayer = _player;
             }
           });

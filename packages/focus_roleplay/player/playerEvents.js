@@ -110,7 +110,6 @@ mp.events.add({
     },
 
     'server:acceptJobOffer': (player, jobID) => { 
-      console.log(`prihvatio ponudu ${jobID}`)
       let job = JOBS.find( ({ID}) => ID === jobID);
       player.job = jobID;
       account.notification(player, `Uspešno ste se zaposlili kao ${job.NAME}.`, NOTIFY_SUCCESS, 4);
@@ -150,6 +149,7 @@ mp.events.add({
 
     'playerEnterVehicle': (player, vehicle, seat) => { 
       if (seat == 0) { player.call('client:showVehicleHUD', [true]); }
+      if (vehicle.job) { if (vehicle.job != player.job) return player.removeFromVehicle(); }
     },
 
     'server:vehicleIndicators': (player, indicatorID) => {
