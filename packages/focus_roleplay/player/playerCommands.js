@@ -115,7 +115,7 @@ mp.events.addCommand({
          // Vehicle.rollDownWindow(index)
          // Vehicle.rollUpWindow(index)
          // isWindowIntact(index) da li je slomljen ili nije 
-      }
+      } 
    },
 
    'giverank': async (player, fullText) => { 

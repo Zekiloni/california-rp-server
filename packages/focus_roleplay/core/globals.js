@@ -23,7 +23,7 @@ global.CHAT_RADIUS = {
    OOC: 4.0, 
    IC: 6.2,
    LOW: 2.8,
-   SHOUT: 12.0, 
+   SHOUT: 12.0,  
    DO: 6.5,
    ME: 6.5,
 }; Object.freeze(CHAT_RADIUS)

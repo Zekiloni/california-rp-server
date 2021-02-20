@@ -69,7 +69,7 @@ let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
 db.query(vehicleTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
   core.terminal(3, `Checking vehicleTable  | MySQL`);
-});
+}); 
 
 
 let inventoryTable = `CREATE TABLE IF NOT EXISTS inventory (

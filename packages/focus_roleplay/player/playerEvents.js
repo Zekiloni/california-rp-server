@@ -100,7 +100,7 @@ mp.events.add({
         account.updateFaceFeatures(player, faceFeatures)
         account.updateBlendData(player, blendData);
     },
-
+ 
     'playerCommand': (player, command) => {
         if (!player.data.loggedIn) return player.ouputChatBox('Morate biti ulogovani da biste koristili komande');
     },

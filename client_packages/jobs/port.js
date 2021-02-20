@@ -29,7 +29,7 @@ mp.events.add({
          alpha: 255,
          dimension: target.dimension
       });
-
+ 
       target.container.notifyStreaming = true;
       target.container.setNoCollision(player.vehicle.handle, false);
 

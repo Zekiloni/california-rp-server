@@ -119,7 +119,7 @@ var container = {
       }
    },
 }
-
+ 
 container.load();
 setInterval(() => { container.refresh(); }, refreshInterval);
 

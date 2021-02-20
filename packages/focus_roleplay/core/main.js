@@ -77,7 +77,7 @@ module.exports = {
                               account.notification(player, "Žedni ste, ukoliko ne popijete neku tečnost uskoro počećete da osećate posledice.", NOTIFY_ERROR, 4);
                          }
                          else if (player.thirst >= 1 && player.thirst < 5) {
-                              account.notification(player, "Veoma ste žedni, ukoliko uskoro ne popijete nešto umrećete.", NOTIFY_ERROR, 4);
+                              account.notification(player, "Veoma ste žedni, ukoliko uskoro ne popijete nešto umrećete.", NOTIFY_ERROR, 4); 
                               player.call("client:screenEffect", 'FocusOut', 5000); // DeathFailOut
                          }    
                          else if (player.thirst <= 2) {

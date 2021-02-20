@@ -102,7 +102,7 @@ mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     veh.numberPlateType = 1;
     veh.numberPlate = "SUPPORT";
     veh.engine = true;
-    veh.dead = false;
+    veh.dead = false; 
     player.putIntoVehicle(veh, 0);
 });
 
