@@ -19,3 +19,4 @@ module.exports = class VehicleModel {
    info () { return this; }
 }
 
+

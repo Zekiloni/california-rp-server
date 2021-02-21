@@ -1,5 +1,4 @@
 const fs = require("fs");
-const inventoryCore = require("../inventory/inventoryCore");
 const savedPosition = "savedPositions.txt";
 
 mp.events.addCommand({
@@ -194,16 +193,17 @@ mp.events.addCommand({
 
       let recipient = account.findPlayer(target);
       if(!recipient) return account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
-      if(recipient.frozen) {
-         recipient.frozen = false;
-         recipient.call("client:freezePlayer", [false]);
-         account.notification(player, `Odmrznuli ste igraca ${recipient.name}`, NOTIFY_SUCCESS, 4);
-      }
-      else {
-         recipient.frozen = true;
-         recipient.call("client:freezePlayer", [true]);
-         account.notification(player, `Zamrznuli ste igraca ${recipient.name}`, NOTIFY_SUCCESS, 4);
-      }
+      recipient.frozen ? ( 
+         recipient.frozen = false,
+         recipient.call('client:freezePlayer', [false]),
+         account.notification(player, `Odledili ste ${recipient.name} !`, NOTIFY_SUCCESS, 4),
+         account.notification(recipient, `Admin ${player.name} vas je odledio !`, NOTIFY_SUCCESS, 4)
+      ) : ( 
+         recipient.frozen = true,
+         recipient.call('client:freezePlayer', [true]),
+         account.notification(player, `Zaledili ste ${recipient.name} !`, NOTIFY_SUCCESS, 4),
+         account.notification(recipient, `Admin ${player.name} vas je zaledio !`, NOTIFY_SUCCESS, 4)
+      );
    },
 
    'kill': (player, fullText, target) => { 

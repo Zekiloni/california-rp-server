@@ -15,6 +15,9 @@ global.CHAT_COLORS = [
    RADIO = 'FFFF99',
    PM_FROM = 'FFD500',
    PM_TO = 'FCBD00',
+   TOMATO = 'FF6347',
+   INFO = 'E2D051'
+
 ]; Object.freeze(CHAT_COLORS)
 
 global.SERVER_MARKER = { r: 3, g: 105, b: 163, a: 150}

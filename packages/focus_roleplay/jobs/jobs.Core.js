@@ -3,6 +3,7 @@ const fs = require("fs");
 var jobs = require('./jobs')
 
 var portJob = require('./port')
+var deliveryJob = require('./delivery')
 
 var routesDir = 'packages/focus_roleplay/jobs/bus-routes/';
 

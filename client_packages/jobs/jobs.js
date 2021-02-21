@@ -22,8 +22,8 @@ mp.events.add({
       mp.events.callRemote('server:acceptJobOffer', parseInt(jobId));
    },
 
-   'client:createjobWaypoint': (position) => { 
-        mp.game.ui.setNewWaypoint(position.x, position.y);
+   'client:createjobWaypoint': (x, y) => { 
+        mp.game.ui.setNewWaypoint(x, y);
    },
 
    'client:createJobMarker': (type = 1, position, radius = 10, color, dimension = 0) => { 

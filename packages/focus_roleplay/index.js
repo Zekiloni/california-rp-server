@@ -1,23 +1,24 @@
 
+var globals = require('./core/globals')
+
 
 global.conf = require('./core/configuration');
 global.core = require('./core/main');
 global.db = require('./core/database');
-global.account = require('./player/playerCore');
+global.account = require('./player/player.Core');
 global.veh = require('./vehicles/vehicleCore')
 global.biz = require('./business/bizCore');
-global.house = require('./houses/houseCore');
-global.jobs = require('./jobs/jobsCore')
-global.inventory = require('./inventory/inventoryCore');
-global.radio = require('./player/radioCore');
+global.houses = require('./houses/houses.Core');
+global.jobs = require('./jobs/jobs.Core')
+global.inventory = require('./inventory/inventory.Core');
+global.radio = require('./player/radio.Core');
 global.factions = require('./factions/factionsCore');
 global.doors = require('./core/doors')
 
-var globals = require('./core/globals')
 var dbStructure = require('./core/databaseStructure');
-var playerEvents = require('./player/playerEvents');
+var playerEvents = require('./player/player.Events');
 var huntingAnimals = require('./hunting/animals');
-var playerCommands = require('./player/playerCommands')
+var playerCommands = require('./player/player.Commands')
 var adminCommands = require('./player/adminCommands')
 var playerAnimations = require('./player/animations')
 var realTimeWeather = require('./core/weather')
@@ -26,7 +27,7 @@ var dealershipVehicles = require('./vehicles/vehicleList');
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
 biz.loadAll();
-house.loadAll();
+houses.load();
 setTimeout(() => { inventory.loadItems(); }, 1500); 
 factions.initFactions();
 jobs.initJobs();

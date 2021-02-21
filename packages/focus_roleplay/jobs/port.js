@@ -1,9 +1,17 @@
 
 
 const HANDLER_VEH_POINT = { position: [851.60418, -2942.36010, 5.22658], rotation: [-0.0529914, 0.009985, -94.208023] },
+   TRUCK_VEH_POINT = [830.3966, -2948.6745, 6.1373066, 180]
    DOWN_OFFSET = 0.5,
    UP_OFFSET = 3,
-   DROPZONE_POINT = [1119.51806, -3142.53393, 5.26680];
+   DROPZONE_POINT = [1119.51806, -3142.53393, 5.26680],
+   TRAILERS_POINTS = [ 
+      [1062.6014404296875, -3186.35498046875, 6.1364350318],
+      [1058.2581787109375, -3186.09619140625, 6.1372241973],
+      [1054.16015625, -3186.14794921875, 6.1354002952],
+      [1050.178466796875, -3186.408935546875, 6.13583946],
+      [1046.0155029296875, -3187.06787109375, 6.134065628]
+   ];
 
 let portContainers = new Map([ 
    [1, { position: [858.7689, -2926.11914, 5.2264], rotation: [0.0467959, 0.01862500, -92.3342] }],
@@ -16,18 +24,18 @@ let portContainers = new Map([
    [8, { position: [867.2453, -2914.49121, 5.2176], rotation: [-0.1004520, -0.000604, 90.34505] }]
 ])
 
-global.dropZoneContainers = [];
-
 const CONTAINER_TYPES = ['Maloprodajne Zalihe', 'Oprema za Oruzije i Municija', 'Namestaj i Pokucstvo'],
       refreshInterval = 1200 * 1000,
       MAX_CONTAINERS_PER_PLAYER = 5; // 20 minutes
+
+global.dropZoneContainers = [ { type: CONTAINER_TYPES[0] } ];
+
 
 
 var container = { 
 
    load: () => { 
       portContainers.forEach((container) => {
-         console.log('1')
          let type = Math.floor(Math.random() * CONTAINER_TYPES.length),
             pos = new mp.Vector3(container.position[0], container.position[1], container.position[2] - DOWN_OFFSET),
             rot = new mp.Vector3(container.rotation[0], container.rotation[1], container.rotation[2]),
@@ -107,8 +115,6 @@ var container = {
       ]
          
       dropZoneContainers.push({dropCont})
-      console.log(dropZoneContainers)
-
       container.delete(player.data.container)
       setTimeout(() => { player.data.container = false; }, 500);
       
@@ -126,16 +132,26 @@ setInterval(() => { container.refresh(); }, refreshInterval);
 var port = { 
    start: (player, job) => { 
       player.duty = true;
+      let color = core.randomRGB(), pos, vehicle;
       switch(job) { 
          case 1: 
-            let pos = HANDLER_VEH_POINT.position,
-               color = core.randomRGB();
-            let vehicle = mp.vehicles.new(mp.joaat('handler'), new mp.Vector3(pos[0], pos[1], pos[2]),
+            pos = HANDLER_VEH_POINT.position;
+            vehicle = mp.vehicles.new(mp.joaat('handler'), new mp.Vector3(pos[0], pos[1], pos[2]),
             { color: [[color.r, color.g, color.b], [color.r, color.g, color.b]], heading: HANDLER_VEH_POINT.rotation[2], engine: false });
             vehicle.job = JOB_LS_PORT.ID;
+            account.sendPlayerMessage(player, 'Započeli ste istovar kontenjera, tegljač vam se nalazi u blizini kontenjera.', INFO)
             break;
 
          case 2:
+            if (dropZoneContainers.length == 0) return account.sendPlayerMessage(player, 'Trenutno nema kontenjera za dostavu.', TOMATO)
+            pos = TRUCK_VEH_POINT;
+            let trailerPoint = TRAILERS_POINTS[Math.floor(Math.random() * TRAILERS_POINTS.length)];
+            vehicle = mp.vehicles.new(mp.joaat('hauler'), new mp.Vector3(pos[0], pos[1], pos[2]),
+            { color: [[color.r, color.g, color.b], [color.r, color.g, color.b]], heading: pos[3], engine: false });
+            vehicle.job = JOB_LS_PORT.ID;
+            let trailer = mp.vehicles.new(mp.joaat('docktrailer'), new mp.Vector3(trailerPoint[0], trailerPoint[1], trailerPoint[2]), {  heading: 0 });
+            account.sendPlayerMessage(player, 'Započeli ste transfer kontenjera do magacina, prikolica vam se nalazi na parkingu pored zone istovara.', INFO)
+            player.call('client:createjobWaypoint', [trailerPoint[0], trailerPoint[1]])
             break;
 
          default:
@@ -160,7 +176,7 @@ var port = {
 mp.events.addCommand({
    'port': (player, fullText) => {
       if (player.job != JOB_LS_PORT.ID) return account.notification(player, MSG_UNEMPLOYED, NOTIFY_ERROR, 4);
-      if (!fullText) return false;
+      if (!fullText) return  account.notification(player, `Nepoznat argument koomande <b>/port</b> (load, unload, deliver)`, NOTIFY_INFO, 4);
       let args = fullText.split(' '),
          action = args[0];
       switch(action) {
@@ -184,7 +200,6 @@ mp.events.add({
       if (nearbyCont) { 
          container.attach(player, nearbyCont);
       } else { 
-         console.log('oh no')
          return false;
       }
    },

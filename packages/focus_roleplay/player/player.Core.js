@@ -257,6 +257,10 @@ module.exports = {
         );
     },
 
+    sendPlayerMessage: function (player, message, color) { 
+        player.outputChatBox(`!{${color}}${message}`)
+    },
+
     sendFactionMessage: function (player, message) {
         if(player.faction == 0) return player.outputChatBox('Niste ni u jednoj fakciji.');
         mp.players.forEach(
