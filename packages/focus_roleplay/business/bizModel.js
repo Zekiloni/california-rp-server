@@ -22,7 +22,7 @@ module.exports = class BussinesModel {
         this.label = mp.labels.new(labelText, new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z), { los: true, font: 0, drawDistance: 4, });
         this.blip = mp.blips.new(blipNumber, new mp.Vector3(this.entrance.x, this.entrance.y, 0), { name: this.name, color: 4, shortRange: true, });
 
-        allBussineses.push(this);
+        mp.business.push(this);
     }
     
     updateBiz () { 

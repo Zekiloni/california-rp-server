@@ -41,7 +41,7 @@ function House (data) {
     this.info = () => {  return this; }
 }
 
-const houses = { 
+var houses = { 
 
     load: async () => { 
         let result = await db.aQuery("SELECT * FROM `houses`");
@@ -129,3 +129,4 @@ const houses = {
 }
 
 module.exports = houses;
+

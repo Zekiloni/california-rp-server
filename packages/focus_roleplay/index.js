@@ -14,6 +14,7 @@ global.inventory = require('./inventory/inventory.Core');
 global.radio = require('./player/radio.Core');
 global.factions = require('./factions/factionsCore');
 global.doors = require('./core/doors')
+global.plants = require("./core/plants")
 
 var dbStructure = require('./core/databaseStructure');
 var playerEvents = require('./player/player.Events');

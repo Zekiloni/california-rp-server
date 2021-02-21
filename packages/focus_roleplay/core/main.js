@@ -55,6 +55,10 @@ module.exports = {
           return {r: rr, g: gg, b: bb}
      },
 
+     randomInRange: (min, max) => {
+          return Math.floor(Math.random() * (max - min)) + min;
+     },
+
      onMinuteSpent: function () { 
           let counter = 0;
           mp.players.forEach(

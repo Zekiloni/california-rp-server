@@ -1,7 +1,9 @@
 
 
 var BussinesModel = require('./bizModel');
-global.allBussineses = [];
+
+
+mp.business = [];
 
 global.BIZ_TYPES = [ 
     BIZ_TYPE_MARKET = { type: 0, interior: 11, blip: 52, name: "24/7 Market" },
@@ -53,8 +55,8 @@ module.exports = {
     delete: function (player, biz) {
         db.query("DELETE FROM `business` WHERE `ID` = ?", [biz.id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
-            let index = allBussineses.findIndex((el) => el.id === biz.id);
-            allBussineses.splice(index, 1);
+            let index = mp.business.findIndex((el) => el.id === biz.id);
+            mp.business.splice(index, 1);
             biz.label.destroy(); 
             biz.blip.destroy();  
         });
@@ -62,7 +64,7 @@ module.exports = {
 
     nearby: function (player) {
         var nearBiz = null;
-        allBussineses.forEach((item) => {
+        mp.business.forEach((item) => {
             let bizPos = new mp.Vector3(item.entrance.x, item.entrance.y, item.entrance.z );
             if (player.dist(bizPos) < 2.5) {
                 nearBiz = item;
@@ -76,22 +78,22 @@ module.exports = {
     },
 
     update: function (id, changeType, value) {
-        let index = allBussineses.findIndex((el) => el.id === id);
+        let index = mp.business.findIndex((el) => el.id === id);
         if (changeType == 'name') { 
-            allBussineses[index].name = value; 
+            mp.business[index].name = value; 
             db.query("UPDATE `business` SET `name` = ? WHERE `ID` = ?", [value, id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });
         }
         else if (changeType == 'owner') { 
-            allBussineses[index].owner = value; 
-            allBussineses[index].updateBiz();
+            mp.business[index].owner = value; 
+            mp.business[index].updateBiz();
             db.query("UPDATE `business` SET owner = ? WHERE `ID` = ?", [value, id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });
         }
         else if (changeType == 'price') { 
-            allBussineses[index].price = value;
+            mp.business[index].price = value;
             db.query("UPDATE `business` SET price = ? WHERE `ID` = ?", [value, id], function (error, results, fields) {
                 if (error) return core.terminal(1, error);
             });

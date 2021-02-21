@@ -1,4 +1,5 @@
 const fs = require("fs");
+const plants = require("../core/plants");
 const savedPosition = "savedPositions.txt";
 
 mp.events.addCommand({
@@ -311,6 +312,11 @@ mp.events.addCommand({
       if (h) {
          house.delete(player, h);
       }
+   },
+
+
+   'createplant': (player, fullText, plant) => { 
+      plants.create(player, { type: plant })
    },
 
    'destroybiz': (player, fullText) => {
