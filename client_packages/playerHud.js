@@ -69,7 +69,7 @@ mp.events.add({
 
 
 		// update veh speed if driver
-		if (isDriving) { vehicle() }
+		if (player.vehicle && isDriving) { vehicle() }
 	},
 
 	'client:showVehicleHUD': (toggle) => { 

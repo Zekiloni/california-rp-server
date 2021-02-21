@@ -21,7 +21,7 @@ module.exports = {
          jobPoint.job = job.ID;
 
          if (job.BLIP) { 
-            let jobBlip = mp.blips.new(job.BLIP, new mp.Vector3(markerPos.x, markerPos.y, markerPos.z), { name: job.LOC, color: 36, shortRange: false });
+            let jobBlip = mp.blips.new(job.BLIP, new mp.Vector3(markerPos.x, markerPos.y, markerPos.z), { name: job.LOC, color: 36, shortRange: true });
          }
 
          counter ++;

@@ -225,15 +225,15 @@ mp.events.addCommand({
    },
 
    'buy': (player, fullText, target) => { 
-      let nearBiz = biz.nearby(player);
-      let nearHouse = house.nearby(player);
+      let nearBiz = business.nearby(player),
+         nearHouse = houses.near(player);
       if (nearBiz) { account.buyBiz(player, nearBiz); }
-      if (nearHouse) { account.buyHouse(player, nearHouse); }
+      if (nearHouse) { houses.buy(player, nearHouse); }
    },
 
    'business': (player, fullText) => {
       if(fullText) { 
-         let bussines = biz.nearby(player);
+         let bussines = business.nearby(player);
          if (bussines && bussines.owner == player.databaseID) { 
              let args = fullText.split(" ");
              switch(args[0]) {

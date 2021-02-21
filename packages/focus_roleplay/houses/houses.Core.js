@@ -3,8 +3,8 @@
 mp.houses = []; 
 
 const HOUSE_TYPES = [ 
-    { num: 0, interior: [0, 0, 0], ipl: 'ipl' }, 
-    { num: 1, interior: [5, 5, 5], ipl: 'ipl 2' }, 
+    { num: 0, position: [0, 0, 0], ipl: 'ipl' }, 
+    { num: 1, position: [5, 5, 5], ipl: 'ipl 2' }, 
 ]
 
 function House (data) {
@@ -15,6 +15,7 @@ function House (data) {
     this.dimension = data.dimension || 0;
     this.entrance = data.entrance || 0;
     this.interior = data.interior || 0;
+    this.ipl = data.ipl;
 
     let position = new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z);
     this.label = mp.labels.new('Kuca na Prodaju !', position, { los: false, font: 0, drawDistance: 3 });
@@ -34,7 +35,7 @@ function House (data) {
     };
 
     this.refresh = () => { 
-        this.owner == -1 ? ( this.label.text = 'Kuca na Prodaju !', this.blip.color = 52 ) : ( this.label.text = 'Kuca u necijem vlasnistvu !', this.blip.color = 49 ); 
+        this.owner == -1 ? ( this.label.text = 'Kuca na Prodaju !', this.blip.color = 52 ) : ( this.label.text = 'Kuca u necijem vlasnistvu !', this.blip.color = 49 );
     }
 
     this.info = () => {  return this; }
@@ -47,18 +48,27 @@ const houses = {
         result.forEach(function (res) {
             let entrance = JSON.parse(res.entrance),
                 interior = JSON.parse(res.interior);
-            let house = new House(res.ID, res.type, res.owner, res.price, res.dimension, entrance, interior);
+            let house = new House({ 
+                id: res.ID,
+                type: res.type,
+                owner: res.owner,
+                price: res.price,
+                dimension: res.dimension,
+                entrance: entrance,
+                interior: interior,
+                ipl: res.ipl
+            });
         });
         core.terminal(3, `${result.length} houses were loaded !`);
     },
     
     create: (player, data) => { 
-        let entrance = JSON.stringify(player.position);
-        db.query("INSERT INTO `houses` (type, price, entrance, interior) VALUES (?, ?, ?, ?)", [data.type, data.price, data.entrance, data.interior], function (error, results, fields) {
+        let entrance = JSON.stringify(player.position), interior = HOUSE_TYPES[data.type];
+        db.query("INSERT INTO `houses` (type, price, entrance, interior, ipl) VALUES (?, ?, ?, ?, ?)", [data.type, data.price, entrance, interior.position, interior.ipl], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             account.notification(player, `Kuca kreirana tip ${type} sa cenom ${price}$.`, NOTIFY_SUCCESS, 4);
             let id = results.insertId; 
-            let house = new House(data)
+            new House({ id: id, price: data.price, type: data.type, interior: interior.position, ipl: interior.ipl })
         });
         
     },
@@ -73,9 +83,25 @@ const houses = {
     near: (player) => { 
         let result = null;
         mp.houses.forEach(house => {
-             player.dist(house.marker.position) < 2.5 ? ( result = house ) : ( result = false )
+            player.dist(house.marker.position) < 2.5 ? ( result = house ) : ( result = false )
         });
         return result;
+    },
+
+    buy: (player, house) => {
+        db.query('SELECT * FROM `houses` WHERE `ID` = ?', [house.id], function (error, results, fields) {
+            if (error) return core.terminal(1, error);
+            if (results && results.length) {
+                if (player.data.cash < house.price) return account.notification(player, MSG_NOT_ENOGUTH_MONEY, NOTIFY_ERROR, 4); 
+                if (house.owner != -1) return account.notification(player, MSG_ALREADY_OWNED, NOTIFY_ERROR, 4);
+                house.owner = player.databaseID;
+                house.refresh()
+                account.notification(player, `Čestitamo!<br>Uspešno ste kupili kuću za <b>${results[0].price}$</b>.`, NOTIFY_SUCCESS, 5);
+            } 
+            else {
+                account.notification(player, MSG_ERROR, NOTIFY_ERROR, 5);
+            }
+        });
     },
 
     update: function (id, changeType, value) {

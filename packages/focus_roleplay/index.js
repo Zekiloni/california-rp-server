@@ -7,7 +7,7 @@ global.core = require('./core/main');
 global.db = require('./core/database');
 global.account = require('./player/player.Core');
 global.veh = require('./vehicles/vehicleCore')
-global.biz = require('./business/bizCore');
+global.business = require('./business/bizCore');
 global.houses = require('./houses/houses.Core');
 global.jobs = require('./jobs/jobs.Core')
 global.inventory = require('./inventory/inventory.Core');
@@ -19,14 +19,14 @@ var dbStructure = require('./core/databaseStructure');
 var playerEvents = require('./player/player.Events');
 var huntingAnimals = require('./hunting/animals');
 var playerCommands = require('./player/player.Commands')
-var adminCommands = require('./player/adminCommands')
+var adminCommands = require('./player/admin.Commands')
 var playerAnimations = require('./player/animations')
 var realTimeWeather = require('./core/weather')
 var dealershipVehicles = require('./vehicles/vehicleList');
 
 
 core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
-biz.loadAll();
+business.loadAll();
 houses.load();
 setTimeout(() => { inventory.loadItems(); }, 1500); 
 factions.initFactions();

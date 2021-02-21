@@ -18,21 +18,23 @@ function enableChatInput(enable)
 		&& enable == true)
 		return;
 	
-    if (enable != (chat.input != null))
-	{
-        mp.invoke("focus", enable);
+    	if (enable != (chat.input != null))
+		{
+			mp.invoke("focus", enable);
 
-        if (enable)
-		{
-            chat.input = $("#chat").append('<div><input id="chat_msg" type="text" /></div>').children(":last");
-			chat.input.children("input").focus();
-        } 
-		else
-		{
-            chat.input.fadeOut('fast', function()
+        	if (enable)
 			{
-                chat.input.remove();
-                chat.input = null;
+				mp.invoke('setTypingInChatState', true)
+            chat.input = $("#chat").append('<div><input id="chat_msg" type="text" /></div>').children(":last");
+				chat.input.children("input").focus();
+        	} 
+			else
+			{
+            chat.input.fadeOut('fast', function()
+				{
+					mp.invoke('setTypingInChatState', false)
+					chat.input.remove();
+					chat.input = null;
             });
         }
     }

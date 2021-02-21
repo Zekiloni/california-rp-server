@@ -278,7 +278,7 @@ mp.events.addCommand({
 
    'createbiz': (player, fullText, type, price) => {
       if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      biz.create(player, type, price);
+      business.create(player, type, price);
    },
 
    'createitem': (player, full, name, quant) => {
@@ -302,7 +302,7 @@ mp.events.addCommand({
 
    'createhouse': (player, fullText, type, price) => {
       if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      house.create(player, type, price, player.position);
+      houses.create(player, { type: type, price: price });
    },
    
    'destroyhouse': (player, fullText) => {
@@ -315,16 +315,16 @@ mp.events.addCommand({
 
    'destroybiz': (player, fullText) => {
       if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let bussines = biz.nearby(player);
+      let bussines = business.nearby(player);
       if (bussines) {
           player.outputChatBox(`Nearest biz ${bussines.id} !`);
-          biz.delete(player, bussines);
+          business.delete(player, bussines);
       }
    },
 
    'editbiz': (player, fullText) => { 
       if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let bussines = biz.nearby(player);
+      let bussines = business.nearby(player);
       if(bussines) {
 
       }

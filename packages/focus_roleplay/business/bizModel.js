@@ -15,7 +15,7 @@ module.exports = class BussinesModel {
         let labelText;
         if (owner == -1) { labelText = `~r~FOR SALE !~s~ ~n~ ${this.name} ~n~ Price ~g~${this.price} $`; }
         else { labelText = `${this.name} Opened !`; }
-        var typesArray = biz.type();
+        var typesArray = business.type();
         var r = typesArray.find( ({ type }) => type === this.type );
         let blipNumber = r.blip;
 
