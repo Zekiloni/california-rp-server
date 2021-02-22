@@ -146,6 +146,22 @@ db.query(housesTable, function(err, results, fields) {
 });
 
 
+let plantsTable = `CREATE TABLE IF NOT EXISTS plants (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  type int(2) NOT NULL DEFAULT 0,
+  contribution int(3) DEFAULT 10,
+  dimension int(6) NOT NULL DEFAULT 0,
+  position text NOT NULL,
+  owner int(11) NOT NULL DEFAULT -1,
+  progress int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY(ID))`;
+
+db.query(plantsTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking plantsTable | MySQL`);
+});
+
+
 
 
 
