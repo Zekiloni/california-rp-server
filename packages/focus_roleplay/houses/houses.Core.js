@@ -3,8 +3,8 @@
 mp.houses = []; 
 
 const HOUSE_TYPES = [ 
-    { num: 0, position: [0, 0, 0], ipl: 'ipl' }, 
-    { num: 1, position: [5, 5, 5], ipl: 'ipl 2' }, 
+    { type: 0, name: 'Low End Apartment', position: [261.4586, -998.8196, -99.00863] }, 
+    { type: 1, name: 'Medium End Apartment', position: [347.2686, -999.2955, -99.19622] }, 
 ]
 
 function House (data) {
