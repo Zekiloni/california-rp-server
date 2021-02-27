@@ -1,6 +1,6 @@
 var VehicleModel = require('./vehicleModel');
 
-global.allVehicles = [];
+mp.vehiclesz = [];
 
 module.exports = {
 
@@ -47,24 +47,24 @@ module.exports = {
       });
    },
 
-   load: function (vid) { 
-      var vehRes = allVehicles.find( ({ id }) => id === vid );
-      let spawnPos = new mp.Vector3(vehRes.position.x, vehRes.position.y, vehRes.position.z)
-      let vehicle = mp.vehicles.new(vehRes.model, spawnPos,
-       {
-           numberPlate: 'NP-00-BG',
-           alpha: 255,
-           color: color,
-           locked: vehRes.locked,
-           engine: false,
-           dimension: 0
-       });
+   // load: function (vid) { 
+   //    var vehRes = mp.vehiclez.find( ({ id }) => id === vid );
+   //    let spawnPos = new mp.Vector3(vehRes.position.x, vehRes.position.y, vehRes.position.z)
+   //    let vehicle = mp.vehicles.new(vehRes.model, spawnPos,
+   //     {
+   //         numberPlate: 'NP-00-BG',
+   //         alpha: 255,
+   //         color: color,
+   //         locked: vehRes.locked,
+   //         engine: false,
+   //         dimension: 0
+   //     });
 
-       vehicle.id = vehRes.id;
-   },
+   //     vehicle.id = vehRes.id;
+   // },
 
    loadAll: function(){
-      db.query("SELECT * FROM `vehicles`", function(error, results, fields){
+      db.query("SELECT * FROM `vehicles`", function(error, results, fields) {
          if(error) return core.terminal(1, error);
          results.forEach(vehRes => {
             let color = JSON.parse(vehRes.color);

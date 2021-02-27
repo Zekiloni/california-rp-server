@@ -9,7 +9,7 @@ const HOUSE_TYPES = [
 
 function House (data) {
     this.id = data.id;
-    this.type = data.type || 2;
+    this.type = data.type || 0;
     this.owner = data.owner || -1;
     this.price = data.price || -1;
     this.dimension = data.dimension || 0;
@@ -18,13 +18,12 @@ function House (data) {
     this.ipl = data.ipl;
 
     let position = new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z);
-    this.label = mp.labels.new('Kuca na Prodaju !', position, { los: false, font: 0, drawDistance: 3 });
-    this.blip = mp.blips.new(40, position, { name: `Kuca ${this.id}`,  shortRange: true });
+    this.label = mp.labels.new('', position, { los: false, font: 0, drawDistance: 3 });
+    this.blip = mp.blips.new(40, position, { name: `Kuca`,  shortRange: true });
     this.marker = mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 0.99), 1.1,
     { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 150], visible: true, dimension: this.dimension });
-    this.owner == -1 ? ( this.label.text = 'Kuca na Prodaju !', this.blip.color = 52 ) : ( this.label.text = 'Kuca u necijem vlasnistvu !', this.blip.color = 49 ); 
 
-    mp.houses.push(this)
+    mp.houses.push(this) 
 
     this.delete = () => {
         let x = mp.houses.indexOf(this)
@@ -35,11 +34,14 @@ function House (data) {
     };
 
     this.refresh = () => { 
-        this.owner == -1 ? ( this.label.text = 'Kuca na Prodaju !', this.blip.color = 52 ) : ( this.label.text = 'Kuca u necijem vlasnistvu !', this.blip.color = 49 );
+        this.owner == -1 ? 
+            ( this.label.text = `~r~Kuca na Prodaju !~n~~s~${HOUSE_TYPES[this.type].name}~n~ ~g~${this.price} $`, this.blip.color = 52 ) : ( this.label.text = `Kuca u necijem vlasnistvu !~n~${HOUSE_TYPES[this.type].name}`, this.blip.color = 49 );
     }
 
-    this.info = () => {  return this; }
+    this.info = () => { return this; }
 }
+
+
 
 var houses = { 
 
@@ -50,7 +52,7 @@ var houses = {
                 interior = JSON.parse(res.interior);
             let house = new House({ 
                 id: res.ID,
-                type: res.type,
+                type: parseInt(res.type),
                 owner: res.owner,
                 price: res.price,
                 dimension: res.dimension,
@@ -58,17 +60,20 @@ var houses = {
                 interior: interior,
                 ipl: res.ipl
             });
+            house.refresh();
         });
         core.terminal(3, `${result.length} houses were loaded !`);
     },
     
     create: (player, data) => { 
         let entrance = JSON.stringify(player.position), interior = HOUSE_TYPES[data.type];
-        db.query("INSERT INTO `houses` (type, price, entrance, interior, ipl) VALUES (?, ?, ?, ?, ?)", [data.type, data.price, entrance, interior.position, interior.ipl], function (error, results, fields) {
+        let intPos = JSON.stringify({x: interior.position[0], y: interior.position[1], z: interior.position[2]})
+        db.query("INSERT INTO `houses` (type, price, entrance, interior, ipl) VALUES (?, ?, ?, ?, ?)", [data.type, data.price, entrance, intPos, interior.ipl], function (error, results, fields) {
             if (error) return core.terminal(1, error);
-            account.notification(player, `Kuca kreirana tip ${type} sa cenom ${price}$.`, NOTIFY_SUCCESS, 4);
+            account.notification(player, `Kuca kreirana tip ${interior.name} sa cenom ${data.price}$.`, NOTIFY_SUCCESS, 4);
             let id = results.insertId; 
-            new House({ id: id, price: data.price, type: data.type, interior: interior.position, ipl: interior.ipl })
+            let h = new House({ id: id, price: data.price, type: data.type, entrance: player.position, interior: interior.position, ipl: interior.ipl })
+            h.refresh();
         });
         
     },
@@ -129,4 +134,7 @@ var houses = {
 }
 
 module.exports = houses;
+
+houses.load();
+
 

@@ -116,7 +116,7 @@ mp.events.add({
     },
 
     'server:processInventoryItem': (player, item_id, status, target, quantity) => { 
-      let item = inventoryItems.find( ({ id }) => id === parseInt(item_id) );
+      let item = mp.items.find( ({ id }) => id === parseInt(item_id) );
       switch(status) { 
         case 'drop': 
             inventory.dropItem(player, item_id);

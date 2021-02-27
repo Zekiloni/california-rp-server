@@ -3,7 +3,7 @@
 var BussinesModel = require('./bizModel');
 
 
-mp.business = [];
+
 
 global.BIZ_TYPES = [ 
     BIZ_TYPE_MARKET = { type: 0, interior: 11, blip: 52, name: "24/7 Market" },

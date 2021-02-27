@@ -4,9 +4,9 @@ let factionsConst = require('./factionsConst')
 let factionsEvents = require('./factionsEvents')
 let factionCmds = require('./factionCmds')
 
-module.exports = { 
+var factions = {
 
-   initFactions: function () {
+   load: function () {
       let counter = 0;
       FACTIONS.forEach(function (f) {
          
@@ -134,3 +134,7 @@ module.exports = {
       }
    }
 }
+
+module.exports = factions;
+
+factions.load();

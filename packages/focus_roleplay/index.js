@@ -1,18 +1,18 @@
 
 var globals = require('./core/globals')
+var settings = require('./core/settings')
 
-
-global.conf = require('./core/configuration');
+global.config = require('./core/configuration');
 global.core = require('./core/main');
 global.db = require('./core/database');
 global.account = require('./player/player.Core');
-global.veh = require('./vehicles/vehicleCore')
+global.vehicles = require('./vehicles/vehicles.Core')
 global.business = require('./business/bizCore');
 global.houses = require('./houses/houses.Core');
 global.jobs = require('./jobs/jobs.Core')
 global.inventory = require('./inventory/inventory.Core');
 global.radio = require('./player/radio.Core');
-global.factions = require('./factions/factionsCore');
+global.factions = require('./factions/factions.Core');
 global.doors = require('./core/doors')
 global.plants = require("./core/plants")
 
@@ -25,16 +25,14 @@ var playerAnimations = require('./player/animations')
 var realTimeWeather = require('./core/weather')
 var dealershipVehicles = require('./vehicles/vehicleList');
 
-
-core.terminal(3, `${conf.app} Started ! version ${conf.version}`);
+core.terminal(3, `${config.app} Started ! version ${config.version}`);
 business.loadAll();
-houses.load();
-setTimeout(() => { inventory.loadItems(); }, 1500); 
-factions.initFactions();
-jobs.initJobs();
+setTimeout(() => { 
+    inventory.loadItems(); 
+}, 1500); 
 setInterval(() => { core.onMinuteSpent()  }, 60000);
 
-
+// mp.Player.prototype.funkcija = () => {  }
 
 //jobs.createBusRoute('Morningwood')
 //console.log(items)
@@ -58,7 +56,6 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 /*  URADITI
     /breaklock
-    LISTA IGRACA
     INTERAKCIONI MENI (animacije, facijalne ekspresije [zavrsiti], raspolozenja, stilovi hodanja)
 
 */
@@ -70,6 +67,9 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
     mp.events.call('eventName', args); // poziva lokalni event
 */
 
+var color = [[033, 343, 535], [3434, 577, 565]]
+
+console.log()
 mp.events.addCommand("tp", (player) => {
     mp.events.call("server:spawnAnimals", player, 15);
     player.position = new mp.Vector3(-1800.14, -794.12, 8.6);

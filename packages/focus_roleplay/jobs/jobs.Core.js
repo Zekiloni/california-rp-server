@@ -7,9 +7,9 @@ var deliveryJob = require('./delivery')
 
 var routesDir = 'packages/focus_roleplay/jobs/bus-routes/';
 
-module.exports = { 
+var jobs = {
 
-   initJobs: function () {
+   load: function () {
       let counter = 0;
       JOBS.forEach(function (job) {
          let markerPos = job.POINT;
@@ -44,4 +44,9 @@ module.exports = {
    },
    
 }
+
 var busRoute = [];
+
+module.exports = jobs;
+
+jobs.load();

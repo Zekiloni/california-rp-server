@@ -73,7 +73,7 @@ var plants = {
             alreadyExist: true
          });
       });
-      core.terminal(3, `${result.length} lpants were loaded !`);
+      core.terminal(3, `${result.length} plants were loaded !`);
    },
 
    save: (plant) => { 

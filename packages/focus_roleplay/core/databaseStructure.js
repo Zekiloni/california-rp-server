@@ -136,7 +136,7 @@ let housesTable = `CREATE TABLE IF NOT EXISTS houses (
   owner int(11) DEFAULT -1,
   entrance text NOT NULL,
   interior text NOT NULL,
-  ipl text NOT NULL,
+  ipl text DEFAULT 0,
   dimension int(11) NOT NULL,
   PRIMARY KEY(ID))`;
 

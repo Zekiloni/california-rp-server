@@ -1,8 +1,8 @@
 
 var itemModel = require('./itemModel');
 
-global.items = require('./itemList');
-global.inventoryItems = [];
+global.items = require('./inventory.Items');
+mp.items = [];
 
 module.exports = { 
     loadItems: async() => { 
@@ -40,8 +40,8 @@ module.exports = {
         let itemID = item.id;
         db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
-            let index = inventoryItems.findIndex((el) => el.id === itemID);
-            inventoryItems.splice(index, 1);
+            let index = mp.items.findIndex((el) => el.id === itemID);
+            mp.items.splice(index, 1);
             item.label.destroy();
             item.object.destroy();
             inventory.deleteItem(itemID)
@@ -51,8 +51,8 @@ module.exports = {
     deleteItem: (itemID) => { 
         db.query("DELETE FROM `inventory` WHERE `ID` = ?", [itemID], function (error, results, fields) {
             if (error) return core.terminal(1, error);
-            let index = inventoryItems.findIndex((el) => el.id === itemID);
-            inventoryItems.splice(index, 1);
+            let index = mp.items.findIndex((el) => el.id === itemID);
+            mp.items.splice(index, 1);
         });
     },
     // name, type, hash, weight, quant = 1, entity, owner, dimension, pos, specs
@@ -106,7 +106,7 @@ module.exports = {
     getPlayerInventory: (player) => { 
         let id = player.databaseID;
         let playerInv = [];
-        inventoryItems.forEach(function (r) {
+        mp.items.forEach(function (r) {
             if(r.owner == id) {
                 playerInv.push({ id: r.id, name: r.name, quantity: r.quantity, hash: r.hash})
             }
@@ -131,7 +131,7 @@ module.exports = {
     },
 
     dropItem: function (player, itemID) {
-        let dropObject = inventoryItems.find( ({ id }) => id === parseInt(itemID) );
+        let dropObject = mp.items.find( ({ id }) => id === parseInt(itemID) );
         if (dropObject) {
             let objPos = new mp.Vector3(player.position.x, player.position.y, player.position.z - 0.93);
             dropObject.object = mp.objects.new(dropObject.hash, objPos,
@@ -156,7 +156,7 @@ module.exports = {
     },
 
     useItem: (player, itemID) => { 
-        let item = inventoryItems.find( ({id}) => id === parseInt(itemID));
+        let item = mp.items.find( ({id}) => id === parseInt(itemID));
         let string = '';
         if (item) { 
             if (item.type == ITEM_TYPE_FOOD) { 
@@ -224,7 +224,7 @@ module.exports = {
 
     nearItem: function (player) {
         let nearItem = null;
-        inventoryItems.forEach((item) => {
+        mp.items.forEach((item) => {
             let itemPos = new mp.Vector3(item.position.x, item.position.y, item.position.z );
             if(item.entity ==  -1) {
                 if (player.dist(itemPos) < 2.5) {

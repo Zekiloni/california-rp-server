@@ -94,7 +94,7 @@ module.exports = {
                               player.hours ++; 
                               player.xp = 0; 
                               
-                              let oldValue = player.data.bank, newValue;
+                              let oldValue = player.data.bank;
                               setTimeout(() => {
                                    let earnings = 0;
                                    if (player.salary > 0) { 
@@ -106,11 +106,10 @@ module.exports = {
                                    if (player.hours < 8) { earnings += 1200; }
 
                                    player.data.bank += earnings;
-                                   newValue = oldValue + earnings;
                               }, 500);
 
                               
-                              let message = `<b> Primili ste platu ! </b> <br> Staro stanje: <b>${oldValue}$</b> <br>, Novo stanje <b>${newValue}$</b>`
+                              let message = `<b> Primili ste platu ! </b> <br> Staro stanje: <b>${oldValue}$</b>.</b>`
                               account.notification(player, message, NOTIFY_INFO, 10);
                               
                      

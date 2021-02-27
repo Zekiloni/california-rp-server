@@ -35,7 +35,7 @@ module.exports = class itemModel {
         }
 
        
-        inventoryItems.push(this)
+        mp.items.push(this)
    }
 
     info () {
