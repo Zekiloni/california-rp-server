@@ -23,7 +23,7 @@ var playerCommands = require('./player/player.Commands')
 var adminCommands = require('./player/admin.Commands')
 var playerAnimations = require('./player/animations')
 var realTimeWeather = require('./core/weather')
-var dealershipVehicles = require('./vehicles/vehicleList');
+var dealershipVehicles = require('./vehicles/vehicles.List');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
 business.loadAll();

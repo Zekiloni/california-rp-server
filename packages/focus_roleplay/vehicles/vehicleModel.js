@@ -36,7 +36,7 @@ function Vehicle (data) {
     }
 
     this.tune = (data) => { 
-        data.length > 1 ? ( data.forEach(tune => { this.vehicle.setMod(tune.index, tune.value) })) : ( this.vehicle.setMod(data.index, data.value) )
+        data.length > 1 ? ( data.forEach(tune => { this.vehicle.setMod(tune.index, tune.value) } )) : ( this.vehicle.setMod(data.index, data.value) )
     }
 }
 
