@@ -33,8 +33,7 @@ const Doors = new Map([
 ])
 
 
-module.exports = { 
-
+var doors = { 
    nearbyDoors: (player) => { 
       let nearDoor = [];
       Doors.forEach((door) => {
@@ -72,3 +71,5 @@ module.exports = {
       } else return false;
    },
 }
+
+module.exports = doors;

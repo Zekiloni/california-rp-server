@@ -2,7 +2,7 @@ const db = require("../core/database");
 
 mp.vehiclez = [];
 
-function Vehicle (data) {
+function Vehicle (data) { 
     this.id = data.id;
     this.model = data.model || 'elegy';
     this.locked = data.locked || true;
