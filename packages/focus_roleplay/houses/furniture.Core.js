@@ -7,12 +7,12 @@ function Furniture (data) {
    this.position = data.position;
    this.rotation = data.rotation;
 
-   mp.furniture.push(this)
+   mp.furniture.push(this);
 
    this.delete = () => {
-      this.object.destroy()
+      this.object.destroy();
       let x = mp.furniture.indexOf(this);
-      mp.furniture.splice(x, 1)
+      mp.furniture.splice(x, 1);
    }
 }
 
