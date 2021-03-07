@@ -4,7 +4,7 @@ var login = require('./authentication/login')
 var animals = require('./animals')
 var charClohing = require('./clothing/clothing')
 var charCustomization = require('./char-customization/customization')
-var playerDamage = require('./playerDamage')
+var playerDamage = require('./syncDamage')
 var inventory = require('./inventory/inventory')
 var binds = require('./binds')
 var events = require('./events')
@@ -19,6 +19,7 @@ var jobs = require('./jobs/jobs')
 var cayoPerico = require('./heistisland')
 var nameTags = require('./nametags')
 var chat = require('./chat')
+var furniture = require('./furniture')
 
 
 

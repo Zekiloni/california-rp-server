@@ -50,7 +50,6 @@ var furniture = {
       let rot = JSON.stringify(furniture.object.rotation);
 
       var values = {
-            model: furniture.model,
             position: pos,
             rotation: rot,
             dimension: furniture.dimension,

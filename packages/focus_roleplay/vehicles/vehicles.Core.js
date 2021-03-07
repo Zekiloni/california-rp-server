@@ -75,3 +75,7 @@ module.exports = {
       });
    }
 }
+
+mp.events.add('server:vehicleDamage', (boneIndex, damage) => {
+   console.log(`[server:vehicleDamage] Bone index: ${boneIndex} | Damage: ${damage}`)
+ })
