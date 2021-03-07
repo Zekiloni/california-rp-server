@@ -161,6 +161,19 @@ db.query(plantsTable, function(err, results, fields) {
   core.terminal(3, `Checking plantsTable | MySQL`);
 });
 
+let furnitureTable = `CREATE TABLE IF NOT EXISTS furniture (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  model int(32) NOT NULL DEFAULT 0,
+  position text ,
+  rotation text ,
+  dimension int(24) NOT NULL DEFALT 0,
+  PRIMARY KEY(ID))`;
+
+db.query(furnitureTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking furnitureTable | MySQL`);
+});
+
 
 
 
