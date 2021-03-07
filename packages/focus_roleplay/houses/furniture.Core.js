@@ -33,7 +33,7 @@ var furniture = {
              rotJS = JSON.parse(res.rotation);
          let position = new mp.Vector3(psJS.x, psJS.y, psJS.z);
          let rotation = new mp.Vector3(rotJS.x, rotJS.y, rotJS.z);
-         
+
          let p = new Furniture({
             id: res.id,
             model: res.model,
@@ -56,10 +56,33 @@ var furniture = {
             dimension: furniture.dimension,
       };
 
-      await db.query("UPDATE `furniture` SET ? WHERE `id` = ?", [values, furniture.id], function (error, results, fields) {
+      await db.query("UPDATE `furniture` SET ? WHERE `ID` = ?", [values, furniture.id], function (error, results, fields) {
          if (error) return core.terminal(1, `Furniture saving ${error}`);
       });
    },
+
+   create: async (player, furniture) => { 
+      await db.query("INSERT INTO `furniture` (model, position, rotation, dimension) VALUES (?, ?, ?, ?)", [furniture.model, furniture.position, furniture.rotation, furniture.dimension], function (error, results, fields) {
+         if (error) return core.terminal(1, error);
+         account.notification(player, `Namestaj kreiran i postavljen.`, NOTIFY_SUCCESS, 4);
+         let p = new Furniture({
+            id: results.insertId,
+            model: furniture.model,
+            position: furniture.position,
+            rotation: furniture.rotation,
+            dimension: furniture.dimension
+         });
+     });
+   },
+
+   delete: (player, furniture) => { 
+      db.query("DELETE FROM `furniture` WHERE `ID` = ?", [furniture.id], function (error, results, fields) {
+         if (error) return core.terminal(1, error);
+         furniture.object.delete();
+     });
+   }
+
+
 }
 
 module.exports = furniture;
