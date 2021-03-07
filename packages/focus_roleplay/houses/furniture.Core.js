@@ -45,7 +45,7 @@ var furniture = {
       core.terminal(3, `${result.length} custom furniture loaded !`);
    },
 
-   save: async (furniture) => { 
+   save: (furniture) => { 
       let pos = JSON.stringify(furniture.object.position);
       let rot = JSON.stringify(furniture.object.rotation);
 
@@ -56,13 +56,13 @@ var furniture = {
             dimension: furniture.dimension,
       };
 
-      await db.query("UPDATE `furniture` SET ? WHERE `ID` = ?", [values, furniture.id], function (error, results, fields) {
+      db.query("UPDATE `furniture` SET ? WHERE `ID` = ?", [values, furniture.id], function (error, results, fields) {
          if (error) return core.terminal(1, `Furniture saving ${error}`);
       });
    },
 
-   create: async (player, furniture) => { 
-      await db.query("INSERT INTO `furniture` (model, position, rotation, dimension) VALUES (?, ?, ?, ?)", [furniture.model, furniture.position, furniture.rotation, furniture.dimension], function (error, results, fields) {
+   create: (player, furniture) => { 
+      db.query("INSERT INTO `furniture` (model, position, rotation, dimension) VALUES (?, ?, ?, ?)", [furniture.model, furniture.position, furniture.rotation, furniture.dimension], function (error, results, fields) {
          if (error) return core.terminal(1, error);
          account.notification(player, `Namestaj kreiran i postavljen.`, NOTIFY_SUCCESS, 4);
          let p = new Furniture({
