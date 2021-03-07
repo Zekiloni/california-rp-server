@@ -1,7 +1,7 @@
 const FURNITURE_TYPES = [ 
-   { type: 'Living room', name: 'Kauc', model: 'prop_couch_lg_06', price: 200 },
-   { type: 'Living room', name: 'Kauc', model: 'prop_couch_lg_08', price: 250 },
-   { type: 'Living room', name: 'Fotelja', model: 'p_yacht_chair_01_s', price: 50 }
+   { type: 'Dnevna soba', name: 'Kauc', model: 'prop_couch_lg_06', price: 200 },
+   { type: 'Dnevna soba', name: 'Kauc', model: 'prop_couch_lg_08', price: 250 },
+   { type: 'Dnevna soba', name: 'Fotelja', model: 'p_yacht_chair_01_s', price: 50 }
 ];
 
 class Furniture {
@@ -42,7 +42,7 @@ var furniture = {
             dimension: res.dimension
          });
       });
-      core.terminal(3, `${result.length} custom furniture loaded !`);
+      core.terminal(3, `${result.length} namestaja ucitano !`);
    },
 
    save: (furniture) => { 
@@ -61,7 +61,7 @@ var furniture = {
       });
    },
 
-   create: (player, furniture) => { 
+   create: (furniture) => { 
       db.query("INSERT INTO `furniture` (model, position, rotation, dimension) VALUES (?, ?, ?, ?)", [furniture.model, furniture.position, furniture.rotation, furniture.dimension], function (error, results, fields) {
          if (error) return core.terminal(1, error);
          account.notification(player, `Namestaj kreiran i postavljen.`, NOTIFY_SUCCESS, 4);
@@ -75,10 +75,10 @@ var furniture = {
      });
    },
 
-   delete: (player, furniture) => { 
+   delete: (furniture) => { 
       db.query("DELETE FROM `furniture` WHERE `ID` = ?", [furniture.id], function (error, results, fields) {
          if (error) return core.terminal(1, error);
-         furniture.object.delete();
+         furniture.delete();
      });
    }
 
