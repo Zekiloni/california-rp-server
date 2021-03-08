@@ -4,6 +4,10 @@ mp.events.add("server:playerDamage", (player, healthLoss, armorLoss) => {
   // armorLoss - hp
 });
 
+mp.events.add("server:onPlayerDamageHimself", (player, healthLoss) => {
+  // 
+});
+
 mp.events.add('server:handleLogin', async (player, username, password) => {
   var login = await account.login(username, password)
 
