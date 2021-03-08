@@ -76,6 +76,6 @@ module.exports = {
    }
 }
 
-mp.events.add('server:vehicleDamage', (boneIndex, damage) => {
-   console.log(`[server:vehicleDamage] Bone index: ${boneIndex} | Damage: ${damage}`)
+mp.events.add('server:onVehicleDamage', (player, vehicle, boneIndex, damage) => {
+   console.log(`[server:onVehicleDamage] Vehicle: ${vehicle.id} Bone index: ${boneIndex} | Damage: ${damage}`)
  })

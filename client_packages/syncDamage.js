@@ -26,7 +26,6 @@ mp.events.add('render',  function() {
 mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapon, boneIndex, damage) => {
   /* Anti Aim 
   if (targetEntity.type === 'player' && boneIndex === 20) {
-    
       headshots++;
       if(headshotsTimer != null) {
         clearTimeout(myVar);
@@ -38,6 +37,9 @@ mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapo
   }*/
 
   if(targetEntity.type === 'vehicle') {
-    mp.events.callRemote('server:vehicleDamage', boneIndex, damage);
+    mp.events.callRemote('server:onVehicleDamage', targetEntity, boneIndex, damage);
+  }
+  if(sourceEntity === targetEntity) {
+    mp.events.callRemote('server:onPlayerDamageHimself', sourceEntity, damage);
   }
 });
