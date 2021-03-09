@@ -1,3 +1,14 @@
+let lpCasinoTable = null;
+let casinoTableToJoin = null;
+let casinoSeatToJoin = null;
+let goToSeatInterval = null;
+let interactingWithTable = null;
+let rouletteCamera = null;
+let canDoBets = false;
+let betObject = null;
+let closestChipSpot = null;
+let interactingWithTableTimeout = null;
+
 let tablesPos = 
 [
 	[ "vw_prop_casino_roulette_01", 1144.4254150390625, 269.3034973144531, -52.840850830078125 ],
@@ -20,8 +31,13 @@ let tablesBets =
 
 let pedModels =
 [
-	"S_M_Y_Casino_01", "S_F_Y_Casino_01", "S_M_Y_Casino_01", "S_F_Y_Casino_01", "S_M_Y_Casino_01", "S_F_Y_Casino_01"
-]
+   ["S_M_Y_Casino_01"],
+   ["S_F_Y_Casino_01"],
+   ["S_M_Y_Casino_01"], 
+   ["S_F_Y_Casino_01"],
+   ["S_M_Y_Casino_01"], 
+   ["S_F_Y_Casino_01"]
+];
 
 let pedModelVariations =
 [
@@ -111,6 +127,9 @@ let pedModelVariations =
 	]
 ]
 
+mp.game.streaming.requestIpl('vw_casino_main');
+mp.blips.new(679, new mp.Vector3(935.8140869140625, 46.942176818847656, 81.09580993652344), { name: "Diamond Casino & Resort", color: 4, shortRange: true, scale: 1.0 });
+
 let tableSeatsPos =
 [
 	[-0.7, -1.28, 1, 0],
@@ -141,3 +160,22 @@ for(var i=0; i < tablesPos.length; i++)
 		rouletteData[i].ped.setComponentVariation(pedModelVariations[i][c][0], pedModelVariations[i][c][1], pedModelVariations[i][c][2], pedModelVariations[i][c][3]);
 	}
 }
+
+mp.events.add('playerEnterColshape', (shape) => {
+	if(shape.casinoTable !== undefined && lpCasinoTable == null && interactingWithTable == null)
+	{
+		casinoTableToJoin = shape.casinoTable;
+		casinoSeatToJoin = shape.seatID;
+
+		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
+		mp.game.graphics.notify(`Pritisnite ~b~[E]~s~ da sednete za sto.~n~Ulozi:~b~${tablesBets[casinoTableToJoin][0]}~s~ do ~b~${tablesBets[casinoTableToJoin][1]}~s~ $`);
+	}
+});
+
+mp.events.add('playerExitColshape', (shape) => {
+	if(shape.casinoTable !== undefined)
+	{
+		casinoTableToJoin = null;
+		casinoSeatToJoin = null;
+	}
+});
