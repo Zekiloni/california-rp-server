@@ -180,6 +180,31 @@ mp.events.add('playerExitColshape', (shape) => {
 	}
 });
 
+mp.keys.bind(0x46, true, () =>  // F
+{
+		
+	if(localPlayer.isDead() || mp.gui.cursor.visible || interactingWithTable != null || lpCasinoTable == null) return false;
+	
+	if(rouletteCamera != null)
+	{
+		destroyRouletteCamera();
+	}
+	else
+	{
+		rouletteCamera = mp.cameras.new('default', new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2]-1, tablesPos[lpCasinoTable][3]+3), new mp.Vector3(0,0,0), 45);
+		rouletteCamera.setRot(-75.0, 0.0, 0.0, 2);
+		rouletteCamera.setActive(true);
+		mp.game.cam.renderScriptCams(true, false, 0, true, false);
+	}	
+});
+
+destroyRouletteCamera = () => 
+{
+	rouletteCamera.destroy(true);
+	rouletteCamera = null;
+   mp.game.cam.renderScriptCams(false, false, 0, true, false);
+}
+
 getCameraHitCoord = () =>
 {
 	let position = rouletteCamera.getCoord();
