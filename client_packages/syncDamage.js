@@ -40,6 +40,6 @@ mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapo
     mp.events.callRemote('server:onVehicleDamage', targetEntity, boneIndex, damage);
   }
   if(sourceEntity === targetEntity) {
-    mp.events.callRemote('server:onPlayerDamageHimself', sourceEntity, damage);
+    mp.events.callRemote('server:onPlayerDamageHimself', damage);
   }
 });

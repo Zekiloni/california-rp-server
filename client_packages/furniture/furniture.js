@@ -49,14 +49,14 @@ function AddInstructionalEnd(type) {
     mp.game.graphics.pushScaleformMovieFunctionParameterInt(type);
     mp.game.graphics.popScaleformMovieFunctionVoid();
     mp.game.graphics.pushScaleformMovieFunction(sc, "SET_BACKGROUND_COLOUR");
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(192);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(57);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(43);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(65);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
     mp.game.graphics.popScaleformMovieFunctionVoid();
 }
 
-mp.events.add("client:startEditingFurniture", function (model) {
+mp.events.add("client:startFurnitureEditor", function (model) {
    object = mp.objects.new(mp.game.joaat(model), new mp.Vector3(localplayer.position.x+1, localplayer.position.y+1, localplayer.position.z-0.5), 
    {
 	   rotation: new mp.Vector3(0, 0, 0),
@@ -66,7 +66,7 @@ mp.events.add("client:startEditingFurniture", function (model) {
    editing = true;
 });
 
-mp.events.add("client:stopEditingFurniture", function () {
+mp.events.add("client:stopFurnitureEditor", function () {
    object.destroy();
    object = null;
    editing = false;
@@ -83,7 +83,7 @@ function UpdateObject() {
    object.destroy();
    object = mp.objects.new(model, position,
    {
-	   rotation: new mp.Vector3(0, 0, 0),
+	   rotation: new mp.Vector3(rot.x, rot.y, rot.z),
 	   alpha: 255,
 	   dimension: localplayer.dimension
    });
@@ -91,7 +91,7 @@ function UpdateObject() {
 }
 
 mp.keys.bind(0x26, false, function () { // UP Arrow
-   if (!editing) return; // uraditi proveru i da li je chat otvoren
+   if (!editing || object === null) return; // uraditi proveru i da li je chat otvoren
    switch (editing_type_idx) {
        // pos x
        case 0:
@@ -114,6 +114,7 @@ mp.keys.bind(0x26, false, function () { // UP Arrow
            var pitch = object.getPitch();
 		   
            object.setRotation(pitch + moving_speeds[moving_speed_idx], rot.y, rot.z, 2, true);
+           mp.gui.chat.push("rot X" + rot);
            break;
        // rot y
        case 4:
@@ -121,6 +122,7 @@ mp.keys.bind(0x26, false, function () { // UP Arrow
            var pitch = object.getPitch();
 		   
            object.setRotation(pitch, rot.y + moving_speeds[moving_speed_idx], rot.z, 2, true);
+           mp.gui.chat.push("rot Y" + rot);
            break;
        // rot z
        case 5:
@@ -128,13 +130,15 @@ mp.keys.bind(0x26, false, function () { // UP Arrow
            var pitch = object.getPitch();
 		   
            object.setRotation(pitch, rot.y, rot.z + moving_speeds[moving_speed_idx], 2, true);
+
+           mp.gui.chat.push("rot Z" + rot);
            break;
    }
    UpdateObject();
 });
 
 mp.keys.bind(0x28, false, function () { // DOWN Arrow
-   if (!editing) return; // uraditi proveru i da li je chat otvoren
+   if (!editing || object === null) return; // uraditi proveru i da li je chat otvoren
    switch (editing_type_idx) {
        // pos x
        case 0:
@@ -193,11 +197,11 @@ mp.keys.bind(0x27, false, function () { // RIGHT Arrow
 });
 
 mp.keys.bind(0x59, false, function () { // Y key
-   if (!editing) return;
-   let rot = object.getRotation(2);
-   let pitch = object.getPitch();
+   if (!editing || object === null) return;
    
-   mp.events.callRemote("server:acceptEditFurniture", parseInt(object.model), object.position.x, object.position.y, object.position.z, rot.x, rot.y, rot.z);
+   let rot = object.getRotation(2);
+
+   mp.events.callRemote("server:acceptEditFurniture", object.model, object.position.x, object.position.y, object.position.z, rot.x, rot.y, rot.z);
    
    object.destroy();
    object = null;
@@ -215,8 +219,9 @@ mp.keys.bind(0x4E, false, function () { // N key
 });
 
 mp.keys.bind(0x5A, false, function () { // Z key
-   if (!editing) return;
+   if (!editing || object === null) return;
    object.placeOnGroundProperly();
+   UpdateObject();
    mp.gui.chat.push("[DEBUG] Object placed on ground properly.");
 });
 
@@ -240,8 +245,8 @@ mp.events.add('render', () => {
     AddInstructionalStart();
     AddInstructionalButton("Next mode", 197);
     AddInstructionalButton("Previous mode", 196);
-    AddInstructionalButton("Editing an object", 194);
-    AddInstructionalButton("Editing an object", 195);
+    AddInstructionalButton("Moving an object", 194);
+    AddInstructionalButton("Moving an object", 195);
     AddInstructionalButtonCustom("Increase speed", "t_+");
     AddInstructionalButtonCustom("Decrease speed", "t_-");
 	AddInstructionalButtonCustom("Place on ground", "t_Z");
