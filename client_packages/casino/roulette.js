@@ -22,3 +22,122 @@ let pedModels =
 [
 	"S_M_Y_Casino_01", "S_F_Y_Casino_01", "S_M_Y_Casino_01", "S_F_Y_Casino_01", "S_M_Y_Casino_01", "S_F_Y_Casino_01"
 ]
+
+let pedModelVariations =
+[
+	[ //S_M_Y_Casino_01
+		[ 0, 2, 2, 0],
+		[ 1, 1, 0, 0],
+		[ 2, 4, 0, 0],
+		[ 3, 0, 3, 0],
+		[ 4, 0, 0, 0],
+		[ 6, 1, 0, 0],
+		[ 7, 2, 0, 0],
+		[ 8, 1, 0, 0],
+		[ 10, 1, 0, 0],
+		[ 11, 1, 0, 0]
+	],
+	[//S_F_Y_Casino_01
+		[ 0, 2, 0, 0],
+		[ 1, 0, 0, 0],
+		[ 2, 2, 0, 0],
+		[ 3, 2, 3, 0],
+		[ 4, 0, 0, 0],
+		[ 6, 0, 0, 0],
+		[ 7, 0, 0, 0],
+		[ 8, 2, 0, 0],
+		[ 10, 0, 0, 0],
+		[ 11, 0, 0, 0]
+	],
+	[ //S_M_Y_Casino_01
+		[ 0, 2, 1, 0],
+		[ 1, 1, 0, 0],
+		[ 2, 2, 0, 0],
+		[ 3, 0, 3, 0],
+		[ 4, 0, 0, 0],
+		[ 6, 1, 0, 0],
+		[ 7, 2, 0, 0],
+		[ 8, 1, 0, 0],
+		[ 10, 1, 0, 0],
+		[ 11, 1, 0, 0]
+	],
+	[//S_F_Y_Casino_01
+		[ 0, 2, 1, 0],
+		[ 1, 0, 0, 0],
+		[ 2, 2, 1, 0],
+		[ 3, 3, 3, 0],
+		[ 4, 1, 0, 0],
+		[ 6, 1, 0, 0],
+		[ 7, 2, 0, 0],
+		[ 8, 3, 0, 0],
+		[ 10, 0, 0, 0],
+		[ 11, 0, 0, 0]
+	],
+	[ //S_M_Y_Casino_01
+		[ 0, 4, 2, 0],
+		[ 1, 1, 0, 0],
+		[ 2, 3, 0, 0],
+		[ 3, 0, 0, 0],
+		[ 4, 0, 0, 0],
+		[ 6, 1, 0, 0],
+		[ 7, 2, 0, 0],
+		[ 8, 1, 0, 0],
+		[ 10, 1, 0, 0],
+		[ 11, 1, 0, 0]
+	],
+	[//S_F_Y_Casino_01
+		[ 0, 4, 0, 0],
+		[ 1, 0, 0, 0],
+		[ 2, 4, 0, 0],
+		[ 3, 2, 1, 0],
+		[ 4, 1, 0, 0],
+		[ 6, 1, 0, 0],
+		[ 7, 1, 0, 0],
+		[ 8, 2, 0, 0],
+		[ 10, 0, 0, 0],
+		[ 11, 0, 0, 0]
+	],
+	[ //S_M_Y_Casino_01 (not used)
+		[ 0, 4, 0, 0],
+		[ 1, 1, 0, 0],
+		[ 2, 0, 0, 0],
+		[ 3, 0, 0, 0],
+		[ 4, 0, 0, 0],
+		[ 6, 1, 0, 0],
+		[ 7, 2, 0, 0],
+		[ 8, 1, 0, 0],
+		[ 10, 1, 0, 0],
+		[ 11, 1, 0, 0]
+	]
+]
+
+let tableSeatsPos =
+[
+	[-0.7, -1.28, 1, 0],
+	[0.775, -1.68, 1, 0],
+	[1.8, -0.63, 1, 90],
+	[1.27, 1.05, 1, 180]
+]
+
+let rouletteData = [];
+
+for(var i=0; i < tablesPos.length; i++)
+{
+	rouletteData[i] = {};
+	rouletteData[i].table = mp.objects.new(mp.game.joaat(tablesPos[i][0]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2], tablesPos[i][3]));
+	rouletteData[i].ball = mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]));
+	rouletteData[i].ped = mp.peds.new(mp.game.joaat(pedModels[i]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2]+0.7, tablesPos[i][3]+1), 180, 0); //-0.001587
+	rouletteData[i].ped.croupier = i;
+	
+	for(var c=0; c < tableSeatsPos.length; c++)
+	{
+		var newShape = mp.colshapes.newSphere(tablesPos[i][1]+tableSeatsPos[c][0], tablesPos[i][2]+tableSeatsPos[c][1], tablesPos[i][3]+tableSeatsPos[c][2], 0.5);
+		newShape.casinoTable = i;
+		newShape.seatID = c;
+	}
+	
+	for(var c=0; c < pedModelVariations[i].length; c++)
+	{
+		rouletteData[i].ped.setComponentVariation(pedModelVariations[i][c][0], pedModelVariations[i][c][1], pedModelVariations[i][c][2], pedModelVariations[i][c][3]);
+	}
+}
