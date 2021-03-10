@@ -342,7 +342,7 @@ mp.events.add("clearRouletteTable", (table) =>
 });
 
 mp.keys.bind(0x5A, true, () =>  // Z
-{		
+{
 	mp.gui.chat.push('1');
 	//if(interactingWithTable != null || lpCasinoTable == null) return;
 	//mp.events.call("clearRouletteTable", lpCasinoTable);
