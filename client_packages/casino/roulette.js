@@ -156,7 +156,7 @@ for(var i=0; i < tablesPos.length; i++)
 	rouletteData[i].table = mp.objects.new(mp.game.joaat(tablesPos[i][0]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2], tablesPos[i][3]));
 	rouletteData[i].ball = mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]));
 	rouletteData[i].ped = mp.peds.new(mp.game.joaat(pedModels[i]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2]+0.7, tablesPos[i][3]+1), 180, 0); //-0.001587
-	rouletteData[i].label = mp.labels.new(`${tablesBets[i][0]}~n~${tablesBets[i][1]}`, new mp.Vector3(-431.88, 1146.86, 327), { los: false, font: 1, drawDistance: 5, })
+	rouletteData[i].label = mp.labels.new(`${tablesBets[i][0]}~n~${tablesBets[i][1]}`, new mp.Vector3(tablesPos[i][1],tablesPos[i][2], tablesPos[i][3]), { los: false, font: 1, drawDistance: 5 })
 	rouletteData[i].ped.croupier = i;
 	
 	for(var c=0; c < tableSeatsPos.length; c++)
@@ -191,6 +191,39 @@ mp.events.add('playerExitColshape', (shape) => {
 	}
 });
 
+mp.events.add('playerDeath', (player) => 
+{
+	if(player == localPlayer) 
+	{
+		if(interactingWithTable != null) interactingWithTable = null;
+		if(BLOCK_CONTROLS_DURING_ANIMATION) BLOCK_CONTROLS_DURING_ANIMATION = false;
+		if(rouletteCamera != null) destroyRouletteCamera();
+		if(canDoBets) canDoBets = false;
+	}
+});
+
+mp.events.add("initRoulette", () => 
+{
+	mp.events.add("render", rouletteRender);
+	
+	mp.events.add('entityStreamIn', (entity) => {
+		if(entity.type == "ped" && entity.croupier != null) 
+		{
+			if(entity.model == mp.game.joaat('S_M_Y_Casino_01')) entity.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+			else entity.taskPlayAnim(dealerLib+"_female", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+			
+			var id = entity.croupier;
+			
+			rouletteData[id].ball.position = new mp.Vector3(tablesPos[id][1]-0.734742, tablesPos[id][2]-0.16617, tablesPos[id][3]);
+			
+			for(var c=0; c < pedModelVariations[id].length; c++)
+			{
+				entity.setComponentVariation(pedModelVariations[id][c][0], pedModelVariations[id][c][1], pedModelVariations[id][c][2], pedModelVariations[id][c][3]);
+			}
+		}
+	});
+});
+
 mp.events.add("playerSitAtCasinoTable", (player, tableID) => {
 	
 	if(player == localPlayer) 
@@ -206,8 +239,17 @@ mp.events.add("playerSitAtCasinoTable", (player, tableID) => {
 	}
 });
 
+mp.events.add("rouletteAllowBets", (toggle) => {
+	
+	canDoBets = toggle;
+	if(toggle) mp.game.graphics.notify("Place your bets.");
+	else mp.game.graphics.notify("No more bets.");
+});
+
 mp.events.add('render', () => 
 {
+	AddInstructionalButtonCustom("Toggle bet camera", "t_F");
+
 	if(canDoBets && rouletteCamera && betObject == null)
 	{
 		betObject = mp.objects.new(mp.game.joaat("vw_prop_chip_100dollar_x1"), new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2], tablesPos[lpCasinoTable][3]));
@@ -295,9 +337,6 @@ anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_ba
 */
 
 mp.events.add("spinRouletteWheel", (table, needSpins, endTable, endBall) => {
-	
-	mp.events.add("render", rouletteRender);
-
 	rouletteData[table].table.playAnim("intro_wheel", tableLib, 1000.0, false, true, true, 0, 1000); // loop, freezeLastFrame, ?
 	
 	rouletteData[table].ball.position = new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.16617, tablesPos[table][3]+1.0715);
@@ -341,6 +380,7 @@ mp.events.add("clearRouletteTable", (table) =>
 	);
 });
 
+/*
 mp.keys.bind(0x5A, true, () =>  // Z
 {
 	mp.gui.chat.push('1');
@@ -366,7 +406,7 @@ mp.keys.bind(0x5A, true, () =>  // Z
 			mp.gui.chat.push("3 rulet");
 		},4500
 	);
-});
+});*/
 
 
 mp.keys.bind(0x45, true, () =>  // E
@@ -402,7 +442,7 @@ mp.keys.bind(0x45, true, () =>  // E
 		localPlayer.position = new mp.Vector3(tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0], tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1], tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2]);
 		localPlayer.setHeading(tableSeatsPos[casinoSeatToJoin][3]);
 		
-		mp.events.call("playerSitAtCasinoTable", localPlayer, casinoTableToJoin);
+		mp.events.callRemote("server:occupyCasinoSeat", casinoTableToJoin, casinoSeatToJoin);
 		
 		interactingWithTableTimeout = setTimeout(
 			function()
@@ -448,7 +488,7 @@ mp.keys.bind(0x46, true, () =>  // F
 	else
 	{
 		createRouletteCamera();
-		mp.events.call("spinRouletteWheel", lpCasinoTable, 1, "exit_7_wheel", "exit_7_ball");
+		//mp.events.call("spinRouletteWheel", lpCasinoTable, 1, "exit_7_wheel", "exit_7_ball");
 	}
 });
 
@@ -469,7 +509,7 @@ function rouletteRender()
 			if(rouletteData[i].ball.getAnimCurrentTime(tableLib, "intro_ball") > 0.99)
 			{
 				rouletteData[i].ball.position = new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]+1.0715);
-				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 30.0);
+				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 270);
 				
 				rouletteData[i].ball.playAnim("loop_ball", tableLib, 1000.0, true, true, false, 0, 1000);
 			}
