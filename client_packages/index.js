@@ -19,7 +19,8 @@ var jobs = require('./jobs/jobs')
 var cayoPerico = require('./heistisland')
 var nameTags = require('./nametags')
 var chat = require('./chat')
-var furniture = require('./furniture')
+var fingerPointing = require('./fingerPointing')
+var furniture = require('./furniture/furniture')
 
 
 

@@ -163,10 +163,10 @@ db.query(plantsTable, function(err, results, fields) {
 
 let furnitureTable = `CREATE TABLE IF NOT EXISTS furniture (
   ID int(11) NOT NULL AUTO_INCREMENT,
-  model int(32) NOT NULL DEFAULT 0,
-  position text ,
-  rotation text ,
-  dimension int(24) NOT NULL DEFALT 0,
+  model int(32),
+  position text,
+  rotation text,
+  dimension int(24),
   PRIMARY KEY(ID))`;
 
 db.query(furnitureTable, function(err, results, fields) {
