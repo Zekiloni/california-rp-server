@@ -442,7 +442,7 @@ mp.keys.bind(0x45, true, () =>  // E
 		localPlayer.position = new mp.Vector3(tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0], tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1], tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2]);
 		localPlayer.setHeading(tableSeatsPos[casinoSeatToJoin][3]);
 		
-		mp.events.callRemote("server:occupyCasinoSeat", casinoTableToJoin, casinoSeatToJoin);
+		mp.events.callRemote("server:occupyCasinoSeat", casinoTableToJoin, casinoSeatToJoin);xxxxxxxxxxxxxxxxxxxxxxxxxx
 		
 		interactingWithTableTimeout = setTimeout(
 			function()

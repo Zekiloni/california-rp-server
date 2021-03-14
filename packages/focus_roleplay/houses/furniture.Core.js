@@ -1,3 +1,5 @@
+mp.furniture = [];
+
 const FURNITURE_TYPES = [ 
    { type: 'Dnevna soba', name: 'Kauc', model: 'prop_couch_lg_06', price: 200 },
    { type: 'Dnevna soba', name: 'Kauc', model: 'prop_couch_lg_08', price: 250 },
@@ -7,6 +9,7 @@ const FURNITURE_TYPES = [
 class Furniture {
    constructor(data) {
       this.id = data.id;
+      this.owner = data.owner;
       this.model = data.model;
       this.object = data.object;
       this.position = data.position;
@@ -23,7 +26,7 @@ class Furniture {
    }
 }
 
-var furniture = { 
+let furniture = { 
 
    load: async () => { 
       let result = await db.aQuery("SELECT * FROM `furniture`");
@@ -36,6 +39,7 @@ var furniture = {
 
          let p = new Furniture({
             id: res.id,
+            owner: res.owner,
             model: res.model,
             position: position,
             rotation: rotation,
@@ -60,12 +64,13 @@ var furniture = {
       });
    },
 
-   create: (furniture) => { 
-      db.query("INSERT INTO `furniture` (model, position, rotation, dimension) VALUES (?, ?, ?, ?)", [furniture.model, furniture.position, furniture.rotation, furniture.dimension], function (error, results, fields) {
+   create: (player, furniture) => { 
+      db.query("INSERT INTO `furniture` (owner, model, position, rotation, dimension) VALUES (?, ?, ?, ?, ?)", [player.name, furniture.model, furniture.position, furniture.rotation, furniture.dimension], function (error, results, fields) {
          if (error) return core.terminal(1, error);
          account.notification(player, `Namestaj kreiran i postavljen.`, NOTIFY_SUCCESS, 4);
          let p = new Furniture({
             id: results.insertId,
+            owner: results.owner,
             model: furniture.model,
             position: furniture.position,
             rotation: furniture.rotation,
@@ -79,9 +84,17 @@ var furniture = {
          if (error) return core.terminal(1, error);
          furniture.delete();
      });
+   },
+
+   getAllOwnedFurniture: (player) => {
+      let furniture = mp.furniture.find( ({owner}) => owner === player.name);
+      if(items !== null) {
+         let furnJson = JSON.stringify(furniture);
+         return furnJson;
+      }
+      else {
+         account.notification(player, `Nemate ništa od nameštaja`, NOTIFY_ERROR, 4);
+      }
    }
-
-
 }
-
 module.exports = furniture;
