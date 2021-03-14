@@ -20,6 +20,7 @@ var nameTags = require('./player/nametags');
 var chat = require('./chat');
 var furniture = require('./furniture');
 var fingerPointer = require('./player/fingerPointing');
+var syncObjects = require('./syncObjects');
 
 
 

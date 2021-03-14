@@ -11,7 +11,16 @@ mp.events.add('detachObject', function (player) {
    } catch (e) { } 
 });
 
-attachObject = (player, jsonData) => { 
+/* "data.Bone
+"data.Model
+"data.PosOffset.x
+"data.PosOffset.y
+"data.PosOffset.z
+"data.RotOffset.x
+"data.RotOffset.y
+"data.RotOffset.z*/
+
+attachObject = (player, jsonData) => {  
    try {
       if (player && mp.players.exists(player)) {
          if (attachedObjects[player.id] != undefined) attachedObjects[player.id].destroy();
