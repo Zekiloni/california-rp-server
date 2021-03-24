@@ -67,25 +67,25 @@ module.exports = {
                          player.hunger --;
                          player.thirst --;
                          if (player.hunger > 5 && player.hunger < 10) {
-                              account.notification(player, "Gladni ste, ukoliko ne pojedete nešto počećete da osećate posledice.", NOTIFY_ERROR, 4);
+                              player.notification("Gladni ste, ukoliko ne pojedete nešto počećete da osećate posledice.", NOTIFY_ERROR, 4);
                          }
                          else if (player.hunger >= 1 && player.hunger < 5) {
-                              account.notification(player, "Veoma ste gladni, ukoliko uskoro ne pojedte nešto umrećete.", NOTIFY_ERROR, 4);
+                              player.notification("Veoma ste gladni, ukoliko uskoro ne pojedte nešto umrećete.", NOTIFY_ERROR, 4);
                               player.call("client:screenEffect", 'FocusOut', 5000);
                          }    
                          else if (player.hunger <= 2) {
-                              account.notification(player, "Umro si od gladi.", NOTIFY_ERROR, 4);
+                              player.notification("Umro si od gladi.", NOTIFY_ERROR, 4);
                               //player.health = 0;
                          }
                          if (player.thirst >= 5 && player.thirst <= 10) {
-                              account.notification(player, "Žedni ste, ukoliko ne popijete neku tečnost uskoro počećete da osećate posledice.", NOTIFY_ERROR, 4);
+                              player.notification("Žedni ste, ukoliko ne popijete neku tečnost uskoro počećete da osećate posledice.", NOTIFY_ERROR, 4);
                          }
                          else if (player.thirst >= 1 && player.thirst < 5) {
-                              account.notification(player, "Veoma ste žedni, ukoliko uskoro ne popijete nešto umrećete.", NOTIFY_ERROR, 4); 
+                              player.notification("Veoma ste žedni, ukoliko uskoro ne popijete nešto umrećete.", NOTIFY_ERROR, 4); 
                               player.call("client:screenEffect", 'FocusOut', 5000); // DeathFailOut
                          }    
                          else if (player.thirst <= 2) {
-                              account.notification(player, "Umro si od žeđi.", NOTIFY_ERROR, 4);
+                              player.notification("Umro si od žeđi.", NOTIFY_ERROR, 4);
                               //player.health = 0;
                          }
                          counter ++;
@@ -110,7 +110,7 @@ module.exports = {
 
                               
                               let message = `<b> Primili ste platu ! </b> <br> Staro stanje: <b>${oldValue}$</b>.</b>`
-                              account.notification(player, message, NOTIFY_INFO, 10);
+                              player.notification(message, NOTIFY_INFO, 10);
                               
                      
                          }

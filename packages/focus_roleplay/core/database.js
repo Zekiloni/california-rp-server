@@ -1,3 +1,5 @@
+
+
 var mysql = require('mysql');
 
 var db = mysql.createPool({
@@ -8,15 +10,6 @@ var db = mysql.createPool({
      database : 'focus'
 });
 
-
-// try {
-//      db.connect(function(err) {
-//           if (err) throw main.terminal(1, `Connection to database failed, ${err}`)
-//           core.terminal(3, 'Connection with MySQL succesfull !')
-//      });
-// } catch (error) {
-//      core.terminal(1, error)
-// }
 
 db.aQuery = (query, values) => { 
      return new Promise(data => {

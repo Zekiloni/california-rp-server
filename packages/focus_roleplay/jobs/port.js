@@ -74,7 +74,7 @@ var container = {
    },
 
    attach: (player, cont) => { 
-      if (player.data.container) return account.notification(player, 'Već imate zakačen kontenjer.', NOTIFY_ERROR, 4)
+      if (player.data.container) return player.notification('Već imate zakačen kontenjer.', NOTIFY_ERROR, 4)
       cont.attached = player.id;
       player.data.container = cont;
       cont.object.destroy();
@@ -96,7 +96,7 @@ var container = {
 
    deliver: (player) => { 
       let dropZone = new mp.Vector3(DROPZONE_POINT[0], DROPZONE_POINT[1], DROPZONE_POINT[2])
-      if (player.dist(dropZone) > 20) return account.notification(player, 'Ne nalazite se u zoni za dostavu.', NOTIFY_ERROR, 4)
+      if (player.dist(dropZone) > 20) return player.notification('Ne nalazite se u zoni za dostavu.', NOTIFY_ERROR, 4)
       
       mp.players.forEachInRange(player.position, 100, (target) => { 
          target.call('client:detachHandlerContainer', [player])
@@ -175,21 +175,21 @@ var port = {
 
 mp.events.addCommand({
    'port': (player, fullText) => {
-      if (player.job != JOB_LS_PORT.ID) return account.notification(player, MSG_UNEMPLOYED, NOTIFY_ERROR, 4);
-      if (!fullText) return  account.notification(player, `Nepoznat argument koomande <b>/port</b> (load, unload, deliver)`, NOTIFY_INFO, 4);
+      if (player.job != JOB_LS_PORT.ID) return player.notification(MSG_UNEMPLOYED, NOTIFY_ERROR, 4);
+      if (!fullText) return  player.notification(`Nepoznat argument koomande <b>/port</b> (load, unload, deliver)`, NOTIFY_INFO, 4);
       let args = fullText.split(' '),
          action = args[0];
       switch(action) {
          case 'load':
-            if (player.duty) return account.notification(player, MSG_ALREADY_WORKING, NOTIFY_ERROR, 4);
+            if (player.duty) return player.notification(MSG_ALREADY_WORKING, NOTIFY_ERROR, 4);
             port.start(player, 1)
             break;
          case 'delivery':
-            if (player.duty) return account.notification(player, MSG_ALREADY_WORKING, NOTIFY_ERROR, 4);
+            if (player.duty) return player.notification(MSG_ALREADY_WORKING, NOTIFY_ERROR, 4);
             port.start(player, 2)
             break;   
          default:
-            return account.notification(player, `Nepoznat argument koomande <b>/port</b> (load, unload, deliver)`, NOTIFY_INFO, 4);
+            return player.notification(`Nepoznat argument koomande <b>/port</b> (load, unload, deliver)`, NOTIFY_INFO, 4);
       }
    }
 });

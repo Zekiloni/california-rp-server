@@ -64,9 +64,9 @@ var doors = {
             );
          })
          if (status == false) { 
-            account.notification(player, MSG_DOORS_UNLOCKED, NOTIFY_SUCCESS, 4);
+            player.notification(MSG_DOORS_UNLOCKED, NOTIFY_SUCCESS, 4);
          } else if (status == true) { 
-            account.notification(player, MSG_DOORS_LOCKED, NOTIFY_ERROR, 4);
+            player.notification(MSG_DOORS_LOCKED, NOTIFY_ERROR, 4);
          }
       } else return false;
    },

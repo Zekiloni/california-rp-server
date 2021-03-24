@@ -89,10 +89,6 @@ mp.events.add({
         mp.events.call('client:setCameraInfrontPlayer', false);
     },
 
-    'client:rotateCharacter': (value) => {
-        player.setHeading(value);
-    },
-
     'client:setCameraInfrontPlayer': (status) => {
         if(status) {
           frontPlayerCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 30);

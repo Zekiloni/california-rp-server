@@ -7,44 +7,42 @@ const HOUSE_TYPES = [
     { type: 1, name: 'Medium End Apartment', position: [347.2686, -999.2955, -99.19622] }, 
 ]
 
-function House (data) {
-    this.id = data.id;
-    this.type = data.type || 0;
-    this.owner = data.owner || -1;
-    this.price = data.price || -1;
-    this.dimension = data.dimension || 0;
-    this.entrance = data.entrance || 0;
-    this.interior = data.interior || 0;
-    this.ipl = data.ipl;
+class House { 
+    constructor (data) { 
+        this.id = data.id;
+        this.type = data.type || 0;
+        this.owner = data.owner || -1;
+        this.price = data.price || -1;
+        this.dimension = data.dimension || 0;
+        this.entrance = data.entrance || 0;
+        this.interior = data.interior || 0;
+        this.ipl = data.ipl;
+    
+        let position = new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z);
+        this.blip = mp.blips.new(40, position, { name: `Kuca`,  shortRange: true });
+        this.marker = mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 0.99), 1.1,
+        { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 150], visible: true, dimension: this.dimension });
+    
+        mp.houses.push(this) 
+    }
 
-    let position = new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z);
-    this.label = mp.labels.new('', position, { los: false, font: 0, drawDistance: 3 });
-    this.blip = mp.blips.new(40, position, { name: `Kuca`,  shortRange: true });
-    this.marker = mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 0.99), 1.1,
-    { direction: new mp.Vector3(90, 0, 0), rotation: new mp.Vector3(0, 0, 90), color: [SERVER_COLOR.R, SERVER_COLOR.G, SERVER_COLOR.B, 150], visible: true, dimension: this.dimension });
-
-    mp.houses.push(this) 
-
-    this.delete = () => {
+    delete = () => {
         let x = mp.houses.indexOf(this)
         mp.houses.splice(x, 1)
         this.blip.destroy();
-        this.label.destroy();
         this.marker.destroy();
     };
 
-    this.refresh = () => { 
-        this.owner == -1 ? 
-            ( this.label.text = `~r~Kuca na Prodaju !~n~~s~${HOUSE_TYPES[this.type].name}~n~ ~g~${this.price} $`, this.blip.color = 52 ) : ( this.label.text = `Kuca u necijem vlasnistvu !~n~${HOUSE_TYPES[this.type].name}`, this.blip.color = 49 );
-    }
-
-    this.info = () => { return this; }
+    info = () => { return this; }
 }
 
 
+// mp.events.add(RageEnums.EventKey.PLAYER_ENTER_COLSHAPE, (player, colshape) => { 
+//     let house = mp.houses.filter(house => house.colshape === colshape);
+// })
+
 
 var houses = { 
-
     load: async () => { 
         let result = await db.aQuery("SELECT * FROM `houses`");
         result.forEach(function (res) {
@@ -60,7 +58,6 @@ var houses = {
                 interior: interior,
                 ipl: res.ipl
             });
-            house.refresh();
         });
         core.terminal(3, `${result.length} houses were loaded !`);
     },
@@ -70,7 +67,7 @@ var houses = {
         let intPos = JSON.stringify({x: interior.position[0], y: interior.position[1], z: interior.position[2]})
         db.query("INSERT INTO `houses` (type, price, entrance, interior, ipl) VALUES (?, ?, ?, ?, ?)", [data.type, data.price, entrance, intPos, interior.ipl], function (error, results, fields) {
             if (error) return core.terminal(1, error);
-            account.notification(player, `Kuca kreirana tip ${interior.name} sa cenom ${data.price}$.`, NOTIFY_SUCCESS, 4);
+            player.notification(`Kuca kreirana tip ${interior.name} sa cenom ${data.price}$.`, NOTIFY_SUCCESS, 4);
             let id = results.insertId; 
             let h = new House({ id: id, price: data.price, type: data.type, entrance: player.position, interior: interior.position, ipl: interior.ipl })
             h.refresh();
@@ -97,14 +94,13 @@ var houses = {
         db.query('SELECT * FROM `houses` WHERE `ID` = ?', [house.id], function (error, results, fields) {
             if (error) return core.terminal(1, error);
             if (results && results.length) {
-                if (player.data.cash < house.price) return account.notification(player, MSG_NOT_ENOGUTH_MONEY, NOTIFY_ERROR, 4); 
-                if (house.owner != -1) return account.notification(player, MSG_ALREADY_OWNED, NOTIFY_ERROR, 4);
+                if (player.data.cash < house.price) return player.notification(MSG_NOT_ENOGUTH_MONEY, NOTIFY_ERROR, 4); 
+                if (house.owner != -1) return player.notification(MSG_ALREADY_OWNED, NOTIFY_ERROR, 4);
                 house.owner = player.databaseID;
-                house.refresh()
-                account.notification(player, `Čestitamo!<br>Uspešno ste kupili kuću za <b>${results[0].price}$</b>.`, NOTIFY_SUCCESS, 5);
+                player.notification(`Čestitamo!<br>Uspešno ste kupili kuću za <b>${results[0].price}$</b>.`, NOTIFY_SUCCESS, 5);
             } 
             else {
-                account.notification(player, MSG_ERROR, NOTIFY_ERROR, 5);
+                player.notification(MSG_ERROR, NOTIFY_ERROR, 5);
             }
         });
     },

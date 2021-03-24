@@ -1,6 +1,6 @@
 
 
-module.exports = class itemModel { 
+class itemModel { 
     constructor(itemID, itemName, itemType, itemHash, itemWeight, itemQuantity, itemEntity, itemOwner, itemDimension, itemPos, itemSpecs, itemObject, itemLabel) {
         this.id = itemID;
         this.name = itemName;
@@ -42,4 +42,6 @@ module.exports = class itemModel {
         return this;
     }
 }
+
+module.exports = itemModel;
 

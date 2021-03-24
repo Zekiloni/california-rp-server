@@ -20,14 +20,14 @@ mp.events.addCommand({
    },
 
    'callsign': (player, fullText) => {
-      if (!factions.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return account.notification(player, MSG_NOT_IN_SPEC_FACTION, NOTIFY_ERROR, 4);
+      if (!factions.isPlayerFactionType(player, FACTIONS_TYPES.LAW)) return player.notification(MSG_NOT_IN_SPEC_FACTION, NOTIFY_ERROR, 4);
       if (player.vehicle) { 
          let vehicle = player.vehicle;
          if (vehicle.callsign == null) { 
             vehicle.callsign = mp.labels.new(`LSPD callsign`, new mp.Vector3(vehicle.position.x, vehicle.position.y, vehicle.position.z), { los: true, font: 0, drawDistance: 5 });
          }
       } else { 
-         account.notification(player, MSG_NOT_IN_VEHICLE, NOTIFY_ERROR, 4);
+         player.notification(MSG_NOT_IN_VEHICLE, NOTIFY_ERROR, 4);
       }
    },
 
@@ -38,7 +38,7 @@ mp.events.addCommand({
       let meText;
 
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -63,7 +63,7 @@ mp.events.addCommand({
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
          return false; 
       } 
 

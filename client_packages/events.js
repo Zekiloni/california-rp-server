@@ -43,6 +43,10 @@ mp.events.add({
       mp.game.object.doorControl(model, posX, posY, posZ, state, 0.0, 50.0, 0)
    },
 
+   'client:rotatePlayer': (value) => {
+      player.setHeading(value);
+   },
+
    'client:screenEffect': (effect, duration) => {
       mp.game.graphics.startScreenEffect(effect, parseInt(duration), false);
    }

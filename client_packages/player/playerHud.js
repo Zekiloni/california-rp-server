@@ -3,6 +3,13 @@ const player = mp.players.local;
 let onlinePlayers = mp.players.length;
 var playerHUD, isDriving = false;
 
+
+
+let pedHeadShot;
+let screenResolution = false;
+let screenshotBrowser = false;
+let photoName = null;
+
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
 mp.events.add('client:showPlayerHUD', (show) => {
@@ -33,6 +40,12 @@ updatePlayerHud = () => {
 	playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${player.cash}\", \"${onlinePlayers}\");`); 
 }
 
+mp.keys.bind(0x77, true, function () {  //F8-Key
+	var date = new Date();
+	photoName = "focusrp-" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + "-" + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".png";
+	mp.gui.takeScreenshot(`${photoName}`, 1, 10, 0);
+	mp.events.call("playerheadshot_taken");
+});
 
 getPlayerHeading = () => { 
 	var heading = player.getHeading();
@@ -67,7 +80,6 @@ mp.events.add({
 			mp.game.ui.showHudComponentThisFrame(14);
 		}
 
-
 		// update veh speed if driver
 		if (player.vehicle && isDriving) { vehicle() }
 	},
@@ -76,6 +88,23 @@ mp.events.add({
 		playerHUD.execute(`showVehicle(${toggle});`); 
 		isDriving = toggle;
 	},
+
+	'playerheadshot_taken': () => {
+		screenshotBrowser = mp.browsers.new("package://hud-interface/screenshot.html");
+	},
+
+	'browserDomReady': (browser) => {
+		if(browser != screenshotBrowser) return;
+		screenshotBrowser.call("client:recieveHeadshotImage", `http://screenshots/${photoName}`);
+  },
+
+  'client:sendScreenToServer': (base64) => {
+		mp.events.callRemote('server:receiveScreen', base64);
+		setTimeout(() => {
+			screenshotBrowser.destroy();
+			screenshotBrowser = false;
+		}, 6500);
+	}
 })
 
 vehicle = () => { 

@@ -12,7 +12,7 @@ mp.events.addCommand({
           let recipient = account.findPlayer(args[0]);
       
          if(!recipient) { 
-            account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+            player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
             return false; 
          } 
    
@@ -57,7 +57,7 @@ mp.events.addCommand({
           let recipient = account.findPlayer(args[0]);
        
          if(!recipient) { 
-            account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
+            player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
             return false; 
          } 
 
@@ -122,19 +122,19 @@ mp.events.addCommand({
       if(fullText) { 
          let args = fullText.split(" ");
          if (args.length < 2 || !args[0].length || !args[1].length) {
-            account.notification(player, MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
+            player.notification(MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
             return false;
          }
 
          let recipient = account.findPlayer(args[0]);
       
          if(!recipient) { 
-            account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+            player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
             return false; 
          } 
          let newRank = args.slice(1).join(' '); 
          factions.setRank(player, recipient, newRank);
-      } else return account.notification(player, MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
+      } else return player.notification(MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
    },
 
    'f': (player, fullText) => { 
@@ -147,11 +147,11 @@ mp.events.addCommand({
    },
 
    'quitjob': (player, fullText) => { 
-      if (player.job == 0) return account.notification(player, MSG_UNEMPLOYED, NOTIFY_ERROR, 4);
-      if (player.duty) return account.notification(player, 'Morate prvo stopirati rad.', NOTIFY_ERROR, 4)
+      if (player.job == 0) return player.notification(MSG_UNEMPLOYED, NOTIFY_ERROR, 4);
+      if (player.duty) return player.notification('Morate prvo stopirati rad.', NOTIFY_ERROR, 4)
 
       player.job = 0;
-      account.notification(player, MSG_QUITJOB, NOTIFY_SUCCESS, 4)
+      player.notification(MSG_QUITJOB, NOTIFY_SUCCESS, 4)
    },
 
    'accept': (player, fullText) => {
@@ -168,10 +168,10 @@ mp.events.addCommand({
                player.outputChatBox(`accept INFO !`);
                break;
             default:
-               account.notification(player, MSG_CMD_SYNTAX + '/accept (invite, ...)', NOTIFY_INFO, 6)
+               player.notification(MSG_CMD_SYNTAX + '/accept (invite, ...)', NOTIFY_INFO, 6)
             }
       }
-      else { account.notification(player, MSG_CMD_SYNTAX + '/accept (invite, ...)', NOTIFY_INFO, 6) }
+      else { player.notification(MSG_CMD_SYNTAX + '/accept (invite, ...)', NOTIFY_INFO, 6) }
       
    },
 
@@ -220,7 +220,7 @@ mp.events.addCommand({
          player.outputChatBox(`[${recipient.id}] ${recipient.name}`)
       }
       else {
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
       }
    },
 

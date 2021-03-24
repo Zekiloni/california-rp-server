@@ -1,41 +1,50 @@
 
-let playersTable = `CREATE TABLE IF NOT EXISTS players (
-  ID int(11) NOT NULL AUTO_INCREMENT,
+let usersTable = `CREATE TABLE IF NOT EXISTS users (
+  id int(11) NOT NULL AUTO_INCREMENT,
   username varchar(48) NOT NULL,
-  first_Name varchar(32) NOT NULL,
-  last_Name varchar(32) NOT NULL,
   password varchar(256) NOT NULL,
-  registerDate timestamp NULL DEFAULT NULL,
-  lastLogin timestamp NOT NULL DEFAULT current_timestamp(),
-  ipAddress varchar(64) NOT NULL,
+  registered_at timestamp NULL DEFAULT NULL,
+  last_login_at timestamp NOT NULL DEFAULT current_timestamp(),
+  ip_adress varchar(64) NOT NULL,
   online int(1) NOT NULL DEFAULT 0,
   xp int(2) NOT NULL DEFAULT 0,
-  donator int(2) NOT NULL DEFAULT 0,
   hours int(11) NOT NULL DEFAULT 0, 
   admin int(2) NOT NULL DEFAULT 0,
+  donator int(2) NOT NULL DEFAULT 0,
+  coins int(6) NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
+
+db.query(usersTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking usersTable | MySQL`);
+});
+
+let accountsTable = `CREATE TABLE IF NOT EXISTS characters (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  first_name varchar(64) NOT NULL,
+  last_name varchar(64) NOT NULL,
+  sex int(1) NOT NULL DEFAULT 0,
+  birth_date date,
+  origin varchar(64),
   cash int(11) NOT NULL DEFAULT 800,
-  bank int(11) NOT NULL DEFAULT 1000,
-  savings int(11) NOT NULL DEFAULT 0,
   salary int(6) NOT NULL DEFAULT 0,
-  credit int(10) NOT NULL DEFAULT 0,
-  clothing text NOT NULL DEFAULT 0,
-  headOverlays text NOT NULL DEFAULT 0,
-  faceFeatures text NOT NULL DEFAULT 0,
-  headBlendData text NOT NULL DEFAULT 0,
-  lastPosition text NOT NULL DEFAULT 0,
+  last_position text NOT NULL DEFAULT 0,
   job int(2) NOT NULL DEFAULT 0,
   faction int(2) NOT NULL DEFAULT 0,
-  factionRank varchar(64) NOT NULL DEFAULT 'no',
-  radioFreq int(6) NOT NULL DEFAULT 0,
+  faction_rank varchar(64) NOT NULL DEFAULT 'no',
+  radio_frequency int(6) NOT NULL DEFAULT 0,
   thirst int(4) NOT NULL DEFAULT 100,
   hunger int(4) NOT NULL DEFAULT 100,
   stress int(4) NOT NULL DEFAULT 0,
-  weaponSkill int(2) NOT NULL DEFAULT 0,
-  PRIMARY KEY(ID))`;
+  weapon_skill int(2) NOT NULL DEFAULT 0,
+  driving_skill int(2) NOT NULL DEFAULT 0,
+  job_skill text NOT NULL DEFAULT 0,
+  licenses text NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
 
-db.query(playersTable, function(err, results, fields) {
+db.query(accountsTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking playersTable | MySQL`);
+  core.terminal(3, `Checking accountsTable | MySQL`);
 });
 
 let businessTable = `CREATE TABLE IF NOT EXISTS business (
@@ -55,13 +64,15 @@ db.query(businessTable, function(err, results, fields) {
 
 let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   ID int(11) NOT NULL AUTO_INCREMENT,
-  model varchar(24) NOT NULL,
+  model varchar(32) NOT NULL,
   locked tinyint(1) NOT NULL,
-  owner varchar(128) NOT NULL,
+  owner int(11) NOT NULL DEFAULT -1,
   price int(10) NOT NULL,
-  position varchar(48) NOT NULL,
+  position text NOT NULL,
+  rotation text NOT NULL,
+  mileage FLOAT NOT NULL DEFAULT 0,
   fuel int(4) NOT NULL,
-  color varchar(48) NOT NULL,
+  color text NOT NULL,
   mods text NOT NULL,
   ebts text NOT NULL,
   PRIMARY KEY(ID))`;
@@ -73,15 +84,15 @@ db.query(vehicleTable, function(err, results, fields) {
 
 
 let inventoryTable = `CREATE TABLE IF NOT EXISTS inventory (
-  ID int(11) NOT NULL AUTO_INCREMENT,
-  itemName varchar(64) NOT NULL,
-  itemHash varchar(128) NOT NULL,
-  itemQuantity int(4) NOT NULL,
-  itemEntity int(2) NOT NULL,
-  itemOwner int(11) NOT NULL,
-  itemDimension int(11) NOT NULL,
-  itemPos text NOT NULL,
-  itemSpecs text NOT NULL,
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name varchar(64) NOT NULL,
+  hash varchar(128) NOT NULL,
+  quantity int(4) NOT NULL DEFAULT 1,
+  entity int(2) NOT NULL DEFAULT -1,
+  owner int(11) NOT NULL DEFAULT -1,
+  dimension int(11) NOT NULL DEFAULT 0,
+  position text NOT NULL,
+  extra text NOT NULL,
   PRIMARY KEY(ID))`;
 
 db.query(inventoryTable, function(err, results, fields) {

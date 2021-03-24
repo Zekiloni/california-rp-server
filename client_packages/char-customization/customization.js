@@ -1,31 +1,57 @@
 const player =  mp.players.local;
-var customizationCEF;
+var customizationCEF, customizatorOpened = false;
+
+
+const genders = [ 
+    mp.game.joaat('mp_m_freemode_01'), 
+    mp.game.joaat('mp_f_freemode_01') 
+];
 
 mp.events.add({
     'client:showCustomization': () => {
         player.freezePosition(true);
-        customizationCEF = mp.browsers.new('package://char-customization/customization-interface/customization.html');
+        customizationCEF = mp.browsers.new('package://char-customization/customization-interface/creator.html');
         setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
         mp.game.ui.displayRadar(false);
         mp.events.call('client:setCameraInfrontPlayer', true);
+        customizatorOpened = true;
+        mp.gui.chat.activate(false);
     },
 
     'client:disableCustomizationPreview': (headOverlays, faceFeatures, blendData) => {
         mp.game.ui.displayRadar(true);
         mp.events.callRemote('server:updatePlayerCustomization', headOverlays, faceFeatures, blendData);
         if (mp.browsers.exists(customizationCEF)) { customizationCEF.destroy() }
-        //customizationCEF.destroy();
         setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
         player.freezePosition(false);
         mp.events.call('client:setCameraInfrontPlayer', false);
+        customizatorOpened = false;
+        mp.gui.chat.activate(true);
     },
 
-    'client:setFaceFeaturePreview': (index, scale) => {
+    'client:creator.faceFeature': (index, scale) => {
         player.setFaceFeature(index, scale);
+    },
+
+    'client:creator.gender': (sex) => { 
+        mp.players.local.model = genders[sex];
     },
 
     'client:setHeadBlendDataPreview': (shapeFirstID, shapeSecondID, skinFirstID, skinSecondID, shapeMix, skinMix) => {
         player.setHeadBlendData(shapeFirstID, shapeSecondID, 0, skinFirstID, skinSecondID, 0, shapeMix, skinMix, 0, false);
+    },
+
+    'render': () => { 
+        if (customizatorOpened) { 
+            let heading;
+            if (mp.keys.isDown(65) === true) {
+                heading = player.getHeading();
+                player.setHeading(heading - 2)
+            } else if (mp.keys.isDown(68) === true) {
+                heading = player.getHeading();
+                player.setHeading(heading + 1.5)
+            }
+        }
     },
 
     'client:setHeadOverlayPreview': (color, index, value) => {
@@ -38,9 +64,6 @@ mp.events.add({
         }
     }
 });
-
-
-
 
 // module.exports = { 
 //   appearance = [ 

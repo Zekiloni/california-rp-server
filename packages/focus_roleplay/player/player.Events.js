@@ -1,3 +1,5 @@
+const webhook = require("webhook-discord")
+const Hook = new webhook.Webhook("https://discord.com/api/webhooks/823659820833832971/Jcpo0AcSVsTU_labTWbnO8dSLg0yxQFd9fDDYuDH5DfL6DKHFkd1FGF7tCxJCDp1STdn")
 
 
 mp.events.add("server:playerDamage", (player, healthLoss, armorLoss) => {
@@ -23,6 +25,7 @@ mp.events.add('server:handleLogin', async (player, username, password) => {
 mp.events.add({
 
     'playerJoin': (player) => {
+      player.welcome()
       player.call('client:showLogin');
     },
 
@@ -68,7 +71,7 @@ mp.events.add({
           let jobData = JOBS.find( ({ID}) => ID === shape.job);
           player.call('client:showJobOffer', [jobData.ID, jobData.NAME, jobData.LOC, jobData.DESC]);
         } else { 
-          account.notification(player, MSG_ALREADY_EMPLOYED, NOTIFY_ERROR, 4);
+          player.notification(MSG_ALREADY_EMPLOYED, NOTIFY_ERROR, 4);
         }
       }
    },
@@ -88,6 +91,17 @@ mp.events.add({
 
     'server:updatePlayerClothing': (player, clothingFinished) => {
         account.updateClothing(player, clothingFinished);
+    },
+
+    'server:receiveScreen': (player, image) => {
+      let res = JSON.parse(image)
+      console.log(res.data);
+      const msg = new webhook.MessageBuilder()
+              .setName('vinewood.online')
+              .setColor("#ffa657")
+              .setImage(res.data.image.url)
+              .addField(`${player.name}`, 'Uzivo slika sa servera')
+      Hook.send(msg);
     },
 
     'server:getPlayerInventory': (player) => { 
@@ -116,7 +130,7 @@ mp.events.add({
     'server:acceptJobOffer': (player, jobID) => { 
       let job = JOBS.find( ({ID}) => ID === jobID);
       player.job = jobID;
-      account.notification(player, `Uspešno ste se zaposlili kao ${job.NAME}.`, NOTIFY_SUCCESS, 4);
+      player.notification(`Uspešno ste se zaposlili kao ${job.NAME}.`, NOTIFY_SUCCESS, 4);
     },
 
     'server:processInventoryItem': (player, item_id, status, target, quantity) => { 
@@ -128,7 +142,7 @@ mp.events.add({
 
         case 'give': 
             let recipient = account.findPlayer(target);
-            if (!recipient) return account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
+            if (!recipient) return player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
             inventory.giveItem(player, item, recipient, quantity) 
             break;
 
@@ -144,10 +158,10 @@ mp.events.add({
     'server:vehicleEngine': (player, vehicle) => { 
       if (vehicle.engine) { 
         vehicle.engine = false;
-        account.notification(player, MSG_ENGINE_OFF, NOTIFY_ERROR, 4); 
+        player.notification(MSG_ENGINE_OFF, NOTIFY_ERROR, 4); 
       } else { 
         setTimeout(() => { vehicle.engine = true; }, 2500); 
-        account.notification(player, MSG_ENGINE_ON, NOTIFY_SUCCESS, 4);
+        player.notification(MSG_ENGINE_ON, NOTIFY_SUCCESS, 4);
       }
     },
 
@@ -181,10 +195,10 @@ mp.events.add({
         if(player.checkpoint >= player.maxCheckpoints) {
           player.checkpoint = 0;
           player.maxCheckpoints = 0;
-          account.notification(player, `Uspešno ste se završili rutu.`, NOTIFY_SUCCESS, 4);
+          player.notification(`Uspešno ste se završili rutu.`, NOTIFY_SUCCESS, 4);
         }
         else {
-          account.notification(player, `Sačekajte da se putnici ukrcaju.`, NOTIFY_SUCCESS, 4);
+          player.notification(`Sačekajte da se putnici ukrcaju.`, NOTIFY_SUCCESS, 4);
         }
       }
     }

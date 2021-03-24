@@ -1,12 +1,15 @@
 
-var globals = require('./core/globals');
-var settings = require('./core/settings');
+let globals = require('./core/globals');
+let settings = require('./core/settings');
 
+global.db = require('./core/database');
 global.config = require('./core/configuration');
 global.core = require('./core/main');
-global.db = require('./core/database');
+
+var databaseStructure = require('./core/databaseStructure');
+let inventorySystem = require('./classes/Inventory');
+
 global.account = require('./player/player.Core');
-global.vehicles = require('./vehicles/vehicles.Core');
 global.business = require('./business/bizCore');
 global.houses = require('./houses/houses.Core');
 global.jobs = require('./jobs/jobs.Core');
@@ -16,7 +19,6 @@ global.factions = require('./factions/factions.Core');
 global.doors = require('./core/doors');
 global.plants = require("./core/plants");
 
-var dbStructure = require('./core/databaseStructure');
 var playerEvents = require('./player/player.Events');
 var huntingAnimals = require('./hunting/animals');
 var playerCommands = require('./player/player.Commands');
@@ -24,16 +26,15 @@ var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
 var realTimeWeather = require('./core/weather');
 var dealershipVehicles = require('./vehicles/vehicles.List');
+var vehiclesSystem = require('./vehicles/vehicles.Core');
 var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
 business.loadAll();
-setTimeout(() => { 
-    inventory.loadItems(); 
-}, 1500); 
 setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 // mp.Player.prototype.funkcija = () => {  }
+
 
 //jobs.createBusRoute('Morningwood')
 //console.log(items)
@@ -70,7 +71,6 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 var color = [[033, 343, 535], [3434, 577, 565]]
 
-console.log()
 mp.events.addCommand("tp", (player) => {
     mp.events.call("server:spawnAnimals", player, 15);
     player.position = new mp.Vector3(-1800.14, -794.12, 8.6);

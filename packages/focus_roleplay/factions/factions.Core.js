@@ -58,7 +58,7 @@ var factions = {
    invite: async function (player, target) { 
       let recipient = account.findPlayer(target);
       if (!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
          return false; 
       } 
 
@@ -75,7 +75,7 @@ var factions = {
    uninvite: async function (player, target) { 
       let recipient = account.findPlayer(target);
       if (!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
          return false; 
       } 
 

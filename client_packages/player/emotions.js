@@ -8,10 +8,11 @@ function setMood(player, mood) {
     }
 }
 
+mp.events.addDataHandler("emotion", (entity, value) => {
+    if (entity.type === "player") setMood(entity, value);
+});
+
 mp.events.add("entityStreamIn", (entity) => {
     if (entity.type === "player") setMood(entity, entity.getVariable("emotion"));
 });
 
-mp.events.addDataHandler("emotion", (entity, value) => {
-    if (entity.type === "player") setMood(entity, value);
-});

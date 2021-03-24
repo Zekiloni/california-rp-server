@@ -103,7 +103,7 @@ var plants = {
          contribution = core.randomInRange(10, 50);
       db.query("INSERT INTO `plants` (type, owner, position, contribution, dimension) VALUES (?, ?, ?, ?, ?)", [data.type, player.databaseID, position, contribution, player.dimension], function (error, results, fields) {
          if (error) return core.terminal(1, error);
-         account.notification(player, `Stabljika kreirana, tip ${plant.name}.`, NOTIFY_SUCCESS, 4);
+         player.notification(`Stabljika kreirana, tip ${plant.name}.`, NOTIFY_SUCCESS, 4);
          let id = results.insertId; 
          let p = new Plant({
             id: id,

@@ -67,7 +67,7 @@ let furniture = {
    create: (player, furniture) => { 
       db.query("INSERT INTO `furniture` (owner, model, position, rotation, dimension) VALUES (?, ?, ?, ?, ?)", [player.name, furniture.model, furniture.position, furniture.rotation, furniture.dimension], function (error, results, fields) {
          if (error) return core.terminal(1, error);
-         account.notification(player, `Namestaj kreiran i postavljen.`, NOTIFY_SUCCESS, 4);
+         player.notification(`Namestaj kreiran i postavljen.`, NOTIFY_SUCCESS, 4);
          let p = new Furniture({
             id: results.insertId,
             owner: results.owner,
@@ -93,7 +93,7 @@ let furniture = {
          return furnJson;
       }
       else {
-         account.notification(player, `Nemate ništa od nameštaja`, NOTIFY_ERROR, 4);
+         player.notification(`Nemate ništa od nameštaja`, NOTIFY_ERROR, 4);
       }
    }
 }

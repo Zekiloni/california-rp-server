@@ -1,3 +1,6 @@
+require('../classes/Account')
+
+
 module.exports = {
     exist: function (username) {
         db.query("SELECT * FROM players WHERE username = ?", [username], function (error, results, fields) {
@@ -279,3 +282,14 @@ module.exports = {
         })
      }
 };
+
+
+mp.Player.prototype.welcome = function () { 
+    this.outputChatBox('Dobrodosao na server')
+}
+
+mp.Player.prototype.notification = function (message, type, time) { 
+    this.call('client:showNotification', [message, type, time]);
+}
+
+

@@ -75,6 +75,45 @@ notification = (message, type, time = 3) => {
     }, parseInt(msTime));
 }
 
+// function toDataUrl(url, callback) {
+    
+//     var xhr = new XMLHttpRequest();
+//     xhr.onload = function() {
+//         var reader = new FileReader();
+//         reader.onloadend = function() {
+//             callback(reader.result);
+//         }
+//         reader.readAsDataURL(xhr.response);
+//     };
+
+//     xhr.open('GET', url);
+//     xhr.responseType = 'blob';
+//     xhr.send();
+// }
+
+
+screenshot = (ss) => { 
+    var img = new Image();
+    console.log('image created')
+    img.crossOrigin = 'Anonymous';
+    //img.setAttribute('crossOrigin', 'anonymous');
+    img.onload = (() => {
+            console.log('uso u try')
+            var canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            var dataURL = canvas.toDataURL("image/png");
+            console.log(dataURL)
+            alert(`${dataURL}`)
+    }); 
+    img.src = 'http://screenshots/127_0_0_1_22005/' + ss;
+    // toDataUrl(`http://screenshots/127_0_0_1_22005/${ss}`, (result) => {
+    //     console.log('screen '+ result)
+    // })
+}
+
 
 createSpeedo = () => { 
     var opts = {

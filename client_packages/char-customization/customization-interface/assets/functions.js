@@ -1,154 +1,240 @@
-var color_max = 63;
-var customization = [
-    setHeadBlendData = [
-        shapeFirstID = { id: -6, min: 0, max: 45, step: 1, name: 'Oblik 1' },
-        shapeSecondID = { id: -5, min: 0, max: 45, step: 1, name: 'Oblik 2' },
-        skinFirstID = { id: -4, min: 0, max: 45, step: 1, name: 'Boja koze 1' },
-        skinSecondID = { id: -3, min: 0, max: 45, step: 1, name: 'Boja koze 2' },
-        shapeMix = { id: -2, min: 0.0, max: 1.0, step: 0.1, name: 'Miks oblika' },
-        skinMix = { id: -1, min: 0.0, max: 1.0, step: 0.1, name: 'Miks koze' }
-    ],
 
-    setHeadOverlay = [
-        blemishes = { id: 0, min: 0, max: 23, step: 1, name: 'blemishes' },
-        facial_hair = { id: 1, min: 0, max: 28, step: 1, name: 'facial_hair' },
-        eyebrows = { id: 2, min: 0, max: 33, step: 1, name: 'eyebrows' },
-        ageing = { id: 3, min: 0, max: 14, step: 1, name: 'ageing' },
-        makeup = { id: 4, min: 0.0, max: 74, step: 1, name: 'makeup' },
-        //blush = { id: 5, min: 0.0, max: 32, step: 1, name: 'blush' }, 
-        complexion = { id: 6, min: 0, max: 11, step: 1, name: 'complexion' },
-        sun_damage = { id: 7, min: 0, max: 10, step: 1, name: 'sun_damage' },
-        //lipstick = { id: 8, min: 0, max: 9, step: 1, name: 'lipstick' },
-        moles_freckles = { id: 9, min: 0, max: 17, step: 1, name: 'moles_freckles' },
-        chest_hair = { id: 10, min: 0.0, max: 16, step: 1, name: 'chest_hair' },
-        body_blemishes = { id: 11, min: 0.0, max: 11, step: 1, name: 'body_blemishes' },
-        add_body_blemishes = { id: 12, min: 0.0, max: 1, step: 1, name: 'add_body_blemishes' }   
-    ],
 
-    setFaceFeature = [
-        Nose_width = { id: 'face-' + 0, min: -1.0, max: 1.0, step: 0.1, name: 'Nose_width' },
-        Nose_height	= { id: 'face-' + 1, min: -1.0, max: 1.0, step: 0.1, name: 'Nose_height' },
-        Nose_length = { id: 'face-' + 2, min: -1.0, max: 1.0, step: 0.1, name: 'Nose_length' },
-        Nose_bridge	= { id: 'face-' + 3, min: -1.0, max: 1.0, step: 0.1, name: 'Nose_bridge' },
-        Nose_tip = { id: 'face-' + 4, min: -1.0, max: 1.0, step: 0.1, name: 'Nose_tip' },
-        Nose_bridge_shift = { id: 'face-' + 5, min: -1.0, max: 1.0, step: 0.1, name: 'Nose_bridge_shift' },
-        Brow_height = { id: 'face-' + 6, min: -1.0, max: 1.0, step: 0.1, name: 'Brow_height' },
-        Brow_width = { id: 'face-' + 7, min: -1.0, max: 1.0, step: 0.1, name: 'Brow_width' },
-        Cheekbone_height = { id: 'face-' +  8, min: -1.0, max: 1.0, step: 0.1, name: 'Cheekbone_height' },
-        Cheekbone_width = { id: 'face-' +  9, min: -1.0, max: 1.0, step: 0.1, name: 'Cheekbone_width' },
-        Cheeks_width = { id: 'face-' + 10, min: -1.0, max: 1.0, step: 0.1, name: 'Cheeks_width' },
-        Eyes = { id: 'face-' + 11, min: -1.0, max: 1.0, step: 0.1, name: 'Eyes' },
-        Lips = { id: 'face-' + 12, min: -1.0, max: 1.0, step: 0.1, name: 'Lips' },
-        Jaw_width = { id: 'face-' + 13, min: -1.0, max: 1.0, step: 0.1, name: 'Jaw_width' },
-        Jaw_height = { id: 'face-' + 14, min: -1.0, max: 1.0, step: 0.1, name: 'Jaw_height' },
-        Chin_length = { id: 'face-' + 15, min: -1.0, max: 1.0, step: 0.1, name: 'Chin_length' },
-        Chin_position = { id: 'face-' + 16, min: -1.0, max: 1.0, step: 0.1, name: 'Chin_position' },
-        Chin_width = { id: 'face-' + 17, min: -1.0, max: 1.0, step: 0.1, name: 'Chin_width' },
-        Chin_shape = { id: 'face-' + 18, min: -1.0, max: 1.0, step: 0.1, name: 'Chin_shape' },
-        Neck_width = { id: 'face-' + 19, min: -1.0, max: 1.0, step: 0.1, name: 'Neck_width' }
-    ]
+const intro = { 
+    song: new Audio('assets/2pac.mp3'),
+    playing: false,
+    skip: false,
+}
+
+const headOverlay = [ 
+    { name: 'Blemishes', min: 0, max: 23 },
+    { name: 'Facial Hair', min: 0, max: 20 },
+    { name: 'Eyebrows', min: 0, max: 20 },
+    { name: 'Ageing', min: 0, max: 20 },
+    { name: 'Makeup', min: 0, max: 20 },
+    { name: 'Blush', min: 0, max: 20 },
+    { name: 'Complexion', min: 0, max: 20 },
+    { name: 'Sun Damage', min: 0, max: 20 },
+    { name: 'Lipstick', min: 0, max: 20 },
+    { name: 'Moles / Freckles', min: 0, max: 20 },
+    { name: 'Chest Hair', min: 0, max: 20 },
 ];
 
-customizationMenu = (menu, menu_2, menu_3) => { 
-    $(".sadrzaj").text(" ");
-    $.each(menu, function(i, item) { 
-        var price = Math.round(item.length * 0.65) * 1;
-        $(".sadrzaj").append(
-            `<div class="form-group"> 
-                <label for="${item.id}"> ${item.name} <b id="vrednost-${item.id}">0</b></label>
-                <input type="range" min="${item.min}" step="${item.step}" max="${item.max}" value="0" class="slajder" id="${item.id}">
-            </div>` 
-        );
-    });
+const faceFeatures = [ 
+    { index: 0, name: 'Širina nosa' },
+    { index: 1, name: 'Visina nosa' },
+    { index: 2, name: 'Dužina nosa' },
+    { index: 3, name: 'Nosni most' },
+    { index: 4, name: 'Vrh nosa' },
+    { index: 6, name: 'Visina obrva' },
+    { index: 7, name: 'Širina obrva' },
+    { index: 8, name: 'Visina jagodične kosti' },
+    { index: 9, name: 'Širina jagodične kosti' },
+    { index: 10, name: 'Širina obraza' },
+    { index: 11, name: 'Oči' },
+    { index: 12, name: 'Usne' },
+    { index: 13, name: 'Širina vilice' },
+    { index: 14, name: 'Visina vilice' },
+    { index: 15, name: 'Dužina brade' },
+    { index: 16, name: 'Položaj brade' },
+    { index: 17, name: 'Širina brade' },
+    { index: 18, name: 'Oblik brade' },
+    { index: 19, name: 'Širina vrata' }
+]
 
-    $.each(menu_2, function(i, item) { 
-        $(".sadrzaj_2").append(
-            `<div class="form-group"> 
-                <label for="${item.id}"> ${item.name} <b id="vrednost-${item.id}">0</b></label>
-                <input type="range" min="${item.min}" step="${item.step}" max="${item.max}" value="0" class="slajder" id="${item.id}">
-                <br> <label for="color"> Boja ${item.name} </label>
-                <input type="range" min="${item.min}" step="1" max="${color_max}" value="0" class="slajder" id="color" data-id="${item.id}">
-            </div>` 
-        );
-    });
+const blend = [ 
+    { name: 'Genetika Majke', min: 0, max: 45, step: 1, value: 0 },
+    { name: 'Genetika Oca', min: 0, max: 45, step: 1, value: 0 },
+    { name: 'Skin First', min: 0, max: 45, step: 1, value: 0 },
+    { name: 'Skin Second', min: 0, max: 45, step: 1, value: 0 },
+    { name: 'Shape Mix', min: 0, max: 1.0, step: 0.1, value: 0 },
+    { name: 'Skin Mix', min: 0, max: 1.0, step: 0.1, value: 0 }
+]
 
-    $.each(menu_3, function(i, item) { 
-        $(".sadrzaj_3").append(
-            `<div class="form-group"> 
-                <label for="${item.id}"> ${item.name} <b id="vrednost-${item.id}">0</b></label>
-                <input type="range" min="${item.min}" step="${item.step}" max="${item.max}" value="0" class="slajder" id="${item.id}">
-            </div>` 
-        );
-    });
+const clothing = { 
+    male: [
+        masks = { id: 1, min: 0, max: 189 },
+        hairStyles = { id: 2, min: 0, max: 74 },
+        torsos = { id: 3, min: 0, max: 194 },
+        legs = { id: 4, min: 0, max: 132},
+        bags = { id: 5, min: 0, max: 88 },
+        shoes = { id: 6, min: 0, max: 97 },
+        accessories = { id: 7, min: 0, max: 150 },
+        undershirts = { id: 8, min: 0, max: 177 },
+        tops = { id: 11, min: 0, max: 361 }
+    ],
+
+    female: [ 
+        masks = { id: 1, min: 0, max: 189 },
+        hairStyles = { id: 2, min: 0, max: 78 },
+        torsos = { id: 3, min: 0, max: 239 },
+        legs = { id: 4, min: 0, max: 139 },
+        bags = { id: 5, min: 0, max: 88 },
+        shoes = { id: 6, min: 0, max: 101 },
+        accessories = { id: 7, min: 0, max: 110 },
+        undershirts = { id: 8, min: 0, max: 215 },
+        tops = { id: 11, min: 0, max: 380 }
+    ]
 }
 
-customizationMenu(setHeadBlendData, setHeadOverlay, setFaceFeature) 
-
-$('.slajder').on('input', function () {
-    var value = this.value;
-    var index = this.id
-    var data_id = $(this).attr("data-id");
-    var same_index = $(`#${index}`).val();
-    $(`#vrednost-${this.id}`).html(this.value)
-    if(index >= -6 && index <= -1) {
-        var shapeFirstID_val = $('#-6').val(),
-            shapeSecondID_val = $('#-5').val(),
-            skinFirstID_val = $('#-4').val(),
-            skinSecondID_val = $('#-3').val(),
-            shapeMix_val = $('#-2').val(),
-            skinMix_val = $('#-1').val();
-       mp.trigger('client:setHeadBlendDataPreview', parseInt(shapeFirstID_val), parseInt(shapeSecondID_val), parseInt(skinFirstID_val), parseInt(skinSecondID_val), parseFloat(shapeMix_val), parseFloat(skinMix_val))
-    }
-    if(index >= 0 && index <= 12) { 
-        mp.trigger('client:setHeadOverlayPreview', false, parseInt(index), parseInt(value))
-    }
-
-    if(index == 'color') { 
-        mp.trigger('client:setHeadOverlayPreview', true, parseInt(data_id), parseInt(value))
-    }
-
-    if(index.includes("face")) {
-        var index_id = index.replace('face-',' ');
-        mp.trigger('client:setFaceFeaturePreview', parseInt(index_id), parseFloat(value))
-    }
-});
-
-$('.rotacija').on('input', function () {
-    var value = this.value;
-    $('#verdnost-rotacije').html(`${value} °`)
-    mp.trigger("client:rotateCharacter", parseFloat(value));
-});
-
-finishCustomization = () => { 
-    var overlaysFinished = [],
-        faceFeatures = [];
-    var shapeFirst = $('#-6').val(),
-        shapeSecond = $('#-5').val(),
-        skinFirst = $('#-4').val(),
-        skinSecond = $('#-3').val(),
-        shapeMix = $('#-2').val(),
-        skinMix = $('#-1').val();
-
-    $(".slajder").each(function(index) {
-        if(this.id >= 0 && this.id <= 12) {
-            var colorVal = $(this).nextAll('#color').val();
-            overlaysFinished.push({index: this.id, value: this.value, color: colorVal})
-        }
-
-        if(this.id.includes("face")) { 
-            var realIndex = this.id.replace('face-',' ');
-            faceFeatures.push({index: realIndex, value: parseFloat(this.value)})
-        }
-    });
-    var headOverlays = JSON.stringify(overlaysFinished);
-    var faceFinished = JSON.stringify(faceFeatures);
-    var blendData = { shapeFirst: shapeFirst, shapeSecond: shapeSecond, skinFirst: skinFirst, skinSecond: skinSecond, shapeMix: shapeMix, skinMix: skinMix};
-    var blendFinished = JSON.stringify(blendData);
-    mp.trigger('client:disableCustomizationPreview', headOverlays, faceFinished, blendFinished);
+var character = { 
+    firstName: $('#char-first-name').val(),
+    lastName: $('#char-last-name').val(),
+    origin: $('#char-origin').val(),
+    birth: $('#char-birth-date').val(),
+    gender: 0
 }
 
-$(document).keyup(function(event) {
-    if (event.keyCode == 13) { 
-        finishCustomization();
+$('#char-birth-date').change(function () { 
+    let date = this.value.split('-'), year = parseInt(date[0]);
+    year > 2001 || year < 1916 ? $(this).css('borderColor', 'tomato') : $(this).css('borderColor', 'transparent');
+})
+
+var preview = { 
+
+    gender: (element, sex) => { 
+        $('.gender').removeClass('selected')
+        $(element).addClass('selected')
+        character.gender = sex;
+        mp.trigger('client:creator.gender', sex)
+    },
+
+    faceFeatures: (index, val) => { 
+        console.log(index, val)
+        let value = faceFeatures[index].value = val;
+        mp.trigger('client:creator.faceFeature', parseInt(index), parseFloat(value))
+    },
+    
+    blendData: (index, val, element = null) => { 
+        if (element) { 
+            switch (index) { 
+                case 0:
+                    $('img[data-id="mother"]').removeClass('selected')
+                    $(element).addClass('selected')
+                    break;
+                case 1:
+                    $('img[data-id="father"]').removeClass('selected')
+                    $(element).addClass('selected')
+                    break;
+                default:
+                    return false;
+            }
+        }
+        blend[index].value = val;
+        mp.trigger('client:previewBlendData', blend)
+    }
+
+}
+
+var range = { 
+    value: (el) => { 
+        let value = el.value, index = el.id,
+        previous = $(el).prev('label')
+        $(previous).find('.slider-value').html(value)
+    }
+}
+
+
+
+var customization = { 
+    init: () => { 
+        for (let mother = 0; mother < 22; mother ++) { 
+            $('#mother-faces').append(
+                `<img class='face-photo' data-id="mother" src='assets/images/parents/female_${mother}.png' onclick='preview.blendData(0, ${mother}, this)' />`
+            )
+        }
+
+        for (let father = 0; father < 24; father ++) { 
+            $('#father-faces').append(
+                `<img class='face-photo' data-id="father" src='assets/images/parents/male_${father}.png' onclick='preview.blendData(1, ${father}, this)' />`
+            )
+        }
+
+        for (const feature of faceFeatures) { 
+            $('#face-features').append(`
+                <div class='slider-handler'>
+                    <label> ${feature.name} <b class='slider-value'> 0 </b></label>
+                    <input class='slider' type='range' min='-1' max='1' step='0.1' value='0' data-customization='face-feature' id='${feature.index}' oninput='range.value(this)' />
+                </div>
+            `)
+        }
+
+        headOverlay.forEach( (el) => { 
+            //$('#')
+        })
+    },
+
+    finish: () => { 
+        if (character.firstName && character.lastName && character.gender && character.age) { 
+            mp.trigger('client:finishCharacter', character)
+        } else { 
+            
+        }
+        
+    }
+}
+
+
+var slider = { 
+    el: $('.customizators'),
+    elements: $('.customizator'),
+    indicator: $('.indicators > .indicator'),
+    active: 0,
+
+    open: (n) => { 
+        if (n >= slider.elements.length) { n = 0; }
+        if (n < 0) { n = slider.elements.length -1 }
+        slider.active = n;
+        $(slider.el).css('transform', `translate(-${455 * n}px)`)
+        $(slider.indicator).removeClass('active')
+        $(slider.indicator[n]).addClass('active')
+    }
+}
+
+$(window).on('load', () => { 
+    customization.init();
+    slider.open(0)
+})
+
+$(document.body).click((e) => {
+    if (intro.playing == false && intro.skip == false) { 
+        intro.playing = true;
+        // intro.song.play()
+        // intro.song.volume = 0.05;
     }
 })
+
+
+$(window).keydown(function(e) {
+    // console.log(e.keyCode)
+    switch (e.keyCode) { 
+        case 39:
+            slider.open(slider.active + 1)
+            break;
+        
+        case 37:
+            slider.open(slider.active - 1)
+            break;
+
+        case 32:
+            if (intro.playing == true) { 
+                intro.skip = true;
+                $('.pause-song > h2').html('<b>Space</b> da nastavite muziku')
+                intro.playing = false;
+                intro.song.pause();
+            } else { 
+                intro.playing = true;
+                $('.pause-song > h2').html('<b>Space</b> da pauzirate muziku')
+                intro.song.play()
+            }
+            break;
+
+    }
+});
+
+
+
+
+
+
+

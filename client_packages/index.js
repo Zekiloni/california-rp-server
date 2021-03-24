@@ -18,9 +18,9 @@ var jobs = require('./jobs/jobs');
 var cayoPerico = require('./heistisland');
 var nameTags = require('./player/nametags');
 var chat = require('./chat');
-var furniture = require('./furniture');
+var furniture = require('./furniture/furniture');
 var fingerPointer = require('./player/fingerPointing');
-var syncObjects = require('./syncObjects');
+// var syncObjects = require('./syncObjects');
 
 
 

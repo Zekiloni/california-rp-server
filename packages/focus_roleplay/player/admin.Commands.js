@@ -5,20 +5,20 @@ const savedPosition = "savedPositions.txt";
 mp.events.addCommand({
 
    'kick': (player, fullText) => {
-      if(player.admin < 1) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 1) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
    },
 
    'ban': (player, fullText) => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
    },
 
    'gethere': (player, fullText, target) => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       if(!target) return player.outputChatBox('Koriscenje /gethere [igrac]'); 
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -28,12 +28,12 @@ mp.events.addCommand({
    },
 
    'goto': (player, fullText, target) => {
-      if(player.admin < 1) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 1) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       if(!target) return player.outputChatBox('Koriscenje /goto [igrac]'); 
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -43,12 +43,12 @@ mp.events.addCommand({
    },
 
    'revive': (player, fullText, target) => { 
-      if (player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if (player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       if (!target) return player.outputChatBox('Koriscenje /revive [igrac]'); 
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -64,7 +64,7 @@ mp.events.addCommand({
       let level = parseInt(adminLevel);
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -74,12 +74,12 @@ mp.events.addCommand({
    },
 
    'setmoney': (player, fullText, target, money) => {
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
 
       let cash = parseInt(money);
       let recipient = account.findPlayer(target);
       if (!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -89,11 +89,11 @@ mp.events.addCommand({
    },
 
    'givemoney': (player, fullText, target, money) => {
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
 
       let recipient = account.findPlayer(target);
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -109,7 +109,7 @@ mp.events.addCommand({
    },
 
    'pos': (player, name = 'unnamed position') => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let pos = (player.vehicle) ? player.vehicle.position : player.position;
       let rot = (player.vehicle) ? player.vehicle.rotation : player.heading;
   
@@ -124,12 +124,12 @@ mp.events.addCommand({
    },
 
    'givegun': (player, fullText, target, weapon = 'weapon_unarmed', ammo = 0) => {
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let weaponHash = mp.joaat(weapon);
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -139,11 +139,11 @@ mp.events.addCommand({
    },
 
    'disarm': (player, fullText, target) => {
-      if(player.admin < 3) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let recipient = account.findPlayer(target);
 
       if(!recipient) { 
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
          return false; 
       } 
 
@@ -153,25 +153,26 @@ mp.events.addCommand({
    },
 
    'customization': (player, fullText) => {
-      if(player.admin < 3) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       player.call("client:showCustomization");
    },
 
    'clothing': (player, fullText) => {
-      if(player.admin < 3) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       player.call("client:showClothing");
    },
 
-   'createveh': (player, fullText, hash, rr, gg, bb, rr2, gg2, bb2) => {
-      if(player.admin < 3) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let model = mp.joaat(hash), 
-         position = player.position, rgb = {r: rr, g: gg, b: bb}, rgb2 = {r: rr2, g: gg2, b: bb2}, locked = false;
-      veh.create(player, 1, model, locked, -1, 1, position, rgb, rgb2, 0, 0);
+   'createveh': (player, fullText, model, c1r = 0, c1g = 0, c1b = 0, c2r = 0, c2g = 0, c2b = 0) => {
+      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      mp.vehicles.create( { 
+         model: model, position: player.position, rotation: player.heading,
+         color: [{r: c1r, g: c1g, b: c1b}, {r: c1r, g: c1g, b: c1b}], owner: -1 } 
+      );
    }, 
 
    'vehtune': (player, fullText, modType, modIndex) => {
-      if(player.admin < 3) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      if (!player.vehicle) return account.notification(player, 'Morate biti u vozilu za koriscenje ove komande.', NOTIFY_ERROR, 4)
+      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if (!player.vehicle) return player.notification('Morate biti u vozilu za koriscenje ove komande.', NOTIFY_ERROR, 4)
       
       player.vehicle.setMod(parseInt(modType), parseInt(modIndex));
       player.outputChatBox(`Tip moda ${modType} sa indeksom moda ${modIndex} je postavljen.`);
@@ -179,7 +180,7 @@ mp.events.addCommand({
 
    'giveitem': (player, fullText) => {
       if (fullText) { 
-         if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+         if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
          let args = fullText.split(' ');
          let quantity = args[0];
          let itemNameFull = args.slice(1).join(' ');
@@ -190,25 +191,25 @@ mp.events.addCommand({
    },
 
    'freeze': (player, fullText, target) => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
 
       let recipient = account.findPlayer(target);
-      if(!recipient) return account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+      if(!recipient) return player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
       recipient.frozen ? ( 
          recipient.frozen = false,
          recipient.call('client:freezePlayer', [false]),
-         account.notification(player, `Odledili ste ${recipient.name} !`, NOTIFY_SUCCESS, 4),
-         account.notification(recipient, `Admin ${player.name} vas je odledio !`, NOTIFY_SUCCESS, 4)
+         player.notification(`Odledili ste ${recipient.name} !`, NOTIFY_SUCCESS, 4),
+         recipient.notification(recipient, `Admin ${player.name} vas je odledio !`, NOTIFY_SUCCESS, 4)
       ) : ( 
          recipient.frozen = true,
          recipient.call('client:freezePlayer', [true]),
-         account.notification(player, `Zaledili ste ${recipient.name} !`, NOTIFY_SUCCESS, 4),
-         account.notification(recipient, `Admin ${player.name} vas je zaledio !`, NOTIFY_SUCCESS, 4)
+         player.notification(`Zaledili ste ${recipient.name} !`, NOTIFY_SUCCESS, 4),
+         recipient.notification(`Admin ${player.name} vas je zaledio !`, NOTIFY_SUCCESS, 4)
       );
    },
 
    'kill': (player, fullText, target) => { 
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let recipient = account.findPlayer(target);
       if(recipient) {
          recipient.health = 0;
@@ -217,18 +218,18 @@ mp.events.addCommand({
          player.outputChatBox(`Ubili ste igraca ${recipient.name}`);
       }
       else {
-         account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
       }
       
    },
 
    'time': (player, fulltext, hour, minute, second) => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       mp.world.time.set(hour, minute, second);
    }, 
 
    'sethp': (player, fullText, target, health) => { 
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let recipient = account.findPlayer(target);
       let healthToSet = parseInt(health);
       if(healthToSet > 0 && healthToSet <= 100 ) {
@@ -237,16 +238,16 @@ mp.events.addCommand({
             recipient.outputChatBox(`Administrator vam je podesio helte na ${healthToSet}.`);
          }
          else { 
-            account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+            player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
          }
       }
       else {
-         account.notification(player, 'Minimalna vrednost 1 a maksimalna 100.', NOTIFY_ERROR, 4);
+         player.notification('Minimalna vrednost 1 a maksimalna 100.', NOTIFY_ERROR, 4);
       }
    },
 
    'setarmour': (player, fullText, target, armour) => { 
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let recipient = account.findPlayer(target);
       let armourToSet = parseInt(armour);
       if(armourToSet > 0 && armourToSet <= 100 ) {
@@ -255,46 +256,46 @@ mp.events.addCommand({
             recipient.outputChatBox(`Administrator vam je podesio armor na ${armourToSet}.`);
          }
          else { 
-            account.notification(player, MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
+            player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
          }
       }
       else {
-         account.notification(player, 'Minimalna vrednost 1 a maksimalna 100.', NOTIFY_ERROR, 4);
+         player.notification('Minimalna vrednost 1 a maksimalna 100.', NOTIFY_ERROR, 4);
       }
    },
 
    'fixveh': (player, fullText) => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let vehToFix = player.vehicle;
       if(!vehToFix) 
-         return account.notification(player, 'Morate biti u vozilu.', NOTIFY_ERROR, 4);
+         return player.notification('Morate biti u vozilu.', NOTIFY_ERROR, 4);
       else
          vehToFix.repair();
    },
 
    'a': (player, fullText) => { 
-      if(player.admin < 1) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 1) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       account.sendAdminMessage(fullText);
    },
 
    'createbiz': (player, fullText, type, price) => {
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       business.create(player, type, price);
    },
 
    'createitem': (player, full, name, quant) => {
-      if (player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if (player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let foundItem = inventory.findItem(name);
       if (foundItem) { 
          inventory.createItem(foundItem.name, foundItem.type, foundItem.hash, 0.12, quant, -1, -1, player.dimension, player.position);
       } else { 
-         account.notification(player, MSG_ITEM_DOESNT_EXIST, NOTIFY_ERROR, 4);
+         player.notification(MSG_ITEM_DOESNT_EXIST, NOTIFY_ERROR, 4);
       }
          
    },
    
    'destroyitem': (player, text) => {
-      if(player.admin < 2) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let item = inventory.nearItem(player);
       if (item) {
           inventory.destroyItem(player, item);
@@ -302,12 +303,12 @@ mp.events.addCommand({
    },
 
    'createhouse': (player, fullText, type, price) => {
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       houses.create(player, { type: type, price: price });
    },
    
    'destroyhouse': (player, fullText) => {
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let h = house.nearby(player);
       if (h) {
          house.delete(player, h);
@@ -320,7 +321,7 @@ mp.events.addCommand({
    },
 
    'destroybiz': (player, fullText) => {
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let bussines = business.nearby(player);
       if (bussines) {
           player.outputChatBox(`Nearest biz ${bussines.id} !`);
@@ -329,7 +330,7 @@ mp.events.addCommand({
    },
 
    'editbiz': (player, fullText) => { 
-      if(player.admin < 4) return account.notification(player, MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       let bussines = business.nearby(player);
       if(bussines) {
 
