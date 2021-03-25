@@ -1,4 +1,3 @@
-const doors = require("../core/doors");
 
 mp.events.addCommand({
   

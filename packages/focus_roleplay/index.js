@@ -8,17 +8,18 @@ global.core = require('./core/main');
 
 let DatabaseStructure = require('./core/databaseStructure');
 let Authentication = require('./classes/Authentication');
-let inventorySystem = require('./classes/Inventory');
-let Savings = require('./classes/Savings')
+let Inventory = require('./classes/Inventory');
+let Savings = require('./classes/Savings');
+let Vehicles = require('./classes/Vehicles');
+let Factions = require('./classes/Factions');
+let Doors = require('./classes/Doors');
+
 
 global.account = require('./player/player.Core');
 global.business = require('./business/bizCore');
 global.houses = require('./houses/houses.Core');
 global.jobs = require('./jobs/jobs.Core');
-global.inventory = require('./inventory/inventory.Core');
 global.radio = require('./player/radio.Core');
-global.factions = require('./factions/factions.Core');
-global.doors = require('./core/doors');
 global.plants = require("./core/plants");
 
 var playerEvents = require('./player/player.Events');
@@ -28,7 +29,6 @@ var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
 var realTimeWeather = require('./core/weather');
 var dealershipVehicles = require('./vehicles/vehicles.List');
-var vehiclesSystem = require('./vehicles/vehicles.Core');
 var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);

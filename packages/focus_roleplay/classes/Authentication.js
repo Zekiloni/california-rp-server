@@ -49,8 +49,6 @@ class Authentication {
             });
          },
       })
-      console.log('auth loaded')
-
    }
 }
 

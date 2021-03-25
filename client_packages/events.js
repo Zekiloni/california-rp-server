@@ -35,12 +35,8 @@ mp.events.add({
       }, 300)
    },
 
-   'client:syncDoorsState': (model, x, y, z, state) => { 
-      mp.gui.chat.push(`${model}, x ${x}, y ${y}, state ${state}`)
-      let posX = parseInt(x),
-         posY = parseInt(y),
-         posZ = parseInt(z);
-      mp.game.object.doorControl(model, posX, posY, posZ, state, 0.0, 50.0, 0)
+   'client:doors.sync': (model, position, state) => { 
+      mp.game.object.doorControl(model, position[0], position[1], position[2], state, 0.0, 50.0, 0)
    },
 
    'client:rotatePlayer': (value) => {

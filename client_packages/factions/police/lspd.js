@@ -14,7 +14,7 @@ mp.events.add({
    },
 
    'client:spawnPoliceVehicle': (name, model) => {
-      mp.events.callRemote('server:policeSpawnVehicle', name, model);
+      mp.events.callRemote('server:police.spawnVehicle', name, model);
    },
 
    'client:showPoliceWeaponary': () => {
@@ -28,7 +28,7 @@ mp.events.add({
    },
 
    'client:policeGiveWeapon': (name, weapon, ammo) => {
-      mp.events.callRemote('server:policeGiveWeapon', name, weapon, ammo);
+      mp.events.callRemote('server:police.giveWeapon', name, weapon, ammo);
    },
 
    'client:showPoliceEquipment': () => {
