@@ -1,32 +1,39 @@
 
 
-let characters = null;
-
 
 const login = { 
    element: $('.login-box'),
-   username: $('#login-username').val(),
-   password: $('#login-password').val(),
+   button: $('button.login'),
+   username: $('#login-username'),
+   password: $('#login-password'),
 
    show: () => { 
-      $(login.element).fadeIn(1500)
+      $(login.element).fadeIn(2000)
+      $(login.element).css('display', 'flex')
    },
 
-   finish: () => { 
-      mp.trigger('client:login.sendCredentials', login.username, login.password)
+   triger: () => { 
+      mp.trigger('client:login.sendCredentials', $(login.username).val(),  $(login.password).val())
    }
 }
 
 const selector = { 
    element: $('.selector'),
 
-   init: () => { 
-      // $(selector.element)
+   init: (characters) => { 
+      $(login.element).css('transition', 'all 0.5s ease')
+      $(login.element).css('transform', 'translateX(1300px)')
+      console.log('Init pozvan')
+      console.log('Karakteri')
    }
 }
 
 $(window).on('load', () => { 
    login.show()
+})
+
+$(login.button).on('click', function () { 
+   login.triger()
 })
 
 

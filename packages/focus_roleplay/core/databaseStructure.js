@@ -3,6 +3,7 @@ let usersTable = `CREATE TABLE IF NOT EXISTS users (
   id int(11) NOT NULL AUTO_INCREMENT,
   username varchar(48) NOT NULL,
   password varchar(256) NOT NULL,
+  email_adress varchar(128) NOT NULL,
   registered_at timestamp NULL DEFAULT NULL,
   last_login_at timestamp NOT NULL DEFAULT current_timestamp(),
   ip_adress varchar(64) NOT NULL,
@@ -19,8 +20,9 @@ db.query(usersTable, function(err, results, fields) {
   core.terminal(3, `Checking usersTable | MySQL`);
 });
 
-let accountsTable = `CREATE TABLE IF NOT EXISTS characters (
+let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   id int(11) NOT NULL AUTO_INCREMENT,
+  master_account int(11) NOT NULL,
   first_name varchar(64) NOT NULL,
   last_name varchar(64) NOT NULL,
   sex int(1) NOT NULL DEFAULT 0,
@@ -42,9 +44,9 @@ let accountsTable = `CREATE TABLE IF NOT EXISTS characters (
   licenses text NOT NULL DEFAULT 0,
   PRIMARY KEY(id))`;
 
-db.query(accountsTable, function(err, results, fields) {
+db.query(charactersTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking accountsTable | MySQL`);
+  core.terminal(3, `Checking charactersTable | MySQL`);
 });
 
 let businessTable = `CREATE TABLE IF NOT EXISTS business (

@@ -1,36 +1,33 @@
 
 var loginCEF, 
     player = mp.players.local,
-    loginCam;
+    loginCamera;
 
 mp.events.add({
-  'client:showLogin': () => {
-    loginCEF = mp.browsers.new('package://authentication/auth-interface/login.html');
+  'client:login.show': () => {
+    loginCEF = mp.browsers.new('package://authentication/auth-interface/auth.html');
     mp.players.local.freezePosition(true);
-    //mp.game.ui.setMinimapVisible(true);
     mp.gui.chat.activate(false);
-    //mp.gui.chat.show(false); 
     setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
     mp.game.ui.displayRadar(false);
-    mp.events.call('client:enableLoginCamera');
+    mp.events.call('client:login.enableCamera');
     mp.game.graphics.transitionToBlurred(1000);
   },
 
-  'client:enableLoginCamera': () => {
-    loginCam = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
-    mp.players.local.position = new mp.Vector3(-2172.62, -1027.5, 20.66);
+  'client:login.enableCamera': () => {
+    loginCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
+    mp.players.local.position = new mp.Vector3(-2022.89, -1214.94, 54.65);
     mp.players.local.freezePosition(true);
-    loginCam.setActive(true);
-    loginCam.setCoord(-2175.62, -1030.5, 20.66);
-    loginCam.pointAtCoord(-2134.11, -1024.2, 20.66);
+    loginCamera.setActive(true);
+    loginCamera.setCoord(-2022.89, -1214.94, 49.65);
+    loginCamera.pointAtCoord(-1915.13, -1180.98, 47.56);
     mp.game.cam.renderScriptCams(true, false, 0, true, false);
   },
 
   'client:disableLoginCamera': () => {
     loginCEF.destroy();
-    loginCam.destroy();
+    loginCamera.destroy();
     mp.gui.chat.activate(true);
-    //mp.gui.chat.show(true); 
     mp.game.ui.displayRadar(true);
     setTimeout(() => { 
       mp.gui.cursor.show(false, false); 
@@ -40,20 +37,29 @@ mp.events.add({
     mp.players.local.freezePosition(false);
     mp.game.graphics.transitionFromBlurred(1000);
     mp.discord.update(`Focus Roleplay`, `Igra kao ${player.name}`)
-  }
+  },
 
+  'client:login.sendCredentials':  (username, password) => {
+    mp.events.callRemote('server:login.handle', username, password);
+  },
+
+  'client:login.status': (status, characters) => { 
+    switch (status) { 
+      case 1:
+        loginCEF.execute(`error('Šifra koju ste uneli nije tačna.', '#user-password')`);
+        break;
+
+      case 2:
+        loginCEF.execute(`error('Šifra koju ste uneli nije tačna.', '#user-password')`);
+        break;
+
+      case 3:
+        loginCEF.execute(`selector.init(${JSON.stringify(characters)})`);
+        break;
+
+      default:
+        return false;
+    }
+  }
 });
 
-mp.events.add('client:sendLoginToServer',  (userName, password) => {
-  mp.events.callRemote('server:handleLogin', userName, password);
-});
-
-
-mp.events.add('client:LoginStatus', (status) => { 
-  if (status == 1) { 
-    mp.events.call('client:disableLoginCamera');
-  }
-  else if (status == 2) {
-    loginCEF.execute(`error('Šifra koju ste uneli nije tačna.', '#user-password')`);
-  }
-})

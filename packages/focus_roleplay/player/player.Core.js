@@ -87,30 +87,30 @@ module.exports = {
     },
 
     save: function (player) { 
-        let PlayerPos = JSON.stringify(player.position);
-        var values = {
-            ipAddress: player.ip,
-            xp: player.xp,
-            hours: player.hours,
-            admin: player.admin,
-            cash: player.data.cash,
-            bank: player.data.bank,
-            savings: player.data.savings,
-            credit: player.data.credit,
-            lastPosition: PlayerPos,
-            job: player.job,
-            faction: player.faction,
-            factionRank: player.rank,
-            radioFreq: player.radioFreq,
-            hunger: player.hunger,
-            thirst: player.thirst,
-            stress: player.stress,
-            salary: player.salary,
-            weaponSkill: player.weaponSkill
-        };
-        db.query("UPDATE `players` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
-            if (error) return core.terminal(1, `Saving Account ${error}`);
-        });
+        // let PlayerPos = JSON.stringify(player.position);
+        // var values = {
+        //     ipAddress: player.ip,
+        //     xp: player.xp,
+        //     hours: player.hours,
+        //     admin: player.admin,
+        //     cash: player.data.cash,
+        //     bank: player.data.bank,
+        //     savings: player.data.savings,
+        //     credit: player.data.credit,
+        //     lastPosition: PlayerPos,
+        //     job: player.job,
+        //     faction: player.faction,
+        //     factionRank: player.rank,
+        //     radioFreq: player.radioFreq,
+        //     hunger: player.hunger,
+        //     thirst: player.thirst,
+        //     stress: player.stress,
+        //     salary: player.salary,
+        //     weaponSkill: player.weaponSkill
+        // };
+        // db.query("UPDATE `players` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
+        //     if (error) return core.terminal(1, `Saving Account ${error}`);
+        // });
     },
 
     updateClothing: function (player, skin) {

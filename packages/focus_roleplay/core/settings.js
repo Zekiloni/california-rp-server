@@ -5,5 +5,5 @@ mp.settings = {
    register: { 
       cash: 3000,
       bank: 0,
-   }
+   },
 }

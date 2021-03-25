@@ -24,13 +24,8 @@ mp.events.add('server:handleLogin', async (player, username, password) => {
 
 mp.events.add({
 
-    'playerJoin': (player) => {
-      player.welcome()
-      player.call('client:showLogin');
-    },
-
     'playerQuit': (player, exitType) => {
-      account.playerQuit(player);
+      //account.playerQuit(player);
 
       switch(exitType)
       {

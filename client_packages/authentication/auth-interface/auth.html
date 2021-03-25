@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
         <!-- source -->
-        <link rel="stylesheet" type="text/css" href="../../statics/vendor/css/fonts.css" />
-        <link rel="stylesheet" type="text/css" href="../../statics/vendor/css/font-awesome.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
 
         <link rel="stylesheet" type="text/css" href="src/style.css" />
 
@@ -16,8 +16,18 @@
 
         <div class="login-wrapper" id="login">
             <div class="login-box">
-                
+                <div class="header">
+                    <h2 data-before="Samo nebo je granica">Focus Roleplay</h2>
+                </div>
+                <div class="content">
+                    <input type="text" id="login-username" placeholder="Korisnicko ime"/>
+                    <input type="password" id="login-password" placeholder="Korisnicka sifra"/>
+                    <h3>U slučajevu zaboravljene lozinke, možete je povratiti putem kontrolnog panela.</h3>
+                    <button class="login">Prijavi se</button>
+                </div>
+                <img class="logo-bottom" src="src/images/logo-small-white.png" />
             </div>
+            
         </div>
 
         <div class="selector-wrapper" id="selector">
@@ -27,7 +37,7 @@
         </div>
 
         <!-- scripts -->
-        <script src="../../statics/vendor/js/jquery-3.5.1.js"></script>
+        <script src="src/vendor/js/jquery-3.5.1.js"></script>
         <script src="src/app.js"></script>
     </body>     
 </html>
