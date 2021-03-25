@@ -6,9 +6,10 @@ global.db = require('./core/database');
 global.config = require('./core/configuration');
 global.core = require('./core/main');
 
-var databaseStructure = require('./core/databaseStructure');
-let Authentication = require('./classes/Authentication')
+let DatabaseStructure = require('./core/databaseStructure');
+let Authentication = require('./classes/Authentication');
 let inventorySystem = require('./classes/Inventory');
+let Savings = require('./classes/Savings')
 
 global.account = require('./player/player.Core');
 global.business = require('./business/bizCore');
