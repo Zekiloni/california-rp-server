@@ -39,7 +39,7 @@ mp.events.add({
       mp.game.object.doorControl(model, position[0], position[1], position[2], state, 0.0, 50.0, 0)
    },
 
-   'client:rotatePlayer': (value) => {
+   'client:player.rotate': (value) => {
       player.setHeading(value);
    },
 

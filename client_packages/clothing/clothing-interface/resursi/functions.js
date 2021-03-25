@@ -40,7 +40,7 @@ $('.slajder').on('input', function () {
 $('.rotacija').on('input', function () {
     var value = this.value;
     $('#verdnost-rotacije').html(`${value} °`)
-    mp.trigger("client:rotatePlayer", parseFloat(value));
+    mp.trigger("client:player.rotate", parseFloat(value));
 });
 
 document.addEventListener("keyup", function(event) {

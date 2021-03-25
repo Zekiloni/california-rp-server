@@ -4,10 +4,11 @@ let DOORS = require('./../configs/Doors.json')
 mp.doors = {};
 
 class Door { 
-   constructor (id, name, position, status) { 
+   constructor (id, name, position, model, status) { 
       this.id = id;
       this.name = name;
       this.position = position;
+      this.model = model;
       this.status = status;
 
       this.colshape = mp.colshapes.newRectangle(position[0], position[1], 3, 2, 0);
@@ -16,13 +17,10 @@ class Door {
       mp.doors[this.id] = this;
    }
 
-   open () { 
-
+   status () { 
+      this.status = !this.status;
    }
 
-   close () { 
-
-   }
 }
 
 class Doors { 
@@ -36,18 +34,12 @@ class Doors {
             }
          }
       });
-
-      mp.events.addCommand({
-         'doors': (player) => { 
-
-         }
-      })
    }
 
    init () { 
       let counter = 0;
       for (let door of DOORS) { 
-         new Door(door.id, door.name, door.position, door.locked);
+         new Door(door.id, door.name, door.position, door.model, door.locked);
          counter ++;
       }
       core.terminal(3, counter + ' Doors loaded')
