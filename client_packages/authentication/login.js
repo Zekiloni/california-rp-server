@@ -24,23 +24,24 @@ mp.events.add({
     mp.game.cam.renderScriptCams(true, false, 0, true, false);
   },
 
-  'client:disableLoginCamera': () => {
+  'client:login.sendCredentials':  (username, password) => {
+    mp.events.callRemote('server:login.handle', username, password);
+  },
+
+  'client:select.Character': (character) => { 
     loginCEF.destroy();
     loginCamera.destroy();
     mp.gui.chat.activate(true);
     mp.game.ui.displayRadar(true);
     setTimeout(() => { 
       mp.gui.cursor.show(false, false); 
-      mp.events.call('client:showPlayerHUD', true);
+      mp.events.call('client:hud.show', true);
     }, 500);
     mp.game.cam.renderScriptCams(false, false, 0, false, false);
     mp.players.local.freezePosition(false);
     mp.game.graphics.transitionFromBlurred(1000);
     mp.discord.update(`Focus Roleplay`, `Igra kao ${player.name}`)
-  },
-
-  'client:login.sendCredentials':  (username, password) => {
-    mp.events.callRemote('server:login.handle', username, password);
+    mp.events.callRemote('server:select.character', character);
   },
 
   'client:login.status': (status, characters) => { 
@@ -54,7 +55,7 @@ mp.events.add({
         break;
 
       case 3:
-        loginCEF.execute(`selector.init(${JSON.stringify(characters)})`);
+        loginCEF.execute(`selector.init(\"${player.name}\", ${JSON.stringify(characters)})`);
         break;
 
       default:

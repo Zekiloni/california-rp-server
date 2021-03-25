@@ -7,12 +7,14 @@ global.config = require('./core/configuration');
 global.core = require('./core/main');
 
 let DatabaseStructure = require('./core/databaseStructure');
+let Logs = require('./classes/Logs');
 let Authentication = require('./classes/Authentication');
 let Inventory = require('./classes/Inventory');
 let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
+let Plants = require('./classes/Plants')
 
 
 global.account = require('./player/player.Core');
@@ -20,7 +22,6 @@ global.business = require('./business/bizCore');
 global.houses = require('./houses/houses.Core');
 global.jobs = require('./jobs/jobs.Core');
 global.radio = require('./player/radio.Core');
-global.plants = require("./core/plants");
 
 var playerEvents = require('./player/player.Events');
 var huntingAnimals = require('./hunting/animals');

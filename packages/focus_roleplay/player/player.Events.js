@@ -80,7 +80,7 @@ mp.events.add({
     },
 
     'playerChat': (player, text) => {
-      if (!player.data.loggedIn) return;
+      if (!player.data.logged) return;
       account.sendProxMessage(player, CHAT_RADIUS.IC, `${player.name}: ${text}`, 'FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E');
     },
 
@@ -100,7 +100,7 @@ mp.events.add({
     },
 
     'server:getPlayerInventory': (player) => { 
-      if (player.data.loggedIn) { 
+      if (player.data.logged) { 
         let pInventory = inventory.getPlayerInventory(player)
         player.call('client:openInventory', [pInventory])
       } else { 
@@ -115,7 +115,7 @@ mp.events.add({
     },
  
     'playerCommand': (player, command) => {
-        if (!player.data.loggedIn) return player.ouputChatBox('Morate biti ulogovani da biste koristili komande');
+        if (!player.data.logged) return player.ouputChatBox('Morate biti ulogovani da biste koristili komande');
     },
 
     'server:playerBanking': (player) => { 

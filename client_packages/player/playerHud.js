@@ -12,7 +12,7 @@ let photoName = null;
 
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
-mp.events.add('client:showPlayerHUD', (show) => {
+mp.events.add('client:hud.show', (show) => {
 	if(show)  {
 		playerHUD = mp.browsers.new('package://hud-interface/index.html');
 		setInterval(() => { updatePlayerHud(); }, 1000);

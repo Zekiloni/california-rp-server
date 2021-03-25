@@ -12,7 +12,7 @@ class Saving {
                case 'kicked': reason = 'je kikovan / banovan sa servera'; break; 
             }
             core.terminal(2, `${player.name} ${reason}`);
-            if (player.data.loggedIn) { 
+            if (player.data.logged) { 
                mp.events.call('server:save.player', player, true)
             }
          },
@@ -46,7 +46,7 @@ class Saving {
    
    save = () => { 
       mp.players.forEach( (player) => {
-         if (player.data.loggedIn) { 
+         if (player.data.logged) { 
             mp.events.call('server:save.player', player);
          }
       });

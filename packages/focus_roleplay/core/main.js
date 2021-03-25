@@ -30,14 +30,6 @@ module.exports = {
           return `${date} ${time}`;
      },
 
-     createLog: function (type, account = 0, play = 0, target = 0, message = 'empty', data = 'empty') { 
-          let info = JSON.stringify(data)
-          db.query("INSERT INTO `logs` (type, account, player, target, message, data, dateTime) VALUES (?, ?, ?, ?, ?, ?, current_timestamp())", [type, account, play, target, message, info], function (error, results, fields) {
-               if (error) return core.terminal(1, error);
-               let id = results.insertId;
-          });
-     },
-
      hash: function (string) { 
           let hash = bcrypt.hashSync(string, salt);
           return hash;
@@ -63,7 +55,7 @@ module.exports = {
           let counter = 0;
           mp.players.forEach(
                (player) => {
-                    if (player.data.loggedIn) { 
+                    if (player.data.logged) { 
                          player.hunger --;
                          player.thirst --;
                          if (player.hunger > 5 && player.hunger < 10) {

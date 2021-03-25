@@ -3,12 +3,6 @@
 
 mp.plants = [];
 
-const PLANT_TYPES = [ 
-   { type: 'palm', name: 'Palma', model: 'apa_mp_h_acc_plant_palm_01', growTime: 3 },
-   { type: 'marijuana', name: 'Kanabis', model: 'prop_weed_01', growTime: 5 },
-   { type: 'cocaina', name: 'Stabljika koke', model: 'aaaa', growTime: 10 }
-];
-
 const plantsTimer = 60; // seconds
 
 function Plant (data) {
@@ -127,5 +121,5 @@ var plants = {
 
 module.exports = plants;
 
-plants.check()
-plants.load()
+/// plants.check()
+// plants.load()
