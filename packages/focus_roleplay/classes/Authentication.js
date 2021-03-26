@@ -7,6 +7,8 @@ mp.events.add({
 
    'server:select.character': (player, char) => { 
       // karaktera loaduj
+      // player.character = id;
+      // new charac
    },
 
    'server:login.handle': (player, username, password) => { 
@@ -15,10 +17,11 @@ mp.events.add({
          if (result.length > 0) { 
             if (result[0].password == password) { 
                let userID = result[0].id;
-               player.sqlid = userID;
+               player.account = userID;
                player.name = result[0].username;
                player.data.logged = true;
-               player.account = new Account({
+               mp
+               new Account({
                   sqlid: userID,
                   username: result[0].username,
                   regDate: result[0].registered_at,

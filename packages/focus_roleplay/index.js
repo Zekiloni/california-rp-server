@@ -16,12 +16,12 @@ let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
 let Plants = require('./classes/Plants')
+let Channels = require('./classes/Channels')
 
 global.account = require('./player/player.Core');
 global.business = require('./business/bizCore');
 global.houses = require('./houses/houses.Core');
 global.jobs = require('./jobs/jobs.Core');
-global.radio = require('./player/radio.Core');
 
 var playerEvents = require('./player/player.Events');
 var huntingAnimals = require('./hunting/animals');

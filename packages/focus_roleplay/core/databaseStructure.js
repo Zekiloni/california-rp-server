@@ -129,12 +129,11 @@ db.query(leadersTable, function(err, results, fields) {
 });
 
 
-let freqTable = `CREATE TABLE IF NOT EXISTS radio_frequencies (
-  ID int(11) NOT NULL AUTO_INCREMENT,
+let freqTable = `CREATE TABLE IF NOT EXISTS channels (
   frequency int(11) NOT NULL,
   password varchar(64) DEFAULT 0,
   owner int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY(ID))`;
+  PRIMARY KEY(frequency))`;
 
 db.query(freqTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }

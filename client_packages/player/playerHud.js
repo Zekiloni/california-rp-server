@@ -4,7 +4,6 @@ let onlinePlayers = mp.players.length;
 var playerHUD, isDriving = false;
 
 
-
 let pedHeadShot;
 let screenResolution = false;
 let screenshotBrowser = false;
@@ -99,7 +98,10 @@ mp.events.add({
   },
 
   'client:sendScreenToServer': (base64) => {
-		mp.events.callRemote('server:receiveScreen', base64);
+		let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0);
+		let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
+		let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
+		mp.events.callRemote('server:disord.screenshot.send', base64, zoneName, streetName);
 		setTimeout(() => {
 			screenshotBrowser.destroy();
 			screenshotBrowser = false;

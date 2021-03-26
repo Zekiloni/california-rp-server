@@ -1,5 +1,3 @@
-const webhook = require("webhook-discord")
-const Hook = new webhook.Webhook("https://discord.com/api/webhooks/823659820833832971/Jcpo0AcSVsTU_labTWbnO8dSLg0yxQFd9fDDYuDH5DfL6DKHFkd1FGF7tCxJCDp1STdn")
 
 
 mp.events.add("server:playerDamage", (player, healthLoss, armorLoss) => {
@@ -88,16 +86,6 @@ mp.events.add({
         account.updateClothing(player, clothingFinished);
     },
 
-    'server:receiveScreen': (player, image) => {
-      let res = JSON.parse(image)
-      console.log(res.data);
-      const msg = new webhook.MessageBuilder()
-              .setName('vinewood.online')
-              .setColor("#ffa657")
-              .setImage(res.data.image.url)
-              .addField(`${player.name}`, 'Uzivo slika sa servera')
-      Hook.send(msg);
-    },
 
     'server:getPlayerInventory': (player) => { 
       if (player.data.logged) { 

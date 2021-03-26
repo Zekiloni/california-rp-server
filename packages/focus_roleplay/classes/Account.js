@@ -5,11 +5,10 @@ mp.accounts = {}
 class Account { 
    /**
    * @param {Object} params
-   * @param {Object} params.player
    * @param {Integer} params.dbid
    */
    constructor (params) { 
-      this.sqlid = params.sqlid;
+      this.id = params.sqlid;
       this.username = params.username;
       this.registerDate = params.regDate;
       this.lastLogin = params.lastLog;
@@ -18,11 +17,9 @@ class Account {
       this.experience = params.xp; 
       this.hours = params.hours;
       this.donator = params.donator;
-      this.characters = [];
+      this.warns = params.warns;
 
-      mp.accounts[this.sqlid] = this;
-
-      console.log(this)
+      mp.accounts[this.id] = this;
    }
    
    isAdmin = (x) => { 
