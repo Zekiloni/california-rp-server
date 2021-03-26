@@ -21,7 +21,7 @@ mp.events.add('client:hud.show', (show) => {
 	}
 })
 
-mp.events.add('client:showNotification', (message, type, time) => {
+mp.events.add('client:notification.show', (message, type, time) => {
 	playerHUD.execute(`notification(\"${message}\", \"${type}\", \"${time}\");`); 
 })
 

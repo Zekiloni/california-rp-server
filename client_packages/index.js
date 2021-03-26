@@ -1,8 +1,10 @@
-var gtaUI = require('./player/playerHud');
-var login = require('./authentication/login');
+let Authentication = require('./authentication/login');
+let GameInterface = require('./player/playerHud');
+let CharacterCreator = require('./creator/customization');
+
+
 var animals = require('./animals');
 var charClohing = require('./clothing/clothing');
-var charCustomization = require('./char-customization/customization');
 var playerDamage = require('./syncDamage');
 var inventory = require('./inventory/inventory');
 var binds = require('./player/binds');

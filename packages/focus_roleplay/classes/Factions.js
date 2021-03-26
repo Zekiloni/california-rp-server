@@ -96,7 +96,7 @@ class Factions {
          },
       })
 
-      mp.commands.add({
+      mp.events.addCommand({
          'invite': (player, fullText) => { 
 
          },

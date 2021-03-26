@@ -269,10 +269,6 @@ module.exports = {
         });
     },
 
-    notification: function (player, message, type, time) { 
-        player.call('client:showNotification', [message, type, time]);
-    },
-
     sendAdminMessage: function (message) { 
         mp.players.forEach((target) => {
            if (target.admin > 0) { 
@@ -287,8 +283,6 @@ mp.Player.prototype.welcome = function () {
     this.outputChatBox('Dobrodosao na server')
 }
 
-mp.Player.prototype.notification = function (message, type, time) { 
-    this.call('client:showNotification', [message, type, time]);
-}
+
 
 

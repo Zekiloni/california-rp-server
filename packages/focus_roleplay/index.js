@@ -8,7 +8,8 @@ global.core = require('./core/main');
 
 let DatabaseStructure = require('./core/databaseStructure');
 let Logs = require('./classes/Logs');
-let Discord = require('./classes/Discord')
+let Discord = require('./classes/Discord');
+let Admins = require('./classes/Admins');
 let Authentication = require('./classes/Authentication');
 let Inventory = require('./classes/Inventory');
 let Savings = require('./classes/Savings');
@@ -19,7 +20,6 @@ let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
 let Anmials = require('./classes/Animals');
-
 
 global.account = require('./player/player.Core');
 // global.business = require('./business/bizCore');
