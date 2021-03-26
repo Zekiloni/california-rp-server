@@ -47,6 +47,10 @@ module.exports = {
           return {r: rr, g: gg, b: bb}
      },
 
+     hexToDecimal: (hex) => {
+          return parseInt(hex.replace("#",""), 16)
+     },
+
      randomInRange: (min, max) => {
           return Math.floor(Math.random() * (max - min)) + min;
      },
