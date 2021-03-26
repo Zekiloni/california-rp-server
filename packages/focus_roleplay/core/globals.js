@@ -59,6 +59,3 @@ global.NOFITICATION_TYPES = [
    NOTIFY_INFO = 'info'
 ];
 
-global.SERVER_COLOR = { 
-   R: 5, G: 149, B: 232
-}; Object.freeze(SERVER_COLOR)

@@ -15,25 +15,25 @@ let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
-let Plants = require('./classes/Plants')
-let Channels = require('./classes/Channels')
+let Plants = require('./classes/Plants');
+let Channels = require('./classes/Channels');
+let Weather = require('./classes/Weather');
+let Anmials = require('./classes/Animals');
+
 
 global.account = require('./player/player.Core');
-global.business = require('./business/bizCore');
-global.houses = require('./houses/houses.Core');
-global.jobs = require('./jobs/jobs.Core');
+// global.business = require('./business/bizCore');
+// global.houses = require('./houses/houses.Core');
+// global.jobs = require('./jobs/jobs.Core');
 
 var playerEvents = require('./player/player.Events');
-var huntingAnimals = require('./hunting/animals');
 var playerCommands = require('./player/player.Commands');
 var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
-var realTimeWeather = require('./core/weather');
 var dealershipVehicles = require('./vehicles/vehicles.List');
 var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
-business.loadAll();
 setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 // mp.Player.prototype.funkcija = () => {  }
@@ -75,7 +75,7 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
 var color = [[033, 343, 535], [3434, 577, 565]]
 
 mp.events.addCommand("tp", (player) => {
-    mp.events.call("server:spawnAnimals", player, 15);
+    mp.events.call('server:animals.spawn', player, 15);
     player.position = new mp.Vector3(-1800.14, -794.12, 8.6);
     player.giveWeapon([3220176749, 2210333304], 1000); // Assault Rifle, Carbine Rifle
 });

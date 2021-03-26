@@ -28,7 +28,7 @@ class Channels {
       })
    }
 
-   create = () => { 
+   create = (player, frequency) => { 
 
    }
 

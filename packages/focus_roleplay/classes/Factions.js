@@ -5,18 +5,59 @@ const Types = {
 }
 
 mp.factions = [
-    LSPD = { 
-      id: 1, name: 'Los Santos Police Department', motd: 'To protect & Serve', type: Types.Law
+   LSPD = { 
+      id: 1, name: 'Los Santos Police Department', motd: 'To protect & Serve', type: Types.Law, sprite: 60,
+      label: new mp.Vector3(434.080, -981.913, 30.7093), blip: new mp.Vector3(433.91, -981.98, 0),
+      garage: new mp.Vector3(455.4101, -1017.4461, 27.6155), equip: new mp.Vector3(452.97064, -992.0955, 30.6896),
+      armory: new mp.Vector3(452.0938415, -980.22052, 30.68961), vehicle: new mp.Vector3(439.02337, -1019.7479, 28.72946),
    }
-]
+];
+
 
 const factions = { 
    init () { 
-      for (faction of mp.factions) { 
-         // napraviti markere, blipove i labele
-         //
-      }
-      core.terminal(3, mp.factions.length + ' Factions Loaded')
+      let counter = 0;
+      for (let faction of mp.factions) { 
+         if (faction.label) { 
+            mp.labels.new(faction.name + '~n~' + faction.motd, faction.label, { los: true, font: 0, drawDistance: 4} );
+         }
+
+         if (faction.blip) { 
+            mp.blips.new(faction.sprite, faction.blip, {
+               name: faction.name,
+               color: 3,
+               shortRange: true,
+            })
+         }
+
+         if (faction.garage) { 
+            faction.garage.marker = mp.markers.new(27, faction.garage, 0.85, {
+               color: mp.settings.color.rgba, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: 0
+            })
+            faction.garage.colshape = mp.colshapes.newRectangle(faction.garage.x, faction.garage.y, 1.75, 2, 0);
+            faction.garage.colshape.name = 'garage';
+         }
+
+
+         if (faction.equip) { 
+            faction.equip.marker = mp.markers.new(27, faction.equip, 0.85, {
+               color: mp.settings.color.rgba, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: 0
+            })
+            faction.equip.colshape = mp.colshapes.newRectangle(faction.equip.x, faction.equip.y, 1.5, 2, 0);
+            faction.equip.colshape.name = 'equip';
+         }
+
+         if (faction.armory) { 
+            faction.armory.marker = mp.markers.new(27, faction.armory, 0.85, {
+               color: mp.settings.color.rgba, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: 0
+            })
+            faction.armory.colshape = mp.colshapes.newRectangle(faction.armory.x, faction.armory.y, 1.5, 2, 0);
+            faction.armory.colshape.name = 'weapon';
+         }
+
+         counter ++;
+      } 
+      core.terminal(3, counter + ' Factions loaded')
    }
 }
 

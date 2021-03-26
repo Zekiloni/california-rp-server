@@ -6,4 +6,8 @@ mp.settings = {
       cash: 3000,
       bank: 0,
    },
+
+   color: { 
+      rgba: [5, 149, 232, 255]
+   }
 }
