@@ -39,6 +39,19 @@ $(window).on('load', () => {
    sliders.open(0)
 })
 
+// ​$(document).ready(function() {
+//    $(window).bind('mousewheel', function(e){
+//          if(e.originalEvent.wheelDelta /120 > 0) {
+//             let n = sliders.active + 1;
+//             sliders.open(n)
+//          }
+//          else{
+//             let n = sliders.active - 1;
+//             sliders.open(n)
+//          }
+//    });
+// });
+
 
 $('#char-birth-date').change(function () { 
    let date = this.value.split('-'), year = parseInt(date[0]);

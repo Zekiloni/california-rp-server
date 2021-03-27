@@ -28,8 +28,9 @@ class Channels {
       })
    }
 
-   create = (player, frequency) => { 
-
+   create = (player, freq, pass = 0) => { 
+      if (this.exist(freq)) return false;
+      let frequency = new Frequency(freq, pass, player.character);
    }
 
    exist = (freq) => { 
