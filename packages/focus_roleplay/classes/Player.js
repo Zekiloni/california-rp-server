@@ -23,6 +23,16 @@ mp.Player.prototype.nearPleayers = (radius) => {
    return near;
 }
 
+mp.Player.prototype.variables = () => { 
+   this.data.cuffed = false;
+   this.data.frozen = false;
+   this.data.crouching = false;
+}
+
+mp.events.add("server:toggleCrouch", (player) => {
+   player.data.crouching = !player.data.crouching;
+});
+
 mp.players.find = (playerName) => {
    let foundPlayer = null;
    if (playerName == parseInt(playerName)) {
@@ -39,3 +49,4 @@ mp.players.find = (playerName) => {
    }
    return foundPlayer;
 }
+

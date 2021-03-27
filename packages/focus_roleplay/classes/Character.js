@@ -8,6 +8,14 @@ class Character {
    * @param {String} p.accid 
    * @param {String} p.name 
    * @param {String} p.lname 
+   * @param {String} birth
+   * @param {String} sex
+   * @param {String} origin
+   * @param {String} faction
+   * @param {String} rank
+   * @param {String} frequency
+   * @param {String} job
+   * @param {String} cash
    * */
    constructor (p) { 
       this.character = p.charid;
@@ -32,8 +40,8 @@ class Character {
       this.jobSkill = p.jSkill;
 
       this.inviteRequest = 0;
-      this.cuffed = 0;
-      this.freezed = 0;
+      this.cuffed = false;
+      this.frozen = false;
 
       mp.accounts[this.character] = this;
    }
