@@ -123,6 +123,8 @@ input {
    margin: 10px; 
 }
 
+label {  }
+
 input:focus { box-shadow: none; }
 
 *:active, *:focus { outline: none; }

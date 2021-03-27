@@ -16,9 +16,6 @@ class Admin {
          }
       })
 
-      this.broadcast('aaa')
-
-
       mp.events.addCommand({
          'a': (player, message) => { 
             this.broadcast(player, message)
