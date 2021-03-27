@@ -11,6 +11,7 @@ class Saving {
                case 'timeout': reason = 'je izgubio konekciju sa serverom'; break;
                case 'kicked': reason = 'je kikovan / banovan sa servera'; break; 
             }
+
             core.terminal(2, `${player.name} ${reason}`);
             if (player.data.logged) { 
                mp.events.call('server:save.player', player, true)
@@ -18,22 +19,15 @@ class Saving {
          },
 
          'server:save.player': (player, exit = false) => { 
-            let Account = { 
-               ip_adress: player.ip,
-               xp: player.account.experience,
-               hours: player.account.hours,
-               donator: player.account.donator,
-               coins: player.account.coins,
-               admin: player.account.admin,
-            }
+            let account = mp.acounts[player.account];
+            let character = mp.characters[player.character];
 
-            if (exit) { 
-               Account.online = 0;
-            }
+            // let user
 
-            db.query('UPDATE `users` SET ? WHERE id = ?', [Account, player.sqlid], function (err, result) {
+            db.query('UPDATE `users` SET ? WHERE id = ?', [account, player.sqlid], function (err, result) {
                if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
-             });
+            });
+
 
          },
 

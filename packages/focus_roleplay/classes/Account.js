@@ -13,6 +13,7 @@ class Account {
       this.registerDate = params.regDate;
       this.lastLogin = params.lastLog;
       this.ipAdress = params.ip;
+      this.socialClub = params.social;
       this.admin = params.admin;
       this.experience = params.xp; 
       this.hours = params.hours;
