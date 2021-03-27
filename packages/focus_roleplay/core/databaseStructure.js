@@ -102,6 +102,31 @@ db.query(inventoryTable, function(err, results, fields) {
   core.terminal(3, `Checking inventoryTable  | MySQL`);
 });
 
+
+
+// appearances
+
+let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
+  character_id int(11) NOT NULL,
+  hair
+  blemishes
+  facial_hair
+  eyebrows
+  ageing
+  makeup
+  blush
+  complexion
+  sun_damage	
+  lipstick
+  moles_freckles	
+  chest_hair	
+  PRIMARY KEY(character_id))`;
+
+db.query(appearancesTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking appearancesTable  | MySQL`);
+});
+
 let logsTable = `CREATE TABLE IF NOT EXISTS logs (
   ID int(11) NOT NULL AUTO_INCREMENT,
   type int(2) NOT NULL,

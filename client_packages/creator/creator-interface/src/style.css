@@ -112,6 +112,40 @@ body {
 .bg-3 { background: url('./images/bg-3.png'); background-size: cover; }
 .bg-4 { background: url('./images/bg-4.png'); background-size: cover; }
 
+.form-control { margin: auto; margin-top: 20px; width: 90%; display: flex; flex-wrap: wrap; justify-content: center; grid-gap: 10px; align-items: center; }
+input { 
+   background: #111113;
+   box-shadow: inset 2px 3px 5px rgb(0 0 0 / 25%);
+   border: none;
+   color: #cdcdcd;
+   padding: 10px 10px;
+   transition: all 0.5s ease;
+   margin: 10px; 
+}
+
+input:focus { box-shadow: none; }
+
+*:active, *:focus { outline: none; }
+
+input[type=date] {
+   height: 35px;
+   margin: 0 auto;
+   font-size: 18px;
+   box-shadow: 2px 3px 5px rgb(0 0 0 / 25%);
+   font-weight: 100;
+   letter-spacing: 2px;
+   text-transform: uppercase;
+   background: #111113;
+   outline: none;
+   font-size: 14px;
+   border: 0;
+   border-bottom: 1px solid transparent;
+   transition: all 0.5s ease;
+   padding: 2px 17px;
+   color: rgb(162 162 162);
+ }
+ 
+ input[type=date]:focus { color: whitesmoke; }
 
 @keyframes slide-from-left {
 	0% { transform: translateX(-600px); }
