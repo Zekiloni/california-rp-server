@@ -103,67 +103,66 @@ db.query(inventoryTable, function(err, results, fields) {
 });
 
 
-
 // appearances
 
-// let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
-//   character_id int(11) NOT NULL,
-//   shapeFirstID
-//   shapeSecondID
-//   skinFirstID
-//   skinSecondID
-//   shapeMix
-//   skinMix
-//   nose_width	
-//   nose_height	
-//   nose_length	
-//   nose_bridge	
-//   nose_tip	
-//   nose_bridge shift	
-//   brow_height	
-//   brow_width	
-//   cheekbone_height	
-//   cheekbone_width	
-//   cheeks_width	
-//   eyes
-//   lips
-//   jaw_width	
-//   jaw_height	
-//   chin_length	
-//   chin_position	
-//   chin_width	
-//   chin_shape	
-//   neck_width	
-//   hair
-//   hair_color
-//   blemishes
-//   blemishes_color
-//   facial_hair
-//   facial_hair_color
-//   eyebrows
-//   eyebrows_color
-//   ageing
-//   ageing_color
-//   makeup
-//   makeup_color
-//   blush
-//   blush_color
-//   complexion
-//   complexion_color
-//   sun_damage	
-//   sun_damage_color
-//   lipstick
-//   lipstick_color
-//   moles_freckles	
-//   moles_freckles_color
-//   chest_hair	
-//   chest_hair_color
-//   PRIMARY KEY(character_id))`;
+let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
+  character_id int(11) NOT NULL,
+  shapeFirstID int(3) NOT NULL,
+  shapeSecondID int(3) NOT NULL,
+  skinFirstID int(3) NOT NULL,
+  skinSecondID int(3) NOT NULL,
+  shapeMix float(2, 2) NOT NULL,
+  skinMix float(2, 2) NOT NULL,
+  nose_width	float(2, 2) NOT NULL,
+  nose_height float(2, 2) NOT NULL,
+  nose_length float(2, 2) NOT NULL,
+  nose_bridge float(2, 2) NOT NULL,
+  nose_tip	float(2, 2) NOT NULL,
+  nose_bridge_shift float(2, 2) NOT NULL,
+  brow_height float(2, 2) NOT NULL,
+  brow_width	float(2, 2) NOT NULL,
+  cheekbone_height	float(2, 2) NOT NULL,
+  cheekbone_width float(2, 2) NOT NULL,
+  cheeks_width float(2, 2)	NOT NULL,
+  eyes float(2, 2) NOT NULL,
+  lips float(2, 2) NOT NULL,
+  jaw_width float(2, 2) NOT NULL,	
+  jaw_height	float(2, 2) NOT NULL,
+  chin_length float(2, 2) NOT NULL,
+  chin_position float(2, 2) NOT NULL,
+  chin_width	float(2, 2) NOT NULL,
+  chin_shape	float(2, 2) NOT NULL,
+  neck_width	float(2, 2) NOT NULL,
+  hair int(3) NOT NULL,
+  hair_color text NOT NULL,
+  blemishes int(2) NOT NULL,
+  blemishes_color int(2) NOT NULL,
+  facial_hair int(2) NOT NULL,
+  facial_hair_color int(2) NOT NULL,
+  eyebrows int(2) NOT NULL,
+  eyebrows_color int(2) NOT NULL,
+  ageing int(2) NOT NULL,
+  ageing_color int(2) NOT NULL,
+  makeup int(2) NOT NULL,
+  makeup_color int(2) NOT NULL,
+  blush int(2) NOT NULL,
+  blush_color int(2) NOT NULL,
+  complexion int(2) NOT NULL,
+  complexion_color int(2) NOT NULL,
+  sun_damage	int(2) NOT NULL,
+  sun_damage_color int(2) NOT NULL,
+  lipstick int(2) NOT NULL,
+  lipstick_color int(2) NOT NULL,
+  moles_freckles	int(2) NOT NULL,
+  moles_freckles_color int(2) NOT NULL,
+  chest_hair	int(2) NOT NULL,
+  chest_hair_color int(2) NOT NULL,
+  PRIMARY KEY(character_id))`;
 
-// db.query(appearancesTable, function(err, results, fields) {
-//   if (err) { core.terminal(1, err.message) }
-//   core.terminal(3, `Checking appearancesTable  | MySQL`);
-// });
+db.query(appearancesTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking appearancesTable  | MySQL`);
+});
 
 let logsTable = `CREATE TABLE IF NOT EXISTS logs (
   ID int(11) NOT NULL AUTO_INCREMENT,

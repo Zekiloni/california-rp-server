@@ -198,40 +198,6 @@ module.exports = {
     },
 
 
-     getPlayersNearPlayer:  function(player, radius) {
-        const returnPlayers = [];
-        
-        mp.players.forEachInRange(player.position, radius,
-            (player) => {
-                returnPlayers.push(player);
-            }
-        );
-        
-        return returnPlayers;
-    },
-
-    findPlayer: function (playerName) {
-        let foundPlayer = null;
-        if (playerName == parseInt(playerName)) {
-            foundPlayer = mp.players.at(playerName);
-        }
-        if (!foundPlayer) {
-          mp.players.forEach((_player) => {
-            if (_player.name === playerName) {
-                foundPlayer = _player;
-            } else if (_player.name.includes(playerName)) { 
-                foundPlayer = _player;
-            }
-          });
-        }
-        return foundPlayer;
-    },
-
-    playerNearTarget: function (player, target) { 
-        if (player.dist(target.position) < 2.5) { return true; } 
-        else return false;
-    },
-
     sendProxMessage: function (player, radius, message, color_1, color_2, color_3, color_4, color_5) {
         //player.outputChatBox(`!{${color_1}}${message}`)
         mp.players.forEach(
