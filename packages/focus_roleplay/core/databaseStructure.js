@@ -190,6 +190,19 @@ db.query(leadersTable, function(err, results, fields) {
   core.terminal(3, `Checking leadersTable  | MySQL`);
 });
 
+let finesTable = `CREATE TABLE IF NOT EXISTS fines (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  price int(11) NOT NULL DEFAULT 250,
+  info varchar(128) NOT NULL DEFAULT 'info',
+  issuer_id int(11) NOT NULL,
+  char_id int(11) NOT NULL,
+  paid tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
+
+db.query(finesTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking finesTable  | MySQL`);
+});
 
 let freqTable = `CREATE TABLE IF NOT EXISTS channels (
   frequency int(11) NOT NULL,
