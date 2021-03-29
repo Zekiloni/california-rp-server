@@ -9,6 +9,7 @@ global.core = require('./core/main');
 let DatabaseStructure = require('./core/databaseStructure');
 let Logs = require('./classes/Logs');
 let Discord = require('./classes/Discord');
+let Bans = require('./classes/Bans')
 let Admins = require('./classes/Admins');
 let Authentication = require('./classes/Authentication');
 let Inventory = require('./classes/Inventory');

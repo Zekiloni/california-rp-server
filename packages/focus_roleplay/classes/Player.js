@@ -29,6 +29,7 @@ mp.Player.prototype.variables = () => {
    this.data.crouching = false;
 }
 
+
 mp.events.add("server:toggleCrouch", (player) => {
    player.data.crouching = !player.data.crouching;
 });

@@ -14,6 +14,13 @@ mp.events.add({
     mp.game.graphics.transitionToBlurred(1000);
   },
 
+  'client:login.banned': (ban) => { 
+    setTimeout(() => {
+      if (loginCEF.active) { loginCEF.destroy(); }
+    }, 2000);
+    mp.gui.chat.push('Ti ste banovani sa server. zabog zato sto ' + ban.reason);
+  },
+
   'client:login.enableCamera': () => {
     loginCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
     mp.players.local.position = new mp.Vector3(-2022.89, -1214.94, 54.65);

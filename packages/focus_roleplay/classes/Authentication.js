@@ -20,7 +20,6 @@ mp.events.add({
                player.account = userID;
                player.name = result[0].username;
                player.data.logged = true;
-               mp
                new Account({
                   sqlid: userID,
                   username: result[0].username,
@@ -38,9 +37,24 @@ mp.events.add({
                   online: 1
                }
 
-               db.query('UPDATE `users` SET ? WHERE id = ?', [values, player.sqlid], function (er, re) {
-                  if (er) return core.terminal(1, 'Updating Acccount Error ' + er);
-                  });
+               db.query('UPDATE `users` SET ? WHERE id = ?', [values, player.account], function (err, re, fields) {
+                  if (err) return core.terminal(1, 'Updating Acccount Error ' + err);
+               });
+
+               db.query('SELECT * FROM `users` WHERE id = ?', [player.account], function (err, res, fields) {
+                  if (err) return core.terminal(1, 'SocialClub Check Acccount Error ' + err);
+                  if (res[0].social_club == null) {
+                     db.query('UPDATE `users` SET social_club = ? WHERE id = ?', [player.socialClub, player.account], function (error, res, field) { 
+                        if (error) return core.terminal(1, 'SocialClub Updating Error ' + error);
+                     })
+                  }
+
+                  if (res[0].hardwer_id == null) {
+                     db.query('UPDATE `users` SET hardwer_id = ? WHERE id = ?', [player.serial, player.account], function (error, res, field) { 
+                        if (error) return core.terminal(1, 'Hardwer ID Updating Error ' + error);
+                     })
+                  }
+               });
 
                db.query('SELECT * FROM `characters` WHERE `master_account` = ?', [userID], function (error, res, fs) {
                   if (error) return core.terminal(1, 'Gettings Characters Error ' + error);

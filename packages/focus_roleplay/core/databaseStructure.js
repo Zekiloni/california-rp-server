@@ -4,10 +4,12 @@ let usersTable = `CREATE TABLE IF NOT EXISTS users (
   username varchar(48) NOT NULL,
   password varchar(256) NOT NULL,
   email_adress varchar(128) NOT NULL,
-  registered_at timestamp NULL DEFAULT NULL,
+  registered_at timestamp NOT NULL DEFAULT current_timestamp(),
   last_login_at timestamp NOT NULL DEFAULT current_timestamp(),
+  social_club varchar(64) DEFAULT NULL,
   ip_adress varchar(64) NOT NULL,
   online int(1) NOT NULL DEFAULT 0,
+  hardwer_id text DEFAULT NULL,
   xp int(2) NOT NULL DEFAULT 0,
   hours int(11) NOT NULL DEFAULT 0, 
   admin int(2) NOT NULL DEFAULT 0,
@@ -261,6 +263,21 @@ db.query(furnitureTable, function(err, results, fields) {
   core.terminal(3, `Checking furnitureTable | MySQL`);
 });
 
+let bansTable = `CREATE TABLE IF NOT EXISTS bans (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  account int(11) NOT NULL,
+  social_club varchar(128) NOT NULL,
+  ip varchar(64) NOT NULL,
+  issuer int(11) NOT NULL,
+  reason varchar(64) NOT NULL,
+  banned_date text NOT NULL DEFAULT 0,
+  expire_date text NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
+
+db.query(bansTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking bansTable | MySQL`);
+});
 
 
 
