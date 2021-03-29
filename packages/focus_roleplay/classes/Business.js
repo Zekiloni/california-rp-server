@@ -1,4 +1,5 @@
 
+const businessTypes = require('../configs/Business.json')
 
 mp.business = {};
 
@@ -36,3 +37,5 @@ class Business {
 }
 
 mp.biz = new Business();
+
+console.log(businessTypes[0])

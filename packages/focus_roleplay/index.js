@@ -17,6 +17,7 @@ let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
+let Business = require('./classes/Business');
 let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
