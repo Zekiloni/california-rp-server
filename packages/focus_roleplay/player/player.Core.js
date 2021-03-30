@@ -198,18 +198,7 @@ module.exports = {
     },
 
 
-    sendProxMessage: function (player, radius, message, color_1, color_2, color_3, color_4, color_5) {
-        //player.outputChatBox(`!{${color_1}}${message}`)
-        mp.players.forEach(
-             (target) => {
-              if (target.dist(player.position) < radius / 8) {  target.outputChatBox(`!{${color_1}}${message}`); } 
-              else if (target.dist(player.position) < radius / 6) { target.outputChatBox(`!{${color_2}}${message}`); } 
-              else if (target.dist(player.position) < radius / 4) { target.outputChatBox(`!{${color_3}}${message}`); } 
-              else if (target.dist(player.position) < radius / 2) { target.outputChatBox(`!{${color_4}}${message}`); } 
-              else if (target.dist(player.position) < radius) { target.outputChatBox(`!{${color_5}}${message}`); }
-             }
-        );
-    },
+
 
     sendPlayerMessage: function (player, message, color) { 
         player.outputChatBox(`!{${color}}${message}`)

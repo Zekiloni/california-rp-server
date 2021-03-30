@@ -8,8 +8,10 @@ global.core = require('./core/main');
 
 let DatabaseStructure = require('./core/databaseStructure');
 let Logs = require('./classes/Logs');
+let Player = require('./classes/Player');
 let Discord = require('./classes/Discord');
-let Bans = require('./classes/Bans')
+let Bans = require('./classes/Bans');
+let Commands = require('./classes/Commands');
 let Admins = require('./classes/Admins');
 let Authentication = require('./classes/Authentication');
 let Inventory = require('./classes/Inventory');
@@ -23,13 +25,14 @@ let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
 let Anmials = require('./classes/Animals');
 
+
 global.account = require('./player/player.Core');
 // global.business = require('./business/bizCore');
 // global.houses = require('./houses/houses.Core');
 // global.jobs = require('./jobs/jobs.Core');
 
-var playerEvents = require('./player/player.Events');
-var playerCommands = require('./player/player.Commands');
+// var playerEvents = require('./player/player.Events');
+// var playerCommands = require('./player/player.Commands');
 var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
 var dealershipVehicles = require('./vehicles/vehicles.List');

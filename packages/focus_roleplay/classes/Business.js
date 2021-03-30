@@ -27,8 +27,10 @@ class Biz {
 }
 
 class Business { 
-   new = () => { 
-
+   new = (player, type, price) => { 
+      db.query('INSERT INTO `business', [], function (err, result, fields) { 
+         
+      })
    }
 
    delete = (id) => { 
@@ -38,4 +40,3 @@ class Business {
 
 mp.biz = new Business();
 
-console.log(businessTypes[0])

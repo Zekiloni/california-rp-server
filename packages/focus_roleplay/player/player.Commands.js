@@ -23,10 +23,6 @@ mp.events.addCommand({
       } else return player.outputChatBox('Koriscenje /pm [igrac] [poruka]');
    },
 
-   'me': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.ME, `** ${player.name} ${fullText}`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
-   },
-
    'do': (player, fullText) => {
       account.sendProxMessage(player, CHAT_RADIUS.DO, `** ${fullText} (( ${player.name} ))`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
    },

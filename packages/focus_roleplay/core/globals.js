@@ -1,35 +1,8 @@
 
 
-global.CHAT_COLORS = [
-   WHITE_1 ='FFFFFF', 
-   WHITE_2 ='E6E6E6', 
-   WHITE_3 ='C8C8C8', 
-   WHITE_4 ='AAAAAA', 
-   WHITE_5 = '6E6E6E', 
-   FACTION = 'BDF38B',
-   PURPLE_1 = 'F9B7FF',
-   PURPLE_2 = 'E6A9EC',
-   PURPLE_3 = 'C38EC7',
-   PURPLE_4 = 'D2B9D3',
-   PURPLE_5 = 'D2B9D3',
-   RADIO = 'FFFF99',
-   PM_FROM = 'FFD500',
-   PM_TO = 'FCBD00',
-   TOMATO = 'FF6347',
-   INFO = 'E2D051'
-
-]; Object.freeze(CHAT_COLORS)
 
 global.SERVER_MARKER = { r: 3, g: 105, b: 163, a: 150}
 
-global.CHAT_RADIUS = { 
-   OOC: 4.0, 
-   IC: 6.2,
-   LOW: 2.8,
-   SHOUT: 12.0,  
-   DO: 6.5,
-   ME: 6.5,
-}; Object.freeze(CHAT_RADIUS)
 
 global.MESSAGES = [ 
    MSG_NOT_ALLOWED = 'Niste ovlašteni za korišćenje ove komande.',

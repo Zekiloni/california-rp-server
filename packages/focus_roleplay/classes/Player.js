@@ -4,16 +4,16 @@ mp.Player.prototype.notification = function (message, type, time) {
    this.call('client:notification.show', [message, type, time]);
 }
 
-mp.Player.prototype.message.info = function (message) { 
-   this.outputChatBox(message);
-}
+// mp.Player.prototype.message.info = function (message) { 
+//    this.outputChatBox(message);
+// }
 
 mp.Player.prototype.isNear = function (target) { 
    if (this.dist(target.position) < 3) { return true; } 
    else return false;
 }
 
-mp.Player.prototype.nearPleayers = (radius) => { 
+mp.Player.prototype.nearPleayers = function (radius) { 
    let near = [];
    mp.players.forEachInRange(this.position, radius, 
       (player) => {
@@ -29,9 +29,29 @@ mp.Player.prototype.variables = () => {
    this.data.crouching = false;
 }
 
+mp.Player.prototype.proximityMessage = function (radius, message, colors) {
+   mp.players.forEachInRange(this.position, radius,
+		(target) => {
+			let distance = target.dist(this.position), color = colors[0];
+         if (distance < radius / 8) { color = colors[0]; }
+         else if (distance < radius / 6) { color = colors[1]; }
+         else if (distance < radius / 4) { color = colors[2]; }
+         else if (distance < radius / 2) { color = colors[3]; }
+         else if (distance < radius) { color = colors[4]; }
+         target.outputChatBox(`!{${color}}${message}`)
+		}
+	);
+},
 
-mp.events.add("server:toggleCrouch", (player) => {
-   player.data.crouching = !player.data.crouching;
+mp.events.add({
+   'server:toggleCrouch': (player) => {
+      player.data.crouching = !player.data.crouching;
+   },
+
+   'playerChat': (player, text) => {
+      if (!player.data.logged) return;
+      player.proximityMessage(7, `${player.name}: ${text}`, ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E']);
+    },
 });
 
 mp.players.find = (playerName) => {

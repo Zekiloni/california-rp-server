@@ -1,16 +1,21 @@
 [
    { 
-      "id": 0,
-      "name": "24 / 7 Market",
-      "interior": [434.7479, -983.2151, 30.83926],
-      "ipl": 320433149
+      "id": 1,
+      "name": "Gas Station & Market",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
    },
 
    { 
       "id": 1,
       "name": "Gas Station & Market",
-      "interior": [434.7479, -983.2151, 30.83926],
-      "model": 320433149,
-      "ipl": "true"
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
    }
 ]
