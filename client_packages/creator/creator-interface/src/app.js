@@ -1,6 +1,5 @@
 
 
-
 const sliders = { 
    element: $('.slides'),
    elements: $('.slide'),
@@ -17,41 +16,46 @@ const sliders = {
    }
 }
 
+const initCustomization = () => { 
+   // for ()
+}
 
 let character = { 
-   firstname: $('#character-first-name'),
-   lastname: $('#character-last-name').val(),
-   birth: $('#character-birth-date').val(),
-   origin: $('#character-origin').val(),
+   firstname: null,
+   lastname: null,
+   birth: null,
+   origin: null,
    gender: 0
 }
 
-const preview = { 
-   gender: (element, sex) => { 
-      $('.gender').removeClass('selected')
-      $(element).addClass('selected')
-      character.gender = sex;
-      mp.trigger('client:creator.gender', sex)
-  },
+let customization = { 
+   blendData = { firstShape: 0, secondShape: 0, firstSkin: 0, secondSkin: 0, shapeMix: 0, skinMix: 0 },
+   headOverlays = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+   faceFeatures = { }
+}
+
+
+identity = (x, i) => { 
+   character[x] = i;
+}
+
+faceFeature = (x, i) => { 
+   mp.trigger('client:creator.faceFeature', gender)
 }
 
 $(window).on('load', () => { 
-   sliders.open(0)
+   sliders.open(0);
+   initCustomization();
 })
 
-// ​$(document).ready(function() {
-//    $(window).bind('mousewheel', function(e){
-//          if(e.originalEvent.wheelDelta /120 > 0) {
-//             let n = sliders.active + 1;
-//             sliders.open(n)
-//          }
-//          else{
-//             let n = sliders.active - 1;
-//             sliders.open(n)
-//          }
-//    });
-// });
 
+$('.genders h2').on('click', function () { 
+   let gender = $(this).attr('data-gender');
+   $('.genders h2').removeClass('active');
+   $(this).addClass('active');
+   character.gender = gender;
+   mp.trigger('client:creator.gender', gender)
+})
 
 $('#char-birth-date').change(function () { 
    let date = this.value.split('-'), year = parseInt(date[0]);

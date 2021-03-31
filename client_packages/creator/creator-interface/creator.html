@@ -32,19 +32,28 @@
 
                         <div class="form-control">
                             <label>Ime Karaktera</label>
-                            <input type="text" id="character-first-name" placeholder="John"/>
+                            <input type="text" id="character-first-name" oninput="identity('firstname', this.value)" placeholder="John"/>
                         </div>
+
                         <div class="form-control">
                             <label>Prezime Karaktera</label>
-                            <input type="text" id="character-last-name" placeholder="Doe" />
-                        </div>   
+                            <input type="text" id="character-last-name" oninput="identity('lastname', this.value)" placeholder="Doe" />
+                        </div>  
+
                         <div class="form-control">
                             <label>Datum Rodjenja</label>
-                            <input type="date" id="char-birth-date" min="1918-01-01" max="2001-01-30" />
+                            <input type="date" id="char-birth-date" oninput="identity('birth', this.value)" min="1918-01-01" max="2001-01-30" />
                         </div>
+
                         <div class="form-control">
                             <label>Poreklo Karaktera</label>
-                            <input type="text" id="character-origin" placeholder="npr. Los Santos, Fort Carson..."/>
+                            <input type="text" id="character-origin" oninput="identity('origin', this.value)" placeholder="npr. Los Santos, Fort Carson..."/>
+                        </div>
+
+                        <div class="genders">
+                            <label>Pol Karaktera</label>
+                            <h2 data-gender="0" class="active">Muško</h2>
+                            <h2 data-gender="1">Žensko</h2>
                         </div>
                     </div>
 
