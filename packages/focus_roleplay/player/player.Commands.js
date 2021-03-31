@@ -1,74 +1,10 @@
 
 mp.events.addCommand({
   
-   'pm': (player, fullText) => {
-      if (fullText) { 
-         let args = fullText.split(" ");
-         if (args.length < 2 || !args[0].length || !args[1].length) {
-            player.outputChatBox('Koriscenje /pm [igrac] [poruka]');
-            return false;
-          }
-          let recipient = account.findPlayer(args[0]);
-      
-         if(!recipient) { 
-            player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
-            return false; 
-         } 
-   
-         let message = args.slice(1).join(' '); 
-         let to = `!{${PM_TO}}(( PM za ${recipient.name} [${recipient.id}]: ${message} ))`;
-         let from = `!{${PM_FROM}}(( PM od ${player.name} [${player.id}]: ${message} ))`;
-         recipient.outputChatBox(from);
-         player.outputChatBox(to);
-      } else return player.outputChatBox('Koriscenje /pm [igrac] [poruka]');
-   },
 
-   'do': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.DO, `** ${fullText} (( ${player.name} ))`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
-   },
-
-   // shout
-   's': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.SHOUT, `${player.name} vice: ${fullText}`, WHITE_1, WHITE_1, WHITE_2, WHITE_2, WHITE_3);
-   },
-
-   // low
-   'l': (player, fullText) => {
-      account.sendProxMessage(player, CHAT_RADIUS.LOW, `${player.name} tiho: ${fullText}`, WHITE_2, WHITE_2, WHITE_3, WHITE_4, WHITE_5);
-   },
 
    'ame': (player, fullText) => {
       account.sendChatBuble(player, 4.0, fullText);
-   },
-
-   // whisper
-   'w': (player, fullText) => { 
-      if(fullText) { 
-         let args = fullText.split(" ");
-         if (args.length < 2 || !args[0].length || !args[1].length) {
-            player.outputChatBox('Koriscenje /w [igrac] [tekst]');
-            return false;
-          }
-          let recipient = account.findPlayer(args[0]);
-       
-         if(!recipient) { 
-            player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4) 
-            return false; 
-         } 
-
-         if(!playerNearTarget(player, recipient)) return player.outputChatBox('Taj igrac nije u vasoj blizini.');
-   
-         let message = args.slice(1).join(' '); 
-         let to = `!{6E6E6E}${player.name} sapuce: ${message}`;
-         let from = `!{6E6E6E}${player.name} vam sapuce: ${message}`;
-         recipient.outputChatBox(from);
-         player.outputChatBox(to);
-      } else return player.outputChatBox('Koriscenje /w [igrac] [poruka]');
-   },
-
-    // ooc chat
-   'b': (player, fullText) => { 
-      account.sendProxMessage(player, CHAT_RADIUS.OOC, `(( ${player.name} [${player.id}]: ${fullText} ))`, 'A6BFBF', 'A0B8B8', '97ADAD', '95ABAB', '90A6A6');
    },
 
    'invite': async (player, fullText, target) => { 

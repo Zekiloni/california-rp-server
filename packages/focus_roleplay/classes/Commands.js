@@ -4,6 +4,7 @@
 mp.cmds = { };
 
 const commandFiles = [
+   'basic.commands',
    'admin.commands',
    'message.commands'
 ];

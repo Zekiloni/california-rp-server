@@ -42,7 +42,7 @@
            mp.players.local.clearSecondaryTask();
 
            setTimeout(() => {
-               mp.events.callRemote("server:pointingStop");
+               mp.events.callRemote('server:finger.pointing.stop');
 
            }, 2000);
        }
@@ -92,13 +92,13 @@
 
            if ((Date.now() - this.lastSent) > 100) {
                this.lastSent = Date.now();
-               mp.events.callRemote("server:fpsync.update", camPitch, camHeading);
+               mp.events.callRemote('server:finger.pointing.update', camPitch, camHeading);
            }
        }
    }
 }
 
-mp.events.add("client:fpsync.update", (id, camPitch, camHeading) => {
+mp.events.add("client:finger.pointing.update", (id, camPitch, camHeading) => {
    let netPlayer = getPlayerByRemoteId(parseInt(id));
    if (netPlayer != null) {
        if (netPlayer != mp.players.local && mp.players.exists(netPlayer)) {

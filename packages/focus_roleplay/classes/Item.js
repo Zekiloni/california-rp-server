@@ -1,7 +1,7 @@
 
 
 
-mp.items = {}
+mp.inventory = {};
 
 class Item { 
    constructor (data) { 

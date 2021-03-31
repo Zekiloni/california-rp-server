@@ -4,9 +4,9 @@ mp.Player.prototype.notification = function (message, type, time) {
    this.call('client:notification.show', [message, type, time]);
 }
 
-// mp.Player.prototype.message.info = function (message) { 
-//    this.outputChatBox(message);
-// }
+mp.Player.prototype.sendMessage = function (message, color) { 
+   this.outputChatBox(`!{${color}}${message}`);
+}
 
 mp.Player.prototype.isNear = function (target) { 
    if (this.dist(target.position) < 3) { return true; } 
@@ -29,6 +29,12 @@ mp.Player.prototype.variables = () => {
    this.data.crouching = false;
 }
 
+/**
+* Slanje proksimalne poruke u radius sa fade bojama
+* @param {Float32Array} radius
+* @param {String} message
+* @param {Array} colors
+*/
 mp.Player.prototype.proximityMessage = function (radius, message, colors) {
    mp.players.forEachInRange(this.position, radius,
 		(target) => {
@@ -50,7 +56,7 @@ mp.events.add({
 
    'playerChat': (player, text) => {
       if (!player.data.logged) return;
-      player.proximityMessage(7, `${player.name}: ${text}`, ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E']);
+      player.proximityMessage(7, `${player.name} kaze: ${text}`, ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E']);
     },
 });
 
@@ -70,4 +76,3 @@ mp.players.find = (playerName) => {
    }
    return foundPlayer;
 }
-

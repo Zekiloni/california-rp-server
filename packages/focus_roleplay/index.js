@@ -13,6 +13,7 @@ let Discord = require('./classes/Discord');
 let Bans = require('./classes/Bans');
 let Commands = require('./classes/Commands');
 let Admins = require('./classes/Admins');
+let Interactions = require('./classes/Animations');
 let Authentication = require('./classes/Authentication');
 let Inventory = require('./classes/Inventory');
 let Savings = require('./classes/Savings');
@@ -23,7 +24,7 @@ let Business = require('./classes/Business');
 let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
-let Anmials = require('./classes/Animals');
+let Animals = require('./classes/Animals');
 
 
 global.account = require('./player/player.Core');
@@ -56,12 +57,12 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
 // }, 2000);
 
 
-/* ZAVRSENE STVARI
-    player.call("client:showClothing"); // CHAR CLOTHING !
-    player.call("client:showCustomization"); // CHAR CUSTOMIZATION
-    core.createLog(type, account, player, target, message, data); // LOGS
-    account.save(player) // SAVING ACCOUNT
-
+/**
+*   player.notifiation(message, type, time) - Tekst, tip (error, uspesno, info), time: broj sekundi za koliko nestaje
+*   player.isNear(target) - Da li je blizu targeta u radiusu manjem od 3, vraca true, false
+*   mp.players.find(id / ime) - Pronalazi igraca
+*   player.proximityMessage(radius, message, colors) - Proks fade poruka u datom radiusu, colors: lista od 5 boja
+*   player.nearPleayers(radius) - Vraca igrace u blizini igraca u datom radiusu
 */
 
 /*  URADITI
