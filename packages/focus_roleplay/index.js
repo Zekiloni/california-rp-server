@@ -1,4 +1,6 @@
 
+const procStats = require('process-stats')()
+
 let globals = require('./core/globals');
 let settings = require('./core/settings');
 
