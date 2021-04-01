@@ -1,4 +1,6 @@
 
+const procStats = require('process-stats')()
+
 let globals = require('./core/globals');
 let settings = require('./core/settings');
 
@@ -8,26 +10,32 @@ global.core = require('./core/main');
 
 let DatabaseStructure = require('./core/databaseStructure');
 let Logs = require('./classes/Logs');
+let Player = require('./classes/Player');
 let Discord = require('./classes/Discord');
+let Bans = require('./classes/Bans');
+let Commands = require('./classes/Commands');
 let Admins = require('./classes/Admins');
+let Interactions = require('./classes/Animations');
 let Authentication = require('./classes/Authentication');
 let Inventory = require('./classes/Inventory');
 let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
+let Business = require('./classes/Business');
 let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
-let Anmials = require('./classes/Animals');
+let Animals = require('./classes/Animals');
+
 
 global.account = require('./player/player.Core');
 // global.business = require('./business/bizCore');
 // global.houses = require('./houses/houses.Core');
 // global.jobs = require('./jobs/jobs.Core');
 
-var playerEvents = require('./player/player.Events');
-var playerCommands = require('./player/player.Commands');
+// var playerEvents = require('./player/player.Events');
+// var playerCommands = require('./player/player.Commands');
 var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
 var dealershipVehicles = require('./vehicles/vehicles.List');
@@ -51,12 +59,12 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
 // }, 2000);
 
 
-/* ZAVRSENE STVARI
-    player.call("client:showClothing"); // CHAR CLOTHING !
-    player.call("client:showCustomization"); // CHAR CUSTOMIZATION
-    core.createLog(type, account, player, target, message, data); // LOGS
-    account.save(player) // SAVING ACCOUNT
-
+/**
+*   player.notifiation(message, type, time) - Tekst, tip (error, uspesno, info), time: broj sekundi za koliko nestaje
+*   player.isNear(target) - Da li je blizu targeta u radiusu manjem od 3, vraca true, false
+*   mp.players.find(id / ime) - Pronalazi igraca
+*   player.proximityMessage(radius, message, colors) - Proks fade poruka u datom radiusu, colors: lista od 5 boja
+*   player.nearPleayers(radius) - Vraca igrace u blizini igraca u datom radiusu
 */
 
 /*  URADITI

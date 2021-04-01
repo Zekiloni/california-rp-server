@@ -19,14 +19,14 @@ class Saving {
          },
 
          'server:save.player': (player, exit = false) => { 
-            let account = mp.acounts[player.account];
-            let character = mp.characters[player.character];
+            //let account = mp.acounts[player.account];
+            // let character = mp.characters[player.character];
 
             // let user
 
-            db.query('UPDATE `users` SET ? WHERE id = ?', [account, player.sqlid], function (err, result) {
-               if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
-            });
+            // db.query('UPDATE `users` SET ? WHERE id = ?', [account, player.sqlid], function (err, result) {
+            //    if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
+            // });
 
 
          },

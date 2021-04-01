@@ -264,14 +264,7 @@ mp.events.addCommand({
       }
    },
 
-   'fixveh': (player, fullText) => {
-      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let vehToFix = player.vehicle;
-      if(!vehToFix) 
-         return player.notification('Morate biti u vozilu.', NOTIFY_ERROR, 4);
-      else
-         vehToFix.repair();
-   },
+
 
    'a': (player, fullText) => { 
       if(player.admin < 1) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
