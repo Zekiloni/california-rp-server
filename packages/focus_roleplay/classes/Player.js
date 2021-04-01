@@ -44,10 +44,14 @@ mp.Player.prototype.proximityMessage = function (radius, message, colors) {
          else if (distance < radius / 4) { color = colors[2]; }
          else if (distance < radius / 2) { color = colors[3]; }
          else if (distance < radius) { color = colors[4]; }
-         target.outputChatBox(`!{${color}}${message}`)
+         target.outputChatBox(`!{${color}}${message}`);
 		}
 	);
-},
+};
+
+mp.Player.prototype.message = function (color, message) { 
+   this.outputChatBox(`!{${color}}${message}`);
+}
 
 mp.events.add({
    'server:toggleCrouch': (player) => {
