@@ -22,6 +22,7 @@ let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
+let Houses = require('./classes/Houses');
 let Business = require('./classes/Business');
 let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
@@ -36,7 +37,7 @@ global.account = require('./player/player.Core');
 
 // var playerEvents = require('./player/player.Events');
 // var playerCommands = require('./player/player.Commands');
-var adminCommands = require('./player/admin.Commands');
+// var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
 var dealershipVehicles = require('./vehicles/vehicles.List');
 var furnitureShop = require('./business/furnitureShop');

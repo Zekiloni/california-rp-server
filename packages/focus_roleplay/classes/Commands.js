@@ -6,6 +6,7 @@ mp.cmds = { };
 const commandFiles = [
    'basic.commands',
    'admin.commands',
+   'house.commands',
    'message.commands'
 ];
 
@@ -28,7 +29,7 @@ mp.events.add('playerCommand', (player, command) => {
       let account = mp.accounts[player.account];
       // let character = mp.characters[player.character];
 
-      if (cmd.admin && account.admin < admnin) return false;
+      if (cmd.admin && account.admin < cmd.admin) return false;
       if (cmd.faction && character.faction != cmd.faction) return false;
       if (cmd.job && character.job != cmd.job) return false;
 

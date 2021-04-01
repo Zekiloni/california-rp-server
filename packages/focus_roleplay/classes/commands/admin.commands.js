@@ -15,7 +15,7 @@ module.exports = {
          description: 'Ban a player',
          admin: 3,
          handler: (player, ...args) => { 
-   
+            
          }
       },
    
