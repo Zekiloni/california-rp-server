@@ -32,7 +32,7 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   origin varchar(64),
   cash int(11) NOT NULL DEFAULT 800,
   salary int(6) NOT NULL DEFAULT 0,
-  last_position text NOT NULL DEFAULT 0,
+  last_position text,
   job int(2) NOT NULL DEFAULT 0,
   faction int(2) NOT NULL DEFAULT 0,
   faction_rank varchar(64) NOT NULL DEFAULT 'no',
@@ -42,8 +42,8 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   stress int(4) NOT NULL DEFAULT 0,
   weapon_skill int(2) NOT NULL DEFAULT 0,
   driving_skill int(2) NOT NULL DEFAULT 0,
-  job_skill text NOT NULL DEFAULT 0,
-  licenses text NOT NULL DEFAULT 0,
+  job_skill text,
+  licenses text,
   PRIMARY KEY(id))`;
 
 db.query(charactersTable, function(err, results, fields) {
@@ -57,7 +57,7 @@ let businessTable = `CREATE TABLE IF NOT EXISTS business (
   name varchar(64) NOT NULL DEFAULT 0,
   owner int(11) NOT NULL DEFAULT -1,
   price int(11) NOT NULL DEFAULT 15000,
-  entrance text NOT NULL DEFAULT 0,
+  entrance text,
   interior int(2) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
 
@@ -72,13 +72,13 @@ let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   locked tinyint(1) NOT NULL,
   owner int(11) NOT NULL DEFAULT -1,
   price int(10) NOT NULL,
-  position text NOT NULL,
-  rotation text NOT NULL,
+  position text,
+  rotation text,
   mileage FLOAT NOT NULL DEFAULT 0,
   fuel int(4) NOT NULL,
-  color text NOT NULL,
-  mods text NOT NULL,
-  ebts text NOT NULL,
+  color text,
+  mods text,
+  ebts text,
   PRIMARY KEY(ID))`;
 
 db.query(vehicleTable, function(err, results, fields) {
@@ -95,9 +95,9 @@ let inventoryTable = `CREATE TABLE IF NOT EXISTS inventory (
   entity int(2) NOT NULL DEFAULT -1,
   owner int(11) NOT NULL DEFAULT -1,
   dimension int(11) NOT NULL DEFAULT 0,
-  position text NOT NULL,
-  extra text NOT NULL,
-  PRIMARY KEY(ID))`;
+  position text,
+  extra text,
+  PRIMARY KEY(id))`;
 
 db.query(inventoryTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
@@ -136,7 +136,7 @@ let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
   chin_shape	float(2, 2) NOT NULL,
   neck_width	float(2, 2) NOT NULL,
   hair int(3) NOT NULL,
-  hair_color text NOT NULL,
+  hair_color text,
   blemishes int(2) NOT NULL,
   blemishes_color int(2) NOT NULL,
   facial_hair int(2) NOT NULL,
@@ -173,7 +173,7 @@ let logsTable = `CREATE TABLE IF NOT EXISTS logs (
   player varchar(128) NOT NULL,
   target int(11) NOT NULL,
   message varchar(128) NOT NULL,
-  data text NOT NULL,
+  data text,
   dateTime timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY(ID))`;
 
@@ -224,11 +224,11 @@ let housesTable = `CREATE TABLE IF NOT EXISTS houses (
   owner int(11) NOT NULL DEFAULT -1,
   type int(2) NOT NULL DEFAULT 0,
   locked int(1) NOT NULL DEFAULT 0,
-  entrance text NOT NULL,
+  entrance text,
   dimension int(11) DEFAULT 0,
-  interior text NOT NULL,
+  interior text,
   intDimension int(11) NOT NULL DEFAULT 0,
-  ipl text DEFAULT 0,
+  ipl text DEFAULT NULL,
   rent int(6) NOT NULL DEFAULT 0,
   PRIMARY KEY(id))`;
 
@@ -243,7 +243,7 @@ let plantsTable = `CREATE TABLE IF NOT EXISTS plants (
   type int(2) NOT NULL DEFAULT 0,
   contribution int(3) DEFAULT 10,
   dimension int(6) NOT NULL DEFAULT 0,
-  position text NOT NULL,
+  position text,
   owner int(11) NOT NULL DEFAULT -1,
   progress int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
@@ -273,8 +273,8 @@ let bansTable = `CREATE TABLE IF NOT EXISTS bans (
   ip varchar(64) NOT NULL,
   issuer int(11) NOT NULL,
   reason varchar(64) NOT NULL,
-  banned_date text NOT NULL DEFAULT 0,
-  expire_date text NOT NULL DEFAULT 0,
+  banned_date text,
+  expire_date text,
   PRIMARY KEY(id))`;
 
 db.query(bansTable, function(err, results, fields) {

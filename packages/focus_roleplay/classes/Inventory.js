@@ -33,9 +33,8 @@ class Inventory {
    }
 
    destroy = (player, item) => { 
-      
+
    }
 }
 
 mp.item = new Inventory();
-inventory.load()
