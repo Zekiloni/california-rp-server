@@ -51,4 +51,4 @@ mp.Vehicle.prototype.tune = function (data) {
    data.length > 1 ? ( data.forEach(tune => { this.vehicle.setMod(tune.index, tune.value) } )) : ( this.vehicle.setMod(data.index, data.value) )
 }
 
-setTimeout(() => { mp.vehicles.load(); }, 500);
+//setTimeout(() => { mp.vehicles.load(); }, 500);
