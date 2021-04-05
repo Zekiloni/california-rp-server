@@ -23,7 +23,7 @@ class House {
 
       this.colshape = mp.colshapes.newRectangle(this.entrance.x, this.entrance.y, 3, 2, 0);
       this.colshape.house = this.id;
-      this.blip = mp.blips.new(40, new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z), { name: 'House', color: 36, shortRange: true });
+      this.blip = mp.blips.new(40, new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z), { dimension: this.dimension, name: 'Kuca', color: 36, shortRange: true });
 
       mp.houses[this.id] = this;
    }
@@ -88,7 +88,7 @@ class Houses {
             if (error) return core.terminal(1, 'House creating ' + error);
             let house = new House(results.insertId, 
                { entrance: position, type: type, price: price, dimension: player.dimension, ipl: info.ipl, interior: info.interior, intDimension: results.insertId })
-            house.refresh()
+            house.refresh();
       });
    }
 

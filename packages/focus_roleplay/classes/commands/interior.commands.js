@@ -10,11 +10,11 @@ module.exports = {
                   case 'house':
                      let house = mp.houses[player.near.id];
                      if (house.locked == 1) return false;
-
+                     
                      player.dimension = house.intDimenison;
                      player.position = new mp.Vector3(house.interior.x, house.interior.y, house.interior.z)
                      player.inside = { type: 'house', id: house.id }
-                     player.call('client:interior.request.ipl', [house.ipl]);
+                     if (house.ipl) { player.call('client:interior.request.ipl', [house.ipl]); }
 
                      break;
 

@@ -1,3 +1,5 @@
+
+
 mp.furniture = [];
 
 const FURNITURE_TYPES = [ 
@@ -97,4 +99,3 @@ let furniture = {
       }
    }
 }
-module.exports = furniture;
