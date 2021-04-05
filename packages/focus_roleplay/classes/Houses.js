@@ -1,7 +1,6 @@
 
 
 let types = require('../configs/Houses.json');
-const db = require('../core/database');
 
 mp.houses = {};
 
