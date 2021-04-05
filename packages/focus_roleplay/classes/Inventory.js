@@ -51,10 +51,17 @@ class Inventory {
 
    }
 
-   find = (query) => { 
-      mp.items.forEach(item => {
-         console.log(item)
+   near = (player) => { 
+      let result = null;
+      mp.objects.forEach(object => {
+         if (object.item) { 
+            if (player.disct(object.position) < 2.5) { 
+               result = mp.items[object.item];
+            }
+         }
       });
+
+      return result;
    }
 }
 
