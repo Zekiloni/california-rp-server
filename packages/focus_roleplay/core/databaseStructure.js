@@ -51,21 +51,6 @@ db.query(charactersTable, function(err, results, fields) {
   core.terminal(3, `Checking charactersTable | MySQL`);
 });
 
-let businessTable = `CREATE TABLE IF NOT EXISTS business (
-  ID int(11) NOT NULL AUTO_INCREMENT,
-  type int(1) NOT NULL DEFAULT 0,
-  name varchar(64) NOT NULL DEFAULT 0,
-  owner int(11) NOT NULL DEFAULT -1,
-  price int(11) NOT NULL DEFAULT 15000,
-  entrance text,
-  interior int(2) NOT NULL DEFAULT 0,
-  PRIMARY KEY(ID))`;
-
-db.query(businessTable, function(err, results, fields) {
-  if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking businessTable | MySQL`);
-});
-
 let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   ID int(11) NOT NULL AUTO_INCREMENT,
   model varchar(32) NOT NULL,
@@ -236,12 +221,12 @@ db.query(housesTable, function(err, results, fields) {
   core.terminal(3, `Checking housesTable | MySQL`);
 });
 
-let bussinesTable = `CREATE TABLE IF NOT EXISTS bussines (
+let bussinesTable = `CREATE TABLE IF NOT EXISTS business (
   id int(11) NOT NULL AUTO_INCREMENT,
   price int(11) NOT NULL DEFAULT 25000,
   owner int(11) NOT NULL DEFAULT -1,
   products int(4) NOT NULL DEFAULT 0,
-  name varchar(128) NOT NULL DEFALT 'Business',
+  name varchar(128) NOT NULL DEFAULT 'Business',
   type int(2) NOT NULL DEFAULT 0,
   locked int(1) NOT NULL DEFAULT 0,
   entrance text,
@@ -250,7 +235,7 @@ let bussinesTable = `CREATE TABLE IF NOT EXISTS bussines (
   interior text,
   intDimension int(11) NOT NULL DEFAULT 0,
   ipl text DEFAULT NULL,
-  rent int(6) NOT NULL DEFAULT 0,
+  rent int(11) NOT NULL DEFAULT -1,
   PRIMARY KEY(id))`;
 
 db.query(bussinesTable, function(err, results, fields) {
