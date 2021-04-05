@@ -1,5 +1,5 @@
 
-const businessTypes = require('../configs/Business.json')
+const businessTypes = require('../configs/Bussines.json')
 
 mp.business = {};
 
@@ -30,7 +30,7 @@ class Biz {
    }
 }
 
-class Business { 
+class Bussines { 
    new = (player, type, price) => {
       let position = player.position;
       //if(type > businessTypes.length) return player.notification(MSG_INVALID_BUSSINES_TYPE, NOTIFY_ERROR, 4); OVO U KOMANDI
