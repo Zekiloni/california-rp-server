@@ -7,6 +7,7 @@ const commandFiles = [
    'basic.commands',
    'admin.commands',
    'house.commands',
+   'item.commands',
    'interior.commands',
    'message.commands'
 ];

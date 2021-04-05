@@ -15,7 +15,9 @@ module.exports = {
          call: (player, args) => { 
             if (player.near != null && player.near.type == 'house') { 
                let house = mp.houses[player.near.id];
-               mp.house.delete(house)
+               if (house) { 
+                  mp.house.delete(house)
+               }
             }
          }
       },
