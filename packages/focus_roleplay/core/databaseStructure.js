@@ -236,6 +236,44 @@ db.query(housesTable, function(err, results, fields) {
   core.terminal(3, `Checking housesTable | MySQL`);
 });
 
+let bussinesTable = `CREATE TABLE IF NOT EXISTS bussines (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  price int(11) NOT NULL DEFAULT 25000,
+  owner int(11) NOT NULL DEFAULT -1,
+  products int(4) NOT NULL DEFAULT 0,
+  name varchar(128) NOT NULL DEFALT 'Business',
+  type int(2) NOT NULL DEFAULT 0,
+  locked int(1) NOT NULL DEFAULT 0,
+  entrance text,
+  workers text,
+  dimension int(11) DEFAULT 0,
+  interior text,
+  intDimension int(11) NOT NULL DEFAULT 0,
+  ipl text DEFAULT NULL,
+  rent int(6) NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
+
+db.query(bussinesTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking bussinesTable | MySQL`);
+});
+
+/* 
+constructor (id, name, d) { 
+      this.id = id;
+      this.type = d.type;
+      this.name = name;
+      this.price = d.price;
+      this.owner = d.owner;
+      this.products = d.products;
+      this.entrance = d.entrance;
+      this.interior = d.interior;
+      this.workers = d.workers;      
+      this.price = data.price || 2500;
+      this.owner = data.owner || -1;
+
+*/
+
 
 let plantsTable = `CREATE TABLE IF NOT EXISTS plants (
   ID int(11) NOT NULL AUTO_INCREMENT,

@@ -2,9 +2,6 @@
 
 var BussinesModel = require('./bizModel');
 
-
-
-
 global.BIZ_TYPES = [ 
     BIZ_TYPE_MARKET = { type: 0, interior: 11, blip: 52, name: "24/7 Market" },
     BIZ_TYPE_CLOTHING = { type: 1, interior: 22, blip: 366, name: "Clothing Store" },
