@@ -43,6 +43,16 @@ mp.events.add({
       player.setHeading(value);
    },
 
+   'client:interior.request.ipl': (ipl) => { 
+      mp.game.streaming.requestIpl(ipl);
+      // mp.game.invoke("0x41B4893843BBDB74", ipl);
+      player.freezePosition(true)
+      setTimeout(() => {
+         player.freezePosition(false)
+      }, 2000);
+      
+   },
+
    'client:screenEffect': (effect, duration) => {
       mp.game.graphics.startScreenEffect(effect, parseInt(duration), false);
    }

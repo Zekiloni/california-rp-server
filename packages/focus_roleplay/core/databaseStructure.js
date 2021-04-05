@@ -219,15 +219,18 @@ db.query(freqTable, function(err, results, fields) {
 
 
 let housesTable = `CREATE TABLE IF NOT EXISTS houses (
-  ID int(11) NOT NULL AUTO_INCREMENT,
+  id int(11) NOT NULL AUTO_INCREMENT,
+  price int(11) NOT NULL DEFAULT 25000,
+  owner int(11) NOT NULL DEFAULT -1,
   type int(2) NOT NULL DEFAULT 0,
-  price int(10) DEFAULT 25000,
-  owner int(11) DEFAULT -1,
+  locked int(1) NOT NULL DEFAULT 0,
   entrance text NOT NULL,
+  dimension int(11) DEFAULT 0,
   interior text NOT NULL,
+  intDimension int(11) NOT NULL DEFAULT 0,
   ipl text DEFAULT 0,
-  dimension int(11) NOT NULL,
-  PRIMARY KEY(ID))`;
+  rent int(6) NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
 
 db.query(housesTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }

@@ -14,8 +14,12 @@ class Biz {
       this.interior = d.interior;
       this.workers = d.workers;
 
-      // this.colshape = mp.colshapes.new
-      // this.blip = 
+      this.price = data.price || 2500;
+      this.owner = data.owner || -1;
+
+      this.colshape = mp.colshapes.newRectangle(this.entrance.x, this.entrance.y, 3, 2, 0);
+      this.colshape.business = this.id;
+      this.blip = mp.blips.new('business ' + this.id, new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z), { name: 'business', color: 36, shortRange: true });
 
    }
 

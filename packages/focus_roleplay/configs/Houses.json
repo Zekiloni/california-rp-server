@@ -1,15 +1,36 @@
 [
    { 
-      "id": 0,
-      "name": "24 / 7 Market",
-      "interior": [434.7479, -983.2151, 30.83926],
-      "ipl": ""
+      "type": 0,
+      "name": "Modern apartment 1",
+      "interior": { "x": -786.8663, "y": 315.7642, "z": 217.6385 },
+      "ipl": "apa_v_mp_h_01_a"
    },
 
    { 
-      "id": 1,
-      "name": "Gas Station & Market",
-      "interior": [434.7479, -983.2151, 30.83926],
-      "ipl": ""
+      "type": 1,
+      "name": "Modern Apartment 2",
+      "interior": { "x": -786.9563, "y": 315.6229, "z": 187.9136 },
+      "ipl": "apa_v_mp_h_01_c"
+   },
+
+   { 
+      "type": 2,
+      "name": "Regal 1 Apartment",
+      "interior": { "x": -787.029, "y": 315.7113, "z": 217.6385 },
+      "ipl": "apa_v_mp_h_07_a"
+   },
+
+   { 
+      "type": 1,
+      "name": "Seductive 2 Apartment",
+      "interior": { "x": -787.0961, "y": 315.815, "z": 187.9135 },
+      "ipl": "apa_v_mp_h_06_c"
+   },
+
+   { 
+      "type": 1,
+      "name": "Modern 2 Apartment",
+      "interior": { "x": -786.9563, "y": 315.6229, "z": 187.9136 },
+      "ipl": "apa_v_mp_h_01_c"
    }
 ]
