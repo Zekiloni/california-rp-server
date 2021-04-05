@@ -37,7 +37,7 @@ class Business {
       db.query("INSERT INTO `bussines` (type, name, price, owner, dimension, entrance, interior, workers, ipl, products) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
          [type, businessTypes[type].name, price, -1, player.dimension, JSON.stringify(position), JSON.stringify(info.interior), -1, info.ipl, 100], function (error, results, fields) {
             if (error) return core.terminal(1, 'Business creating ' + error);
-            var business = new Business(results.insertId, { type: type, name: businessTypes[type].name, price: price, owner: -1, dimension: player.dimension, entrance: position, ipl: businessTypes[type].ipl, interior: info.interior, intDimension: results.insertId })
+            let business = new Biz(results.insertId, { type: type, name: businessTypes[type].name, price: price, owner: -1, dimension: player.dimension, entrance: position, ipl: businessTypes[type].ipl, interior: info.interior, intDimension: results.insertId })
       });
    }
 
@@ -46,7 +46,7 @@ class Business {
       db.query("SELECT * from `business`", function(error, results, fields) { 
          if (error) return core.terminal(1, 'Loading business ' + error);
          results.forEach(result => {
-            var business = new Business(result.id, 
+            let business = new Biz(result.id, 
                { entrance: JSON.parse(result.entrance), type: result.type, price: result.price, dimension: result.dimension, ipl: result.ipl, interior: result.interior, intDimension: result.intDimension })
             counter ++;
          });
