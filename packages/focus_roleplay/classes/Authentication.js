@@ -12,7 +12,9 @@ mp.events.add({
          let info = result[0];
          player.character = character;
          new Character({
-            id: character, account: info.master_account, name: 
+            id: character, account: info.master_account, name: info.first_name, lname: last_name, 
+            sex: info.sex, birth: info.birth_date, origin, cash, salary, last_position, job, 
+            faction, fation_rank, radio_frequency, thirst, hunger, stress, weapon_skill, driving_skill, licenses
          })
 
       });
