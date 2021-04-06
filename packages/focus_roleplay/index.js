@@ -15,6 +15,7 @@ let Commands = require('./classes/Commands');
 let Admins = require('./classes/Admins');
 let Interactions = require('./classes/Animations');
 let Authentication = require('./classes/Authentication');
+let Jobs = require('./classes/Jobs');
 let Inventory = require('./classes/Inventory');
 let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');

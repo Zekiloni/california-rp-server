@@ -5,7 +5,7 @@ class Character {
    /**
    * @param {Object} p
    * @param {String} p.id
-   * @param {String} p.accid 
+   * @param {String} p.account 
    * @param {String} p.name 
    * @param {String} p.lname 
    * @param {String} birth
@@ -18,8 +18,8 @@ class Character {
    * @param {String} cash
    * */
    constructor (p) { 
-      this.character = p.charid;
-      this.account = p.accid;
+      this.character = p.id;
+      this.account = p.account;
       this.firstName = p.name;
       this.lastName = p.lname;
       this.birth = p.birth;
@@ -43,8 +43,9 @@ class Character {
       this.cuffed = false;
       this.frozen = false;
 
-      mp.accounts[this.character] = this;
+      mp.characters[this.character] = this;
    }
 }
 
+module.exports = Character;
 

@@ -28,8 +28,6 @@ class Inventory {
    }
 
    create = (player, quantity, item) => { 
-      console.log(quantity)
-      console.log(item)
       let found = mp.itemList[item];
       if (found) { 
          db.query("INSERT INTO `items` (item, quantity, entity, owner, position, dimension) VALUES (?, ?, ?, ?, ?, ?)", 

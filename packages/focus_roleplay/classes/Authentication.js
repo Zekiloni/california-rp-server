@@ -1,11 +1,21 @@
-const Account = require("./Account");
+const Account = require('./Account');
+const Character = require('./Character');
 
 mp.events.add({
    'playerJoin': (player) => { 
       player.call('client:login.show')
    },
 
-   'server:select.character': (player, char) => { 
+   'server:select.character': (player, character) => { 
+      db.query('SELECT * FROM `characters` WHERE `id` = ?', [character], function (err, result, fields) {
+         if (err) core.terminal(1, 'Selecting Character ' + err)
+         let info = result[0];
+         player.character = character;
+         new Character({
+            id: character, account: info.master_account, name: 
+         })
+
+      });
       // karaktera loaduj
       // player.character = id;
       // new charac
