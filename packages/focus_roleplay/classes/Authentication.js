@@ -1,5 +1,5 @@
 const Account = require('./Account');
-const Character = require('./Character');
+const { Character, Clothing, Appearance } = require('./Character');
 
 mp.events.add({
    'playerJoin': (player) => { 
@@ -12,10 +12,14 @@ mp.events.add({
          let info = result[0];
          player.character = character;
          player.name = info.first_name + ' ' + info.last_name;
+         
+
+         let clothing = new Clothing();
+
          new Character({
             id: character, account: info.master_account, name: info.first_name, lname: last_name, 
             sex: info.sex, birth: info.birth_date, origin, cash, salary, last_position, job, 
-            faction, fation_rank, radio_frequency, thirst, hunger, stress, weapon_skill, driving_skill, licenses
+            faction, fation_rank, radio_frequency, thirst, hunger, stress, weapon_skill, driving_skill, licenses, clothing: clothing
          })
 
       });

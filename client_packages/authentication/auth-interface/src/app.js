@@ -26,6 +26,7 @@ const error = (message, fields = 0) => {
 
 const goToCreator = () => { 
    mp.trigger('client:creator.show')
+   mp.trigger('client:login.hide');
 }
 
 const selector = { 

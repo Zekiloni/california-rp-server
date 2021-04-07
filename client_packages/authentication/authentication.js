@@ -14,6 +14,11 @@ mp.events.add({
     mp.game.graphics.transitionToBlurred(1000);
   },
 
+  'client:login.hide': () => {
+    loginCEF.destroy();
+    mp.game.graphics.transitionFromBlurred(1500);
+  },
+
   'client:login.banned': (ban) => { 
     setTimeout(() => {
       if (loginCEF.active) { loginCEF.destroy(); }

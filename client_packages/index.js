@@ -1,4 +1,4 @@
-let Authentication = require('./authentication/login');
+let Authentication = require('./authentication/authentication');
 let GameInterface = require('./player/playerHud');
 let CharacterCreator = require('./creator/customization');
 

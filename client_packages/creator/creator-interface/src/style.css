@@ -14,13 +14,12 @@ body {
    overflow: hidden;
 }
 
-
 .creator {
    position: relative;
    left: 0;
-   top: 0;
+   top: 70px;
    width: 450px;
-   height: 100%;
+   height: 85%;
    background: #f9f9f9;
    box-shadow: 0 1px 25px rgb(0 0 0 / 10%);
    animation: slide-from-left 1.5s;
@@ -33,7 +32,11 @@ body {
    top: 0;
    margin: 0;
    height: 100%;
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
    width: 50px;
+   /* grid-gap: 20px; */
    border-right: 1px solid rgb(128 128 128 / 6%);
    box-shadow: 0 1px 25px rgb(0 0 0 / 10%);
 }
@@ -43,12 +46,12 @@ body {
    writing-mode: vertical-rl;
    text-orientation: upright;
    text-transform: uppercase;
-   font-size: 13px;
+   font-size: 18px;
    font-weight: 300;
    height: auto;
+   margin: 10px 0;
    padding: 5px 0;
    min-height: 35px;
-   margin-top: 15px;
    color: #6b6b6b;
    background: white;
    transition: all 0.5s ease;
@@ -71,8 +74,15 @@ body {
 
 .navigation li:hover::after { opacity: 1; }
 .navigation li:hover { filter: brightness(1.25); color: black; }
-.navigation li.active { color: white; background: #642fa3; box-shadow: 3.58px 7.562px 10px 0 rgb(104 54 175 / 45%), 5.137px 7.384px 150px 0 rgb(87 50 220 / 35%); }
-.navigation li.active::after { opacity: 1; box-shadow: rgb(106 80 170) 0px -5px 7px, rgb(58 129 188) 0px 4px 15px; }
+.navigation li.active { 
+   color: white; 
+   background: #642fa3; 
+   box-shadow: 3.58px 7.562px 10px 0 rgb(104 54 175 / 45%), 5.137px 7.384px 150px 0 rgb(87 50 220 / 35%); 
+}
+.navigation li.active::after { 
+   opacity: 1; 
+   box-shadow: rgb(106 80 170) 0px -5px 7px, rgb(58 129 188) 0px 4px 15px; 
+}
 
 .handler { position: absolute; left: 50px; width: 400px; height: 100%; overflow: hidden; }
 
@@ -88,11 +98,12 @@ body {
 .slides .slide {
    width: 100%;
    height: 100%;
-   padding: 10px 20px;
+   overflow: hidden;
    transition: 0.5s ease;
 }
 
-.header { position: relative; overflow: hidden; width: 350px; height: 150px; margin: auto; display: flex; justify-content: center; align-items: center; border-radius: 20px; }
+
+.header {position: relative;overflow: hidden;width: 100%;height: 150px;margin: auto;display: flex;justify-content: center;align-items: center;clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);/* border-radius: 20px; */}
 .header h2 { position: relative; width: 70%; text-align: center; font-size: 32px; text-transform: uppercase; color: whitesmoke; letter-spacing: 1.2px; font-weight: 500; text-shadow: 0 0px 2px rgb(0 0 0 / 25%); }
 .header h2::before {
    content: attr(data-before);
@@ -115,15 +126,15 @@ body {
 
 .form-control { margin: auto; margin-top: 20px; width: 90%; display: flex; flex-wrap: wrap; justify-content: center; grid-gap: 10px; align-items: center; }
 input { 
-border: 1px solid rgba(0,0,0,.125);
-    border-radius: 5px;
-    color: #555;
-    background: transparent;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 10px 21px;
-    box-shadow: 0 5px 10px rgb(0 0 0 / 7%);
-    transition: box-shadow .4s ease-in-out;
+   border: 1px solid rgba(0,0,0,.125);
+   border-radius: 5px;
+   color: #555;
+   background: transparent;
+   font-size: 15px;
+   font-weight: 500;
+   padding: 10px 21px;
+   box-shadow: 0 5px 10px rgb(0 0 0 / 7%);
+   transition: box-shadow .4s ease-in-out;
 }
 input:hover { box-shadow: 0 5px 10px rgb(0 0 0 / 15%) }
 label {width: 100%;text-align: center;text-transform: uppercase;font-weight: 300;font-size: 14px;letter-spacing: 1.25px;color: #9c9c9c;}

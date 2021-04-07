@@ -10,7 +10,7 @@ const genders = [
 mp.events.add({
     'client:creator.show': () => {
         player.freezePosition(true);
-        customizationCEF = mp.browsers.new('package://char-customization/customization-interface/creator.html');
+        customizationCEF = mp.browsers.new('package://creator/creator-interface/creator.html');
         setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
         mp.game.ui.displayRadar(false);
         mp.events.call('client:setCameraInfrontPlayer', true);
