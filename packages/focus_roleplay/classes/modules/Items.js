@@ -41,4 +41,3 @@ mp.ItemRegistry = {
    }
 };
 
-console.log(mp.ItemRegistry)

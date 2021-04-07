@@ -114,6 +114,12 @@ mp.events.add({
         mp.events.call('client:creator.cam.set', 1);
     },
 
+    
+    'client:creator.preview.faceFeature': (index, scale) => { 
+        player.setFaceFeature(parseInt(index), parseFloat(scale)); 
+        mp.events.call('client:creator.cam.set', 2);
+    },
+
     'render': () => { 
         if (customizatorOpened) { 
             let heading;

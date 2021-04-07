@@ -34,7 +34,14 @@ let customization = {
       {name: 'Sirina vrata', value: 0},
    ]
 };
+   // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'
 
+let clothing = [
+   { name: 'Kapa', value: 0, color: 0 },
+   { name: 'Majca', value: 0, color: 0 },
+   { name: 'Pantalone', value: 0, color: 0 },
+   { name: 'Patike', value: 0, color: 0 }
+]
 
 const sliders = { 
    element: $('.slides'),
@@ -64,18 +71,46 @@ let preview = (element) => {
          customization['faceFeatures'][index].value = value;
          mp.trigger('client:creator.preview.faceFeature', index, value)
          break;
+      
+      case 'clothing':
+         clothing[index].value = value;
+         mp.trigger('client:creator.preview.clothing', clothing)
+         break;
    }
    
+}
+
+input = (val, element) => { 
+   if (val == 1) { 
+      element.parentNode.querySelector('input[type=number]').stepUp()
+   } else { 
+      element.parentNode.querySelector('input[type=number]').stepDown()
+   }
+   let el = element.parentNode.querySelector('input[type=number]');
+   preview(el);
 }
 
 const initCustomization = () => { 
    for (let i in customization.faceFeatures) { 
       let feature = customization.faceFeatures[i];
-
       $('.faceFeatures').append(
          `<div class='slider-handler'>
             <label> ${feature.name} <b class='slider-value'>${feature.value}</b> </label>
             <input class='slider' type='range' data-customization='faceFeatures' oninput='preview(this)' data-name='${feature.name}' data-index='${i}' value='${feature.value}' min='-1' step='0.1' max='1'>
+         </div>`
+      )
+   }
+
+   for (let i in clothing) { 
+      let cloth = clothing[i];
+      $('.clothing').append(
+         `<div class='item'>
+            <label> ${cloth.name} </label>
+            <div class='number-input'>
+               <button onclick='input(0, this)' ></button>
+               <input class='quantity' min='0' placeholder='0' data-customization='clothing' data-index='${i}' name='quantity' value='0' type='number' disabled>
+               <button onclick='input(1, this)' class='plus'></button>
+            </div>
          </div>`
       )
    }
