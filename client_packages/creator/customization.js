@@ -8,7 +8,7 @@ const genders = [
 ];
 
 mp.events.add({
-    'client:showCustomization': () => {
+    'client:creator.show': () => {
         player.freezePosition(true);
         customizationCEF = mp.browsers.new('package://char-customization/customization-interface/creator.html');
         setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
@@ -18,7 +18,7 @@ mp.events.add({
         mp.gui.chat.activate(false);
     },
 
-    'client:disableCustomizationPreview': (headOverlays, faceFeatures, blendData) => {
+    'client:creator.finish': (headOverlays, faceFeatures, blendData) => {
         mp.game.ui.displayRadar(true);
         mp.events.callRemote('server:updatePlayerCustomization', headOverlays, faceFeatures, blendData);
         if (mp.browsers.exists(customizationCEF)) { customizationCEF.destroy() }
@@ -29,13 +29,9 @@ mp.events.add({
         mp.gui.chat.activate(true);
     },
 
-    'client:creator.faceFeature': (index, scale) => {
-        player.setFaceFeature(index, scale);
-    },
+    'client:creator.faceFeature': (index, scale) => { player.setFaceFeature(index, parseFloat(scale)); },
 
-    'client:creator.gender': (sex) => { 
-        mp.players.local.model = genders[sex];
-    },
+    'client:creator.gender': (sex) => {  mp.players.local.model = genders[sex]; },
 
     'client:setHeadBlendDataPreview': (shapeFirstID, shapeSecondID, skinFirstID, skinSecondID, shapeMix, skinMix) => {
         player.setHeadBlendData(shapeFirstID, shapeSecondID, 0, skinFirstID, skinSecondID, 0, shapeMix, skinMix, 0, false);

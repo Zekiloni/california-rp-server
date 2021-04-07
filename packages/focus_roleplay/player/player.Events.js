@@ -133,15 +133,7 @@ mp.events.add({
       }
     },
 
-    'server:vehicleEngine': (player, vehicle) => { 
-      if (vehicle.engine) { 
-        vehicle.engine = false;
-        player.notification(MSG_ENGINE_OFF, NOTIFY_ERROR, 4); 
-      } else { 
-        setTimeout(() => { vehicle.engine = true; }, 2500); 
-        player.notification(MSG_ENGINE_ON, NOTIFY_SUCCESS, 4);
-      }
-    },
+
 
     'playerEnterVehicle': (player, vehicle, seat) => { 
       if (seat == 0) { player.call('client:showVehicleHUD', [true]); }

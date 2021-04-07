@@ -1,5 +1,5 @@
 
-
+const player = mp.players.local;
 const blockedClasses = [13, 14, 15, 16, 21]; 
 
 mp.events.add({
@@ -21,6 +21,21 @@ mp.events.addDataHandler({
    }
 });
 
+
+player.setConfigFlag(429, true);
+mp.game.vehicle.defaultEngineBehaviour = false;
+
+mp.keys.bind(0x4C, false, function() {
+   if (!player.loggedIn) return false;
+
+});
+
+mp.keys.bind(0x59, false, function() {
+   if (!player.loggedIn) return false;
+   if (mp.players.local.isTypingInTextChat) return false;
+   if (!player.vehicle) return false;
+   mp.events.callRemote('server:vehicle.engine', player.vehicle);
+});
 
 // left
 mp.keys.bind(0x25, false, () => {

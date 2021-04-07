@@ -51,4 +51,17 @@ mp.Vehicle.prototype.tune = function (data) {
    data.length > 1 ? ( data.forEach(tune => { this.vehicle.setMod(tune.index, tune.value) } )) : ( this.vehicle.setMod(data.index, data.value) )
 }
 
+
+mp.events.add({
+    'server:vehicle.engine': (player, vehicle) => { 
+        if (vehicle.engine) { 
+          vehicle.engine = false;
+          //player.notification(MSG_ENGINE_OFF, NOTIFY_ERROR, 4); 
+        } else { 
+          setTimeout(() => { vehicle.engine = true; }, 2500); 
+          //player.notification(MSG_ENGINE_ON, NOTIFY_SUCCESS, 4);
+        }
+      },
+})
+
 //setTimeout(() => { mp.vehicles.load(); }, 500);

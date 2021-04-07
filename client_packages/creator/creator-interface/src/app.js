@@ -59,7 +59,8 @@ $('.genders h2').on('click', function () {
 
 $('#char-birth-date').change(function () { 
    let date = this.value.split('-'), year = parseInt(date[0]);
-   year > 2001 || year < 1916 ? $(this).css('borderColor', 'tomato') : $(this).css('borderColor', 'transparent');
+   let dateFormat = parseInt(date[2]) + '/' + parseInt(date[1]) + '/' + parseInt(date[0]);
+   year > 2001 || year < 1916 ? ( $(this).css('borderColor', 'tomato'), character.brith = false ) : ( $(this).css('borderColor', 'transparent'), character.birth = dateFormat );
 })
 
 

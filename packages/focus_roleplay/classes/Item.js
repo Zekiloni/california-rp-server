@@ -7,7 +7,6 @@ class Item {
    constructor (id, data) { 
       this.id = id;
       this.item = data.item;
-      this.info = mp.itemList[this.item];
       this.entity = data.entity || -1;
       this.owner = data.owner || -1;
       this.quantity = data.quantity;
