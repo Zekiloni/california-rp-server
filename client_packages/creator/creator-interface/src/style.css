@@ -166,7 +166,8 @@ input[type=text]:focus { box-shadow: 0 5px 10px rgb(0 0 0 / 15%) }
 }
 
 .clothing .item {
-   width: 100%;
+   width: 60%;
+   margin: auto;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -198,11 +199,8 @@ input[type=date]:focus { color: #1f1f1f; }
  
 .slider {
    -webkit-appearance: none;
-   height: 30px;
    width: 100%;
-   width: 100%;
-   height: 15px; 
-   outline: none;
+   height: 20px;
    border: 1px solid rgba(0,0,0,.125);
    color: #555;
    background: #dedede;
@@ -222,12 +220,10 @@ input[type=date]:focus { color: #1f1f1f; }
 .slider::-webkit-slider-thumb {
    -webkit-appearance: none;
    appearance: none;
-   width: 10px;
-   height: 10px;
+   width: 15px;
+   height: 15px;
    transition: all 0.5s ease;
    background: #b66ed8;
-   border-radius: 50px;
-   cursor: pointer;
 }
 
 input[type="number"] {

@@ -14,7 +14,6 @@ const genders = [
 
 getCameraOffset = (pos, angle, dist) => {
     angle = angle * 0.0174533;
-
     pos.y = pos.y + dist * Math.sin(angle);
     pos.x = pos.x + dist * Math.cos(angle);
     return pos;
@@ -35,7 +34,6 @@ mp.events.add({
         player.setComponentVariation(11, 15, 0, 0);
         player.setComponentVariation(3, 15, 0, 0);
         player.setComponentVariation(8, 15, 0, 0);
-
 
     },
 
@@ -114,10 +112,18 @@ mp.events.add({
         mp.events.call('client:creator.cam.set', 1);
     },
 
-    
     'client:creator.preview.faceFeature': (index, scale) => { 
         player.setFaceFeature(parseInt(index), parseFloat(scale)); 
         mp.events.call('client:creator.cam.set', 2);
+    },
+
+    'client:creator.preview.clothing': (clothing) => { 
+        clothing = JSON.parse(clothing); 
+        player.setComponentVariation(11, parseInt(clothing[0].value), parseInt(clothing[0].color), 0);
+        player.setComponentVariation(4, parseInt(clothing[1].value), parseInt(clothing[1].color), 0);
+        player.setComponentVariation(6, parseInt(clothing[2].value), parseInt(clothing[2].color), 0);
+        clothing[0].value > 5 ? ( player.setComponentVariation(3, 2, 0, 0) ) : ( player.setComponentVariation(3, 15, 0, 0) )
+        // majca = 0, pantalone = 1, patike = 2
     },
 
     'render': () => { 

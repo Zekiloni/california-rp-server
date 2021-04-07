@@ -20,6 +20,20 @@ mp.events.add({
     
     'playerExitVehicle': (player, vehicle) => { 
         player.call('client:vehicle.hud', [false])
+    },
+
+    'server:vehicle.mileage': (player, vehicleData) => {
+        let distance = 0;
+        let speed = vehicleData;
+        
+        let trip = Math.floor(speed * ((Date.now() - timeNow) / 1000) * 100) / 100;
+        distance += parseFloat(trip / 1000);
+        timeNow = Date.now();
+        let kmS = distance;
+        kmS = kmS + player.vehicle.getVariable('Kilometer');
+        let data = JSON.stringify({"playerID":player.id,"distance":distance,"state":true,"vehicle":player.vehicle});
+        mp.events.call('tank', player, data);
+        player.vehicle.setVariable('Kilometer',kmS);
     }
 })
 

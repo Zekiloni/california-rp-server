@@ -11,6 +11,7 @@ let customization = {
    blendData: { firstShape: 0, secondShape: 0, firstSkin: 0, secondSkin: 0, shapeMix: 0, skinMix: 0 },
    headOverlays: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
    headOverlaysColors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+   torso: 0,
    'faceFeatures': [
       {name: 'Nos širina', value: 0}, 
       {name: 'Nos visina', value: 0},
@@ -36,11 +37,16 @@ let customization = {
 };
    // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'
 
+// male , female
+var validTorsoIDs = [
+   [0, 0, 2, 14, 14, 5, 14, 14, 8, 0, 14, 15, 12],
+   [0, 5, 2, 3, 4, 4, 5, 5, 5, 0]
+];
+
 let clothing = [
-   { name: 'Kapa', value: 0, color: 0 },
-   { name: 'Majca', value: 0, color: 0 },
-   { name: 'Pantalone', value: 0, color: 0 },
-   { name: 'Patike', value: 0, color: 0 }
+   { name: 'Majca', value: 0, color: 0, max: 361 },
+   { name: 'Pantalone', value: 0, color: 0, max: 132 },
+   { name: 'Patike', value: 0, color: 0, max: 97 }
 ]
 
 const sliders = { 
@@ -74,7 +80,12 @@ let preview = (element) => {
       
       case 'clothing':
          clothing[index].value = value;
-         mp.trigger('client:creator.preview.clothing', clothing)
+         mp.trigger('client:creator.preview.clothing', JSON.stringify(clothing))
+         break;
+
+      case 'clothingColor':
+         clothing[index].color = value;
+         mp.trigger('client:creator.preview.clothing', JSON.stringify(clothing))
          break;
    }
    
@@ -111,6 +122,7 @@ const initCustomization = () => {
                <input class='quantity' min='0' placeholder='0' data-customization='clothing' data-index='${i}' name='quantity' value='0' type='number' disabled>
                <button onclick='input(1, this)' class='plus'></button>
             </div>
+            <input class='slider' type='range' data-customization='clothingColor' oninput='preview(this)' data-name='${cloth.name}' data-index='${i}' value='${cloth.color}' min='0' step='1' max='30'>
          </div>`
       )
    }
