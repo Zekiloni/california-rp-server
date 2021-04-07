@@ -1,8 +1,8 @@
 
-var loginCEF, 
+var loginCEF = null, 
     player = mp.players.local,
-    loginCamera;
-
+    loginCamera = null;
+   
 mp.events.add({
   'client:login.show': () => {
     loginCEF = mp.browsers.new('package://authentication/auth-interface/auth.html');
@@ -15,7 +15,15 @@ mp.events.add({
   },
 
   'client:login.hide': () => {
-    loginCEF.destroy();
+    if (loginCEF != null) { 
+      loginCEF.destroy(); 
+    }
+    if (loginCamera != null) { 
+      loginCamera.destroy();
+    }
+    loginCEF = null;
+    loginCamera = null;
+    mp.game.cam.renderScriptCams(false, false, 0, false, false);
     mp.game.graphics.transitionFromBlurred(1500);
   },
 
