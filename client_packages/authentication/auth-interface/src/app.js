@@ -25,8 +25,10 @@ const error = (message, fields = 0) => {
 }
 
 const goToCreator = () => { 
-   mp.trigger('client:creator.show')
-   mp.trigger('client:login.hide');
+   $('.selector-wrapper').fadeOut(2000, function() {
+      mp.trigger('client:creator.show');
+      mp.trigger('client:login.hide');
+   });
 }
 
 const selector = { 

@@ -32,9 +32,26 @@ class Character {
 }
 
 class Appearance { 
-   constructor (player, blendData, hair, faceFeatures, hairColor) { 
+   constructor (player, gender, blendData, hair, beard, faceFeatures, eyeColor) { 
 
+      this.gender = gender;
+      this.blendData = blendData;
+      this.hair = hair;
+      this.beard = beard;
+      this.eyeColor = eyeColor;
+      this.faceFeatures = faceFeatures;
+
+      player.setClothes(0, this.hair[0], 0, 0);
+
+      player.setCustomization(this.gender == 0 ? true : false, this.blendData[0], this.blendData[1], 0, this.blendData[2], this.blendData[3], 0, this.blendData[4], this.blendData[5], 0, this.eyeColor, this.hair[1], this.hair[2], 
+         [
+            this.faceFeatures[0], this.faceFeatures[1], this.faceFeatures[2], this.faceFeatures[3], this.faceFeatures[4], this.faceFeatures[5], 
+            this.faceFeatures[6], this.faceFeatures[7], this.faceFeatures[8], this.faceFeatures[9], this.faceFeatures[10], this.faceFeatures[11], this.faceFeatures[12],
+            this.faceFeatures[13], this.faceFeatures[14], this.faceFeatures[15], this.faceFeatures[16], this.faceFeatures[17], this.faceFeatures[18], this.faceFeatures[19]
+         ]
+      );
    }
+
 }
 
 
@@ -60,4 +77,3 @@ class Clothing  {
 }
 
 module.exports = { Character, Clothing, Appearance };
-
