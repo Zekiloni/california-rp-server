@@ -121,8 +121,13 @@ mp.events.add({
                 player.setFaceFeature(parseInt(data[0]), parseFloat(data[1])); 
                 break;
             }
-            case 'gender' : { 
+            case 'gender': { 
                 mp.players.local.model = genders[data];
+                break;
+            }
+            case 'beard': {
+                mp.events.call('client:creator.cam.set', 2);
+                player.setHeadOverlay(1, parseInt(data[0]), 1.0, parseInt(data[1]), 0);
                 break;
             }
 

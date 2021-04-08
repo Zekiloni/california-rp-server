@@ -9,7 +9,7 @@ let character = {
    headOverlays: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
    headOverlaysColors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
    hair: [0, 0, 0],
-   beard: [0, 0, 0],
+   beard: [0, 0],
    torso: 0,
    faceFeatures: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
    clothing: [
@@ -43,7 +43,10 @@ const data = {
    validTorsos: [
       [0, 0, 2, 14, 14, 5, 14, 14, 8, 0, 14, 15, 12],
       [0, 5, 2, 3, 4, 4, 5, 5, 5, 0]
-   ]
+   ],
+
+   clothings: ['Majca', 'Pantalone', 'Patike'],
+   clothingsMax: [0, 0, 0]
 }
 
 const sliders = { 
@@ -63,39 +66,6 @@ const sliders = {
    }
 }
 
-let maxmiums = { 
-   drawables: (list) => { 
-      $(".clothings[data-index='0']").attr('max', list[0])
-      $(".clothings[data-index='1']").attr('max', list[1])
-      $(".clothings[data-index='2']").attr('max', list[2])
-   }
-}
-
-// let preview = (element) => { 
-//    let value = element.value,
-//       syntax = $(element).attr('data-customization'),
-//       name = $(element).attr('data-name'),
-//       index = $(element).attr('data-index');
-   
-//    switch (syntax) { 
-//       case 'faceFeatures':
-//          customization['faceFeatures'][index].value = value;
-//          mp.trigger('client:creator.preview.faceFeature', index, value)
-//          break;
-      
-//       case 'clothing':
-//          clothing[index].value = value;
-//          mp.trigger('client:clothing.max.textures', )
-//          mp.trigger('client:creator.preview.clothing', JSON.stringify(clothing))
-//          break;
-
-//       case 'clothingColor':
-//          clothing[index].color = value;
-//          mp.trigger('client:creator.preview.clothing', JSON.stringify(clothing))
-//          break;
-//    }
-   
-// }
 
 // input = (val, element) => { 
 //    if (val == 1) { 
@@ -109,10 +79,10 @@ let maxmiums = {
 
 
 const gender = (el, i) => { 
-   character.gender = i;
-   $('.genders h2').removeClass('active');
-   $(el).addClass('active');
+   character.gender = i; $('.genders h2').removeClass('active'); $(el).addClass('active');
    mp.trigger('client:creator.preview', 'gender', JSON.stringify(character.gender))
+
+   customization.reload();
 }
 
 const customize = (x, id, val) => { 
@@ -134,72 +104,34 @@ const customization = {
          $('.hairColors-1').append(`<li style='background: ${data.hairColors[h]};' onclick='customize("hair", 1, ${h})'> </li>`);
          $('.hairColors-2').append(`<li style='background: ${data.hairColors[h]};' onclick='customize("hair", 2, ${h})'> </li>`);
       }
+
+      for (let c in data.clothings) { 
+         $('.clothing').append(`<input type='number' min="0" value="0" step="5" disabled />`)
+      }
+
+      for (let b in data.beardColors) { 
+         let hair = data.beardColors[b], color = data.hairColors[hair];
+         $('.beardColors').append(`<li style='background: ${color};' onclick='customize("beard", 1, ${hair})'> </li>`);
+      }
+   },
+
+   reload () { 
+      if (character.gender == 1) { 
+         $('.beard').css('display', 'none');
+      }
+      else { 
+         $('.beard').css('display', 'flex');
+      }
    }
 }
 
 
-// const initCustomization = () => { 
-//    for (let i in customization.faceFeatures) { 
-//       let feature = customization.faceFeatures[i];
-//       $('.faceFeatures').append(
-//          `<div class='slider-handler'>
-//            
-//             <input class='slider' type='range' data-customization='faceFeatures' oninput='preview(this)' data-name='${feature.name}' data-index='${i}' value='${feature.value}' min='-1' step='0.1' max='1'>
-//          </div>`
-//       )
-//    }
+$(window).on('load', () => { sliders.open(0); customization.init(); })
 
-//    for (let i in clothing) { 
-//       let cloth = clothing[i];
-//       $('.clothing').append(
-//          `<div class='item'>
-//             <label> ${cloth.name} </label>
-//             <div class='number-input'>
-//                <button onclick='input(0, this)' ></button>
-//                <input class='clothings' min='0' placeholder='0' data-customization='clothing' data-index='${i}' name='quantity' value='0' type='number' disabled>
-//                <button onclick='input(1, this)' class='plus'></button>
-//             </div>
-//             <input class='slider' type='range' data-customization='clothingColor' oninput='preview(this)' data-name='${cloth.name}' data-index='${i}' value='${cloth.color}' min='0' step='1' max='30'>
-//          </div>`
-//       );
-//    }
-
-//    for (let color in hairColors) { 
-//       
-//    }
-
-//    for (let hair in hairs[character.gender]) { 
-//       $('#hairStyles').append('<option value="'+ hairs[character.gender][hair] +'"> '+ hairs[character.gender][hair] +' </option');
-//    }
-// }
-
-
-// identity = (x, i) => { character[x] = i; }
-
-// hair = (x, i) => { 
-//    customization.hair[x] = i; 
-//    mp.trigger('client:creator.hair.preview', JSON.stringify(customization.hair))
-// }
-
-$(window).on('load', () => { 
-   sliders.open(0);
-   customization.init();
+$('#char-birth-date').change(function () { 
+   let date = this.value.split('-'), year = parseInt(date[0]), dateFormat = date[2] + '/' + date[1] + '/' + date[0];
+   year > 2001 || year < 1916 ? ( $(this).css('borderColor', 'tomato'), character.brith = null ) : ( $(this).css('borderColor', 'transparent'), character.birth = dateFormat );
 })
-
-
-// $('.genders h2').on('click', function () { 
-//    let gender = $(this).attr('data-gender');
-//    $('.genders h2').removeClass('active');
-//    $(this).addClass('active');
-//    mp.trigger('client:creator.gender', gender);
-//    mp.trigger('client:creator.clothing.max.drawables')
-// })
-
-
-// $('#char-birth-date').change(function () { 
-//    let date = this.value.split('-'), year = parseInt(date[0]), dateFormat = date[2] + '/' +date[1] + '/' + date[0];
-//    year > 2001 || year < 1916 ? ( $(this).css('borderColor', 'tomato'), character.brith = null ) : ( $(this).css('borderColor', 'transparent'), character.birth = dateFormat );
-// })
 
 
 

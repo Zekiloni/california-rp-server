@@ -62,16 +62,26 @@
                             <h2 data-before="Genetika Karaktera">Genetika</h2>
                         </div>
 
-                        <div class="hair">
-                            <label>Stil kose</label>
-                            <input type="range" class='slider' oninput="customize('hair', 0, this.value)" value="0" max="75" class='hairStyle' list="hairStyles">
-                            <datalist id="hairStyles"> </datalist>
+                        <div class="dna">
+                            <div class="hair">
+                                <label>Stil kose</label>
+                                <input type="range" class='slider' oninput="customize('hair', 0, this.value)" value="0" max="75">
+                                <datalist id="hairStyles"> </datalist>
+    
+                                <div class="hairStyle"> </div>
+                                <label>Boja Kose</label>
+                                <ul class="hairColors-1"> </ul>
+                                <label>Presijavanje Kose</label>
+                                <ul class="hairColors-2"> </ul>
+                            </div>
 
-                            <div class="hairStyle"> </div>
-                            <label>Boja Kose</label>
-                            <ul class="hairColors-1"> </ul>
-                            <label>Presijavanje Kose</label>
-                            <ul class="hairColors-2"> </ul>
+                            <div class="beard">
+                                <label>Stil brade</label>
+                                <button class="btn" onclick="customize('beard', 0, 255)">ukloni bradu</button>
+                                <input type="range" class='slider' oninput="customize('beard', 0, this.value)" value="0" max="28">
+                                <label>Boja brade</label>
+                                <ul class="beardColors"> </ul>
+                            </div>
                         </div>
                     </div>
 
