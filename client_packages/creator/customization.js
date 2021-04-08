@@ -105,31 +105,38 @@ mp.events.add({
 	    bodyCam.pointAtCoord(bodyCamStart.x, bodyCamStart.y, bodyCamStart.z + camValues.Height);
     },
 
-    'client:creator.preview.faceFeature': (index, scale) => { 
-        player.setFaceFeature(parseInt(index), parseFloat(scale)); 
-        mp.events.call('client:creator.cam.set', 2);
+
+    'client:creator.preview': (x, data) => { 
+        data = JSON.parse(data);
+
+        switch (x) { 
+            case 'hair': {
+                mp.events.call('client:creator.cam.set', 2);
+                player.setComponentVariation(2, parseInt(data[0]), 0, 0);
+                player.setHairColor(parseInt(data[1]), parseInt(data[2]));
+                break;
+            }
+            case 'faceFeatures': { 
+                mp.events.call('client:creator.cam.set', 2);
+                player.setFaceFeature(parseInt(data[0]), parseFloat(data[1])); 
+                break;
+            }
+            case 'gender' : { 
+                mp.players.local.model = genders[data];
+                break;
+            }
+
+        }
+
     },
 
-    'client:creator.hair.preview': (hair) => { 
-        hair = JSON.parse(hair)
-        player.setComponentVariation(2, parseInt(hair[0]), 0, 0);
-        mp.gui.chat.push(JSON.stringify())
 
-        player.setHairColor(parseInt(hair[1]), parseInt(hair[2]));
-        mp.events.call('client:creator.cam.set', 2);
-    },
-
-    'client:creator.gender': (sex) => {  mp.players.local.model = genders[sex]; },
 
     'client:creator.blendDataPrevieew': (shapeFirstID, shapeSecondID, skinFirstID, skinSecondID, shapeMix, skinMix) => {
         player.setHeadBlendData(shapeFirstID, shapeSecondID, 0, skinFirstID, skinSecondID, 0, shapeMix, skinMix, 0, false);
         mp.events.call('client:creator.cam.set', 1);
     },
 
-    'client:creator.preview.faceFeature': (index, scale) => { 
-        player.setFaceFeature(parseInt(index), parseFloat(scale)); 
-        mp.events.call('client:creator.cam.set', 2);
-    },
 
     'client:creator.preview.clothing': (clothing) => { 
         clothing = JSON.parse(clothing); 

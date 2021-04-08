@@ -42,18 +42,18 @@
 
                         <div class="form-control">
                             <label>Datum Rodjenja</label>
-                            <input type="date" id="char-birth-date" oninput="identity('birth', this.value)" min="1918-01-01" max="2001-01-30" />
+                            <input type="date" id="char-birth-date" min="1918-01-01" max="2001-01-30" />
                         </div>
 
                         <div class="form-control">
                             <label>Poreklo Karaktera</label>
-                            <input type="text" id="character-origin" oninput="identity('origin', this.value)" placeholder="npr. Los Santos, Fort Carson..."/>
+                            <input type="text" id="character-origin" oninput="identity('origin', this.value)" placeholder="npr. Los Santos, Paleto Bay..."/>
                         </div>
 
                         <div class="genders">
                             <label>Pol Karaktera</label>
-                            <h2 data-gender="0" class="active">Muško</h2>
-                            <h2 data-gender="1">Žensko</h2>
+                            <h2 onclick='gender(this, 0)'>Muško</h2>
+                            <h2 onclick='gender(this, 1)'>Žensko</h2>
                         </div>
                     </div>
 
@@ -64,14 +64,14 @@
 
                         <div class="hair">
                             <label>Stil kose</label>
-                            <input type="range" class='slider' oninput="hair(0, this.value)" class='hairStyle' list="hairStyles">
+                            <input type="range" class='slider' oninput="customize('hair', 0, this.value)" value="0" max="75" class='hairStyle' list="hairStyles">
                             <datalist id="hairStyles"> </datalist>
 
                             <div class="hairStyle"> </div>
                             <label>Boja Kose</label>
-                            <ul data-hair-colors="1"> </ul>
+                            <ul class="hairColors-1"> </ul>
                             <label>Presijavanje Kose</label>
-                            <ul data-hair-colors="2"> </ul>
+                            <ul class="hairColors-2"> </ul>
                         </div>
                     </div>
 
