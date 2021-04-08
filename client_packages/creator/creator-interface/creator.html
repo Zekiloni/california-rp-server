@@ -61,6 +61,18 @@
                         <div class="header bg-2">
                             <h2 data-before="Genetika Karaktera">Genetika</h2>
                         </div>
+
+                        <div class="hair">
+                            <label>Stil kose</label>
+                            <input type="range" class='slider' oninput="hair(0, this.value)" class='hairStyle' list="hairStyles">
+                            <datalist id="hairStyles"> </datalist>
+
+                            <div class="hairStyle"> </div>
+                            <label>Boja Kose</label>
+                            <ul data-hair-colors="1"> </ul>
+                            <label>Presijavanje Kose</label>
+                            <ul data-hair-colors="2"> </ul>
+                        </div>
                     </div>
 
                     <div class="slide">

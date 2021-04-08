@@ -70,6 +70,11 @@ mp.events.add({
 	    player.taskPlayAnim("amb@world_human_guard_patrol@male@base", "base", 8.0, 1, -1, 1, 0.0, false, false, false);
     },
 
+    'client:creator.clothing.max.drawables': () => { 
+        let r1 = player.getNumberOfDrawableVariations(11), r2 = player.getNumberOfDrawableVariations(4), r3 = player.getNumberOfDrawableVariations(6);
+        customizationCEF.execute(`maxmiums.drawables([${r1}, ${r2}, ${r3}]);`);
+    },
+
     'client:creator.cam.set': (flag) => {
         let camValues = { Angle: 0, Dist: 1, Height: 0.2 };
         switch(flag)
@@ -105,6 +110,15 @@ mp.events.add({
         mp.events.call('client:creator.cam.set', 2);
     },
 
+    'client:creator.hair.preview': (hair) => { 
+        hair = JSON.parse(hair)
+        player.setComponentVariation(2, parseInt(hair[0]), 0, 0);
+        mp.gui.chat.push(JSON.stringify())
+
+        player.setHairColor(parseInt(hair[1]), parseInt(hair[2]));
+        mp.events.call('client:creator.cam.set', 2);
+    },
+
     'client:creator.gender': (sex) => {  mp.players.local.model = genders[sex]; },
 
     'client:creator.blendDataPrevieew': (shapeFirstID, shapeSecondID, skinFirstID, skinSecondID, shapeMix, skinMix) => {
@@ -123,6 +137,7 @@ mp.events.add({
         player.setComponentVariation(4, parseInt(clothing[1].value), parseInt(clothing[1].color), 0);
         player.setComponentVariation(6, parseInt(clothing[2].value), parseInt(clothing[2].color), 0);
         clothing[0].value > 5 ? ( player.setComponentVariation(3, 2, 0, 0) ) : ( player.setComponentVariation(3, 15, 0, 0) )
+        mp.events.call('client:creator.cam.set', 0);
         // majca = 0, pantalone = 1, patike = 2
     },
 
