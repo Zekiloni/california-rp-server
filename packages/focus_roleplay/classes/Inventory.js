@@ -28,9 +28,7 @@ class Inventory {
    }
 
    create = (player, quantity, item) => { 
-      console.log(quantity)
-      console.log(item)
-      let found = mp.itemList[item];
+      let found = mp.ItemRegistry[item];
       if (found) { 
          db.query("INSERT INTO `items` (item, quantity, entity, owner, position, dimension) VALUES (?, ?, ?, ?, ?, ?)", 
             [item, quantity, -1, -1, JSON.stringify(player.position), player.dimension], function(err, result, fields) {
@@ -39,7 +37,7 @@ class Inventory {
             let id = result.insertId;
             try { 
                let i = new Item(id, { 
-                  item: item, entity: -1, owner: -1, position: JSON.stringify(player.position), dimension: player.dimension, quanity: quantity, info: mp.itemList[item]
+                  item: item, entity: -1, owner: -1, position: JSON.stringify(player.position), dimension: player.dimension, quanity: quantity
                })
             } catch (e) { console.log(e) }
 

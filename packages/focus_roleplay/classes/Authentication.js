@@ -1,14 +1,34 @@
-const Account = require("./Account");
+const Account = require('./Account');
+const { Character, Clothing, Appearance } = require('./Character');
 
 mp.events.add({
    'playerJoin': (player) => { 
       player.call('client:login.show')
    },
 
-   'server:select.character': (player, char) => { 
-      // karaktera loaduj
-      // player.character = id;
-      // new charac
+   'server:select.character': (player, character) => { 
+      db.query('SELECT * FROM `characters` WHERE `id` = ?', [character], function (err, result, fields) {
+         if (err) core.terminal(1, 'Selecting Character ' + err)
+         let info = result[0];
+         player.character = character;
+         player.name = info.first_name + ' ' + info.last_name;
+         
+
+         let clothing = new Clothing();
+
+         new Character({
+            id: character, account: info.master_account, name: info.first_name, lname: last_name, 
+            sex: info.sex, birth: info.birth_date, origin, cash, salary, last_position, job, 
+            faction, fation_rank, radio_frequency, thirst, hunger, stress, weapon_skill, driving_skill, licenses, clothing: clothing
+         })
+
+      });
+   },
+
+   'server:create.character': (player, character) => { 
+      player.dimension = 0;
+      player.position = mp.settings.defaultSpawn;
+      player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info)
    },
 
    'server:login.handle': (player, username, password) => { 
@@ -18,17 +38,11 @@ mp.events.add({
             if (result[0].password == password) { 
                let userID = result[0].id;
                player.account = userID;
-               player.name = result[0].username;
                player.data.logged = true;
+
                new Account({
-                  sqlid: userID,
-                  username: result[0].username,
-                  regDate: result[0].registered_at,
-                  admin: result[0].admin,
-                  xp: result[0].xp,
-                  ip: player.ip,
-                  hours: result[0].hours,
-                  donator: result[0].donator
+                  sqlid: userID, username: result[0].username, regDate: result[0].registered_at, admin: result[0].admin,
+                  xp: result[0].xp, ip: player.ip, hours: result[0].hours, donator: result[0].donator
                })
                
                let values = { 

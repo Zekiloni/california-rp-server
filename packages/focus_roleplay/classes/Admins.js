@@ -44,3 +44,25 @@ class Admin {
 
 mp.admin = new Admin();
 
+
+mp.reports = {};
+
+class Report { 
+   constructor (player, message) { 
+      this.player = player;
+      this.message = message;
+
+      mp.reports[this.player] = this.message;
+      console.log(mp.reports)
+   }
+}
+
+mp.report = { 
+   new: (player, message) => { 
+      let report = new Report(player, message);
+   },
+
+   delete: (player) => { 
+      delete mp.reports[player];
+   }
+}

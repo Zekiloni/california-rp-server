@@ -15,6 +15,7 @@ let Commands = require('./classes/Commands');
 let Admins = require('./classes/Admins');
 let Interactions = require('./classes/Animations');
 let Authentication = require('./classes/Authentication');
+let Jobs = require('./classes/Jobs');
 let Inventory = require('./classes/Inventory');
 let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
@@ -114,8 +115,7 @@ mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     veh.dimension = player.dimension;
     veh.numberPlateType = 1;
     veh.numberPlate = "SUPPORT";
-    veh.engine = true;
-    veh.dead = false; 
+    veh.engine = false;
     player.putIntoVehicle(veh, 0);
 });
 
