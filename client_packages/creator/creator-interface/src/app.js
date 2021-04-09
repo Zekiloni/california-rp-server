@@ -6,12 +6,12 @@ let character = {
    origin: null,
    gender: null,
    blendData: [0, 0, 0, 0, 0, 0],
-   headOverlays: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
+   headOverlays: { 0: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0 },
    headOverlaysColors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
    hair: [0, 0, 0],
    beard: [0, 0],
    torso: 0,
-   faceFeatures: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+   faceFeatures: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
    clothing: [
       [0, 0], [0, 0], [0, 0]
    ]
@@ -39,6 +39,7 @@ const data = {
    ],
 
    beardColors: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29, 55, 56, 57, 58, 59, 60, 61, 62, 63],
+   headOverlays: ['Mrlje', 'Obrve', 'Starost, pore', 'Šminka', 'Rumenilo', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Krtice / pege', 'Kosa na prsima'],
 
    validTorsos: [
       [0, 0, 2, 14, 14, 5, 14, 14, 8, 0, 14, 15, 12],
@@ -46,7 +47,8 @@ const data = {
    ],
 
    clothings: ['Majca', 'Pantalone', 'Patike'],
-   clothingsMax: [0, 0, 0],
+   clothingMax: [361, 132, 97],
+
    blendData: [ 
       ['Oblik lica majke', 0, 45, 1], ['Oblik lica oca', 0, 45, 1], ['Boja kože majke', 0, 45, 1],
       ['Boja kože oca', 0, 45, 1], ['Miks oblika', -1, 1, 0.1], ['Miks boje kože',-1, 1, 0.1]
@@ -71,15 +73,13 @@ const sliders = {
 }
 
 
-// input = (val, element) => { 
-//    if (val == 1) { 
-//       element.parentNode.querySelector('input[type=number]').stepUp()
-//    } else { 
-//       element.parentNode.querySelector('input[type=number]').stepDown()
-//    }
-//    let el = element.parentNode.querySelector('input[type=number]');
-//    preview(el);
-// }
+input = (val, element) => { 
+   if (val == 1) { element.parentNode.querySelector('input[type=number]').stepUp()
+   } else { element.parentNode.querySelector('input[type=number]').stepDown() }
+
+   let el = element.parentNode.querySelector('input[type=number]');
+   //preview(el);
+}
 
 
 const gender = (el, i) => { 
@@ -97,6 +97,8 @@ const customize = (x, id, val) => {
       mp.trigger('client:creator.preview', x, JSON.stringify(character[x]));
 }
 
+const clothes = (x, i, val) => { character.clothing[x][i] = val, mp.trigger('client:creator.preview', 'clothing', JSON.stringify(character.clothing)); }
+
 const customization = { 
    init () { 
       for (let f in data.faceFeatures) { 
@@ -110,7 +112,11 @@ const customization = {
       }
 
       for (let c in data.clothings) { 
-         $('.clothing').append(`<input type='number' min="0" value="0" step="5" disabled />`)
+         $('.clothing').append(`<div class='number-input'>
+            <button onclick='input(0, this)' ></button>
+               <input class='clothings-${c}' min='0' max='${data.clothingMax[c]}' placeholder='0' data-customization='clothing' data-index='${c}' name='quantity' value='0' type='number' >
+               <button onclick='input(1, this)' class='plus'></button>
+            </div>`)
       }
 
       for (let b in data.beardColors) { 
@@ -132,9 +138,14 @@ const customization = {
       else { 
          $('.beard').css('display', 'flex');
       }
+
+      mp.trigger('client:creator.reload')
+   },
+
+   max (x) { 
+
    }
 }
-
 
 $(window).on('load', () => { sliders.open(0); customization.init(); })
 

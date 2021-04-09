@@ -34,7 +34,6 @@ mp.events.add({
         player.setComponentVariation(11, 15, 0, 0);
         player.setComponentVariation(3, 15, 0, 0);
         player.setComponentVariation(8, 15, 0, 0);
-
     },
 
     'client:creator.finish': (headOverlays, faceFeatures, blendData) => {
@@ -70,11 +69,6 @@ mp.events.add({
 	    player.taskPlayAnim("amb@world_human_guard_patrol@male@base", "base", 8.0, 1, -1, 1, 0.0, false, false, false);
     },
 
-    'client:creator.clothing.max.drawables': () => { 
-        let r1 = player.getNumberOfDrawableVariations(11), r2 = player.getNumberOfDrawableVariations(4), r3 = player.getNumberOfDrawableVariations(6);
-        customizationCEF.execute(`maxmiums.drawables([${r1}, ${r2}, ${r3}]);`);
-    },
-
     'client:creator.cam.set': (flag) => {
         let camValues = { Angle: 0, Dist: 1, Height: 0.2 };
         switch(flag)
@@ -105,6 +99,14 @@ mp.events.add({
 	    bodyCam.pointAtCoord(bodyCamStart.x, bodyCamStart.y, bodyCamStart.z + camValues.Height);
     },
 
+    'client:creator.reload': () => { 
+        player.setComponentVariation(11, 15, 0, 0);
+        player.setComponentVariation(3, 15, 0, 0);
+        player.setComponentVariation(8, 15, 0, 0);
+
+        let shirt = player.getNumberOfDrawableVariations(11), bottom = player.getNumberOfDrawableVariations(4), shoes = player.getNumberOfDrawableVariations(6);
+        customizationCEF.execute(`maxmiums.drawables([${r1}, ${r2}, ${r3}]);`);
+    },
 
     'client:creator.preview': (x, data) => { 
         data = JSON.parse(data);
@@ -136,26 +138,16 @@ mp.events.add({
                 break;
             }
 
+            case 'clothiing': { 
+                mp.events.call('client:creator.cam.set', 0);
+                player.setComponentVariation(11, parseInt(clothing[0][0]), parseInt(clothing[0][1]), 0);
+                player.setComponentVariation(4, parseInt(clothing[1][0]), parseInt(clothing[1][1]), 0);
+                player.setComponentVariation(6, parseInt(clothing[2][0]), parseInt(clothing[2][1]), 0);
+                break;
+            }
+
         }
 
-    },
-
-
-
-    'client:creator.blendDataPrevieew': (shapeFirstID, shapeSecondID, skinFirstID, skinSecondID, shapeMix, skinMix) => {
-        player.setHeadBlendData(shapeFirstID, shapeSecondID, 0, skinFirstID, skinSecondID, 0, shapeMix, skinMix, 0, false);
-        mp.events.call('client:creator.cam.set', 1);
-    },
-
-
-    'client:creator.preview.clothing': (clothing) => { 
-        clothing = JSON.parse(clothing); 
-        player.setComponentVariation(11, parseInt(clothing[0].value), parseInt(clothing[0].color), 0);
-        player.setComponentVariation(4, parseInt(clothing[1].value), parseInt(clothing[1].color), 0);
-        player.setComponentVariation(6, parseInt(clothing[2].value), parseInt(clothing[2].color), 0);
-        clothing[0].value > 5 ? ( player.setComponentVariation(3, 2, 0, 0) ) : ( player.setComponentVariation(3, 15, 0, 0) )
-        mp.events.call('client:creator.cam.set', 0);
-        // majca = 0, pantalone = 1, patike = 2
     },
 
     'render': () => { 
@@ -168,18 +160,6 @@ mp.events.add({
                 heading = player.getHeading();
                 player.setHeading(heading + 1.5)
             }
-        }
-    },
-
-    'client:creator.preview.headOverlay': (color, index, value) => {
-        if(color){
-          var oldVal = player.getHeadOverlayValue(index);
-          player.setHeadOverlay(index, oldVal, 1, value, 0);
-          mp.events.call('client:creator.cam.set', 1);
-        }
-        else { 
-          player.setHeadOverlay(index, value, 1.0, 0, 0);
-          mp.events.call('client:creator.cam.set', 1);
         }
     }
 });
