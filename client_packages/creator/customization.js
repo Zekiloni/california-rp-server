@@ -94,7 +94,7 @@ mp.events.add({
         customizationCEF.execute(`customization.max([${shirt}, ${bottom}, ${shoes}]);`);
     },
 
-    'client:creator.finsh': () => { 
+    'client:creator.finish': (character) => { 
         mp.events.call('client:creator.cam', false);
         if (mp.browsers.exists(customizationCEF)) { customizationCEF.destroy() }
         customizatorOpened = false;

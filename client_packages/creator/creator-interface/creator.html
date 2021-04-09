@@ -34,22 +34,22 @@
 
                         <div class="form-control">
                             <label>Ime Karaktera</label>
-                            <input type="text" id="character-first-name" oninput="identity('firstname', this.value)" placeholder="John"/>
+                            <input type="text" id="character-first-name" oninput="character.firstname = this.value" placeholder="John"/>
                         </div>
 
                         <div class="form-control">
                             <label>Prezime Karaktera</label>
-                            <input type="text" id="character-last-name" oninput="identity('lastname', this.value)" placeholder="Doe" />
+                            <input type="text" id="character-last-name" oninput="character.lastname = this.value" placeholder="Doe" />
                         </div>  
 
                         <div class="form-control">
                             <label>Datum Rodjenja</label>
-                            <input type="date" id="char-birth-date" min="1918-01-01" max="2001-01-30" />
+                            <input class="unstyled" type="date" id="char-birth-date" min="1918-01-01" max="2001-01-30" />
                         </div>
 
                         <div class="form-control">
                             <label>Poreklo Karaktera</label>
-                            <input type="text" id="character-origin" oninput="identity('origin', this.value)" placeholder="npr. Los Santos, Paleto Bay..."/>
+                            <input type="text" id="character-origin" oninput="character.origin = this.value" placeholder="npr. Los Santos, Paleto Bay..."/>
                         </div>
 
                         <div class="genders">
@@ -117,7 +117,10 @@
                     </div>
 
                     <div class="slide">
-                        
+                        <div class="finish">
+                            <img src="src/images/logo.png" />
+                            <button onclick="customization.finish()">Kreiraj Karaktera</button>
+                        </div>
                     </div>
                 </div>
             </div>

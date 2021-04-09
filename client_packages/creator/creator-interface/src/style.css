@@ -142,7 +142,6 @@ input[type=text]:focus { box-shadow: 0 5px 10px rgb(0 0 0 / 15%) }
 
 .clothing { width: 95%; margin: auto; margin-top: 50px; height: 565px; overflow-y: auto; }
 .clothing .item { width: 60%; margin: auto; display: flex; justify-content: center; align-items: center; grid-gap: 10px; flex-direction: column; margin-top: 20px; }
-.clothing .item input { margin: 10px; }
 
 input[type=date] {
    height: 35px;
@@ -280,6 +279,9 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
 .help { margin: auto; margin-top: 25px; width: 90%; text-align: center; color: rgb(51, 51, 51); font-size: 13px; font-weight: 300; }
 
+.finish {width: 90%;padding: 20px 0;display: flex;margin: auto;justify-content: center;align-items: center;height: 90%;flex-direction: column;}
+.finish img { width: 225px; height: 225px; }
+
 @keyframes slide-from-left {
 	0% { transform: translateX(-600px); }
 	100% { transform: translateX(0px) }
@@ -295,3 +297,9 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 ::-webkit-scrollbar { width: 7px; }
 ::-webkit-scrollbar-track {background: rgb(0 0 0 / 26%); }
 ::-webkit-scrollbar-thumb { background: linear-gradient(0deg, rgba(124,71,160,1) 0%, rgba(3,104,162,1) 100%); border-radius: 50px; }
+
+.unstyled::-webkit-inner-spin-button,
+.unstyled::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}

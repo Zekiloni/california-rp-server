@@ -157,6 +157,22 @@ const customization = {
       $('.clothings-0').attr('max', t);
       $('.clothings-1').attr('max', l);
       $('.clothings-2').attr('max', s);
+   },
+
+   finish () { 
+      console.log('jok more')
+      console.log(character.birth)
+      console.log(character.gender)
+      console.log(character.firstname)
+      console.log(character.lastname)
+      console.log(character.origin)
+
+
+      if (character.gender != null && character.birth != null  && character.origin != null && character.firstname != null && character.lastname != null) { 
+         mp.trigger('client:creator.finish', JSON.stringify(character));
+         console.log('pozvan')
+      }
+      console.log('jok more')
    }
 }
 
