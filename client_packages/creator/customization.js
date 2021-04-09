@@ -130,6 +130,11 @@ mp.events.add({
                 player.setHeadOverlay(1, parseInt(data[0]), 1.0, parseInt(data[1]), 0);
                 break;
             }
+            case 'blendData': { 
+                mp.events.call('client:creator.cam.set', 1);
+                player.setHeadBlendData(parseInt(data[0]), parseInt(data[1]), 0, parseInt(data[2]), parseInt(data[3]), 0, parseFloat(data[4]), parseFloat(data[5]), 0, true);
+                break;
+            }
 
         }
 

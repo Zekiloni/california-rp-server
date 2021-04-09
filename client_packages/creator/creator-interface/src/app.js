@@ -5,7 +5,7 @@ let character = {
    birth: null,
    origin: null,
    gender: null,
-   blendData: [ 0, 0, 0, 0, 0, 0],
+   blendData: [0, 0, 0, 0, 0, 0],
    headOverlays: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 },
    headOverlaysColors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
    hair: [0, 0, 0],
@@ -46,7 +46,11 @@ const data = {
    ],
 
    clothings: ['Majca', 'Pantalone', 'Patike'],
-   clothingsMax: [0, 0, 0]
+   clothingsMax: [0, 0, 0],
+   blendData: [ 
+      ['Oblik lica majke', 0, 45, 1], ['Oblik lica oca', 0, 45, 1], ['Boja kože majke', 0, 45, 1],
+      ['Boja kože oca', 0, 45, 1], ['Miks oblika', -1, 1, 0.1], ['Miks boje kože',-1, 1, 0.1]
+   ]
 }
 
 const sliders = { 
@@ -112,6 +116,12 @@ const customization = {
       for (let b in data.beardColors) { 
          let hair = data.beardColors[b], color = data.hairColors[hair];
          $('.beardColors').append(`<li style='background: ${color};' onclick='customize("beard", 1, ${hair})'> </li>`);
+      }
+
+      for (let b in data.blendData) { 
+         let blend = data.blendData[b];
+         $('.blendData').append(`<div class='slider-handler'> <label> ${blend[0]} </label>
+            <input type='range' class='slider' value='0' oninput='customize("blendData", ${b}, this.value)' min='${blend[1]}' max='${blend[2]}' step='${blend[3]}' > </div>`)
       }
    },
 

@@ -299,6 +299,16 @@ input[type=number]::-webkit-outer-spin-button {
 
 .dna { height: 565px; width: 95%; margin: auto; margin-top: 35px; overflow-y: auto; }
 
+.blendData {
+    width: 85%;
+    padding: 15px 20px;
+    margin: 0 auto;
+    margin-top: 20px;
+    display: flex;
+    background: #efefef;
+    flex-direction: column;
+}
+
 .beard {width: 85%;padding: 0 20px;margin: 0 auto;margin-top: 20px;display: flex;flex-direction: column;align-items: center;}
 .beard ul { display: flex; grid-gap: 3px; justify-content: center; align-items: center; flex-wrap: wrap; list-style: none; padding: 0; }
 .beard ul li { width: 25px; height: 25px; transition: all 0.4s ease; margin: 2px; border: 2px solid transparent; }
