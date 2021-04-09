@@ -6,14 +6,14 @@ let character = {
    origin: null,
    gender: null,
    blendData: [0, 0, 0, 0, 0, 0],
-   headOverlays: { 0: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0 },
+   headOverlays: [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
    headOverlaysColors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
    hair: [0, 0, 0],
    beard: [0, 0],
    torso: 0,
    faceFeatures: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
    clothing: [
-      [0, 0], [0, 0], [0, 0]
+      [0, 0], [0, 0], [0, 0], [0, 0]
    ]
 }
 
@@ -39,14 +39,14 @@ const data = {
    ],
 
    beardColors: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29, 55, 56, 57, 58, 59, 60, 61, 62, 63],
-   headOverlays: ['Mrlje', 'Obrve', 'Starost, pore', 'Šminka', 'Rumenilo', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Krtice / pege', 'Kosa na prsima'],
+   headOverlays: ['Mrlje', 'Obrve', 'Starost, pore', 'Šminka', 'Rumenilo', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
 
    validTorsos: [
       [0, 0, 2, 14, 14, 5, 14, 14, 8, 0, 14, 15, 12],
       [0, 5, 2, 3, 4, 4, 5, 5, 5, 0]
    ],
 
-   clothings: ['Majca', 'Pantalone', 'Patike'],
+   clothings: ['Majca', 'Podmajca', 'Pantalone', 'Patike'],
    clothingMax: [361, 132, 97],
 
    blendData: [ 
@@ -72,20 +72,16 @@ const sliders = {
    }
 }
 
-
 input = (val, element) => { 
    if (val == 1) { element.parentNode.querySelector('input[type=number]').stepUp()
    } else { element.parentNode.querySelector('input[type=number]').stepDown() }
-
    let el = element.parentNode.querySelector('input[type=number]');
-   //preview(el);
+   clothes(el.id, 0, el.value);
 }
-
 
 const gender = (el, i) => { 
    character.gender = i; $('.genders h2').removeClass('active'); $(el).addClass('active');
    mp.trigger('client:creator.preview', 'gender', JSON.stringify(character.gender))
-
    customization.reload();
 }
 
@@ -112,11 +108,11 @@ const customization = {
       }
 
       for (let c in data.clothings) { 
-         $('.clothing').append(`<div class='number-input'>
-            <button onclick='input(0, this)' ></button>
-               <input class='clothings-${c}' min='0' max='${data.clothingMax[c]}' placeholder='0' data-customization='clothing' data-index='${c}' name='quantity' value='0' type='number' >
+         $('.clothing').append(`<div class='item'> <label> ${data.clothings[c]} </label> <div class='number-input'>
+               <button onclick='input(0, this)' ></button>
+               <input class='clothings-${c}' min='0' max='${data.clothingMax[c]}' placeholder='0' id='${c}' name='quantity' value='0' type='number' >
                <button onclick='input(1, this)' class='plus'></button>
-            </div>`)
+            </div> <input type='range' class='slider' value='0' oninput='clothes(${c}, 1, this.value)' min='0' > </div>`)
       }
 
       for (let b in data.beardColors) { 
@@ -129,21 +125,38 @@ const customization = {
          $('.blendData').append(`<div class='slider-handler'> <label> ${blend[0]} </label>
             <input type='range' class='slider' value='0' oninput='customize("blendData", ${b}, this.value)' min='${blend[1]}' max='${blend[2]}' step='${blend[3]}' > </div>`)
       }
+
+      for (let h in data.headOverlays) { 
+         let hOverlay = data.headOverlays[h];
+         $('.headOverlays').append(`<div class='slider-handler headOverlay' id='headOverlay-${h}' > <label> ${hOverlay} </label> 
+            <button class='btn' onclick='customize("headOverlays", ${h}, 255)'> ukloni ${hOverlay} </button>
+            <input type='range' class='slider' value='0' oninput='customize("headOverlays", ${h}, this.value)' min='0' max='12' > </div>`)
+      }
    },
 
    reload () { 
       if (character.gender == 1) { 
          $('.beard').css('display', 'none');
+         $('#headOverlay-7').css('display', 'flex');
+         $('#headOverlay-3').css('display', 'flex');
+         $('#headOverlay-4').css('display', 'flex');
+         $('#headOverlay-9').css('display', 'none');
       }
       else { 
          $('.beard').css('display', 'flex');
+         $('#headOverlay-9').css('display', 'flex');
+         $('#headOverlay-7').css('display', 'none');
+         $('#headOverlay-3').css('display', 'none');
+         $('#headOverlay-4').css('display', 'none');
       }
 
       mp.trigger('client:creator.reload')
    },
 
-   max (x) { 
-
+   max (t, l, s) { 
+      $('.clothings-0').attr('max', t);
+      $('.clothings-1').attr('max', l);
+      $('.clothings-2').attr('max', s);
    }
 }
 
@@ -153,6 +166,3 @@ $('#char-birth-date').change(function () {
    let date = this.value.split('-'), year = parseInt(date[0]), dateFormat = date[2] + '/' + date[1] + '/' + date[0];
    year > 2001 || year < 1916 ? ( $(this).css('borderColor', 'tomato'), character.brith = null ) : ( $(this).css('borderColor', 'transparent'), character.birth = dateFormat );
 })
-
-
-

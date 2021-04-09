@@ -25,6 +25,12 @@ mp.events.add({
       });
    },
 
+   'server:create.character': (player, character) => { 
+      player.dimension = 0;
+      player.position = mp.settings.defaultSpawn;
+      player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info)
+   },
+
    'server:login.handle': (player, username, password) => { 
       db.query('SELECT * FROM `users` WHERE `username` = ?', [username], function (err, result, fields) {
          if (err) return core.terminal(1, 'Login.handle Error ' + err)

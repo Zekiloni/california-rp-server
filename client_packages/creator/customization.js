@@ -24,7 +24,6 @@ mp.events.add({
     'client:creator.show': () => {
         player.freezePosition(true);
         if (customizatorOpened == true) return;
-        mp.gui.chat.push('opened')
         customizationCEF = mp.browsers.new('package://creator/creator-interface/creator.html');
         setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
         mp.game.ui.displayRadar(false);
@@ -36,20 +35,8 @@ mp.events.add({
         player.setComponentVariation(8, 15, 0, 0);
     },
 
-    'client:creator.finish': (headOverlays, faceFeatures, blendData) => {
-        mp.game.ui.displayRadar(true);
-        mp.events.callRemote('server:updatePlayerCustomization', headOverlays, faceFeatures, blendData);
-        if (mp.browsers.exists(customizationCEF)) { customizationCEF.destroy() }
-        setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
-        player.freezePosition(false);
-        mp.events.call('client:creator.cam', false);
-        customizatorOpened = false;
-        mp.gui.chat.activate(true);
-    },
-
-
     'client:creator.cam': (toggle) => {
-        if(toggle) {
+        if (toggle) {
             bodyCamStart = player.position;
             let camValues = { Angle: player.getRotation(2).z + 90, Dist: 2.6, Height: 0.2 };
             let pos = getCameraOffset(new mp.Vector3(bodyCamStart.x, bodyCamStart.y, bodyCamStart.z + camValues.Height), camValues.Angle, camValues.Dist);
@@ -103,9 +90,19 @@ mp.events.add({
         player.setComponentVariation(11, 15, 0, 0);
         player.setComponentVariation(3, 15, 0, 0);
         player.setComponentVariation(8, 15, 0, 0);
-
         let shirt = player.getNumberOfDrawableVariations(11), bottom = player.getNumberOfDrawableVariations(4), shoes = player.getNumberOfDrawableVariations(6);
-        customizationCEF.execute(`maxmiums.drawables([${r1}, ${r2}, ${r3}]);`);
+        customizationCEF.execute(`customization.max([${shirt}, ${bottom}, ${shoes}]);`);
+    },
+
+    'client:creator.finsh': () => { 
+        mp.events.call('client:creator.cam', false);
+        if (mp.browsers.exists(customizationCEF)) { customizationCEF.destroy() }
+        customizatorOpened = false;
+        mp.events.callRemote('server:create.character');
+        mp.game.ui.displayRadar(true);
+        setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
+        player.freezePosition(false);
+        mp.gui.chat.activate(true);
     },
 
     'client:creator.preview': (x, data) => { 
@@ -114,6 +111,7 @@ mp.events.add({
         switch (x) { 
             case 'hair': {
                 mp.events.call('client:creator.cam.set', 2);
+                if (data[0] == 23 || data[0] == 24) return false;
                 player.setComponentVariation(2, parseInt(data[0]), 0, 0);
                 player.setHairColor(parseInt(data[1]), parseInt(data[2]));
                 break;
@@ -137,17 +135,29 @@ mp.events.add({
                 player.setHeadBlendData(parseInt(data[0]), parseInt(data[1]), 0, parseInt(data[2]), parseInt(data[3]), 0, parseFloat(data[4]), parseFloat(data[5]), 0, true);
                 break;
             }
-
-            case 'clothiing': { 
+            case 'clothing': { 
                 mp.events.call('client:creator.cam.set', 0);
-                player.setComponentVariation(11, parseInt(clothing[0][0]), parseInt(clothing[0][1]), 0);
-                player.setComponentVariation(4, parseInt(clothing[1][0]), parseInt(clothing[1][1]), 0);
-                player.setComponentVariation(6, parseInt(clothing[2][0]), parseInt(clothing[2][1]), 0);
+                player.setComponentVariation(11, parseInt(data[0][0]), parseInt(data[0][1]), 0);
+                player.setComponentVariation(8, parseInt(data[1][0]), parseInt(data[1][1]), 0);
+                player.setComponentVariation(4, parseInt(data[2][0]), parseInt(data[2][1]), 0);
+                player.setComponentVariation(6, parseInt(data[3][0]), parseInt(data[3][1]), 0);
                 break;
             }
-
+            case 'headOverlays': { 
+                mp.events.call('client:creator.cam.set', 2);
+                player.setHeadOverlay(0, parseInt(data[0]), 1.0, 0, 0);
+                player.setHeadOverlay(2, parseInt(data[1]), 1.0, 0, 0);
+                player.setHeadOverlay(3, parseInt(data[2]), 1.0, 0, 0);
+                player.setHeadOverlay(6, parseInt(data[5]), 1.0, 0, 0);
+                player.setHeadOverlay(7, parseInt(data[6]), 1.0, 0, 0);
+                player.setHeadOverlay(9, parseInt(data[8]), 1.0, 0, 0);
+                if (player.model == genders[1]) { 
+                    player.setHeadOverlay(5, parseInt(data[4]), 1.0, 0, 0);
+                    player.setHeadOverlay(8, parseInt(data[7]), 1.0, 0, 0);
+                    player.setHeadOverlay(4, parseInt(data[3]), 1.0, 0, 0);
+                }
+            }0
         }
-
     },
 
     'render': () => { 
