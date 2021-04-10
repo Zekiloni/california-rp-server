@@ -98,7 +98,7 @@ mp.events.add({
         mp.events.call('client:creator.cam', false);
         if (mp.browsers.exists(customizationCEF)) { customizationCEF.destroy() }
         customizatorOpened = false;
-        mp.events.callRemote('server:create.character');
+        mp.events.callRemote('server:create.character', character);
         mp.game.ui.displayRadar(true);
         setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
         player.freezePosition(false);

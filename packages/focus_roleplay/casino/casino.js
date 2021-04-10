@@ -36,12 +36,14 @@ mp.events.add('server:leaveCasinoSeat', (player) => {
 
 spinRouletteWheel = (player) => {
    rouletteEnd = Math.floor(Math.random() * 38);
-   lastTenWiningNumbers.push(rouletteEnd);
+   
    if(lastTenWiningNumbers.length > 9) {
       lastTenWiningNumbers = [];
    }
+   lastTenWiningNumbers.push(rouletteEnd);
+   
    if(rouletteEnd >= 0 && rouletteEnd <= 38) {
-      mp.call("client:spinRouletteWheel", player.rouletteTable, 10, `exit_${rouletteEnd}_wheel`, `exit_${rouletteEnd}_ball`);
+      mp.players.callInDimension(0, "client:spinRouletteWheel", player.rouletteTable, 10, `exit_${rouletteEnd}_wheel`, `exit_${rouletteEnd}_ball`);
    }
 }
 
