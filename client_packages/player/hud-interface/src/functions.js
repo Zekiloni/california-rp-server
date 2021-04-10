@@ -46,13 +46,6 @@ cashFormat = (x) => {
     return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
-curDate = () => { 
-    const d = new Date();
-    const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
-    const mo = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'short' }).format(d);
-    const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
-    return `${da}. ${mo} ${ye}`;
-}
 
 curTime = () => { 
     var now = new Date(), 
@@ -60,20 +53,7 @@ curTime = () => {
     return time;
 }
 
-notification = (message, type, time = 3) => { 
-    var msTime = time * 1000;
-    var border = 'info';
-    if (type == 'success') { border = 'uspesno'; }
-    else if (type == 'error') { border = 'greska'; }
-    else if (type == 'info') { border = 'info'; }
 
-    $('.notif').append(`<div class='notification ${border}'>${message}</div>`)
-    setTimeout(function() { 
-        $('.notification').fadeOut(3000, function() {
-            setTimeout(function() { $('.notification').remove(); }, 1500);
-        });
-    }, parseInt(msTime));
-}
 
 // function toDataUrl(url, callback) {
     
@@ -91,28 +71,6 @@ notification = (message, type, time = 3) => {
 //     xhr.send();
 // }
 
-
-screenshot = (ss) => { 
-    var img = new Image();
-    console.log('image created')
-    img.crossOrigin = 'Anonymous';
-    //img.setAttribute('crossOrigin', 'anonymous');
-    img.onload = (() => {
-            console.log('uso u try')
-            var canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            var dataURL = canvas.toDataURL("image/png");
-            console.log(dataURL)
-            alert(`${dataURL}`)
-    }); 
-    img.src = 'http://screenshots/127_0_0_1_22005/' + ss;
-    // toDataUrl(`http://screenshots/127_0_0_1_22005/${ss}`, (result) => {
-    //     console.log('screen '+ result)
-    // })
-}
 
 
 createSpeedo = () => { 

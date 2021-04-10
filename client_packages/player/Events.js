@@ -1,9 +1,18 @@
 const player = mp.players.local;
 let eatObject, drinkObject;
 
+
+mp.events.addDataHandler({
+   'logged': (entity, newValue, oldValue) => {
+      if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
+         player.logged = newValue;
+      }
+   },
+});
+
 mp.events.add({
    
-   'client:freezePlayer': (toggle) => {
+   'client:player.freeze': (toggle) => {
       player.freezePosition(toggle);
    },
 

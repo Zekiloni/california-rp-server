@@ -3,7 +3,6 @@ const player = mp.players.local;
 let onlinePlayers = mp.players.length;
 var playerHUD, isDriving = false;
 
-
 let pedHeadShot;
 let screenResolution = false;
 let screenshotBrowser = false;
@@ -13,7 +12,7 @@ mp.game.gameplay.setFadeOutAfterDeath(false);
 
 mp.events.add('client:hud.show', (show) => {
 	if (show)  {
-		playerHUD = mp.browsers.new('package://hud-interface/index.html');
+		playerHUD = mp.browsers.new('package://player/hud-interface/hud.html');
 		setInterval(() => { updatePlayerHud(); }, 1000);
 	}
 	else { 
@@ -22,7 +21,7 @@ mp.events.add('client:hud.show', (show) => {
 })
 
 mp.events.add('client:notification.show', (message, type, time) => {
-	playerHUD.execute(`notification(\"${message}\", \"${type}\", \"${time}\");`); 
+	playerHUD.execute(`hud.notification(\"${message}\", \"${type}\", \"${time}\");`); 
 })
 
 mp.events.addDataHandler('cash', (entity, newCash, oldCash) => {
@@ -89,7 +88,7 @@ mp.events.add({
 	},
 
 	'client:screenshot.taken': () => {
-		screenshotBrowser = mp.browsers.new("package://hud-interface/screenshot.html");
+		screenshotBrowser = mp.browsers.new("package://player/hud-interface/screenshot.html");
 	},
 
 	'browserDomReady': (browser) => {
