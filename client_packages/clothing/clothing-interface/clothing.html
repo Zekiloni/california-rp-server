@@ -1,26 +1,67 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="Auth Page">
-        <meta name="author" content="Zekiloni">
-        <title>Focus Roleplay - Clothing UI</title>
-        <link rel="stylesheet" type="text/css" href="resursi/vendor/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="resursi/stil.css">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <script src="resursi/vendor/js/jquery-3.5.1.js"></script>
-        <script src="resursi/vendor/js/bootstrap.min.js"></script>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
     </head>
     <body>
-        <div class="odeca">
-            <h2 class="naslov">Odeća</h2>
-            <div class="sadrzaj"></div>
+        <div id="clothing">
+            <ul>
+                <li v-for="(cloth, index) in player.clothings">
+                    <button @click="preview('clothings', index, 0)">minus 1</button> 
+                        {{ index }} - {{ cloth.x }} - {{ cloth.value }}
+                    <button @click="preview('clothings', index, 1)">plus 1</button> 
+                </li>
+              </ul>
         </div>
-        <div class="drzac-rotacije">
-            <label for="rotacija"> Rotacija <b id="verdnost-rotacije">0 °</b></label>
-            <input type="range" min="0" step="1" max="360" value="180" class="rotacija" id="rotacija">
-        </div>
-        <script src="resursi/functions.js"></script>
-    </body>
+          
+        <!-- scripts -->
+        <script src="src/vendor/js/vue.js"></script>
+        <script>
+            let clothing = new Vue({
+                el: '#clothing',
+                data: {
+                    gender: 1,
+                    player: { 
+                        clothings: [
+                            { i: 3, x: 'Torso', value: 0, tx: 0 },
+                            { i: 4, x: 'Legs', value: 0, tx: 0},
+                            { i: 5, x: 'Torbe', value: 0, tx: 0 },
+                            { i: 6, x: 'Obuća', value: 0, tx: 0 },
+                            { i: 7, x: 'Aseksoar,', value: 0, tx: 0 },
+                            { i: 8, x: 'Podmajce', value: 0, tx: 0 },
+                            { i: 9, x: 'Legs', value: 0, tx: 0 },
+                            { i: 11, x: 'Majce', value: 0, tx: 0 }
+                        ],
+                        props: [
+                            { i: 0, x: 'Kape, kačketi, maske', value: 0 },
+                            { i: 1, x: 'Optika i naoćare', value: 0 },
+                            { i: 2, x: 'Aseksoar za uši', value: 0 },
+                            { i: 6, x: 'Aseksoar za uši', value: 0 },
+                            { i: 7, x: 'Narukvice', value: 0 },
+                        ]
+                    }
+                },
+
+                methods: { 
+                    preview: function (s, i, v) { 
+                        v == 0 ? ( this.player[s][i].value -- ) : ( this.player[s][i].value ++ )
+                        mp.trigger('client:clothng.preview', s, i, v);
+                    },
+
+                    textures: e => { 
+
+                    }
+                }
+            })
+        </script>
+    </body>     
 </html>

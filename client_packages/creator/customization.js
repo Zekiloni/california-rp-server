@@ -103,6 +103,7 @@ mp.events.add({
         setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
         player.freezePosition(false);
         mp.gui.chat.activate(true);
+        mp.events.call('client:hud.show', true);
     },
 
     'client:creator.preview': (x, data) => { 
