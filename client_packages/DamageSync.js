@@ -8,7 +8,7 @@ const player = mp.players.local;
 mp.events.add('render',  function() {
   var healthLoss = 0;
   var armourLoss = 0;
-  if(lastHealth != player.getHealth()) {
+  if (lastHealth != player.getHealth()) {
       healthLoss = lastHealth - player.getHealth();
       lastHealth = player.getHealth();
   }
@@ -36,10 +36,10 @@ mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapo
       }
   }*/
 
-  if(targetEntity.type === 'vehicle') {
+  if (targetEntity.type === 'vehicle') {
     mp.events.callRemote('server:onVehicleDamage', targetEntity, boneIndex, damage);
   }
-  if(sourceEntity === targetEntity) {
+  if (sourceEntity === targetEntity) {
     mp.events.callRemote('server:onPlayerDamageHimself', damage);
   }
 });

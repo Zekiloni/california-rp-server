@@ -12,7 +12,7 @@ let photoName = null;
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
 mp.events.add('client:hud.show', (show) => {
-	if(show)  {
+	if (show)  {
 		playerHUD = mp.browsers.new('package://hud-interface/index.html');
 		setInterval(() => { updatePlayerHud(); }, 1000);
 	}
@@ -43,7 +43,7 @@ mp.keys.bind(0x77, true, function () {  //F8-Key
 	var date = new Date();
 	photoName = "focusrp-" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + "-" + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".png";
 	mp.gui.takeScreenshot(`${photoName}`, 1, 10, 0);
-	mp.events.call("playerheadshot_taken");
+	mp.events.call("client:screenshot.taken");
 });
 
 getPlayerHeading = () => { 
@@ -88,16 +88,16 @@ mp.events.add({
 		isDriving = toggle;
 	},
 
-	'playerheadshot_taken': () => {
+	'client:screenshot.taken': () => {
 		screenshotBrowser = mp.browsers.new("package://hud-interface/screenshot.html");
 	},
 
 	'browserDomReady': (browser) => {
 		if(browser != screenshotBrowser) return;
-		screenshotBrowser.call("client:recieveHeadshotImage", `http://screenshots/${photoName}`);
+		screenshotBrowser.call("client:screenshot.receive", `http://screenshots/${photoName}`);
   },
 
-  'client:sendScreenToServer': (base64) => {
+  'client:screenshot.send.to.server': (base64) => {
 		let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0);
 		let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
 		let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);

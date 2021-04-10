@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sccreenshot to Server Zeky</title>
+    <title>Screenshot to Server Zeky</title>
 </head>
 <body>
     <script src="assets/vendor/js/jquery-3.2.1.js"></script>
 
 <script>
-    mp.events.add("client:recieveHeadshotImage", (imgURL) => {
+    mp.events.add("client:screenshot.receive", (imgURL) => {
         var img = new Image();
         img.crossOrigin = 'Anonymous';
         img.src = imgURL;
@@ -34,7 +34,7 @@
             }
             $.ajax(settings).done(function (response) {
                 var respond = JSON.stringify(response)
-                mp.trigger('client:sendScreenToServer', respond);
+                mp.trigger('client:screenshot.send.to.server', respond);
             });
             
         }); 
