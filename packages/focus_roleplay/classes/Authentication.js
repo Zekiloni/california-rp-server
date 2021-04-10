@@ -45,13 +45,13 @@ mp.events.add({
          });
       }
       catch(e) {
-         core.terminal(1, '[server:create.character] [characters] Error ' + e)
+         core.terminal(1, '[server:create.character] [characters] Error ' + e);
       }
    
       try {
          db.query('INSERT INTO `appearances` (character_id, blendData, headOverlays, headOverlaysColors, hair, beard, torso, faceFeatures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [charID, characterData.blendData, characterData.headOverlays, characterData.headOverlaysColors, characterData.hair, characterData.beard, characterData.torso, characterData.faceFeatures], function (err, result, fields) {
-            if (err) core.terminal(1, 'Creating Character Appearance ' + err)        
-            let clothing = new Clothing();  // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'   
+            if (err) core.terminal(1, 'Creating Character Appearance ' + err);     
+            let clothing = new Clothing({});  // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'   
          });
       }
       catch(e) {

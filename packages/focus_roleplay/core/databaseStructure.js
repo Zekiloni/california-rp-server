@@ -100,6 +100,7 @@ let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
   beard text NOT NULL,
   torso int(2) NOT NULL DEFAULT 0,
   faceFeatures text NOT NULL,
+  clothes text NOT NULL,
   PRIMARY KEY(character_id))`;
 
 db.query(appearancesTable, function(err, results, fields) {
