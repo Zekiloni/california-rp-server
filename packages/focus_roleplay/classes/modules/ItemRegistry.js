@@ -41,6 +41,20 @@ mp.ItemRegistry = {
       hash: 'ng_proc_beerbottle_01a',
       weight: 0.03,
       type: ItemType.Drink
+   },
+
+   'Pizza HOT': { 
+      name: 'Pizza HOT',
+      hash: 'prop_pizza_box_01',
+      weight: 0.09,
+      type: ItemType.Food
+   },
+
+   'Pizza': { 
+      name: 'Pizza',
+      hash: 'prop_pizza_box_02',
+      weight: 0.09,
+      type: ItemType.Food
    }
 };
 
