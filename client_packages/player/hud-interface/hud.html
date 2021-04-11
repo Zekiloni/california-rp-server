@@ -38,8 +38,8 @@
             <div class="donji-ugao">
                 <div class="date-time">
                     <img class="icon" src="src/images/current-time.png">
-                    <h4 class="current-time">21:00</h4>
-                    <h4 class="current-date">18. Feb 2021</h4>
+                    <h4 class="current-time">{{ timestamp }}</h4>
+                    <h4 class="current-date">{{ datestamp }}</h4>
                 </div>
                 <div class="location">
                     <img class="icon" src="src/images/current-location.png">
@@ -59,11 +59,19 @@
                 money: null,
                 onlinePlayers: null,
 
+                timestamp: null,
+                datestamp: null,
+
                 location: { 
                     street: null,
                     zone: null,
                     heading: null
                 }
+            },
+
+            created() {
+                setInterval(this.getTime, 1000);
+                setInterval(this.getDate, 1000);
             },
 
             methods: { 
@@ -84,12 +92,21 @@
                     }, parseInt(msTime));
                 },
 
-                date: () => { 
+                getDate: () => { 
                     let now = new Date(),
-                        year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d),
-                        month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'short' }).format(d),
-                        day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
-                    return `${da}. ${mo} ${ye}`;
+                        year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(now),
+                        month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'short' }).format(now),
+                        day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
+                    this.datestamp = `${day}. ${month} ${year}`;
+                },
+
+                getTime: function () { 
+                    let now = new Date();
+                    this.timestamp = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+                },
+
+                cash: () => { 
+                    return this.money.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 }
             }
         })

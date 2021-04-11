@@ -43,14 +43,6 @@ vehicleInfo = function(speed, lights) {
 }
 
 cashFormat = (x) => {
-    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-}
-
-
-curTime = () => { 
-    var now = new Date(), 
-        time = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    return time;
 }
 
 
