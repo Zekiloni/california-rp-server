@@ -22,16 +22,17 @@
 
             </div>
 
-            <div class="weapons">
+            <div class="weapons" >
                 <div class="primary"> 
-                    <h2 v-if="player.weapons[0]"> {{ player.weapons[0] }} </h2>
+                    <h2  @click="weaponStore(0)"> {{ player.weapons[0] }} </h2>
+                    <h2 v-else> kurcina </h2>
                     <h5>primarno oružije</h5>
-                    <img v-bind:src="'src/images/primary_weapon.png'" />
+                    <img src="src/images/primary_weapon.png" />
                 </div>
                 <div class="secondary">
-                    <h2 v-if="player.weapons[1]"> {{ player.weapons[1] }} </h2>
+                    <h2 v-if="player.weapons[1]" @click="weaponStore(1)"> {{ player.weapons[1] }} </h2>
                     <h5>sekundarno oružije</h5>
-                    <img v-bind:src="'src/images/secondary_weapon.png'" />
+                    <img src="src/images/secondary_weapon.png" />
                 </div>
             </div>
         </div>
@@ -46,38 +47,28 @@
                         money: null,
                         clothing: [0, 0, 0, 0, 0],
                         weapons: ['Combat Pistol', 'Secondary'],
-                        items: []
+                        items: [ 
+                            { id: 0, name: 'Combat Pistol', quantity: 2, type: 'weapon' }
+                        ]
                     },
                 },
 
                 methods: { 
+                    weaponStore: function (i) { 
+                        console.log(this.player.weapons[i])
+                        delete this.player.weapons[i];
+                        console.log(this.player.weapons[i])
 
-                    add: function (name, price) { 
-                        this.player.cart.push({ item: name, price: price })
                     },
 
-                    remove: function (i) { 
-                        let index = this.player.cart.indexOf(i);
-                        this.player.cart.splice(index, 1);
-                    },
-
-                    total: function () { 
-                        let price = 0;
-                        for (let i in this.player.cart) { price = price + this.player.cart[i].price; }
-                        return price;
-                    },
-
-                    empty: function () {
-                        this.player.cart = [];
-                    },
-
-                    cashout: function() {
-                        let items = this.player.cart;
-                        let bill = this.total();
-                        setTimeout(() => { this.empty(); }, 200);
-                        mp.trigger('client:market.buy', bill, JSON.stringify(items))
+                    startDrag: (evt, item) => {
+                        evt.dataTransfer.dropEffect = 'move'
+                        evt.dataTransfer.effectAllowed = 'move'
+                        evt.dataTransfer.setData('itemID', item.id)
                     }
                 }
+
+                
             })
 
         </script>

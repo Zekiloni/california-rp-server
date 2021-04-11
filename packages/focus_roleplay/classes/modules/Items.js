@@ -15,7 +15,10 @@ mp.ItemRegistry = {
       hash: 'w_ar_carbinerifle',
       weapon: 'weapon_carbinerifle',
       weight: 0.03,
-      type: ItemType.Weapon
+      type: ItemType.Weapon,
+      use: (player) => { 
+         player.giveWeapon(mp.joaat(weapon), 0);
+      }
    },
    
    'Combat Pistol': { 

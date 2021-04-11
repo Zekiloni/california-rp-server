@@ -6,13 +6,13 @@ let NameTags = require('./player/NameTags');
 let DamageSync = require('./DamageSync');
 let PlayerEvents = require('./player/Events');
 let PlayerLst = require('./player/PlayerList');
+let PlayerInventory = require('./player/inventory/inventory');
 
 
 let binds = require('./player/binds');
 
 var animals = require('./animals');
 var charClohing = require('./clothing/clothing');
-var inventory = require('./inventory/inventory');
 // var interactionsMenu = require('./interactions-menu/interactions')
 var bankingATM = require('./banking/atm');
 var vehicles = require('./vehicles');

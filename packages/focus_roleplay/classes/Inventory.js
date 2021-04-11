@@ -5,6 +5,10 @@ let info = require('./modules/Items');
 class Inventory { 
    constructor () { 
       mp.events.add({
+         'server:inventory.get': (player) => { 
+            player.call('client:inventory.toggle', [true])
+         },
+
          'server:item.drop': (player, item, quantity) => { 
 
          },
@@ -14,11 +18,35 @@ class Inventory {
          },
 
          'server:item.use': (player, item) => { 
+            item = mp.items[item];
+            if (item) { 
+               if (item.quantity > 0) item.quantity --; 
+               else delete item;
 
+               item.use(player)
+            }
          },
 
-         'server:item.give': (player, item) => { 
+         'server:item.give': (player, target, item, quantity = 1) => { 
+            item = mp.items[item];
+            target = mp.players.at(target);
+            if (!target) return;
 
+            if (item) { 
+               if (item.quantity < quantity) return player.notification('Nemate tu količinu', 'error', 3);
+
+               if (quantity > 1) { 
+                  if (item.quantity > 1) { 
+                     item.quantity --;
+                  } else { 
+                     delete item;
+                  }
+                  item.owner = mp.characters[target.character];
+
+               } else { 
+
+               }
+            }
          }
       })
    }

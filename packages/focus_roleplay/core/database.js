@@ -5,8 +5,8 @@ var mysql = require('mysql');
 var db = mysql.createPool({
      connectionLimit: 100,
      host     : 'localhost',
-     user     : 'focus-roleplay',
-     password : 'l65P2Q99sRehYw1s',
+     user     : 'root',
+     password : '',
      database : 'focus'
 });
 
