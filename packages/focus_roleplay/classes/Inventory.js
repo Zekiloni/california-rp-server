@@ -10,10 +10,34 @@ class Inventory {
          },
 
          'server:item.drop': (player, item, quantity) => { 
-
+            let nearItem = this.near(player),
+                name = mp.items[item].item;
+            
+            if (nearItem) {
+               if (nearItem.item == name) {
+                  nearItem.quantity += quantity;
+                  delete mp.items[item];
+               }              
+            }
+            else {
+               this.create(player, quantity, name);              
+            }
          },
 
          'server:item.pickup': (player) => { 
+            let nearItem = this.near(player);
+            
+            if (nearItem) {
+               if(!hasItem) {
+                  nearItem.owner = player.character;
+                  nearItem.entity = INVENTORY_ENTITIES.Player;
+                  nearItem.delete();
+               }
+               else {
+                  
+               }
+               
+            } 
 
          },
 
@@ -88,6 +112,16 @@ class Inventory {
       });
 
       return result;
+   }
+
+   hasItem = (player, item) => { 
+      for (let i of mp.items) { 
+         if (mp.items[i].item == item) { 
+            if (mp.items[i].owner == player.character) { 
+               return true;
+            } else return false;
+         } else return false;
+      }
    }
 }
 

@@ -29,9 +29,16 @@ class Item {
       mp.items[this.id] = this;
    }
 
-   delete () { 
+   destroy () { 
       this.object.destroy();
       this.object = null;
+   }
+
+   delete () {
+      if (this.object != null) {
+         this.object.destroy();
+         this.object = null;
+      }
       delete mp.items[this.id];
    }
 }

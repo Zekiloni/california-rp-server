@@ -1,5 +1,5 @@
 
-global.INVENTORY_ENTITIES = { 
+const INVENTORY_ENTITIES = { 
    Ground: -1, Player: 0, Vehicle: 1, House: 2, 
    Wheel: 3, LeftHand: 4, RightHand: 5
 }
