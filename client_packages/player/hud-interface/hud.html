@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+    </head>
+    <body>
+        <div id="hud">
+            <div class="server">
+                <h3 class="site">www.<b class="focus-rp">focus-rp</b>.com</h3>
+                <h6 class="online">online <b class="online-players">127</b> <i class="icon fa fa-users" aria-hidden="true"></i></h6>
+            </div>  
+
+            <div class="notif"></div>
+
+            <div class="player">
+                <h4 class="money"><b>&dollar;</b><span class="player-money">33</span></h4>
+            </div>
+            
+            <div class="vehicle">
+                <canvas id="speedo">guage</canvas>
+                <div class="veh-info">
+                    <h1 class="vehicle-speed">74</h1>
+                    <h4>km/h</h4>
+                </div>
+                <img class="fuel-icon" src="src/images/veh-fuel.png">
+                <img class="lights-icon" src="src/images/lights-0.png">
+            </div>
+
+            <div class="donji-ugao">
+                <div class="date-time">
+                    <img class="icon" src="src/images/current-time.png">
+                    <h4 class="current-time">{{ timestamp }}</h4>
+                    <h4 class="current-date">{{ datestamp }}</h4>
+                </div>
+                <div class="location">
+                    <img class="icon" src="src/images/current-location.png">
+                    <h4 class="current-heading"> {{ location.heading }} </h4>
+                    <h4 class="current-zone">{{ location.zone }}</h4>
+                    <h5 class="current-street">{{ location.street }}</h5>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="src/vendor/js/jquery-3.2.1.js"></script>
+    <script src="src/vendor/js/vue.js"></script>
+    <script>
+        let hud = new Vue({
+            el: '#hud',
+            data: {
+                money: null,
+                onlinePlayers: null,
+
+                timestamp: null,
+                datestamp: null,
+
+                location: { 
+                    street: null,
+                    zone: null,
+                    heading: null
+                }
+            },
+
+            created() {
+                setInterval(this.getTime, 1000);
+                setInterval(this.getDate, 1000);
+            },
+
+            methods: { 
+                notification: (message, type, time = 3) => { 
+                    let msTime = time * 1000, border;
+                    switch (type) { 
+                        case 'success': border = 'uspesno'; break;
+                        case 'error': border = 'greska'; break;
+                        case 'info': border = 'info'; break;
+                        default: border = 'info';
+                    }
+
+                    $('.notif').append(`<div class='notification ${border}'>${message}</div>`)
+                    setTimeout(function() { 
+                        $('.notification').fadeOut(3000, function() {
+                            setTimeout(function() { $('.notification').remove(); }, 1500);
+                        });
+                    }, parseInt(msTime));
+                },
+
+                getDate: () => { 
+                    let now = new Date(),
+                        year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(now),
+                        month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'short' }).format(now),
+                        day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
+                    this.datestamp = `${day}. ${month} ${year}`;
+                },
+
+                getTime: function () { 
+                    let now = new Date();
+                    this.timestamp = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+                },
+
+                cash: () => { 
+                    return this.money.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                }
+            }
+        })
+
+    </script>
+</html>

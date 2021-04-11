@@ -52,12 +52,7 @@ mp.events.addCommand({
          return false; 
       } 
 
-      let position = recipient.position;
-      clearTimeout(recipient.respawnTimer)
-      recipient.isDead = false;
-      setTimeout(() => { recipient.spawn(position); }, 700)
-      recipient.outputChatBox(`${player.name} vas je oziveo !`);
-      player.outputChatBox(`Oziveli ste ${recipient.name} !`);
+
    },
 
    'makeadmin': (player, fullText, target, adminLevel) => { 
