@@ -8,6 +8,7 @@ mp.colors = {
    radio: 'FFFF99',
    pm: { from: 'FFD500', to: 'FCBD00' },
    tomato: 'FF6347',
+   admin: 'F17270',
    info: 'E2D051',
    server: '0792E5',
 }

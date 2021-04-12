@@ -11,13 +11,6 @@ const loadClipSet = (clipSetName) => {
 loadClipSet(movementClipSet);
 loadClipSet(strafeClipSet);
 
-mp.events.add("entityStreamIn", (entity) => {
-    if (entity.type === "player" && entity.getVariable("crouching")) {
-        entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
-        entity.setStrafeClipset(strafeClipSet);
-    }
-});
-
 mp.events.addDataHandler("crouching", (entity, value) => {
     if (entity.type === "player") {
         if (value) {
@@ -30,9 +23,16 @@ mp.events.addDataHandler("crouching", (entity, value) => {
     }
 });
 
+mp.events.add("entityStreamIn", (entity) => {
+    if (entity.type === "player" && entity.crouching) {
+        entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
+        entity.setStrafeClipset(strafeClipSet);
+    }
+});
+
+
 mp.keys.bind(0x12, false, () => { // testirati
-    if(localPlayer.getVariable("cuffed") || localPlayer.getVariable("frozen")) return;
     let lastCheck = new Date().getTime();
     if (new Date().getTime() - lastCheck < 1000 || localplayer.vehicle) return;
-    mp.events.callRemote("server:toggleCrouch");
+    mp.events.callRemote("server:player.crouch");
 });

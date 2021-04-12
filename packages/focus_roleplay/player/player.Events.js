@@ -1,8 +1,5 @@
 
 
-mp.events.add("server:playerDamage", (player, healthLoss, armorLoss) => {
-  // armorLoss - hp
-});
 
 mp.events.add("server:onPlayerDamageHimself", (player, healthLoss) => {
   // 

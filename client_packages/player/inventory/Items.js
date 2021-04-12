@@ -22,6 +22,13 @@ mp.events.add({
 
   'client:inventory.item': (item, status, target = -1, quantity = 1) => { 
       mp.events.callRemote('server:processInventoryItem', item, status, target, quantity);
+  },
+
+  'entityStreamIn': (entity) => {
+      if (entity.type === 'object') {
+         if (entity.item) { 
+         }
+      }
   }
 })
 
@@ -36,3 +43,8 @@ mp.keys.bind(0x49, false, function() {
    }
 });
 
+mp.keys.bind(0x59, false, function() {
+   if (!player.logged) return;
+   if (!player.spawned) return;
+   mp.events.callRemote('server:item.pickup');
+});

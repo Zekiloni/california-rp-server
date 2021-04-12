@@ -13,6 +13,7 @@ mp.events.add({
          let info = result[0];
          player.character = character;
          player.name = info.first_name + ' ' + info.last_name;
+         player.defaultVariables();
          
          player.data.spawned = true;
          let clothing = new Clothing();
@@ -40,6 +41,7 @@ mp.events.add({
          player.name = characterData.firstname + ' ' + characterData.lastname;
          player.dimension = 0;
          player.data.spawned = true;
+         player.frozen = false;
          player.position = mp.settings.defaultSpawn;
       });
    

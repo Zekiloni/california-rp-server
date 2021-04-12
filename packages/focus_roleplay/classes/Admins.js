@@ -15,12 +15,6 @@ class Admin {
 
          }
       })
-
-      mp.events.addCommand({
-         'a': (player, message) => { 
-            this.broadcast(player, message)
-         }
-      })
    }
 
 
@@ -29,21 +23,15 @@ class Admin {
    }
 
    broadcast = (player, message) => { 
-      let playerAccount = mp.accounts[player.account];
-      // if (!playerAccount.isAdmin(1)) return player.notificcation;
-      
       mp.players.forEach( (target) => { 
-         let account = mp.accounts[target.account];
-         let admin = account.isAdmin(1);
-         if (admin) { 
-            target.outputChatBox(`!${"0080FF"} A | !${"FFFFFF"} ${message}`);
+         if (mp.accounts[target.account].admin >= 1) { 
+            target.sendMessage(`${mp.admins[mp.accounts[target.account].admin]} ${player.name} [${player.id}]: ${message}`, mp.colors.admin)
          }
       })
    }
 }
 
 mp.admin = new Admin();
-
 
 mp.reports = {};
 
@@ -66,3 +54,4 @@ mp.report = {
       delete mp.reports[player];
    }
 }
+

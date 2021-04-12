@@ -44,6 +44,7 @@ class Houses {
    constructor () { 
       mp.events.add({
          'playerEnterColshape': (player, shape) => { 
+            if (player.vehicle) return;
             if (shape.house) { 
                player.near = { type: 'house', id: shape.house };
                let house = mp.houses[shape.house];

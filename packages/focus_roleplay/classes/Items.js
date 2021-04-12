@@ -6,7 +6,7 @@ class Item {
    constructor (id, data) { 
       this.id = id;
       this.item = data.item;
-      this.entity = data.entity || -1;
+      this.entity = data.entity;
       this.owner = data.owner || -1;
       this.quantity = data.quantity;
       this.position = data.position;
@@ -27,6 +27,14 @@ class Item {
             dimension: this.dimension
          });
          this.object.item = this.id;
+         this.object.notifyStreaming = true;
+         console.log('zemlja')
+      } else { 
+         if (this.object) { 
+            this.object.destroy();
+            console.log('nije zemlja')
+
+         }
       }
    }
 
@@ -68,24 +76,26 @@ class Inventory {
 
          'server:item.pickup': (player) => { 
             let nearItem = this.near(player),
-                hasItem = this.hasItem(player);
+                hasItem = this.hasItem(player, nearItem.item);
             
             if (nearItem) {
                if (hasItem) {
                   hasItem.quanity += nearItem.quanity;
                   hasItem.entity = ItemEntities.Player;
-                  nearItem.delete();
+                  nearItem.refresh();
                   // Update
+                  console.log('podigao imao vec tem')
                }
                else {
                   nearItem.owner = player.character;
                   nearItem.entity = ItemEntities.Player;
-                  nearItem.destroy();
+                  nearItem.refresh();
+                  console.log('podigao nije imao item')
+
                   // Update 
                }
-               
+               this.update(nearItem)
             } 
-
          },
 
          'server:item.use': (player, item) => { 
@@ -127,7 +137,7 @@ class Inventory {
          if (err) return core.terminal(1, 'Loading Items ' + err);
          results.forEach(result => {
             let item = new Item(result.id, { 
-               item: result.item,  entity: result.entity, owner: result.owner, quantity: result.quantity, 
+               item: result.item, entity: result.entity, owner: result.owner, quantity: result.quantity, 
                position: JSON.parse(result.position), dimension: result.dimension, extra: result.extra
             });
             item.refresh();
@@ -165,7 +175,7 @@ class Inventory {
    }
 
    update = (item) => {
-      db.query("UPDATE `item` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ? WHERE id = ?", 
+      db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ? WHERE id = ?", 
             [item.quanity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Update Item ' + err);
       });
@@ -175,7 +185,7 @@ class Inventory {
       let result = null;
       mp.objects.forEach(object => {
          if (object.item) { 
-            if (player.disct(object.position) < 2.5) { 
+            if (player.dist(object.position) < 2.5) { 
                result = mp.items[object.item];
             }
          }
@@ -183,14 +193,16 @@ class Inventory {
       return result;
    }
 
-   hasItem = (player, item) => { 
-      for (let i of mp.items) { 
-         if (mp.items[i].item == item) { 
-            if (mp.items[i].owner == player.character) { 
-               return mp.items[i];
-            } else return false;
-         } else return false;
+   hasItem = (char, item) => { 
+      let result = false;
+      for (let i in mp.items) { 
+         if (mp.items[i].entity == ItemEntities.Player && mp.items[i].owner == char) { 
+            if (mp.items[i].item == item) { 
+               result = mp.items[i];
+            }
+         }
       }
+      return result;
    }
 }
 

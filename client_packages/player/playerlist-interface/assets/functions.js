@@ -2,7 +2,7 @@
 
 $(window).on('load', function() { $('.box').fadeIn(100) })
 
-closePlayerList = () => { mp.trigger('client:hidePlayerList'); }
+closePlayerList = () => { mp.trigger('client:players.list', false); }
 
 var players;
 

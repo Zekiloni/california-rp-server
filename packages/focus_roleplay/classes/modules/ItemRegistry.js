@@ -16,7 +16,7 @@ mp.ItemRegistry = {
       name: 'M4 Carbine Rifle',
       hash: 'w_ar_carbinerifle',
       weapon: 'weapon_carbinerifle',
-      weight: 0.03,
+      weight: 0.1,
       type: ItemType.Weapon,
       use: (player) => { 
          player.giveWeapon(mp.joaat(weapon), 0);
@@ -27,8 +27,21 @@ mp.ItemRegistry = {
       name: 'Combat Pistol',
       hash: 'w_pi_combatpistol',
       weapon: 'weapon_combatpistol',
-      weight: 0.03,
-      type: ItemType.Weapon
+      weight: 0.08,
+      caliber: '9mm Ammo',
+      type: ItemType.Weapon,
+      use: (player) => { 
+         player.giveWeapon(mp.joaat(weapon), 0);
+      }
+   },
+
+   '9mm Ammo': { 
+      weight: 0.01,
+      use: (player) => { 
+         if (player.weapon) { 
+            if (mp.ItemRegistry[player.weapon.name]) { }
+         }
+      }
    },
 
    'Cheeseburger': { 

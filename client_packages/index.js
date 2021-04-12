@@ -6,7 +6,7 @@ let NameTags = require('./player/NameTags');
 let DamageSync = require('./DamageSync');
 let PlayerEvents = require('./player/Events');
 let PlayerLst = require('./player/PlayerList');
-let PlayerInventory = require('./player/inventory/inventory');
+let PlayerInventory = require('./player/inventory/Items');
 
 
 let binds = require('./player/binds');
