@@ -22,6 +22,7 @@ let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
 let Houses = require('./classes/Houses');
+let Dealerships = require('./classes/Dealership');
 let Business = require('./classes/Business');
 let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
@@ -38,7 +39,6 @@ global.account = require('./player/player.Core');
 // var playerCommands = require('./player/player.Commands');
 // var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
-var dealershipVehicles = require('./vehicles/vehicles.List');
 var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
@@ -142,7 +142,7 @@ mp.events.addCommand("dzok", (player, fullText, dict, anim) => {
 })
 
 mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => { 
-    player.call('client:showVehicleDealership', [OFFROADS])
+    player.call('client:vehicle.dealership', [true, mp.dealerships.sedans])
 })
 
 mp.events.addCommand("cobject", (player, fullText, model) => { 

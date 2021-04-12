@@ -1,6 +1,6 @@
 
 
-let info = require('./modules/ItemRegistry');
+let { ItemEntities, ItemType } = require('./modules/ItemRegistry');
 
 class Item { 
    constructor (id, data) { 
@@ -9,14 +9,18 @@ class Item {
       this.entity = data.entity || -1;
       this.owner = data.owner || -1;
       this.quantity = data.quantity;
-      this.position = JSON.parse(data.position);
+      this.position = data.position;
       this.dimension = data.dimension || 0;
       this.object = data.object || null;
       this.colshape = null;
       this.extra = data.extra || null;
 
+      mp.items[this.id] = this;
+   }
+
+   refresh () { 
       if (this.entity == -1) { 
-         this.object = mp.objects.new(this.info.hash, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93),
+         this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93),
          {
             rotation: new mp.Vector3(-90, 0, 0),
             alpha: 255,
@@ -24,8 +28,6 @@ class Item {
          });
          this.object.item = this.id;
       }
-
-      mp.items[this.id] = this;
    }
 
    destroy () { 
@@ -71,13 +73,13 @@ class Inventory {
             if (nearItem) {
                if (hasItem) {
                   hasItem.quanity += nearItem.quanity;
-                  hasItem.entity = INVENTORY_ENTITIES.Player;
+                  hasItem.entity = ItemEntities.Player;
                   nearItem.delete();
                   // Update
                }
                else {
                   nearItem.owner = player.character;
-                  nearItem.entity = INVENTORY_ENTITIES.Player;
+                  nearItem.entity = ItemEntities.Player;
                   nearItem.destroy();
                   // Update 
                }
@@ -89,9 +91,8 @@ class Inventory {
          'server:item.use': (player, item) => { 
             item = mp.items[item];
             if (item) { 
-               if (item.quantity > 0) item.quantity --; 
-               else delete item;
-
+               item.quantity --;
+               if (item.quantity < 1) { delete mp.items[item.id]; }
                item.use(player)
             }
          },
@@ -121,7 +122,19 @@ class Inventory {
    }
 
    load = () => { 
-   
+      let counter = 0;
+      db.query("SELECT * from items", function (err, results, fields) { 
+         if (err) return core.terminal(1, 'Loading Items ' + err);
+         results.forEach(result => {
+            let item = new Item(result.id, { 
+               item: result.item,  entity: result.entity, owner: result.owner, quantity: result.quantity, 
+               position: JSON.parse(result.position), dimension: result.dimension, extra: result.extra
+            });
+            item.refresh();
+            counter ++;
+         });
+         core.terminal(3, counter + ' Items loaded')
+      })
    }
 
    create = (player, quantity, item, entity) => { 
@@ -141,12 +154,12 @@ class Inventory {
       }
    }
 
-   remove = (itemId) => { 
-      let found = mp.items[itemId];
+   remove = (item) => { 
+      let found = mp.items[item.id];
       if (found) { 
-         db.query("DELETE FROM `items` WHERE id = ?", [itemId], function(err, result, fields) {
+         db.query("DELETE FROM `items` WHERE id = ?", [item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Remove Item ' + err);
-            delete mp.items[itemId];
+            delete mp.items[item.id];
          })
       }
    }
@@ -167,7 +180,6 @@ class Inventory {
             }
          }
       });
-
       return result;
    }
 
@@ -184,3 +196,4 @@ class Inventory {
 
 mp.items = {};
 mp.item = new Inventory();
+mp.item.load();

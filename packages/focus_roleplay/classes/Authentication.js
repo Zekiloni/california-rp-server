@@ -26,24 +26,22 @@ mp.events.add({
    },
 
    'server:create.character': (player, character) => {      
-      let characterData = JSON.parse(character),
-          charId = -1;
+      let characterData = JSON.parse(character), characterID;
       
       db.query('INSERT INTO `characters` (master_account, first_name, last_name, sex, birth_date, origin) VALUES (?, ?, ?, ?, ?, ?)', [player.account, characterData.firstname, characterData.lastname, characterData.gender, characterData.birth, characterData.origin, characterData.cash], function (err, result, fields) {
          if (err) core.terminal(1, 'Creating Character ' + err);
          
          let newChar = new Character({
-            account: player.account, character: charId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin
+            account: player.account, character: result.insertId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin
          })
          
-         player.character = newChar;
+         player.character = result.insertId;
          player.name = characterData.firstname + ' ' + characterData.lastname;
          player.dimension = 0;
          player.position = mp.settings.defaultSpawn;
-         charId = result.insertId;      
       });
    
-      db.query('INSERT INTO `appearances` (character_id, blendData, headOverlays, headOverlaysColors, hair, beard, torso, faceFeatures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [charID, characterData.blendData, characterData.headOverlays, characterData.headOverlaysColors, characterData.hair, characterData.beard, characterData.torso, characterData.faceFeatures], function (err, result, fields) {
+      db.query('INSERT INTO `appearances` (character_id, blendData, headOverlays, headOverlaysColors, hair, beard, torso, faceFeatures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [player.character, characterData.blendData, characterData.headOverlays, characterData.headOverlaysColors, characterData.hair, characterData.beard, characterData.torso, characterData.faceFeatures], function (err, result, fields) {
          if (err) core.terminal(1, 'Creating Character Appearance ' + err);     
          let clothing = new Clothing({});  // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'   
       });

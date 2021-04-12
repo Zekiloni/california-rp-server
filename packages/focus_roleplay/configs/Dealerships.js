@@ -1,5 +1,5 @@
-global.DEALERSHIP_VEHICLES = [ 
-   MOTORCYCLES = [
+mp.dealerships = { 
+   motorcycles: [
       { model: 'akuma', price: 3000, name: 'Akuma' },
       { model: 'avarus', price: 3000, name: 'Avarus' },
       { model: 'bagger', price: 3000, name: 'Bagger' },
@@ -49,13 +49,13 @@ global.DEALERSHIP_VEHICLES = [
       { model: 'manchez2', price: 3000, name: 'Manchez Scout' },
    ],
 
-   OFFROADS = [
+   offroads: [
       { model: 'dubsta3', name: 'Dubsta 6x6 Wagoon', price: 120000 },
       { model: 'riata', name: 'Riata Wagoon', price: 17820 },
       { model: 'vagrant', name: 'Vagrant Wagoon', price: 14000 }
    ],
 
-   CYCLES = [ 
+   cycles: [ 
       { model: 'bmx', price: 3000, name: 'BMX' },
       { model: 'cruiser', price: 3000, name: 'Cruiser' },
       { model: 'fixter', price: 3000, name: 'Fixter' },
@@ -65,10 +65,18 @@ global.DEALERSHIP_VEHICLES = [
       { model: 'tribike3', price: 3000, name: 'Tri-Cycles Race Bike' }
    ],
 
-   SALOONS = [ 
-      { model: 'elegy', price: 45000, name: 'Elegy Brzi' }
+   sedans: [ 
+      { model: 'asea', price: 45000, name: 'Declasse Asea' },
+      { model: 'asterope', price: 22150, name: 'Karin Asterope' },
+      { model: 'cog55', price: 27000, name: 'Enus Cognoscenti 55' },
+      { model: 'intruder', price: 15000, name: 'Karin Intruder' },
+      { model: 'cognoscenti', price: 17000, name: 'Enus Cognoscenti' },
+      { model: 'ingot', price: 16500, name: 'Vulcar Ingot' },
+      { model: 'glendale', price: 13500, name: 'Glendale' },
+      { model: 'fugitive', price: 25000, name: 'Cheval Fugitive' },
+      { model: 'primo', price: 17000, name: 'Albany Primo' },
+      { model: 'stanier', price: 22000, name: 'Vapid Stanier' },
+      { model: 'surge', price: 18000, name: 'Cheval Surge' },
    ]
+}
 
-
-]
-   
