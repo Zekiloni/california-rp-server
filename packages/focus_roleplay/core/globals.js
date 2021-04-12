@@ -23,7 +23,8 @@ global.MESSAGES = [
    MSG_DOORS_LOCKED = 'Zaključali ste vrata',
    MSG_DOORS_UNLOCKED = 'Otključali ste vrata',
    MSG_NOT_ON_DUTY = 'Niste na dužnosti.',
-   MSG_ALREADY_WORKING = 'Već radite.'
+   MSG_ALREADY_WORKING = 'Već radite.',
+   MSG_INVALID_BUSSINES_TYPE = 'Nepoznat tip biznisa'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

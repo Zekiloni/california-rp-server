@@ -17,7 +17,7 @@ colorPicker = new ColorPicker.Default('#color-picker', {
 });
 
 colorPicker.on('change', function (color) {
-    mp.trigger('client:vehicleColorPreview', colorPreview, color.hex);
+    mp.trigger('client:vehicle.color.preview', colorPreview, color.hex);
 });
 
 $(window).on('load', function() { $('.box').fadeIn(1000); })
@@ -46,7 +46,7 @@ vehInfo = (index) => {
         vehName = vehicles[index].name;
     $('#veh-model').text(vehName)
     $('#veh-price').text(vehPrice)
-    mp.trigger('client:vehiclePreview', vehicles[index].model)
+    mp.trigger('client:vehicle.model.preview', vehicles[index].model)
 }
 
 vehPreview = (n) => { 

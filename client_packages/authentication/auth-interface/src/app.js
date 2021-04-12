@@ -25,7 +25,10 @@ const error = (message, fields = 0) => {
 }
 
 const goToCreator = () => { 
-   mp.trigger('client:creator.show')
+   $('.selector-wrapper').fadeOut(2000, function() {
+      mp.trigger('client:login.hide');
+      mp.trigger('client:creator.show');
+   });
 }
 
 const selector = { 
@@ -44,8 +47,6 @@ const selector = {
       $(selector.element).css('display', 'flex')
 
       selector.load();
-      console.log(player.characters);
-      console.log(JSON.stringify(player.characters))
    },
 
    select: (char) => { 
@@ -58,7 +59,6 @@ const selector = {
       for (i = 0; i < 3; i ++) {
          if (player.characters[i]) { 
             let char = player.characters[i];
-            // $(selector.character[i]).attr('', ``);
             $(selector.character[i]).append(`
                <div class='char-info' onclick='selector.select(${char.id})'>
                   <h2 id='char-name'>${char.first_name} ${char.last_name}</h2>

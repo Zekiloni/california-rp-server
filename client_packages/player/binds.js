@@ -1,4 +1,3 @@
-const player = mp.players.local;
 
 // L - ZAKLJUCAVANJE // 0x4C
 // Y - MOTOR VOZILA // 0x59
@@ -9,17 +8,3 @@ const player = mp.players.local;
 // NUM 2 - RUKE U VIS
 
 // engines off by default
-player.setConfigFlag(429, true);
-mp.game.vehicle.defaultEngineBehaviour = false;
-
-mp.keys.bind(0x4C, false, function() {
-   if (!player.loggedIn) return false;
-
-});
-
-mp.keys.bind(0x59, false, function() {
-   if (!player.loggedIn) return false;
-   if (mp.players.local.isTypingInTextChat) return false;
-   if (!player.vehicle) return false;
-   mp.events.callRemote('server:vehicleEngine', player.vehicle);
-});

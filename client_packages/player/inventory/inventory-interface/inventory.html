@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+    </head>
+    <body>
+        <div id="inventory">
+            <div class="clothing">
+
+            </div>
+
+            <div class="items">
+
+            </div>
+
+            <div class="weapons" >
+                <div class="primary"> 
+                    <h2  @click="weaponStore(0)"> {{ player.weapons[0] }} </h2>
+                    <h2 v-else> kurcina </h2>
+                    <h5>primarno oružije</h5>
+                    <img src="src/images/primary_weapon.png" />
+                </div>
+                <div class="secondary">
+                    <h2 v-if="player.weapons[1]" @click="weaponStore(1)"> {{ player.weapons[1] }} </h2>
+                    <h5>sekundarno oružije</h5>
+                    <img src="src/images/secondary_weapon.png" />
+                </div>
+            </div>
+        </div>
+          
+        <!-- scripts -->
+        <script src="src/vendor/js/vue.js"></script>
+        <script>
+            let inventory = new Vue({
+                el: '#inventory',
+                data: {
+                    player: {
+                        money: null,
+                        clothing: [0, 0, 0, 0, 0],
+                        weapons: ['Combat Pistol', 'Secondary'],
+                        items: [ 
+                            { id: 0, name: 'Combat Pistol', quantity: 2, type: 'weapon' }
+                        ]
+                    },
+                },
+
+                methods: { 
+                    weaponStore: function (i) { 
+                        console.log(this.player.weapons[i])
+                        delete this.player.weapons[i];
+                        console.log(this.player.weapons[i])
+
+                    },
+
+                    startDrag: (evt, item) => {
+                        evt.dataTransfer.dropEffect = 'move'
+                        evt.dataTransfer.effectAllowed = 'move'
+                        evt.dataTransfer.setData('itemID', item.id)
+                    }
+                }
+
+                
+            })
+
+        </script>
+    </body>     
+</html>

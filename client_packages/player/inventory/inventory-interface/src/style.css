@@ -1,0 +1,95 @@
+
+body {
+   font-family: 'Roboto', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   line-height: 1.5;
+   color: #8e8e8e;
+   margin: 0;
+   width: 100%;
+   height: 100vh;
+   background: rgb(0 0 0 / 70%);
+   padding: 0;
+   position: relative;
+   overflow: hidden;
+}
+
+#inventory {
+   width: 100%;
+   height: 100%;
+   margin: auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.clothing { 
+   width: 300px; 
+   margin: 10px;
+   height: 500px;
+   background: blue;
+   animation: slide-in 1s;
+}
+
+.items { 
+   width: 650px;
+   height: 500px;
+   margin: 10px;
+   background: red;
+   animation: slide-in 1.25s;
+}
+
+.weapons { 
+   width: 220px;
+   margin: 5px;
+   height: 160px;
+   display: flex;
+   animation: slide-in 1.5s;
+   flex-direction: column;
+}
+
+.weapons .primary, .weapons .secondary {
+   padding: 15px 20px;
+   width: 100%;
+   overflow: hidden;
+   box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
+   background: rgb(255 255 255 / 10%);
+   border: 1px solid rgb(128 128 128 / 25%);
+   position: relative;
+   transition: all 0.35s ease;
+}
+.weapons .primary img, .weapons .secondary img {
+   position: absolute;
+   top: 0;
+   opacity: 0.65;
+   left: 0;
+   transform: rotate(-10deg);
+   z-index: 0;
+   transition: all 0.35s ease;
+}
+.weapons .primary:hover, .weapons .secondary:hover { filter: brightness(1.25); background: rgb(255 255 255 / 15%); }
+.weapons .primary:hover img, .weapons .secondary:hover img { transform: rotate(5deg); }
+.weapons .primary h2, .weapons .secondary h2 { margin: 1px 0; font-size: 20px; position: relative; font-weight: 500; z-index: 2; color: #c5c5c5; }
+.weapons .primary h5, .weapons .secondary h5 {
+   margin: 1px 0;
+   position: relative;
+   z-index: 1;
+   text-transform: uppercase;
+   font-weight: 300;
+   letter-spacing: 1.2px;
+   color: #929292;
+}
+
+.weapons .secondary { margin-top: 20px; }
+
+
+* { user-select: none; }
+
+@keyframes slide-in {
+   0% { transform: translateY(-800px); }  
+   100% { transform: translateX(0); }
+}
+
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track {background: rgb(0 0 0 / 26%); }
+::-webkit-scrollbar-thumb { background: linear-gradient(0deg, rgba(124,71,160,1) 0%, rgba(3,104,162,1) 100%); border-radius: 50px; }

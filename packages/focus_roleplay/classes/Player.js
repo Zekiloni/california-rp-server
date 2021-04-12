@@ -23,11 +23,13 @@ mp.Player.prototype.nearPleayers = function (radius) {
    return near;
 }
 
-mp.Player.prototype.variables = () => { 
+mp.Player.prototype.defaultVariables = () => { 
    this.data.cuffed = false;
-   this.data.frozen = false;
+   this.frozen = false;
+   this.data.tased = false;
    this.data.crouching = false;
 }
+
 
 /**
 * Slanje proksimalne poruke u radius sa fade bojama
@@ -44,13 +46,17 @@ mp.Player.prototype.proximityMessage = function (radius, message, colors) {
          else if (distance < radius / 4) { color = colors[2]; }
          else if (distance < radius / 2) { color = colors[3]; }
          else if (distance < radius) { color = colors[4]; }
-         target.outputChatBox(`!{${color}}${message}`)
+         target.outputChatBox(`!{${color}}${message}`);
 		}
 	);
-},
+};
+
+mp.Player.prototype.message = function (color, message) { 
+   this.outputChatBox(`!{${color}}${message}`);
+}
 
 mp.events.add({
-   'server:toggleCrouch': (player) => {
+   'server:player.crouch': (player) => {
       player.data.crouching = !player.data.crouching;
    },
 
@@ -58,6 +64,9 @@ mp.events.add({
       if (!player.data.logged) return;
       player.proximityMessage(7, `${player.name} kaze: ${text}`, ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E']);
     },
+
+   'server:player.damage': (player, healthLoss, armorLoss) => {
+   }
 });
 
 mp.players.find = (playerName) => {

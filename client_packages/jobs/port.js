@@ -8,7 +8,7 @@ mp.events.addDataHandler({
 });
 
 mp.keys.bind(0x62, false, function() {
-   if (!player.loggedIn) return false;
+   if (!player.logged) return false;
    if (!player.vehicle) return false;
    let vehicle = player.vehicle;
    if (vehicle.model == 444583674) {

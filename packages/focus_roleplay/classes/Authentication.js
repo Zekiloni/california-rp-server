@@ -1,14 +1,56 @@
-const Account = require("./Account");
+const Account = require('./Account');
+const { Character, Clothing, Appearance } = require('./Character');
 
 mp.events.add({
    'playerJoin': (player) => { 
+      player.data.spawned = false;
       player.call('client:login.show')
    },
 
-   'server:select.character': (player, char) => { 
-      // karaktera loaduj
-      // player.character = id;
-      // new charac
+   'server:select.character': (player, character) => { 
+      db.query('SELECT * FROM `characters` WHERE `id` = ?', [character], function (err, result, fields) {
+         if (err) core.terminal(1, 'Selecting Character ' + err)
+         let info = result[0];
+         player.character = character;
+         player.name = info.first_name + ' ' + info.last_name;
+         player.defaultVariables();
+         
+         player.data.spawned = true;
+         let clothing = new Clothing();
+
+         new Character({
+            id: character, account: info.master_account, name: info.first_name, lname: last_name, 
+            sex: info.sex, birth: info.birth_date, origin, cash, salary, last_position, job, 
+            faction, fation_rank, radio_frequency, thirst, hunger, stress, weapon_skill, driving_skill, licenses, clothing: clothing
+         })
+
+      });
+   },
+
+   'server:create.character': (player, character) => {      
+      let characterData = JSON.parse(character), characterID;
+      
+      db.query('INSERT INTO `characters` (master_account, first_name, last_name, sex, birth_date, origin) VALUES (?, ?, ?, ?, ?, ?)', [player.account, characterData.firstname, characterData.lastname, characterData.gender, characterData.birth, characterData.origin, characterData.cash], function (err, result, fields) {
+         if (err) core.terminal(1, 'Creating Character ' + err);
+         
+         let newChar = new Character({
+            account: player.account, character: result.insertId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin
+         })
+         
+         player.character = result.insertId;
+         player.name = characterData.firstname + ' ' + characterData.lastname;
+         player.dimension = 0;
+         player.data.spawned = true;
+         player.frozen = false;
+         player.position = mp.settings.defaultSpawn;
+      });
+   
+      db.query('INSERT INTO `appearances` (character_id, blendData, headOverlays, headOverlaysColors, hair, beard, torso, faceFeatures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [player.character, characterData.blendData, characterData.headOverlays, characterData.headOverlaysColors, characterData.hair, characterData.beard, characterData.torso, characterData.faceFeatures], function (err, result, fields) {
+         if (err) core.terminal(1, 'Creating Character Appearance ' + err);     
+         let clothing = new Clothing({});  // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'   
+      });
+      
+      player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info)
    },
 
    'server:login.handle': (player, username, password) => { 
@@ -18,17 +60,11 @@ mp.events.add({
             if (result[0].password == password) { 
                let userID = result[0].id;
                player.account = userID;
-               player.name = result[0].username;
                player.data.logged = true;
+
                new Account({
-                  sqlid: userID,
-                  username: result[0].username,
-                  regDate: result[0].registered_at,
-                  admin: result[0].admin,
-                  xp: result[0].xp,
-                  ip: player.ip,
-                  hours: result[0].hours,
-                  donator: result[0].donator
+                  sqlid: userID, username: result[0].username, regDate: result[0].registered_at, admin: result[0].admin,
+                  xp: result[0].xp, ip: player.ip, hours: result[0].hours, donator: result[0].donator
                })
                
                let values = { 

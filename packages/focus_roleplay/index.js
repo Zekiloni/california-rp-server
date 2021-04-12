@@ -1,6 +1,4 @@
 
-const procStats = require('process-stats')()
-
 let globals = require('./core/globals');
 let settings = require('./core/settings');
 
@@ -17,11 +15,14 @@ let Commands = require('./classes/Commands');
 let Admins = require('./classes/Admins');
 let Interactions = require('./classes/Animations');
 let Authentication = require('./classes/Authentication');
-let Inventory = require('./classes/Inventory');
+let Jobs = require('./classes/Jobs');
+let Items = require('./classes/Items');
 let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
+let Houses = require('./classes/Houses');
+let Dealerships = require('./classes/Dealership');
 let Business = require('./classes/Business');
 let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
@@ -36,9 +37,8 @@ global.account = require('./player/player.Core');
 
 // var playerEvents = require('./player/player.Events');
 // var playerCommands = require('./player/player.Commands');
-var adminCommands = require('./player/admin.Commands');
+// var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
-var dealershipVehicles = require('./vehicles/vehicles.List');
 var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
@@ -115,8 +115,7 @@ mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
     veh.dimension = player.dimension;
     veh.numberPlateType = 1;
     veh.numberPlate = "SUPPORT";
-    veh.engine = true;
-    veh.dead = false; 
+    veh.engine = false;
     player.putIntoVehicle(veh, 0);
 });
 
@@ -143,7 +142,7 @@ mp.events.addCommand("dzok", (player, fullText, dict, anim) => {
 })
 
 mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => { 
-    player.call('client:showVehicleDealership', [OFFROADS])
+    player.call('client:vehicle.dealership', [true, mp.dealerships.sedans])
 })
 
 mp.events.addCommand("cobject", (player, fullText, model) => { 

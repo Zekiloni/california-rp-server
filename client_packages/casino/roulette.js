@@ -339,7 +339,7 @@ anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_ba
 mp.events.add("spinRouletteWheel", (table, needSpins, endTable, endBall) => {
 	rouletteData[table].table.playAnim("intro_wheel", tableLib, 1000.0, false, true, true, 0, 1000); // loop, freezeLastFrame, ?
 	
-	rouletteData[table].ball.position = new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.16617, tablesPos[table][3]+1.0715);
+	rouletteData[table].ball.position = new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.16627, tablesPos[table][3]+1.0715);
 	rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 30);
 	
 	rouletteData[table].ball.playAnim("intro_ball", tableLib, 1000.0, false, true, false, 0, 1000); // loop, freezeLastFrame, ?
@@ -442,7 +442,7 @@ mp.keys.bind(0x45, true, () =>  // E
 		localPlayer.position = new mp.Vector3(tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0], tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1], tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2]);
 		localPlayer.setHeading(tableSeatsPos[casinoSeatToJoin][3]);
 		
-		mp.events.callRemote("server:occupyCasinoSeat", casinoTableToJoin, casinoSeatToJoin);xxxxxxxxxxxxxxxxxxxxxxxxxx
+		mp.events.callRemote("server:occupyCasinoSeat", casinoTableToJoin, casinoSeatToJoin);
 		
 		interactingWithTableTimeout = setTimeout(
 			function()

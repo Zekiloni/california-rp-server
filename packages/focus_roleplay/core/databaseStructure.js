@@ -32,7 +32,7 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   origin varchar(64),
   cash int(11) NOT NULL DEFAULT 800,
   salary int(6) NOT NULL DEFAULT 0,
-  last_position text NOT NULL DEFAULT 0,
+  last_position text,
   job int(2) NOT NULL DEFAULT 0,
   faction int(2) NOT NULL DEFAULT 0,
   faction_rank varchar(64) NOT NULL DEFAULT 'no',
@@ -42,28 +42,13 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   stress int(4) NOT NULL DEFAULT 0,
   weapon_skill int(2) NOT NULL DEFAULT 0,
   driving_skill int(2) NOT NULL DEFAULT 0,
-  job_skill text NOT NULL DEFAULT 0,
-  licenses text NOT NULL DEFAULT 0,
+  job_skill text,
+  licenses text,
   PRIMARY KEY(id))`;
 
 db.query(charactersTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
   core.terminal(3, `Checking charactersTable | MySQL`);
-});
-
-let businessTable = `CREATE TABLE IF NOT EXISTS business (
-  ID int(11) NOT NULL AUTO_INCREMENT,
-  type int(1) NOT NULL DEFAULT 0,
-  name varchar(64) NOT NULL DEFAULT 0,
-  owner int(11) NOT NULL DEFAULT -1,
-  price int(11) NOT NULL DEFAULT 15000,
-  entrance text NOT NULL DEFAULT 0,
-  interior int(2) NOT NULL DEFAULT 0,
-  PRIMARY KEY(ID))`;
-
-db.query(businessTable, function(err, results, fields) {
-  if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking businessTable | MySQL`);
 });
 
 let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
@@ -72,13 +57,13 @@ let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   locked tinyint(1) NOT NULL,
   owner int(11) NOT NULL DEFAULT -1,
   price int(10) NOT NULL,
-  position text NOT NULL,
-  rotation text NOT NULL,
+  position text,
+  rotation text,
   mileage FLOAT NOT NULL DEFAULT 0,
   fuel int(4) NOT NULL,
-  color text NOT NULL,
-  mods text NOT NULL,
-  ebts text NOT NULL,
+  color text,
+  mods text,
+  ebts text,
   PRIMARY KEY(ID))`;
 
 db.query(vehicleTable, function(err, results, fields) {
@@ -87,17 +72,16 @@ db.query(vehicleTable, function(err, results, fields) {
 }); 
 
 
-let inventoryTable = `CREATE TABLE IF NOT EXISTS inventory (
+let inventoryTable = `CREATE TABLE IF NOT EXISTS items (
   id int(11) NOT NULL AUTO_INCREMENT,
-  name varchar(64) NOT NULL,
-  hash varchar(128) NOT NULL,
+  item varchar(128) NOT NULL,
   quantity int(4) NOT NULL DEFAULT 1,
   entity int(2) NOT NULL DEFAULT -1,
   owner int(11) NOT NULL DEFAULT -1,
   dimension int(11) NOT NULL DEFAULT 0,
-  position text NOT NULL,
-  extra text NOT NULL,
-  PRIMARY KEY(ID))`;
+  position text DEFAULT NULL,
+  extra text DEFAULT NULL,
+  PRIMARY KEY(id))`;
 
 db.query(inventoryTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
@@ -109,56 +93,14 @@ db.query(inventoryTable, function(err, results, fields) {
 
 let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
   character_id int(11) NOT NULL,
-  shapeFirstID int(3) NOT NULL,
-  shapeSecondID int(3) NOT NULL,
-  skinFirstID int(3) NOT NULL,
-  skinSecondID int(3) NOT NULL,
-  shapeMix float(2, 2) NOT NULL,
-  skinMix float(2, 2) NOT NULL,
-  nose_width	float(2, 2) NOT NULL,
-  nose_height float(2, 2) NOT NULL,
-  nose_length float(2, 2) NOT NULL,
-  nose_bridge float(2, 2) NOT NULL,
-  nose_tip	float(2, 2) NOT NULL,
-  nose_bridge_shift float(2, 2) NOT NULL,
-  brow_height float(2, 2) NOT NULL,
-  brow_width	float(2, 2) NOT NULL,
-  cheekbone_height	float(2, 2) NOT NULL,
-  cheekbone_width float(2, 2) NOT NULL,
-  cheeks_width float(2, 2)	NOT NULL,
-  eyes float(2, 2) NOT NULL,
-  lips float(2, 2) NOT NULL,
-  jaw_width float(2, 2) NOT NULL,	
-  jaw_height	float(2, 2) NOT NULL,
-  chin_length float(2, 2) NOT NULL,
-  chin_position float(2, 2) NOT NULL,
-  chin_width	float(2, 2) NOT NULL,
-  chin_shape	float(2, 2) NOT NULL,
-  neck_width	float(2, 2) NOT NULL,
-  hair int(3) NOT NULL,
-  hair_color text NOT NULL,
-  blemishes int(2) NOT NULL,
-  blemishes_color int(2) NOT NULL,
-  facial_hair int(2) NOT NULL,
-  facial_hair_color int(2) NOT NULL,
-  eyebrows int(2) NOT NULL,
-  eyebrows_color int(2) NOT NULL,
-  ageing int(2) NOT NULL,
-  ageing_color int(2) NOT NULL,
-  makeup int(2) NOT NULL,
-  makeup_color int(2) NOT NULL,
-  blush int(2) NOT NULL,
-  blush_color int(2) NOT NULL,
-  complexion int(2) NOT NULL,
-  complexion_color int(2) NOT NULL,
-  sun_damage	int(2) NOT NULL,
-  sun_damage_color int(2) NOT NULL,
-  lipstick int(2) NOT NULL,
-  lipstick_color int(2) NOT NULL,
-  moles_freckles	int(2) NOT NULL,
-  moles_freckles_color int(2) NOT NULL,
-  chest_hair	int(2) NOT NULL,
-  chest_hair_color int(2) NOT NULL,
+  blendData text NOT NULL ,
+  headOverlays text NOT NULL,
+  headOverlaysColors text NOT NULL,
+  hair text NOT NULL,
+  beard text NOT NULL,
+  torso int(2) NOT NULL DEFAULT 0,
+  faceFeatures text NOT NULL,
+  clothes text NOT NULL,
   PRIMARY KEY(character_id))`;
 
 db.query(appearancesTable, function(err, results, fields) {
@@ -173,7 +115,7 @@ let logsTable = `CREATE TABLE IF NOT EXISTS logs (
   player varchar(128) NOT NULL,
   target int(11) NOT NULL,
   message varchar(128) NOT NULL,
-  data text NOT NULL,
+  data text,
   dateTime timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY(ID))`;
 
@@ -219,20 +161,60 @@ db.query(freqTable, function(err, results, fields) {
 
 
 let housesTable = `CREATE TABLE IF NOT EXISTS houses (
-  ID int(11) NOT NULL AUTO_INCREMENT,
+  id int(11) NOT NULL AUTO_INCREMENT,
+  price int(11) NOT NULL DEFAULT 25000,
+  owner int(11) NOT NULL DEFAULT -1,
   type int(2) NOT NULL DEFAULT 0,
-  price int(10) DEFAULT 25000,
-  owner int(11) DEFAULT -1,
-  entrance text NOT NULL,
-  interior text NOT NULL,
-  ipl text DEFAULT 0,
-  dimension int(11) NOT NULL,
-  PRIMARY KEY(ID))`;
+  locked int(1) NOT NULL DEFAULT 0,
+  entrance text,
+  dimension int(11) DEFAULT 0,
+  interior text,
+  intDimension int(11) NOT NULL DEFAULT 0,
+  ipl text DEFAULT NULL,
+  rent int(6) NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
 
 db.query(housesTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
   core.terminal(3, `Checking housesTable | MySQL`);
 });
+
+let bussinesTable = `CREATE TABLE IF NOT EXISTS business (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  price int(11) NOT NULL DEFAULT 25000,
+  owner int(11) NOT NULL DEFAULT -1,
+  products int(4) NOT NULL DEFAULT 0,
+  name varchar(128) NOT NULL DEFAULT 'Business',
+  type int(2) NOT NULL DEFAULT 0,
+  locked int(1) NOT NULL DEFAULT 0,
+  entrance text,
+  workers text,
+  dimension int(11) DEFAULT 0,
+  interior text,
+  intDimension int(11) NOT NULL DEFAULT 0,
+  ipl text DEFAULT NULL,
+  rent int(11) NOT NULL DEFAULT -1,
+  PRIMARY KEY(id))`;
+
+db.query(bussinesTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking bussinesTable | MySQL`);
+});
+
+/* 
+constructor (id, name, d) { 
+      this.id = id;
+      this.type = d.type;
+      this.name = name;
+      this.price = d.price;
+      this.owner = d.owner;
+      this.products = d.products;
+      this.entrance = d.entrance;
+      this.interior = d.interior;
+      this.workers = d.workers;      
+      this.price = data.price || 2500;
+      this.owner = data.owner || -1;
+*/
 
 
 let plantsTable = `CREATE TABLE IF NOT EXISTS plants (
@@ -240,7 +222,7 @@ let plantsTable = `CREATE TABLE IF NOT EXISTS plants (
   type int(2) NOT NULL DEFAULT 0,
   contribution int(3) DEFAULT 10,
   dimension int(6) NOT NULL DEFAULT 0,
-  position text NOT NULL,
+  position text,
   owner int(11) NOT NULL DEFAULT -1,
   progress int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY(ID))`;
@@ -270,8 +252,8 @@ let bansTable = `CREATE TABLE IF NOT EXISTS bans (
   ip varchar(64) NOT NULL,
   issuer int(11) NOT NULL,
   reason varchar(64) NOT NULL,
-  banned_date text NOT NULL DEFAULT 0,
-  expire_date text NOT NULL DEFAULT 0,
+  banned_date text,
+  expire_date text,
   PRIMARY KEY(id))`;
 
 db.query(bansTable, function(err, results, fields) {
