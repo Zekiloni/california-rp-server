@@ -90,9 +90,7 @@ class Inventory {
                   nearItem.entity = ItemEntities.Player;
                   nearItem.refresh();
                   console.log('podigao nije imao item')
-               }
-
-               // da kreira novi item ukoliko ovaj da ceo item a ovaj nema item
+               }              
 
                this.update(nearItem)
             } 
@@ -112,6 +110,7 @@ class Inventory {
             target = mp.players.at(target);
             if (!target) return;
 
+
             if (item) { 
                if (item.quantity < quantity) return player.notification('Nemate tu količinu', 'error', 3);
 
@@ -121,7 +120,7 @@ class Inventory {
                   item.owner = target.character;
                   // da kreira novi item ukoliko ovaj da ceo item a ovaj nema item ISKORISTI this.create samo je doteraj za potrebne parametre da je entity ovaj...
                } else { 
-
+                  
                }
             }
          }
@@ -144,7 +143,7 @@ class Inventory {
       })
    }
 
-   create = (player, quantity, item, entity) => { 
+   create = (player, quantity, item, entity = -1, owner = -1) => { 
       let found = mp.ItemRegistry[item];
       if (found) { 
          db.query("INSERT INTO `items` (item, quantity, entity, owner, position, dimension) VALUES (?, ?, ?, ?, ?, ?)", 
@@ -154,8 +153,9 @@ class Inventory {
             let id = result.insertId;
             try { 
                let i = new Item(id, { 
-                  item: item, entity: -1, owner: -1, position: JSON.stringify(player.position), dimension: player.dimension, quanity: quantity
+                  item: item, entity: entity, owner: player.character, position: JSON.stringify(player.position), dimension: player.dimension, quanity: quantity
                })
+               i.refresh();
             } catch (e) { console.log(e) }
          })
       }
