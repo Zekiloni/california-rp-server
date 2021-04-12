@@ -35,7 +35,7 @@ updatePlayerHud = () => {
 	let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
 	let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
 	let heading = getPlayerHeading();
-	playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${player.cash}\", \"${onlinePlayers}\");`); 
+	//playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${player.cash}\", \"${onlinePlayers}\");`); 
 }
 
 mp.keys.bind(0x77, true, function () {  //F8-Key

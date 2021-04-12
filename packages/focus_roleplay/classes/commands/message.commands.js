@@ -105,8 +105,8 @@ module.exports = {
             
             if (target) { 
                let message = args.slice(1).join(' '); 
-               target.sendMessage(`(( PM od ${player.name} [${player.id}]: ${message} ))`, colors.pm.from);
-               player.sendMessage(`(( PM za ${target.name} [${target.id}]: ${message} ))`, colors.pm.to)
+               target.sendMessage(`(( PM od ${player.name} [${player.id}]: ${message} ))`, mp.colors.pm.from);
+               player.sendMessage(`(( PM za ${target.name} [${target.id}]: ${message} ))`, mp.colors.pm.to)
             } else return false;
          }
       },

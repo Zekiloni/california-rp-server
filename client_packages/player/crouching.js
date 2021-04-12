@@ -16,6 +16,7 @@ mp.events.addDataHandler("crouching", (entity, value) => {
         if (value) {
             entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
             entity.setStrafeClipset(strafeClipSet);
+
         } else {
             entity.resetMovementClipset(clipSetSwitchTime);
             entity.resetStrafeClipset();
@@ -31,8 +32,6 @@ mp.events.add("entityStreamIn", (entity) => {
 });
 
 
-mp.keys.bind(0x12, false, () => { // testirati
-    let lastCheck = new Date().getTime();
-    if (new Date().getTime() - lastCheck < 1000 || localplayer.vehicle) return;
+mp.keys.bind(0x12, false, () => {
     mp.events.callRemote("server:player.crouch");
 });

@@ -1,7 +1,11 @@
+
+
+
 let Authentication = require('./authentication/authentication');
 let GameInterface = require('./player/PlayerHud');
 let CharacterCreator = require('./creator/customization');
 let FingerPointing = require('./player/FingerPointing');
+let Crouching = require('./player/Crouching');
 let NameTags = require('./player/NameTags');
 let DamageSync = require('./DamageSync');
 let PlayerEvents = require('./player/Events');
