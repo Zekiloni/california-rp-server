@@ -20,6 +20,7 @@ mp.events.add({
 
 mp.keys.bind(0x50, false, function() {
    if (!player.logged) return;
+   if (!player.spawned) return;
    if (mp.players.local.isTypingInTextChat) return;
    opened == false ? ( mp.events.call('client:players.list', true), opened = true ) : ( mp.events.call('client:players.list', false), opened = false )
 });

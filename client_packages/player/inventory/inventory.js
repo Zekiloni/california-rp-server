@@ -27,6 +27,7 @@ mp.events.add({
 
 mp.keys.bind(0x49, false, function() {
    if (!player.logged) return;
+   if (!player.spawned) return;
    if (!opened) {
       if (mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:inventory.get');

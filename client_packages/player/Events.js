@@ -8,6 +8,12 @@ mp.events.addDataHandler({
          player.logged = newValue;
       }
    },
+
+   'spawned': (entity, newValue, oldValue) => {
+      if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
+         player.spawned = newValue;
+      }
+   }
 });
 
 mp.events.add({

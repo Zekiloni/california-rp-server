@@ -3,6 +3,7 @@ const { Character, Clothing, Appearance } = require('./Character');
 
 mp.events.add({
    'playerJoin': (player) => { 
+      player.data.spawned = false;
       player.call('client:login.show')
    },
 
@@ -13,7 +14,7 @@ mp.events.add({
          player.character = character;
          player.name = info.first_name + ' ' + info.last_name;
          
-
+         player.data.spawned = true;
          let clothing = new Clothing();
 
          new Character({
@@ -38,6 +39,7 @@ mp.events.add({
          player.character = result.insertId;
          player.name = characterData.firstname + ' ' + characterData.lastname;
          player.dimension = 0;
+         player.data.spawned = true;
          player.position = mp.settings.defaultSpawn;
       });
    
