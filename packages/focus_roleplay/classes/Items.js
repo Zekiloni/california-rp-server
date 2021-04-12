@@ -83,7 +83,6 @@ class Inventory {
                   hasItem.quanity += nearItem.quanity;
                   hasItem.entity = ItemEntities.Player;
                   nearItem.refresh();
-                  // Update
                   console.log('podigao imao vec tem')
                }
                else {
@@ -91,9 +90,10 @@ class Inventory {
                   nearItem.entity = ItemEntities.Player;
                   nearItem.refresh();
                   console.log('podigao nije imao item')
-
-                  // Update 
                }
+
+               // da kreira novi item ukoliko ovaj da ceo item a ovaj nema item
+
                this.update(nearItem)
             } 
          },
@@ -116,13 +116,10 @@ class Inventory {
                if (item.quantity < quantity) return player.notification('Nemate tu količinu', 'error', 3);
 
                if (quantity > 1) { 
-                  if (item.quantity > 1) { 
-                     item.quantity --;
-                  } else { 
-                     delete mp.items[item.id];
-                  }
+                  item.quantity --;
+                  if (item.quantity < 1) { delete mp.items[item.id]; }
                   item.owner = target.character;
-
+                  // da kreira novi item ukoliko ovaj da ceo item a ovaj nema item ISKORISTI this.create samo je doteraj za potrebne parametre da je entity ovaj...
                } else { 
 
                }
