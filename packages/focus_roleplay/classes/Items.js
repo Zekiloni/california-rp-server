@@ -110,17 +110,16 @@ class Inventory {
             target = mp.players.at(target);
             if (!target) return;
 
-
             if (item) { 
-               if (item.quantity < quantity) return player.notification('Nemate tu količinu', 'error', 3);
-
-               if (quantity > 1) { 
-                  item.quantity --;
-                  if (item.quantity < 1) { delete mp.items[item.id]; }
-                  item.owner = target.character;
-                  // da kreira novi item ukoliko ovaj da ceo item a ovaj nema item ISKORISTI this.create samo je doteraj za potrebne parametre da je entity ovaj...
-               } else { 
-                  
+               if (item.quantity < quantity || quantity < 0) return player.notification('Nemate tu količinu', 'error', 3);
+               let hasItem = this.hasItem(target.character, item.name);
+               if (hasItem) {
+                  mp.items[hasItem].quanity += quantity;
+                  delete mp.items[item];
+                  hasItem.refresh();
+               } else {
+                  this.create(target, quantity, item.name, ItemEntities.Player, target.character);
+                  delete mp.items[item];
                }
             }
          }
