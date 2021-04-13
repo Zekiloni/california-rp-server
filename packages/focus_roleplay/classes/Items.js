@@ -82,7 +82,7 @@ class Inventory {
                if (hasItem) {
                   hasItem.quanity += nearItem.quanity;
                   hasItem.entity = ItemEntities.Player;
-                  nearItem.refresh();
+                  nearItem.refresh(); // Da li treba ovde nearItem.delete() ?
                   console.log('podigao imao vec tem')
                }
                else {
@@ -100,7 +100,7 @@ class Inventory {
             item = mp.items[item];
             if (item) { 
                item.quantity --;
-               if (item.quantity < 1) { delete mp.items[item.id]; }
+               if (item.quantity < 1) { delete mp.items[item.id]; } // mp.items[item]; ?
                item.use(player)
             }
          },
@@ -110,17 +110,16 @@ class Inventory {
             target = mp.players.at(target);
             if (!target) return;
 
-
             if (item) { 
-               if (item.quantity < quantity) return player.notification('Nemate tu količinu', 'error', 3);
-
-               if (quantity > 1) { 
-                  item.quantity --;
-                  if (item.quantity < 1) { delete mp.items[item.id]; }
-                  item.owner = target.character;
-                  // da kreira novi item ukoliko ovaj da ceo item a ovaj nema item ISKORISTI this.create samo je doteraj za potrebne parametre da je entity ovaj...
-               } else { 
-                  
+               if (item.quantity < quantity || quantity < 0) return player.notification('Nemate tu količinu', 'error', 3);
+               let hasItem = this.hasItem(target.character, item.name);
+               if (hasItem) {
+                  mp.items[hasItem].quanity += quantity;
+                  delete mp.items[item];
+                  hasItem.refresh();
+               } else {
+                  this.create(target, quantity, item.name, ItemEntities.Player, target.character);
+                  delete mp.items[item];
                }
             }
          }
@@ -149,7 +148,7 @@ class Inventory {
          db.query("INSERT INTO `items` (item, quantity, entity, owner, position, dimension) VALUES (?, ?, ?, ?, ?, ?)", 
             [item, quantity, entity, player.character, JSON.stringify(player.position), player.dimension], function(err, result, fields) {
 
-            if (err) return core.terminal(1, 'Creating Item ' + err)
+            if (err) return core.terminal(1, 'Creating Item ' + err);
             let id = result.insertId;
             try { 
                let i = new Item(id, { 
@@ -162,7 +161,7 @@ class Inventory {
    }
 
    remove = (item) => { 
-      let found = mp.items[item.id];
+      let found = mp.items[item];
       if (found) { 
          db.query("DELETE FROM `items` WHERE id = ?", [item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Remove Item ' + err);
@@ -192,7 +191,7 @@ class Inventory {
 
    hasItem = (char, item) => { 
       let result = false;
-      for (let i in mp.items) { 
+      for (let i in mp.items) {
          if (mp.items[i].entity == ItemEntities.Player && mp.items[i].owner == char) { 
             if (mp.items[i].item == item) { 
                result = mp.items[i];
