@@ -13,18 +13,26 @@
 
     </head>
     <body>
+
+        <div class="ground"> </div>
+
         <div id="inventory">
             <div class="clothing">
 
             </div>
 
-            <div class="items">
-
+            <!-- v-on:click="drop(item)" -->
+            <div class="items" v-if="player.items.length > 0">
+                <div class="item" v-for="item in player.items" v-if="item" :key="item.id" :data-id="item.id" >
+                    <h2 class="name">{{ item.name }}</h2>
+                    <img class="icon" :src="itemImage(item.name)" />
+                    <h4 class="quantity">{{ item.quantity }}</h4>
+                </div>
             </div>
 
             <div class="weapons" >
                 <div class="primary"> 
-                    <h2  @click="weaponStore(0)"> {{ player.weapons[0] }} </h2>
+                    <h2 @click="weaponStore(0)"> {{ player.weapons[0] }} </h2>
                     <h2 v-else> kurcina </h2>
                     <h5>primarno oružije</h5>
                     <img src="src/images/primary_weapon.png" />
@@ -38,9 +46,11 @@
         </div>
           
         <!-- scripts -->
+        <script src="src/vendor/js/jquery-3.5.1.js"></script>
+        <script src="src/vendor/js/jquery-ui.min.js"></script>
         <script src="src/vendor/js/vue.js"></script>
         <script>
-            let inventory = new Vue({
+            var inventory = new Vue({
                 el: '#inventory',
                 data: {
                     player: {
@@ -48,7 +58,9 @@
                         clothing: [0, 0, 0, 0, 0],
                         weapons: ['Combat Pistol', 'Secondary'],
                         items: [ 
-                            { id: 0, name: 'Combat Pistol', quantity: 2, type: 'weapon' }
+                            { id: 1, name: 'Combat Pistol', hash: 'w_pi_combatpistol', quantity: 2, type: 'weapon' },
+                            { id: 2, name: 'Combat Pistol', hash: 'w_pi_combatpistol', quantity: 44, type: 'weapon' },
+                            { id: 3, name: 'Combat Pistol', hash: 'w_pi_combatpistol', quantity: 33, type: 'weapon' },
                         ]
                     },
                 },
@@ -61,15 +73,27 @@
 
                     },
 
-                    startDrag: (evt, item) => {
-                        evt.dataTransfer.dropEffect = 'move'
-                        evt.dataTransfer.effectAllowed = 'move'
-                        evt.dataTransfer.setData('itemID', item.id)
-                    }
-                }
+                    drop: function (item) { 
+                        item = this.player.items.find(element => element === item);
+                        let index = this.player.items.indexOf(item);                        
+                        this.player.items.splice(index, 1);
+                        //mp.trigger('client:inventory.process.item', 'drop', item.id)
+                    },
 
-                
+                    itemImage: (hash) => {  return 'src/images/items/' + hash + '.png'; }
+                }
             })
+
+            $('.item').draggable({ revert: true });
+
+            $(".ground").droppable({
+                accept: '.item',
+                drop: function(event, ui) {
+                    let item = inventory.player.items.find(element => element.id === parseInt(ui.draggable[0].attributes[0].value))
+                    inventory.drop(item)
+                    $(".item").draggable({ revert: true });
+                }
+            });
 
         </script>
     </body>     
