@@ -9,7 +9,7 @@ mp.events.add({
          items = JSON.stringify(items)
          mp.game.graphics.transitionToBlurred(500);
          inventory = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
-         inventory.execute(`inventory.player = ${items};`)
+         //inventory.execute(`inventory.player = ${items};`)
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       } else { 
@@ -20,7 +20,7 @@ mp.events.add({
       }
   },
 
-  'client:inventory.item': (item, status, target = -1, quantity = 1) => { 
+  'client:inventory.process.item': (item, status, target = -1, quantity = 1) => { 
       mp.events.callRemote('server:processInventoryItem', item, status, target, quantity);
   },
 
