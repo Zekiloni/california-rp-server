@@ -90,7 +90,7 @@ class Inventory {
             
             if (nearItem) {
                if (hasItem) {
-                  hasItem.quanity += nearItem.quanity;
+                  hasItem.quantity += nearItem.quantity;
                   hasItem.entity = ItemEntities.Player;
                   nearItem.refresh();
                   delete mp.items[nearItem.id];
@@ -102,7 +102,7 @@ class Inventory {
                }              
 
                this.update(nearItem)
-            } 
+            }
          },
 
          'server:item.use': (player, item) => { 
@@ -123,7 +123,7 @@ class Inventory {
                if (item.quantity < quantity || quantity < 0) return player.notification('Nemate tu količinu', 'error', 3);
                let hasItem = this.hasItem(target.character, item.name);
                if (hasItem) {
-                  mp.items[hasItem].quanity += quantity;
+                  mp.items[hasItem].quantity += quantity;
                   delete mp.items[item];
                   hasItem.refresh();
                } else {
@@ -137,7 +137,7 @@ class Inventory {
 
    load = () => { 
       let counter = 0;
-      db.query("SELECT * from items", function (err, results, fields) { 
+      db.query("SELECT * from `items`;", function (err, results, fields) { 
          if (err) return core.terminal(1, 'Loading Items ' + err);
          results.forEach(result => {
             let item = new Item(result.id, { 
@@ -179,7 +179,7 @@ class Inventory {
 
    update = (item) => {
       db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ? WHERE id = ?", 
-            [item.quanity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.id], function(err, result, fields) {
+            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Update Item ' + err);
       });
    }

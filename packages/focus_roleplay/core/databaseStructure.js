@@ -112,7 +112,7 @@ let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
   ears text NOT NULL,
   watches text NOT NULL,
   braclet text NOT NULL,
-  PRIMARY KEY(character_id))`;
+  PRIMARY KEY(characters_id))`;
 
 db.query(appearancesTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
