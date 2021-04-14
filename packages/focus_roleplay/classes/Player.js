@@ -28,6 +28,7 @@ mp.Player.prototype.defaultVariables = () => {
    this.frozen = false;
    this.data.tased = false;
    this.data.crouching = false;
+   this.data.spawned = true;
 }
 
 
