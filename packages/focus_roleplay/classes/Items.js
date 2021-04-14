@@ -55,8 +55,10 @@ class Inventory {
          'server:inventory.get': (player) => { 
             let inventory = [];
             for (let i in mp.items) { 
-               if (mp.items[i].owner == player.character) { 
-                  inventory.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
+               if (mp.items[i].entity == ItemEntities.Player) { 
+                  if (mp.items[i].owner == player.character) { 
+                     inventory.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
+                  }
                }
             }
             console.log(inventory)
@@ -90,7 +92,7 @@ class Inventory {
             
             if (nearItem) {
                if (hasItem) {
-                  hasItem.quanity += nearItem.quanity;
+                  hasItem.quantity += nearItem.quantity;
                   hasItem.entity = ItemEntities.Player;
                   nearItem.refresh();
                   delete mp.items[nearItem.id];
@@ -105,12 +107,18 @@ class Inventory {
             } 
          },
 
-         'server:item.use': (player, item) => { 
-            item = mp.items[item];
+         'server:item.use': (player, id) => { 
+            let item = mp.items[id];
             if (item) { 
-               item.quantity --;
-               if (item.quantity < 1) { delete mp.items[item.id]; } // mp.items[item]; ?
-               item.use(player)
+               if (mp.ItemRegistry[item.item].type !== ItemType.Weapon) {
+                  item.quantity --;
+                  if (item.quantity < 1) { delete mp.items[item.id]; }
+               }
+               if (mp.ItemRegistry[item.item].type == ItemType.Weapon) { 
+                  item.entity = ItemEntities.Wheel;
+               }
+
+               mp.ItemRegistry[item.item].use(player);
             }
          },
 
@@ -123,7 +131,7 @@ class Inventory {
                if (item.quantity < quantity || quantity < 0) return player.notification('Nemate tu količinu', 'error', 3);
                let hasItem = this.hasItem(target.character, item.name);
                if (hasItem) {
-                  mp.items[hasItem].quanity += quantity;
+                  mp.items[hasItem].quantity += quantity;
                   delete mp.items[item];
                   hasItem.refresh();
                } else {
@@ -146,6 +154,7 @@ class Inventory {
             });
             item.refresh();
             counter ++;
+            console.log(item)
          });
          core.terminal(3, counter + ' Items loaded')
       })
@@ -179,7 +188,7 @@ class Inventory {
 
    update = (item) => {
       db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ? WHERE id = ?", 
-            [item.quanity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.id], function(err, result, fields) {
+            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Update Item ' + err);
       });
    }

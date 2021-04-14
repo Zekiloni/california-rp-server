@@ -23,6 +23,7 @@ mp.events.add({
   'client:inventory.process.item': (action, item, target = -1, quantity = 1) => { 
       switch(action) { 
          case 'drop': mp.events.callRemote('server:item.drop', item, quantity); break;
+         case 'use': mp.events.callRemote('server:item.use', item); break;
       }
   },
 
