@@ -69,11 +69,21 @@ class Clothing  {
       this.armour = [armour[0], armour[1]];
       this.watch = [watch[0], watch[1]];
       this.bracelet = [bracelet[0], bracelet[1]];
-
+   }
+   
+   set = (player) => {
       player.setProp(0, this.hat[0], this.hat[1]);
-      player.setClothes(1, this.mask[0], this.mask[1], 3);
+      player.setProp(1, this.glasses[0], this.glasses[1]);
+      player.setProp(2, this.ear[0], this.ear[1]);
+      player.setProp(6, this.watch[0], this.watch[1]);
+      player.setProp(7, this.bracelet[0], this.bracelet[1]);
 
-   } 
+      player.setClothes(4, this.bottoms[0], this.bottoms[1], 3);
+      player.setClothes(6, this.shoes[0], this.shoes[1], 3);
+      player.setClothes(9, this.backpack[0], this.backpack[1], 3);
+      player.setClothes(10, this.mask[0], this.mask[1], 3);      
+      // armour
+   }
 }
 
 module.exports = { Character, Clothing, Appearance };
