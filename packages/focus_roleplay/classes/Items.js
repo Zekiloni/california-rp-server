@@ -28,11 +28,9 @@ class Item {
          });
          this.object.item = this.id;
          this.object.notifyStreaming = true;
-         console.log('zemlja')
       } else { 
          if (this.object) { 
             this.object.destroy();
-            console.log('nije zemlja')
          }
       }
    }
@@ -65,19 +63,19 @@ class Inventory {
             player.call('client:inventory.toggle', [true, inventory])
          },
 
-         'server:item.drop': (player, item, quantity) => { 
+         'server:item.drop': (player, itemID, quantity) => { 
             let nearItem = this.near(player),
-                name = mp.items[item].item;
+               item = mp.items[itemID];
             
 
             if (nearItem) {
-               if (nearItem.item == name) {
+               if (nearItem.item == item.item) {
                   nearItem.quantity += quantity;
                   delete mp.items[item];
                }
             }
             else {
-               item.entity = -1;
+               item.entity = ItemEntities.Ground;
                item.owner = -1;
                item.position = player.position;
                item.refresh();
@@ -87,24 +85,20 @@ class Inventory {
          },
 
          'server:item.pickup': (player) => { 
-            console.log('0')
             let nearItem = this.near(player),
-                hasItem = this.hasItem(player, nearItem.item);
+               hasItem = this.hasItem(player, nearItem.item);
             
-
             if (nearItem) {
                if (hasItem) {
                   hasItem.quanity += nearItem.quanity;
                   hasItem.entity = ItemEntities.Player;
-                  nearItem.refresh(); // Da li treba ovde nearItem.delete() ?
-                  console.log('1')
+                  nearItem.refresh();
+                  delete mp.items[nearItem.id];
                }
                else {
                   nearItem.owner = player.character;
                   nearItem.entity = ItemEntities.Player;
                   nearItem.refresh();
-                  console.log('2')
-
                }              
 
                this.update(nearItem)
@@ -157,21 +151,18 @@ class Inventory {
       })
    }
 
-   create = (player, quantity, item, entity = -1, owner = -1) => { 
-      let found = mp.ItemRegistry[item];
+   create = (player, quantity, name, entity = -1, owner = -1) => { 
+      let found = mp.ItemRegistry[name];
       if (found) { 
          db.query("INSERT INTO `items` (item, quantity, entity, owner, position, dimension) VALUES (?, ?, ?, ?, ?, ?)", 
-            [item, quantity, entity, player.character, JSON.stringify(player.position), player.dimension], function(err, result, fields) {
+            [found.name, quantity, entity, owner, JSON.stringify(player.position), player.dimension], function(err, result, fields) {
 
             if (err) return core.terminal(1, 'Creating Item ' + err);
             let id = result.insertId;
-            try { 
-               let i = new Item(id, { 
-                  item: item, entity: entity, owner: player.character, position: JSON.stringify(player.position), dimension: player.dimension, quanity: quantity
-               })
-               console.log(i)
-               i.refresh();
-            } catch (e) { console.log(e) }
+            let i = new Item(id, { 
+               item: found.name, entity: entity, owner: owner, position: player.position, dimension: player.dimension, quantity: quantity
+            })
+            i.refresh();
          })
       }
    }

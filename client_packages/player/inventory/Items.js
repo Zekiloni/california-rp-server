@@ -37,11 +37,8 @@ mp.events.add({
 mp.keys.bind(0x49, false, function() {
    if (player.logged && player.spawned) { 
       if (!opened) {
-         mp.gui.chat.push('j')
          if (mp.players.local.isTypingInTextChat) return;
-         mp.gui.chat.push('je')
          mp.events.callRemote('server:inventory.get');
-         mp.gui.chat.push('jeb')
       } else { 
          mp.events.call('client:inventory.toggle', false);
       }

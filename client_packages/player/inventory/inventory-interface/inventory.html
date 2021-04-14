@@ -21,9 +21,9 @@
 
             </div>
 
-            <!-- v-on:click="drop(item)" // v-if="player.items.length > 0" -->
+            <!--  // v-if="player.items.length > 0" -->
             <div class="items">
-                <div class="item" v-for="item in player.items" v-if="item" :key="item.id" :data-id="item.id" >
+                <div class="item" v-for="item in player.items" v-if="item" :key="item.id" v-on:click="use(item.id)" :data-id="item.id" >
                     <h2 class="name">{{ item.name }}</h2>
                     <img class="icon" :src="itemImage(item.hash)" />
                     <h4 class="quantity">{{ item.quantity }}</h4>
@@ -75,6 +75,10 @@
                         console.log(this.player.weapons[i])
                         delete this.player.weapons[i];
                         console.log(this.player.weapons[i])
+
+                    },
+
+                    use: function (item) {
 
                     },
 

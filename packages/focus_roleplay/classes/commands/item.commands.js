@@ -7,7 +7,7 @@ module.exports = {
          admin: 3,
          call: (player, args) => { 
             let quantity = args[0], name = args.slice(1).join(' ');
-            mp.item.create(player, quantity, name);
+            mp.item.create(player, quantity, name, -1, -1);
          }
       },
 

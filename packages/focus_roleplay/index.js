@@ -85,7 +85,6 @@ var color = [[033, 343, 535], [3434, 577, 565]]
 mp.events.addCommand("tp", (player) => {
     mp.events.call('server:animals.spawn', player, 15);
     player.position = new mp.Vector3(-1800.14, -794.12, 8.6);
-    player.giveWeapon([3220176749, 2210333304], 1000); // Assault Rifle, Carbine Rifle
 });
 
 
