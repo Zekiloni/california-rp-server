@@ -60,7 +60,7 @@ mp.ItemRegistry = {
       weight: 0.03,
       type: ItemType.Food,
       use: (player) => { 
-         player.call('client:player.animation', ['idle_c', 'amb@code_human_wander_eating_donut@male@idle_a'])
+         player.call('client:player.animation', ['static', 'amb@code_human_wander_eating_donut@male@base'])
          player.health = player.health + 5;
       }
    },
