@@ -23,7 +23,7 @@ mp.Player.prototype.nearPleayers = function (radius) {
    return near;
 }
 
-mp.Player.prototype.defaultVariables = () => { 
+mp.Player.prototype.defaultVariables = function () { 
    this.data.cuffed = false;
    this.frozen = false;
    this.data.tased = false;

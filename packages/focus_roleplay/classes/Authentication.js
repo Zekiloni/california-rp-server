@@ -59,9 +59,8 @@ mp.events.add({
          player.character = result.insertId;
          player.name = characterData.firstname + ' ' + characterData.lastname;
          player.dimension = 0;
-         player.data.spawned = true;
-         player.frozen = false;
          player.position = mp.settings.defaultSpawn;
+         player.defaultVariables();
       });
    
       // 14 
@@ -89,7 +88,6 @@ mp.events.add({
                player.account = userID;
                player.data.logged = true;
                player.data.spawned = false;
-
 
                new Account({
                   sqlid: userID, username: result[0].username, regDate: result[0].registered_at, admin: result[0].admin,

@@ -58,9 +58,10 @@ class Inventory {
             let inventory = [];
             for (let i in mp.items) { 
                if (mp.items[i].owner == player.character) { 
-                  inventory.push(mp.items[i]);
+                  inventory.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
                }
             }
+            console.log(inventory)
             player.call('client:inventory.toggle', [true, inventory])
          },
 
@@ -75,7 +76,12 @@ class Inventory {
                }
             }
             else {
-               this.create(player, quantity, name);              
+               item.entity = -1;
+               item.owner = -1;
+               item.position = player.position;
+               item.refresh();
+
+               //this.create(player, quantity, name);              
             }
          },
 
@@ -84,8 +90,6 @@ class Inventory {
             let nearItem = this.near(player),
                 hasItem = this.hasItem(player, nearItem.item);
             
-            console.log(nearItem)
-            console.log(hasItem)
 
             if (nearItem) {
                if (hasItem) {
