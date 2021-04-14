@@ -46,8 +46,17 @@ mp.events.add({
       });
    
       db.query('INSERT INTO `appearances` (character_id, blendData, headOverlays, headOverlaysColors, hair, beard, torso, faceFeatures) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [player.character, characterData.blendData, characterData.headOverlays, characterData.headOverlaysColors, characterData.hair, characterData.beard, characterData.torso, characterData.faceFeatures], function (err, result, fields) {
-         if (err) core.terminal(1, 'Creating Character Appearance ' + err);     
-         let clothing = new Clothing({});  // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'   
+         if (err) core.terminal(1, 'Creating Character Appearance ' + err);    
+         /* 
+         let clothing = new Clothing({
+            hat: 0, mask: 0, shirt: [character.clothing[0][0], character.clothing[0][1]], bottoms: [character.clothing[1][0]], shoes: character.clothing[1][1], 
+         });  // 'hat', 'mask', 'shirt', 'bottoms', 'shoes', 'glasses', 'ear', 'backpack', 'armour', 'watch', 'bracelet'   */
+         let clothing = new Clothing();
+         clothing.shirt = [character.clothing[0][0], character.clothing[0][1]];
+         clothing.bottoms = [character.clothing[1][0], character.clothing[1][1]];
+         clothing.shoes = [character.clothing[2][0], character.clothing[2][1]];
+         clothing.glasses = []
+
       });
       
       player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info)

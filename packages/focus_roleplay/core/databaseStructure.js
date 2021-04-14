@@ -92,15 +92,25 @@ db.query(inventoryTable, function(err, results, fields) {
 // appearances
 
 let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
-  character_id int(11) NOT NULL,
-  blendData text NOT NULL ,
-  headOverlays text NOT NULL,
-  headOverlaysColors text NOT NULL,
+  characters_id int(11) NOT NULL,  
+  blend_data text NOT NULL,
+  face_features text NOT NULL,
+  head_overlays text NOT NULL,
+  head_overlays_colors text NOT NULL,
   hair text NOT NULL,
   beard text NOT NULL,
   torso int(2) NOT NULL DEFAULT 0,
-  faceFeatures text NOT NULL,
-  clothes text NOT NULL,
+  legs text NOT NULL,
+  bags text NOT NULL,
+  shoes text NOT NULL,
+  accessories text NOT NULL,
+  undershirt text NOT NULL,
+  body_armours text NOT NULL,
+  hats text NOT NULL,
+  glasses text NOT NULL,
+  ears text NOT NULL,
+  watches text NOT NULL,
+  braclet text NOT NULL,
   PRIMARY KEY(character_id))`;
 
 db.query(appearancesTable, function(err, results, fields) {
