@@ -1,12 +1,12 @@
 
 const player = mp.players.local;
-let inventoryCEF, opened = false, nearbyPlayers = [];
+let inventory, opened = false, nearbyPlayers = [];
 
 
 mp.events.add({
    'client:inventory.toggle': (toggle, items = 0) => {
       if (toggle) { 
-         if (items.length > 0) items = JSON.stringify(items)
+         items = JSON.stringify(items)
          mp.game.graphics.transitionToBlurred(500);
          inventory = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
          inventory.execute(`inventory.player = ${items};`)
@@ -33,8 +33,7 @@ mp.events.add({
 })
 
 mp.keys.bind(0x49, false, function() {
-   if (!player.logged) return;
-   if (!player.spawned) return;
+   if (!player.logged && !player.spawned) return;
    if (!opened) {
       if (mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:inventory.get');
