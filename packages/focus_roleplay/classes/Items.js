@@ -55,8 +55,10 @@ class Inventory {
          'server:inventory.get': (player) => { 
             let inventory = [], weapons = [];
             for (let i in mp.items) { 
-               if (mp.items[i].owner == player.character) { 
-                  inventory.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
+               if (mp.items[i].entity == ItemEntities.Player) { 
+                  if (mp.items[i].owner == player.character) { 
+                     inventory.push({ id: mp.items[i].id, type: mp.ItemRegistry[mp.items[i].item].type, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
+                  }
                }
 
                if (mp.items[i].entity == ItemEntities.Wheel) { 
@@ -107,15 +109,21 @@ class Inventory {
                }              
 
                this.update(nearItem)
-            }
+            } 
          },
 
-         'server:item.use': (player, item) => { 
-            item = mp.items[item];
+         'server:item.use': (player, id) => { 
+            let item = mp.items[id];
             if (item) { 
-               item.quantity --;
-               if (item.quantity < 1) { delete mp.items[item.id]; } // mp.items[item]; ?
-               item.use(player)
+               if (mp.ItemRegistry[item.item].type !== ItemType.Weapon) {
+                  item.quantity --;
+                  if (item.quantity < 1) { delete mp.items[item.id]; }
+               }
+               if (mp.ItemRegistry[item.item].type == ItemType.Weapon) { 
+                  item.entity = ItemEntities.Wheel;
+               }
+
+               mp.ItemRegistry[item.item].use(player);
             }
          },
 
@@ -142,7 +150,7 @@ class Inventory {
 
    load = () => { 
       let counter = 0;
-      db.query("SELECT * from `items`;", function (err, results, fields) { 
+      db.query("SELECT * from items", function (err, results, fields) { 
          if (err) return core.terminal(1, 'Loading Items ' + err);
          results.forEach(result => {
             let item = new Item(result.id, { 
@@ -151,6 +159,7 @@ class Inventory {
             });
             item.refresh();
             counter ++;
+            console.log(item)
          });
          core.terminal(3, counter + ' Items loaded')
       })

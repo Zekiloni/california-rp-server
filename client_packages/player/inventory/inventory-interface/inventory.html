@@ -33,7 +33,7 @@
             <div class="weapons" >
                 <div class="primary"> 
                     <div v-if="player.weapons.length > 0">
-                        <h2 @click="weapon(0, player.weapons[0].id)"> {{ player.weapons[0].name }} </h2>
+                        <h2 @click="weapon(0, player.weapons[0].id)"> {{ player.weapons[0] }} </h2>
                     </div>
                     <h5>primarno oružije</h5>
                     <img src="src/images/primary_weapon.png" />
