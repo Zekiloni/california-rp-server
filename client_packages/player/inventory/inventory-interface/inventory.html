@@ -32,14 +32,14 @@
 
             <div class="weapons" >
                 <div class="primary"> 
-                    <div v-if="player.weapons.length > 0">
-                        <h2 @click="weapon(0, player.weapons[0].id)"> {{ player.weapons[0] }} </h2>
+                    <div v-if="player.weapons.length == 1">
+                        <h2 @click="weapon(0, player.weapons[0].id)"> {{ player.weapons[0].name }} </h2>
                     </div>
                     <h5>primarno oružije</h5>
                     <img src="src/images/primary_weapon.png" />
                 </div>
                 <div class="secondary">
-                    <div v-if="player.weapons.length > 0">
+                    <div v-if="player.weapons.length == 2">
                         <h2 @click="weapon(1, player.weapons[1].id)"> {{ player.weapons[1].name }} </h2>
                     </div>
                     <h5>sekundarno oružije</h5>
@@ -57,7 +57,7 @@
                 el: '#inventory',
                 data: {
                     player: {
-                        money: null, weapons: [], items: null,
+                        money: null, weapons: [ {id: 0, name: 'Maretova keva'}], items: null,
                         clothing: [0, 0, 0, 0, 0],
                     },
                 },

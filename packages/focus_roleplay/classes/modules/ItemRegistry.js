@@ -58,7 +58,11 @@ mp.ItemRegistry = {
       name: 'Cheeseburger',
       hash: 'prop_cs_burger_01',
       weight: 0.03,
-      type: ItemType.Food
+      type: ItemType.Food,
+      use: (player) => { 
+         player.call('client:player.animation', ['idle_c', 'amb@code_human_wander_eating_donut@male@idle_a'])
+         player.health = player.health + 5;
+      }
    },
 
    'Flaša Vode': { 

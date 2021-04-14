@@ -159,7 +159,6 @@ class Inventory {
             });
             item.refresh();
             counter ++;
-            console.log(item)
          });
          core.terminal(3, counter + ' Items loaded')
       })
