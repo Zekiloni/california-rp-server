@@ -36,11 +36,20 @@ mp.ItemRegistry = {
       }
    },
 
-   '9mm Ammo': { 
-      weight: 0.01,
+   '9mm Municija': {
+      name: '9mm Municija',
+      hash: 'w_pi_combatpistol_mag2', 
+      weight: 0.02,
       use: (player) => { 
-         if (player.weapon) { 
-            if (mp.ItemRegistry[player.weapon.name]) { }
+         let weapon = player.weapon, bullets = 30;
+         if (weapon) { 
+            let ammo = player.getWeaponAmmo(weapon);
+            player.setWeaponAmmo(weapon, parseInt(ammo + bullets));
+            console.log(player.weaponAmmo);
+            console.log(weapon)
+            // if (weapon.hash == mp.ItemRegistry['Combat Pistol'].weapon) { 
+
+            // }
          }
       }
    },

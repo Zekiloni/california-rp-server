@@ -4,12 +4,15 @@ let inventory, opened = false, nearbyPlayers = [];
 
 
 mp.events.add({
-   'client:inventory.toggle': (toggle, items = 0) => {
+   'client:inventory.toggle': (toggle, items = 0, weapons = 0) => {
       if (toggle) { 
          items = JSON.stringify(items)
+         weapons = JSON.stringify(weapons)
          mp.game.graphics.transitionToBlurred(500);
          inventory = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
-         inventory.execute(`inventory.player.items = ${items}`)
+         inventory.execute(`inventory.player.items = ${items}`);
+         inventory.execute(`inventory.player.weapons = ${weapons}`)
+         mp.gui.chat.push(weapons)
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       } else { 

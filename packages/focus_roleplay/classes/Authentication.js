@@ -14,6 +14,9 @@ mp.events.add({
          player.name = info.first_name + ' ' + info.last_name;
          player.defaultVariables();
 
+         // SHARED DATA
+         player.data.money = 
+
          new Character({
             id: character, account: info.master_account, name: info.first_name, lname: last_name, 
             sex: info.sex, birth: info.birth_date, origin, cash, salary, last_position, job, 

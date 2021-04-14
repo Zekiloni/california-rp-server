@@ -10,6 +10,8 @@ let photoName = null;
 
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
+
+
 mp.events.add('client:hud.show', (show) => {
 	if (show)  {
 		playerHUD = mp.browsers.new('package://player/hud-interface/hud.html');
@@ -74,6 +76,10 @@ mp.events.add({
 	
 		mp.game.invoke('0x9E4CFFF989258472');
 		mp.game.invoke('0xF4F2C0D4EE209E20');
+
+		// disable tab weapon wheel
+		mp.game.controls.disableControlAction(32, 37, true);
+
 
 		// show Crosshair if player is aiming with AWP
 		let playerWeapon = player.weapon;

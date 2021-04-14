@@ -53,16 +53,21 @@ class Inventory {
    constructor () { 
       mp.events.add({
          'server:inventory.get': (player) => { 
-            let inventory = [];
+            let inventory = [], weapons = [];
             for (let i in mp.items) { 
                if (mp.items[i].entity == ItemEntities.Player) { 
                   if (mp.items[i].owner == player.character) { 
                      inventory.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
                   }
                }
+
+               if (mp.items[i].entity == ItemEntities.Wheel) { 
+                  if (mp.items[i].owner == player.character) { 
+                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item })
+                  }
+               }
             }
-            console.log(inventory)
-            player.call('client:inventory.toggle', [true, inventory])
+            player.call('client:inventory.toggle', [true, inventory, weapons])
          },
 
          'server:item.drop': (player, itemID, quantity) => { 
