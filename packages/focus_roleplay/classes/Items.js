@@ -33,7 +33,6 @@ class Item {
          if (this.object) { 
             this.object.destroy();
             console.log('nije zemlja')
-
          }
       }
    }
@@ -56,7 +55,13 @@ class Inventory {
    constructor () { 
       mp.events.add({
          'server:inventory.get': (player) => { 
-            player.call('client:inventory.toggle', [true])
+            let inventory = [];
+            for (let i in mp.items) { 
+               if (mp.items[i].owner == player.character) { 
+                  inventory.push(mp.items[i]);
+               }
+            }
+            player.call('client:inventory.toggle', [true, inventory])
          },
 
          'server:item.drop': (player, item, quantity) => { 
@@ -75,21 +80,26 @@ class Inventory {
          },
 
          'server:item.pickup': (player) => { 
+            console.log('0')
             let nearItem = this.near(player),
                 hasItem = this.hasItem(player, nearItem.item);
             
+            console.log(nearItem)
+            console.log(hasItem)
+
             if (nearItem) {
                if (hasItem) {
                   hasItem.quanity += nearItem.quanity;
                   hasItem.entity = ItemEntities.Player;
                   nearItem.refresh(); // Da li treba ovde nearItem.delete() ?
-                  console.log('podigao imao vec tem')
+                  console.log('1')
                }
                else {
                   nearItem.owner = player.character;
                   nearItem.entity = ItemEntities.Player;
                   nearItem.refresh();
-                  console.log('podigao nije imao item')
+                  console.log('2')
+
                }              
 
                this.update(nearItem)
@@ -154,6 +164,7 @@ class Inventory {
                let i = new Item(id, { 
                   item: item, entity: entity, owner: player.character, position: JSON.stringify(player.position), dimension: player.dimension, quanity: quantity
                })
+               console.log(i)
                i.refresh();
             } catch (e) { console.log(e) }
          })
@@ -205,3 +216,4 @@ class Inventory {
 mp.items = {};
 mp.item = new Inventory();
 mp.item.load();
+

@@ -3,7 +3,6 @@ const { Character, Clothing, Appearance } = require('./Character');
 
 mp.events.add({
    'playerJoin': (player) => { 
-      player.data.spawned = false;
       player.call('client:login.show')
    },
 
@@ -69,6 +68,8 @@ mp.events.add({
                let userID = result[0].id;
                player.account = userID;
                player.data.logged = true;
+               player.data.spawned = false;
+
 
                new Account({
                   sqlid: userID, username: result[0].username, regDate: result[0].registered_at, admin: result[0].admin,
