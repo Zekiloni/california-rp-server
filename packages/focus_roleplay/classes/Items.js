@@ -69,6 +69,7 @@ class Inventory {
             let nearItem = this.near(player),
                 name = mp.items[item].item;
             
+
             if (nearItem) {
                if (nearItem.item == name) {
                   nearItem.quantity += quantity;

@@ -12,8 +12,8 @@ const ItemType = {
 module.exports = { ItemType, ItemEntities }
 
 mp.ItemRegistry = { 
-   'M4 Carbine Rifle': { 
-      name: 'M4 Carbine Rifle',
+   'Carbine Rifle': { 
+      name: 'Carbine Rifle',
       hash: 'w_ar_carbinerifle',
       weapon: 'weapon_carbinerifle',
       weight: 0.1,
@@ -46,21 +46,35 @@ mp.ItemRegistry = {
 
    'Cheeseburger': { 
       name: 'Cheeseburger',
-      hash: 'ng_proc_beerbottle_01a',
+      hash: 'prop_cs_burger_01',
       weight: 0.03,
       type: ItemType.Food
    },
 
-   'Water Bottle': { 
-      name: 'Water Bottle',
-      hash: 'ng_proc_beerbottle_01a',
+   'Flaša Vode': { 
+      name: 'Flaša Vode',
+      hash: 'prop_ld_flow_bottle',
       weight: 0.03,
       type: ItemType.Drink
    },
 
+   'Redwood Cigarete': { 
+      name: 'Redwood Cigarete',
+      hash: 'prop_cigar_pack_01',
+      weight: 0.05,
+      type: ItemType.Misc
+   },
+
+   'Upaljač': { 
+      name: 'Upaljač',
+      hash: 'p_cs_lighter_01',
+      weight: 0.01,
+      type: ItemType.Misc
+   },
+
    'Pizza HOT': { 
       name: 'Pizza HOT',
-      hash: 'prop_pizza_box_01',
+      hash: 'prop_cigar_pack_01',
       weight: 0.09,
       type: ItemType.Food
    },

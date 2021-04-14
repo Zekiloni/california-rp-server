@@ -35,9 +35,6 @@ mp.events.add({
 })
 
 mp.keys.bind(0x49, false, function() {
-   mp.gui.chat.push(JSON.stringify(player.logged));
-   mp.gui.chat.push(JSON.stringify(player.spawned));
-
    if (player.logged && player.spawned) { 
       if (!opened) {
          mp.gui.chat.push('j')
@@ -52,6 +49,7 @@ mp.keys.bind(0x49, false, function() {
 });
 
 mp.keys.bind(0x59, false, function() {
-   //if (!player.logged || !player.spawned) return;
-   mp.events.callRemote('server:item.pickup');
+   if (player.logged && player.spawned) { 
+      mp.events.callRemote('server:item.pickup');
+   }
 });
