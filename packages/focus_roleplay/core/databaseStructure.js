@@ -100,6 +100,7 @@ let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
   hair text NOT NULL,
   beard text NOT NULL,
   torso int(2) NOT NULL DEFAULT 0,
+  shirt text NOT NULL,
   legs text NOT NULL,
   bags text NOT NULL,
   shoes text NOT NULL,

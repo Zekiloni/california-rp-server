@@ -46,7 +46,7 @@ const data = {
       [0, 5, 2, 3, 4, 4, 5, 5, 5, 0]
    ],
 
-   clothings: ['Majca', 'Podmajca', 'Pantalone', 'Patike'],
+   clothings: ['Majca', 'Podmajca', 'Pantalone', 'Patike'], 
    clothingMax: [361, 132, 97],
 
    blendData: [ 
