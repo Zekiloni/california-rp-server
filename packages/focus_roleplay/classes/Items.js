@@ -55,8 +55,10 @@ class Inventory {
          'server:inventory.get': (player) => { 
             let inventory = [];
             for (let i in mp.items) { 
-               if (mp.items[i].owner == player.character) { 
-                  inventory.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
+               if (mp.items[i].entity == ItemEntities.Player) { 
+                  if (mp.items[i].owner == player.character) { 
+                     inventory.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash, quantity: mp.items[i].quantity })
+                  }
                }
             }
             console.log(inventory)
@@ -105,12 +107,18 @@ class Inventory {
             }
          },
 
-         'server:item.use': (player, item) => { 
-            item = mp.items[item];
+         'server:item.use': (player, id) => { 
+            let item = mp.items[id];
             if (item) { 
-               item.quantity --;
-               if (item.quantity < 1) { delete mp.items[item.id]; } // mp.items[item]; ?
-               item.use(player)
+               if (mp.ItemRegistry[item.item].type !== ItemType.Weapon) {
+                  item.quantity --;
+                  if (item.quantity < 1) { delete mp.items[item.id]; }
+               }
+               if (mp.ItemRegistry[item.item].type == ItemType.Weapon) { 
+                  item.entity = ItemEntities.Wheel;
+               }
+
+               mp.ItemRegistry[item.item].use(player);
             }
          },
 
@@ -146,6 +154,7 @@ class Inventory {
             });
             item.refresh();
             counter ++;
+            console.log(item)
          });
          core.terminal(3, counter + ' Items loaded')
       })
