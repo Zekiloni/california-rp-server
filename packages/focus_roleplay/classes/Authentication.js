@@ -14,16 +14,36 @@ mp.events.add({
          player.character = character;
          player.name = info.first_name + ' ' + info.last_name;
          player.defaultVariables();
-         
-         player.data.spawned = true;
-         let clothing = new Clothing();
 
          new Character({
             id: character, account: info.master_account, name: info.first_name, lname: last_name, 
             sex: info.sex, birth: info.birth_date, origin, cash, salary, last_position, job, 
             faction, fation_rank, radio_frequency, thirst, hunger, stress, weapon_skill, driving_skill, licenses, clothing: clothing
+         })       
+         db.query('SELECT * FROM `appearances` WHERE characters_id = ?', [player.character], function (error, result, field) {
+            if (error) return core.terminal(1, 'Appearances Loading Error ' + error);
+            let clothing = new Clothing();
+            clothing.blend_data =  result.blend_data;
+            clothing.face_features = result.face_features;
+            clothing.head_overlays = result.head_overlays;
+            clothing.head_overlays_colors = result.head_overlays_colors;
+            clothing.hair = result.hair;
+            clothing.beard = result.beard;
+            clothing.torso = result.torso;
+            clothing.shirt = result.shirt;
+            clothing.legs =  result.legs;
+            clothing.bags = result.bags;
+            clothing.shoes = result.shoes;
+            clothing.accessories =  result.accessories;
+            clothing.undershirt = result.undershirt;
+            clothing.body_armours = result.body_armours;
+            clothing.hats = result.hats;
+            clothing.glasses =  result.glasses;
+            clothing.ears = result.ears;
+            clothing.watches =  result.watches;
+            clothing.braclet = result.braclet;
+            clothing.set();
          })
-
       });
    },
 
@@ -49,7 +69,7 @@ mp.events.add({
       db.query('INSERT INTO `appearances` ( characters_id, blend_data, face_features, head_overlays, head_overlays_colors, hair, beard, torso, legs, shirt, shoes, undershirt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [player.character, characterData.blendData, characterData.faceFeatures, characterData.headOverlays, characterData.headOverlaysColors, characterData.hair, characterData.beard, characterData.torso, JSON.stringify(characterData.clothing[2]), JSON.stringify(characterData.clothing[0]), JSON.stringify(characterData.clothing[3]), JSON.stringify(characterData.clothing[1]) ], function (err, result, fields) { // VIDETI SA ZEKIJEM
          if (err) core.terminal(1, 'Creating Character Appearance ' + err);
-         // top, undershirt, bottoms, shoesx
+         // top, undershirt, bottoms, shoes
          let clothing = new Clothing();
          clothing.shirt = [character.clothing[0][0], character.clothing[0][1]];
          clothing.undershirt = [character.clothing[1][0], character.clothing[1][1]];
