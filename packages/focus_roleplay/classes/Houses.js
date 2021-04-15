@@ -154,11 +154,12 @@ class Houses {
    }
 
    storage = (player, house, interaction, itemId = -1) => {
-      switch(interaction) {
+      switch(interaction) 
+      {
          case 'load':
             let houseItems = [];
             for(let i in mp.items) {
-               if(mp.items[i].entity == ItemEntities.House && mp.items[i].owner == player.character) {
+               if(mp.items[i].entity == ItemEntities.House && mp.items[i].owner == house.id) {
                   houseItems.add(mp.items[i]);
                }
             }
@@ -167,10 +168,25 @@ class Houses {
             break;
          case 'put':
             if (itemId != -1) {
-
+               let itemToLeave = mp.items[itemId];
+               if (itemToLeave) {
+                  itemToLeave.entity = ItemEntities.House;
+                  itemToLeave.owner = house.id;
+                  itemToLeave.update(itemToLeave);
+                  player.notification(MSG_HOUSE_ITEM_LEFT, NOTIFY_SUCCESS, 4);
+               }
             }
             break;
          case 'take':
+            if (itemId != -1) {
+               let itemToTake = mp.items[itemId];
+               if (itemToTake) {
+                  itemToTake.entity = ItemEntities.Player;
+                  itemToLeave.owner = player.character;
+                  itemToTake.update(itemToTake);
+                  player.notification(MSG_HOUSE_ITEM_TAKEN, NOTIFY_SUCCESS, 4);
+               }
+            }
             break;
       }
    }
