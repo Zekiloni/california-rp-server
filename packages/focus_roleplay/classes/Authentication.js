@@ -57,7 +57,7 @@ mp.events.add({
          
          let created = new Character({
             account: player.account, character: result.insertId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin
-         })
+         }) // ovo !!!!
 
          player.character = result.insertId;
          player.name = characterData.firstname + ' ' + characterData.lastname;

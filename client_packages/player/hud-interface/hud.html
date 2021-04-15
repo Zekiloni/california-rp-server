@@ -22,20 +22,20 @@
             <div class="notif"></div>
 
             <div class="player">
-                <h4 class="money"><b>&dollar;</b><span class="player-money">33</span></h4>
+                <h4 class="money"><b>&dollar;</b><span class="player-money">{{ money }}</span></h4>
             </div>
             
-            <div class="vehicle">
-                <canvas id="speedo">guage</canvas>
+            <div class="vehicle" v-if="vehicle.driving == true">
                 <div class="veh-info">
-                    <h1 class="vehicle-speed">74</h1>
+                    <h1 class="vehicle-speed">{{ vehicleSpeed() }}</h1>
                     <h4>km/h</h4>
                 </div>
                 <img class="fuel-icon" src="src/images/veh-fuel.png">
-                <img class="lights-icon" src="src/images/lights-0.png">
+                <img class="lights-icon" v-bind:src="'src/images/lights-' + vehicle.lights + '.png'" /> 
+
             </div>
 
-            <div class="donji-ugao">
+            <div class="location-time">
                 <div class="date-time">
                     <img class="icon" src="src/images/current-time.png">
                     <h4 class="current-time">{{ timestamp }}</h4>
@@ -61,6 +61,13 @@
 
                 timestamp: null,
                 datestamp: null,
+
+                vehicle: { 
+                    driving: false,
+                    speed: null,
+                    lights: 0,
+                    fuel: null
+                },
 
                 location: { 
                     street: null,
@@ -92,7 +99,7 @@
                     }, parseInt(msTime));
                 },
 
-                getDate: () => { 
+                getDate: function () { 
                     let now = new Date(),
                         year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(now),
                         month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'short' }).format(now),
@@ -107,7 +114,12 @@
 
                 cash: () => { 
                     return this.money.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                },
+
+                vehicleSpeed: function () { 
+                    return parseInt(this.vehicle.speed);
                 }
+
             }
         })
 
