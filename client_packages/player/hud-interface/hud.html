@@ -22,7 +22,7 @@
             <div class="notif"></div>
 
             <div class="player">
-                <h4 class="money"><b>&dollar;</b><span class="player-money">{{ money }}</span></h4>
+                <h4 class="money"><b>&dollar;</b>{{ cash() }}</h4>
             </div>
             
             <div class="vehicle" v-if="vehicle.driving == true">
@@ -56,7 +56,7 @@
         let hud = new Vue({
             el: '#hud',
             data: {
-                money: null,
+                money: 0,
                 onlinePlayers: null,
 
                 timestamp: null,
@@ -112,7 +112,7 @@
                     this.timestamp = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
                 },
 
-                cash: () => { 
+                cash: function () { 
                     return this.money.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 },
 

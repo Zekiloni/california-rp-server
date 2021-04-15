@@ -54,3 +54,6 @@ mp.keys.bind(0x59, false, function() {
       mp.events.callRemote('server:item.pickup');
    }
 });
+
+
+
