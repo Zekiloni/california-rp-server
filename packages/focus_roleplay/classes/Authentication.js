@@ -40,7 +40,7 @@ mp.events.add({
                ears: JSON.parse(char.ears), watch: JSON.parse(char.watches), bracelet: JSON.parse(char.bracelet)
             })
             charClothes.load(player);
-            
+
          })
       });
    },
@@ -84,6 +84,9 @@ mp.events.add({
                player.account = userID;
                player.data.logged = true;
                player.data.spawned = false;
+
+               // settnig money because of data handler requrie change
+               player.data.money = 0;
                player.dimension = player.id;
 
                new Account({

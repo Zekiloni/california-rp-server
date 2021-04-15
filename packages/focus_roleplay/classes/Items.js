@@ -92,10 +92,11 @@ class Inventory {
          },
 
          'server:item.pickup': (player) => { 
-            let nearItem = this.near(player),
-               hasItem = this.hasItem(player, nearItem.item);
+            let nearItem = this.near(player);
             
             if (nearItem) {
+               let hasItem = this.hasItem(player, nearItem.item);
+
                if (hasItem) {
                   hasItem.quantity += nearItem.quantity;
                   hasItem.entity = ItemEntities.Player;

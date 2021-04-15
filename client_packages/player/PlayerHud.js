@@ -26,7 +26,7 @@ mp.events.add('client:notification.show', (message, type, time) => {
 	playerHUD.execute(`hud.notification(\"${message}\", \"${type}\", \"${time}\");`); 
 })
 
-mp.events.addDataHandler('cash', (entity, newCash, oldCash) => {
+mp.events.addDataHandler('money', (entity, newCash, oldCash) => {
 	if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
 		player.cash = newCash;
 	}
