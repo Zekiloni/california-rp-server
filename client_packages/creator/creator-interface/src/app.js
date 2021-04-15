@@ -170,5 +170,5 @@ $(window).on('load', () => { sliders.open(0); customization.init(); })
 
 $('#char-birth-date').change(function () { 
    let date = this.value.split('-'), year = parseInt(date[0]), dateFormat = date[2] + '/' + date[1] + '/' + date[0];
-   year > 2001 || year < 1916 ? ( $(this).css('borderColor', 'tomato'), character.brith = null ) : ( $(this).css('borderColor', 'transparent'), character.birth = dateFormat );
+   year > 2001 || year < 1916 ? ( $(this).css('borderColor', 'tomato'), character.birth = null ) : ( $(this).css('borderColor', 'transparent'), character.birth = dateFormat );
 })
