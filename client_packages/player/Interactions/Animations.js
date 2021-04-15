@@ -25,9 +25,12 @@ mp.events.add({
 
 mp.keys.bind(0x20, true, function() {
 	if (player.logged && player.spawned) { 
-		let playing = player.isPlayingAnim(animation.dictionary, animation.name, 3);
-		if (playing) { 
-			player.stopAnimTask(animation.dictionary, animation.name, 3.0);
+		if (animation.dictionary != null && animation.name != null) { 
+			let playing = player.isPlayingAnim(animation.dictionary, animation.name, 3);
+			if (playing) { 
+				player.stopAnimTask(animation.dictionary, animation.name, 3.0);
+				animation.dictionary = null, animation.name = null;
+			}
 		}
 	}
 });

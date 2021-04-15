@@ -23,7 +23,7 @@ html, body {
 .player { right: 2%; top: 2%; position: absolute; width: 300px; }
 .player .money {text-align: right;font-weight: 700;color: #84b879;font-size: 35px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);letter-spacing: -1.5px;}
 
-.donji-ugao {left: 10.5%;bottom: 1.2%;position: absolute;width: 400px;/* height: 150px; */}
+.location-time {left: 11.5%;bottom: 2%;position: absolute;width: 400px;/* height: 150px; */}
 
 .location { letter-spacing: 1px; left: 31%;bottom: 1px;position: relative;width: 400px;padding: 5px 30px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}
 .location .icon {position: absolute;left: 0;top: 35px;color: #868782;width: 20px;}
