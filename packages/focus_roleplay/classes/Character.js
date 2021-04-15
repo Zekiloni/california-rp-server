@@ -32,8 +32,8 @@ class Character {
 }
 
 const genders = [ 
-   mp.game.joaat('mp_m_freemode_01'), 
-   mp.game.joaat('mp_f_freemode_01')  
+   mp.joaat('mp_m_freemode_01'), 
+   mp.joaat('mp_f_freemode_01')  
 ];
 
 class Appearance { 
@@ -49,7 +49,8 @@ class Appearance {
    load (player) {
       player.model = genders[this.gender];
       player.setClothes(2, parseInt(this.hair[0]), 0, 2);
-      player.setHeadOverlay(1, [parseInt(this.beard[0]), 1.0, parseInt(this.beard[1]), 0]);
+
+      if (this.gender == 0) { player.setHeadOverlay(1, [parseInt(this.beard[0]), 1.0, parseInt(this.beard[1]), 0]); }
 
       player.setCustomization(this.gender == 0 ? true : false, parseInt(this.blendData[0]), parseInt(this.blendData[1]), 0, parseInt(this.blendData[2]), parseInt(this.blendData[3]), 0, parseFloat(this.blendData[4]), parseFloat(this.blendData[5]), 0, parseInt(this.eyeColor), parseInt(this.hair[1]), parseInt(this.hair[2]), 
          [

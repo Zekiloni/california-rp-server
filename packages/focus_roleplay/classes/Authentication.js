@@ -33,18 +33,14 @@ mp.events.add({
             });
             charSkin.load(player);
 
-            try { 
-               let charClothes = new Clothing({
-                  mask: JSON.parse(char.mask), torso: char.torso, undershirt: JSON.parse(char.undershirt), shirt: JSON.parse(char.shirt),
-                  legs: JSON.parse(char.legs), shoes: JSON.parse(char.shoes), bags: JSON.parse(char.bags), armour: JSON.parse(char.body_armours),
-                  accessories: JSON.parse(char.accessories), hat: JSON.parse(char.hats), glasses: JSON.parse(char.glasses), 
-                  ears: JSON.parse(char.ears), watch: JSON.parse(char.watches), bracelet: JSON.parse(char.bracelet)
-               })
-
-               charClothes.load(player);
-            } catch (e) { 
-               console.log(e)
-            }
+            let charClothes = new Clothing({
+               mask: JSON.parse(char.mask), torso: char.torso, undershirt: JSON.parse(char.undershirt), shirt: JSON.parse(char.shirt),
+               legs: JSON.parse(char.legs), shoes: JSON.parse(char.shoes), bags: JSON.parse(char.bags), armour: JSON.parse(char.body_armours),
+               accessories: JSON.parse(char.accessories), hat: JSON.parse(char.hats), glasses: JSON.parse(char.glasses), 
+               ears: JSON.parse(char.ears), watch: JSON.parse(char.watches), bracelet: JSON.parse(char.bracelet)
+            })
+            charClothes.load(player);
+            
          })
       });
    },
