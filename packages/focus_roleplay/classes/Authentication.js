@@ -45,7 +45,7 @@ mp.events.add({
             clothing.ears = result.ears;
             clothing.watches =  result.watches;
             clothing.braclet = result.braclet;
-            clothing.set();
+            clothing.set(player);
          })
       });
    },
