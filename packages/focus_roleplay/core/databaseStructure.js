@@ -24,7 +24,7 @@ db.query(usersTable, function(err, results, fields) {
 
 let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   id int(11) NOT NULL AUTO_INCREMENT,
-  master_account int(11) NOT NULL,
+  master_account int(11) NOT NULL, 
   first_name varchar(64) NOT NULL,
   last_name varchar(64) NOT NULL,
   sex int(1) NOT NULL DEFAULT 0,

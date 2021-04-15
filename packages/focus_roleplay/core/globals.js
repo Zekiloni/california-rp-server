@@ -14,7 +14,8 @@ global.MESSAGES = [
    MSG_UNEMPLOYED = 'Niste zaposleni.',
    MSG_QUITJOB = 'Dali ste otkaz.',
    MSG_NOT_IN_FREQ = 'Niste ni u jednoj frekvenciji.',
-   MSG_NOT_ENOGUTH_MONEY = 'Nemate dovoljno novca.',
+   MSG_NOT_ENOUGH_MONEY = 'Nemate dovoljno novca.',
+   MSG_NOT_ENOUGH_FOR_TRANSACTION = 'Nedovoljno novca za uspešnu transakciju.',
    MSG_ALREADY_OWNED = 'Neko već poseduje ovaj objekat.',
    MSG_ERROR = 'Došlo je do greške.',
    MSG_ENGINE_ON = 'Upalili ste motor vozila.',
@@ -24,7 +25,8 @@ global.MESSAGES = [
    MSG_DOORS_UNLOCKED = 'Otključali ste vrata',
    MSG_NOT_ON_DUTY = 'Niste na dužnosti.',
    MSG_ALREADY_WORKING = 'Već radite.',
-   MSG_INVALID_BUSSINES_TYPE = 'Nepoznat tip biznisa'
+   MSG_INVALID_BUSSINES_TYPE = 'Nepoznat tip biznisa',
+   MSG_HOUSE_SOLD_SUCCSESSFULY = 'Uspešno ste prodali kuću',
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [

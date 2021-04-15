@@ -3,8 +3,8 @@ mp.characters = {};
 
 class Character { 
    constructor (p) { 
-      this.character = p.id;
-      this.account = p.account;
+      this.character = p.id; // PK
+      this.account = p.account; // FK
       this.firstName = p.name;
       this.lastName = p.lname;
       this.birth = p.birth;
@@ -16,7 +16,7 @@ class Character {
       this.job = p.jobs;
       this.cash = p.cash;
       this.salary = p.salary;
-      this.bankAccount = p.bank;
+      this.bankAccount = p.bank; // FK
       this.hunger = p.hunger;
       this.thirst = p.thirs;
       this.licenses = p.licenses;
@@ -28,6 +28,16 @@ class Character {
       this.inviteRequest = 0;
 
       mp.characters[this.character] = this;
+   }
+   
+   setMoney (player, amount) { 
+      this.cash = amount;
+      player.data.money = this.cash;
+   }
+
+   giveMoney (player, amount) { 
+      this.cash += amount;
+      player.data.money = this.cash
    }
 }
 
