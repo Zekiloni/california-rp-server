@@ -3,32 +3,47 @@ mp.characters = {};
 
 class Character { 
    constructor (p) { 
-      this.character = p.id;
+      this.character = p.character;
       this.account = p.account;
-      this.firstName = p.name;
-      this.lastName = p.lname;
+      this.first_name = p.first_name;
+      this.last_name = p.last_name;
       this.birth = p.birth;
       this.sex = p.sex;
       this.origin = p.origin;
       this.faction = p.faction;
       this.rank = p.rank;
-      this.frequency = p.freq;
-      this.job = p.jobs;
-      this.cash = p.cash;
+      this.frequency = p.frequency;
+      this.job = p.job;
+      this.money = p.money;
       this.salary = p.salary;
-      this.bankAccount = p.bank;
+      this.bank_account = p.bank_account;
       this.hunger = p.hunger;
-      this.thirst = p.thirs;
+      this.thirst = p.thirst;
       this.licenses = p.licenses;
-      this.weaponSkill = p.wSkill;
-      this.drivingSkill = p.dSkill;
-      this.jobSkill = p.jSkill;
+      this.weapon_skill = p.weapon_skill;
+      this.driving_skill = p.driving_skill;
+      this.job_skill = p.job_skill;
       this.clothing = p.clothing;
 
       this.inviteRequest = 0;
 
       mp.characters[this.character] = this;
    }
+
+   setName (player) { 
+      player.name = this.first_name + ' ' + this.last_name;
+   }
+
+   setMoney (player, amount) { 
+      this.cash = amount;
+      player.data.money = this.cash;
+   }
+
+   giveMoney (player, amount) { 
+      this.cash += amount;
+      player.data.money = this.cash
+   }
+
 }
 
 const genders = [ 
