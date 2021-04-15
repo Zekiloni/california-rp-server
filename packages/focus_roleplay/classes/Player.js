@@ -65,9 +65,6 @@ mp.events.add({
       if (!player.data.logged) return;
       player.proximityMessage(7, `${player.name} kaze: ${text}`, ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E']);
     },
-
-   'server:player.damage': (player, healthLoss, armorLoss) => {
-   }
 });
 
 mp.players.find = (playerName) => {
@@ -86,3 +83,4 @@ mp.players.find = (playerName) => {
    }
    return foundPlayer;
 }
+

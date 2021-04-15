@@ -3,42 +3,47 @@ mp.characters = {};
 
 class Character { 
    constructor (p) { 
-      this.character = p.id; // PK
-      this.account = p.account; // FK
-      this.firstName = p.name;
-      this.lastName = p.lname;
+      this.character = p.character;
+      this.account = p.account;
+      this.first_name = p.first_name;
+      this.last_name = p.last_name;
       this.birth = p.birth;
       this.sex = p.sex;
       this.origin = p.origin;
       this.faction = p.faction;
       this.rank = p.rank;
-      this.frequency = p.freq;
-      this.job = p.jobs;
-      this.cash = p.cash;
+      this.frequency = p.frequency;
+      this.job = p.job;
+      this.money = p.money;
       this.salary = p.salary;
-      this.bankAccount = p.bank; // FK
+      this.bank_account = p.bank_account;
       this.hunger = p.hunger;
-      this.thirst = p.thirs;
+      this.thirst = p.thirst;
       this.licenses = p.licenses;
-      this.weaponSkill = p.wSkill;
-      this.drivingSkill = p.dSkill;
-      this.jobSkill = p.jSkill;
+      this.weapon_skill = p.weapon_skill;
+      this.driving_skill = p.driving_skill;
+      this.job_skill = p.job_skill;
       this.clothing = p.clothing;
 
       this.inviteRequest = 0;
 
       mp.characters[this.character] = this;
    }
-   
+
+   setName (player) { 
+      player.name = this.first_name + ' ' + this.last_name;
+   }
+
    setMoney (player, amount) { 
-      this.cash = amount;
-      player.data.money = this.cash;
+      this.money = amount;
+      player.data.money = this.money;
    }
 
    giveMoney (player, amount) { 
-      this.cash += amount;
-      player.data.money = this.cash
+      this.money += amount;
+      player.data.money = this.money
    }
+
 }
 
 const genders = [ 
@@ -101,8 +106,6 @@ class Clothing  {
    }
    
    load = (player) => {
-      console.log('turio')
-      console.log(this)
       player.setProp(0, parseInt(this.hat[0]), parseInt(this.hat[1]));
       player.setProp(1, parseInt(this.glasses[0]), parseInt(this.glasses[1]));
       player.setProp(2, parseInt(this.ears[0]), parseInt(this.ears[1]));

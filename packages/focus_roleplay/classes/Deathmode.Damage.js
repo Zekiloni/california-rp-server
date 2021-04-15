@@ -11,15 +11,18 @@ class Deathmode {
                 player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544));
                 player.isDead = false;
             }, mp.settings.death.respawnTime * 1000);
-          }
+         },
+
+         'server:player.damage': (player, healthLoss, armorLoss) => {
+         }
       })
    }
 }
 
-let Deathmode = new Deathmode();
+let deathmode = new Deathmode();
 
 class Damage { 
 
 }
 
-let Damage = new Damage();
+let damage = new Damage();
