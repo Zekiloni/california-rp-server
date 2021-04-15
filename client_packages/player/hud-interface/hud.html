@@ -22,13 +22,12 @@
             <div class="notif"></div>
 
             <div class="player">
-                <h4 class="money"><b>&dollar;</b><span class="player-money">33</span></h4>
+                <h4 class="money"><b>&dollar;</b><span class="player-money">{{ money }}</span></h4>
             </div>
             
-            <div class="vehicle">
-                <canvas id="speedo">guage</canvas>
+            <div class="vehicle" v-if="vehicle.driving == true">
                 <div class="veh-info">
-                    <h1 class="vehicle-speed">74</h1>
+                    <h1 class="vehicle-speed">{{ vehicle.speed }}</h1>
                     <h4>km/h</h4>
                 </div>
                 <img class="fuel-icon" src="src/images/veh-fuel.png">
@@ -62,6 +61,12 @@
                 timestamp: null,
                 datestamp: null,
 
+                vehicle: { 
+                    driving: false,
+                    speed: null,
+                    fuel: null
+                },
+
                 location: { 
                     street: null,
                     zone: null,
@@ -92,7 +97,7 @@
                     }, parseInt(msTime));
                 },
 
-                getDate: () => { 
+                getDate: function () { 
                     let now = new Date(),
                         year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(now),
                         month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'short' }).format(now),

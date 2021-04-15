@@ -48,7 +48,7 @@ html, body {
   to { transform: translateX(0); }
 }
 
-.vehicle { display: none; right: 1%;bottom: 1%;position: absolute;width: 400px;height: auto; }
+.vehicle {right: 1%;bottom: 1%;position: absolute;width: 400px;height: auto;}
 .vehicle #speedo {right: 0;bottom: 10px;position: absolute;}
 .vehicle .veh-info {position: absolute;bottom: 60px;width: 110px;text-align: center;left: 195px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}
 .vehicle .veh-info h1 { color: white; margin: 0; padding: 0; } 

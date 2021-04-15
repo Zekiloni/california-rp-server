@@ -62,28 +62,3 @@ cashFormat = (x) => {
 //     xhr.responseType = 'blob';
 //     xhr.send();
 // }
-
-
-
-createSpeedo = () => { 
-    var opts = {
-        angle: 0.26, // The span of the gauge arc
-        radiusScale: 0.93, // Relative radius
-        limitMax: false,     // If false, max value increases automatically if value > maxValue
-        limitMin: false,     // If true, the min value of the gauge will be fixed
-        colorStart: '#00BD13',   // Colors
-        colorStop: '#00A111',    // just experiment with them
-        strokeColor: 'rgb(134 135 130 / 80%)',  // to see which ones work best for you
-        generateGradient: true,
-        highDpiSupport: true,     // High resolution support
-    };
-
-    var target = document.getElementById('speedo'); // your canvas element
-    speedo = new Donut(target).setOptions(opts); // create sexy gauge!
-    speedo.maxValue = 250; // set max gauge value
-    speedo.setMinValue(0);  // Prefer setter over gauge.minValue = 0
-    speedo.animationSpeed = 35; // set animation speed (32 is default value)
-    speedo.set(0); // set actual value
-}
-
-createSpeedo()
