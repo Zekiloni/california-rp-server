@@ -15,16 +15,21 @@ mp.events.add({
 
          player.dimension = 0;
 
-         let char = new Character({
-            character: character, account: player.account, first_name: info.first_name, last_name: info.last_name,
-            birth: info.birth_date, sex: parseInt(info.sex), origin: info.origin, faction: info.faction, rank: info.rank,
-            frequency: info.radio_frequency, job: info.job, salary: info.salary, bankAccount: info.bank_account,
-            hunger: info.hunger, thirst: info.thirst, licenses: JSON.parse(info.licenses), weaponSkill: info.weapon_skill,
-            drivingSkill: info.driving_skill, jobSkill: info.job_skill
-         })  
+         try { 
+            let char = new Character({
+               character: character, account: player.account, first_name: info.first_name, last_name: info.last_name,
+               birth: info.birth_date, sex: parseInt(info.sex), origin: info.origin, faction: info.faction, rank: info.faction_rank,
+               frequency: info.radio_frequency, job: info.job, salary: info.salary, bank_account: info.bank_account,
+               hunger: info.hunger, thirst: info.thirst, licenses: JSON.parse(info.licenses), weapon_skill: info.weapon_skill,
+               driving_skill: info.driving_skill, job_skill: info.job_skill
+            })  
+   
+            char.setName(player);
+            char.setMoney(player, info.money);
+         } catch (e) { 
+            console.log(e)
+         }
 
-         char.setName(player);
-         char.setMoney(player, info.money);
 
          db.query('SELECT * FROM `appearances` WHERE `character` = ?', [player.character], function (err, res, field) {
             if (err) return core.terminal(1, 'Appearances Loading Error ' + err);
@@ -44,7 +49,11 @@ mp.events.add({
             })
             charClothes.load(player);
 
+            mp.characters[player.character].clothing = charClothes;
+      
          })
+
+         console.log(mp.characters[player.character]);
       });
    },
 

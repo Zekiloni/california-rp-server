@@ -35,13 +35,13 @@ class Character {
    }
 
    setMoney (player, amount) { 
-      this.cash = amount;
-      player.data.money = this.cash;
+      this.money = amount;
+      player.data.money = this.money;
    }
 
    giveMoney (player, amount) { 
-      this.cash += amount;
-      player.data.money = this.cash
+      this.money += amount;
+      player.data.money = this.money
    }
 
 }
@@ -106,8 +106,6 @@ class Clothing  {
    }
    
    load = (player) => {
-      console.log('turio')
-      console.log(this)
       player.setProp(0, parseInt(this.hat[0]), parseInt(this.hat[1]));
       player.setProp(1, parseInt(this.glasses[0]), parseInt(this.glasses[1]));
       player.setProp(2, parseInt(this.ears[0]), parseInt(this.ears[1]));
