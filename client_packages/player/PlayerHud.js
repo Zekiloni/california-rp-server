@@ -127,6 +127,6 @@ vehicle = () => {
 	else if (lights.lightsOn == 1 && lights.highbeamsOn == 1) { lightsStatus = 2; }
 
 	//playerHUD.execute(`vehicleInfo(\"${vehicleSpeed}\", \"${lightsStatus}\");`); 
-	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed};`); 
+	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
 }
 
