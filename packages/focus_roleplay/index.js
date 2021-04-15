@@ -9,6 +9,7 @@ global.core = require('./core/main');
 let DatabaseStructure = require('./core/databaseStructure');
 let Logs = require('./classes/Logs');
 let Player = require('./classes/Player');
+let DeathmodeDamage = require('./classes/Deathmode.Damage');
 let Discord = require('./classes/Discord');
 let Bans = require('./classes/Bans');
 let Commands = require('./classes/Commands');
