@@ -15,7 +15,8 @@ mp.events.add({
          player.defaultVariables();
 
          // SHARED DATA
-         player.data.money = 
+         player.data.money = 33;
+         player.dimension = 0;
 
          new Character({
             id: character, account: info.master_account, name: info.first_name, lname: last_name, 
@@ -50,35 +51,40 @@ mp.events.add({
    },
 
    'server:create.character': (player, character) => {      
-      let characterData = JSON.parse(character), characterID;
+      let characterData = JSON.parse(character);
       
       db.query('INSERT INTO `characters` (master_account, first_name, last_name, sex, birth_date, origin) VALUES (?, ?, ?, ?, ?, ?)', [player.account, characterData.firstname, characterData.lastname, characterData.gender, characterData.birth, characterData.origin, characterData.cash], function (err, result, fields) {
          if (err) core.terminal(1, 'Creating Character ' + err);
          
-         let newChar = new Character({
+         let created = new Character({
             account: player.account, character: result.insertId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin
          })
-         
+
+         console.log('PRIMIO PARAMETRE:')
+         console.log(character);
+         console.log('KREIRAN KARAKTER:')
+         console.log(created);
+
          player.character = result.insertId;
          player.name = characterData.firstname + ' ' + characterData.lastname;
          player.dimension = 0;
          player.position = mp.settings.defaultSpawn;
          player.defaultVariables();
+
+         db.query('INSERT INTO `appearances` (characters_id, blend_data, face_features, head_overlays, head_overlays_colors, hair, beard, torso, legs, shirt, shoes, undershirt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+         [ player.character, JSON.stringify(characterData.blendData), JSON.stringify(characterData.faceFeatures), JSON.stringify(characterData.headOverlays), JSON.stringify(characterData.headOverlaysColors), JSON.stringify(characterData.hair), JSON.stringify(characterData.beard), JSON.stringify(characterData.torso), JSON.stringify(characterData.clothing[2]), JSON.stringify(characterData.clothing[0])], function (err, res, fields) { // VIDETI SA ZEKIJEM
+            if (err) core.terminal(1, 'Creating Character Appearance ' + err);
+            // top, undershirt, bottoms, shoes
+            let clothing = new Clothing();
+            clothing.shirt = [character.clothing[0][0], character.clothing[0][1]];
+            clothing.undershirt = [character.clothing[1][0], character.clothing[1][1]];
+            clothing.bottoms = [character.clothing[2][0], character.clothing[2][1]];
+            clothing.shoes = [character.clothing[3][0], character.clothing[3][1]];
+            clothing.set(player);      
+   
+         });
       });
    
-      // 14 
-      db.query('INSERT INTO `appearances` ( characters_id, blend_data, face_features, head_overlays, head_overlays_colors, hair, beard, torso, legs, shirt, shoes, undershirt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [player.character, characterData.blendData, characterData.faceFeatures, characterData.headOverlays, characterData.headOverlaysColors, characterData.hair, characterData.beard, characterData.torso, JSON.stringify(characterData.clothing[2]), JSON.stringify(characterData.clothing[0]), JSON.stringify(characterData.clothing[3]), JSON.stringify(characterData.clothing[1]) ], function (err, result, fields) { // VIDETI SA ZEKIJEM
-         if (err) core.terminal(1, 'Creating Character Appearance ' + err);
-         // top, undershirt, bottoms, shoes
-         let clothing = new Clothing();
-         clothing.shirt = [character.clothing[0][0], character.clothing[0][1]];
-         clothing.undershirt = [character.clothing[1][0], character.clothing[1][1]];
-         clothing.bottoms = [character.clothing[2][0], character.clothing[2][1]];
-         clothing.shoes = [character.clothing[3][0], character.clothing[3][1]];
-         clothing.set();      
-      });
-      
       player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info)
    },
 
@@ -91,6 +97,7 @@ mp.events.add({
                player.account = userID;
                player.data.logged = true;
                player.data.spawned = false;
+               player.dimension = player.id;
 
                new Account({
                   sqlid: userID, username: result[0].username, regDate: result[0].registered_at, admin: result[0].admin,

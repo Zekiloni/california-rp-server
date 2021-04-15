@@ -28,7 +28,7 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   first_name varchar(64) NOT NULL,
   last_name varchar(64) NOT NULL,
   sex int(1) NOT NULL DEFAULT 0,
-  birth_date date,
+  birth_date text,
   origin varchar(64),
   cash int(11) NOT NULL DEFAULT 800,
   salary int(6) NOT NULL DEFAULT 0,

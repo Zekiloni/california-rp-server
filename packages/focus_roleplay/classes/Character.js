@@ -23,7 +23,7 @@ class Character {
       this.weaponSkill = p.wSkill;
       this.drivingSkill = p.dSkill;
       this.jobSkill = p.jSkill;
-      this.clothing = d.clothing;
+      this.clothing = p.clothing;
 
       this.inviteRequest = 0;
 

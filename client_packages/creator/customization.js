@@ -26,7 +26,6 @@ mp.events.add({
         mp.events.call('client:creator.cam', true);
         customizatorOpened = true;
         mp.gui.chat.activate(false);
-        player.dimension = player.remoteId;
         player.setComponentVariation(11, 15, 0, 0);
         player.setComponentVariation(3, 15, 0, 0);
         player.setComponentVariation(8, 15, 0, 0);

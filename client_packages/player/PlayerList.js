@@ -21,10 +21,9 @@ mp.events.add({
 })
 
 mp.keys.bind(0x50, false, function() {
-   if (!player.logged) return;
-   //if (!player.spawned) return;
    if (mp.players.local.isTypingInTextChat) return;
-   
-   mp.events.call('client:players.list')
+   if (player.logged && player.spawned) { 
+      mp.events.call('client:players.list')
+   }
 });
 
