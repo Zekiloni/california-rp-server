@@ -27,6 +27,8 @@ global.MESSAGES = [
    MSG_ALREADY_WORKING = 'Već radite.',
    MSG_INVALID_BUSSINES_TYPE = 'Nepoznat tip biznisa',
    MSG_HOUSE_SOLD_SUCCSESSFULY = 'Uspešno ste prodali kuću',
+   MSG_HOUSE_ITEM_LEFT = 'Uspešno ste ostavili predmet u svoju kuću',
+   MSG_HOUSE_ITEM_TAKEN = 'Uzeli ste predmet iz svoje kuće'
 ]; Object.freeze(MESSAGES)
 
 global.NOFITICATION_TYPES = [
