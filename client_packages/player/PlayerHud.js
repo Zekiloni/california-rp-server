@@ -29,6 +29,7 @@ mp.events.add('client:notification.show', (message, type, time) => {
 mp.events.addDataHandler('money', (entity, newCash, oldCash) => {
 	if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
 		player.money = newCash;
+		mp.gui.chat.push(player.money)
 	}
 })
 
