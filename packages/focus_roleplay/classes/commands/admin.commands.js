@@ -142,5 +142,19 @@ module.exports = {
             }
          }
       },
+
+      {
+         name: 'setmoney',
+         admin: 3,
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]);
+            if (target) { 
+               let TargetCharacter = mp.characters[target.character];
+               TargetCharacter.setMoney(player, args[1]);
+               target.sendMessage(player.name + ' vam je postavio novac na ' + args[1] + '$', mp.colors.tomato);
+               player.sendMessage('Postavili ste novac ' + target.name + ' na ' + args[1] + '$', mp.colors.tomato);
+            }
+         }
+      },
    ]
 }

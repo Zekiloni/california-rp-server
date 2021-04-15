@@ -36,12 +36,12 @@ class Character {
 
    setMoney (player, amount) { 
       this.money = amount;
-      player.data.money = this.money;
+      player.setVariable('money', this.money);
    }
 
    giveMoney (player, amount) { 
       this.money += amount;
-      player.data.money = this.money
+      player.setVariable('money', this.money);
    }
 
 }
