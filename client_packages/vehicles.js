@@ -2,7 +2,6 @@
 const player = mp.players.local;
 const blockedClasses = [13, 14, 15, 16, 21]; 
 
-player.setConfigFlag(429, true);
 mp.game.vehicle.defaultEngineBehaviour = false;
 
 mp.events.add({
@@ -11,6 +10,10 @@ mp.events.add({
          if (entity.hasVariable("IndicatorRight")) entity.setIndicatorLights(0, entity.getVariable("IndicatorRight"));
          if (entity.hasVariable("IndicatorLeft")) entity.setIndicatorLights(1, entity.getVariable("IndicatorLeft"));
       }
+   },
+
+   'playerEnterVehicle': (vehicle, seat) => { 
+      player.setConfigFlag(429, true);
    }
 });
 
