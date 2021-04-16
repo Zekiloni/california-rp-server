@@ -86,3 +86,6 @@ class Discord {
 mp.discord = new Discord();
 
 // mp.discord.send('Server Startovan', 'adadada', 'adada', '#fffff')
+
+
+

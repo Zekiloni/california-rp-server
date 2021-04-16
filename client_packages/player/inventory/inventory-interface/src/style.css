@@ -23,12 +23,27 @@ body {
    align-items: center;
 }
 
-.clothing { 
-   width: 300px; 
+.clothing {
+   width: 300px;
    margin: 10px;
    height: 500px;
-   background: blue;
+   flex-wrap: wrap;
+   display: flex;
+   align-items: center;
    animation: slide-in 1s;
+   justify-content: space-between;
+   flex-direction: column;
+}
+
+.clothing .cloth {
+   width: 60px;
+   margin: 10px;
+   height: 60px;
+   transition: all 0.5s ease;
+   box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
+   background: rgb(255 255 255 / 10%);
+   border: 1px solid rgb(128 128 128 / 25%);
+   text-align: center;
 }
 
 .items {
@@ -40,6 +55,8 @@ body {
    flex-wrap: wrap;
    animation: slide-in 1.25s;
 }
+
+.cloth:hover { opacity: 0.5; }
 
 .items .item {
    width: 70px;
@@ -105,7 +122,7 @@ body {
    flex-direction: column;
 }
 
-.weapons .primary, .weapons .secondary {
+.weapons .weapon {
    padding: 15px 20px;
    width: 100%;
    overflow: hidden;
@@ -115,7 +132,7 @@ body {
    position: relative;
    transition: all 0.35s ease;
 }
-.weapons .primary img, .weapons .secondary img {
+.weapons .weapon img {
    position: absolute;
    top: 0;
    opacity: 0.65;
@@ -124,10 +141,10 @@ body {
    z-index: 0;
    transition: all 0.35s ease;
 }
-.weapons .primary:hover, .weapons .secondary:hover { filter: brightness(1.25); background: rgb(255 255 255 / 15%); border-color: #492e8d; }
-.weapons .primary:hover img, .weapons .secondary:hover img { transform: rotate(5deg); }
-.weapons .primary h2, .weapons .secondary h2 { margin: 1px 0; font-size: 20px; position: relative; font-weight: 500; z-index: 2; color: #c5c5c5; }
-.weapons .primary h5, .weapons .secondary h5 {
+.weapons .weapon:hover { filter: brightness(1.25); background: rgb(255 255 255 / 15%); border-color: #492e8d; }
+.weapons .weapon:hover img { transform: rotate(5deg); }
+.weapons .weapon h2 { margin: 1px 0; font-size: 20px; position: relative; font-weight: 500; z-index: 2; color: #c5c5c5; }
+.weapons .weapon h5 {
    margin: 1px 0;
    position: relative;
    z-index: 1;
@@ -137,7 +154,7 @@ body {
    color: #929292;
 }
 
-.weapons .secondary { margin-top: 20px; }
+.weapons .weapon:nth-child(2) { margin-top: 20px; }
 
 
 * { user-select: none; }

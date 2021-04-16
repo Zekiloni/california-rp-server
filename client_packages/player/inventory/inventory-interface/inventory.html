@@ -18,7 +18,9 @@
 
         <div id="inventory">
             <div class="clothing">
-
+                <div class="cloth" v-for="(item, key) in player.clothing" v-on:click="clothing(item)">
+                    {{ clothingNames[key] }}
+                </div>
             </div>
 
             <!--  // v-if="player.items.length > 0" -->
@@ -31,19 +33,10 @@
             </div>
 
             <div class="weapons" >
-                <div class="primary"> 
-                    <div v-if="player.weapons.length == 1">
-                        <h2 @click="weapon(0, player.weapons[0].id)"> {{ player.weapons[0].name }} </h2>
-                    </div>
+                <div class="weapon" v-for="(weapon, key) in player.weapons" v-on:dblclick="weaponBack(key, weapon.id)"> 
+                    <h2 v-on:click="weaponUse(key, weapon.id)"> {{ weapon.name }} </h2>
                     <h5>primarno oružije</h5>
-                    <img src="src/images/primary_weapon.png" />
-                </div>
-                <div class="secondary">
-                    <div v-if="player.weapons.length == 2">
-                        <h2 @click="weapon(1, player.weapons[1].id)"> {{ player.weapons[1].name }} </h2>
-                    </div>
-                    <h5>sekundarno oružije</h5>
-                    <img src="src/images/secondary_weapon.png" />
+                    <img :src="'src/images/' + key + '.png'">
                 </div>
             </div>
         </div>
@@ -57,9 +50,11 @@
                 el: '#inventory',
                 data: {
                     player: {
-                        money: null, weapons: [ {id: 0, name: 'Maretova keva'}], items: null,
-                        clothing: [0, 0, 0, 0, 0],
+                        money: null, weapons: [{ id: 0, name: 'Mare gej'}, { id: 0, name: 'Mare gej'}], items: null,
+                        clothing: [1, 11, 8, 4, 6],
                     },
+
+                    clothingNames: ['Maska', 'Majca', 'Podmajca', 'Donji deo', 'Patike']
                 },
 
                 methods: { 
@@ -69,11 +64,16 @@
                         console.log(JSON.stringify(items))
                     },
 
-                    weapon: function (i) { 
-                        console.log(this.player.weapons[i])
-                        delete this.player.weapons[i];
-                        console.log(this.player.weapons[i])
+                    weaponUse: function (i, w) { 
+                        mp.trigger('client:inventory.weapon.select', i, w)
+                    },
 
+                    weaponBack: function (i, w) { 
+                        console.log('weapon back')
+                    },
+
+                    clothing: function (index) {
+                        mp.trigger('client:inventory.process.clothing', index)
                     },
 
                     use: function (item) {

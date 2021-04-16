@@ -67,7 +67,32 @@ class Inventory {
                   }
                }
             }
+            console.log(player.allWeapons)
             player.call('client:inventory.toggle', [true, inventory, weapons])
+         },
+
+         'server:weapon.select': (player, key, weapon) => { 
+
+         },
+
+         'server:item.clothing': (player, index) => { 
+            let undressed = { 1: 0, 11: 15, 8: 15, 4: 61, 6:34 }, character = mp.characters[player.character], clothing = null,
+               dressed = player.getClothes(parseInt(index));
+
+            switch (index) { 
+               case 1: { clothing = character.clothing.mask; break; }
+               case 11: { clothing = character.clothing.shirt; break; }
+               case 8: { clothing = character.clothing.undershirt; break; }
+               case 4: { clothing = character.clothing.legs; break; }
+               case 6: { clothing = character.clothing.shoes; break; }
+            }
+
+            console.log(clothing)
+            if (dressed.drawable == undressed[index]) { 
+               player.setClothes(parseInt(index), parseInt(clothing[0]), parseInt(clothing[1]), 2);
+            } else { 
+               player.setClothes(parseInt(index), undressed[index], 0, 2);
+            }
          },
 
          'server:item.drop': (player, itemID, quantity) => { 

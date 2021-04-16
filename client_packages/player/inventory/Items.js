@@ -30,6 +30,14 @@ mp.events.add({
       }
   },
 
+  'client:inventory.process.clothing': (index) => { 
+      mp.events.callRemote('server:item.clothing', index);
+   },
+
+   'client:inventory.weapon.select': (key, id) => { 
+      mp.events.callRemote('server:weapon.select', key, id);
+   },
+
   'entityStreamIn': (entity) => {
       if (entity.type === 'object') {
          if (entity.item) { 

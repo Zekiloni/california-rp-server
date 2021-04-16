@@ -30,7 +30,7 @@ mp.events.add('playerCommand', (player, command) => {
 
    if (cmd) { 
       let account = mp.accounts[player.account];
-      // let character = mp.characters[player.character];
+      let character = mp.characters[player.character];
 
       if (cmd.admin && account.admin < cmd.admin) return false;
       if (cmd.faction && character.faction != cmd.faction) return false;
@@ -39,6 +39,6 @@ mp.events.add('playerCommand', (player, command) => {
       cmd.call(player, args);
  
    } else {
-      // player.notfication();
+      player.notification(MSG_CMD_DOESNT_EXIST, NOTIFY_ERROR, 4);
    }
 }) 

@@ -121,6 +121,9 @@ class Clothing  {
       player.setClothes(9, parseInt(this.armour[0]), parseInt(this.armour[1]), 2);
       player.setClothes(7, parseInt(this.accessories[0]), parseInt(this.accessories[1]), 2);
       player.setClothes(11, parseInt(this.shirt[0]), parseInt(this.shirt[1]), 2);
+
+      mp.characters[player.character].clothing = this;
+      console.log(mp.characters[player.character].clothing)
    }
 }
 

@@ -31,7 +31,6 @@ mp.ItemRegistry = {
       caliber: '9mm Ammo',
       type: ItemType.Weapon,
       use: (player) => { 
-         console.log('iskorisio')
          player.giveWeapon(mp.joaat(mp.ItemRegistry['Combat Pistol'].weapon), 0);
       }
    },
