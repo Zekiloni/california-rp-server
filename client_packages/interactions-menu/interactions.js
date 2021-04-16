@@ -39,4 +39,5 @@ mp.events.add('click', (x, y, upOrDown, leftOrRight) => {
    const result = mp.raycasting.testPointToPoint(position, end, [mp.players.local]);
  
    console.log(JSON.stringify(result));
+   mp.gui.chat.push(JSON.stringify(result));
 });
