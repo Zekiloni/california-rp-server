@@ -17,6 +17,8 @@ class Vehicle {
           this.engine = params.engine || false;
           this.dimension = params.dimension || 0;
           this.visible = params.visible || true;
+          this.km = params.km || 0;
+          this.dirt = params.dirt || 0; // Dirt ide od 0 do 15
           if (!this._visible) this._alpha = 0;
           this.vehicle = mp.vehicles.new(mp.joaat(this.model), this.position,
           {
@@ -28,6 +30,7 @@ class Vehicle {
             engine: this.engine,
             dimension: this.dimension,
           });
+          // Napraviti Set i sync dirt funkciju
         }
     }
 }

@@ -72,7 +72,7 @@ mp.events.add({
 
             let newCharSkin = new Appearance({
                gender: characterData.gender, blendData: characterData.blendData, hair: characterData.hair,
-               beard: characterData.beard, eyeColor: characterData.eyeColor, faceFeatures: characterData.faceFeatures // FALI characterData.eyeColor
+               beard: characterData.beard, eyeColor: 0, faceFeatures: characterData.faceFeatures // FALI characterData.eyeColor
             });
             
             let newCharClothes = new Clothing({
@@ -83,7 +83,7 @@ mp.events.add({
          });
       });
    
-      player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info);
+      player.sendMessage(MSG_WELCOME_ON_REGISTER, mp.colors.info);
    },
 
    'server:login.handle': (player, username, password) => { 

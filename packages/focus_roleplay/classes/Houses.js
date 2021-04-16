@@ -156,7 +156,7 @@ class Houses {
    storage = (player, house, interaction, itemId = -1) => {
       switch(interaction) 
       {
-         case 'load':
+         case ARG_LOAD:
             let houseItems = [];
             for(let i in mp.items) {
                if(mp.items[i].entity == ItemEntities.House && mp.items[i].owner == house.id) {
@@ -166,7 +166,7 @@ class Houses {
             // let houseJson = JSON.stringify(houseItems);
             // player.call('client:inventory.house.action', 'load', houseJson);
             break;
-         case 'put':
+         case ARG_PUT:
             if (itemId != -1) {
                let itemToLeave = mp.items[itemId];
                if (itemToLeave) {
@@ -177,7 +177,7 @@ class Houses {
                }
             }
             break;
-         case 'take':
+         case ARG_TAKE:
             if (itemId != -1) {
                let itemToTake = mp.items[itemId];
                if (itemToTake) {

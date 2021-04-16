@@ -29,8 +29,18 @@ global.MESSAGES = [
    MSG_HOUSE_SOLD_SUCCSESSFULY = 'Uspešno ste prodali kuću',
    MSG_HOUSE_ITEM_LEFT = 'Uspešno ste ostavili predmet u svoju kuću',
    MSG_HOUSE_ITEM_TAKEN = 'Uzeli ste predmet iz svoje kuće',
-   MSG_CMD_DOESNT_EXIST = 'Komanda ne poostoji.'
+   MSG_CMD_DOESNT_EXIST = 'Komanda ne poostoji.',
+   MSG_WELCOME_ON_REGISTER = 'Dobrodošli na Focus Roleplay, uživajte u igri.',
+
 ]; Object.freeze(MESSAGES)
+
+global.ARGUMENTS = [ 
+   ARG_LOAD = 'load',
+   ARG_PUT = 'put',
+   ARG_TAKE = 'take'
+
+   
+]; Object.freeze(ARGUMENTS)
 
 global.NOFITICATION_TYPES = [
    NOTIFY_SUCCESS = 'success',
