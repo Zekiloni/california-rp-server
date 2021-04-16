@@ -61,6 +61,8 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 
 /**
+*   player.getCharacter(); - vraca karaktera od kurca / igraca
+*   player.getCharacter(); - vraca korisnicki racun od kurca / igraca
 *   player.notifiation(message, type, time) - Tekst, tip (error, uspesno, info), time: broj sekundi za koliko nestaje
 *   player.isNear(target) - Da li je blizu targeta u radiusu manjem od 3, vraca true, false
 *   mp.players.find(id / ime) - Pronalazi igraca
