@@ -24,6 +24,8 @@ class Character {
       this.job_skill = p.job_skill || 0;
       this.clothing = p.clothing || 'None';
 
+      this.mood = p.mood || 'normal';
+
       this.mute = p.mute || 0;
 
       this.inviteRequest = 0;
@@ -43,6 +45,11 @@ class Character {
    giveMoney (player, amount) { 
       this.money += amount;
       player.setVariable('money', this.money);
+   }
+
+   setMood (player, mood) { 
+      this.mood = mood;
+      player.setVariable('mood', this.mood);
    }
 }
 
