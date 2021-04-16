@@ -39,7 +39,6 @@ global.ARGUMENTS = [
    ARG_PUT = 'put',
    ARG_TAKE = 'take'
 
-   
 ]; Object.freeze(ARGUMENTS)
 
 global.NOFITICATION_TYPES = [

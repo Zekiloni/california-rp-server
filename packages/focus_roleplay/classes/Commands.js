@@ -32,9 +32,9 @@ mp.events.add('playerCommand', (player, command) => {
       let account = mp.accounts[player.account];
       let character = mp.characters[player.character];
 
-      if (cmd.admin && account.admin < cmd.admin) return false;
-      if (cmd.faction && character.faction != cmd.faction) return false;
-      if (cmd.job && character.job != cmd.job) return false;
+      if (cmd.admin && account.admin < cmd.admin) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if (cmd.faction && character.faction != cmd.faction) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);;
+      if (cmd.job && character.job != cmd.job) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);;
 
       cmd.call(player, args);
  
