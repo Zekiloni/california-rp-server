@@ -19,7 +19,8 @@
         <div id="inventory">
             <div class="clothing">
                 <div class="cloth" v-for="(item, key) in player.clothing" v-on:click="clothing(item)">
-                    {{ clothingNames[key] }}
+                    <img :src="'src/images/clothes/' + clothingNames[key] + '.png'">
+
                 </div>
             </div>
 
@@ -54,7 +55,7 @@
                         clothing: [1, 11, 8, 4, 6],
                     },
 
-                    clothingNames: ['Maska', 'Majca', 'Podmajca', 'Donji deo', 'Patike']
+                    clothingNames: ['hat', 'shirt', 'undershirt', 'bottoms', 'shoes']
                 },
 
                 methods: { 

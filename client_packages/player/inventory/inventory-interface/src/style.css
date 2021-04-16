@@ -26,7 +26,7 @@ body {
 .clothing {
    width: 300px;
    margin: 10px;
-   height: 500px;
+   height: auto;
    flex-wrap: wrap;
    display: flex;
    align-items: center;
@@ -34,8 +34,8 @@ body {
    border: 1px solid rgb(128 128 128 / 11%);
    animation: slide-in 1s;
    border-radius: 20px;
-   justify-content: space-between;
-   flex-direction: column;
+   justify-content: center;
+   /* flex-direction: column; */
 }
 
 .clothing .cloth {
@@ -47,7 +47,13 @@ body {
    background: rgb(255 255 255 / 10%);
    border: 1px solid rgb(128 128 128 / 25%);
    text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }
+
+.cloth img { width: 40px; height: 40px; opacity: 0.45; transition: all 0.35s ease; }
+.cloth:hover img { opacity: 0.8; }
 
 .items {
    width: 640px;
@@ -62,7 +68,6 @@ body {
    animation: slide-in 1.25s;
 }
 
-.cloth:hover { opacity: 0.5; }
 
 .items .item {
    width: 70px;
