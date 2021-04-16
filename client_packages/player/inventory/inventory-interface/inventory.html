@@ -33,9 +33,9 @@
             </div>
 
             <div class="weapons" >
-                <div class="weapon" v-for="(weapon, key) in player.weapons" v-on:dblclick="weaponBack(key, weapon.id)"> 
-                    <h2 v-on:click="weaponUse(key, weapon.id)"> {{ weapon.name }} </h2>
-                    <h5>primarno oružije</h5>
+                <div class="weapon" v-for="(weapon, key) in player.weapons" v-on:dblclick="weaponBack(weapon)"> 
+                    <h2 v-on:click="weaponUse(key, weapon.id)"> {{ weapon.name }} {{ key }} </h2>
+                    <h5>{{ weaponIndex(key) }}</h5>
                     <img :src="'src/images/' + key + '.png'">
                 </div>
             </div>
@@ -50,7 +50,7 @@
                 el: '#inventory',
                 data: {
                     player: {
-                        money: null, weapons: [{ id: 0, name: 'Mare gej'}, { id: 0, name: 'Mare gej'}], items: null,
+                        money: null, weapons: [], items: null, // { id: 0, name: 'Zeki gej'}, { id: 0, name: 'Mare gej'}
                         clothing: [1, 11, 8, 4, 6],
                     },
 
@@ -65,15 +65,23 @@
                     },
 
                     weaponUse: function (i, w) { 
-                        mp.trigger('client:inventory.weapon.select', i, w)
+                        //mp.trigger('client:inventory.weapon.select', i, w)
                     },
 
-                    weaponBack: function (i, w) { 
-                        console.log('weapon back')
+                    weaponBack: function (weapon) { 
+                        weapon = this.player.weapons.find(element => element === weapon);
+                        let index = this.player.weapons.indexOf(weapon);          
+                        this.player.weapons.splice(index, 1);
+                        mp.trigger('client:inventory.process.item', 'put', weapon.id)
                     },
 
                     clothing: function (index) {
                         mp.trigger('client:inventory.process.clothing', index)
+                    },
+
+                    weaponIndex: (i) => { 
+                        let names = ['Primarno Oružije', 'Sekundardno oružije'];
+                        return names[i];
                     },
 
                     use: function (item) {

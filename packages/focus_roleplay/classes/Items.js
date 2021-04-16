@@ -67,7 +67,7 @@ class Inventory {
                   }
                }
             }
-            console.log(player.allWeapons)
+            // console.log(player.allWeapons)
             player.call('client:inventory.toggle', [true, inventory, weapons])
          },
 
@@ -87,7 +87,6 @@ class Inventory {
                case 6: { clothing = character.clothing.shoes; break; }
             }
 
-            console.log(clothing)
             if (dressed.drawable == undressed[index]) { 
                player.setClothes(parseInt(index), parseInt(clothing[0]), parseInt(clothing[1]), 2);
             } else { 
@@ -206,8 +205,18 @@ class Inventory {
       }
    }
 
+   clear = function (player) { 
+      for (let i in mp.items) { 
+         if (mp.items[i].entity == ItemEntities.Player) { 
+            if (mp.items[i].owner == player.character) { 
+               this.remove(mp.items[i]);
+            }
+         }
+      }
+   }
+
    remove = (item) => { 
-      let found = mp.items[item];
+      let found = mp.items[item.id];
       if (found) { 
          db.query("DELETE FROM `items` WHERE id = ?", [item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Remove Item ' + err);
