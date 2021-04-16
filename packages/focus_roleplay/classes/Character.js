@@ -24,6 +24,8 @@ class Character {
       this.job_skill = p.job_skill || 0;
       this.clothing = p.clothing || 'None';
 
+      this.mute = p.mute || 0;
+
       this.inviteRequest = 0;
 
       mp.characters[this.character] = this;
@@ -42,7 +44,6 @@ class Character {
       this.money += amount;
       player.setVariable('money', this.money);
    }
-
 }
 
 const genders = [ 

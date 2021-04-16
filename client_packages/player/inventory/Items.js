@@ -8,7 +8,7 @@ mp.events.add({
       if (toggle) { 
          items = JSON.stringify(items)
          weapons = JSON.stringify(weapons)
-         mp.game.graphics.transitionToBlurred(500);
+         // mp.game.graphics.transitionToBlurred(500);
          inventory = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
          inventory.execute(`inventory.player.items = ${items}`);
          inventory.execute(`inventory.player.weapons = ${weapons}`)
@@ -16,7 +16,7 @@ mp.events.add({
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       } else { 
-         mp.game.graphics.transitionFromBlurred(300);
+         // mp.game.graphics.transitionFromBlurred(300);
          setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
          inventory.destroy();
          opened = false;
