@@ -32,7 +32,7 @@ module.exports = {
          params: '[tekst]',
          call: (player, args) => { 
             let message = args.splice(0).join(" ");
-            player.proximityMessage(distances.me, `* ${player.name} ${message}`, mp.colors.purple)
+            player.proximityMessage(distances.me, `** ${player.name} ${message}`, mp.colors.purple)
          }
       },
 
@@ -42,7 +42,18 @@ module.exports = {
          params: '[tekst]',
          call: (player, args) => { 
             let message = args.splice(0).join(" ");
-            player.proximityMessage(distances.me, `* ${message} (( ${player.name} ))`, mp.colors.purple)
+            player.proximityMessage(distances.me, `** ${message} (( ${player.name} ))`, mp.colors.purple)
+         }
+      },
+
+      {
+         name: 'try',
+         desc: 'Pokušaj',
+         params: '[akcija]',
+         call: (player, args) => { 
+            let message = args.splice(0).join(" "), msg = ['uspeva', 'ne uspeva'];
+            let random = msg[Math.floor(Math.random()*msg.length)];
+            player.proximityMessage(distances.me, `* ${player.name} pokušava da ${message} i ${random}.`, mp.colors.purple)
          }
       },
 
