@@ -59,7 +59,7 @@ mp.ItemRegistry = {
       weight: 0.03,
       type: ItemType.Food,
       use: (player) => { 
-         player.call('client:player.animation', ['static', 'amb@code_human_wander_eating_donut@male@base', 49, 4]);
+         player.Animation({ name: 'static', dictionary: 'amb@code_human_wander_eating_donut@male@base', flag: 49, time: 4})
       }
    },
 

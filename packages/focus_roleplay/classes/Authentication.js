@@ -20,7 +20,7 @@ mp.events.add({
             birth: info.birth_date, sex: parseInt(info.sex), origin: info.origin, faction: info.faction, rank: info.faction_rank,
             frequency: info.radio_frequency, job: info.job, salary: info.salary, bank_account: info.bank_account,
             hunger: info.hunger, thirst: info.thirst, licenses: JSON.parse(info.licenses), weapon_skill: info.weapon_skill,
-            driving_skill: info.driving_skill, job_skill: info.job_skill
+            driving_skill: info.driving_skill, job_skill: info.job_skill, screenshot: info.screenshot
          })  
 
          char.setName(player);

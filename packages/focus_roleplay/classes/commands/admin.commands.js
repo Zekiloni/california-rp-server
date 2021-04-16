@@ -130,6 +130,18 @@ module.exports = {
             }
          }
       },
+
+      {
+         name: 'cc',
+         admin: 3,
+         call: (player, args) => { 
+            mp.players.forEach((target) => { 
+               if (target.data.logged) { 
+                  target.call('chat:clear')
+               }
+            })
+         }
+      },
    
       {
          name: 'fixveh',

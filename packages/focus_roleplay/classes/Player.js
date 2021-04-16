@@ -56,6 +56,12 @@ mp.Player.prototype.message = function (color, message) {
    this.outputChatBox(`!{${color}}${message}`);
 }
 
+// SINHRONIIZACIJA ANIMACIJA
+mp.Player.prototype.Animation = function (animation) { 
+   let character = mp.characters[this.character];
+   character.Animation(this, animation);
+}
+
 mp.events.add({
    'server:player.crouch': (player) => {
       player.data.crouching = !player.data.crouching;
@@ -63,7 +69,7 @@ mp.events.add({
 
    'playerChat': (player, text) => {
       if (!player.data.logged) return;
-      player.proximityMessage(7, `${player.name} kaze: ${text}`, ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E']);
+      player.proximityMessage(7, `${player.name} kaze: ${text}`, mp.colors.white);
     },
 });
 

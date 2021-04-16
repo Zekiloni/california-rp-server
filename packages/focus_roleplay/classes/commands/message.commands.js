@@ -14,14 +14,13 @@ mp.colors = {
 }
 
 const distances = { 
-   ooc: 4.0, 
-   ic: 6.5,
-   low: 2.8,
-   shout: 12.2,  
-   do: 6.8,
-   me: 6.8,
+   ooc: 5.0, 
+   ic: 7.5,
+   low: 3,
+   shout: 12.5,  
+   do: 7.5,
+   me: 7.5,
 }
-
 
 module.exports = { 
    commands: [
@@ -102,7 +101,7 @@ module.exports = {
          params: '[tekst]',
          call: (player, args) => { 
             let message = args.splice(0).join(" ");
-            player.proximityMessage(distances.ooc, `(( [${player.id}] ${player.name}: ${message}`, colors.white)
+            player.proximityMessage(distances.ooc, `(( ${player.name} [${player.id}]: ${message} ))`, mp.colors.white)
          }
       },
 

@@ -23,8 +23,10 @@ class Character {
       this.weapon_skill = p.weapon_skill || 'None';
       this.job_skill = p.job_skill || 0;
       this.clothing = p.clothing || 'None';
+      this.screenshot = p.screenshot || 0;
 
       this.mood = p.mood || 'normal';
+      this.animation = p.animation || null;
 
       this.mute = p.mute || 0;
 
@@ -35,6 +37,20 @@ class Character {
 
    setName (player) { 
       player.name = this.first_name + ' ' + this.last_name;
+   }
+
+   screenShot (player, toggle) { 
+      this.screenshot = toggle;
+      player.setVariable('screenshot', this.screenshot);
+   }
+
+   // SINHRONIIZACIJA ANIMACIJA
+   Animation (player, animation) { 
+      this.animation = animation;
+      player.setVariable('animation', this.animation);
+      if (this.animation != null) { 
+         player.call('client:player.animation', [animation.name, animation.dictionary, animation.flag, animation.time])
+      }
    }
 
    setMoney (player, amount) { 
