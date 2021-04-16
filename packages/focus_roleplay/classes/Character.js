@@ -49,7 +49,7 @@ class Character {
       this.animation = animation;
       player.setVariable('animation', this.animation);
       if (this.animation != null) { 
-         player.call('client:player.animation', [animation.name, animation.dictionary, animation.flag, animation.time])
+         player.call('client:player.animation', [animation.name, animation.dictionary, animation.flag, animation.time]) // (animName, animDict, flag = 0, time = 5)
       }
    }
 
