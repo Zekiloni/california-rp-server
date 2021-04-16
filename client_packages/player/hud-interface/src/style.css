@@ -21,9 +21,9 @@ html, body {
 .server .online .icon { color: #868686;}
 
 .player { right: 2%; top: 2%; position: absolute; width: 300px; }
-.player .money {text-align: right;font-weight: 700;color: #84b879;font-size: 35px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);letter-spacing: -1.5px;}
+.player .money {text-align: right;font-weight: 700;color: #84b879;font-size: 35px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);letter-spacing: 2px;}
 
-.donji-ugao {left: 10.5%;bottom: 1.2%;position: absolute;width: 400px;/* height: 150px; */}
+.location-time {left: 11.5%;bottom: 2%;position: absolute;width: 400px;/* height: 150px; */}
 
 .location { letter-spacing: 1px; left: 31%;bottom: 1px;position: relative;width: 400px;padding: 5px 30px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}
 .location .icon {position: absolute;left: 0;top: 35px;color: #868782;width: 20px;}
@@ -34,7 +34,7 @@ html, body {
 .date-time {left: 31%; padding: 5px 30px; position: relative; letter-spacing: 1px; text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%); }
 .date-time .icon {position: absolute;left: 0;top: 16px;color: #868782;width: 20px;}
 .date-time .current-time { margin: 0; font-size: 18px; font-weight: 500; color: whitesmoke; }
-.date-time .current-date { margin: 0; font-size: 17px; font-weight: 400; color: #c7c7c7; }
+.date-time .current-date {margin: 0;font-size: 17px;font-weight: 500;color: #d0d0d0;}
 
 .notif {left: 1.1%;bottom: 245px;width: 300px;min-height: 50px;height: auto;position: absolute;}
 .notif .notification {margin-top: 10px;word-wrap: break-word;font-family: "Roboto";box-shadow: 0 12px 18px rgb(0 0 0 / 18%);background: rgb(0 0 0 / 35%);height: auto;padding: 10px 15px;font-weight: 400;font-size: 16px;border-radius: 2px;text-shadow: 0px 0.5px 0.5px rgb(0 0 0 / 32%);color: white;animation: slide 1.5s;border-left: 7px solid transparent;}
@@ -48,7 +48,7 @@ html, body {
   to { transform: translateX(0); }
 }
 
-.vehicle { display: none; right: 1%;bottom: 1%;position: absolute;width: 400px;height: auto; }
+.vehicle {right: 1%;bottom: 1%;position: absolute;width: 400px;height: auto;}
 .vehicle #speedo {right: 0;bottom: 10px;position: absolute;}
 .vehicle .veh-info {position: absolute;bottom: 60px;width: 110px;text-align: center;left: 195px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}
 .vehicle .veh-info h1 { color: white; margin: 0; padding: 0; } 

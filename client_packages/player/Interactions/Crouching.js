@@ -33,5 +33,7 @@ mp.events.add("entityStreamIn", (entity) => {
 
 
 mp.keys.bind(0x12, false, () => {
-    mp.events.callRemote("server:player.crouch");
+    if (player.logged && player.spawned) { 
+        mp.events.callRemote("server:player.crouch");
+    }
 });

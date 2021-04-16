@@ -1,6 +1,7 @@
 
 
 let types = require('../configs/Houses.json');
+let { ItemEntities, ItemType } = require('./modules/ItemRegistry');
 
 mp.houses = {};
 
@@ -92,6 +93,14 @@ class Houses {
       });
    }
 
+   update = (house) => { 
+      db.query("UPDATE `houses` SET (type, price, dimension, entrance, interior, ipl) VALUES (?, ?, ?, ?, ?, ?)", 
+         [house.type, house.price, house.dimension, JSON.stringify(house.entrance), JSON.stringify(house.interior), house.ipl], function (error, results, fields) {
+            if (error) return core.terminal(1, 'House updating ' + error);
+            house.refresh();
+      });
+   }
+
    delete = (house) => { 
       db.query("DELETE FROM `houses` WHERE `id` = ?", [house.id], function (error, results, fields) {
          if (error) return core.terminal(1, 'House deleting ' + error);
@@ -100,10 +109,87 @@ class Houses {
    }
 
    buy = (player, house) => { 
-
+      if (mp.houses[house] && house.owner == -1) {
+         if (mp.characters[player.character].cash >= house.price) { 
+            mp.characters[player.character].giveMoney(player, -house.price);
+            house.owner = player.character; 
+            this.update(house);
+         } else { 
+            player.notification(MSG_NOT_ENOUGH_MONEY, NOTIFY_ERROR, 4); 
+         }      
+      }
    }
 
-   
+   sell = (player, house, target = -1, price = 1) => {
+      if (price <= 0) return core.terminal(1, '[House sell] Invalid house price');
+      if(house.owner == player.character) {
+         if(target == -1) {
+            house.owner = -1;
+            this.update(house);
+            mp.characters[player.character].giveMoney(player, price / 2);
+            player.notification(MSG_HOUSE_SOLD_SUCCSESSFULY, NOTIFY_SUCCESS, 4);
+         } else {
+            if (player.isNear(target)) {
+               let targetCharacter = mp.characters[target.character],
+                   sellerCharacter = mp.characters[player.character]; 
+
+               if(targetCharacter) {
+                  if(targetCharacter.data.money >= price) {
+                     targetCharacter.giveMoney(target, -price);
+                     sellerCharacter.giveMoney(player, price);
+
+                     house.owner = target.character;
+                     this.update(house);
+
+                     player.notification(MSG_HOUSE_SOLD_SUCCSESSFULY, NOTIFY_SUCCESS, 4);
+                  }
+                  else {
+                     player.notification(MSG_NOT_ENOUGH_FOR_TRANSACTION, NOTIFY_ERROR, 4); 
+                     target.notification(MSG_NOT_ENOUGH_MONEY, NOTIFY_ERROR, 4); 
+                  }
+               }
+            }           
+         }      
+      }
+   }
+
+   storage = (player, house, interaction, itemId = -1) => {
+      switch(interaction) 
+      {
+         case 'load':
+            let houseItems = [];
+            for(let i in mp.items) {
+               if(mp.items[i].entity == ItemEntities.House && mp.items[i].owner == house.id) {
+                  houseItems.add(mp.items[i]);
+               }
+            }
+            // let houseJson = JSON.stringify(houseItems);
+            // player.call('client:inventory.house.action', 'load', houseJson);
+            break;
+         case 'put':
+            if (itemId != -1) {
+               let itemToLeave = mp.items[itemId];
+               if (itemToLeave) {
+                  itemToLeave.entity = ItemEntities.House;
+                  itemToLeave.owner = house.id;
+                  itemToLeave.update(itemToLeave);
+                  player.notification(MSG_HOUSE_ITEM_LEFT, NOTIFY_SUCCESS, 4);
+               }
+            }
+            break;
+         case 'take':
+            if (itemId != -1) {
+               let itemToTake = mp.items[itemId];
+               if (itemToTake) {
+                  itemToTake.entity = ItemEntities.Player;
+                  itemToLeave.owner = player.character;
+                  itemToTake.update(itemToTake);
+                  player.notification(MSG_HOUSE_ITEM_TAKEN, NOTIFY_SUCCESS, 4);
+               }
+            }
+            break;
+      }
+   }
 }
 
 mp.house = new Houses();

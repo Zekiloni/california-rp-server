@@ -11,42 +11,41 @@ mp.events.add({
          if (err) core.terminal(1, 'Selecting Character ' + err)
          let info = result[0];
          player.character = character;
-         player.name = info.first_name + ' ' + info.last_name;
          player.defaultVariables();
 
-         // SHARED DATA
-         player.data.money = 33;
          player.dimension = 0;
 
-         new Character({
-            id: character, account: info.master_account, name: info.first_name, lname: last_name, 
-            sex: info.sex, birth: info.birth_date, origin, cash, salary, last_position, job, 
-            faction, fation_rank, radio_frequency, thirst, hunger, stress, weapon_skill, driving_skill, licenses, clothing: clothing
-         })       
-         db.query('SELECT * FROM `appearances` WHERE characters_id = ?', [player.character], function (error, result, field) {
-            if (error) return core.terminal(1, 'Appearances Loading Error ' + error);
-            let clothing = new Clothing();
-            clothing.blend_data =  result.blend_data;
-            clothing.face_features = result.face_features;
-            clothing.head_overlays = result.head_overlays;
-            clothing.head_overlays_colors = result.head_overlays_colors;
-            clothing.hair = result.hair;
-            clothing.beard = result.beard;
-            clothing.torso = result.torso;
-            clothing.shirt = result.shirt;
-            clothing.legs =  result.legs;
-            clothing.bags = result.bags;
-            clothing.shoes = result.shoes;
-            clothing.accessories =  result.accessories;
-            clothing.undershirt = result.undershirt;
-            clothing.body_armours = result.body_armours;
-            clothing.hats = result.hats;
-            clothing.glasses =  result.glasses;
-            clothing.ears = result.ears;
-            clothing.watches =  result.watches;
-            clothing.braclet = result.braclet;
-            clothing.set(player);
+         let char = new Character({
+            character: character, account: player.account, first_name: info.first_name, last_name: info.last_name,
+            birth: info.birth_date, sex: parseInt(info.sex), origin: info.origin, faction: info.faction, rank: info.faction_rank,
+            frequency: info.radio_frequency, job: info.job, salary: info.salary, bank_account: info.bank_account,
+            hunger: info.hunger, thirst: info.thirst, licenses: JSON.parse(info.licenses), weapon_skill: info.weapon_skill,
+            driving_skill: info.driving_skill, job_skill: info.job_skill
+         })  
+
+         char.setName(player);
+         char.setMoney(player, info.money);
+
+         db.query('SELECT * FROM `appearances` WHERE `character` = ?', [player.character], function (err, res, field) {
+            if (err) return core.terminal(1, 'Appearances Loading Error ' + err);
+         
+            let char = res[0];
+            let charSkin = new Appearance({
+               gender: info.sex, blendData: JSON.parse(char.blend_data), hair: JSON.parse(char.hair),
+               beard: JSON.parse(char.beard), eyeColor: char.eye_color, faceFeatures: JSON.parse(char.face_features)
+            });
+            charSkin.load(player);
+
+            let charClothes = new Clothing({
+               mask: JSON.parse(char.mask), torso: char.torso, undershirt: JSON.parse(char.undershirt), shirt: JSON.parse(char.shirt),
+               legs: JSON.parse(char.legs), shoes: JSON.parse(char.shoes), bags: JSON.parse(char.bags), armour: JSON.parse(char.body_armours),
+               accessories: JSON.parse(char.accessories), hat: JSON.parse(char.hats), glasses: JSON.parse(char.glasses), 
+               ears: JSON.parse(char.ears), watch: JSON.parse(char.watches), bracelet: JSON.parse(char.bracelet)
+            })
+            charClothes.load(player);
+      
          })
+
       });
    },
 
@@ -58,12 +57,7 @@ mp.events.add({
          
          let created = new Character({
             account: player.account, character: result.insertId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin
-         })
-
-         console.log('PRIMIO PARAMETRE:')
-         console.log(character);
-         console.log('KREIRAN KARAKTER:')
-         console.log(created);
+         }) // ovo !!!!
 
          player.character = result.insertId;
          player.name = characterData.firstname + ' ' + characterData.lastname;
@@ -71,16 +65,13 @@ mp.events.add({
          player.position = mp.settings.defaultSpawn;
          player.defaultVariables();
 
-         db.query('INSERT INTO `appearances` (characters_id, blend_data, face_features, head_overlays, head_overlays_colors, hair, beard, torso, legs, shirt, shoes, undershirt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-         [ player.character, JSON.stringify(characterData.blendData), JSON.stringify(characterData.faceFeatures), JSON.stringify(characterData.headOverlays), JSON.stringify(characterData.headOverlaysColors), JSON.stringify(characterData.hair), JSON.stringify(characterData.beard), JSON.stringify(characterData.torso), JSON.stringify(characterData.clothing[2]), JSON.stringify(characterData.clothing[0])], function (err, res, fields) { // VIDETI SA ZEKIJEM
+         let string = `["0", "0"]`
+         db.query('INSERT INTO `appearances` (`character`, `blend_data`, `face_features`, `head_overlays`, `head_overlays_colors`, `hair`, `beard`, `torso`, `shirt`, `undershirt`, `legs`, `shoes`, `bags`, `accessories`, `bracelet`, `watches`, `ears`, `glasses`, `mask`, `hats`, `body_armours`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+         [ player.character, JSON.stringify(characterData.blendData), JSON.stringify(characterData.faceFeatures), JSON.stringify(characterData.headOverlays), JSON.stringify(characterData.headOverlaysColors), JSON.stringify(characterData.hair), JSON.stringify(characterData.beard), JSON.stringify(characterData.torso), JSON.stringify(characterData.clothing[0]), JSON.stringify(characterData.clothing[1]), JSON.stringify(characterData.clothing[2]), JSON.stringify(characterData.clothing[3]), string, string, '["255", "255"]', '["255", "255"]', '["255", "255"]', '["255", "255"]', '["255", "255"]', '["255", "255"]', string], function (err, res, fields) { // VIDETI SA ZEKIJEM
             if (err) core.terminal(1, 'Creating Character Appearance ' + err);
-            // top, undershirt, bottoms, shoes
-            let clothing = new Clothing();
-            clothing.shirt = [character.clothing[0][0], character.clothing[0][1]];
-            clothing.undershirt = [character.clothing[1][0], character.clothing[1][1]];
-            clothing.bottoms = [character.clothing[2][0], character.clothing[2][1]];
-            clothing.shoes = [character.clothing[3][0], character.clothing[3][1]];
-            clothing.set(player);      
+
+            
+            // uraditi load i clothing  i model karaktera
    
          });
       });
@@ -97,6 +88,9 @@ mp.events.add({
                player.account = userID;
                player.data.logged = true;
                player.data.spawned = false;
+
+               // settnig money because of data handler requrie change
+               player.data.money = 0;
                player.dimension = player.id;
 
                new Account({

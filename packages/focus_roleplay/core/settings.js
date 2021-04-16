@@ -7,6 +7,10 @@ mp.settings = {
       bank: 0,
    },
 
+   death: { 
+      respawnTime: 60
+   },
+
    color: { 
       rgba: [5, 149, 232, 255]
    }

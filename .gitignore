@@ -9,3 +9,5 @@
 /plugins
 /dotnet
 /ragemp-server.exe
+.fake
+.ionide

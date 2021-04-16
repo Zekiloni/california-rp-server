@@ -24,14 +24,15 @@ db.query(usersTable, function(err, results, fields) {
 
 let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   id int(11) NOT NULL AUTO_INCREMENT,
-  master_account int(11) NOT NULL,
+  master_account int(11) NOT NULL, 
   first_name varchar(64) NOT NULL,
   last_name varchar(64) NOT NULL,
   sex int(1) NOT NULL DEFAULT 0,
   birth_date text,
   origin varchar(64),
-  cash int(11) NOT NULL DEFAULT 800,
+  money int(11) NOT NULL DEFAULT 800,
   salary int(6) NOT NULL DEFAULT 0,
+  bank_account int(16) NOT NULL DEFAULT 0,
   last_position text,
   job int(2) NOT NULL DEFAULT 0,
   faction int(2) NOT NULL DEFAULT 0,
@@ -91,28 +92,30 @@ db.query(inventoryTable, function(err, results, fields) {
 
 // appearances
 
-let appearancesTable = `CREATE TABLE IF NOT EXISTS appearances (
-  characters_id int(11) NOT NULL,  
-  blend_data text NOT NULL,
-  face_features text NOT NULL,
-  head_overlays text NOT NULL,
-  head_overlays_colors text NOT NULL,
-  hair text NOT NULL,
-  beard text NOT NULL,
-  torso int(2) NOT NULL DEFAULT 0,
-  shirt text NOT NULL,
-  legs text NOT NULL,
-  bags text NOT NULL,
-  shoes text NOT NULL,
-  accessories text NOT NULL,
-  undershirt text NOT NULL,
-  body_armours text NOT NULL,
-  hats text NOT NULL,
-  glasses text NOT NULL,
-  ears text NOT NULL,
-  watches text NOT NULL,
-  braclet text NOT NULL,
-  PRIMARY KEY(characters_id))`;
+let appearancesTable = 'CREATE TABLE IF NOT EXISTS appearances (' +
+  '`character` int(11) NOT NULL,' +
+  'blend_data text NOT NULL,' +
+  'face_features text NOT NULL,' +
+  'head_overlays text NOT NULL,' +
+  'head_overlays_colors text NOT NULL,' +
+  'hair text NOT NULL,' +
+  'beard text NOT NULL,' +
+  'eye_color int(2) NOT NULL DEFAULT 0,' +
+  'torso int(2) NOT NULL DEFAULT 0,' +
+  'shirt text NOT NULL,' +
+  'legs text NOT NULL,' +
+  'bags text NOT NULL,' +
+  'shoes text NOT NULL,' +
+  'accessories text NOT NULL,' +
+  'undershirt text NOT NULL,' +
+  'body_armours text NOT NULL,' +
+  'mask text NOT NULL,' +
+  'hats text NOT NULL,' +
+  'glasses text NOT NULL,' +
+  'ears text NOT NULL,' +
+  'watches text NOT NULL,' +
+  'bracelet text NOT NULL,' +
+  'PRIMARY KEY(`character`));';
 
 db.query(appearancesTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }

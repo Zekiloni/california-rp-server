@@ -26,18 +26,16 @@ mp.events.add('client:notification.show', (message, type, time) => {
 	playerHUD.execute(`hud.notification(\"${message}\", \"${type}\", \"${time}\");`); 
 })
 
-mp.events.addDataHandler('cash', (entity, newCash, oldCash) => {
-	if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
-		player.cash = newCash;
-	}
-})
-
 updatePlayerHud = () => { 
-	let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0);
-	let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
-	let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
-	let heading = getPlayerHeading();
-	//playerHUD.execute(`UpdateHud(\"${streetName}\", \"${zoneName}\", \"${heading}\", \"${player.cash}\", \"${onlinePlayers}\");`); 
+	let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0),
+		zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z)),
+		streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName),
+		heading = getPlayerHeading();
+	playerHUD.execute(
+		`hud.location.street = \"${streetName}\", hud.location.zone = \"${zoneName}\", 
+		hud.location.heading = \"${heading}\", hud.money = \"${player.money}\",
+		hud.onlinePlayers =  \"${onlinePlayers}\";`
+	); 
 }
 
 mp.keys.bind(0x77, true, function () {  //F8-Key
@@ -48,8 +46,7 @@ mp.keys.bind(0x77, true, function () {  //F8-Key
 });
 
 getPlayerHeading = () => { 
-	var heading = player.getHeading();
-	var headingString;
+	let heading = player.getHeading(), headingString;
 	if (heading >= 0 && heading <= 30) { headingString = "N"; }
 	else if (heading >= 30 && heading <= 90) { headingString = "NE"; }
 	else if (heading >= 90 && heading <= 135) { headingString = "E"; }
@@ -92,7 +89,7 @@ mp.events.add({
 	},
 
 	'client:vehicle.hud': (toggle) => { 
-		playerHUD.execute(`showVehicle(${toggle});`); 
+		playerHUD.execute(`hud.vehicle.driving = ${toggle};`); 
 		isDriving = toggle;
 	},
 
@@ -129,6 +126,7 @@ vehicle = () => {
 	else if (lights.lightsOn == 1 && lights.highbeamsOn == 0) { lightsStatus = 1; }
 	else if (lights.lightsOn == 1 && lights.highbeamsOn == 1) { lightsStatus = 2; }
 
-	playerHUD.execute(`vehicleInfo(\"${vehicleSpeed}\", \"${lightsStatus}\");`); 
+	//playerHUD.execute(`vehicleInfo(\"${vehicleSpeed}\", \"${lightsStatus}\");`); 
+	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
 }
 

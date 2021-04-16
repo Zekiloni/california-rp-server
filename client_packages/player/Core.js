@@ -13,6 +13,12 @@ mp.events.addDataHandler({
       if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
          player.spawned = newValue;
       }
+   },
+
+   'money': (entity, newCash, oldCash) => {
+      if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
+         player.money = newCash;
+      }
    }
 });
 

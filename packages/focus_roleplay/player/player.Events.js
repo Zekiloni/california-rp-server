@@ -66,14 +66,6 @@ mp.events.add({
       }
    },
 
-    'playerDeath': (player, reason, killer) => {
-      player.isDead = true;
-      player.respawnTimer = setTimeout(() => {
-          player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544));
-          player.isDead = false;
-      }, 60000)
-    },
-
     'server:updatePlayerClothing': (player, clothingFinished) => {
         account.updateClothing(player, clothingFinished);
     },
