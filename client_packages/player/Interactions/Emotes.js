@@ -9,7 +9,7 @@ const moods = [
     { Name: 'Stressed', AnimName: 'mood_stressed_1' },
     { Name: 'Sulking', AnimName: 'mood_sulk_1' },
 ];
-
+ 
 function setMood(player, mood) {
     if (!mood) {
         player.clearFacialIdleAnimOverride();
