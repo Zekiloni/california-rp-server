@@ -3,6 +3,8 @@ const player = mp.players.local;
 const blockedClasses = [13, 14, 15, 16, 21]; 
 
 mp.game.vehicle.defaultEngineBehaviour = false;
+mp.game.controls.useDefaultVehicleEntering = true;
+
 
 mp.events.add({
    'entityStreamIn': (entity) => {
