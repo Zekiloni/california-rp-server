@@ -16,7 +16,7 @@ mp.events.add('render', (nametags) => {
            player.getAlpha() != 0 &&
            mp.players.local.hasClearLosTo(player.handle, 17)
        ) {
-           var username = `${player.name} [${player.remoteId}]`;
+           let username = `${player.name} [${player.remoteId}]`;
            drawMpGamerTag(player, username, x, y);
        }
    });
@@ -24,10 +24,9 @@ mp.events.add('render', (nametags) => {
 
 drawMpGamerTag = (player, name, x, y) => {
 
-   var localPos = mp.players.local.position,
-      playerPos = player.position;
+   let localPos = mp.players.local.position, playerPos = player.position;
    // var dist = vdist(mp.players.local.position, player.position);
-   var dist = mp.game.system.vdist(localPos.x, localPos.y, localPos.z, playerPos.x, playerPos.y, playerPos.z);
+   let dist = mp.game.system.vdist(localPos.x, localPos.y, localPos.z, playerPos.x, playerPos.y, playerPos.z);
    if (dist > distance) return;
 
 //    if (player.vehicle) {

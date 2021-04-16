@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+    </head>
+    <body>
+
+        <div id="interactions">
+            <ul class="menu">
+                <li> <img src="src/images/emotes.png" /> </li>
+                <li> <img src="src/images/anims.png" /> </li>
+            </ul>
+        </div>
+          
+        <!-- scripts -->
+        <script src="src/vendor/js/jquery-3.5.1.js"></script>
+        <script src="src/vendor/js/jquery-ui.min.js"></script>
+        <script src="src/vendor/js/vue.js"></script>
+        <script>
+            let interactions = new Vue({
+                el: '#interactions',
+                data: {
+                   moods: []
+                },
+
+                methods: { 
+                    mood: function (mood) { 
+
+                    }
+                }
+            })
+
+        </script>
+    </body>     
+</html>

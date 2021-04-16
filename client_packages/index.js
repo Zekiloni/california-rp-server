@@ -4,15 +4,18 @@
 let Authentication = require('./authentication/authentication');
 let GameInterface = require('./player/PlayerHud');
 let CharacterCreator = require('./creator/customization');
-let FingerPointing = require('./player/Interactions/FingerPointing');
-let Crouching = require('./player/Interactions/Crouching');
-let NameTags = require('./player/NameTags');
 let DamageSync = require('./DamageSync');
 let PlayerCore = require('./player/Core');
-let PlayerLst = require('./player/PlayerList');
-let Animations = require('./player/Interactions/Animations');
+let PlayerList = require('./player/PlayerList');
 let PlayerInventory = require('./player/inventory/Items');
-var Vehicles = require('./Vehicles');
+let NameTags = require('./player/NameTags');
+let Vehicles = require('./Vehicles');
+
+let Animations = require('./player/Interactions/Animations');
+var Emotes = require('./player/Interactions/Emotes');
+let Crouching = require('./player/Interactions/Crouching');
+let FingerPointing = require('./player/Interactions/FingerPointing');
+
 
 
 let binds = require('./player/binds');
