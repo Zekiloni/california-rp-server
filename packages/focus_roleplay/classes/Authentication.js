@@ -56,8 +56,8 @@ mp.events.add({
          if (err) core.terminal(1, 'Creating Character ' + err);
          
          let created = new Character({
-            account: player.account, character: result.insertId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin
-         }) // ovo !!!!
+            account: player.account, character: result.insertId, name: characterData.firstname, lname: characterData.lastname, sex: characterData.gender, birth: characterData.birth, origin: characterData.origin, 
+         })
 
          player.character = result.insertId;
          player.name = characterData.firstname + ' ' + characterData.lastname;
@@ -65,18 +65,25 @@ mp.events.add({
          player.position = mp.settings.defaultSpawn;
          player.defaultVariables();
 
-         let string = `["0", "0"]`
+         let string = `["0", "0"]`;
          db.query('INSERT INTO `appearances` (`character`, `blend_data`, `face_features`, `head_overlays`, `head_overlays_colors`, `hair`, `beard`, `torso`, `shirt`, `undershirt`, `legs`, `shoes`, `bags`, `accessories`, `bracelet`, `watches`, `ears`, `glasses`, `mask`, `hats`, `body_armours`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
          [ player.character, JSON.stringify(characterData.blendData), JSON.stringify(characterData.faceFeatures), JSON.stringify(characterData.headOverlays), JSON.stringify(characterData.headOverlaysColors), JSON.stringify(characterData.hair), JSON.stringify(characterData.beard), JSON.stringify(characterData.torso), JSON.stringify(characterData.clothing[0]), JSON.stringify(characterData.clothing[1]), JSON.stringify(characterData.clothing[2]), JSON.stringify(characterData.clothing[3]), string, string, '["255", "255"]', '["255", "255"]', '["255", "255"]', '["255", "255"]', '["255", "255"]', '["255", "255"]', string], function (err, res, fields) { // VIDETI SA ZEKIJEM
             if (err) core.terminal(1, 'Creating Character Appearance ' + err);
 
+            let newCharSkin = new Appearance({
+               gender: characterData.gender, blendData: characterData.blendData, hair: characterData.hair,
+               beard: characterData.beard, eyeColor: characterData.eyeColor, faceFeatures: characterData.faceFeatures // FALI characterData.eyeColor
+            });
             
-            // uraditi load i clothing  i model karaktera
-   
+            let newCharClothes = new Clothing({
+               mask: characterData.mask, torso: characterData.torso, undershirt: characterData.clothing[1], shirt: characterData.clothing[0],
+               legs: characterData.clothing[2], shoes: characterData.clothing[3]
+            });
+            newCharClothes.load(player);
          });
       });
    
-      player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info)
+      player.sendMessage('Dobrodošli na Focus Roleplay, uživajte u igri.', mp.colors.info);
    },
 
    'server:login.handle': (player, username, password) => { 

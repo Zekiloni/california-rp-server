@@ -10,20 +10,19 @@ class Character {
       this.birth = p.birth;
       this.sex = p.sex;
       this.origin = p.origin;
-      this.faction = p.faction;
-      this.rank = p.rank;
-      this.frequency = p.frequency;
-      this.job = p.job;
-      this.money = p.money;
-      this.salary = p.salary;
-      this.bank_account = p.bank_account;
-      this.hunger = p.hunger;
-      this.thirst = p.thirst;
-      this.licenses = p.licenses;
-      this.weapon_skill = p.weapon_skill;
-      this.driving_skill = p.driving_skill;
-      this.job_skill = p.job_skill;
-      this.clothing = p.clothing;
+      this.faction = p.faction || 0;
+      this.rank = p.rank || 'None';
+      this.frequency = p.frequency || 0;
+      this.job = p.job || 0;
+      this.money = p.money || 0;
+      this.salary = p.salary || 0;
+      this.bank_account = p.bank_account || 0;
+      this.hunger = p.hunger || 100;
+      this.thirst = p.thirst || 100;
+      this.licenses = p.licenses || 'None';
+      this.weapon_skill = p.weapon_skill || 'None';
+      this.job_skill = p.job_skill || 0;
+      this.clothing = p.clothing || 'None';
 
       this.inviteRequest = 0;
 
@@ -97,12 +96,11 @@ class Clothing  {
       this.armour = clothing.armour;
       this.accessories = clothing.accessories;
 
-      this.hat = clothing.hat;
-      this.glasses = clothing.glasses;
-      this.ears = clothing.ears;
-      this.watch = clothing.watch;
-      this.bracelet = clothing.bracelet;
-
+      this.hat = clothing.hat || [255, 0];
+      this.glasses = clothing.glasses || [255, 0];
+      this.ears = clothing.ears || [255, 0];
+      this.watch = clothing.watch || [255, 0];
+      this.bracelet = clothing.bracelet || [255, 0];
    }
    
    load = (player) => {
