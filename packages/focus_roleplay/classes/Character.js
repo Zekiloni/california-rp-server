@@ -29,6 +29,8 @@ class Character {
       this.screenshot = p.screenshot || 0;
       this.experience = p.experience; 
       this.hours = p.hours;
+      this.last_positon = p.last_postion;
+      this.spawn_point = p.spawn_point;
 
       this.mood = p.mood || 'normal';
       this.walking_style = p.walking_style || 'normal';
@@ -43,6 +45,14 @@ class Character {
 
    setName (player) { 
       player.name = this.first_name + ' ' + this.last_name;
+   }
+
+   spawn (player) { 
+      switch (this.spawn_point) { 
+         case 0: player.position = mp.settings.defaultSpawn; break;
+         case 1: player.position = this.last_positon; break;
+         default: player.position = mp.settings.defaultSpawn; break;
+      }
    }
 
    screenShot (player, toggle) { 
@@ -86,7 +96,7 @@ class Character {
 
    payDay (player) { 
 
-      
+
    }
 }
 
