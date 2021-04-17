@@ -134,7 +134,7 @@ class Houses {
                    sellerCharacter = mp.characters[player.character]; 
 
                if(targetCharacter) {
-                  if(targetCharacter.data.money >= price) {
+                  if (targetCharacter.data.money >= price) {
                      targetCharacter.giveMoney(target, -price);
                      sellerCharacter.giveMoney(player, price);
 

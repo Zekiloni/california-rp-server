@@ -20,24 +20,26 @@ class Saving {
          },
 
          'server:save.player.account': (player, exit = false) => { 
-            let account = mp.acounts[player.account], onlineStatus = 1;
+            if (player.data.logged && player.data.spawned) { 
+               let account = mp.acounts[player.account], onlineStatus = 1;
 
-            if (account) { 
-               if (exit) { onlineStatus = 0; }
-
-               let values = {
-                  ip_adress: player.ip,
-                  admin: account.admin,
-                  donator: account.donator,
-                  coins: account.coins,
-                  online: onlineStatus
-               }
-               db.query('UPDATE `users` SET ? WHERE id = ?', [values, account.id], function (err, result, fields) {
-                  if (err) return core.terminal(1, 'Saving Acccount Error ' + err);
-                  if (exit == true) {
-                     delete mp.accounts[account.id];
+               if (account) { 
+                  if (exit) { onlineStatus = 0; }
+   
+                  let values = {
+                     ip_adress: player.ip,
+                     admin: account.admin,
+                     donator: account.donator,
+                     coins: account.coins,
+                     online: onlineStatus
                   }
-              });
+                  db.query('UPDATE `users` SET ? WHERE id = ?', [values, account.id], function (err, result, fields) {
+                     if (err) return core.terminal(1, 'Saving Acccount Error ' + err);
+                     if (exit == true) {
+                        delete mp.accounts[account.id];
+                     }
+                  });
+               }
             }
          },
 
@@ -50,6 +52,20 @@ class Saving {
             //    if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
             // });
 
+         },
+
+         'server:save.player.character.urgent': (player) => { 
+            let character = mp.characters[player.character];
+            if (character) { 
+               let values = {
+                  last_position: JSON.stringify(player.position),
+                  health: character.health,
+                  armour: character.armour
+               }
+               db.query('UPDATE `characters` SET ? WHERE id = ?', [values, character.id], function (err, result, fields) {
+                  if (err) return core.terminal(1, 'Saving Charater Error ' + err);
+              });
+            }
          },
 
          'server:save.vehicle': (player) => { 
@@ -72,5 +88,5 @@ class Saving {
    }
 }
 
-let saving = new Saving;
+let saving = new Saving();
 setInterval(() => { saving.save(); }, 60000);

@@ -8,6 +8,7 @@ global.core = require('./core/main');
 
 let DatabaseStructure = require('./core/databaseStructure');
 let Logs = require('./classes/Logs');
+let Minute = require('./classes/Minute');
 let Player = require('./classes/Player');
 let DeathmodeDamage = require('./classes/Deathmode.Damage');
 let Discord = require('./classes/Discord');
@@ -43,7 +44,6 @@ var playerAnimations = require('./player/animations');
 var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
-setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 // mp.Player.prototype.funkcija = () => {  }
 
