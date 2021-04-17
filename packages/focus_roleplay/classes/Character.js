@@ -83,6 +83,11 @@ class Character {
       this.walking_style = style;
       player.setVariable('walking_style', this.walking_style);
    }
+
+   payDay (player) { 
+
+      
+   }
 }
 
 const genders = [ 

@@ -268,6 +268,19 @@ db.query(furnitureTable, function(err, results, fields) {
   core.terminal(3, `Checking furnitureTable | MySQL`);
 });
 
+let banksTable = `CREATE TABLE IF NOT EXISTS bank (
+  number int(16) NOT NULL,
+  pin int(3) NOT NULL,
+  balance int(11) NOT NULL DEFAULT 500,
+  savings int(11) NOT NULL DEFAULT 0,
+  paycheck int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY(number))`;
+
+db.query(banksTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking banksTable | MySQL`);
+});
+
 let bansTable = `CREATE TABLE IF NOT EXISTS bans (
   id int(11) NOT NULL AUTO_INCREMENT,
   account int(11) NOT NULL,

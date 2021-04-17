@@ -26,6 +26,9 @@ mp.events.add({
    
          console.log(char)
 
+         let pos = JSON.parse(info.last_position);
+         player.position = new mp.Vector3(pos.x, pos.y, pos.z)
+
          char.setName(player);
          char.setMoney(player, info.money);
 

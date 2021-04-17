@@ -14,7 +14,7 @@ class Minute {
             if (character.experience >= 60) { 
                characters.hours ++;
                character.experience = 0;
-               // payday .... paycheck ... plata ... salary .. daj pare kurcu
+               character.payDay(target);
             }
             mp.events.call('server:save.player.character.urgent', target)
          }

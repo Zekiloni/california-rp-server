@@ -3,8 +3,8 @@
 mp.settings = { 
    defaultSpawn: new mp.Vector3(1070.206, -711.958, 58.483),
    register: { 
-      cash: 3000,
-      bank: 0,
+      cash: 2000,
+      bank: 3000,
    },
 
    death: { 
