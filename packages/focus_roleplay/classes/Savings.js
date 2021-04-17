@@ -13,21 +13,42 @@ class Saving {
             }
 
             core.terminal(2, `${player.name} ${reason}`);
-            if (player.data.logged) { 
-               mp.events.call('server:save.player', player, true)
+            if (player.getVariable('logged')) { 
+               mp.events.call('server:save.player.account', player, true);
+               mp.events.call('server:save.player.character', player, true);
             }
          },
 
-         'server:save.player': (player, exit = false) => { 
-            //let account = mp.acounts[player.account];
-            // let character = mp.characters[player.character];
+         'server:save.player.account': (player, exit = false) => { 
+            let account = mp.acounts[player.account], onlineStatus = 1;
+
+            if (account) { 
+               if (exit) { onlineStatus = 0; }
+
+               let values = {
+                  ip_adress: player.ip,
+                  admin: account.admin,
+                  donator: account.donator,
+                  coins: account.coins,
+                  online: onlineStatus
+               }
+               db.query('UPDATE `users` SET ? WHERE id = ?', [values, account.id], function (err, result, fields) {
+                  if (err) return core.terminal(1, 'Saving Acccount Error ' + err);
+                  if (exit == true) {
+                     delete mp.accounts[account.id];
+                  }
+              });
+            }
+         },
+
+         'server:save.player.character': (player, exit = false) => { 
+            let character = mp.characters[player.character];
 
             // let user
 
             // db.query('UPDATE `users` SET ? WHERE id = ?', [account, player.sqlid], function (err, result) {
             //    if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
             // });
-
 
          },
 

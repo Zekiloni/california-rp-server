@@ -15,10 +15,16 @@
     <body>
 
         <div id="interactions">
-            <ul class="menu">
-                <li> <img src="src/images/emotes.png" /> </li>
-                <li> <img src="src/images/anims.png" /> </li>
+            <ul class="menu" v-show="menu.active">
+                <li @click="open('emotes')"> <img src="src/images/emotes.png" /> </li>
+                <li @click="open('anims')"> <img src="src/images/anims.png" /> </li>
             </ul>
+
+            <div class="emotes" v-show="menu.emotes">
+                <div class="emote" v-for="(mood, key) in moods" @click="setMood(mood.AnimName)">
+                    <img :src="'src/images/emotes/' + mood.AnimName + '.png'">
+                </div>
+            </div>
         </div>
           
         <!-- scripts -->
@@ -29,12 +35,22 @@
             let interactions = new Vue({
                 el: '#interactions',
                 data: {
-                   moods: []
+                    menu: {
+                        active: true,
+                        emotes: false,
+                        anims: false
+                    },
+                    moods: []
                 },
 
                 methods: { 
-                    mood: function (mood) { 
+                    open: function (element) { 
+                        this.menu.active = false;
+                        this.menu[element] = !this.menu[element];
+                    },
 
+                    setMood: function (mood) { 
+                        mp.trigger('client:player.mood', mood);
                     }
                 }
             })

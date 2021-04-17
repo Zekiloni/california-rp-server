@@ -12,7 +12,6 @@ mp.events.add({
          inventory = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
          inventory.execute(`inventory.player.items = ${items}`);
          inventory.execute(`inventory.player.weapons = ${weapons}`)
-         mp.gui.chat.push(weapons)
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       } else { 

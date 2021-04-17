@@ -24,8 +24,11 @@ class Character {
       this.job_skill = p.job_skill || 0;
       this.clothing = p.clothing || 'None';
       this.screenshot = p.screenshot || 0;
+      this.experience = params.xp; 
+      this.hours = params.hours;
 
       this.mood = p.mood || 'normal';
+      this.walking_style = p.walking_style || 'normal';
       this.animation = p.animation || null;
 
       this.mute = p.mute || 0;
@@ -66,6 +69,11 @@ class Character {
    setMood (player, mood) { 
       this.mood = mood;
       player.setVariable('mood', this.mood);
+   }
+
+   setWalkingStyle (player, style) { 
+      this.walking_style = style;
+      player.setVariable('walking_style', this.walking_style);
    }
 }
 
