@@ -73,7 +73,7 @@ mp.ItemRegistry = {
    },
 
    'Radio Prijemnik': { 
-      name: 'Radio Prjiemnik',
+      name: 'Radio Prijemnik',
       hash: 'prop_cs_hand_radio',
       weight: 0.03,
       type: ItemType.Misc

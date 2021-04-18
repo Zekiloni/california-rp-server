@@ -116,7 +116,7 @@ var color = [[033, 343, 535], [3434, 577, 565]]
 
 mp.events.addCommand("tp", (player) => {
     mp.events.call('server:animals.spawn', player, 15);
-    player.position = new mp.Vector3(1105.5439453125, 229.40882873535156, -50.84077072143555);
+    player.position = new mp.Vector3(1070.206, -711.958, 58.483);
 });
 
 

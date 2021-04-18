@@ -20,14 +20,19 @@ class Item {
 
    refresh () { 
       if (this.entity == -1) { 
-         this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93),
-         {
-            rotation: new mp.Vector3(-90, 0, 0),
-            alpha: 255,
-            dimension: this.dimension
-         });
-         this.object.item = this.id;
-         this.object.notifyStreaming = true;
+         try { 
+            this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93),
+            {
+               rotation: new mp.Vector3(-90, 0, 0),
+               alpha: 255,
+               dimension: this.dimension
+            });
+            this.object.item = this.id;
+            this.object.notifyStreaming = true;
+         } catch (e) { 
+            console.log(e)
+         }
+
       } else { 
          if (this.object) { 
             this.object.destroy();
@@ -200,6 +205,7 @@ class Inventory {
             let i = new Item(id, { 
                item: found.name, entity: entity, owner: owner, position: player.position, dimension: player.dimension, quantity: quantity
             })
+            console.log(i)
             i.refresh();
          })
       }

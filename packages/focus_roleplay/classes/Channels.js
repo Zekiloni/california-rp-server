@@ -30,10 +30,14 @@ class Channels {
 
    create = (player, freq, pass = 0) => { 
       let character = player.getCharacter();
-      if (this.exist(freq)) { player.sendMessage('Frekvencija već postoji !', mp.colors.tomato); return false; };
-      if (character.frequency != 0) { player.sendMessage('Već ste u nekoj frekvenciji !', mp.colors.tomato); return false; };
-      let frequency = new Frequency(freq, pass, character.id);
-      character.frequency = freq;
+      if (this.exist(freq)) return player.sendMessage('Frekvencija već postoji !', mp.colors.tomato);
+      if (character.frequency != 0) return player.sendMessage('Već ste u nekoj frekvenciji !', mp.colors.tomato); 
+      if (!freq) return player.sendMessage('Komanda /freq create [frekvencija] [sifra - opcionalno] !', mp.colors.help);
+      db.query('INSERT INTO `channels` (frequency, password, owner) VALUES (?, ?, ?)', [freq, pass, character.id], function (error, results, fields) {
+         if (error) return core.terminal(1, 'Frequency Creating ' + error);
+         let frequency = new Frequency(freq, pass, character.id);
+         character.frequency = freq;
+      }); 
    }
 
    join = (player, freq, password = 0) => { 
@@ -42,10 +46,7 @@ class Channels {
       if (!this.exist(freq)) return player.sendMessage('Frekvencija ne postoji !', mp.colors.tomato);
       if (mp.frequencies[freq]) { 
          let frequency = mp.frequencies[freq];
-         if (frequency.password && frequency.password != password) { 
-            player.sendMessage('Šifra frekvencije nije tačna !', mp.colors.tomato);
-            return false;
-         }
+         if (frequency.password != 0 && frequency.password != password) return player.sendMessage('Šifra frekvencije nije tačna !', mp.colors.tomato);
 
          player.sendMessage('Uspešno ste se pridružilii frekvenciji ' + freq + ' !', mp.colors.success);
          character.frequency = freq;
