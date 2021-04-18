@@ -75,7 +75,7 @@ mp.events.add({
 		mp.game.invoke('0xF4F2C0D4EE209E20');
 
 		// disable tab weapon wheel
-		mp.game.controls.disableControlAction(32, 37, true);
+		//mp.game.controls.disableControlAction(32, 37, true); // eanbeati
 
 
 		// show Crosshair if player is aiming with AWP

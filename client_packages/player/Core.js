@@ -28,6 +28,10 @@ mp.events.add({
       player.freezePosition(toggle);
    },
 
+   'client:chat.clear': () => { 
+      mp.events.call('chat:clear')
+   },
+
    'client:createCheckpoint': (posX, posY, posZ) => {
       mp.checkpoints.new(1, new mp.Vector3(posX, posY, posZ), 10,
       {

@@ -26,7 +26,7 @@ module.exports = {
       },
 
       {
-         name: 'a',
+         name: 'ao',
          admin: 2,
          call: (player, args) => { 
             let message = args.slice(0).join(' '); 

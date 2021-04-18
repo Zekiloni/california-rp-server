@@ -13,7 +13,7 @@ let usersTable = `CREATE TABLE IF NOT EXISTS users (
   admin int(2) NOT NULL DEFAULT 0,
   donator int(2) NOT NULL DEFAULT 0,
   coins int(6) NOT NULL DEFAULT 0,
-  warns text NOT NULL DEFAULT 'no',
+  warns text,
   PRIMARY KEY(id))`;
 
 db.query(usersTable, function(err, results, fields) {

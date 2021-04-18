@@ -4,7 +4,7 @@ module.exports = {
          name: 'equip',
          call: (player, args) => { 
             let character = player.getCharacter();
-            const weaponNames = ["weapon_stungun", "weapon_combatpistol", "weapon_nightstick", "weapon_flashlight"];
+            const weaponNames = ['weapon_stungun', 'weapon_combatpistol', 'weapon_nightstick', 'weapon_flashlight', 'weapon_pumpshotgun', 'weapon_carbinerifle'];
             for (let i in weaponNames){
                player.giveWeapon(mp.joaat(weaponNames[i]), 9999);
             }

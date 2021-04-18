@@ -12,6 +12,7 @@ mp.events.add({
     mp.game.ui.displayRadar(false);
     mp.events.call('client:login.enableCamera');
     mp.game.graphics.transitionToBlurred(1000);
+    mp.events.call('client:chat.clear');
   },
 
   'client:login.hide': () => {
