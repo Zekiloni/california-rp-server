@@ -5,7 +5,7 @@ mp.frequencies = {};
 class Frequency  { 
    constructor (freq, password, owner) { 
       this.frequency = freq;
-      this.password = password;
+      this.password = password || 0;
       this.owner = owner;
 
       mp.frequencies[this.frequency] = this;
@@ -15,12 +15,12 @@ class Frequency  {
 
 class Channels { 
    load = () => { 
+      let counter = 0;
       db.query("SELECT * FROM `channels`", function (err, result, fields) { 
          if (err) return core.terminal(1, 'Channels Loading Error ' + err);
-         let counter = 0;
          if (result.length > 0) { 
             result.forEach(ch => {
-               new Frequency(ch.frequency, ch.password, ch.owner);
+               let freq = new Frequency(ch.frequency, ch.password, ch.owner);
                counter ++;
             });
          }
@@ -29,8 +29,40 @@ class Channels {
    }
 
    create = (player, freq, pass = 0) => { 
-      if (this.exist(freq)) return false;
-      let frequency = new Frequency(freq, pass, player.character);
+      let character = player.getCharacter();
+      if (this.exist(freq)) { player.sendMessage('Frekvencija već postoji !', mp.colors.tomato); return false; };
+      if (character.frequency != 0) { player.sendMessage('Već ste u nekoj frekvenciji !', mp.colors.tomato); return false; };
+      let frequency = new Frequency(freq, pass, character.id);
+      character.frequency = freq;
+   }
+
+   join = (player, freq, password = 0) => { 
+      let character = player.getCharacter();
+      if (character.frequency != 0) return player.sendMessage('Već ste u nekoj frekvenciji !', mp.colors.tomato);
+      if (!this.exist(freq)) return player.sendMessage('Frekvencija ne postoji !', mp.colors.tomato);
+      if (mp.frequencies[freq]) { 
+         let frequency = mp.frequencies[freq];
+         if (frequency.password && frequency.password != password) { 
+            player.sendMessage('Šifra frekvencije nije tačna !', mp.colors.tomato);
+            return false;
+         }
+
+         player.sendMessage('Uspešno ste se pridružilii frekvenciji ' + freq + ' !', mp.colors.success);
+         character.frequency = freq;
+      }
+   }
+
+   send = (freq, message) => { 
+      if (mp.frequencies[freq]) { 
+         mp.players.forEach((target) => {
+            if (target.data.logged && target.data.spawned) { 
+               let char = target.getCharacter();
+               if (char.frequency == freq) { 
+                  target.sendMessage(message, mp.colors.radio);
+               }
+            }
+         })
+      }
    }
 
    exist = (freq) => { 
