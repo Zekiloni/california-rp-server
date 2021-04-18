@@ -10,11 +10,10 @@ let usersTable = `CREATE TABLE IF NOT EXISTS users (
   ip_adress varchar(64) NOT NULL,
   online int(1) NOT NULL DEFAULT 0,
   hardwer_id text DEFAULT NULL,
-  xp int(2) NOT NULL DEFAULT 0,
-  hours int(11) NOT NULL DEFAULT 0, 
   admin int(2) NOT NULL DEFAULT 0,
   donator int(2) NOT NULL DEFAULT 0,
   coins int(6) NOT NULL DEFAULT 0,
+  warns text NOT NULL DEFAULT 'no',
   PRIMARY KEY(id))`;
 
 db.query(usersTable, function(err, results, fields) {

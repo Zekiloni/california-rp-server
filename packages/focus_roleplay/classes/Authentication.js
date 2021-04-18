@@ -102,13 +102,15 @@ mp.events.add({
                player.data.logged = true;
                player.data.spawned = false;
 
+               console.log(1)
                // settnig money because of data handler requrie change
                player.data.money = 0;
                player.dimension = player.id;
 
-               new Account({
-                  sqlid: userID, username: result[0].username, regDate: result[0].registered_at, admin: result[0].admin,
-                  xp: result[0].xp, ip: player.ip, hours: result[0].hours, donator: result[0].donator
+               let acc = new Account({
+                  id: userID, username: result[0].username, register_date: result[0].registered_at, admin: result[0].admin,
+                  ip: player.ip, donator: result[0].donator, last_login: result[0].last_login_at, warns: result[0].warns,
+                  coins: result[0].coins, email: result[0].email_adress
                })
                
                let values = { 

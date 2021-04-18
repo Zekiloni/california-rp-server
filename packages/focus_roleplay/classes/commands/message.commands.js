@@ -10,6 +10,7 @@ mp.colors = {
    tomato: 'FF6347',
    admin: 'F17270',
    info: 'E2D051',
+   help: '11C4B3',
    server: '0792E5',
 }
 
