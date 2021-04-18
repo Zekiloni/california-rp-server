@@ -1,25 +1,27 @@
 
 mp.admins = {
-   1: 'Supporter',
+   1: 'Supporter/Tester',
    2: 'Junior Admin',
    3: 'Admin',
    4: 'Senior Admin',
    5: 'Lead Admin',
-   6: 'Founder'
+   6: 'Developer',
+   7: 'Founder'
 }
 
 class Admin { 
-   constructor () { 
+   constructor () { /*
       mp.events.add({
          'event': (player, ...args) => { 
 
          }
-      })
+      })*/
    }
 
 
    set = (player, level) => { 
-
+      if(level < 0 || level > 7) return;
+      mp.accounts[player.character].admin = parseInt(level);
    }
 
    chat = (player, message) => { 

@@ -31,6 +31,15 @@ global.MESSAGES = [
    MSG_HOUSE_ITEM_TAKEN = 'Uzeli ste predmet iz svoje kuće',
    MSG_CMD_DOESNT_EXIST = 'Komanda ne poostoji.',
    MSG_WELCOME_ON_REGISTER = 'Dobrodošli na Focus Roleplay, uživajte u igri.',
+   MSG_MAX_BUSSINES_TYPE = 'Maksimalni tip biznisa je', // Maximum bussiness type is
+   MSG_NO_FURNITURE_OWNED = `Nemate ništa od nameštaja`,
+   MSG_LIVE_PHOTO_FROM_SERVER = 'Uzivo slika sa servera',
+   MSG_ALREADY_IN_CHANNEL = 'Već ste u nekoj frekvenciji',
+   MSG_SUCCESSFULY_JOINED_CHANNEL = 'Uspešno ste se pridružilii frekvenciji ',
+   MSG_FREQUENCY_NOT_EXIST = 'Frekvencija ne postoji !',
+   MSG_CHANNEL_WRONG_PASSWORD = 'Šifra frekvencije nije tačna !',
+   MSG_FREQUENCY_ALREADY_EXISTS = 'Frekvencija već postoji !',
+   MSG_ALREADY_IN_SOME_CHANNEL = 'Već ste u nekoj frekvenciji !',
 
 ]; Object.freeze(MESSAGES)
 
