@@ -188,5 +188,3 @@ mp.events.addCommand("cobject", (player, fullText, model) => {
 
 })
 
-
-
