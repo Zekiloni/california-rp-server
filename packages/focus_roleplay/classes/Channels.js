@@ -37,6 +37,7 @@ class Channels {
          if (error) return core.terminal(1, 'Frequency Creating ' + error);
          let frequency = new Frequency(freq, pass, character.id);
          character.frequency = freq;
+         player.sendMessage('Kreirali ste frekvenciju ' + freq + ' sa sifrom ' + pass + '.', mp.colors.success); 
       }); 
    }
 
