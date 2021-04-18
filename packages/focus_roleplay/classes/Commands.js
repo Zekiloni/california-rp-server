@@ -12,6 +12,7 @@ const commandFiles = [
    'interior.commands',
    'message.commands',
    'radio.commands',
+   'police.commands'
 ];
 
 for (const file of commandFiles) {
