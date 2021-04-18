@@ -18,6 +18,7 @@ let FingerPointing = require('./player/Interactions/FingerPointing');
 
 
 let casino = require('./casino/CasinoSlots');
+let fuel = require('./fuel');
 
 let binds = require('./player/binds');
 
