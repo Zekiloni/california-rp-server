@@ -106,6 +106,30 @@ module.exports = {
       },
 
       {
+         name: 'givegun',
+         admin: 2,
+         desc: 'Davanje oruzija',
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]);
+            if (target) { 
+               let weaponHash = mp.joaat(args[1]);
+               target.giveWeapon(weaponHash, parseInt(args[2]) || 500);
+            }
+         }
+      },
+
+      {
+         name: 'makeadmin',
+         admin: 6,
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]);
+            if (target) { 
+               mp.accounts[target.account].admin = args[1];
+            }
+         }
+      },
+
+      {
          name: 'freeze',
          admiin: 2,
          call: (player, args) => { 

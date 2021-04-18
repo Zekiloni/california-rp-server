@@ -24,14 +24,8 @@ module.exports = {
             if (!args[0]) return player.sendMessage('Komanda /freq set - create - leave - delete - password !', mp.colors.help);
             switch (args[0]) { 
                case 'set': { mp.channels.join(player, args[1], args[2]); break; }
-
                case 'create': { mp.channels.create(player, args[1], args[2] ? ( args[2] ) : ( 0 )); break; }
-
-               case 'leave': { 
-                  console.log('leave')
-
-                  break;
-               }
+               case 'leave': { mp.channels.leave(player); break; }
 
                case 'delete': { 
                   console.log('delete')

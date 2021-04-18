@@ -1,12 +1,13 @@
 
 
-const Types = {
+const FactionTypes = {
    Law: 0, Fmd: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Party: 6, Cartel: 7
 }
 
+
 mp.factions = [
    LSPD = { 
-      id: 1, name: 'Los Santos Police Department', motd: 'To protect & Serve', type: Types.Law, sprite: 60,
+      id: 1, name: 'Los Santos Police Department', motd: 'To protect & Serve', type: FactionTypes.Law, sprite: 60,
       label: new mp.Vector3(434.080, -981.913, 30.7093), blip: new mp.Vector3(433.91, -981.98, 0),
       garage: new mp.Vector3(455.4101, -1017.4461, 27.6155), equip: new mp.Vector3(452.97064, -992.0955, 30.6896),
       armory: new mp.Vector3(452.0938415, -980.22052, 30.68961), vehicle: new mp.Vector3(439.02337, -1019.7479, 28.72946),

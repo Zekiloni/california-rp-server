@@ -23,6 +23,7 @@ module.exports = {
          desc: 'Promena mesta spavna',
          call: (player, args) => { 
             let character = player.getCharacter();
+            const spawns = ['Default spawn', 'Zadnja pozicija', 'Fakcija']
             if (!args[0]) { 
                player.sendMessage('Komanda zahteva argument broja.', mp.colors.help);
                player.sendMessage('0 - Default Spawn, 1 - Zadnja Pozicija, 2 - Fakcija.', mp.colors.help);
@@ -32,7 +33,7 @@ module.exports = {
                case 0: { character.spawn_point = 0; }
                case 1: { character.spawn_point = 1; }
             }
-            player.sendMessage('Promenili ste mesto spawna na ' + args[0], mp.colors.info);
+            player.sendMessage('Promenili ste mesto spawna na ' + spawns[args[0]], mp.colors.info);
          }
       },
    ]

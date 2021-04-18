@@ -53,6 +53,18 @@ class Channels {
       }
    }
 
+   leave = (player) => { 
+      let character = player.getCharacter(), exist = this.exist(character.frequency);
+      if (character.frequency == 0) return false;
+      if (exist) { 
+         if (exist.owner == character.id) return player.sendMessage('Vi ste vlasnik ove frekvencije, /freq delete', mp.colors.tomato); 
+         character.frequency = 0;
+      } else { 
+         character.frequency = 0;
+      }
+      player.sendMessage('Uspešno ste napustili frekvenciju.', mp.colors.success); 
+   }
+
    send = (freq, message) => { 
       if (mp.frequencies[freq]) { 
          mp.players.forEach((target) => {

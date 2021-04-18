@@ -88,20 +88,7 @@ mp.events.addCommand({
       
    },
 
-   'givegun': (player, fullText, target, weapon = 'weapon_unarmed', ammo = 0) => {
-      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let weaponHash = mp.joaat(weapon);
-      let recipient = account.findPlayer(target);
 
-      if(!recipient) { 
-         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
-         return false; 
-      } 
-
-      recipient.giveWeapon(weaponHash, parseInt(ammo) || 500);
-      recipient.outputChatBox(`${player.name} vam je dao oruzije ${weapon} sa ${ammo} metaka.`);
-      player.outputChatBox(`Dali ste igracu ${recipient.name} oruzije ${weapon} sa ${ammo} metaka`);
-   },
 
    'customization': (player, fullText) => {
       if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);

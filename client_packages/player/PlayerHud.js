@@ -67,8 +67,8 @@ mp.events.add({
 		mp.game.ui.hideHudComponentThisFrame(3); // HUD_CASH
 		mp.game.ui.hideHudComponentThisFrame(4); // HUD_MP_CASH
 		mp.game.ui.hideHudComponentThisFrame(14); // CROSSHAIR
-		mp.game.ui.hideHudComponentThisFrame(19); // HUD_WEAPON_WHEEL
-		mp.game.ui.hideHudComponentThisFrame(20); // HUD_WEAPON_WHEEL_STATS
+		//mp.game.ui.hideHudComponentThisFrame(19); // HUD_WEAPON_WHEEL
+		//mp.game.ui.hideHudComponentThisFrame(20); // HUD_WEAPON_WHEEL_STATS
 
 	
 		mp.game.invoke('0x9E4CFFF989258472');

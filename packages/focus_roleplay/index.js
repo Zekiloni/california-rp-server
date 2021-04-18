@@ -141,12 +141,13 @@ mp.events.addCommand('eating', (player, full) => {
     //player.position = new mp.Vector3(2962.40, 2746.20, 42.39);
 })
 
-mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
+mp.events.addCommand("veh", (player, full, hash, color, color2) => {
     var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
     veh.dimension = player.dimension;
     veh.numberPlateType = 1;
-    veh.numberPlate = "SUPPORT";
+    veh.numberPlate = "BETA TEST";
     veh.engine = false;
+    veh.setColor(color, color2);
     player.putIntoVehicle(veh, 0);
 });
 
@@ -158,15 +159,6 @@ mp.events.addCommand("prop", (player, full, comp, draw, text) => {
     player.setProp(parseInt(comp), parseInt(draw), parseInt(text));
 });
 
-
-mp.events.addCommand("pickup", (player) => { 
-    var pickUpObject = inventory.nearItem(player);
-    inventory.pickUpItem(player, pickUpObject);
-})
-
-mp.events.addCommand("drop", (player, fullText, itemid) => { 
-    inventory.dropItem(player, itemid);
-})
 
 mp.events.addCommand("dzok", (player, fullText, dict, anim) => { 
     player.playAnimation(dict, anim, 5, 0)
