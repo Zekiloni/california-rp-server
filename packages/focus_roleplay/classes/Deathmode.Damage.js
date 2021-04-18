@@ -8,8 +8,10 @@ class Deathmode {
          'playerDeath': function (player, reason, killer) {
             player.isDead = true;
             player.respawnTimer = setTimeout(() => {
-                player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544));
-                player.isDead = false;
+               if (player && mp.players.exists(player.id)) { 
+                  player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544));
+                  player.isDead = false;
+               }
             }, mp.settings.death.respawnTime * 1000);
          },
 

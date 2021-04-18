@@ -21,23 +21,31 @@ module.exports = {
             if (!args[0]) return player.sendMessage('Komanda /freq set - create - leave - delete - password !', mp.colors.help);
             switch (args[0]) { 
                case 'set': { 
+                  console.log('set')
                   break;
                }
 
                case 'create': { 
+                  console.log('create')
+
                   break;
                }
 
                case 'leave': { 
+                  console.log('leave')
+
                   break;
                }
 
                case 'delete': { 
-                  
+                  console.log('delete')
+
                   break;
                }
 
                case 'password': { 
+                  console.log('password')
+
                   break;
                }
             }
