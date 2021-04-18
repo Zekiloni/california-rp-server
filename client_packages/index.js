@@ -13,7 +13,8 @@ let PlayerLst = require('./player/PlayerList');
 let Animations = require('./player/Interactions/Animations');
 let PlayerInventory = require('./player/inventory/Items');
 var Vehicles = require('./Vehicles');
-
+let CasinoRoulette = require('./casino/Roulette');
+let CasinoSlots = require('./casino/Slots');
 
 let binds = require('./player/binds');
 
