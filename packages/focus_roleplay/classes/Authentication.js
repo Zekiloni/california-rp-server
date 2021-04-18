@@ -14,15 +14,21 @@ mp.events.add({
          player.defaultVariables();
 
          player.dimension = 0;
+         let position = JSON.parse(info.last_position);
 
          let char = new Character({
             character: character, account: player.account, first_name: info.first_name, last_name: info.last_name,
-            birth: info.birth_date, sex: parseInt(info.sex), origin: info.origin, faction: info.faction, rank: info.faction_rank,
+            birth: info.birth_date, sex: parseInt(info.sex), origin: info.origin, faction: info.faction, rank: info.faction_rank, leader: info.faction_leader,
             frequency: info.radio_frequency, job: info.job, salary: info.salary, bank_account: info.bank_account,
             hunger: info.hunger, thirst: info.thirst, licenses: JSON.parse(info.licenses), weapon_skill: info.weapon_skill,
-            driving_skill: info.driving_skill, job_skill: info.job_skill, screenshot: info.screenshot
+            driving_skill: info.driving_skill, job_skill: info.job_skill, screenshot: info.screenshot, experience: info.experience,
+            hours: info.hours_played, health: info.health, armour: info.armour, last_postion: new mp.Vector3(position.x, position.y, position.z),
+            spawn_point: info.spawn_point
          })  
 
+         console.log(char)
+
+         char.spawn(player);
          char.setName(player);
          char.setMoney(player, info.money);
 

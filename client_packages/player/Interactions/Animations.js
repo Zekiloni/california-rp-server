@@ -38,3 +38,18 @@ function loadAnimDict(a, b) {
 		 mp.game.streaming.hasAnimDictLoaded(a) && (clearInterval(c), b())
 	}, 100)
 }
+
+mp.keys.bind(0x20, true, function() {
+	if (player.logged && player.spawned) { 
+		if (entity.hasVariable("animData")) {
+			const value = entity.getVariable("animData");
+			if (null != value) {
+				const anim = value.split("%");
+				let playing = player.isPlayingAnim(anim[0], anim[1]);
+				if (playing) { 
+					player.stopAnimTask(anim[0], anim[1], 3.0);
+				}
+			}
+		}
+	}
+});

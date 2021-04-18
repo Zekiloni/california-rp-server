@@ -1,5 +1,5 @@
-const movementClipSet = "move_ped_crouched";
-const strafeClipSet = "move_ped_crouched_strafing";
+const movementClipSet = 'move_ped_crouched';
+const strafeClipSet = 'move_ped_crouched_strafing';
 const clipSetSwitchTime = 0.25;
 const localPlayer = mp.players.local;
 
@@ -11,8 +11,8 @@ const loadClipSet = (clipSetName) => {
 loadClipSet(movementClipSet);
 loadClipSet(strafeClipSet);
 
-mp.events.addDataHandler("crouching", (entity, value) => {
-    if (entity.type === "player") {
+mp.events.addDataHandler('crouching', (entity, value) => {
+    if (entity.type === 'player') {
         if (value) {
             entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
             entity.setStrafeClipset(strafeClipSet);
@@ -24,8 +24,8 @@ mp.events.addDataHandler("crouching", (entity, value) => {
     }
 });
 
-mp.events.add("entityStreamIn", (entity) => {
-    if (entity.type === "player" && entity.crouching) {
+mp.events.add('entityStreamIn', (entity) => {
+    if (entity.type === 'player' && entity.crouching) {
         entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
         entity.setStrafeClipset(strafeClipSet);
     }
@@ -34,6 +34,6 @@ mp.events.add("entityStreamIn", (entity) => {
 
 mp.keys.bind(0x12, false, () => {
     if (player.logged && player.spawned) { 
-        mp.events.callRemote("server:player.crouch");
+        mp.events.callRemote('server:player.crouch');
     }
 });

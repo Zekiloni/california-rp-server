@@ -42,7 +42,7 @@
            mp.players.local.clearSecondaryTask();
 
            setTimeout(() => {
-               mp.events.callRemote('server:finger.pointing.stop');
+               mp.events.callRemote('server:player.finger.pointing.stop');
 
            }, 2000);
        }
@@ -92,7 +92,7 @@
 
            if ((Date.now() - this.lastSent) > 100) {
                this.lastSent = Date.now();
-               mp.events.callRemote('server:finger.pointing.update', camPitch, camHeading);
+               mp.events.callRemote('server:player.finger.pointing.update', camPitch, camHeading);
            }
        }
    }

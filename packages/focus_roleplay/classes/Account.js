@@ -15,9 +15,8 @@ class Account {
       this.ipAdress = params.ip;
       this.socialClub = params.social;
       this.admin = params.admin;
-      this.experience = params.xp; 
-      this.hours = params.hours;
       this.donator = params.donator;
+      this.coins = params.coins || 0;
       this.warns = params.warns;
 
       mp.accounts[this.id] = this;

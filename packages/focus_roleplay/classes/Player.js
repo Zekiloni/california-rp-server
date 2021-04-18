@@ -4,6 +4,18 @@ mp.Player.prototype.notification = function (message, type, time = 4) {
    this.call('client:notification.show', [message, type, time]);
 }
 
+mp.Player.prototype.getCharacter = function () { 
+   if (this.data.logged && this.data.spawned) { 
+      return mp.characters[this.character];
+   }
+}
+
+mp.Player.prototype.getAccount = function () { 
+   if (this.data.logged && this.data.spawned) { 
+      return mp.accounts[this.account];
+   }
+}
+
 mp.Player.prototype.sendMessage = function (message, color) { 
    this.outputChatBox(`!{${color}}${message}`);
 }
@@ -31,13 +43,6 @@ mp.Player.prototype.defaultVariables = function () {
    this.data.spawned = true;
 }
 
-
-/**
-* Slanje proksimalne poruke u radius sa fade bojama
-* @param {Float32Array} radius
-* @param {String} message
-* @param {Array} colors
-*/
 mp.Player.prototype.proximityMessage = function (radius, message, colors) {
    mp.players.forEachInRange(this.position, radius,
 		(target) => {
@@ -56,21 +61,12 @@ mp.Player.prototype.message = function (color, message) {
    this.outputChatBox(`!{${color}}${message}`);
 }
 
-// SINHRONIIZACIJA ANIMACIJA
-mp.Player.prototype.Animation = function (animation) { 
-   let character = mp.characters[this.character];
-   character.Animation(this, animation);
-}
-
 mp.events.add({
-   'server:player.crouch': (player) => {
-      player.data.crouching = !player.data.crouching;
-   },
-
    'playerChat': (player, text) => {
-      if (!player.data.logged) return;
-      player.proximityMessage(7, `${player.name} kaze: ${text}`, mp.colors.white);
-    },
+      if (player.data.logged && player.data.spawned) { 
+         player.proximityMessage(7, `${player.name} kaze: ${text}`, mp.colors.white);
+      }
+   },
 });
 
 mp.players.find = (playerName) => {

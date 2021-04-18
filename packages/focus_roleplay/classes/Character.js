@@ -3,7 +3,7 @@ mp.characters = {};
 
 class Character { 
    constructor (p) { 
-      this.character = p.character;
+      this.id = p.character;
       this.account = p.account;
       this.first_name = p.first_name;
       this.last_name = p.last_name;
@@ -11,9 +11,12 @@ class Character {
       this.sex = p.sex;
       this.origin = p.origin;
       this.faction = p.faction || 0;
+      this.leader = p.leader || 0;
       this.rank = p.rank || 'None';
       this.frequency = p.frequency || 0;
       this.job = p.job || 0;
+      this.health = p.health;
+      this.armour = p.armour;
       this.money = p.money || 0;
       this.salary = p.salary || 0;
       this.bank_account = p.bank_account || 0;
@@ -24,25 +27,43 @@ class Character {
       this.job_skill = p.job_skill || 0;
       this.clothing = p.clothing || 'None';
       this.screenshot = p.screenshot || 0;
+      this.experience = p.experience; 
+      this.hours = p.hours;
+      this.last_positon = p.last_postion;
+      this.spawn_point = p.spawn_point;
 
       this.mood = p.mood || 'normal';
+      this.walking_style = p.walking_style || 'normal';
       this.animation = p.animation || null;
 
       this.mute = p.mute || 0;
 
       this.inviteRequest = 0;
 
-      mp.characters[this.character] = this;
+      mp.characters[this.id] = this;
    }
 
    setName (player) { 
       player.name = this.first_name + ' ' + this.last_name;
    }
 
+   spawn (player) { 
+      switch (this.spawn_point) { 
+         case 0: player.position = mp.settings.defaultSpawn; break;
+         case 1: player.position = this.last_positon; break;
+         default: player.position = mp.settings.defaultSpawn; break;
+      }
+   }
+
    screenShot (player, toggle) { 
       this.screenshot = toggle;
       player.setVariable('screenshot', this.screenshot);
    }
+
+   setHealth (player, value) { 
+      this.health = value;
+      player.health = this.health;
+   } 
 
    // SINHRONIIZACIJA ANIMACIJA
    Animation (player, animation) { 
@@ -66,6 +87,16 @@ class Character {
    setMood (player, mood) { 
       this.mood = mood;
       player.setVariable('mood', this.mood);
+   }
+
+   setWalkingStyle (player, style) { 
+      this.walking_style = style;
+      player.setVariable('walking_style', this.walking_style);
+   }
+
+   payDay (player) { 
+
+
    }
 }
 

@@ -27,16 +27,24 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   master_account int(11) NOT NULL, 
   first_name varchar(64) NOT NULL,
   last_name varchar(64) NOT NULL,
+  create_date varchar(64) NOT NULL,
   sex int(1) NOT NULL DEFAULT 0,
+  experience int(3) NOT NULL DEFAULT 0,
+  hours_played int(12) NOT NULL DEFAULT 0,
   birth_date text,
   origin varchar(64),
+  health int(4) NOT NULL DEFAULT 100,
+  armour int(4) NOT NULL DEFAULT 0,
   money int(11) NOT NULL DEFAULT 800,
   salary int(6) NOT NULL DEFAULT 0,
   bank_account int(16) NOT NULL DEFAULT 0,
   last_position text,
+  spawn_point int(2) NOT NULL DEFAULT 0,
+  mask_id int(6) NOT NULL DEFAULT 0,
   job int(2) NOT NULL DEFAULT 0,
   faction int(2) NOT NULL DEFAULT 0,
   faction_rank varchar(64) NOT NULL DEFAULT 'no',
+  faction_leader int(3) NOT NULL DEFAULT 0,
   radio_frequency int(6) NOT NULL DEFAULT 0,
   thirst int(4) NOT NULL DEFAULT 100,
   hunger int(4) NOT NULL DEFAULT 100,
@@ -258,6 +266,19 @@ let furnitureTable = `CREATE TABLE IF NOT EXISTS furniture (
 db.query(furnitureTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
   core.terminal(3, `Checking furnitureTable | MySQL`);
+});
+
+let banksTable = `CREATE TABLE IF NOT EXISTS bank (
+  number int(16) NOT NULL,
+  pin int(3) NOT NULL,
+  balance int(11) NOT NULL DEFAULT 500,
+  savings int(11) NOT NULL DEFAULT 0,
+  paycheck int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY(number))`;
+
+db.query(banksTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking banksTable | MySQL`);
 });
 
 let bansTable = `CREATE TABLE IF NOT EXISTS bans (

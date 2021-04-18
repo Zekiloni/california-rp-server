@@ -95,17 +95,5 @@ class Factions {
             vehicle.callsign = null;
          },
       })
-
-      mp.events.addCommand({
-         'invite': (player, fullText) => { 
-
-         },
-
-         'uninvite': (player, fullText) => { 
-
-         },
-
-
-      })
    }
 }

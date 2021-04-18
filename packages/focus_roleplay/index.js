@@ -8,6 +8,7 @@ global.core = require('./core/main');
 
 let DatabaseStructure = require('./core/databaseStructure');
 let Logs = require('./classes/Logs');
+let Minute = require('./classes/Minute');
 let Player = require('./classes/Player');
 let DeathmodeDamage = require('./classes/Deathmode.Damage');
 let Discord = require('./classes/Discord');
@@ -25,6 +26,7 @@ let Doors = require('./classes/Doors');
 let Houses = require('./classes/Houses');
 let Dealerships = require('./classes/Dealership');
 let Business = require('./classes/Business');
+let Bank = require('./classes/Bank');
 let Plants = require('./classes/Plants');
 let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
@@ -43,9 +45,36 @@ var playerAnimations = require('./player/animations');
 var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
-setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 // mp.Player.prototype.funkcija = () => {  }
+
+
+
+// Server-eventi
+mp.events.add("server:casino.slot.occupy", (player, slotMachine) => 
+{   
+	if (mp.characters[player.character].slotMachine == -1) {
+		mp.characters[player.character].slotMachine = slotMachine;
+	}
+	
+});
+
+mp.events.add("server:casino.slot.leave", (player) => 
+{
+	if (mp.characters[player.character].slotMachine != -1) {
+		mp.characters[player.character].slotMachine = -1;
+		player.call('client:casino.cancelInteractingWithSlotMachine');
+	}
+    
+	mp.characters[player.character].slotMachine = -1;
+});
+
+mp.events.add("server:casino.slot.spin", (player, slotMachine) => 
+{
+    player.call('client:spinSlotMachine', mp.characters[player.character].slotMachine, JSON.stringify(player.position))
+});
+
+
 
 
 //jobs.createBusRoute('Morningwood')
@@ -61,6 +90,8 @@ setInterval(() => { core.onMinuteSpent()  }, 60000);
 
 
 /**
+*   player.getCharacter(); - vraca karaktera od kurca / igraca
+*   player.getCharacter(); - vraca korisnicki racun od kurca / igraca
 *   player.notifiation(message, type, time) - Tekst, tip (error, uspesno, info), time: broj sekundi za koliko nestaje
 *   player.isNear(target) - Da li je blizu targeta u radiusu manjem od 3, vraca true, false
 *   mp.players.find(id / ime) - Pronalazi igraca
@@ -85,7 +116,7 @@ var color = [[033, 343, 535], [3434, 577, 565]]
 
 mp.events.addCommand("tp", (player) => {
     mp.events.call('server:animals.spawn', player, 15);
-    player.position = new mp.Vector3(-1800.14, -794.12, 8.6);
+    player.position = new mp.Vector3(1105.5439453125, 229.40882873535156, -50.84077072143555);
 });
 
 
@@ -156,6 +187,4 @@ mp.events.addCommand("cobject", (player, fullText, model) => {
     } catch(e) { console.log(e) }
 
 })
-
-
 

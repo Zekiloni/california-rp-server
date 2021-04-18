@@ -4,16 +4,16 @@ const businessTypes = require('../configs/Business.json')
 mp.business = {};
 
 class Biz { 
-   constructor (id, name, d) { 
+   constructor (id, name, data) { 
       this.id = id;
-      this.type = d.type;
       this.name = name;
-      this.price = d.price;
-      this.owner = d.owner;
-      this.products = d.products;
-      this.entrance = d.entrance;
-      this.interior = d.interior;
-      this.workers = d.workers;      
+      this.type = data.type;
+      this.price = data.price;
+      this.owner = data.owner;
+      this.products = data.products;
+      this.entrance = data.entrance;
+      this.interior = data.interior;
+      this.workers = data.workers;      
       this.price = data.price || 2500;
       this.owner = data.owner || -1;
 

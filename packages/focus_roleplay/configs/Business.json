@@ -1,7 +1,7 @@
 [
    { 
       "id": 1,
-      "name": "Gas Station & Market",
+      "name": "24/7 Market",
       "interior": {
          "x": 344,
          "y": 33,
@@ -10,8 +10,98 @@
    },
 
    { 
-      "id": 1,
-      "name": "Gas Station & Market",
+      "id": 2,
+      "name": "Benzniska Pumpa i 24/7 Market",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 3,
+      "name": "Fast Food Restoran",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 4,
+      "name": "Klasicni Restoran",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 5,
+      "name": "Kafic / Bar",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 6,
+      "name": "Nocni klub / Disko",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 7,
+      "name": "Butik sportske odece",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 8,
+      "name": "Butik luksuzne odece",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 9,
+      "name": "Salon Namestaja",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+   
+   { 
+      "id": 10,
+      "name": "Salon Vozila",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
+      "id": 11,
+      "name": "Prodavnica Oruzija",
       "interior": {
          "x": 344,
          "y": 33,
