@@ -142,14 +142,19 @@ mp.events.addCommand('eating', (player, full) => {
 })
 
 mp.events.addCommand("veh", (player, full, hash, color, color2) => {
-    var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
+    let c1 = color.split(','), c2 = color2.split(',');
+    var veh = mp.vehicles.new(mp.joaat(hash), player.position, {
+        numberPlate: "BETA TEST",
+        color: [[c1[0], c1[1], c1[2]], [c2[0], c2[1], c2[2]]]
+    });
     veh.dimension = player.dimension;
     veh.numberPlateType = 1;
-    veh.numberPlate = "BETA TEST";
     veh.engine = false;
-    veh.setColor(color, color2);
     player.putIntoVehicle(veh, 0);
 });
+
+let string = "1,2,3";
+console.log(string.split(','))
 
 mp.events.addCommand("clot", (player, full, comp, draw, text, pal) => {
     player.setClothes(parseInt(comp), parseInt(draw), parseInt(text), parseInt(pal));
