@@ -22,14 +22,22 @@ class Admin {
 
    }
 
-   broadcast = (player, message) => { 
+   chat = (player, message) => { 
       mp.players.forEach( (target) => { 
          if (target.data.logged) {
             if (mp.accounts[target.account]) {
                if (mp.accounts[target.account].admin >= 1) { 
-                  target.sendMessage(`${mp.admins[mp.accounts[target.account].admin]} ${player.name} [${player.id}]: ${message}`, mp.colors.admin)
+                  target.sendMessage(`${mp.admins[mp.accounts[player.account].admin]} ${player.name} [${player.id}]: ${message}`, mp.colors.admin)
                }
             }
+         }
+      })
+   }
+
+   broadcast = (player, message) => { 
+      mp.players.forEach( (target) => { 
+         if (target.data.logged) {
+            target.sendMessage(`${mp.admins[mp.accounts[player.account].admin]} ${player.name} [${player.id}]: ${message}`, mp.colors.admin)
          }
       })
    }

@@ -21,6 +21,15 @@ module.exports = {
          admin: 1,
          call: (player, args) => { 
             let message = args.slice(0).join(' '); 
+            mp.admin.chat(player, message)
+         }
+      },
+
+      {
+         name: 'a',
+         admin: 2,
+         call: (player, args) => { 
+            let message = args.slice(0).join(' '); 
             mp.admin.broadcast(player, message)
          }
       },
