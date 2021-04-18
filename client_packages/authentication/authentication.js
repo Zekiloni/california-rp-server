@@ -12,7 +12,6 @@ mp.events.add({
     mp.game.ui.displayRadar(false);
     mp.events.call('client:login.enableCamera');
     mp.game.graphics.transitionToBlurred(1000);
-    mp.events.call('client:chat.clear');
   },
 
   'client:login.hide': () => {
@@ -40,6 +39,7 @@ mp.events.add({
     mp.players.local.position = new mp.Vector3(-2022.89, -1214.94, 54.65);
     mp.players.local.freezePosition(true);
     loginCamera.setActive(true);
+    mp.events.call('chat:clear')
     loginCamera.setCoord(-2022.89, -1214.94, 49.65);
     loginCamera.pointAtCoord(-1915.13, -1180.98, 47.56);
     mp.game.cam.renderScriptCams(true, false, 0, true, false);
