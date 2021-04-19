@@ -107,5 +107,20 @@
          "y": 33,
          "z": 34
       }
+   },
+
+   { 
+      "id": 11,
+      "name": "Prodavnica oruzija"
+   },
+   
+   { 
+      "id": 12,
+      "name": "24/7 Market"
+   },
+
+   { 
+      "id": 13,
+      "name": "Nocni klub"
    }
 ]

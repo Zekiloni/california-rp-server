@@ -23,7 +23,6 @@ class Biz {
       this.colshape = mp.colshapes.newRectangle(this.entrance.x, this.entrance.y, 3, 2, 0);
       this.colshape.business = this.id;
       this.blip = mp.blips.new('business ' + this.id, new mp.Vector3(this.entrance.x, this.entrance.y, this.entrance.z), { name: 'business', color: 36, shortRange: true });
-
    }
 
    delete () { 
@@ -66,17 +65,14 @@ class Business {
    update = (business) => {
 
       let values = {
-         type: character.money,
-         price: character.salary,
-         entrance: character.job,
-         ipl: character.frequency,
-         budget: character.faction
+         owner: business.owner,
+         price: business.price,
+         budget: business.budget
       }
-      db.query('UPDATE `business` SET ? WHERE id = ?', [values, business.id], function (err, result) {
-            if (err) return core.terminal(1, 'Saving Business Error ' + err)
+      db.query('UPDATE `business` SET ? WHERE `id` = ?', [values, business.id], function (err, result) {
+            if (err) return core.terminal(1, 'Updating Business Error ' + err)
       });
    }
 }
 
 mp.biz = new Business();
-
