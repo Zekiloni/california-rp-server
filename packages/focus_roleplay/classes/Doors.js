@@ -32,6 +32,13 @@ class Doors {
                let door = colshape.doors;
                let status = mp.doors[door].status, position = mp.doors[door].position, model = mp.doors[door].model;
                player.call('client:doors.sync', [model, position, status]);
+               player.near = { type: 'door', id: door };
+            }
+         },
+
+         'playerExitColshape': (player, colshape) => {
+            if (colshape.doors && player.near) { 
+               player.near = null;
             }
          }
       });
