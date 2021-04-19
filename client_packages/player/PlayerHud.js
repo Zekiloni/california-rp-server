@@ -34,7 +34,7 @@ updatePlayerHud = () => {
 	playerHUD.execute(
 		`hud.location.street = \"${streetName}\", hud.location.zone = \"${zoneName}\", 
 		hud.location.heading = \"${heading}\", hud.money = \"${player.money}\",
-		hud.onlinePlayers =  \"${onlinePlayers}\";`
+		hud.onlinePlayers =  \"${onlinePlayers}\", hud.id = \"${player.remoteId}\";`
 	); 
 }
 

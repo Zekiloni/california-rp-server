@@ -141,14 +141,14 @@ mp.events.addCommand('eating', (player, full) => {
     //player.position = new mp.Vector3(2962.40, 2746.20, 42.39);
 })
 
-mp.events.addCommand("veh", (player, full, hash, color, color2) => {
+mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 = "0,0,0") => {
     let c1 = color.split(','), c2 = color2.split(',');
-    var veh = mp.vehicles.new(mp.joaat(hash), player.position, {
-        numberPlate: "BETA TEST",
-        color: [[c1[0], c1[1], c1[2]], [c2[0], c2[1], c2[2]]]
-    });
+    var veh = mp.vehicles.new(mp.joaat(hash), player.position, { });
+    veh.setColorRGB(parseInt(c1[0]), parseInt(c1[1]), parseInt(c1[2]), parseInt(c2[0]), parseInt(c2[1]), parseInt(c2[2]));
+    veh.alpha = 255;
     veh.dimension = player.dimension;
     veh.numberPlateType = 1;
+    veh.numberPlate = 'focus rp beta';
     veh.engine = false;
     player.putIntoVehicle(veh, 0);
 });

@@ -18,6 +18,7 @@ class Vehicle {
 			this.dimension = params.dimension || 0;
 			this.visible = params.visible || true;
 			this.km = params.km || 0;
+			this.windows = params.windows || [false, false, false, false];
 			this.dirt = params.dirt || 0; // Dirt ide od 0 do 15
 			if (!this._visible) this._alpha = 0;
 			this.vehicle = mp.vehicles.new(mp.joaat(this.model), this.position,
@@ -34,6 +35,10 @@ class Vehicle {
 		}
 	}
 
+	window (vehicle, index) { 
+		this.windows[index] != this.windows[index];
+		this.vehicle.setVariable('windows', this.windows)
+	}
 
 	setDirt (level) { 
 		this.dirt = level;
