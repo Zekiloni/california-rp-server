@@ -16,7 +16,7 @@ class Discord {
 
             var myEmbed = {
                author: {
-                 name: 'Uzivo slika sa servera'
+                 name: MSG_LIVE_PHOTO_FROM_SERVER
                },
                title: player.name,
                description: zone + ', ' + street,

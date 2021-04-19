@@ -23,7 +23,7 @@ module.exports = {
 
     create: function (player, type, price) {
         let info = this.type();
-        if (type > info.length) return player.notify(`Maksimalni tip biznisa je ${info.length}`);
+        if (type > info.length) return player.notify(MSG_MAX_BUSSINES_TYPE + `${info.length}`); 
         var name = info[type].name;
         let int = info[type].interior;
         let entrance = JSON.stringify(player.position);

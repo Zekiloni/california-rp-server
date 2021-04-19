@@ -17,8 +17,8 @@ let Crouching = require('./player/Interactions/Crouching');
 let FingerPointing = require('./player/Interactions/FingerPointing');
 
 
-let CasinoSlots = require('./Casino/Slots');
-let CasinoRoulette = require('./Casino/Roulette')
+let casino = require('./casino/CasinoSlots');
+let fuel = require('./fuel');
 
 let binds = require('./player/binds');
 

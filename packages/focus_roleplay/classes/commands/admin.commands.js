@@ -21,6 +21,15 @@ module.exports = {
          admin: 1,
          call: (player, args) => { 
             let message = args.slice(0).join(' '); 
+            mp.admin.chat(player, message)
+         }
+      },
+
+      {
+         name: 'ao',
+         admin: 2,
+         call: (player, args) => { 
+            let message = args.slice(0).join(' '); 
             mp.admin.broadcast(player, message)
          }
       },
@@ -121,6 +130,30 @@ module.exports = {
                target.isDead = false;
                setTimeout(() => { target.spawn(position); }, 350)
 
+            }
+         }
+      },
+
+      {
+         name: 'givegun',
+         admin: 2,
+         desc: 'Davanje oruzija',
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]);
+            if (target) { 
+               let weaponHash = mp.joaat(args[1]);
+               target.giveWeapon(weaponHash, parseInt(args[2]) || 500);
+            }
+         }
+      },
+
+      {
+         name: 'makeadmin',
+         admin: 6,
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]);
+            if (target) { 
+               mp.accounts[target.account].admin = args[1];
             }
          }
       },

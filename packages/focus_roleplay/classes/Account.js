@@ -8,12 +8,13 @@ class Account {
    * @param {Integer} params.dbid
    */
    constructor (params) { 
-      this.id = params.sqlid;
+      this.id = params.id;
       this.username = params.username;
-      this.registerDate = params.regDate;
-      this.lastLogin = params.lastLog;
-      this.ipAdress = params.ip;
-      this.socialClub = params.social;
+      this.email = params.email;
+      this.register_date = params.register_date;
+      this.last_login = params.last_login;
+      this.ip_adress = params.ip;
+      this.social_club = params.social;
       this.admin = params.admin;
       this.donator = params.donator;
       this.coins = params.coins || 0;

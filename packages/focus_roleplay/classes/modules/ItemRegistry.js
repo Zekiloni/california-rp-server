@@ -60,8 +60,8 @@ mp.ItemRegistry = {
       type: ItemType.Food,
       use: (player) => { 
          //player.Animation({ name: 'static', dictionary: 'amb@code_human_wander_eating_donut@male@base', flag: 49, time: 4})
-         player.playAnimation('amb@code_human_wander_eating_donut@male@base', 'static', 4, 49);
-         player.setVariable("animData", `amb@code_human_wander_eating_donut@male@base%static%49`);
+         //player.playAnimation('amb@code_human_wander_eating_donut@male@base', 'static', 4, 49);
+         //player.setVariable("animData", `amb@code_human_wander_eating_donut@male@base%static%49`);
       }
    },
 
@@ -72,12 +72,20 @@ mp.ItemRegistry = {
       type: ItemType.Drink
    },
 
+   'Radio Prijemnik': { 
+      name: 'Radio Prijemnik',
+      hash: 'prop_cs_hand_radio',
+      weight: 0.03,
+      type: ItemType.Misc
+   }, 
+
    'Redwood Cigarete': { 
       name: 'Redwood Cigarete',
       hash: 'prop_cigar_pack_01',
       weight: 0.05,
       type: ItemType.Misc
    },
+   
 
    'Upaljač': { 
       name: 'Upaljač',

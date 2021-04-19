@@ -141,9 +141,6 @@ mp.events.addCommand({
       else {  player.outputChatBox(`Komanda nema argumente /frequency (set, create, leave, delete) !`); }
    },
 
-   'r': (player, fullText) => { 
-      radio.send(player, player.radioFreq, fullText);
-   },
 
    'id': (player, fullText, target) => { 
       let recipient = account.findPlayer(target);

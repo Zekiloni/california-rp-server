@@ -21,8 +21,9 @@ class Saving {
 
          'server:save.player.account': (player, exit = false) => { 
             if (player.data.logged && player.data.spawned) { 
-               let account = mp.acounts[player.account], onlineStatus = 1;
+               let account = mp.accounts[player.account], onlineStatus = 1;
 
+               console.log(account)
                if (account) { 
                   if (exit) { onlineStatus = 0; }
    
@@ -46,12 +47,25 @@ class Saving {
          'server:save.player.character': (player, exit = false) => { 
             let character = mp.characters[player.character];
 
-            // let user
-
-            // db.query('UPDATE `users` SET ? WHERE id = ?', [account, player.sqlid], function (err, result) {
-            //    if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
-            // });
-
+            if (character) { 
+               let values = {
+                  money: character.money,
+                  salary: character.salary,
+                  job: character.job,
+                  radio_frequency: character.frequency,
+                  faction: character.faction,
+                  faction_rank: character.rank,
+                  faction_leader: character.leader,
+                  hunger: character.hunger,
+                  thirst: character.thirst,
+                  last_position: JSON.stringify(player.position),
+                  health: character.health,
+                  armour: character.armour
+               }
+               db.query('UPDATE `characters` SET ? WHERE id = ?', [values, player.character], function (err, result) {
+                     if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
+               });
+            }
          },
 
          'server:save.player.character.urgent': (player) => { 

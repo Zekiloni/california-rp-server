@@ -22,6 +22,7 @@
             <div class="notif"></div>
 
             <div class="player">
+                <h2 class="player-id"> <i class="fas fa-user"></i> {{ id }} </h2>
                 <h4 class="money"><b>&dollar;</b>{{ cash() }}</h4>
             </div>
             
@@ -57,6 +58,7 @@
             el: '#hud',
             data: {
                 money: 0,
+                id: null,
                 onlinePlayers: null,
 
                 timestamp: null,

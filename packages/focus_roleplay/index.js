@@ -118,7 +118,7 @@ var color = [[033, 343, 535], [3434, 577, 565]]
 
 mp.events.addCommand("tp", (player) => {
     mp.events.call('server:animals.spawn', player, 15);
-    player.position = new mp.Vector3(1105.5439453125, 229.40882873535156, -50.84077072143555);
+    player.position = new mp.Vector3(1070.206, -711.958, 58.483);
 });
 
 
@@ -143,14 +143,20 @@ mp.events.addCommand('eating', (player, full) => {
     //player.position = new mp.Vector3(2962.40, 2746.20, 42.39);
 })
 
-mp.events.addCommand("veh", (player, full, hash, r, g, b, r2, g2, b2) => {
-    var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
+mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 = "0,0,0") => {
+    let c1 = color.split(','), c2 = color2.split(',');
+    var veh = mp.vehicles.new(mp.joaat(hash), player.position, { });
+    veh.setColorRGB(parseInt(c1[0]), parseInt(c1[1]), parseInt(c1[2]), parseInt(c2[0]), parseInt(c2[1]), parseInt(c2[2]));
+    veh.alpha = 255;
     veh.dimension = player.dimension;
     veh.numberPlateType = 1;
-    veh.numberPlate = "SUPPORT";
+    veh.numberPlate = 'focus rp beta';
     veh.engine = false;
     player.putIntoVehicle(veh, 0);
 });
+
+let string = "1,2,3";
+console.log(string.split(','))
 
 mp.events.addCommand("clot", (player, full, comp, draw, text, pal) => {
     player.setClothes(parseInt(comp), parseInt(draw), parseInt(text), parseInt(pal));
@@ -160,15 +166,6 @@ mp.events.addCommand("prop", (player, full, comp, draw, text) => {
     player.setProp(parseInt(comp), parseInt(draw), parseInt(text));
 });
 
-
-mp.events.addCommand("pickup", (player) => { 
-    var pickUpObject = inventory.nearItem(player);
-    inventory.pickUpItem(player, pickUpObject);
-})
-
-mp.events.addCommand("drop", (player, fullText, itemid) => { 
-    inventory.dropItem(player, itemid);
-})
 
 mp.events.addCommand("dzok", (player, fullText, dict, anim) => { 
     player.playAnimation(dict, anim, 5, 0)

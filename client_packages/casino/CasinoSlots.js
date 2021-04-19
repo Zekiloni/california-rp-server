@@ -155,12 +155,10 @@ mp.events.add('playerExitColshape', (shape) => {
 
 mp.keys.bind(0x45, true, () =>  // E
 {
-	mp.gui.chat.push('1')
 	//if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
 	
 	if (lpSlotMachine != null)
 	{
-		mp.gui.chat.push('2')
 
 		
 		mp.events.callRemote("leaveSlotMachine");
@@ -172,7 +170,6 @@ mp.keys.bind(0x45, true, () =>  // E
 		interactingWithSlotMachineTimeout = setTimeout(
 			function()
 			{
-				mp.gui.chat.push('3 timeout')
 				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
 				interactingWithSlotMachine = null;
 				interactingWithSlotMachineTimeout = null;
@@ -181,10 +178,8 @@ mp.keys.bind(0x45, true, () =>  // E
 	}
 	else
 	{
-		mp.gui.chat.push('4')
 
 		if(slotMachineToJoin == null) return false;
-		mp.gui.chat.push('5')
 
 		interactingWithSlotMachine = slotMachineToJoin;
 		

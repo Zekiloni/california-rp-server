@@ -95,7 +95,7 @@ let furniture = {
          return furnJson;
       }
       else {
-         player.notification(`Nemate ništa od nameštaja`, NOTIFY_ERROR, 4);
+         player.notification(MSG_NO_FURNITURE_OWNED, NOTIFY_ERROR, 4); 
       }
    }
 }

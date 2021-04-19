@@ -1,6 +1,6 @@
 [
    { 
-      "id": 1,
+      "id": 0,
       "name": "24/7 Market",
       "interior": {
          "x": 344,
@@ -10,7 +10,7 @@
    },
 
    { 
-      "id": 2,
+      "id": 1,
       "name": "Benzniska Pumpa i 24/7 Market",
       "interior": {
          "x": 344,
@@ -20,7 +20,7 @@
    },
 
    { 
-      "id": 3,
+      "id": 2,
       "name": "Fast Food Restoran",
       "interior": {
          "x": 344,
@@ -30,8 +30,18 @@
    },
 
    { 
+      "id": 3,
+      "name": "Restoran",
+      "interior": {
+         "x": 344,
+         "y": 33,
+         "z": 34
+      }
+   },
+
+   { 
       "id": 4,
-      "name": "Klasicni Restoran",
+      "name": "Kafe / Bar",
       "interior": {
          "x": 344,
          "y": 33,
@@ -41,16 +51,6 @@
 
    { 
       "id": 5,
-      "name": "Kafic / Bar",
-      "interior": {
-         "x": 344,
-         "y": 33,
-         "z": 34
-      }
-   },
-
-   { 
-      "id": 6,
       "name": "Nocni klub / Disko",
       "interior": {
          "x": 344,
@@ -60,7 +60,7 @@
    },
 
    { 
-      "id": 7,
+      "id": 6,
       "name": "Butik sportske odece",
       "interior": {
          "x": 344,
@@ -70,7 +70,7 @@
    },
 
    { 
-      "id": 8,
+      "id": 7,
       "name": "Butik luksuzne odece",
       "interior": {
          "x": 344,
@@ -80,7 +80,7 @@
    },
 
    { 
-      "id": 9,
+      "id": 8,
       "name": "Salon Namestaja",
       "interior": {
          "x": 344,
@@ -90,7 +90,7 @@
    },
    
    { 
-      "id": 10,
+      "id": 9,
       "name": "Salon Vozila",
       "interior": {
          "x": 344,
@@ -100,12 +100,27 @@
    },
 
    { 
-      "id": 11,
+      "id": 10,
       "name": "Prodavnica Oruzija",
       "interior": {
          "x": 344,
          "y": 33,
          "z": 34
       }
+   },
+
+   { 
+      "id": 11,
+      "name": "Prodavnica oruzija"
+   },
+   
+   { 
+      "id": 12,
+      "name": "24/7 Market"
+   },
+
+   { 
+      "id": 13,
+      "name": "Nocni klub"
    }
 ]

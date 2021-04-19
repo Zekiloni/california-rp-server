@@ -57,7 +57,7 @@ mp.events.add({
    },
 
    'client:doors.sync': (model, position, state) => { 
-      mp.game.object.doorControl(model, position[0], position[1], position[2], state, 0.0, 50.0, 0)
+      mp.game.object.doorControl(parseInt(model), position[0], position[1], position[2], state, 0.0, 50.0, 0)
    },
 
    'client:player.rotate': (value) => {
