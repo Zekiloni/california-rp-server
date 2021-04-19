@@ -114,7 +114,7 @@ for(let i=0; i < slotMachinePos.length; i++)
 	slotMachineData[i].reels = [];
 	
 	var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, 0, -1.5, 1);
-	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 0.25);
+	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 1);
 	newShape.casinoSlotMachime = i;
 	
 	for(var c=0; c < 3; c++)
@@ -132,6 +132,7 @@ mp.events.add('playerEnterColshape', (shape) => {
 		slotMachineToJoin = shape.casinoSlotMachime;
 		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
 		mp.game.graphics.notify(`~b~${slotMachineNames[slotMachinePos[slotMachineToJoin].type]}~n~~w~Pritisnite E da igrate`);
+		mp.gui.chat.push('shape ' + shape.casinoSlotMachime);
 	}
 });
 
@@ -147,21 +148,22 @@ mp.events.add('playerExitColshape', (shape) => {
 
 mp.keys.bind(0x45, true, () =>  // E
 {
-	
+	mp.gui.chat.push('1');
 	if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
-	
+	mp.gui.chat.push('2');
 	if(lpSlotMachine != null)
 	{
-		
+		mp.gui.chat.push('3');
 		mp.events.callRemote("leaveSlotMachine");
 		interactingWithSlotMachine = lpSlotMachine;
 		lpSlotMachine = null;
 		BLOCK_CONTROLS_DURING_ANIMATION = false;
 		if(canSpin) canSpin = false;
-		
+		mp.gui.chat.push('4');
 		interactingWithSlotMachineTimeout = setTimeout(
 			function()
 			{
+				mp.gui.chat.push('5');
 				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
 				interactingWithSlotMachine = null;
 				interactingWithSlotMachineTimeout = null;
@@ -170,51 +172,30 @@ mp.keys.bind(0x45, true, () =>  // E
 	}
 	else
 	{
-		if(slotMachineToJoin == null) return false;
-		
+		mp.gui.chat.push('6');
+		//if(slotMachineToJoin == null) return false;
+		mp.gui.chat.push('7');
 		interactingWithSlotMachine = slotMachineToJoin;
-		
+		mp.gui.chat.push('8');
 		slotMachineData[slotMachineToJoin].machine.setCollision(false, false);
-		
+		mp.gui.chat.push('9');
 		var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[slotMachineToJoin].x, slotMachinePos[slotMachineToJoin].y, slotMachinePos[slotMachineToJoin].z, slotMachinePos[slotMachineToJoin].rz, 0, -1.5, 1);
 		localPlayer.position = new mp.Vector3(pos.x, pos.y, pos.z);
 		localPlayer.setHeading(slotMachinePos[slotMachineToJoin].rz);
-		
+		mp.gui.chat.push('10');
 		mp.events.callRemote("server:casino.slot.occupy", slotMachineToJoin);
 		mp.events.call('client:casino.slot.occupy', localPlayer, slotMachine);
-		
+		mp.gui.chat.push('11');
 		interactingWithSlotMachineTimeout = setTimeout(
 			function()
 			{
+				mp.gui.chat.push('12');
 				interactingWithSlotMachine = null;
 				interactingWithSlotMachineTimeout = null;
 			},5500
 		);
-	}	
-});
-
-// Server-eventi
-mp.events.add("server:casino.slot.occupy", (player, slotMachine) => 
-{   
-	if (mp.characters[player.character].slotMachine == -1) {
-		mp.characters[player.character].slotMachine = slotMachine;
 	}
-	
-});
-
-mp.events.add("server:casino.slot.leave", (player) => 
-{
-	if (mp.characters[player.character].slotMachine != -1) {
-		mp.characters[player.character].slotMachine = -1;
-		player.call('client:casino.cancelInteractingWithSlotMachine');
-	}
-    
-	mp.characters[player.character].slotMachine = -1;
-});
-
-mp.events.add("server:casino.slot.spin", (player, slotMachine) => 
-{
-    player.call('client:spinSlotMachine', mp.characters[player.character].slotMachine, JSON.stringify(player.position))
+	mp.gui.chat.push('13');	
 });
 
 
@@ -281,7 +262,7 @@ mp.events.add('render', (nametags) => {
 	{
 		if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // LMB
 		{
-			mp.events.callRemote("server:spinSlotMachine");
+			mp.events.callRemote("server:casino.slot.spin");
 		}
 	}
 });
@@ -289,50 +270,56 @@ mp.events.add('render', (nametags) => {
 
 mp.events.add('client:spinSlotMachine', (id, position) => 
 {
-	let machine = id;
-	slotMachineData[machine].endPos = JSON.parse(position);
+	try {
+		let machine = id;
+		let endPos = JSON.parse(position);
+		slotMachineData[machine].endPos = endPos;
 
-	mp.events.call('client:slotMachineAllowSpin', false);
-	
-	var pos = null;
-	for(var i=0; i < 3; i++)
-	{
-		slotMachineData[machine].reels[i].destroy();
-		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
-		slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
-		slotMachineData[machine]['spinning'][i] = true;
+		mp.events.call('client:slotMachineAllowSpin', false);
+		
+		var pos = null;
+		for(var i=0; i < 3; i++)
+		{
+			slotMachineData[machine].reels[i].destroy();
+			pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
+			slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
+			slotMachineData[machine]['spinning'][i] = true;
+		}
+		
+		setTimeout(
+			function()
+			{
+				slotMachineData[machine]['spinning'][0] = null;
+		
+				slotMachineData[machine].reels[0].destroy();
+				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
+				slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
+			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
+		);
+		setTimeout(
+			function()
+			{
+				slotMachineData[machine]['spinning'][1] = null;
+		
+				slotMachineData[machine].reels[1].destroy();
+				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
+				slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
+			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
+		);
+		setTimeout(
+			function()
+			{
+				slotMachineData[machine]['spinning'][2] = null;
+		
+				slotMachineData[machine].reels[2].destroy();
+				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
+				slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
+			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
+		);
 	}
-	
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][0] = null;
-	
-			slotMachineData[machine].reels[0].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
-			slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
-	);
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][1] = null;
-	
-			slotMachineData[machine].reels[1].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
-			slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
-	);
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][2] = null;
-	
-			slotMachineData[machine].reels[2].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
-			slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
-	);
+	catch(e) {
+		console.log(e);
+	}
 });
 
 // Loading IPL 

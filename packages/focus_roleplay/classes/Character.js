@@ -37,8 +37,10 @@ class Character {
       this.animation = p.animation || null;
 
       this.mute = p.mute || 0;
-
+      
       this.inviteRequest = 0;
+      this.casinoSlot = -1;
+      this.casinoRoulette = -1;
 
       mp.characters[this.id] = this;
    }
