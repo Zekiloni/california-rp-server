@@ -11,11 +11,45 @@ mp.factions = [
       label: new mp.Vector3(434.080, -981.913, 30.7093), blip: new mp.Vector3(433.91, -981.98, 0),
       garage: new mp.Vector3(455.4101, -1017.4461, 27.6155), equip: new mp.Vector3(452.97064, -992.0955, 30.6896),
       armory: new mp.Vector3(452.0938415, -980.22052, 30.68961), vehicle: new mp.Vector3(439.02337, -1019.7479, 28.72946),
+      
    }
 ];
 
 
-const factions = { 
+class Factions { 
+   constructor () { 
+      mp.events.add({
+         'server:faction.invite': (player, target) => { 
+
+         },
+
+         'server:faction.uninvite': (player, target) => { 
+            
+         },
+
+         'server:faction.rank': (player, target, rank) => { 
+            
+         },
+
+         'server:police.giveWeapon': (player, name, weapon, ammo) => {
+            let weaponHash = mp.joaat(weapon);
+            player.giveWeapon(weaponHash, parseInt(ammo) || 15);
+            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} uzima ${name} iz ormarica.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
+         },
+
+         'server:police.spawnVehicle': (player, name, model) => {
+            let faction = factions.getFaction(player.faction);
+            let vPos = faction.VEH_POINT;
+            let vehPos = new mp.Vector3(vPos.x, vPos.y, vPos.z)
+            let hash = mp.joaat(model);
+            let numberPlate = Math.floor(1000 + Math.random() * 9000);
+            let vehicle = mp.vehicles.new(hash, vehPos, { numberPlate: `LSPD ${numberPlate}`, heading: 90,color: [[255, 255, 246], [0, 255, 0]], locked: false, dimension: 0 });
+            vehicle.faction = player.faction;
+            vehicle.callsign = null;
+         },
+      })
+   }
+
    init () { 
       let counter = 0;
       for (let faction of mp.factions) { 
@@ -62,39 +96,6 @@ const factions = {
    }
 }
 
-factions.init()
+mp.fation = new Factions();
+mp.fation.init();
 
-class Factions { 
-   constructor () { 
-      mp.events.add({
-         'server:faction.invite': (player, target) => { 
-
-         },
-
-         'server:faction.uninvite': (player, target) => { 
-            
-         },
-
-         'server:faction.rank': (player, target, rank) => { 
-            
-         },
-
-         'server:police.giveWeapon': (player, name, weapon, ammo) => {
-            let weaponHash = mp.joaat(weapon);
-            player.giveWeapon(weaponHash, parseInt(ammo) || 15);
-            account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} uzima ${name} iz ormarica.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
-         },
-
-         'server:police.spawnVehicle': (player, name, model) => {
-            let faction = factions.getFaction(player.faction);
-            let vPos = faction.VEH_POINT;
-            let vehPos = new mp.Vector3(vPos.x, vPos.y, vPos.z)
-            let hash = mp.joaat(model);
-            let numberPlate = Math.floor(1000 + Math.random() * 9000);
-            let vehicle = mp.vehicles.new(hash, vehPos, { numberPlate: `LSPD ${numberPlate}`, heading: 90,color: [[255, 255, 246], [0, 255, 0]], locked: false, dimension: 0 });
-            vehicle.faction = player.faction;
-            vehicle.callsign = null;
-         },
-      })
-   }
-}
