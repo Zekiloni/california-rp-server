@@ -4,16 +4,19 @@ const businessTypes = require('../configs/Business.json')
 mp.business = {};
 
 class Biz { 
-   constructor (id, name, data) { 
+   constructor (id, data) { 
       this.id = id;
-      this.name = name;
+      this.name = data.name;
       this.type = data.type;
       this.price = data.price;
       this.owner = data.owner;
-      this.products = data.products;
+      this.products = data.products || 100;
+      this.budget = data.budget || 0;
+      this.dimension = data.dimension || 0;
+      this.interiorDimension = data.interiorDimension || -1;
       this.entrance = data.entrance;
-      this.interior = data.interior;
-      this.workers = data.workers;      
+      this.ipl = data.ipl || '';
+      this.workers = data.workers || [];   
       this.price = data.price || 2500;
       this.owner = data.owner || -1;
 
@@ -31,13 +34,13 @@ class Biz {
 }
 
 class Business { 
-   new = (player, type, price) => {
+   create = (player, type, price) => {
       let position = player.position;
-      //if(type > businessTypes.length) return player.notification(MSG_INVALID_BUSSINES_TYPE, NOTIFY_ERROR, 4); OVO U KOMANDI
-      db.query("INSERT INTO `bussines` (type, name, price, owner, dimension, entrance, interior, workers, ipl, products) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-         [type, businessTypes[type].name, price, -1, player.dimension, JSON.stringify(position), JSON.stringify(info.interior), -1, info.ipl, 100], function (error, results, fields) {
+      //if(type > businessTypes.length) return player.notification(MSG_INVALID_business_TYPE, NOTIFY_ERROR, 4); OVO U KOMANDI
+      db.query('INSERT INTO `business` (type, price, dimension, entrance, ipl) VALUES (?, ?, ?, ?, ?)', 
+         [type, price, player.dimension, JSON.stringify(position), JSON.stringify(businessTypes[type].ipl)], function (error, results, fields) {
             if (error) return core.terminal(1, 'Business creating ' + error);
-            let business = new Biz(results.insertId, { type: type, name: businessTypes[type].name, price: price, owner: -1, dimension: player.dimension, entrance: position, ipl: businessTypes[type].ipl, interior: info.interior, intDimension: results.insertId })
+            let business = new Biz(results.insertId, { type: type, name: businessTypes[type].name, price: price, owner: -1, dimension: player.dimension, entrance: position, ipl: businessTypes[type].ipl, interiorDimension: results.insertId })
       });
    }
 
@@ -46,8 +49,7 @@ class Business {
       db.query("SELECT * from `business`", function(error, results, fields) { 
          if (error) return core.terminal(1, 'Loading business ' + error);
          results.forEach(result => {
-            let business = new Biz(result.id, 
-               { entrance: JSON.parse(result.entrance), type: result.type, price: result.price, dimension: result.dimension, ipl: result.ipl, interior: result.interior, intDimension: result.intDimension })
+            let business = new Biz(result.id, { type: result.type, name: result.name, price: result.price, owner: result.owner, dimension: result.dimension, entrance: JSON.parse(result.entrance), ipl: JSON.parse(results.ipl), interiorDimension: result.id }) // entrance: JSON.parse(result.entrance), type: result.type, price: result.price, dimension: result.dimension, ipl: result.ipl, interior: result.interior, intDimension: result.intDimension
             counter ++;
          });
          core.terminal(3, counter + ' business loaded')
@@ -57,7 +59,21 @@ class Business {
    delete = (id) => { 
       db.query("DELETE * FROM `business` WHERE `id` = ?", [id], function (error, results, fields) {
             if (error) return core.terminal(1, 'Business deleting ' + error);
-            mp.biz[id] = null;
+            delete mp.business[id];
+      });
+   }
+
+   update = (business) => {
+
+      let values = {
+         type: character.money,
+         price: character.salary,
+         entrance: character.job,
+         ipl: character.frequency,
+         budget: character.faction
+      }
+      db.query('UPDATE `business` SET ? WHERE id = ?', [values, business.id], function (err, result) {
+            if (err) return core.terminal(1, 'Saving Business Error ' + err)
       });
    }
 }
