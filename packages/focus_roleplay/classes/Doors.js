@@ -15,6 +15,7 @@ class Door {
       this.colshape.doors = this.id;
 
       mp.doors[this.id] = this;
+      console.log(this)
    }
 
    status () { 
