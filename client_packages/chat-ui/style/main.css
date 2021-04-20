@@ -7,7 +7,7 @@
 body,html{
     -webkit-font-smoothing:antialiased;
     overflow:hidden;
-    font-size: 14.5px;
+    font-size: 14px;
     -webkit-user-select:none;
     user-select:none;
 }
@@ -42,13 +42,17 @@ a { text-decoration:none }
     transform:rotate(-180deg)}
 #chat input#chat_msg{
     color:#fff;
-    background:rgba(0,0,0,.5);
-    outline:0;border:none;
+    background: rgb(0 0 0 / 45%);
+    outline:0;
+    border:none;
     font-family:Myriad Pro,Open Sans,sans-serif;
     font-size:13px;
+    margin-left: 10px;
     line-height:35px;
+    border-radius: 5px;
     width:35vw;
-    padding:5px 5px 5px 15px}
+    padding:5px 5px 5px 15px;
+    }
 ::-webkit-scrollbar{
     width:11px;
 }
