@@ -36,5 +36,24 @@ module.exports = {
             player.sendMessage('Promenili ste mesto spawna na ' + spawns[args[0]], mp.colors.info);
          }
       },
+
+
+      {
+         name: 'accept',
+         desc: 'Lista Komand',
+         call: (player, args) => { 
+            let character = player.getCharacter();
+            if (!args[0]) return;
+            switch(args[0]) { 
+               case 'invite': {
+                  if (character.invite_request == 0) return false;
+                  character.faction = character.invite_request;
+                  character.invite_request = 0;
+                  character.rank = 'Newbie';
+                  player.sendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[character.faction].name + '.', mp.colors.success);
+               }
+            }
+         }
+      }
    ]
 }

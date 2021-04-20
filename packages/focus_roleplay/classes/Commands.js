@@ -12,6 +12,7 @@ const commandFiles = [
    'interior.commands',
    'message.commands',
    'radio.commands',
+   'faction.commands',
    'police.commands',
    'lock.command'
 ];

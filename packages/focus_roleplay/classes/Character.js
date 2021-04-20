@@ -38,7 +38,7 @@ class Character {
 
       this.mute = p.mute || 0;
 
-      this.inviteRequest = 0;
+      this.invite_request = 0;
 
       mp.characters[this.id] = this;
    }

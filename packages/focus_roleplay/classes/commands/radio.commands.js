@@ -6,7 +6,6 @@ module.exports = {
          desc: 'Radio komunikacija',
          call: (player, args) => { 
             let character = player.getCharacter();
-            console.log(mp.item.hasItem(character.id, 'Radio Prijemnik'))
             if (character.frequency == 0) return player.sendMessage('Niste ni u jednoj frekvenciji !', mp.colors.tomato);
             if (!mp.item.hasItem(character.id, 'Radio Prijemnik')) return player.sendMessage('Ne posedujete radio prijemnik !', mp.colors.tomato);
             let message = args.splice(0).join(" ");
