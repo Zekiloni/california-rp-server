@@ -59,6 +59,12 @@ class Factions {
             if (result && result.length > 0) { 
                faction.leader = result[0].leader;
                faction.budget = result[0].budget;
+            } else { 
+               db.query('INSERT INTO `factions` (`faction`, `budget`, `leader`) VALUES (?, ?, ?)', [faction.id, 0, 0], function (greska, res, fields) { 
+                  if (greska) return core.terminial(1, 'Faction Insert ' + greska);
+                  faction.leader = 0
+                  faction.budget = 0;
+               })
             }
          })
 
