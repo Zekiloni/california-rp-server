@@ -99,24 +99,27 @@ class Factions {
       core.terminal(3, counter + ' Factions loaded')
    }
 
-   leader (player, faction) { 
+   leader (player, f) { 
       let character = player.getCharacter();
+      let faction = mp.factions[f];
       if (character) { 
          let values = { leader: player.character };
          db.query('UPDATE `factions` SET ? WHERE faction = ?', [values, faction.id], function (err, re, fields) {
             if (err) return core.terminal(1, 'Updating Faction Error ' + err);
-            character.faction = faction;
-            faction.leader = player.character;
-            player.sendMessage('Postavljeni ste za lidera fakcije ' + mp.factions[faction].name + '.', mp.colors.info);
+            character.faction = faction.id;
+            faction.leader = character.id;
+
+            console.log(' Character faction ' + character.faction)
+            player.sendMessage('Postavljeni ste za lidera fakcije ' + faction.name + '.', mp.colors.info);
          });
       }
    }
 
    invite (player, target) { 
-      let charater = player.getCharacter(), targetcharacter = target.getCharacter();
-      if (charater && targetcharacter) { 
-         if (character.faction == 0) return false;
-         if (mp.factions[character.faction].leader != character.id) return false;
+      let character = player.getCharacter(), targetcharacter = target.getCharacter();
+      if (character && targetcharacter) { 
+         if (character.faction == 0) return;
+         if (mp.factions[character.faction].leader != character.id) return;
 
          player.sendMessage('Pozvali ste ' + target.name + ' u vasu fakciju.', mp.colors.info);
          target.sendMessage(target.name + ' vam je poslao zahtev za pridruzivanje ' + mp.factions[character.faction].name + '.', mp.colors.info);
@@ -126,9 +129,9 @@ class Factions {
    }
 
    uninvite (player, target) { 
-      let charater = player.getCharacter(), targetcharacter = target.getCharacter();
-      if (charater && targetcharacter) { 
-         if (charater.faction != targetcharacter.faction) return false;
+      let character = player.getCharacter(), targetcharacter = target.getCharacter();
+      if (character && targetcharacter) { 
+         if (character.faction != targetcharacter.faction) return false;
          if (mp.factions[character.faction].leader != character.id) return false;
          targetcharacter.faction = 0;
          player.sendMessage('Izbacili ste ' + target.name + ' iz fakcije.', mp.colors.info);
@@ -139,8 +142,8 @@ class Factions {
    rank (player, target, rank) { 
       let targetcharacter = target.getCharacter(), character = player.getCharacter();
       if (targetcharacter && character) { 
-         if (character.faction != targetcharacter.faction) return false;
-         if (mp.factions[character.faction].leader != character.id) return false;
+         if (character.faction != targetcharacter.faction) return;
+         if (mp.factions[character.faction].leader != character.id) return;
          targetcharacter.rank = rank;
          player.sendMessage('Postavili ste rank ' + rank + ' clanu ' + target.name + '.', mp.colors.info);
          target.sendMessage(target.name + ' vam je postavio rank na ' + rank + '.', mp.colors.info);
@@ -149,7 +152,7 @@ class Factions {
 
    chat (faction, message) { 
       mp.players.forEach( (target) => { 
-         if (target.logged && target.spawned) { 
+         if (target.data.logged && target.data.spawned) { 
             let char = target.getCharacter();
             if (char) { 
                if (char.faction == faction) { 

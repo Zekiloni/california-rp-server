@@ -47,10 +47,11 @@ module.exports = {
             switch(args[0]) { 
                case 'invite': {
                   if (character.invite_request == 0) return false;
-                  character.faction = character.invite_request;
+                  let faction = character.invite_request;
+                  character.faction = faction;
                   character.invite_request = 0;
                   character.rank = 'Newbie';
-                  player.sendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[character.faction].name + '.', mp.colors.success);
+                  player.sendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[faction].name + '.', mp.colors.success);
                }
             }
          }

@@ -68,10 +68,6 @@ mp.events.addCommand({
       } else return player.notification(MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
    },
 
-   'f': (player, fullText) => { 
-      account.sendFactionMessage(player, fullText);
-   },
-
    'paycheck': (player, fullText) => { 
       let timeToPayCheck = 60 - player.xp;
       player.outputChatBox(`Jos ${timeToPayCheck} minuta do sledece plate.`);
@@ -106,41 +102,6 @@ mp.events.addCommand({
       
    },
 
-   'frequency': (player, fullText) => {
-      if(fullText) { 
-         let args = fullText.split(" ");
-         let freq = args[1];
-         let pw = args[2];
-         switch(args[0]) {
-            case 'set':
-               if (!freq) return player.outputChatBox(`Polje frekvencije je obavezno.`);
-               if (player.radioFreq != 0) return player.outputChatBox(`Vec ste u nekoj frekvenciji (/frequency leave da izadjete) !`); 
-               radio.join(player, freq, pw)
-               break;
-
-            case 'create':
-               if (!freq) return player.outputChatBox(`Polje frekvencije je obavezno polje !`);
-               radio.create(player, freq, pw)
-               break;
-
-            case 'leave':
-               if (player.radioFreq == 0) return player.outputChatBox(`Niste ni u jednoj frekvenciji !`);
-               player.radioFreq = 0;
-               player.outputChatBox(`Uspesno ste napustili frekvenciju.`);
-               break;
-
-            case 'delete':
-               if (player.radioFreq == 0) return player.outputChatBox(`Niste ni u jednoj frekvenciji !`);
-               radio.delete(player, player.radioFreq);
-               break;
-
-            default:
-               player.outputChatBox(`Komanda nema argumente /frequency (set, create, leave, delete) !`);
-         }
-      }
-      else {  player.outputChatBox(`Komanda nema argumente /frequency (set, create, leave, delete) !`); }
-   },
-
 
    'id': (player, fullText, target) => { 
       let recipient = account.findPlayer(target);
@@ -151,39 +112,4 @@ mp.events.addCommand({
          player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4);
       }
    },
-
-   'buy': (player, fullText, target) => { 
-      let nearBiz = business.nearby(player),
-         nearHouse = houses.near(player);
-      if (nearBiz) { account.buyBiz(player, nearBiz); }
-      if (nearHouse) { houses.buy(player, nearHouse); }
-   },
-
-   'business': (player, fullText) => {
-      if(fullText) { 
-         let bussines = business.nearby(player);
-         if (bussines && bussines.owner == player.databaseID) { 
-             let args = fullText.split(" ");
-             switch(args[0]) {
-               case 'help':
-                  player.outputChatBox(`BIZ HELP !`);
-                  break;
-               case 'info':
-                  player.outputChatBox(`BIZ INFO !`);
-                  break;
-               case 'sell':
-                  player.outputChatBox(`BIZ sell !`);
-                  break;
-               case 'products':
-                  player.outputChatBox(`BIZ sell !`);
-                  break;
-               default:
-                  player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`);
-             }
-         }
-         else { player.outputChatBox(`Niste u blizini niti jednog vaseg biznisa ! `); }
-      }
-      else {  player.outputChatBox(`Komanda nema argumente /business (info, sell, products, list) !`); }
-   }
-
 });

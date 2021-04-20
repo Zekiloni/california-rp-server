@@ -77,7 +77,7 @@ class Saving {
                   armour: character.armour
                }
                db.query('UPDATE `characters` SET ? WHERE id = ?', [values, character.id], function (err, result, fields) {
-                  if (err) return core.terminal(1, 'Saving Charater Error ' + err);
+                  if (err) return core.terminal(1, 'Saving character Error ' + err);
               });
             }
          },

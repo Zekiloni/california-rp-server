@@ -26,8 +26,6 @@ mp.events.add({
             spawn_point: info.spawn_point
          })  
 
-         console.log(char)
-
          char.spawn(player);
          char.setName(player);
          char.setMoney(player, info.money);
