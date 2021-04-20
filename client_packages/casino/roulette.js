@@ -1,321 +1,284 @@
-// FOCUS ROLEPLAY DIAMOND CASINO - Roulette
+let canDoBets = true,
+	 betObject = null,
+	 closestChipSpot = null,
+	 rouletteTable = null,
+	 rouletteSeat = null,
+	 startRoullete = false,
+	 roulleteCam = false,
+	 blockControls = false,
+	 setBet = false;
+	 CasinoPedsID = [],
+    rouletteCamera = null,
+    betCoords = null,
+	 RouletteTables = [];
 
-
-let lpCasinoTable = null,
-	casinoTableToJoin = null,
-	casinoSeatToJoin = null,
-	goToSeatInterval = null,
-	interactingWithTable = null,
-	rouletteCamera = null,
-	canDoBets = true,
-	betObject = null,
-	closestChipSpot = null,
-	interactingWithTableTimeout = null,
-	rouletteData = [],
-	posX = 0,
-	posY = 0,
-	posZ = 0;
-
-
-const localPlayer = mp.players.local,
-	  tableLib = "anim_casino_b@amb@casino@games@roulette@table",
-	  dealerLib = "anim_casino_b@amb@casino@games@roulette@dealer",
-	  dealerLibF = "anim_casino_b@amb@casino@games@roulette@dealer_female";
-
-
-// U ON PLAYER ENTER CASINO PREBACITI OVO OBAVEZNO!!!!!!
-mp.game.streaming.requestAnimDict(tableLib);
-mp.game.streaming.requestAnimDict(dealerLib);
-mp.game.streaming.requestAnimDict(dealerLibF);
-mp.game.streaming.requestIpl('vw_casino_main');
-
-
-const tablesPos = 
-[
-	[ "vw_prop_casino_roulette_01", 1144.4254150390625, 269.3034973144531, -52.840850830078125 ],
-	[ "vw_prop_casino_roulette_01", 1151.2305908203125, 263.14093017578125, -52.840850830078125 ],
-	[ "vw_prop_casino_roulette_01b", 1148.9163818359375, 248.62892150878906, -52.03075408935547 ],
-	[ "vw_prop_casino_roulette_01b", 1143.677978515625, 251.36131286621094, -52.0307502746582 ],
-	[ "vw_prop_casino_roulette_01b", 1133.1802978515625, 262.3916320800781, -52.03075408935547 ], 
-	[ "vw_prop_casino_roulette_01b", 1129.9976806640625, 266.93695068359375, -52.0307502746582 ] 
+let betRoulette = [
+    [],
+    []
 ];
 
-const tablesBets = 
-[
-	[ 500, 2500 ],
-	[ 1000, 5000 ],
-	[ 3000, 15000 ],
-	[ 7000, 35000 ],
-	[ 10000, 50000 ],
-	[ 20000, 100000 ]
+const CasinoPeds = [
+    {Hash: 0x1422D45B, Pos: new mp.Vector3(1145.337, 267.7967, -51.8409), Angle: 47.5},
+    {Hash: 0x1422D45B, Pos: new mp.Vector3(1149.791, 263.1628, -51.8409), Angle: 222.2},
 ];
 
-const tableSeatsPos =
-[
-	[-0.7, -1.28, 1, 0],
-	[0.775, -1.68, 1, 0],
-	[1.8, -0.63, 1, 90],
-	[1.27, 1.05, 1, 180]
-]
-
-const pedModels =
-[
-   ["S_M_Y_Casino_01"],
-   ["S_F_Y_Casino_01"],
-   ["S_M_Y_Casino_01"], 
-   ["S_F_Y_Casino_01"],
-   ["S_M_Y_Casino_01"], 
-   ["S_F_Y_Casino_01"]
+const PrizePed = [
+    {Hash: 0x1422D45B, Pos: new mp.Vector3(1087.727, 221.20876, -49.220415), Angle: 178},
 ];
 
-const pedModelVariations =
-[
-	[ //S_M_Y_Casino_01
-		[ 0, 2, 2, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 4, 0, 0],
-		[ 3, 0, 3, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	],
-	[//S_F_Y_Casino_01
-		[ 0, 2, 0, 0],
-		[ 1, 0, 0, 0],
-		[ 2, 2, 0, 0],
-		[ 3, 2, 3, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 0, 0, 0],
-		[ 7, 0, 0, 0],
-		[ 8, 2, 0, 0],
-		[ 10, 0, 0, 0],
-		[ 11, 0, 0, 0]
-	],
-	[ //S_M_Y_Casino_01
-		[ 0, 2, 1, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 2, 0, 0],
-		[ 3, 0, 3, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	],
-	[//S_F_Y_Casino_01
-		[ 0, 2, 1, 0],
-		[ 1, 0, 0, 0],
-		[ 2, 2, 1, 0],
-		[ 3, 3, 3, 0],
-		[ 4, 1, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 3, 0, 0],
-		[ 10, 0, 0, 0],
-		[ 11, 0, 0, 0]
-	],
-	[ //S_M_Y_Casino_01
-		[ 0, 4, 2, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 3, 0, 0],
-		[ 3, 0, 0, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	],
-	[//S_F_Y_Casino_01
-		[ 0, 4, 0, 0],
-		[ 1, 0, 0, 0],
-		[ 2, 4, 0, 0],
-		[ 3, 2, 1, 0],
-		[ 4, 1, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 1, 0, 0],
-		[ 8, 2, 0, 0],
-		[ 10, 0, 0, 0],
-		[ 11, 0, 0, 0]
-	],
-	[ //S_M_Y_Casino_01 (not used)
-		[ 0, 4, 0, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 0, 0, 0],
-		[ 3, 0, 0, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	]
-]
+const CasinoBlip = mp.blips.new(617, new mp.Vector3(935.8140869140625, 46.942176818847656, 81.09580993652344), { name: "Diamond Casino & Resort", color: 83, shortRange: true, scale: 1.0 });
 
-// Loading IPL 
-//mp.game.streaming.requestIpl('vw_casino_main');
-//mp.game.streaming.requestIpl('vw_dlc_casino_door');
-//mp.game.streaming.requestIpl('hei_dlc_windows_casino');
-//mp.game.streaming.requestIpl('hei_dlc_casino_door');
-//mp.game.streaming.requestIpl('hei_dlc_casino_aircon');
-//mp.game.streaming.requestIpl('vw_casino_garage');
-//mp.game.streaming.requestIpl('vw_casino_carpark');
-//mp.game.streaming.requestIpl('vw_casino_penthouse');
+const RouletteTablesSeatsHeading = [
+    [45,-45,-135,-135],
+    [225,135,45,45],
+
+    [110.5,65.5,20.5, 330.5],
+    [216.5,161.5,116.5, 66.5],
+];
+
+const RouletteSeats = {
+    0: "Chair_Base_04",
+    1: "Chair_Base_03",
+    2: "Chair_Base_02",
+    3: "Chair_Base_01"
+};
+
+const RouletteCameraPos = [
+
+    new mp.Vector3(1143.73, 268.9541, -52.960873 + 3.5),
+    new mp.Vector3(1151.4585, 262.04517, -52.96084 + 3.5),
+];
 
 
-//mp.game.invoke('0xC1F1920BAF281317');
+const RouletteCameraRot = [
+	225,
+   45
+];
 
-// Creating blip
-mp.blips.new(679, new mp.Vector3(935.8140869140625, 46.942176818847656, 81.09580993652344), { name: "Diamond Casino & Resort", color: 4, shortRange: true, scale: 1.0 });
 
-for(var i=0; i < tablesPos.length; i++)
-{
-	rouletteData[i] = {};
-	rouletteData[i].table = mp.objects.new(mp.game.joaat(tablesPos[i][0]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2], tablesPos[i][3]));
-	rouletteData[i].ball = mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]+posX, tablesPos[i][2]+posY, tablesPos[i][3]+posZ)); // mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]));
-	rouletteData[i].ped = mp.peds.new(mp.game.joaat(pedModels[i]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2]+0.7, tablesPos[i][3]+1), 180, 0); //-0.001587
-	rouletteData[i].label = mp.labels.new(`${tablesBets[i][0]}~n~${tablesBets[i][1]}`, new mp.Vector3(tablesPos[i][1],tablesPos[i][2], tablesPos[i][3]), { los: false, font: 1, drawDistance: 5 })
-	rouletteData[i].ped.croupier = i;
-	//mp.game.invoke('0x971DA0055324D033', rouletteData[i].table.handle, 3);
+const RouletteCameraRotStop = [
+	[-173, -112, -160],
+	[13, 68, 17]
+];
+
+
+
+const RouletteTablesPos = [
+    new mp.Vector3(1144.814, 268.2634, -52.8409),
+    new mp.Vector3(1150.355, 262.7224, -52.8409),
+];
+
+
+const RouletteTablesHeading = [
+    -135,
+    45
+];
+
+
+setTimeout(function () {
+	for(let tbs = 0; tbs < RouletteTablesPos.length; tbs++){
+		RouletteTables[tbs] = {};
+		RouletteTables[tbs].table = mp.objects.new(mp.game.joaat('vw_prop_casino_roulette_01'), new mp.Vector3( RouletteTablesPos[tbs].x, RouletteTablesPos[tbs].y, RouletteTablesPos[tbs].z), {
+			rotation: new mp.Vector3(0, 0, RouletteTablesHeading[tbs]),
+			alpha: 255,
+			dimension: 0
+		});
+		RouletteTables[tbs].ball = mp.objects.new(87196104, new mp.Vector3( RouletteTablesPos[tbs].x, RouletteTablesPos[tbs].y, RouletteTablesPos[tbs].z));
+	}
+}, 1000);
+
+
+setTimeout(function () {
+    mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@dealer@");
+    let n = 0;
+    CasinoPeds.forEach(ped => {
+        CasinoPedsID[n] = mp.peds.new(ped.Hash, ped.Pos, ped.Angle, 0);
+        CasinoPedsID[n].setComponentVariation(0, 2, 1, 0);
+        CasinoPedsID[n].setComponentVariation(1, 1, 0, 0);
+        CasinoPedsID[n].setComponentVariation(2, 2, 0, 0);
+        CasinoPedsID[n].setComponentVariation(3, 0, n + 2, 0);
+        CasinoPedsID[n].setComponentVariation(4, 0, 0, 0);
+        CasinoPedsID[n].setComponentVariation(6, 1, 0, 0);
+        CasinoPedsID[n].setComponentVariation(7, 2, 0, 0);
+        CasinoPedsID[n].setComponentVariation(8, 1, 0, 0);
+        CasinoPedsID[n].setComponentVariation(10, 1, 0, 0);
+        CasinoPedsID[n].setComponentVariation(11, 1, 0, 0);
+        CasinoPedsID[n].setConfigFlag(185, true);
+        CasinoPedsID[n].setConfigFlag(108, true);
+        CasinoPedsID[n].setConfigFlag(208, true);
+        CasinoPedsID[n].taskPlayAnim("anim_casino_b@amb@casino@games@shared@dealer@", "idle", 1000.0, -2.0, -1, 2, 1148846080, false, false, false);
+        n = n + 1;
+        //CasinoPedsID[0].playFacialAnim("idle_facial", "anim_casino_b@amb@casino@games@shared@dealer@");
+        //mp.game.invoke("0xEA47FE3719165B94", CasinoPedsID[0].handle, "anim_casino_b@amb@casino@games@shared@dealer@", "idle", 1000.0, -2.0, -1, 2, 1148846080, false, false, false)
+    });
+	n = 0;
+
+	PrizePed.forEach(ped => {
+		var ped = mp.peds.new(ped.Hash, ped.Pos, ped.Angle, 0);
+        ped.setComponentVariation(0, 2, 1, 0);
+        ped.setComponentVariation(1, 1, 0, 0);
+		ped.setComponentVariation(2, 2, 0, 0);
+        ped.setComponentVariation(3, 0, n + 2, 0);
+        ped.setComponentVariation(4, 0, 0, 0);
+        ped.setComponentVariation(6, 1, 0, 0);
+        ped.setComponentVariation(7, 2, 0, 0);
+        ped.setComponentVariation(8, 1, 0, 0);
+        ped.setComponentVariation(10, 1, 0, 0);
+        ped.setComponentVariation(11, 1, 0, 0);
+        ped.setConfigFlag(185, true);
+        ped.setConfigFlag(108, true);
+        ped.setConfigFlag(208, true);
+	})
+
+}, 10000);
+
+mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@dealer@");
+mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@player@");
+mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@table");
+mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@dealer");
+mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@ped_male@seat_1@regular@01a@base");
+mp.game.streaming.requestAnimDict("anim_casino_a@amb@casino@games@lucky7wheel@male");
+mp.game.streaming.requestIpl("vw_casino_main");
+
+mp.events.add('luckyWheel', (entity) => {
+	let wheelPos = new mp.Vector3(1110.2651, 228.62857, -50.7558);
 	
-	for(var c=0; c < tableSeatsPos.length; c++)
-	{
-		var newShape = mp.colshapes.newSphere(tablesPos[i][1]+tableSeatsPos[c][0], tablesPos[i][2]+tableSeatsPos[c][1], tablesPos[i][3]+tableSeatsPos[c][2], 0.5);
-		newShape.casinoTable = i;
-		newShape.seatID = c;
-	}
-	
-	for(var c=0; c < pedModelVariations[i].length; c++)
-	{
-		rouletteData[i].ped.setComponentVariation(pedModelVariations[i][c][0], pedModelVariations[i][c][1], pedModelVariations[i][c][2], pedModelVariations[i][c][3]);
-	}
-}
+	mp.game.invoke("0x960C9FF8F616E41C", "Press ~INPUT_PICKUP~ to start shopping", true);
+	entity.taskGoStraightToCoord(wheelPos.x, wheelPos.y, wheelPos.z, 1.0,  -1,  312.2,  0.0);
 
-mp.events.add('playerEnterColshape', (shape) => {
-	if(shape.casinoTable !== undefined && lpCasinoTable == null && interactingWithTable == null)
-	{
-		casinoTableToJoin = shape.casinoTable;
-		casinoSeatToJoin = shape.seatID;
+	setTimeout(() => {
+		entity.setRotation(0.0, 0.0, 2.464141, 1, true);
+		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "enter_right_to_baseidle", 8.0, -8.0, -1, 0, 0, false, false, false);
+	}, 1000);
 
-		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
-		mp.game.graphics.notify(`Pritisnite ~b~E~s~ da sednete.`);
-	}
-});
+	setTimeout(() => {
 
-mp.events.add('playerExitColshape', (shape) => {
-	if(shape.casinoTable !== undefined)
-	{
-		casinoTableToJoin = null;
-		casinoSeatToJoin = null;
-	}
-});
+		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "enter_to_armraisedidle", 8.0, -8.0, -1, 0, 0, false, false, false);
+		if(entity == mp.players.local){
 
-mp.events.add('playerDeath', (player) => 
-{
-	if(player == localPlayer) 
-	{
-		if(interactingWithTable != null) interactingWithTable = null;
-		if(BLOCK_CONTROLS_DURING_ANIMATION) BLOCK_CONTROLS_DURING_ANIMATION = false;
-		if(rouletteCamera != null) destroyRouletteCamera();
-		if(canDoBets) canDoBets = false;
-	}
-});
-
-mp.events.add("initRoulette", () => 
-{
-	mp.events.add("render", rouletteRender);
-	
-	mp.events.add('entityStreamIn', (entity) => {
-		if(entity.type == "ped" && entity.croupier != null) 
-		{
-			if(entity.model == mp.game.joaat('S_M_Y_Casino_01')) entity.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-			else entity.taskPlayAnim(dealerLibF, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-			
-			var id = entity.croupier;
-			
-			rouletteData[id].ball.position = new mp.Vector3(tablesPos[id][1]-0.734742, tablesPos[id][2]-0.36617, tablesPos[id][3]); // rouletteData[id].ball.position = new mp.Vector3(tablesPos[id][1]-0.734742, tablesPos[id][2]-0.16617, tablesPos[id][3]);
-			
-			for(var c=0; c < pedModelVariations[id].length; c++)
-			{
-				entity.setComponentVariation(pedModelVariations[id][c][0], pedModelVariations[id][c][1], pedModelVariations[id][c][2], pedModelVariations[id][c][3]);
-			}
+			setTimeout(() => {
+				mp.events.callRemote('startRoll');
+				entity.freezePosition(true);
+				rouletteCamera = mp.cameras.new('default', new mp.Vector3(1111.015, 227.7846, -50.755825 +2.5), new mp.Vector3(0,0,0), 40);
+				rouletteCamera.setRot(0.0, 0, 0, 2);
+				rouletteCamera.setActive(true);
+				//localplayer.freezePosition(true);
+				mp.game.cam.renderScriptCams(true, true, 1500, true, false);
+			}, 1000);
 		}
-	});
+	}, 2000);
+
+	setTimeout(() => {
+
+		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "armraisedidle_to_spinningidle_high", 8.0, -8.0, -1, 0, 0, false, false, false);
+	}, 3000);
 });
 
-mp.events.add("playerSitAtCasinoTable", (player, tableID) => {
+mp.events.add('delWheelCam', () => {
+    rouletteCamera.destroy(true);
+    rouletteCamera = null;
+    mp.game.cam.renderScriptCams(false, true, 1000, true, false);
+	localplayer.freezePosition(false);
+});
+
+mp.events.add('spin_wheel', function(tb, needSpins, endTable, endBall){
+    RouletteTables[tb].table.playAnim("intro_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
+    RouletteTables[tb].table.forceAiAndAnimationUpdate();
+    const ballPos = RouletteTables[tb].table.getWorldPositionOfBone(RouletteTables[tb].table.getBoneIndexByName("Roulette_Wheel"));
+    RouletteTables[tb].ball.position = ballPos;
+
+    RouletteTables[tb].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
+    const ballRot = RouletteTables[tb].table.getRotation(2);
+    RouletteTables[tb].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
+	//RouletteTables[tb].ball.rotation = new mp.Vector3(0.0, 0.0, 0);
 	
-	if(player == localPlayer) 
-	{
-		lpCasinoTable = casinoTableToJoin;
-		BLOCK_CONTROLS_DURING_ANIMATION = true;
+	RouletteTables[tb].ball.playAnim("intro_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
+    RouletteTables[tb].ball.forceAiAndAnimationUpdate();
+
+   RouletteTables[tb].spins = 0;
+	RouletteTables[tb].lastSpinTime = 0;
+	RouletteTables[tb].needSpins = needSpins;
+	RouletteTables[tb].endTable = endTable;
+   RouletteTables[tb].endBall = endBall;
+    
+   CasinoPedsID[tb].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
+
+   setTimeout(
+		function()
+		{
+            CasinoPedsID[tb].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+
+		}, 8000
+	);
+});
+
+mp.events.add('render', () => {
+    if( blockControls) {
+        mp.game.controls.disableControlAction(0, 257, true); // стрельба
+		mp.game.controls.disableControlAction(0, 22, true);
+		mp.game.controls.disableControlAction(2, 25, true);
+		mp.game.controls.disableControlAction(0, 23, true); // INPUT_ENTER
 		
-		//showAlert('alert-blue', 'ЛКМ - сделать/повысить ставку</br>ПКМ - убрать/понизить ставку</br>F - вид на стол');
-	}
-	else
-	{
-		rouletteData[tableID].table.setNoCollision(player.handle, false);
-	}
-});
+		mp.game.controls.disableControlAction(2, 24, true);
+		mp.game.controls.disableControlAction(2, 69, true);
+		mp.game.controls.disableControlAction(2, 70, true);
+		mp.game.controls.disableControlAction(2, 92, true);
 
-mp.events.add("rouletteAllowBets", (toggle) => {
-	
-	canDoBets = toggle;
-	if(toggle) mp.game.graphics.notify("Place your bets.");
-	else mp.game.graphics.notify("No more bets.");
-});
+		mp.game.controls.disableControlAction(2, 140, true);
+		mp.game.controls.disableControlAction(2, 141, true);
+		mp.game.controls.disableControlAction(2, 263, true);
+		mp.game.controls.disableControlAction(2, 264, true);
 
-mp.events.add('render', () => 
-{
-	//AddInstructionalButtonCustom("Toggle bet camera", "t_F");
+		mp.game.controls.disableControlAction(0, 21, true);
+		mp.game.controls.disableControlAction(0, 23, true);
+		mp.game.controls.disableControlAction(0, 32, true);
+		mp.game.controls.disableControlAction(0, 33, true);
+		mp.game.controls.disableControlAction(0, 34, true);
+		mp.game.controls.disableControlAction(0, 35, true);
+    }
 
-	if(canDoBets && rouletteCamera && betObject == null)
-	{
-		betObject = mp.objects.new(mp.game.joaat("vw_prop_chip_100dollar_x1"), new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2], tablesPos[lpCasinoTable][3]));
-		betObject.setCollision(false, false);
-	}
-	
-	if(betObject != null)
-	{
-		if(!canDoBets || rouletteCamera == null)
-		{
-			betObject.destroy();
-			betObject = null;
-			clearTableMarkers();
-		}
-	}
-	
-	if(rouletteCamera != null && lpCasinoTable != null)
-	{
-		if(betObject != null)
+    if(setBet && rouletteCamera != null && rouletteTable != null && startRoullete == false && !mp.gui.cursor.visible){
+        if(canDoBets && betObject == null)
+        {
+            betObject = mp.objects.new(mp.game.joaat("vw_prop_chip_100dollar_x1"), new mp.Vector3(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z + 0.4));
+            betObject.setCollision(false, false);
+        }
+        if(betObject != null && canDoBets)
 		{
 			if(mp.game.controls.isDisabledControlJustReleased(0, 25) && !mp.gui.cursor.visible) // ПКМ
 			{
-				if(closestChipSpot != null) mp.events.callRemote("removeRouletteBet", closestChipSpot);
+				if(closestChipSpot != null) mp.events.call('bet_roulette', rouletteTable, closestChipSpot);//mp.events.callRemote("server_remove_roulette_bet", closestChipSpot);
 			}
 			
 			if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // ЛКМ
 			{
-				if(closestChipSpot != null) mp.events.callRemote("makeRouletteBet", closestChipSpot);
-			}
-			
+				if(closestChipSpot != null) mp.events.call('bet_roulette', rouletteTable, closestChipSpot); //mp.events.callRemote("server_make_roulette_bet", closestChipSpot);
+            }
+
 			let drawObj = getCameraHitCoord();
 			if(drawObj != null)
 			{
-				// let height = betObject.getHeight(editorFocusObject.position.x, editorFocusObject.position.y, editorFocusObject.position.z, false, true);
-				//drawObj.position.z += height / 2;
-				drawObj.position.z = tablesPos[lpCasinoTable][3]+0.95;
-				betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y, drawObj.position.z, false, false, false);
 				
-				getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+				// let height = betObject.getHeight(editorFocusObject.position.x, editorFocusObject.position.y, editorFocusObject.position.z, false, true);
+				//drawObj.position.z = RouletteTablesPos[rouletteTable].z;
+                //drawObj.position.z = mp.game.gameplay.getGroundZFor3dCoord(drawObj.position.x, drawObj.position.y, drawObj.position.z, parseFloat(0), false);
+                getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+
+				if(betCoords == null){
+					betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y,RouletteTablesPos[rouletteTable].z + 0.95, false, false, false);
+					getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+				}
+				else {
+					
+					betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y, RouletteTablesPos[rouletteTable].z + 0.95, false, false, false);
+					getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+				}				
+				//getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
 			}
-		}
-		
-		let rightAxisX = mp.game.controls.getDisabledControlNormal(0, 220);
+        }
+      
+        
+      let rightAxisX = mp.game.controls.getDisabledControlNormal(0, 220);
 		let rightAxisY = mp.game.controls.getDisabledControlNormal(0, 221);
 		
 		let leftAxisX = 0;
@@ -337,301 +300,192 @@ mp.events.add('render', () =>
 		let rot = rouletteCamera.getRot(2);
 		
 		let rotx = rot.x + rightAxisY * -5.0;
-		if(rotx > 89) rotx = 89;
-		if(rotx < -89) rotx = -89;
+        let rotz = rot.z + rightAxisX * -5.0;
+
+		if(rotx > -57.5) rotx = -57.5;
+		if(rotx < -70) rotx = -70;
 		
-		rouletteCamera.setRot(rotx, 0.0, rot.z + rightAxisX * -5.0, 2);
-	}
-});
-/*
-anim_casino_b@amb@casino@games@roulette@dealer idle
-anim_casino_b@amb@casino@games@roulette@dealer no_more_bets
-anim_casino_b@amb@casino@games@roulette@dealer clear_chips_intro
-anim_casino_b@amb@casino@games@roulette@dealer clear_chips_outro
-anim_casino_b@amb@casino@games@roulette@dealer spin_wheel
-Table:
-anim_casino_b@amb@casino@games@roulette@table    intro_ball
-anim_casino_b@amb@casino@games@roulette@table    intro_wheel
-anim_casino_b@amb@casino@games@roulette@table    loop_ball
-anim_casino_b@amb@casino@games@roulette@table    loop_wheel
-Za završetak:
-anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_wheel
-anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_ball
-*/
+        if(rotz < RouletteCameraRotStop[rouletteTable][0]) rotz = RouletteCameraRotStop[rouletteTable][0];
+        if(rotz > RouletteCameraRotStop[rouletteTable][1]) rotz = RouletteCameraRotStop[rouletteTable][1];
 
-/*
+        if(rotx < -69 && rotz < RouletteCameraRotStop[rouletteTable][2]) {
+            rotz = RouletteCameraRotStop[rouletteTable][2];
+            rotx = -69;
+        }
+        
 
-mp.events.add('spin_wheel', function(tb, needSpins, endTable, endBall){
-    RouletteTables[tb].table.playAnim("intro_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
-    RouletteTables[tb].table.forceAiAndAnimationUpdate();
-    const ballPos = RouletteTables[tb].table.getWorldPositionOfBone(RouletteTables[tb].table.getBoneIndexByName("Roulette_Wheel"));
-    RouletteTables[tb].ball.position = ballPos;
+        rouletteCamera.setRot(rotx, 0.0, rotz, 2);
 
-    RouletteTables[tb].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
-    const ballRot = RouletteTables[tb].table.getRotation(2);
-    RouletteTables[tb].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
-    //RouletteTables[tb].ball.rotation = new mp.Vector3(0.0, 0.0, 0);
-
-    RouletteTables[tb].ball.playAnim("intro_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
-    RouletteTables[tb].ball.forceAiAndAnimationUpdate();
-
-    RouletteTables[tb].spins = 0;
-    RouletteTables[tb].lastSpinTime = 0;
-    RouletteTables[tb].needSpins = needSpins;
-    RouletteTables[tb].endTable = endTable;
-    RouletteTables[tb].endBall = endBall;
-
-
-*/
-
-mp.events.add("spinRouletteWheel", (table, needSpins, endTable, endBall) => {
-	rouletteData[table].table.playAnim("intro_wheel", tableLib, 1000.0, false, true, true, 0, 136702); // loop, freezeLastFrame, ?
-	rouletteData[table].table.forceAiAndAnimationUpdate();
+        let cp = rouletteCamera.getRot(2);
+    }    
+    if(startRoullete == true && rouletteTable != null && !roulleteCam){
+		
+        const ballPos = RouletteTables[rouletteTable].table.getWorldPositionOfBone(RouletteTables[rouletteTable].table.getBoneIndexByName("Roulette_Wheel"));
+        //rouletteCamera.setActive(false);
+        //rouletteCamera.destroy();
+        //rouletteCamera = mp.cameras.new('default', new mp.Vector3(ballPos.x, ballPos.y, ballPos.z+1.5), new mp.Vector3(0,0,0), 40);
+        rouletteCamera.setCoord(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z+1.5);
+        rouletteCamera.pointAtCoord(ballPos.x, ballPos.y, ballPos.z);
+        //rouletteCamera.setRot(90.0, 0, 225, 2);
+        rouletteCamera.setActive(true);
+        mp.game.cam.renderScriptCams(true, true, 2500, true, false);
+        roulleteCam = true;
+    }
+    if(startRoullete == false && rouletteTable != null && roulleteCam){
+		
+        roulleteCam = false;
+        rouletteCamera.destroy();
+        rouletteCamera = mp.cameras.new('default', RouletteCameraPos[rouletteTable], new mp.Vector3(0,0,0), 40);
+        rouletteCamera.setRot(-63, 0, RouletteCameraRot[rouletteTable], 2);
+        rouletteCamera.setActive(true);
+        mp.game.cam.renderScriptCams(true, true, 1500, true, false);
+    }
 	
-
-	const ballPos = rouletteData[table].table.getWorldPositionOfBone(rouletteData[table].table.getBoneIndexByName("Roulette_Wheel"));
-	rouletteData[table].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
-	rouletteData[table].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
-
-	//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-	const ballRot = rouletteData[table].table.getRotation(2);
-    rouletteData[table].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
-	
-	rouletteData[table].ball.playAnim("intro_ball", tableLib, 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
-	rouletteData[table].ball.forceAiAndAnimationUpdate();
-
-	rouletteData[table].spins = 0;
-	rouletteData[table].lastSpinTime = 0;
-	rouletteData[table].needSpins = needSpins;
-
-	rouletteNumber(table);
-
-	if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) {
-		rouletteData[table].ped.taskPlayAnim(dealerLib, "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
-	}
-	else {
-		rouletteData[table].ped.taskPlayAnim(dealerLibF, "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
-	}
-	
-	
-	setTimeout(
-		function()
-		{
-			if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-			else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-		}, 8000
-	);
 });
 
-mp.events.add("clearRouletteTable", (table) => 
-{
-	if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "clear_chips_zone2", 8.0, 1, -1, 2, 0.0, false, false, false);
-	else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "clear_chips_zone2", 8.0, 1, -1, 2, 0.0, false, false, false);
-	
-	setTimeout(
-		function()
-		{
-			if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-			else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-		}, 2000
-	);
-});
-
-mp.keys.bind(0x45, true, () =>  // E
-{
-	if(mp.gui.cursor.visible || interactingWithTable != null) return false;
-	
-	if(lpCasinoTable != null)
-	{
-		//mp.events.callRemote("leaveCasinoSeat");
-		rouletteData[lpCasinoTable].table.setCollision(true, false);
-		interactingWithTable = lpCasinoTable;
-		lpCasinoTable = null;
-		BLOCK_CONTROLS_DURING_ANIMATION = false;
-		if(rouletteCamera != null) destroyRouletteCamera();
-		if(canDoBets) canDoBets = false;
-		
-		interactingWithTableTimeout = setTimeout(
-			function()
-			{
-				interactingWithTable = null;
-				interactingWithTableTimeout = null;
-			},4500
-		);
-	}
-	else
-	{
-		if(casinoTableToJoin == null) return false;
-		
-		interactingWithTable = casinoTableToJoin;
-		
-		rouletteData[casinoTableToJoin].table.setCollision(false, false);
-		
-		localPlayer.position = new mp.Vector3(tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0], tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1], tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2]);
-		localPlayer.setHeading(tableSeatsPos[casinoSeatToJoin][3]);
-		
-		mp.events.call("playerSitAtCasinoTable", localPlayer, casinoTableToJoin);
-		
-		interactingWithTableTimeout = setTimeout(
-			function()
-			{
-				interactingWithTable = null;
-				interactingWithTableTimeout = null;
-			},5500
-		);
-		
-		// localPlayer.taskGoStraightToCoord(
-			// tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0],
-			// tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1],
-			// tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2],
-			// 1.15, // speed
-			// 3000, // timeout
-			// tableSeatsPos[casinoSeatToJoin][3], // heading
-			// 0.5 // slide (?)
-		// );
-		
-		// setTimeout(
-			// function()
-			// {
-				// if(goToSeatInterval != null)
-				// {
-					// clearInterval(goToSeatInterval);
-					// goToSeatInterval = null;
-				// }
-			// },3000
-		// );
-		
-		// goToSeatInterval = setInterval(checkPlayerCanSit, 200, casinoTableToJoin, casinoSeatToJoin);
-	}	
-});
-
-mp.keys.bind(0x46, true, () =>  // F
-{		
-	if(interactingWithTable != null || lpCasinoTable == null) return;
-	
-	if(rouletteCamera != null)
-	{
-		destroyRouletteCamera();
-	}
-	else
-	{
-		createRouletteCamera();
-		mp.events.call('initRoulette');
-		mp.events.call("spinRouletteWheel", lpCasinoTable, 1, "exit_7_wheel", "exit_7_ball");
-	}
-});
-
-function getRandomInt(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-  }
-
-function rouletteNumber(rouletteId)
-{
-	let random = getRandomInt(1, 38);
-	if(random < 0 || random > 38) { rouletteNumber(rouletteId); return; } 
-	rouletteData[rouletteId].endBall = `exit_${random}_ball`;
-	rouletteData[rouletteId].endTable = `exit_${random}_wheel`;
-
-}
-
+mp.events.add('render', rouletteRender);
 function rouletteRender() 
 {
-
-	for(var i=0; i < rouletteData.length; i++)
+	for(var i=0; i < RouletteTables.length; i++)
 	{
-		if(rouletteData[i].table.isPlayingAnim(tableLib, "intro_wheel", 3))
+		if(RouletteTables[i].table.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "intro_wheel", 3))
 		{
-			if(rouletteData[i].table.getAnimCurrentTime(tableLib, "intro_wheel") > 0.9425)
+			if(RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "intro_wheel") > 0.9425)
 			{
-				rouletteData[i].table.playAnim("loop_wheel", tableLib, 1000.0, true, true, true, 0, 13704);
-				rouletteData[i].table.forceAiAndAnimationUpdate();
+				RouletteTables[i].table.playAnim("loop_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, true, true, true, 0, 131072);
 			}
 		}
 		
-		if(rouletteData[i].ball.isPlayingAnim(tableLib, "intro_ball", 3))
+		if(RouletteTables[i].ball.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "intro_ball", 3))
 		{
-			if(rouletteData[i].ball.getAnimCurrentTime(tableLib, "intro_ball") > 0.99)
+			if(RouletteTables[i].ball.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "intro_ball") > 0.99)
 			{
-				/*
-				rouletteData[i].ball.position = new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.36617, tablesPos[i][3]+1.0715); // new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]+1.0715);
-				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				*/
-
-				const ballPos = rouletteData[i].table.getWorldPositionOfBone(rouletteData[i].table.getBoneIndexByName("Roulette_Wheel"));
-				rouletteData[i].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
-				rouletteData[i].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
-
-				//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				const ballRot = rouletteData[i].table.getRotation(2);
-				rouletteData[i].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1);
-
-				rouletteData[i].ball.playAnim("loop_ball", tableLib, 1000.0, true, true, false, 0, 13704);
-				rouletteData[i].ball.forceAiAndAnimationUpdate();
-			}
-		}
-		
-		if(rouletteData[i].table.isPlayingAnim(tableLib, "loop_wheel", 3))
-		{
-			if(rouletteData[i].table.getAnimCurrentTime(tableLib, "loop_wheel") >= 0.99 && Date.now()-rouletteData[i].lastSpinTime > 1000)
-			{
-				rouletteData[i].spins++;
-				rouletteData[i].lastSpinTime = Date.now();
-			}
-			if(rouletteData[i].spins == rouletteData[i].needSpins-1)
-			{
-				rouletteData[i].ball.setAnimSpeed(tableLib, "loop_ball", 0.71);
-			}
-			if(rouletteData[i].spins == rouletteData[i].needSpins && rouletteData[i].table.getAnimCurrentTime(tableLib, "loop_wheel") > 0.99)
-			{
-				rouletteData[i].table.playAnim(rouletteData[i].endTable, tableLib, 1000.0, false, true, true, 0, 1148846080);
-				rouletteData[i].table.forceAiAndAnimationUpdate();
+                const ballPos = RouletteTables[i].table.getWorldPositionOfBone(RouletteTables[i].table.getBoneIndexByName("Roulette_Wheel"));
+                const ballRot = RouletteTables[i].table.getRotation(2);
+				RouletteTables[i].ball.position = new mp.Vector3(ballPos.x, ballPos.y, ballPos.z);
+				RouletteTables[i].ball.rotation = new mp.Vector3(ballRot.x,ballRot.y,ballRot.z + 90);
 				
-				/*
-				rouletteData[i].ball.position = new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.36617, tablesPos[i][3]+1.0715); // new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]+1.0715);
-				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				*/
-
-				const ballPos = rouletteData[i].table.getWorldPositionOfBone(rouletteData[i].table.getBoneIndexByName("Roulette_Wheel"));
-				rouletteData[i].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
-				rouletteData[i].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
-
-				//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				const ballRot = rouletteData[i].table.getRotation(2);
-				rouletteData[i].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1);
-
-				rouletteData[i].ball.playAnim(rouletteData[i].endBall, tableLib, 1000.0, false, true, true, 0, 1148846080);
-				rouletteData[i].ball.forceAiAndAnimationUpdate();
+				RouletteTables[i].ball.playAnim("loop_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, true, true, false, 0, 136704);
 			}
 		}
 		
+		if(RouletteTables[i].table.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel", 3))
+		{
+			
+			if(RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel") >= 0.9 && Date.now()-RouletteTables[i].lastSpinTime > 1000)
+			{
+				RouletteTables[i].spins++;
+				RouletteTables[i].lastSpinTime = Date.now();
+			}
+			if(RouletteTables[i].spins == RouletteTables[i].needSpins-1)
+			{
+				RouletteTables[i].ball.setAnimSpeed("anim_casino_b@amb@casino@games@roulette@table", "loop_ball", 0.70);
+			}
+			if(RouletteTables[i].spins == RouletteTables[i].needSpins && RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel") > 0.99)
+			{
+                RouletteTables[i].table.playAnim(RouletteTables[i].endTable, "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
+				
+                const ballPos = RouletteTables[i].table.getWorldPositionOfBone(RouletteTables[i].table.getBoneIndexByName("Roulette_Wheel"));
+                const ballRot = RouletteTables[i].table.getRotation(2);
+				RouletteTables[i].ball.position = new mp.Vector3(ballPos.x, ballPos.y, ballPos.z);
+				RouletteTables[i].ball.rotation = new mp.Vector3(ballRot.x,ballRot.y,ballRot.z + 90);
+				RouletteTables[i].ball.playAnim(RouletteTables[i].endBall, "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 136704);
+			}
+		}
 	}
 }
 
-createRouletteCamera = () => 
-{
-	rouletteCamera = mp.cameras.new('default', new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2]-1, tablesPos[lpCasinoTable][3]+3), new mp.Vector3(0,0,0), 45);
-	rouletteCamera.setRot(-75.0, 0.0, 0.0, 2);
-	rouletteCamera.setActive(true);
-	mp.game.cam.renderScriptCams(true, false, 0, true, false);
-}
+mp.events.add('casinoBet', (val) => {
+	setBet = true;
+	mp.gui.cursor.visible = false;
+   mp.events.callRemote('serverSetRouletteBet', val);
+});
 
-destroyRouletteCamera = () => 
-{
-	rouletteCamera.destroy(true);
-	rouletteCamera = null;
-    mp.game.cam.renderScriptCams(false, false, 0, true, false);
-}
 
-getCameraHitCoord = () =>
+mp.events.add('clean_chips', function( table){
+
+    CasinoPedsID[table].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_intro", 3.0, 1.0, -1, 2, 0, false, false, false);
+
+    for(let i = 0; i < betRoulette[table].length; i++)
+    {
+        if(betRoulette[table][i] != null)
+        betRoulette[table][i].destroy();
+    }
+
+    betRoulette[table] = [];
+
+    setTimeout(() => {
+        CasinoPedsID[table].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_outro", 3.0, 1.0, -1, 2, 0, false, false, false);
+    }, 1000);
+});
+
+
+mp.events.add('start_roulette', function(){
+    startRoullete = true;
+});
+
+mp.events.add('stop_roulette', function(){
+    startRoullete = false;
+});
+
+mp.events.add('bet_roulette', function(table, spot){
+    //player.taskPlayAnim("anim_casino_b@amb@casino@games@blackjack@player", "place_bet_small", 3.0, 1.0, -1, 2, 0, false, false, false);
+    let tablePos = RouletteTablesPos[table];
+    let betOffset = tableChipsOffsets[spot]; 
+    let newCardPos = mp.game.object.getObjectOffsetFromCoords(tablePos.x, tablePos.y, tablePos.z, RouletteTablesHeading[table], betOffset[0], betOffset[1], betOffset[2]);
+   
+	 betRoulette[table].push(mp.objects.new(mp.game.joaat(`vw_prop_chip_100dollar_x1`), new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z),
+	 {
+		rotation: new mp.Vector3(0,0,0),
+		alpha: 255,
+		dimension: 0,
+	 }));
+});
+
+mp.events.add('seat_to_roulette_table', function(table){
+		localplayer.freezePosition(true);
+		rouletteTable = table;
+		setBet = false;
+		rouletteCamera = mp.cameras.new('default', RouletteCameraPos[table], new mp.Vector3(90,0,0), 40);
+		rouletteCamera.setRot(-63, 0, RouletteCameraRot[table], 2);
+	// rouletteCamera.pointAtCoord(RouletteTablesPos[table].x, RouletteTablesPos[table].y, RouletteTablesPos[table].z);
+		rouletteCamera.setActive(true);
+		//localplayer.freezePosition(true);
+		mp.game.cam.renderScriptCams(true, true, 1500, true, false);
+		blockControls = true;
+});
+
+mp.events.add('exit_roulette', function(){
+    //entity.taskPlayAnim("anim_casino_b@amb@casino@games@shared@player@", "sit_exit_left", 3.0, 1.0, 2500, 2, 0, false, false, false);
+try {
+		RouletteTables[rouletteTable].table.setCollision(true, false);
+		rouletteCamera.destroy(true);
+		rouletteCamera = null;
+		rouletteTable = null;
+		mp.game.cam.renderScriptCams(false, true, 1000, true, false);
+		localplayer.freezePosition(false);
+		blockControls = false;
+		setBet = false;
+
+		clearTableMarkers();
+		if(betObject != null || betObject !== undefined){
+			betObject.destroy();
+			betObject = null;
+		}
+	}
+	catch(e) {
+		console.log(e);
+	}
+});
+
+function getCameraHitCoord()
 {
 	let position = rouletteCamera.getCoord();
 	let direction = rouletteCamera.getDirection();
-	let farAway = new mp.Vector3((direction.x * 150) + position.x, (direction.y * 150) + position.y, (direction.z * 150) + position.z);
+	let farAway = new mp.Vector3((direction.x * 3) + position.x, (direction.y * 3) + position.y, (direction.z * 3) + position.z);
 	
-	let hitData = mp.raycasting.testPointToPoint(position, farAway, mp.players.local);
-	
+    let hitData = mp.raycasting.testPointToPoint(position, farAway);
+   // mp.game.graphics.drawLine(position.x, position.y, position.z, farAway.x, farAway.y, farAway.z, 255, 0, 0, 255);
 	if(hitData != undefined)
 	{
 		return hitData;
@@ -639,7 +493,7 @@ getCameraHitCoord = () =>
 	return null;
 }
 
-getNormalizedVector = (vector) =>
+function getNormalizedVector(vector)
 {
 	let mag = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 	vector.x = vector.x / mag;
@@ -648,57 +502,13 @@ getNormalizedVector = (vector) =>
 	return vector;
 }
 
-getCrossProduct = (v1, v2) =>
+function getCrossProduct(v1, v2)
 {
 	let vector = new mp.Vector3(0, 0, 0);
 	vector.x = v1.y * v2.z - v1.z * v2.y;
 	vector.y = v1.z * v2.x - v1.x * v2.z;
 	vector.z = v1.x * v2.y - v1.y * v2.x;
 	return vector;
-}
-
-getClosestChipSpot = (vector) =>
-{
-	var spot = null;
-	var prevDistance = 0.05;
-	var dist = null;
-	
-	for(var i=0; i < tableChipsOffsets.length; i++)
-	{
-		//dist = mp.Vector3.getDistanceBetweenPoints3D(vector, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableChipsOffsets[i][0], tablesPos[lpCasinoTable][2]+tableChipsOffsets[i][1], tablesPos[lpCasinoTable][3]+tableChipsOffsets[i][2]));
-		dist = mp.game.gameplay.getDistanceBetweenCoords(vector.x, vector.y, vector.z, tablesPos[lpCasinoTable][1]+tableChipsOffsets[i][0], tablesPos[lpCasinoTable][2]+tableChipsOffsets[i][1], tablesPos[lpCasinoTable][3]+tableChipsOffsets[i][2], true);
-		if(dist <= prevDistance)
-		{
-			spot = i;
-			prevDistance = dist;
-		}
-	}
-	
-	if(spot != closestChipSpot)
-	{
-		closestChipSpot = spot;
-		clearTableMarkers();
-		
-		if(spot != null)
-		{
-			var key = null;
-			var obj = null;
-			for(var i=0; i < tableChipsOffsets[spot][3].length; i++)
-			{
-				key = tableChipsOffsets[spot][3][i];
-				if(key == "00" || key == "0")
-				{
-					obj = mp.objects.new(269022546, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableMarkersOffsets[key][0], tablesPos[lpCasinoTable][2]+tableMarkersOffsets[key][1], tablesPos[lpCasinoTable][3]+tableMarkersOffsets[key][2]));
-					obj.setCollision(false, false);
-					tableMarkers.push(obj);
-				}
-				else
-				{
-					tableMarkers.push(mp.objects.new(3267450776, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableMarkersOffsets[key][0], tablesPos[lpCasinoTable][2]+tableMarkersOffsets[key][1], tablesPos[lpCasinoTable][3]+tableMarkersOffsets[key][2])));
-				}
-			}
-		}
-	}	
 }
 
 let tableMarkers = [];
@@ -888,21 +698,23 @@ const tableChipsOffsets =
 	[0.6336669921875, -0.27386474609375, 0.9449996948242188, ["25","26","27","28","29","30"]],
 	[0.7144775390625, -0.272186279296875, 0.9449996948242188, ["28","29","30","31","32","33"]],
 	[0.7935791015625, -0.272918701171875, 0.9449996948242188, ["31","32","33","34","35","36"]],
-	[0.0643310546875, -0.304718017578125, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12"]], //1st12
-	[0.392822265625, -0.304779052734375, 0.9449996948242188, ["13","14","15","16","17","18","19","20","21","22","23","24"]],//2nd12
-	[0.712158203125, -0.30303955078125, 0.9449996948242188, ["25","26","27","28","29","30","31","32","33","34","35","36"]],//3rd12
-	[0.9222412109375, -0.185882568359375, 0.9449996948242188, ["1","4","7","10","13","16","19","22","25","28","31","34"]],//2to1
-	[0.9229736328125, -0.0181884765625, 0.9449996948242188, ["2","5","8","11","14","17","20","23","26","29","32","35"]],//2to1
-	[0.9248046875, 0.14849853515625, 0.9449996948242188, ["3","6","9","12","15","18","21","24","27","30","33","36"]],//2to1
-	[-0.011474609375, -0.378875732421875, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]],//1-18
-	[0.142822265625, -0.375732421875, 0.9449996948242188, ["2","4","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36"]], //even
-	[0.308349609375, -0.37542724609375, 0.9449996948242188, ["1","3","5","7","9","12","14","16","18","19","21","23","25","27","30","32","34","36"]],//red
-	[0.4713134765625, -0.376861572265625, 0.9449996948242188, ["2","4","6","8","10","11","13","15","17","20","22","24","26","28","29","31","33","35"]],//black
-	[0.6341552734375, -0.376495361328125, 0.9449996948242188, ["1","3","5","7","9","11","13","15","17","19","21","23","25","27","29","31","33","35"]],//odd
-	[0.7926025390625, -0.382232666015625, 0.9449996948242188, ["19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"]]//19-36
+	[0.0643310546875, -0.304718017578125, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12"]], 
+	[0.392822265625, -0.304779052734375, 0.9449996948242188, ["13","14","15","16","17","18","19","20","21","22","23","24"]],
+	[0.712158203125, -0.30303955078125, 0.9449996948242188, ["25","26","27","28","29","30","31","32","33","34","35","36"]],
+	[0.9222412109375, -0.185882568359375, 0.9449996948242188, ["1","4","7","10","13","16","19","22","25","28","31","34"]],
+	[0.9229736328125, -0.0181884765625, 0.9449996948242188, ["2","5","8","11","14","17","20","23","26","29","32","35"]],
+	[0.9248046875, 0.14849853515625, 0.9449996948242188, ["3","6","9","12","15","18","21","24","27","30","33","36"]],
+	[-0.011474609375, -0.378875732421875, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]],
+	[0.142822265625, -0.375732421875, 0.9449996948242188, ["2","4","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36"]],
+	[0.308349609375, -0.37542724609375, 0.9449996948242188, ["1","3","5","7","9","12","14","16","18","19","21","23","25","27","30","32","34","36"]],
+	[0.4713134765625, -0.376861572265625, 0.9449996948242188, ["2","4","6","8","10","11","13","15","17","20","22","24","26","28","29","31","33","35"]],
+	[0.6341552734375, -0.376495361328125, 0.9449996948242188, ["1","3","5","7","9","11","13","15","17","19","21","23","25","27","29","31","33","35"]],
+	[0.7926025390625, -0.382232666015625, 0.9449996948242188, ["19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"]]
 ];
 
-clearTableMarkers = () =>
+
+
+function clearTableMarkers()
 {
 	for(var i=0; i < tableMarkers.length; i++)
 	{
@@ -910,3 +722,67 @@ clearTableMarkers = () =>
 	}
 	tableMarkers = [];
 }
+
+function getClosestChipSpot(vector)
+{
+	var spot = null;
+	var prevDistance = 0.025;
+	var dist = null;
+
+	for(var i=0; i < tableChipsOffsets.length; i++)
+	{
+        //dist = mp.Vector3.getDistanceBetweenPoints3D(vector, new mp.Vector3(RouletteTablesPos[0].x+tableChipsOffsets[i][0], RouletteTablesPos[0].y+tableChipsOffsets[i][1], RouletteTablesPos[0].z+tableChipsOffsets[i][2]));
+        let newCordPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableChipsOffsets[i][0], tableChipsOffsets[i][1], tableChipsOffsets[i][2]);
+        dist = mp.game.gameplay.getDistanceBetweenCoords(vector.x, vector.y, vector.z, newCordPos.x, newCordPos.y,newCordPos.z, false);
+
+        if(dist <= prevDistance)
+		{
+			spot = i;
+            prevDistance = dist;
+          
+		}
+	}
+	
+	if(spot != closestChipSpot)
+	{
+		closestChipSpot = spot;
+		clearTableMarkers();
+		
+		if(spot != null)
+		{
+			var key = null;
+            var obj = null;
+            let newBetPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableChipsOffsets[spot][0], tableChipsOffsets[spot][1], tableChipsOffsets[spot][2]);
+            betCoords = newBetPos;
+
+			for(var i=0; i < tableChipsOffsets[spot][3].length; i++)
+			{
+				key = tableChipsOffsets[spot][3][i];
+				if(key == "00" || key == "0")
+				{
+                    let newCardPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableMarkersOffsets[key][0], tableMarkersOffsets[key][1], tableMarkersOffsets[key][2]);
+                    
+                    obj = mp.objects.new(269022546, new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z), {rotation: new mp.Vector3(0, 0, RouletteTablesHeading[rouletteTable])});
+					obj.setCollision(false, false);
+					tableMarkers.push(obj);
+				}
+				else
+				{
+                    let newCardPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableMarkersOffsets[key][0], tableMarkersOffsets[key][1], tableMarkersOffsets[key][2]);
+                    
+                   
+                    tableMarkers.push(mp.objects.new(3267450776, new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z), {rotation: new mp.Vector3(0, 0, RouletteTablesHeading[rouletteTable])}));
+				}
+			}
+		}
+	}	
+}
+/*
+
+mp.keys.bind(0x09, false, function () { // change bet
+    if (!loggedin || chatActive || editing || global.menuCheck() || cuffed || localplayer.getVariable('InDeath') == true) return;
+
+    mp.events.callRemote('serverChangeRouletteBet');
+    
+    lastCheck = new Date().getTime();
+});*/

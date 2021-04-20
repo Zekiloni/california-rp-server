@@ -53,26 +53,28 @@ core.terminal(3, `${config.app} Started ! version ${config.version}`);
 // Server-eventi
 mp.events.add("server:casino.slot.occupy", (player, slotMachine) => 
 {   
-	if (mp.characters[player.character].slotMachine == -1) {
-		mp.characters[player.character].slotMachine = slotMachine;
+	if (mp.characters[player.character].casinoSlot == -1) {
+		mp.characters[player.character].casinoSlot = slotMachine;
 	}
-	
 });
 
 mp.events.add("server:casino.slot.leave", (player) => 
 {
-	if (mp.characters[player.character].slotMachine != -1) {
-		mp.characters[player.character].slotMachine = -1;
+	if (mp.characters[player.character].casinoSlot != -1) {
+		mp.characters[player.character].casinoSlot = -1;
 		player.call('client:casino.cancelInteractingWithSlotMachine');
 	}
-    
-	mp.characters[player.character].slotMachine = -1;
 });
 
-mp.events.add("server:casino.slot.spin", (player, slotMachine) => 
+mp.events.add("server:casino.slot.spin", (player) => 
 {
-    player.call('client:spinSlotMachine', mp.characters[player.character].slotMachine, JSON.stringify(player.position))
+    console.log('1');
+    if(mp.characters[player.character].casinoSlot == -1) return;
+    console.log('2');
+    player.call('client:spinSlotMachine', mp.characters[player.character].casinoSlot, JSON.stringify(player.position));
+    console.log('3');
 });
+
 
 
 

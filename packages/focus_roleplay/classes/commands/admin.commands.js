@@ -34,6 +34,35 @@ module.exports = {
          }
       },
 
+      
+    {
+      name: 'slot',
+      admin: 4,
+      call: (player, args) => { 
+         console.log('1');
+         if(mp.characters[player.character].casinoSlot == -1) {
+            player.sendMessage("nisi");
+         }
+         else {
+            console.log('2') ;
+            let json = JSON.stringify(player.position);
+            console.log(json);
+            player.call('client:spinSlotMachine', mp.characters[player.character].casinoSlot, json);
+            console.log('3');
+         }
+         
+      }
+   },
+      {
+         name: 'coord',
+         admin: 4,
+         call: (player, args) => { 
+            let coord = args[0].split(',');
+            console.log(coord);
+            player.position = new mp.Vector3(parseFloat(coord[0]), parseFloat(coord[1]), parseFloat(coord[2]));
+         }
+      },
+
       {
          name: 'kick',
          admin: 3,
