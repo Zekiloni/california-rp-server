@@ -79,6 +79,20 @@ module.exports = {
             mp.world.time.set(args[0], args[1], args[2]);
          }
       },
+
+      {
+         name: 'weather',
+         admin: 2,
+         call: (player, args) => { 
+            const weathers = ['EXTRASUNNY', 'CLEAR', 'CLOUDS', 'SMOG', 'FOGGY', 'OVERCAST', 'RAIN', 'THUNDER', 'CLEARING', 'NEUTRAL', 'SNOW', 'BLIZZARD', 'SNOWLIGHT', 'XMAS', 'HALLOWEEN']
+            if (args[0] === parseInt(args[0])) { 
+               mp.world.weather = weathers[args[0]];
+            } else { 
+               mp.world.weather = args[0];
+            }
+         }
+      },
+   
    
       {
          name: 'ban',
