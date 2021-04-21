@@ -14,32 +14,32 @@
     </head>
     <body>
         <div id="locker">
+            <div class="header">
+                <img src="src/images/ls-gov.png">
+                <h2>Los Santos Police Department <small>lični ormarić</small> </h2>
+            </div>
             <i @click="close()" class="close fa fa-times" aria-hidden="true"></i>
 
 
             <div class="content">
-                <div class="products" >
-                    <div class="item" v-for="(item, key) in bussines.items" @click="add(key, item.price)">
-                        <!-- {{ key }} - {{ item }} - {{ item.icon }} -->
-                        <img v-bind:src="'src/images/items/' + item.icon + '.png'" />
-                        <h2> {{ item.price }} $</h2>
-                    </div>
-                </div>
+                <ul class="equipment">
+                    <li> 
+                        <p>Uniforma</p>
+                        <div class="uniform">
+                            <i @click="uniform(-1)" class="arrow fa fa-arrow-left" aria-hidden="true"></i>
+                            <span> {{ equipment.uniforms[player.uniform] }} </span>
+                            <i @click="uniform(1)" class="arrow fa fa-arrow-right" aria-hidden="true"></i>
+                        </div>
+                    </li>
 
-                <div class="cart" v-if="player.cart.length > 0">
-                    <div class="item" v-for="(item, i) in player.cart" @click="remove(i)">
-                        {{ item.item }} : <b>{{ item.price }}$</b>
-                    </div>
-
-                    <div class="bill" >
-                        <h2> Račun <b>{{ total() }}</b>$ </h2>
-                        <button @click="cashout()">Kupi</button>
-                    </div>
-                </div>
+                    <li class="items">
+                        <h2 class="item"> Značka </h2>
+                        <h2 class="item"> Radio Prijemnik </h2>
+                    </li>
+                </ul>
 
                 <div class="info">
-                    <p>Klikom na predmet u listi produkata dodajete isti u <b>korpu</b>. <br>
-                    Klikom na predmet u korpi, mačinjete isti iz kopre</p>
+                    <p>Prostor za uzimanje opreme i uniformi <b></b>. <br> </p>
                 </div>
             </div>
 
@@ -52,12 +52,12 @@
                 el: '#locker',
                 data: {
                     player: {
-                        money: 3000,
+                        uniform: 0,
                         cart: []
                     },
 
-                    bussines: { 
-                        name: 'Test ime Biznisa', id: 1,
+                    equipment: { 
+                        uniforms: ['musliman', 'srbin', 'hrvat'],
                         items: {
                             'Kanister': { icon: 'kanister', price: 19 },
                             'Flasa Piva': { icon: 'pivo', price: 3 },
@@ -68,30 +68,10 @@
                 methods: { 
                     close: () => { mp.trigger('client:police.locker.toggle', false); },
 
-                    add: function (name, price) { 
-                        this.player.cart.push({ item: name, price: price })
-                    },
-
-                    remove: function (i) { 
-                        let index = this.player.cart.indexOf(i);
-                        this.player.cart.splice(index, 1);
-                    },
-
-                    total: function () { 
-                        let price = 0;
-                        for (let i in this.player.cart) { price = price + this.player.cart[i].price; }
-                        return price;
-                    },
-
-                    empty: function () {
-                        this.player.cart = [];
-                    },
-
-                    cashout: function() {
-                        let items = this.player.cart;
-                        let bill = this.total();
-                        setTimeout(() => { this.empty(); }, 200);
-                        mp.trigger('client:market.buy', bill, JSON.stringify(items))
+                    uniform: function (i) {
+                        this.player.uniform += i;
+                        if (this.player.uniform >= this.equipment.uniforms.length) { this.player.uniform = 0;
+                        } else if (this.player.uniform < 0) { this.player.uniform = this.equipment.uniforms.length - 1; }
                     }
                 }
             })

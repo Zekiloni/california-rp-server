@@ -38,6 +38,7 @@ class Character {
 
       this.mute = p.mute || 0;
       
+      this.duty = false;
       this.inviteRequest = 0;
       this.casinoSlot = -1;
       this.casinoRoulette = -1;
@@ -66,6 +67,11 @@ class Character {
       this.health = value;
       player.health = this.health;
    } 
+
+   setDuty (player, toggle) { 
+      this.duty = toggle;
+      player.setVariable('duty', this.duty);
+   }
 
    // SINHRONIIZACIJA ANIMACIJA
    Animation (player, animation) { 
