@@ -27,7 +27,7 @@ a { text-decoration:none }
 @media screen and (min-height:1080px){
                                                                                                                                                                                                                                                                      
 #chat{
-    font-size:18px!important;
+    font-size:16px!important;
       font-weight:700}}
 #chat ul#chat_messages{
     overflow-y:auto;
@@ -36,8 +36,10 @@ a { text-decoration:none }
     transform:rotate(180deg);
     /*width:37vw; /* old: 37vw*/
     width: 800px;
-    padding:10px 20px; /* old padding: 10px 20px*/
-    list-style-type:none}
+    padding: 5px 20px; /* old padding: 10px 20px*/
+    margin-left: 10px;
+    list-style-type:none;
+    }
 #chat ul#chat_messages>li{
     transform:rotate(-180deg)}
 #chat input#chat_msg{
@@ -46,8 +48,8 @@ a { text-decoration:none }
     outline:0;
     border:none;
     font-family:Myriad Pro,Open Sans,sans-serif;
-    font-size:13px;
-    margin-left: 10px;
+    font-size:14px;
+    margin-left: 25px;
     line-height:35px;
     border-radius: 5px;
     width:35vw;
