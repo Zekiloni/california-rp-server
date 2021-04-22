@@ -9,7 +9,7 @@ class Biz {
       this.name = data.name;
       this.type = data.type;
       this.price = data.price;
-      this.owner = data.owner;
+      this.owner = data.owner || -1;
       this.products = data.products || 100;
       this.budget = data.budget || 0;
       this.dimension = data.dimension || 0;
@@ -17,8 +17,6 @@ class Biz {
       this.entrance = data.entrance;
       this.ipl = data.ipl || '';
       this.workers = data.workers || [];   
-      this.price = data.price || 2500;
-      this.owner = data.owner || -1;
 
       this.colshape = mp.colshapes.newRectangle(this.entrance.x, this.entrance.y, 3, 2, 0);
       this.colshape.business = this.id;

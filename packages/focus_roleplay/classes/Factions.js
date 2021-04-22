@@ -4,6 +4,7 @@ const FactionTypes = {
    Law: 0, Fmd: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Party: 6, Cartel: 7
 }
 
+module.exports = { FactionTypes }
 
 
 mp.factions = {
