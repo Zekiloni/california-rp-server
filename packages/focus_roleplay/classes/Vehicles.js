@@ -1,6 +1,5 @@
 
 
-const
 
 class Vehicle { 
 	constructor(temporary, params) {
@@ -8,7 +7,7 @@ class Vehicle {
 		this.id = params.id;
 		this.model = params.model;
 		this.position = params.position;
-		this.heading = params.heading || 0;
+		this.rotation = params.rotation || 0;
 		this.price = params.price;
 		this.owner = params.owner || -1;
 		this.plate = params.plate || '';
@@ -40,11 +39,18 @@ class Vehicle {
 
 		
 		if (this.temporary) { 
-            this.id = 'temporary';
+            this.id = 'temporary vehicle';
+            this.job = params.job || 0;
 			this.faction = params.faction || 0;
-			this.job = params.job || 0;
+            if (this.faction > 0) { 
+                this.callsign = params.callsign || null;
+            }
 		}
 	}
+
+    paint (vehicle, color) {
+        vehicle.setColorRGB(parseInt(color[0][0]), parseInt(color[0][1]), parseInt(color[0][2]), parseInt(color[1][0]), parseInt(color[1][1]), parseInt(color[1][2]));
+    }
 
 	window (vehicle, index) { 
 		this.windows[index] != this.windows[index];
@@ -70,12 +76,14 @@ mp.events.add({
         let character = player.getCharacter();
         if (vehicle.job && vehicle.job != character.job) return player.removeFromVehicle();
         if (vehicle.faction && vehicle.faction != character.faction) return player.removeFromVehicle();
-        if (seat == 0) { player.call('client:vehicle.hud', [true]); }
+        if (seat == 0) { player.call('client:player.vehicle', [true, vehicle.engine]); }
+        console.log(vehicle.engine);
 
     },
     
     'playerExitVehicle': (player, vehicle) => { 
-        player.call('client:vehicle.hud', [false])
+        player.call('client:player.vehicle', [false, vehicle.engine])
+        console.log(vehicle.engine);
     },
 
     'server:vehicle.indicators': (player, indicator) => {

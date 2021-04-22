@@ -2,7 +2,7 @@
 const player = mp.players.local;
 const blockedClasses = [13, 14, 15, 16, 21]; 
 
-mp.game.vehicle.defaultEngineBehaviour = false;
+//mp.game.vehicle.defaultEngineBehaviour = false;
 mp.game.controls.useDefaultVehicleEntering = true;
 
 
@@ -14,9 +14,6 @@ mp.events.add({
       }
    },
 
-   'playerEnterVehicle': (vehicle, seat) => { 
-      player.setConfigFlag(429, true);
-   }
 });
 
 mp.events.addDataHandler({
@@ -29,11 +26,6 @@ mp.events.addDataHandler({
    }
 });
 
-
-mp.keys.bind(0x4C, false, function() {
-   if (!player.logged) return false;
-
-});
 
 // left
 mp.keys.bind(0x25, false, () => {

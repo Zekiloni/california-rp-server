@@ -61,7 +61,7 @@ db.query(charactersTable, function(err, results, fields) {
 });
 
 let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
-  ID int(11) NOT NULL AUTO_INCREMENT,
+  id int(11) NOT NULL AUTO_INCREMENT,
   model varchar(32) NOT NULL,
   locked tinyint(1) NOT NULL,
   owner int(11) NOT NULL DEFAULT -1,

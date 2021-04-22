@@ -88,9 +88,11 @@ mp.events.add({
 		if (player.vehicle && isDriving) { vehicle() }
 	},
 
-	'client:vehicle.hud': (toggle) => { 
+	'client:player.vehicle': (toggle, engine) => { 
 		playerHUD.execute(`hud.vehicle.driving = ${toggle};`); 
 		isDriving = toggle;
+		if (engine) { player.setConfigFlag(429, false);
+		} else { player.setConfigFlag(429, true); }
 	},
 
 	'client:screenshot.taken': () => {
