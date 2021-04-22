@@ -2,11 +2,11 @@
 let globals = require('./core/globals');
 let settings = require('./core/settings');
 
-global.db = require('./core/database');
+global.db = require('./core/Database');
 global.config = require('./core/configuration');
 global.core = require('./core/main');
 
-let DatabaseStructure = require('./core/databaseStructure');
+let DatabaseStructure = require('./core/Database.Structure');
 let Logs = require('./classes/Logs');
 let Minute = require('./classes/Minute');
 let Player = require('./classes/Player');

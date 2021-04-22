@@ -1,25 +1,91 @@
 
 
-let Vehicle = require('./Vehicle')
+const
+
+class Vehicle { 
+	constructor(temporary, params) {
+		this.temporary = temporary || false;
+		this.id = params.id;
+		this.model = params.model;
+		this.position = params.position;
+		this.heading = params.heading || 0;
+		this.price = params.price;
+		this.owner = params.owner || -1;
+		this.plate = params.plate || '';
+		this.color = params.color || [[0, 0, 0], [0, 0, 0]];
+		this.alpha = params.alpha || 255;
+		this.fuel = params.fuel || 100;
+		this.locked = params.locked || false;
+		this.engine = params.engine || false;
+		this.dimension = params.dimension || 0;
+		this.visible = params.visible || true;
+		this.km = params.km || 0;
+		this.windows = params.windows || [false, false, false, false];
+		this.dirt = params.dirt || 0; 
+        this.impounded = params.impounded || 0;
+        this.tuning = params.tuning || 0;
+        this.upgrades = { 
+            engine: params.upgrades.engine || 0,
+            brakes: params.upgrades.brakes || 0,
+            transmission: params.upgrades.transmission || 0,
+            suspension: params.upgrades.suspension || 0,
+            turbo: params.upgrades.turbo || 0,
+            armour: params.upgrades.armour || 0,
+            xenon: params.upgrades.xenon || 0,
+            window_tint: params.upgrades.window_tint || 0,
+            horn: params.upgrades.horn || 0
+        }
+
+        this.alarm = false;
+
+		
+		if (this.temporary) { 
+            this.id = 'temporary';
+			this.faction = params.faction || 0;
+			this.job = params.job || 0;
+		}
+	}
+
+	window (vehicle, index) { 
+		this.windows[index] != this.windows[index];
+		vehicle.setVariable('windows', this.windows)
+	}
+
+	setDirt (vehicle, dirt) { 
+		this.dirt = dirt;
+		vehicle.setVariable('dirt', this.dirt)
+	}
+
+    tune (vehicle, components) { 
+        components.forEach(component => { vehicle.setMod(component.index, component.value) })
+    }
+}
+
+
+
 
 mp.events.add({
-    'server:vehicle.indicators': (player, indicator) => {
-        let vehicle = player.vehicle;
-        if (vehicle && player.seat == 0) {
-            switch (indicator) {
-                case 0: vehicle.data.IndicatorRight = !vehicle.data.IndicatorRight; break; // right
-                case 1: vehicle.data.IndicatorLeft = !vehicle.data.IndicatorLeft; break; // left
-            }
-        }
-    },
 
     'playerEnterVehicle': (player, vehicle, seat) => { 
+        let character = player.getCharacter();
+        if (vehicle.job && vehicle.job != character.job) return player.removeFromVehicle();
+        if (vehicle.faction && vehicle.faction != character.faction) return player.removeFromVehicle();
         if (seat == 0) { player.call('client:vehicle.hud', [true]); }
-        if (vehicle.job) { if (vehicle.job != player.job) return player.removeFromVehicle(); }
+
     },
     
     'playerExitVehicle': (player, vehicle) => { 
         player.call('client:vehicle.hud', [false])
+    },
+
+    'server:vehicle.indicators': (player, indicator) => {
+        let vehicle = player.vehicle;
+        if (vehicle && player.seat == 0) {
+            switch (indicator) {
+                case 0: vehicle.data.IndicatorRight = !vehicle.data.IndicatorRight; break;
+                case 1: vehicle.data.IndicatorLeft = !vehicle.data.IndicatorLeft; break;
+            }
+        }
     },
 
     'server:vehicle.mileage': (player, vehicleData) => {
@@ -40,7 +106,7 @@ mp.events.add({
 mp.vehicles.load = () => { 
    db.query("SELECT * FROM `vehicles`", function(error, results, fields){
        if (error) return core.terminal(1, error);
-       if (results.length != 0) {
+       if (results.length > 0) {
            results.forEach(veh => {
                let color = JSON.parse(veh.color), position = JSON.parse(veh.position), stats = JSON.parse(veh.ebts)
                let vehicle = mp.vehicles.new();
@@ -77,13 +143,7 @@ mp.vehicles.save = () => {
    })
 }
 
-mp.Vehicle.prototype.save = function () { 
 
-}
-
-mp.Vehicle.prototype.tune = function (data) { 
-   data.length > 1 ? ( data.forEach(tune => { this.vehicle.setMod(tune.index, tune.value) } )) : ( this.vehicle.setMod(data.index, data.value) )
-}
 
 
 
