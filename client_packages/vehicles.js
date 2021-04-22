@@ -2,7 +2,6 @@
 const player = mp.players.local;
 const blockedClasses = [13, 14, 15, 16, 21]; 
 
-//mp.game.vehicle.defaultEngineBehaviour = false;
 mp.game.controls.useDefaultVehicleEntering = true;
 
 
@@ -14,6 +13,11 @@ mp.events.add({
       }
    },
 
+   'client:player.vehicle': (hud, engine) => { 
+      mp.game.vehicle.defaultEngineBehaviour = false;
+      player.setConfigFlag(429, true);
+      mp.events.call('client:hud.vehicle', hud);
+   }
 });
 
 mp.events.addDataHandler({
@@ -23,7 +27,7 @@ mp.events.addDataHandler({
 
    'IndicatorLeft': (entity, value) => {
       if (entity.type === "vehicle") entity.setIndicatorLights(1, (value == null) ? false : value);
-   }
+   },
 });
 
 

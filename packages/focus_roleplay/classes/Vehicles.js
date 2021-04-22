@@ -77,13 +77,14 @@ mp.events.add({
         if (vehicle.job && vehicle.job != character.job) return player.removeFromVehicle();
         if (vehicle.faction && vehicle.faction != character.faction) return player.removeFromVehicle();
         if (seat == 0) { player.call('client:player.vehicle', [true, vehicle.engine]); }
-        console.log(vehicle.engine);
-
     },
     
+    'playerStartExitVehicle': (player) => {
+        if (player.vehicle.engine) player.vehicle.engine = true;
+    },
+
     'playerExitVehicle': (player, vehicle) => { 
         player.call('client:player.vehicle', [false, vehicle.engine])
-        console.log(vehicle.engine);
     },
 
     'server:vehicle.indicators': (player, indicator) => {
@@ -150,7 +151,6 @@ mp.vehicles.save = () => {
        vehicle.save();
    })
 }
-
 
 
 
