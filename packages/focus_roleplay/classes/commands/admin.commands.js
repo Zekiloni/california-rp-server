@@ -2,7 +2,6 @@
 
 module.exports = { 
    commands: [
-
       {
          name: 'adminhelp',
          admin: 1,
@@ -34,25 +33,25 @@ module.exports = {
          }
       },
 
-      
-    {
-      name: 'slot',
-      admin: 4,
-      call: (player, args) => { 
-         console.log('1');
-         if(mp.characters[player.character].casinoSlot == -1) {
-            player.sendMessage("nisi");
+      {
+         name: 'slot',
+         admin: 4,
+         call: (player, args) => { 
+            console.log('1');
+            if(mp.characters[player.character].casinoSlot == -1) {
+               player.sendMessage("nisi");
+            }
+            else {
+               console.log('2') ;
+               let json = JSON.stringify(player.position);
+               console.log(json);
+               player.call('client:spinSlotMachine', mp.characters[player.character].casinoSlot, json);
+               console.log('3');
+            }
+            
          }
-         else {
-            console.log('2') ;
-            let json = JSON.stringify(player.position);
-            console.log(json);
-            player.call('client:spinSlotMachine', mp.characters[player.character].casinoSlot, json);
-            console.log('3');
-         }
-         
-      }
-   },
+      },
+
       {
          name: 'coord',
          admin: 4,
@@ -92,7 +91,30 @@ module.exports = {
             }
          }
       },
-   
+
+      {
+         name: 'health',
+         admin: 3,
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]), amount = parseInt(args[1]); 
+            if (target) { 
+               let character = target.getCharacter();
+               character.setHealth(target, amount);
+            }
+         }
+      },
+
+      {
+         name: 'armour',
+         admin: 4,
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]), amount = parseInt(args[1]); 
+            if (target) { 
+               let character = target.getCharacter();
+               character.setArmour(target, amount);
+            }
+         }
+      },
    
       {
          name: 'ban',

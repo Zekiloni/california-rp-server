@@ -12,7 +12,7 @@ class Minute {
             character.experience ++;
 
             if (character.experience >= 60) { 
-               characters.hours ++;
+               character.hours ++;
                character.experience = 0;
                character.payDay(target);
             }

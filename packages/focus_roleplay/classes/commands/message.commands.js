@@ -2,6 +2,7 @@
 
 mp.colors = { 
    white: ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E'], 
+   low: ['E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E', '6E6E6E'], 
    purple: ['F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3', 'D2B9D3'],
    ooc: ['7B8A89', 'A3B8B7', '9AADAC', '8D9E9D', '7B8A89'],
    faction: '5DD7B8',
@@ -14,14 +15,15 @@ mp.colors = {
    success: '6BD56B',
    error: 'FF6347',
    help: 'DACA5D',
+   broadcast: 'FF2624',
    server: '0792E5',
 }
 
 const distances = { 
-   ooc: 5.0, 
-   ic: 7.5,
-   low: 3,
-   shout: 12.5,  
+   ooc: 7.0, 
+   ic: 8.5,
+   low: 4.0,
+   shout: 18.5,  
    do: 7.5,
    me: 7.5,
 }
@@ -66,7 +68,7 @@ module.exports = {
          params: '[tekst]',
          call: (player, args) => { 
             let message = args.splice(0).join(" ");
-            player.proximityMessage(distances.low, `${player.name} tiho: ${message}`, mp.colors.white)
+            player.proximityMessage(distances.low, `${player.name} tiho: ${message}`, mp.colors.low)
          }
       },
 

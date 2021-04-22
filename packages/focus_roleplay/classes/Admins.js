@@ -29,7 +29,7 @@ class Admin {
          if (target.data.logged) {
             if (mp.accounts[target.account]) {
                if (mp.accounts[target.account].admin >= 1) { 
-                  target.sendMessage(`${mp.admins[mp.accounts[player.account].admin]} ${player.name} [${player.id}]: ${message}`, mp.colors.admin)
+                  target.sendMessage(`(( ${mp.admins[mp.accounts[player.account].admin]} ${player.name} [${player.id}]: ${message} ))`, mp.colors.admin)
                }
             }
          }
@@ -39,7 +39,7 @@ class Admin {
    broadcast = (player, message) => { 
       mp.players.forEach( (target) => { 
          if (target.data.logged) {
-            target.sendMessage(`${mp.admins[mp.accounts[player.account].admin]} ${player.name}: ~w~${message}`, mp.colors.admin)
+            target.sendMessage(`[!] ${mp.admins[mp.accounts[player.account].admin]} ${player.name}: ${message}`, mp.colors.broadcast)
          }
       })
    }

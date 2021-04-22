@@ -68,6 +68,11 @@ class Character {
       player.health = this.health;
    } 
 
+   setArmour (player, value) { 
+      this.armour  = value;
+      player.armour  = this.armour;
+   } 
+
    setDuty (player, toggle) { 
       this.duty = toggle;
       player.setVariable('duty', this.duty);
