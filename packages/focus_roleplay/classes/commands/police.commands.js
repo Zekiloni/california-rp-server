@@ -47,18 +47,30 @@ module.exports = {
             //if (character.faction == 0) return;
             //if (mp.factions[character.faction].type != FactionTypes.Law) return;
 
+            // prop_tyre_spike_01
+            
             const bariers = [
                'prop_barrier_work01a', 'prop_barrier_work04a', 'prop_barrier_work06a', 'prop_barrier_work02a', 'prop_barrier_wat_04c',
                'prop_barrier_work01c', 'prop_barrier_wat_03b', 'prop_barrier_wat_03a', 'prop_barrier_work06b', 'prop_barrier_wat_04b',
                'prop_barrier_work01d', 'prop_barrier_work05', 'prop_mc_conc_barrier_01', 'prop_barrier_work01b', 'prop_mp_barrier_02',
-               'prop_mp_barrier_02b',  'prop_mp_arrow_barrier_01', 'prop_mp_conc_barrier_01'
+               'prop_mp_barrier_02b',  'prop_mp_arrow_barrier_01', 'prop_mp_conc_barrier_01', 'prop_roadcone01a', 'prop_roadcone01c',
+               'prop_roadcone01b', 'prop_roadcone02a', 'prop_mp_cone_04', 'prop_air_conelight', 'prop_mp_cone_02', 
             ];
 
             function Roadblock (player, model) { 
                this.placed_by = character.id;
-               let position = new mp.Vector3(player.position.x + 1, player.position.y, player.position.z - 1)
-               this.object = mp.objects.new(mp.joaat(model), position, { alpha: 255, dimension: player.dimension });
+               let position = new mp.Vector3(player.position.x + 1, player.position.y, player.position.z - 1),
+                  rotation = new mp.Vector3(0, 0, player.heading + 180);              
+               this.object = mp.objects.new(mp.joaat(model), position, { 
+                  rotation: rotation,
+                  alpha: 255, 
+                  dimension: player.dimension 
+               });
+               console.log(player.heading)
                this.object.roadblock = true;
+               this.object.notifyStreaming = true;
+               this.object.setVariable('roadblock', true);
+               console.log(this)
                roadblocks.push(this);
             }
             
@@ -71,7 +83,10 @@ module.exports = {
                      }
                   }
                })
-            } else { new Roadblock(player, bariers[i]); }
+            } else { 
+               if (!bariers[i]) return; 
+               new Roadblock(player, bariers[i]); 
+            }
          }
       }
    ]

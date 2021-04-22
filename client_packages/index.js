@@ -2,13 +2,15 @@
 
 
 let Authentication = require('./authentication/authentication');
-let GameInterface = require('./player/PlayerHud');
 let CharacterCreator = require('./creator/customization');
-let DamageSync = require('./DamageSync');
+let GameInterface = require('./player/PlayerHud');
 let PlayerCore = require('./player/Core');
 let PlayerList = require('./player/PlayerList');
-let PlayerInventory = require('./player/inventory/Items');
+let Streamer = require('./player/Streamer');
 let NameTags = require('./player/NameTags');
+let PlayerInventory = require('./player/inventory/Items');
+let DamageSync = require('./DamageSync');
+
 let Vehicles = require('./Vehicles');
 
 let Animations = require('./player/Interactions/Animations');

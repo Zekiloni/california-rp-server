@@ -48,13 +48,13 @@ mp.keys.bind(0x77, true, function () {  //F8-Key
 getPlayerHeading = () => { 
 	let heading = player.getHeading(), headingString;
 	if (heading >= 0 && heading <= 30) { headingString = "N"; }
-	else if (heading >= 30 && heading <= 90) { headingString = "NE"; }
-	else if (heading >= 90 && heading <= 135) { headingString = "E"; }
-	else if (heading >= 135 && heading <= 180) { headingString = "SE"; }
+	else if (heading >= 30 && heading <= 90) { headingString = "NW"; }
+	else if (heading >= 90 && heading <= 135) { headingString = "W"; }
+	else if (heading >= 135 && heading <= 180) { headingString = "SW"; }
 	else if (heading >= 180 && heading <= 225) { headingString = "S"; }
-	else if (heading >= 225 && heading <= 270) { headingString = "SW"; }
-	else if (heading >= 270 && heading <= 315) { headingString = "W"; }
-	else if (heading >= 315 && heading <= 360) { headingString = "NW"; }
+	else if (heading >= 225 && heading <= 270) { headingString = "SE"; }
+	else if (heading >= 270 && heading <= 315) { headingString = "E" ; }
+	else if (heading >= 315 && heading <= 360) { headingString = "NE"; }
 	return headingString;
 }
 
