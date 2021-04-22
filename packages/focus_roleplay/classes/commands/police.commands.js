@@ -71,9 +71,7 @@ module.exports = {
                      }
                   }
                })
-            } else {
-               let rb = new Roadblock(player, bariers[i]);
-            }
+            } else { new Roadblock(player, bariers[i]); }
          }
       }
    ]
