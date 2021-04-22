@@ -20,12 +20,12 @@ mp.colors = {
 }
 
 const distances = { 
-   ooc: 7.0, 
-   ic: 8.5,
-   low: 4.0,
+   ooc: 8.0, 
+   ic: 10.5,
+   low: 4.5,
    shout: 18.5,  
-   do: 7.5,
-   me: 7.5,
+   do: 8.5,
+   me: 8.5,
 }
 
 module.exports = { 
