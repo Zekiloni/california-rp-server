@@ -122,6 +122,7 @@ mp.events.addCommand("tp", (player) => {
 });
 
 
+
 mp.events.addCommand("peds", (player) => {
     const playerPos = player.position;
     let peds = mp.game.ped.getClosestPed(
