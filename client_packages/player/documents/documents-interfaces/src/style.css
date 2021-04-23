@@ -37,6 +37,9 @@ body {
 
 .data {position: absolute;bottom: 27px;left: 130px;list-style: none;color: #868686;}
 
+.licenses {position:absolute;right: 25px;top: 100px;padding: 0;width: 250px;}
+.licenses li { font-size: 16px;color: rgb(24, 24, 24); list-style: none;}
+.licenses li b { margin: 0 2px; }
 
 .gov-logo { 
    bottom: -40px;
