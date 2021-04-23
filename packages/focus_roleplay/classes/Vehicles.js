@@ -19,7 +19,6 @@ class Vehicle {
 		this.dimension = params.dimension || 0;
 		this.visible = params.visible || true;
 		this.km = params.km || 0;
-		this.windows = params.windows || [false, false, false, false];
 		this.dirt = params.dirt || 0; 
         this.impounded = params.impounded || 0;
         this.tuning = params.tuning || 0;
@@ -35,6 +34,7 @@ class Vehicle {
             horn: params.upgrades.horn || 0
         }
 
+		this.windows = params.windows || [false, false, false, false];
         this.alarm = false;
 
 		
@@ -64,6 +64,28 @@ class Vehicle {
 
     tune (vehicle, components) { 
         components.forEach(component => { vehicle.setMod(component.index, component.value) })
+    }
+
+    delete (vehicle) { 
+
+    }
+
+    update (vehicle) { 
+        let values = { 
+            position: JSON.stringify(vehicle.position),
+            rotation: JSON.stringify(vehicle.rotation),
+            model: this.model,
+            owner: this.owner,
+            tuning: JSON.stringify(this.tuning),
+            upgrades: JSON.stringify(this.upgrades),
+            impounded: this.impounded,
+            km: this.km,
+            dimension: this.dimension,
+            locked: this.locked,
+            fuel: this.fuel,
+            color: JSON.stringify(this.color),
+            plate: this.plate,
+        }
     }
 }
 
@@ -126,24 +148,22 @@ mp.vehicles.load = () => {
    })
 }
 
-mp.vehicles.create = (data) => { 
-   let position = data.position;
-   let values = { 
-       model: data.model,
-       locked: data.locked || 0,
-       owner: data.owner || -1,
-       price: data.price || 0,
-       fuel: 100,
-   }
-   db.query("INSERT INTO `vehicles` ?", [values], function (error, result, fields) {
-       if (error) return core.terminal(1, error);
-       let vehicle = mp.vehicles.new(mp.jooat(data.model), new mp.Vector3(data.position.x, data.position.y, data.position,z), { 
-           heading: data.rotation,
-           numberPlate: ' ',
+mp.vehicles.create = (player, model, temporary = false, data) => { 
+    let vehicle = mp.vehicles.new(mp.joaat("turismor"), new mp.Vector3(-441.88, 1156.86, 326),
+    {
+        numberPlate: "ADMIN",
+        color: [[0, 255, 0],[0, 255, 0]]
+    });
 
-       })
-       vehicle.data = new Vehicle(result.ID, data.owner, data.price, 100, 0, 0);
-   });
+    if (temporary == true) { 
+        // insert into database
+        db.query("INSERT INTO `vehicles`", function(error, results, fields) {
+
+        });
+    }
+
+    vehicle.info = new Vehicle();
+
 }
 
 mp.vehicles.save = () => { 

@@ -62,22 +62,30 @@ db.query(charactersTable, function(err, results, fields) {
 
 let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   id int(11) NOT NULL AUTO_INCREMENT,
-  model varchar(32) NOT NULL,
-  locked tinyint(1) NOT NULL,
-  owner int(11) NOT NULL DEFAULT -1,
-  price int(10) NOT NULL,
-  position text,
-  rotation text,
-  mileage FLOAT NOT NULL DEFAULT 0,
-  fuel int(4) NOT NULL,
-  color text,
-  mods text,
-  ebts text,
-  PRIMARY KEY(ID))`;
+  price INT(4) NOT NULL,
+  owner INT(11) NOT NULL,
+  alpha INT(3) NOT NULL,
+  model VARCHAR(32) NOT NULL,
+  plate VARCHAR(8) NOT NULL,
+  color TEXT NOT NULL,
+  position TEXT NOT NULL,
+  rotation TEXT NOT NULL,
+  tuning TEXT NOT NULL,
+  upgrades TEXT NOT NULL,
+  fuel DECIMAL(3,1) NOT NULL,
+  locked TINYINT(1) NOT NULL,
+  visible TINYINT(1) NOT NULL,
+  dimension INT(4) NOT NULL,
+  kilometers INT(4) NOT NULL,
+  dirt INT(3) NOT NULL,
+  impounded TINYINT(1) NOT NULL,
+  faction INT(3) NOT NULL DEFAULT 0,
+  business INT(3) NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
 
 db.query(vehicleTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking vehicleTable  | MySQL`);
+  core.terminal(3, `Checking vehiclesTable  | MySQL`);
 }); 
 
 
