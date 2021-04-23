@@ -88,7 +88,7 @@ mp.events.add({
 		if (player.vehicle && isDriving) { vehicle() }
 	},
 
-	'client:vehicle.hud': (toggle) => { 
+	'client:hud.vehicle': (toggle) => { 
 		playerHUD.execute(`hud.vehicle.driving = ${toggle};`); 
 		isDriving = toggle;
 	},

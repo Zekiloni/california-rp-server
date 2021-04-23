@@ -66,11 +66,7 @@ module.exports = {
                   alpha: 255, 
                   dimension: player.dimension 
                });
-               console.log(player.heading)
                this.object.roadblock = true;
-               this.object.notifyStreaming = true;
-               this.object.setVariable('roadblock', true);
-               console.log(this)
                roadblocks.push(this);
             }
             

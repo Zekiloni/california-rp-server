@@ -79,11 +79,13 @@ let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   kilometers INT(4) NOT NULL,
   dirt INT(3) NOT NULL,
   impounded TINYINT(1) NOT NULL,
+  faction INT(3) NOT NULL DEFAULT 0,
+  business INT(3) NOT NULL DEFAULT 0,
   PRIMARY KEY(id))`;
 
 db.query(vehicleTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }
-  core.terminal(3, `Checking vehicleTable  | MySQL`);
+  core.terminal(3, `Checking vehiclesTable  | MySQL`);
 }); 
 
 

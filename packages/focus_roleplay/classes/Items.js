@@ -72,12 +72,23 @@ class Inventory {
                   }
                }
             }
-            // console.log(player.allWeapons)
+
             player.call('client:inventory.toggle', [true, inventory, weapons])
          },
 
          'server:weapon.select': (player, key, weapon) => { 
-
+            let weapons = [];
+            for (let i in mp.items) { 
+               if (mp.items[i].entity == ItemEntities.Wheel) { 
+                  if (mp.items[i].owner == player.character) { 
+                     let ammo = player.allWeapons[mp.joaat(mp.ItemRegistry[mp.items[i].item].weapon)];
+                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].weapon, ammo: ammo })
+                  }
+               }
+            }
+            // player.removeAllWeapons();
+            let selected = weapons[key];
+            player.giveWeapon(mp.joaat(selected.hash), selected.ammo);
          },
 
          'server:item.clothing': (player, index) => { 

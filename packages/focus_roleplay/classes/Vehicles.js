@@ -1,6 +1,5 @@
 
 
-const
 
 class Vehicle { 
 	constructor(temporary, params) {
@@ -8,7 +7,7 @@ class Vehicle {
 		this.id = params.id;
 		this.model = params.model;
 		this.position = params.position;
-		this.heading = params.heading || 0;
+		this.rotation = params.rotation || 0;
 		this.price = params.price;
 		this.owner = params.owner || -1;
 		this.plate = params.plate || '';
@@ -20,7 +19,6 @@ class Vehicle {
 		this.dimension = params.dimension || 0;
 		this.visible = params.visible || true;
 		this.km = params.km || 0;
-		this.windows = params.windows || [false, false, false, false];
 		this.dirt = params.dirt || 0; 
         this.impounded = params.impounded || 0;
         this.tuning = params.tuning || 0;
@@ -36,15 +34,23 @@ class Vehicle {
             horn: params.upgrades.horn || 0
         }
 
+		this.windows = params.windows || [false, false, false, false];
         this.alarm = false;
 
 		
 		if (this.temporary) { 
-            this.id = 'temporary';
+            this.id = 'temporary vehicle';
+            this.job = params.job || 0;
 			this.faction = params.faction || 0;
-			this.job = params.job || 0;
+            if (this.faction > 0) { 
+                this.callsign = params.callsign || null;
+            }
 		}
 	}
+
+    paint (vehicle, color) {
+        vehicle.setColorRGB(parseInt(color[0][0]), parseInt(color[0][1]), parseInt(color[0][2]), parseInt(color[1][0]), parseInt(color[1][1]), parseInt(color[1][2]));
+    }
 
 	window (vehicle, index) { 
 		this.windows[index] != this.windows[index];
@@ -59,6 +65,28 @@ class Vehicle {
     tune (vehicle, components) { 
         components.forEach(component => { vehicle.setMod(component.index, component.value) })
     }
+
+    delete (vehicle) { 
+
+    }
+
+    update (vehicle) { 
+        let values = { 
+            position: JSON.stringify(vehicle.position),
+            rotation: JSON.stringify(vehicle.rotation),
+            model: this.model,
+            owner: this.owner,
+            tuning: JSON.stringify(this.tuning),
+            upgrades: JSON.stringify(this.upgrades),
+            impounded: this.impounded,
+            km: this.km,
+            dimension: this.dimension,
+            locked: this.locked,
+            fuel: this.fuel,
+            color: JSON.stringify(this.color),
+            plate: this.plate,
+        }
+    }
 }
 
 
@@ -70,12 +98,15 @@ mp.events.add({
         let character = player.getCharacter();
         if (vehicle.job && vehicle.job != character.job) return player.removeFromVehicle();
         if (vehicle.faction && vehicle.faction != character.faction) return player.removeFromVehicle();
-        if (seat == 0) { player.call('client:vehicle.hud', [true]); }
-
+        if (seat == 0) { player.call('client:player.vehicle', [true, vehicle.engine]); }
     },
     
+    'playerStartExitVehicle': (player) => {
+        if (player.vehicle.engine) player.vehicle.engine = true;
+    },
+
     'playerExitVehicle': (player, vehicle) => { 
-        player.call('client:vehicle.hud', [false])
+        player.call('client:player.vehicle', [false, vehicle.engine])
     },
 
     'server:vehicle.indicators': (player, indicator) => {
@@ -117,24 +148,22 @@ mp.vehicles.load = () => {
    })
 }
 
-mp.vehicles.create = (data) => { 
-   let position = data.position;
-   let values = { 
-       model: data.model,
-       locked: data.locked || 0,
-       owner: data.owner || -1,
-       price: data.price || 0,
-       fuel: 100,
-   }
-   db.query("INSERT INTO `vehicles` ?", [values], function (error, result, fields) {
-       if (error) return core.terminal(1, error);
-       let vehicle = mp.vehicles.new(mp.jooat(data.model), new mp.Vector3(data.position.x, data.position.y, data.position,z), { 
-           heading: data.rotation,
-           numberPlate: ' ',
+mp.vehicles.create = (player, model, temporary = false, data) => { 
+    let vehicle = mp.vehicles.new(mp.joaat("turismor"), new mp.Vector3(-441.88, 1156.86, 326),
+    {
+        numberPlate: "ADMIN",
+        color: [[0, 255, 0],[0, 255, 0]]
+    });
 
-       })
-       vehicle.data = new Vehicle(result.ID, data.owner, data.price, 100, 0, 0);
-   });
+    if (temporary == true) { 
+        // insert into database
+        db.query("INSERT INTO `vehicles`", function(error, results, fields) {
+
+        });
+    }
+
+    vehicle.info = new Vehicle();
+
 }
 
 mp.vehicles.save = () => { 
@@ -142,7 +171,6 @@ mp.vehicles.save = () => {
        vehicle.save();
    })
 }
-
 
 
 
