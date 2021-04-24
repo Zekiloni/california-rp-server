@@ -3,8 +3,8 @@ const player = mp.players.local;
 let onlinePlayers = mp.players.length;
 let playerHUD = mp.browsers.new('package://player/hud-interface/hud.html'), isDriving = false;
 
-let screenshotBrowser = false;
-let photoName = null;
+let screenshotBrowser = false, photoName = null,
+	ScreenShotTimer = false;
 
 
 mp.events.add({
@@ -40,7 +40,11 @@ mp.keys.bind(0x77, true, function () {  //F8-Key
 	var date = new Date();
 	photoName = "focusrp-" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + "-" + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".png";
 	mp.gui.takeScreenshot(`${photoName}`, 1, 10, 0);
-	mp.events.call("client:screenshot.taken");
+	if (!ScreenShotTimer) { 
+		mp.events.call("client:screenshot.taken");
+		ScreenShotTimer = true;
+		setTimeout(() => { ScreenShotTimer = false; }, 6000);
+	}
 });
 
 getPlayerHeading = () => { 
