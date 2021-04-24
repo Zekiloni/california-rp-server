@@ -74,7 +74,7 @@ let vehicleTable = `CREATE TABLE IF NOT EXISTS vehicles (
   upgrades TEXT NOT NULL,
   fuel DECIMAL(3,1) NOT NULL,
   locked TINYINT(1) NOT NULL,
-  visible TINYINT(1) NOT NULL,
+  spawned TINYINT(1) NOT NULL,
   dimension INT(4) NOT NULL,
   kilometers INT(4) NOT NULL,
   dirt INT(3) NOT NULL,

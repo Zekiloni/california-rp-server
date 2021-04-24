@@ -17,7 +17,7 @@ class Vehicle {
 		this.locked = params.locked || false;
 		this.engine = params.engine || false;
 		this.dimension = params.dimension || 0;
-		this.visible = params.visible || true;
+		this.spawned = params.spawned || false;
 		this.km = params.km || 0;
 		this.dirt = params.dirt || 0; 
         this.impounded = params.impounded || 0;
@@ -86,6 +86,10 @@ class Vehicle {
             color: JSON.stringify(this.color),
             plate: this.plate,
         }
+
+        db.query("UPDATE `vehicles` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
+            if (error) return core.terminal(1, `Saving Vehicle ${error}`);
+        });
     }
 }
 
