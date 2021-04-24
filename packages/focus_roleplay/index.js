@@ -1,6 +1,6 @@
 
 let globals = require('./core/globals');
-let settings = require('./core/settings');
+let settings = require('./core/Settings');
 
 global.db = require('./core/Database');
 global.config = require('./core/configuration');
@@ -32,8 +32,6 @@ let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
 let Animals = require('./classes/Animals');
 
-
-global.account = require('./player/player.Core');
 // global.business = require('./business/bizCore');
 // global.houses = require('./houses/houses.Core');
 // global.jobs = require('./jobs/jobs.Core');
