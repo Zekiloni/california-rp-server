@@ -55,7 +55,6 @@ class Report {
       this.message = message;
 
       mp.reports[this.player] = this.message;
-      console.log(mp.reports)
    }
 }
 

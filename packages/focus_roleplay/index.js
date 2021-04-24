@@ -42,7 +42,6 @@ global.account = require('./player/player.Core');
 // var playerCommands = require('./player/player.Commands');
 // var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
-var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
 

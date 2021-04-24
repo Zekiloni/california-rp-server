@@ -109,8 +109,6 @@ class Factions {
             if (err) return core.terminal(1, 'Updating Faction Error ' + err);
             character.faction = faction.id;
             faction.leader = character.id;
-
-            console.log(' Character faction ' + character.faction)
             player.sendMessage('Postavljeni ste za lidera fakcije ' + faction.name + '.', mp.colors.info);
          });
       }

@@ -44,8 +44,6 @@ mp.ItemRegistry = {
          if (weapon) { 
             let ammo = player.getWeaponAmmo(weapon);
             player.setWeaponAmmo(weapon, parseInt(ammo + bullets));
-            console.log(player.weaponAmmo);
-            console.log(weapon)
          }
       }
    },

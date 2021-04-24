@@ -35,5 +35,4 @@ class Bans {
 }
 
 mp.bans = new Bans();
-console.log(Date.now())
 

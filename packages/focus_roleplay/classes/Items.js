@@ -218,7 +218,6 @@ class Inventory {
             let i = new Item(id, { 
                item: found.name, entity: entity, owner: owner, position: player.position, dimension: player.dimension, quantity: quantity
             })
-            console.log(i)
             i.refresh();
          })
       }
