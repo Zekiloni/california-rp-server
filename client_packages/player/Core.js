@@ -2,6 +2,12 @@ const player = mp.players.local;
 let eatObject, drinkObject;
 
 
+// black screen after death
+mp.game.gameplay.setFadeOutAfterDeath(false); 
+
+// dont remove weapon when run out from ammo
+mp.game.weapon.unequipEmptyWeapons = false;
+
 mp.events.addDataHandler({
    'logged': (entity, newValue, oldValue) => {
       if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {

@@ -1,31 +1,28 @@
 
 const player = mp.players.local;
 let onlinePlayers = mp.players.length;
-var playerHUD, isDriving = false;
+let playerHUD = mp.browsers.new('package://player/hud-interface/hud.html'), isDriving = false;
 
-let pedHeadShot;
-let screenResolution = false;
 let screenshotBrowser = false;
 let photoName = null;
 
-mp.game.gameplay.setFadeOutAfterDeath(false);
 
-playerHUD = mp.browsers.new('package://player/hud-interface/hud.html');
+mp.events.add({
+	'client:hud.show': (show) => {
+		if (show)  {
+			playerHUD.execute(`hud.toggle = true;`); 
+			setInterval(() => { updatePlayerHud(); }, 1000);
+		}
+		else { 
+			playerHUD.execute(`hud.toggle = false;`); 
+		}
+	},
 
-
-mp.events.add('client:hud.show', (show) => {
-	if (show)  {
-		playerHUD.execute(`hud.toggle = true;`); 
-		setInterval(() => { updatePlayerHud(); }, 1000);
-	}
-	else { 
-		playerHUD.execute(`hud.toggle = false;`); 
+	'client:notification.show': (message, type, time) => {
+		playerHUD.execute(`hud.notification(\"${message}\", \"${type}\", \"${time}\");`);
 	}
 })
 
-mp.events.add('client:notification.show', (message, type, time) => {
-	playerHUD.execute(`hud.notification(\"${message}\", \"${type}\", \"${time}\");`); 
-})
 
 updatePlayerHud = () => { 
 	let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0),
@@ -131,7 +128,6 @@ vehicle = () => {
 	else if (lights.lightsOn == 1 && lights.highbeamsOn == 0) { lightsStatus = 1; }
 	else if (lights.lightsOn == 1 && lights.highbeamsOn == 1) { lightsStatus = 2; }
 
-	//playerHUD.execute(`vehicleInfo(\"${vehicleSpeed}\", \"${lightsStatus}\");`); 
 	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
 }
 

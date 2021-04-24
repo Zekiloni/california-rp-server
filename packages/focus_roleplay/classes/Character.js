@@ -47,7 +47,8 @@ class Character {
       this.tog ={
          hud: false,
          ooc: false,
-         ads: false
+         ads: false,
+         admin_chat: false,
       }
 
       mp.characters[this.id] = this;
