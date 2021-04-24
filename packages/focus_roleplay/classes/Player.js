@@ -52,7 +52,7 @@ mp.Player.prototype.proximityMessage = function (radius, message, colors) {
          else if (distance < distanceGap * 2) { color = colors[1]; }
          else if (distance < distanceGap * 3) { color = colors[2]; }
          else if (distance < distanceGap * 4) { color = colors[3]; }
-         else { color = colors[4]; }
+         else { color = colors[3]; }
          target.outputChatBox(`!{${color}}${message}`);
 		}
 	);

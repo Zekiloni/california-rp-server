@@ -1,9 +1,9 @@
 
 
 mp.colors = { 
-   white: ['FFFFFF', 'E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E'], 
-   low: ['E6E6E6', 'C8C8C8', 'AAAAAA', '6E6E6E', '6E6E6E'], 
-   purple: ['F9B7FF', 'E6A9EC', 'C38EC7', 'D2B9D3', 'D2B9D3'],
+   white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'], 
+   low: ['E6E6E6', 'BDBDBD', 'DEDEDE', 'A3A2A2', '909090'], 
+   purple: ['cf9ae1', 'b380c4', '9565a5', '7f508f', '673e74'],
    ooc: ['7B8A89', 'A3B8B7', '9AADAC', '8D9E9D', '7B8A89'],
    faction: '5DD7B8',
    radio: 'FFFF99',
