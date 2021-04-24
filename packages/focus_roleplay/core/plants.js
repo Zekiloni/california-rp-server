@@ -23,7 +23,7 @@ function Plant (data) {
       pos = new mp.Vector3(data.position.x, data.position.y, data.position.z - 2.2);
    }
    
-   this.object = mp.objects.new(plantModel, pos, { alpha: 255, dimension: data.dimension });
+   this.object = 
    this.label = mp.labels.new(plantName, new mp.Vector3(pos.x, pos.y, pos.z + 0.5), { los: false, font: 0, drawDistance: 3 })
 
    mp.plants.push(this)

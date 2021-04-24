@@ -2,21 +2,21 @@
    { 
       "type": "palm",
       "name": "Drvo Palme",
-      "model": "apa_mp_h_acc_plant_palm_01",
+      "hash": "apa_mp_h_acc_plant_palm_01",
       "grow": 3
    },
 
    { 
       "type": "marijuana",
       "name": "Stabljika Kanabisa",
-      "model": "prop_weed_01", 
+      "hash": "prop_weed_01", 
       "grow": 5
    },
 
    { 
       "type": "cocaina",
       "name": "Stabljika Koke",
-      "model": [434.7479, -983.2151, 30.83926],
+      "hash": [434.7479, -983.2151, 30.83926],
       "grow": 320433149
    }
 ]
