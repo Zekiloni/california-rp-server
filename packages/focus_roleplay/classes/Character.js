@@ -38,10 +38,17 @@ class Character {
 
       this.mute = p.mute || 0;
       
+      this.blindfolded = false;
       this.duty = false;
       this.inviteRequest = 0;
       this.casinoSlot = -1;
       this.casinoRoulette = -1;
+
+      this.tog ={
+         hud: false,
+         ooc: false,
+         ads: false
+      }
 
       mp.characters[this.id] = this;
    }
