@@ -10,15 +10,16 @@ let photoName = null;
 
 mp.game.gameplay.setFadeOutAfterDeath(false);
 
+playerHUD = mp.browsers.new('package://player/hud-interface/hud.html');
 
 
 mp.events.add('client:hud.show', (show) => {
 	if (show)  {
-		playerHUD = mp.browsers.new('package://player/hud-interface/hud.html');
+		playerHUD.execute(`hud.toggle = true;`); 
 		setInterval(() => { updatePlayerHud(); }, 1000);
 	}
 	else { 
-		playerHUD.destroy()
+		playerHUD.execute(`hud.toggle = false;`); 
 	}
 })
 
@@ -91,6 +92,10 @@ mp.events.add({
 	'client:hud.vehicle': (toggle) => { 
 		playerHUD.execute(`hud.vehicle.driving = ${toggle};`); 
 		isDriving = toggle;
+	},
+
+	'client:hud.black_screen': () => { 
+		playerHUD.execute(`hud.black_screen = !hud.black_screen;`); 
 	},
 
 	'client:screenshot.taken': () => {

@@ -172,7 +172,7 @@ module.exports = {
 
       {
          name: 'givegun',
-         admin: 2,
+         admin: 5,
          desc: 'Davanje oruzija',
          call: (player, args) => { 
             let target = mp.players.find(args[0]);

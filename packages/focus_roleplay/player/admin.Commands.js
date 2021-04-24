@@ -53,21 +53,6 @@ mp.events.addCommand({
       player.outputChatBox(`Postavili ste ${recipient.name} novac na ${money}$.`);
    },
 
-   'givemoney': (player, fullText, target, money) => {
-      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-
-      let recipient = account.findPlayer(target);
-      if(!recipient) { 
-         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
-         return false; 
-      } 
-
-      let cash = parseInt(money);
-
-      recipient.data.cash += cash;
-      recipient.outputChatBox(`${player.name} vam je dao novca ${cash} $.`);
-      player.outputChatBox(`Dali ste igracu ${recipient.name} novca ${cash}.`);
-   },
 
    'cash': (player, fullText) => { 
       player.outputChatBox(`pare kola kucke ${player.data.cash}.`);

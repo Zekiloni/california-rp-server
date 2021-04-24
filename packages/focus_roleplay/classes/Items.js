@@ -14,6 +14,7 @@ class Item {
       this.object = data.object || null;
       this.colshape = null;
       this.extra = data.extra || null;
+      this.ammo = data.ammo;
 
       mp.items[this.id] = this;
    }
@@ -82,7 +83,7 @@ class Inventory {
                if (mp.items[i].entity == ItemEntities.Wheel) { 
                   if (mp.items[i].owner == player.character) { 
                      let ammo = player.allWeapons[mp.joaat(mp.ItemRegistry[mp.items[i].item].weapon)];
-                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].weapon, ammo: ammo })
+                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].weapon, ammo: mp.items[i].ammo })
                   }
                }
             }
@@ -164,7 +165,13 @@ class Inventory {
                   item.entity = ItemEntities.Wheel;
                }
 
-               mp.ItemRegistry[item.item].use(player);
+               if (mp.ItemRegistry[item.item].ammo > 0) { 
+                  mp.ItemRegistry[item.item].use(player, mp.ItemRegistry[item.item].ammo);
+               } else { 
+                  mp.ItemRegistry[item.item].use(player);
+               }
+
+               this.update(item);
             }
          },
 
@@ -196,7 +203,7 @@ class Inventory {
          results.forEach(result => {
             let item = new Item(result.id, { 
                item: result.item, entity: result.entity, owner: result.owner, quantity: result.quantity, 
-               position: JSON.parse(result.position), dimension: result.dimension, extra: result.extra
+               position: JSON.parse(result.position), dimension: result.dimension, extra: result.extra, ammo: result.ammo
             });
             item.refresh();
             counter ++;
@@ -243,10 +250,18 @@ class Inventory {
    }
 
    update = (item) => {
-      db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ? WHERE id = ?", 
-            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.id], function(err, result, fields) {
+      if (item.quantity > 0) { 
+         db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ?, ammo = ? WHERE id = ?", 
+            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.ammo, item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Update Item ' + err);
-      });
+         });
+      } else { 
+         db.query("DELETE FROM `items` WHERE id = ?", [item.id], function(err, result, fields) {
+            if (err) return core.terminal(1, 'Remove Item ' + err);
+            delete mp.items[item.id];
+         })
+      }
+
    }
 
    near = (player) => { 

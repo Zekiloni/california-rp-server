@@ -94,6 +94,7 @@ let inventoryTable = `CREATE TABLE IF NOT EXISTS items (
   item varchar(128) NOT NULL,
   quantity int(4) NOT NULL DEFAULT 1,
   entity int(2) NOT NULL DEFAULT -1,
+  ammo int(4) NOT NULL DEFAULT 0,
   owner int(11) NOT NULL DEFAULT -1,
   dimension int(11) NOT NULL DEFAULT 0,
   position text DEFAULT NULL,
