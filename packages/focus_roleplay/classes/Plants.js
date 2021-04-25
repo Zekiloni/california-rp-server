@@ -37,7 +37,7 @@ class Plants {
       db.query("query", [], function (error, result, fields) { 
          if (error) return core.termnial(1, 'Plant Error ' + error)
       })
-      let plant = new Plant();
+      // let plant = new Plant();
    }
 
    delete (plant) { 
