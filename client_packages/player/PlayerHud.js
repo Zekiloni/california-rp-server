@@ -90,7 +90,7 @@ mp.events.add({
 		if (playerWeapon != mp.game.joaat('weapon_unarmed')) {  // TODO
 			let ammoInClip = getAmmoInClip(playerWeapon), ammoCount = getAmmoCount(playerWeapon);
 			let weapon = getWeaponString();
-			playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = [${ammoCount}, ${ammoInClip}], hud.weapon.hash = \"${weapon}\";`); 
+			playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = ${ammoCount}, hud.weapon.hash = \"${weapon}\";`); 
 		} else { 
 			playerHUD.execute(`hud.weapon.have = false;`);
 		}
