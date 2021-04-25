@@ -29,6 +29,14 @@
                     <h2 class="player-id"> <i class="fas fa-user"></i> {{ id }} </h2>
                     <h4 class="money"><b>&dollar;</b>{{ cash() }}</h4>
                 </div>
+
+                <div class="weapon" v-show="weapon.have">
+                    <img v-bind:src="'src/images/weapons/' + weapon.hash + '.png'" /> 
+                    <div class="ammo">
+                        <h2>{{ weapon.ammo[0] }}</h2>
+                        <h2>/ {{ weapon.ammo[1] }}</h2>
+                    </div>
+                </div>
                 
                 <div class="vehicle" v-if="vehicle.driving == true">
                     <div class="veh-info">
@@ -62,6 +70,12 @@
             el: '#hud',
             data: {
                 toggle: false, 
+
+                weapon: { 
+                    have: false,
+                    ammo: null,
+                    hash: null
+                },
 
                 money: 0,
                 id: null,

@@ -85,6 +85,15 @@ mp.events.add({
 		if (playerWeapon == '0x05FC3C11' || playerWeapon == '0x0C472FE2' || playerWeapon == '0xA914799' || playerWeapon == '0xC734385A' || playerWeapon == '0x6A6C02E0') {
 			mp.game.ui.showHudComponentThisFrame(14);
 		}
+	
+
+		if (playerWeapon != mp.game.joaat('weapon_unarmed')) {  // TODO
+			let ammoInClip = getAmmoInClip(playerWeapon), ammoCount = getAmmoCount(playerWeapon);
+			let weapon = getWeaponString();
+			playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = [${ammoCount}, ${ammoInClip}], hud.weapon.hash = \"${weapon}\";`); 
+		} else { 
+			playerHUD.execute(`hud.weapon.have = false;`);
+		}
 
 		// update veh speed if driver
 		if (player.vehicle && isDriving) { vehicle() }
@@ -131,7 +140,36 @@ vehicle = () => {
 	else if (lights.lightsOn == 0 && lights.highbeamsOn == 1) { lightsStatus = 2; }
 	else if (lights.lightsOn == 1 && lights.highbeamsOn == 0) { lightsStatus = 1; }
 	else if (lights.lightsOn == 1 && lights.highbeamsOn == 1) { lightsStatus = 2; }
-
 	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
+}
+
+function hasWeapon (weaponHash){
+	return mp.game.invoke("0x8DECB02F88F428BC", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
+}
+
+function getAmmoCount (weaponHash){
+	if (hasWeapon(weaponHash)){
+		let ammoCount = mp.game.invoke("0x015A522136D7F951", mp.players.local.handle, parseInt(weaponHash) >> 0)
+		if (ammoCount > 999) ammoCount = null
+		return ammoCount
+	}
+	return 0
+}
+
+function getAmmoInClip (weaponHash){
+	if (hasWeapon(weaponHash)){
+		let clipCount = mp.game.invoke("0xA38DCFFCEA8962FA", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
+		if (clipCount > 360) clipCount = null 
+		return clipCount
+	}
+	return 0
+}
+
+function getWeaponString (){
+	let weapon = mp.players.local.weapon 
+	if (typeof weapon !== "undefined")
+		return "0x" + mp.players.local.weapon.toString(16).toUpperCase()
+	else 
+		return "0xA2719263"
 }
 

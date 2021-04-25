@@ -7,6 +7,7 @@ mp.game.gameplay.setFadeOutAfterDeath(false);
 
 // dont remove weapon when run out from ammo
 mp.game.weapon.unequipEmptyWeapons = false;
+player.setCanSwitchWeapon(false);
 
 mp.events.addDataHandler({
    'logged': (entity, newValue, oldValue) => {

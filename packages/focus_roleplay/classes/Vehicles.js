@@ -102,7 +102,7 @@ mp.events.add({
 
     'playerEnterVehicle': (player, vehicle, seat) => { 
         let character = player.getCharacter();
-        if (vehicle.info.job && vehicle.job != character.job) return player.removeFromVehicle();
+        if (vehicle.info.job && vehicle.info.job != character.job) return player.removeFromVehicle();
         if (vehicle.info.faction && vehicle.info.faction != character.faction) return player.removeFromVehicle();
         if (seat == 0) { player.call('client:player.vehicle', [true, vehicle.engine]); }
     },

@@ -20,7 +20,7 @@ html, body {
 .server .online {display: block;color: #f7f7f7;font-size: 19px;font-weight: 300;letter-spacing: 2px;}
 .server .online .icon { color: #868686;}
 
-.player { right: 2%; top: 2%; position: absolute; width: 300px; }
+.player {right: 2%;margin-top: 10px;position: absolute;width: 300px;}
 .player .money {text-align: right;font-weight: 700;color: #84b879;font-size: 35px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);letter-spacing: 2px;}
 
 .player .player-id { 
@@ -65,5 +65,10 @@ html, body {
 .vehicle .fuel-icon {width: 18px;position: absolute;right: 120px;bottom: 22px;}
 .vehicle .lights-icon {width: 18px;position: absolute;right: 160px;bottom: 22px;}
 
+
+.weapon {position: absolute;width: 300px;padding: 5px 20px;display: flex;justify-content: space-between;align-items: center;border-radius: 10px;top: 110px;right: 2%;background: rgb(0 0 0 / 10%);border: 1px solid rgb(0 0 0 / 20%);}
+.weapon .ammo h2 { margin: 0; color: white; text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%); }
+.weapon .ammo {text-align: right;}
+.weapon img { margin-right: 20px; }
 
 .black_screen { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: black; z-index: 2; }
