@@ -2,6 +2,7 @@
 
 const player = mp.players.local;
 
+
 mp.events.addDataHandler('walking_style', (entity, value) => {
    if (entity.type === 'player') setWalkingStyle(entity, value);
 });
@@ -17,6 +18,7 @@ mp.events.add({
       setMovementClipset(player, style);
    }
 });
+
 
 function setWalkingStyle(entity, walkstyle) {
    try {

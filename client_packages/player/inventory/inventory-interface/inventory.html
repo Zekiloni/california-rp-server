@@ -36,8 +36,8 @@
             <div class="weapons" >
                 <div class="weapon" v-for="(weapon, key) in player.weapons" v-on:click="weaponUse(key, weapon.id)" v-on:dblclick="weaponBack(weapon)"> 
                     <h2> {{ weapon.name }} {{ key }} </h2>
-                    <h5>{{ weaponIndex(key) }}</h5>
-                    <img :src="'src/images/' + key + '.png'">
+                    <h5>{{ weaponphoto(weapon.hash) }}</h5>
+                    <img :src="'src/images/items/' + weapon.hash + '.png'">
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
         <script src="src/vendor/js/jquery-ui.min.js"></script>
         <script src="src/vendor/js/vue.js"></script>
         <script>
-            var inventory = new Vue({
+            let inventory = new Vue({
                 el: '#inventory',
                 data: {
                     player: {
@@ -83,6 +83,10 @@
                     weaponIndex: (i) => { 
                         let names = ['Primarno Oružije', 'Sekundardno oružije'];
                         return names[i];
+                    },
+
+                    weaponphoto: function (hash) {
+                        console.log('src/images/items/' + hash + '.png')
                     },
 
                     use: function (item) {

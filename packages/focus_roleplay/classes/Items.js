@@ -64,7 +64,7 @@ class Inventory {
 
                if (mp.items[i].entity == ItemEntities.Wheel) { 
                   if (mp.items[i].owner == player.character) { 
-                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item })
+                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash })
                   }
                }
             }

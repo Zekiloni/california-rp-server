@@ -13,7 +13,6 @@ let PlayerInventory = require('./player/inventory/Items');
 let Chat = require('./chat');
 let CayoPerico = require('./heistisland');
 
-
 // SYNCHRONIZATION & STREAMER
 let Streamer = require('./player/Streamer');
 let DamageSync = require('./DamageSync');
