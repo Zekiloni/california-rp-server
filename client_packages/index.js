@@ -9,9 +9,12 @@ let PlayerList = require('./player/PlayerList');
 let NameTags = require('./player/NameTags');
 let PlayerInventory = require('./player/inventory/Items');
 
+
 // GAME CORE 
 let Chat = require('./chat');
 let CayoPerico = require('./heistisland');
+let ChatBubble = require('./player/ChatBubble');
+
 
 // SYNCHRONIZATION & STREAMER
 let Streamer = require('./player/Streamer');
@@ -40,7 +43,6 @@ let Police = require('./factions/police/police');
 // var charClohing = require('./clothing/clothing');
 // // var interactionsMenu = require('./interactions-menu/interactions')
 // var bankingATM = require('./banking/atm');
-// var chatBubble = require('./player/chatBubble');
 // var vehDealership = require('./vehicles-dealership/dealerships');
 // var jobs = require('./jobs/jobs');
 // var furniture = require('./furniture/furniture');

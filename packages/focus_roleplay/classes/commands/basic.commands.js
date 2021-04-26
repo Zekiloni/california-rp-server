@@ -46,6 +46,21 @@ module.exports = {
       },
 
       {
+         name: 'showid',
+         desc: 'Pokazivanje dokumenata',
+         call: (player, args) => { 
+            if (args[0]) { 
+               let target = mp.players.find(args[0]);
+               if (target) { 
+                  target.call('client:player.documents', 'id', player.getCharacter());
+               }
+            } else { 
+               player.call('client:player.documents', 'id', player.getCharacter());
+            }
+         }
+      },
+
+      {
          name: 'accept',
          desc: 'Lista Komand',
          call: (player, args) => { 

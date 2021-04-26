@@ -74,4 +74,3 @@ function waitEntity (entity) {
    });
 }
 
-

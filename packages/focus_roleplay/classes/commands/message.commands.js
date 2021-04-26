@@ -112,6 +112,16 @@ module.exports = {
       },
 
       {
+         name: 'ame',
+         desc: 'Lokana OOC komunikacija',
+         params: '[tekst]',
+         call: (player, args) => { 
+            let message = args.splice(0).join(" ");
+            player.call('client:player.chat.bubble', [15, message, true])
+         }
+      },
+
+      {
          name: 'pm',
          desc: 'Privatna poruka',
          params: '[id / ime] [tekst]',
