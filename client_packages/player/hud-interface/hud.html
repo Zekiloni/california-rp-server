@@ -14,39 +14,50 @@
     </head>
     <body>
         <div id="hud">
-            <div class="server">
-                <h3 class="site">www.<b class="focus-rp">focus-rp</b>.com</h3>
-                <h6 class="online">online <b class="online-players">127</b> <i class="icon fa fa-users" aria-hidden="true"></i></h6>
-            </div>  
+            <div v-show="toggle">
 
-            <div class="notif"></div>
+                <div class="server">
+                    <h3 class="site">www.<b class="focus-rp">focus-rp</b>.com</h3>
+                    <h6 class="online">online <b class="online-players">127</b> <i class="icon fa fa-users" aria-hidden="true"></i></h6>
+                </div>  
 
-            <div class="player">
-                <h2 class="player-id"> <i class="fas fa-user"></i> {{ id }} </h2>
-                <h4 class="money"><b>&dollar;</b>{{ cash() }}</h4>
-            </div>
-            
-            <div class="vehicle" v-if="vehicle.driving == true">
-                <div class="veh-info">
-                    <h1 class="vehicle-speed">{{ vehicleSpeed() }}</h1>
-                    <h4>km/h</h4>
+                <div class="notif"> </div>
+
+                <div v-show="black_screen" class="black_screen"> </div>
+    
+                <div class="player">
+                    <h2 class="player-id"> <i class="fas fa-user"></i> {{ id }} </h2>
+                    <h4 class="money"><b>&dollar;</b>{{ cash() }}</h4>
                 </div>
-                <img class="fuel-icon" src="src/images/veh-fuel.png">
-                <img class="lights-icon" v-bind:src="'src/images/lights-' + vehicle.lights + '.png'" /> 
 
-            </div>
-
-            <div class="location-time">
-                <div class="date-time">
-                    <img class="icon" src="src/images/current-time.png">
-                    <h4 class="current-time">{{ timestamp }}</h4>
-                    <h4 class="current-date">{{ datestamp }}</h4>
+                <div class="weapon" v-show="weapon.have">
+                    <img v-bind:src="'src/images/weapons/' + weapon.hash + '.png'" /> 
+                    <div class="ammo">
+                        <h2 v-if="weapon.ammo">{{ weapon.ammo }}</h2>
+                    </div>
                 </div>
-                <div class="location">
-                    <img class="icon" src="src/images/current-location.png">
-                    <h4 class="current-heading"> {{ location.heading }} </h4>
-                    <h4 class="current-zone">{{ location.zone }}</h4>
-                    <h5 class="current-street">{{ location.street }}</h5>
+                
+                <div class="vehicle" v-if="vehicle.driving == true">
+                    <div class="veh-info">
+                        <h1 class="vehicle-speed">{{ vehicleSpeed() }}</h1>
+                        <h4>km/h</h4>
+                    </div>
+                    <img class="fuel-icon" src="src/images/veh-fuel.png">
+                    <img class="lights-icon" v-bind:src="'src/images/lights-' + vehicle.lights + '.png'" /> 
+                </div>
+
+                <div class="location-time">
+                    <div class="date-time">
+                        <img class="icon" src="src/images/current-time.png">
+                        <h4 class="current-time">{{ timestamp }}</h4>
+                        <h4 class="current-date">{{ datestamp }}</h4>
+                    </div>
+                    <div class="location">
+                        <img class="icon" src="src/images/current-location.png">
+                        <h4 class="current-heading"> {{ location.heading }} </h4>
+                        <h4 class="current-zone">{{ location.zone }}</h4>
+                        <h5 class="current-street">{{ location.street }}</h5>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,9 +68,19 @@
         let hud = new Vue({
             el: '#hud',
             data: {
+                toggle: false, 
+
+                weapon: { 
+                    have: false,
+                    ammo: 0,
+                    hash: null
+                },
+
                 money: 0,
                 id: null,
                 onlinePlayers: null,
+
+                black_screen: false,
 
                 timestamp: null,
                 datestamp: null,

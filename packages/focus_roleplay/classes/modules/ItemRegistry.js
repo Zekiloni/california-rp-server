@@ -11,6 +11,40 @@ const ItemType = {
 
 module.exports = { ItemType, ItemEntities }
 
+
+
+// PREDLOG SA RAGEMP FORUMA !
+// PREDLOG SA RAGEMP FORUMA !
+// class BaseItem {
+//    constructor (name) {
+//      this.name = name;
+//    }
+ 
+//    use (player) {
+//      console.log(`player trying use ${this.name} item`);
+//    }
+//  }
+ 
+//  class WeaponItem extends BaseItem {
+//    constructor (name, objectName, weapon) {
+//      super(name);
+ 
+//      this.objectName = objectName;
+//      this.weaponName = weaponName;    
+//    }
+ 
+//    use (player, ammo = 0) {
+//      player.giveWeapon(mp.joaat(this.weaponName), ammo);
+//    }
+//  }
+ 
+//  const items = {
+//    'justBaseItem': new BaseItem('Some food'),
+//    'carbineRifle': new WeaponItem('Carbine Rifle', 'w_ar_carbinerifle', 'weapon_carbinerifle')
+//  };
+
+
+
 mp.ItemRegistry = { 
    'Carbine Rifle': { 
       name: 'Carbine Rifle',
@@ -18,8 +52,8 @@ mp.ItemRegistry = {
       weapon: 'weapon_carbinerifle',
       weight: 0.1,
       type: ItemType.Weapon,
-      use: (player) => { 
-         player.giveWeapon(mp.joaat(mp.ItemRegistry['Carbine Rifle'].weapon), 0);
+      use: (player, ammo = 0) => { 
+         player.giveWeapon(mp.joaat(mp.ItemRegistry['Carbine Rifle'].weapon), ammo);
       }
    },
    
@@ -30,8 +64,8 @@ mp.ItemRegistry = {
       weight: 0.08,
       caliber: '9mm Ammo',
       type: ItemType.Weapon,
-      use: (player) => { 
-         player.giveWeapon(mp.joaat(mp.ItemRegistry['Combat Pistol'].weapon), 0);
+      use: (player, ammo = 0) => { 
+         player.giveWeapon(mp.joaat(mp.ItemRegistry['Combat Pistol'].weapon), ammo);
       }
    },
 
@@ -44,11 +78,6 @@ mp.ItemRegistry = {
          if (weapon) { 
             let ammo = player.getWeaponAmmo(weapon);
             player.setWeaponAmmo(weapon, parseInt(ammo + bullets));
-            console.log(player.weaponAmmo);
-            console.log(weapon)
-            // if (weapon.hash == mp.ItemRegistry['Combat Pistol'].weapon) { 
-
-            // }
          }
       }
    },

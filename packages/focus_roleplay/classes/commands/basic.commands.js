@@ -37,6 +37,13 @@ module.exports = {
          }
       },
 
+      {
+         name: 'blindfold',
+         desc: 'Povez preko ociju',
+         call: (player, args) => { 
+            player.call('client:hud.black_screen')
+         }
+      },
 
       {
          name: 'accept',

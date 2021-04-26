@@ -38,10 +38,19 @@ class Character {
 
       this.mute = p.mute || 0;
       
+      this.blindfolded = false;
+      this.cuffed = false;
       this.duty = false;
       this.inviteRequest = 0;
       this.casinoSlot = -1;
       this.casinoRoulette = -1;
+
+      this.tog ={
+         hud: false,
+         ooc: false,
+         ads: false,
+         admin_chat: false,
+      }
 
       mp.characters[this.id] = this;
    }
@@ -105,6 +114,11 @@ class Character {
    setWalkingStyle (player, style) { 
       this.walking_style = style;
       player.setVariable('walking_style', this.walking_style);
+   }
+
+   Cuff (player) { 
+      this.cuffed = !this.cuffed;
+      player.setVariable('cuffed', this.cuffed);
    }
 
    payDay (player) { 

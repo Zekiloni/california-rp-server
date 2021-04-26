@@ -1,6 +1,6 @@
 
 let globals = require('./core/globals');
-let settings = require('./core/settings');
+let settings = require('./core/Settings');
 
 global.db = require('./core/Database');
 global.config = require('./core/configuration');
@@ -32,8 +32,6 @@ let Channels = require('./classes/Channels');
 let Weather = require('./classes/Weather');
 let Animals = require('./classes/Animals');
 
-
-global.account = require('./player/player.Core');
 // global.business = require('./business/bizCore');
 // global.houses = require('./houses/houses.Core');
 // global.jobs = require('./jobs/jobs.Core');
@@ -42,7 +40,6 @@ global.account = require('./player/player.Core');
 // var playerCommands = require('./player/player.Commands');
 // var adminCommands = require('./player/admin.Commands');
 var playerAnimations = require('./player/animations');
-var furnitureShop = require('./business/furnitureShop');
 
 core.terminal(3, `${config.app} Started ! version ${config.version}`);
 
@@ -120,6 +117,7 @@ mp.events.addCommand("tp", (player) => {
     mp.events.call('server:animals.spawn', player, 15);
     player.position = new mp.Vector3(1070.206, -711.958, 58.483);
 });
+
 
 
 mp.events.addCommand("peds", (player) => {

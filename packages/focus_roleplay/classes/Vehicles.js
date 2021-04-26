@@ -10,6 +10,7 @@ class Vehicle {
 		this.rotation = params.rotation || 0;
 		this.price = params.price;
 		this.owner = params.owner || -1;
+        this.business = params.business || 0;
 		this.plate = params.plate || '';
 		this.color = params.color || [[0, 0, 0], [0, 0, 0]];
 		this.alpha = params.alpha || 255;
@@ -17,7 +18,7 @@ class Vehicle {
 		this.locked = params.locked || false;
 		this.engine = params.engine || false;
 		this.dimension = params.dimension || 0;
-		this.visible = params.visible || true;
+		this.spawned = params.spawned || false;
 		this.km = params.km || 0;
 		this.dirt = params.dirt || 0; 
         this.impounded = params.impounded || 0;
@@ -49,6 +50,7 @@ class Vehicle {
 	}
 
     paint (vehicle, color) {
+        this.color = color;
         vehicle.setColorRGB(parseInt(color[0][0]), parseInt(color[0][1]), parseInt(color[0][2]), parseInt(color[1][0]), parseInt(color[1][1]), parseInt(color[1][2]));
     }
 
@@ -86,18 +88,22 @@ class Vehicle {
             color: JSON.stringify(this.color),
             plate: this.plate,
         }
+
+        db.query("UPDATE `vehicles` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
+            if (error) return core.terminal(1, `Saving Vehicle ${error}`);
+        });
     }
 }
-
-
 
 
 mp.events.add({
 
     'playerEnterVehicle': (player, vehicle, seat) => { 
         let character = player.getCharacter();
-        if (vehicle.job && vehicle.job != character.job) return player.removeFromVehicle();
-        if (vehicle.faction && vehicle.faction != character.faction) return player.removeFromVehicle();
+        if (vehicle.info) { 
+            if (vehicle.info.job && vehicle.info.job != character.job) return player.removeFromVehicle();
+            if (vehicle.info.faction && vehicle.info.faction != character.faction) return player.removeFromVehicle();
+        }
         if (seat == 0) { player.call('client:player.vehicle', [true, vehicle.engine]); }
     },
     
@@ -148,23 +154,36 @@ mp.vehicles.load = () => {
    })
 }
 
-mp.vehicles.create = (player, model, temporary = false, data) => { 
-    let vehicle = mp.vehicles.new(mp.joaat("turismor"), new mp.Vector3(-441.88, 1156.86, 326),
+mp.vehicles.create = (model, temporary = false, data) => { 
+
+    let vehicle = mp.vehicles.new(mp.joaat(model), data.position,
     {
-        numberPlate: "ADMIN",
-        color: [[0, 255, 0],[0, 255, 0]]
+        numberPlate: data.numberplate || 'none',
+        engine: false,
+        dimenson: data.dimenson,
+        locked: data.locked,
+        alpha: 255,
     });
 
-    if (temporary == true) { 
-        // insert into database
-        db.query("INSERT INTO `vehicles`", function(error, results, fields) {
+    vehicle.info = new Vehicle(temporary, { 
+        id: data.id, model: model, km: 0, fuel: 100, plate: vehicle.numberPlate, spawned: true, dimension: vehicle.dimension,
+        position: data.position, locked: data.locked, owner: data.owner || 0, price: data.price, upgrades: { } 
+    });
 
-        });
+    if (data.color) { 
+        vehicle.info.paint(vehicle, data.color)
     }
 
-    vehicle.info = new Vehicle();
-
+    if (temporary == false) { 
+        let locked = 0;
+        data.locked == true ? locked = 1 : locked = 0;
+        db.query("INSERT INTO `vehicles` (model, price, owner, plate, color, position, heading, locked, spawned, dimension, kilometers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+            [vehicle.model, data.price, data.owner || 0, data.numberplate, JSON.stringify(data.color), JSON.stringify(vehicle.position), vehicle.heading, locked, 1, data.dimension, 0], function (error, results, fields) {
+            if (error) return core.terminal(1, 'Vehicle Creating Error ' + error);
+        });
+    }
 }
+
 
 mp.vehicles.save = () => { 
    mp.vehicles.forEach( (vehicle) => { 

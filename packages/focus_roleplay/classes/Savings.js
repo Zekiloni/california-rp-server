@@ -63,7 +63,10 @@ class Saving {
                   armour: character.armour
                }
                db.query('UPDATE `characters` SET ? WHERE id = ?', [values, player.character], function (err, result) {
-                     if (err) return core.terminal(1, 'Saving Acccount Error ' + err)
+                     if (err) return core.terminal(1, 'Saving Acccount Error ' + err);
+                     if (exit == true) { 
+                        delete mp.characters[character.id];
+                     }
                });
             }
          },

@@ -46,12 +46,13 @@ mp.Player.prototype.defaultVariables = function () {
 mp.Player.prototype.proximityMessage = function (radius, message, colors) {
    mp.players.forEachInRange(this.position, radius,
 		(target) => {
-			let distance = target.dist(this.position), color = colors[0];
-         if (distance < radius / 8) { color = colors[0]; }
-         else if (distance < radius / 6) { color = colors[1]; }
-         else if (distance < radius / 4) { color = colors[2]; }
-         else if (distance < radius / 2) { color = colors[3]; }
-         else if (distance < radius) { color = colors[4]; }
+         let distanceGap = radius / 5;
+			let distance = target.dist(this.position), color = colors[0];  
+         if (distance < distanceGap) { color = colors[0]; } 
+         else if (distance < distanceGap * 2) { color = colors[1]; }
+         else if (distance < distanceGap * 3) { color = colors[2]; }
+         else if (distance < distanceGap * 4) { color = colors[3]; }
+         else { color = colors[3]; }
          target.outputChatBox(`!{${color}}${message}`);
 		}
 	);

@@ -14,25 +14,21 @@ class Item {
       this.object = data.object || null;
       this.colshape = null;
       this.extra = data.extra || null;
+      this.ammo = data.ammo;
 
       mp.items[this.id] = this;
    }
 
    refresh () { 
       if (this.entity == -1) { 
-         try { 
-            this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93),
-            {
-               rotation: new mp.Vector3(-90, 0, 0),
-               alpha: 255,
-               dimension: this.dimension
-            });
-            this.object.item = this.id;
-            this.object.notifyStreaming = true;
-         } catch (e) { 
-            console.log(e)
-         }
-
+         this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93),
+         {
+            rotation: new mp.Vector3(-90, 0, 0),
+            alpha: 255,
+            dimension: this.dimension
+         });
+         this.object.item = this.id;
+         this.object.notifyStreaming = true;
       } else { 
          if (this.object) { 
             this.object.destroy();
@@ -68,7 +64,7 @@ class Inventory {
 
                if (mp.items[i].entity == ItemEntities.Wheel) { 
                   if (mp.items[i].owner == player.character) { 
-                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item })
+                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].hash })
                   }
                }
             }
@@ -82,7 +78,7 @@ class Inventory {
                if (mp.items[i].entity == ItemEntities.Wheel) { 
                   if (mp.items[i].owner == player.character) { 
                      let ammo = player.allWeapons[mp.joaat(mp.ItemRegistry[mp.items[i].item].weapon)];
-                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].weapon, ammo: ammo })
+                     weapons.push({ id: mp.items[i].id, name: mp.items[i].item, hash: mp.ItemRegistry[mp.items[i].item].weapon, ammo: mp.items[i].ammo })
                   }
                }
             }
@@ -106,6 +102,7 @@ class Inventory {
             if (dressed.drawable == undressed[index]) { 
                player.setClothes(parseInt(index), parseInt(clothing[0]), parseInt(clothing[1]), 2);
             } else { 
+               if (index == 8 || index == 11) player.setClothes(3, 15, 0, 2);
                player.setClothes(parseInt(index), undressed[index], 0, 2);
             }
          },
@@ -164,7 +161,13 @@ class Inventory {
                   item.entity = ItemEntities.Wheel;
                }
 
-               mp.ItemRegistry[item.item].use(player);
+               if (mp.ItemRegistry[item.item].ammo > 0) { 
+                  mp.ItemRegistry[item.item].use(player, mp.ItemRegistry[item.item].ammo);
+               } else { 
+                  mp.ItemRegistry[item.item].use(player);
+               }
+
+               this.update(item);
             }
          },
 
@@ -196,7 +199,7 @@ class Inventory {
          results.forEach(result => {
             let item = new Item(result.id, { 
                item: result.item, entity: result.entity, owner: result.owner, quantity: result.quantity, 
-               position: JSON.parse(result.position), dimension: result.dimension, extra: result.extra
+               position: JSON.parse(result.position), dimension: result.dimension, extra: result.extra, ammo: result.ammo
             });
             item.refresh();
             counter ++;
@@ -216,7 +219,6 @@ class Inventory {
             let i = new Item(id, { 
                item: found.name, entity: entity, owner: owner, position: player.position, dimension: player.dimension, quantity: quantity
             })
-            console.log(i)
             i.refresh();
          })
       }
@@ -243,10 +245,18 @@ class Inventory {
    }
 
    update = (item) => {
-      db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ? WHERE id = ?", 
-            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.id], function(err, result, fields) {
+      if (item.quantity > 0) { 
+         db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ?, ammo = ? WHERE id = ?", 
+            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.ammo, item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Update Item ' + err);
-      });
+         });
+      } else { 
+         db.query("DELETE FROM `items` WHERE id = ?", [item.id], function(err, result, fields) {
+            if (err) return core.terminal(1, 'Remove Item ' + err);
+            delete mp.items[item.id];
+         })
+      }
+
    }
 
    near = (player) => { 

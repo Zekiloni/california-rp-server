@@ -1,62 +1,58 @@
 
-const player =  mp.players.local;
+const player = mp.players.local;
 var vehiclesCEF, weaponCEF, equipCEF;
 
-mp.events.add({
-   'client:showPoliceVehicles': () => {
-      vehiclesCEF = mp.browsers.new('package://factions/police/police-interfaces/vehicles.html');
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
-   },
 
-   'client:hidePoliceVehicles': () => {
-      vehiclesCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
-   },
-
-   'client:spawnPoliceVehicle': (name, model) => {
-      mp.events.callRemote('server:police.spawnVehicle', name, model);
-   },
-
-   'client:showPoliceWeaponary': () => {
-      weaponCEF = mp.browsers.new('package://factions/police/police-interfaces/weapons.html');
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
-   },
-
-   'client:hidePoliceWeaponary': () => {
-      weaponCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
-   },
-
-   'client:policeGiveWeapon': (name, weapon, ammo) => {
-      mp.events.callRemote('server:police.giveWeapon', name, weapon, ammo);
-   },
-
-   'client:showPoliceEquipment': () => {
-      equipCEF = mp.browsers.new('package://factions/police/police-interfaces/equipment.html');
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
-   },
-
-   'client:hidePoliceEquipment': () => {
-      equipCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
-   },
-
-   'client:policeDragPlayer': (target, toggle) => { 
-      if (toggle) {
-         if (target && mp.players.exists(target))
-            player.taskFollowToOffsetOf(target.handle, 0, -1, 0, 1.0, -1, 1.0, true)
+mp.events.addDataHandler('cuffed', (entity, newValue, oldValue) => {
+   if (entity.type === 'player') {
+      if (newValue !== oldValue) { 
+         cuff(entity, newValue);
       }
-      else
-         player.clearTasks();
+   }
+});
+
+mp.events.add({
+
+   'entityStreamIn': (entity) => {
+      if (entity.type === 'player') cuff(entity, entity.getVariable('cuffed'));
    },
 
-   'client:playerCuff': () => {
-      player.setEnableHandcuffs(true);
+   'client:player.cuff': (entity, toggle) => { 
+      mp.gui.chat.push(entity.name + ' lisice ' + JSON.stringify(toggle))
+      cuff(entity, toggle);
    },
 
-   'client:playerUncuff': () => {
-      player.setEnableHandcuffs(false);
-   },
+   'render': () => { 
+      if (player.cuffed) { 
+         // DISABLE SPRINT, ATTACK, AIM, JUMP
+         mp.game.controls.disableControlAction(0, 24, true);
+         mp.game.controls.disableControlAction(0, 25, true);
+         // mp.game.controls.disableControlAction(0, 21, true);
+         mp.game.controls.disableControlAction(0, 55, true);
+      }
+   }
 
 })
+
+
+function cuff (entity, toggle) { 
+   if (toggle) { 
+      entity.setEnableHandcuffs(true);
+      entity.cuffed = true;
+
+      let cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), entity.position,
+         {
+             rotation: rotation,
+             alpha: alpha,
+             dimension: dimension
+         });
+      entity.attachTo(entity2, boneIndex, xPosOffset, yPosOffset, zPosOffset, xRot, yRot, zRot, p9, useSoftPinning, collision, isPed, vertexIndex, fixedRot);
+
+   }
+   else {
+      entity.setEnableHandcuffs(false);
+      entity.cuffed = false;
+   }
+}
+
 

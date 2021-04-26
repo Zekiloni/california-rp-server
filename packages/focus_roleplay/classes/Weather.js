@@ -26,7 +26,7 @@ class Weather {
          }).catch(function(err){
          	core.terminal(1, `Server Weather, there was a problem fetching weather, ${err}.`)
          }); 
-      }, 3600000)
+      }, 1800000)
    }
 }
 

@@ -23,12 +23,12 @@ function setMood(player, mood) {
 }
 
 mp.events.addDataHandler('mood', (entity, value) => {
-    if (entity.type === "player") setMood(entity, value);
+    if (entity.type === 'player') setMood(entity, value);
 });
 
 mp.events.add({
     'entityStreamIn': (entity) => {
-        if (entity.type === "player") setMood(entity, entity.getVariable('mood'));
+        if (entity.type === 'player') setMood(entity, entity.getVariable('mood'));
     },
 
     'client:player.interactions.menu': (toggle) => { 

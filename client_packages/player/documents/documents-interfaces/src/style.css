@@ -1,0 +1,86 @@
+
+body {
+   font-family: 'Roboto', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   line-height: 1.5;
+   color: #8e8e8e;
+   margin: 0;
+   width: 100%;
+   height: 100vh;
+   padding: 0;
+   position: relative;
+   overflow: hidden;
+   display: grid;
+}
+
+#id {
+   width: 650px;
+   height: 380px;
+   margin: auto;
+   background-color: #f6f6f6;
+   background-image: url('images/bg_id.png');
+   border-radius: 5px;
+   display: flex;
+   flex-direction: column;
+   position: relative;
+   overflow: hidden;
+   box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;
+}
+
+
+.header_bottom::after {
+   content: '';
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   width: 350px;
+   height: 2px;
+   /* background: #9e9e9e; */
+}
+
+
+/* DOZVOLE */
+#license {
+   width: 650px;
+   height: 380px;
+   margin: auto;
+   background-color: #f6f6f6;
+   background-image: url('images/bg_license.png');
+   border-radius: 5px;
+   display: flex;
+   flex-direction: column;
+   position: relative;
+   overflow: hidden;
+   box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;
+}
+
+.header_bg {background: linear-gradient(45deg, #e6e6e6, transparent);}
+
+.header {width: 98%;padding-left: 25px;padding-top: 15px;padding-bottom: 5px;position: relative;}
+.header h2 { color: rgb(77, 77, 77); font-weight: 400; text-transform: uppercase; font-size: 27px; margin: 0; letter-spacing: 1.2px; }
+.header h4 { text-transform: uppercase; font-weight: 300; letter-spacing: 2px; font-size: 22px; margin: 0; }
+
+.info {width: 310px;list-style-type: upper-roman;margin-left: 25px;margin-top: 20px;height: 120px;flex-wrap: wrap;padding: 0;}
+.info li {font-size: 16px;color: rgb(24, 24, 24);display: flex;margin: 5px 0;justify-content: space-between;}
+
+.data {position: absolute;bottom: 27px;left: 130px;list-style: none;color: #868686;}
+
+.licenses {position:absolute;right: 25px;top: 100px;padding: 0;width: 250px;}
+.licenses li { font-size: 16px;color: rgb(24, 24, 24); list-style: none;}
+.licenses li b { margin: 0 2px; }
+
+.gov-logo { 
+   bottom: -40px;
+   right: -40px;
+   opacity: 0.45;
+   position: absolute; 
+}
+
+* { user-select: none; }
+
+@keyframes pop-up {
+   0% { transform: scale(0.4, 0.4); }  
+   20% { transform: rotate(-260deg);}
+   100% { transform: rotate(0); }
+}

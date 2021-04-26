@@ -53,21 +53,6 @@ mp.events.addCommand({
       player.outputChatBox(`Postavili ste ${recipient.name} novac na ${money}$.`);
    },
 
-   'givemoney': (player, fullText, target, money) => {
-      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-
-      let recipient = account.findPlayer(target);
-      if(!recipient) { 
-         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
-         return false; 
-      } 
-
-      let cash = parseInt(money);
-
-      recipient.data.cash += cash;
-      recipient.outputChatBox(`${player.name} vam je dao novca ${cash} $.`);
-      player.outputChatBox(`Dali ste igracu ${recipient.name} novca ${cash}.`);
-   },
 
    'cash': (player, fullText) => { 
       player.outputChatBox(`pare kola kucke ${player.data.cash}.`);
@@ -90,16 +75,6 @@ mp.events.addCommand({
 
 
 
-   'customization': (player, fullText) => {
-      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      player.call("client:showCustomization");
-   },
-
-   'clothing': (player, fullText) => {
-      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      player.call("client:showClothing");
-   },
-
    'createveh': (player, fullText, model, c1r = 0, c1g = 0, c1b = 0, c2r = 0, c2g = 0, c2b = 0) => {
       if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
       mp.vehicles.create( { 
@@ -115,19 +90,6 @@ mp.events.addCommand({
       player.vehicle.setMod(parseInt(modType), parseInt(modIndex));
       player.outputChatBox(`Tip moda ${modType} sa indeksom moda ${modIndex} je postavljen.`);
    },
-
-   'giveitem': (player, fullText) => {
-      if (fullText) { 
-         if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-         let args = fullText.split(' ');
-         let quantity = args[0];
-         let itemNameFull = args.slice(1).join(' ');
-         
-         console.log(`ime predmeta za davanje je ${itemNameFull}, kolicina ${quantity}`)
-         inventoryCore.addItem(player, itemNameFull, quantity);
-      }
-   },
-
    'freeze': (player, fullText, target) => {
       if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
 

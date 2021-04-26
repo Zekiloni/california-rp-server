@@ -41,6 +41,25 @@ module.exports = {
       },
 
       {
+         name: 'cuff',
+         desc: 'Lisice',
+         factionType: FactionTypes.Law,
+         call: (player, args) => { 
+            let target = mp.players.find(args[0]);    
+            if (target) { 
+               let character = target.getCharacter();
+               character.Cuff(target);
+               if (character.cuffed) { 
+                  target.playAnimation('mp_arresting', 'idle', 1, 49); }
+               else {         
+                  target.stopAnimation()
+               }
+               // target.call('client:player.cuff', [character.cuffed])
+            }
+         }
+      },
+
+      {
          name: 'rb',
          call: (player, args) => { 
             let character = player.getCharacter(), i = args[0], roadblocks = [];

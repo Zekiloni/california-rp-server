@@ -25,7 +25,6 @@ module.exports = {
             let target = mp.players.find(args[0]);
             if (target) { 
                mp.item.clear(target);
-               console.log('pozvana')
             }
          }
       }

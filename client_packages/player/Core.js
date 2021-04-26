@@ -2,6 +2,13 @@ const player = mp.players.local;
 let eatObject, drinkObject;
 
 
+// black screen after death
+mp.game.gameplay.setFadeOutAfterDeath(false); 
+
+// dont remove weapon when run out from ammo
+mp.game.weapon.unequipEmptyWeapons = false;
+player.setCanSwitchWeapon(false);
+
 mp.events.addDataHandler({
    'logged': (entity, newValue, oldValue) => {
       if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
@@ -56,20 +63,10 @@ mp.events.add({
       }, 300)
    },
 
-   'client:doors.sync': (model, position, state) => { 
-      mp.game.object.doorControl(parseInt(model), position[0], position[1], position[2], state, 0.0, 50.0, 0)
-   },
-
    'client:player.rotate': (value) => {
       player.setHeading(value);
    },
 
-   'client:interior.request.ipl': (ipl) => { 
-      mp.game.streaming.requestIpl(ipl);
-      // mp.game.invoke("0x41B4893843BBDB74", ipl);
-      player.freezePosition(true)
-      setTimeout(() => { player.freezePosition(false) }, 1500);
-   },
 
    'client:screenEffect': (effect, duration) => {
       mp.game.graphics.startScreenEffect(effect, parseInt(duration), false);

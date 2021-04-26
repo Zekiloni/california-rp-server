@@ -68,18 +68,6 @@ mp.events.addCommand({
       } else return player.notification(MSG_CMD_SYNTAX + '/giverank [igrac] [rank]', NOTIFY_INFO, 6)
    },
 
-   'paycheck': (player, fullText) => { 
-      let timeToPayCheck = 60 - player.xp;
-      player.outputChatBox(`Jos ${timeToPayCheck} minuta do sledece plate.`);
-   },
-
-   'quitjob': (player, fullText) => { 
-      if (player.job == 0) return player.notification(MSG_UNEMPLOYED, NOTIFY_ERROR, 4);
-      if (player.duty) return player.notification('Morate prvo stopirati rad.', NOTIFY_ERROR, 4)
-
-      player.job = 0;
-      player.notification(MSG_QUITJOB, NOTIFY_SUCCESS, 4)
-   },
 
    'accept': (player, fullText) => {
       if(fullText) { 
