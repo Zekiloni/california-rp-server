@@ -50,7 +50,7 @@ module.exports = {
                let character = target.getCharacter();
                character.Cuff(target);
                //if (character.cuffed) { target.playAnimation('mp_arresting', 'idle', 1, 49); }
-               target.call('client:player.cuff', [target, character.cuffed])
+               // target.call('client:player.cuff', [character.cuffed])
             }
          }
       },

@@ -17,25 +17,25 @@ mp.events.add({
       if (entity.type === 'player') cuff(entity, entity.getVariable('cuffed'));
    },
 
-   'client:player.cuff': (player, toggle) => { 
-      mp.gui.chat.push(player.name + ' lisice ' + JSON.stringify(toggle))
-      cuff(player, toggle);
+   'client:player.cuff': (entity, toggle) => { 
+      mp.gui.chat.push(entity.name + ' lisice ' + JSON.stringify(toggle))
+      cuff(entity, toggle);
    }
 
 })
 
 
-function cuff (player, toggle) { 
+function cuff (entity, toggle) { 
    if (toggle) { 
-      player.setEnableHandcuffs(true);
-      mp.game.invoke("0xDF1AF8B5D56542FA", player, true);
-      player.cuffed = true;
+      entity.setEnableHandcuffs(true);
+      mp.game.invoke("0xDF1AF8B5D56542FA", entity, true);
+      entity.cuffed = true;
       mp.gui.chat.push('turio sam')
    }
    else {
-      player.setEnableHandcuffs(false);
-      mp.game.invoke("0xDF1AF8B5D56542FA", player, false);
-      player.cuffed = false;
+      entity.setEnableHandcuffs(false);
+      mp.game.invoke("0xDF1AF8B5D56542FA", entity, false);
+      entity.cuffed = false;
       mp.gui.chat.push('mako sam')
    }
 }

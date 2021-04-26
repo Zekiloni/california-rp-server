@@ -31,19 +31,19 @@ let FingerPointing = require('./player/Interactions/FingerPointing');
 let Police = require('./factions/police/police');
 
 
-let casino = require('./casino/CasinoSlots');
-let fuel = require('./fuel');
+// let casino = require('./casino/CasinoSlots');
+// let fuel = require('./fuel');
 
-let binds = require('./player/binds');
+// let binds = require('./player/binds');
 
-var animals = require('./animals');
-var charClohing = require('./clothing/clothing');
-// var interactionsMenu = require('./interactions-menu/interactions')
-var bankingATM = require('./banking/atm');
-var chatBubble = require('./player/chatBubble');
-var vehDealership = require('./vehicles-dealership/dealerships');
-var jobs = require('./jobs/jobs');
-var furniture = require('./furniture/furniture');
+// var animals = require('./animals');
+// var charClohing = require('./clothing/clothing');
+// // var interactionsMenu = require('./interactions-menu/interactions')
+// var bankingATM = require('./banking/atm');
+// var chatBubble = require('./player/chatBubble');
+// var vehDealership = require('./vehicles-dealership/dealerships');
+// var jobs = require('./jobs/jobs');
+// var furniture = require('./furniture/furniture');
 // var syncObjects = require('./syncObjects');
 
 

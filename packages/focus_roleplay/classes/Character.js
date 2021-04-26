@@ -118,7 +118,6 @@ class Character {
 
    Cuff (player) { 
       this.cuffed = !this.cuffed;
-      console.log('cuffed ' + this.cuffed)
       player.setVariable('cuffed', this.cuffed);
    }
 
