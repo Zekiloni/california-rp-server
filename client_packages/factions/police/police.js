@@ -18,7 +18,6 @@ mp.events.add({
    },
 
    'client:player.cuff': (entity, toggle) => { 
-      mp.gui.chat.push(entity.name + ' lisice ' + JSON.stringify(toggle))
       cuff(entity, toggle);
    },
 
@@ -27,7 +26,7 @@ mp.events.add({
          // DISABLE SPRINT, ATTACK, AIM, JUMP
          mp.game.controls.disableControlAction(0, 24, true);
          mp.game.controls.disableControlAction(0, 25, true);
-         // mp.game.controls.disableControlAction(0, 21, true);
+         mp.game.controls.disableControlAction(0, 21, true);
          mp.game.controls.disableControlAction(0, 55, true);
       }
    }
@@ -40,25 +39,39 @@ function cuff (entity, toggle) {
       entity.setEnableHandcuffs(true);
       entity.cuffed = true;
 
-      let cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), entity.position,
-      {
-            rotation: entity.rotation,
-            alpha: 255,
-            dimension: entity.dimension
+      entity.cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), entity.position, {
+         rotation: new mp.Vector3(0, 0, 0),
+         alpha: 255,
+         dimension: entity.dimension
       });
-      entity.attachTo(cuffs, 6286, -0.02, 0.063, 0.0, 75.0, 0.0, 76.0, true, true, false, true, 0, true); 
+
+      entity.cuffs.notifyStreaming = true;
+      waitEntity(entity.cuffs).then(() => {
+         let bone = mp.players.local.getBoneIndex(6286);
+         entity.cuffs.attachTo(entity.handle, bone, -0.02, 0.06, 0.0, 75.0, 0.0, 76.0, true, true, false, false, 0, true);
+      })
 
    }
    else {
       entity.setEnableHandcuffs(false);
       entity.cuffed = false;
+      if (entity.cuffs) { 
+         if (entity.cuffs.doesExist()) { 
+            entity.cuffs.destroy();
+         }
+      }
    }
 }
 
-/*AttachObjectToPlayer(target, NAPI.Util.GetHashKey("p_cs_cuffs_02_s"), 6286, new Vector3(-0.02f, 0.063f, 0.0f), new Vector3(75.0f, 0.0f, 76.0f));
-public static void AttachObjectToPlayer(Player player, uint model, int bone, Vector3 posOffset, Vector3 rotOffset)
-        {
-            var attObj = new AttachedObject(model, bone, posOffset, rotOffset);
-            player.SetSharedData("attachedObject", JsonConvert.SerializeObject(attObj));
-            Trigger.ClientEventInRange(player.Position, 550, "attachObject", player);
-        } */
+function waitEntity (entity) {
+   return new Promise(resolve => {
+         let wait = setInterval(() => {
+            if (mp.game.entity.isAnEntity(entity.handle)) {
+               clearInterval(wait);
+               resolve();
+            }
+         }, 1);
+   });
+}
+
+

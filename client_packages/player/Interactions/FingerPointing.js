@@ -5,19 +5,22 @@
    lastSent: 0,
    start: function() {
        if (!this.active) {
-           this.active = true;
 
-           mp.game.streaming.requestAnimDict("anim@mp_point");
+            if (mp.players.local.cuffed) return; 
+            
+            this.active = true;
 
-           while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
-               mp.game.wait(0);
-           }
-           mp.game.invoke("0x0725a4ccfded9a70", mp.players.local.handle, 0, 1, 1, 1);
-           mp.players.local.setConfigFlag(36, true)
-           mp.players.local.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
-           mp.game.streaming.removeAnimDict("anim@mp_point");
+            mp.game.streaming.requestAnimDict("anim@mp_point");
 
-           this.interval = setInterval(this.process.bind(this), 0);
+            while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
+                mp.game.wait(0);
+            }
+            mp.game.invoke("0x0725a4ccfded9a70", mp.players.local.handle, 0, 1, 1, 1);
+            mp.players.local.setConfigFlag(36, true)
+            mp.players.local.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
+            mp.game.streaming.removeAnimDict("anim@mp_point");
+
+            this.interval = setInterval(this.process.bind(this), 0);
        }
    },
 
