@@ -1,35 +1,8 @@
-const fs = require("fs");
 const plants = require("../core/plants");
-const savedPosition = "savedPositions.txt";
 
 mp.events.addCommand({
 
 
-
-   'pos': (player, name = 'unnamed position') => {
-      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let pos = (player.vehicle) ? player.vehicle.position : player.position;
-      let rot = (player.vehicle) ? player.vehicle.rotation : player.heading;
-  
-      fs.appendFile(savedPosition, `Position: ${pos.x}, ${pos.y}, ${pos.z} | ${(player.vehicle) ? `Rotation: ${rot.x}, ${rot.y}, ${rot.z}` : `Heading: ${rot}`} | ${(player.vehicle) ? "InCar" : "OnFoot"} - ${name}\r\n`, (err) => {
-          if (err) {
-              core.terminal(1, `Saving Position Error: ${err.message}`);
-          } else {
-              player.outputChatBox(`Trenutna pozicija: ${name} { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`);
-          }
-      });
-      
-   },
-
-
-
-   'createveh': (player, fullText, model, c1r = 0, c1g = 0, c1b = 0, c2r = 0, c2g = 0, c2b = 0) => {
-      if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      mp.vehicles.create( { 
-         model: model, position: player.position, rotation: player.heading,
-         color: [{r: c1r, g: c1g, b: c1b}, {r: c1r, g: c1g, b: c1b}], owner: -1 } 
-      );
-   }, 
 
    'vehtune': (player, fullText, modType, modIndex) => {
       if(player.admin < 3) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);

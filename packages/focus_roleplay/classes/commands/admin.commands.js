@@ -1,4 +1,6 @@
 
+const fs = require("fs");
+const savedPosition = 'savedPositions.txt';
 
 module.exports = { 
    commands: [
@@ -24,12 +26,29 @@ module.exports = {
          }
       },
 
+
       {
          name: 'ao',
          admin: 2,
          call: (player, args) => { 
             let message = args.slice(0).join(' '); 
             mp.admin.broadcast(player, message)
+         }
+      },
+
+      {
+         name: 'position',
+         admin: 4,
+         call: (player, args) => { 
+            let name = args.slice(0).join(' '), pos = (player.vehicle) ? player.vehicle.position : player.position;
+               rot = (player.vehicle) ? player.vehicle.rotation : player.heading;
+  
+            fs.appendFile(savedPosition, `Position: ${pos.x}, ${pos.y}, ${pos.z} | ${(player.vehicle) ? `Rotation: ${rot.x}, ${rot.y}, ${rot.z}` : `Heading: ${rot}`} | ${(player.vehicle) ? "InCar" : "OnFoot"} - ${name}\r\n`, (err) => {
+               if (err) { core.terminal(1, `Saving Position Error: ${err.message}`);
+               } else {
+                  player.sendMessage(`Trenutna pozicija: ${name} { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`, mp.colors.info);
+               }
+            });
          }
       },
 
@@ -49,16 +68,6 @@ module.exports = {
                console.log('3');
             }
             
-         }
-      },
-
-      {
-         name: 'coord',
-         admin: 4,
-         call: (player, args) => { 
-            let coord = args[0].split(',');
-            console.log(coord);
-            player.position = new mp.Vector3(parseFloat(coord[0]), parseFloat(coord[1]), parseFloat(coord[2]));
          }
       },
 
