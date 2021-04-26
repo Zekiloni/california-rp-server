@@ -1,4 +1,8 @@
 
+
+let { MarketItems } = require('../modules/Shops');
+
+
 module.exports = { 
    commands: [
       {
