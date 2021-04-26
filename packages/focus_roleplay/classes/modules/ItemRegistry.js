@@ -11,6 +11,40 @@ const ItemType = {
 
 module.exports = { ItemType, ItemEntities }
 
+
+
+// PREDLOG SA RAGEMP FORUMA !
+// PREDLOG SA RAGEMP FORUMA !
+// class BaseItem {
+//    constructor (name) {
+//      this.name = name;
+//    }
+ 
+//    use (player) {
+//      console.log(`player trying use ${this.name} item`);
+//    }
+//  }
+ 
+//  class WeaponItem extends BaseItem {
+//    constructor (name, objectName, weapon) {
+//      super(name);
+ 
+//      this.objectName = objectName;
+//      this.weaponName = weaponName;    
+//    }
+ 
+//    use (player, ammo = 0) {
+//      player.giveWeapon(mp.joaat(this.weaponName), ammo);
+//    }
+//  }
+ 
+//  const items = {
+//    'justBaseItem': new BaseItem('Some food'),
+//    'carbineRifle': new WeaponItem('Carbine Rifle', 'w_ar_carbinerifle', 'weapon_carbinerifle')
+//  };
+
+
+
 mp.ItemRegistry = { 
    'Carbine Rifle': { 
       name: 'Carbine Rifle',

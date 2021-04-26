@@ -4,6 +4,7 @@ const Player = mp.players.local;
 
 
 
+
 mp.events.add({
    'entityStreamIn': (entity) => {
 
@@ -19,4 +20,5 @@ mp.events.add({
       player.freezePosition(true)
       setTimeout(() => { player.freezePosition(false) }, 1500);
    }
+
 });

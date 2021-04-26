@@ -39,6 +39,7 @@ class Character {
       this.mute = p.mute || 0;
       
       this.blindfolded = false;
+      this.cuffed = false;
       this.duty = false;
       this.inviteRequest = 0;
       this.casinoSlot = -1;
@@ -113,6 +114,12 @@ class Character {
    setWalkingStyle (player, style) { 
       this.walking_style = style;
       player.setVariable('walking_style', this.walking_style);
+   }
+
+   Cuff (player) { 
+      this.cuffed = !this.cuffed;
+      console.log('cuffed ' + this.cuffed)
+      player.setVariable('cuffed', this.cuffed);
    }
 
    payDay (player) { 

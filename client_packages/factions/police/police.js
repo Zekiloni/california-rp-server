@@ -1,62 +1,43 @@
 
-const player =  mp.players.local;
+const player = mp.players.local;
 var vehiclesCEF, weaponCEF, equipCEF;
 
-mp.events.add({
-   'client:showPoliceVehicles': () => {
-      vehiclesCEF = mp.browsers.new('package://factions/police/police-interfaces/vehicles.html');
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
-   },
 
-   'client:hidePoliceVehicles': () => {
-      vehiclesCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
-   },
-
-   'client:spawnPoliceVehicle': (name, model) => {
-      mp.events.callRemote('server:police.spawnVehicle', name, model);
-   },
-
-   'client:showPoliceWeaponary': () => {
-      weaponCEF = mp.browsers.new('package://factions/police/police-interfaces/weapons.html');
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
-   },
-
-   'client:hidePoliceWeaponary': () => {
-      weaponCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
-   },
-
-   'client:policeGiveWeapon': (name, weapon, ammo) => {
-      mp.events.callRemote('server:police.giveWeapon', name, weapon, ammo);
-   },
-
-   'client:showPoliceEquipment': () => {
-      equipCEF = mp.browsers.new('package://factions/police/police-interfaces/equipment.html');
-      setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
-   },
-
-   'client:hidePoliceEquipment': () => {
-      equipCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 500);
-   },
-
-   'client:policeDragPlayer': (target, toggle) => { 
-      if (toggle) {
-         if (target && mp.players.exists(target))
-            player.taskFollowToOffsetOf(target.handle, 0, -1, 0, 1.0, -1, 1.0, true)
+mp.events.addDataHandler('cuffed', (entity, newValue, oldValue) => {
+   if (entity.type === 'player') {
+      if (newValue !== oldValue) { 
+         cuff(entity, newValue);
       }
-      else
-         player.clearTasks();
+   }
+});
+
+mp.events.add({
+
+   'entityStreamIn': (entity) => {
+      if (entity.type === 'player') cuff(entity, entity.getVariable('cuffed'));
    },
 
-   'client:playerCuff': () => {
-      player.setEnableHandcuffs(true);
-   },
-
-   'client:playerUncuff': () => {
-      player.setEnableHandcuffs(false);
-   },
+   'client:player.cuff': (player, toggle) => { 
+      mp.gui.chat.push(player.name + ' lisice ' + JSON.stringify(toggle))
+      cuff(player, toggle);
+   }
 
 })
+
+
+function cuff (player, toggle) { 
+   if (toggle) { 
+      player.setEnableHandcuffs(true);
+      mp.game.invoke("0xDF1AF8B5D56542FA", player, true);
+      player.cuffed = true;
+      mp.gui.chat.push('turio sam')
+   }
+   else {
+      player.setEnableHandcuffs(false);
+      mp.game.invoke("0xDF1AF8B5D56542FA", player, false);
+      player.cuffed = false;
+      mp.gui.chat.push('mako sam')
+   }
+}
+
 
