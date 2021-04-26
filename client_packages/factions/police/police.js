@@ -41,12 +41,12 @@ function cuff (entity, toggle) {
       entity.cuffed = true;
 
       let cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), entity.position,
-         {
-             rotation: rotation,
-             alpha: alpha,
-             dimension: dimension
-         });
-      entity.attachTo(entity2, boneIndex, xPosOffset, yPosOffset, zPosOffset, xRot, yRot, zRot, p9, useSoftPinning, collision, isPed, vertexIndex, fixedRot);
+      {
+            rotation: entity.rotation,
+            alpha: 255,
+            dimension: entity.dimension
+      });
+      entity.attachTo(cuffs, 6286, -0.02, 0.063, 0.0, 75.0, 0.0, 76.0, true, true, false, true, 0, true); 
 
    }
    else {
@@ -55,4 +55,10 @@ function cuff (entity, toggle) {
    }
 }
 
-
+/*AttachObjectToPlayer(target, NAPI.Util.GetHashKey("p_cs_cuffs_02_s"), 6286, new Vector3(-0.02f, 0.063f, 0.0f), new Vector3(75.0f, 0.0f, 76.0f));
+public static void AttachObjectToPlayer(Player player, uint model, int bone, Vector3 posOffset, Vector3 rotOffset)
+        {
+            var attObj = new AttachedObject(model, bone, posOffset, rotOffset);
+            player.SetSharedData("attachedObject", JsonConvert.SerializeObject(attObj));
+            Trigger.ClientEventInRange(player.Position, 550, "attachObject", player);
+        } */
