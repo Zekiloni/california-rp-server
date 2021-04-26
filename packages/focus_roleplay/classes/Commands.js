@@ -14,7 +14,8 @@ const commandFiles = [
    'radio.commands',
    'faction.commands',
    'law.commands',
-   'lock.command'
+   'lock.command',
+   'buy.command'
 ];
 
 for (const file of commandFiles) {

@@ -16,14 +16,14 @@
         <div id="market">
             <div class="header">
                 <img src="src/images/basket-icon.png" />
-                <h2> {{ bussines.name }}</h2>
+                <h2> {{ bussines.name }} <small>prodavnica</small> </h2>
+                
                 <i @click="close()" class="close fa fa-times" aria-hidden="true"></i>
             </div>
 
             <div class="content">
                 <div class="products" >
                     <div class="item" v-for="(item, key) in bussines.items" @click="add(key, item.price)">
-                        <!-- {{ key }} - {{ item }} - {{ item.icon }} -->
                         <img v-bind:src="'src/images/items/' + item.icon + '.png'" />
                         <h2> {{ item.price }} $</h2>
                     </div>
@@ -55,7 +55,7 @@
                 el: '#market',
                 data: {
                     player: {
-                        money: 3000,
+                        money: 0,
                         cart: []
                     },
 
