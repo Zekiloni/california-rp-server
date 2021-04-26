@@ -21,7 +21,7 @@ let Streamer = require('./player/Streamer');
 let DamageSync = require('./DamageSync');
 
 // VEHICLES
-let Vehicles = require('./Vehicles');
+//let Vehicles = require('./Vehicles');
 
 // INTERACTIONS
 let Animations = require('./player/Interactions/Animations');
