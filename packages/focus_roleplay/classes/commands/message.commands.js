@@ -10,6 +10,7 @@ mp.colors = {
    pm: { from: 'FCBD00', to: 'FFD500' },
    grey: 'E8E8E8',
    tomato: 'FF6347',
+   megaphone: ['F4D31C', 'F4D31C', 'F4D31C', 'F4D31C', 'F4D31C'],
    admin: 'D9534F',
    info: 'E48857',
    success: '6BD56B',
@@ -78,7 +79,7 @@ module.exports = {
          params: '[tekst]',
          call: (player, args) => { 
             let message = args.splice(0).join(" ");
-            player.proximityMessage(distances.shout, `${player.name} se dere: ${message}`, mp.colors.white)
+            player.proximityMessage(distances.shout, `${player.name} se dere: ${message}`, mp.colors.white);
          }
       },
 

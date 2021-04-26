@@ -4,59 +4,7 @@ const savedPosition = "savedPositions.txt";
 
 mp.events.addCommand({
 
-   'kick': (player, fullText) => {
-      if(player.admin < 1) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-   },
 
-   'ban': (player, fullText) => {
-      if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-   },
-
-   'revive': (player, fullText, target) => { 
-      if (player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      if (!target) return player.outputChatBox('Koriscenje /revive [igrac]'); 
-
-      let recipient = account.findPlayer(target);
-      if(!recipient) { 
-         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
-         return false; 
-      } 
-
-
-   },
-
-   'makeadmin': (player, fullText, target, adminLevel) => { 
-      let level = parseInt(adminLevel);
-      let recipient = account.findPlayer(target);
-      if(!recipient) { 
-         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
-         return false; 
-      } 
-
-      recipient.admin = level;
-      recipient.outputChatBox(`${player.name} vam je dao admina level ${level}.`);
-      player.outputChatBox(`Dali ste igracu ${recipient.name} admina level ${level}.`);
-   },
-
-   'setmoney': (player, fullText, target, money) => {
-      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-
-      let cash = parseInt(money);
-      let recipient = account.findPlayer(target);
-      if (!recipient) { 
-         player.notification(MSG_USER_NOT_FOUND, NOTIFY_ERROR, 4)
-         return false; 
-      } 
-
-      recipient.data.cash = cash;
-      recipient.outputChatBox(`${player.name} vam je ostavio novac na ${money}$.`);
-      player.outputChatBox(`Postavili ste ${recipient.name} novac na ${money}$.`);
-   },
-
-
-   'cash': (player, fullText) => { 
-      player.outputChatBox(`pare kola kucke ${player.data.cash}.`);
-   },
 
    'pos': (player, name = 'unnamed position') => {
       if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);

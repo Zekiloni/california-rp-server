@@ -13,7 +13,7 @@ const commandFiles = [
    'message.commands',
    'radio.commands',
    'faction.commands',
-   'police.commands',
+   'law.commands',
    'lock.command'
 ];
 
@@ -37,7 +37,12 @@ mp.events.add('playerCommand', (player, command) => {
       let character = mp.characters[player.character];
 
       if (cmd.admin && account.admin < cmd.admin) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      if (cmd.faction && character.faction != cmd.faction) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);;
+
+      if (cmd.faction) { 
+         if (cmd.faction.type && cmd.faction.type != mp.factions[character.faction].type) return;
+         if (cmd.faction.id && cmd.faction.id != character.faction) return;
+      }
+
       if (cmd.job && character.job != cmd.job) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);;
 
       cmd.call(player, args);
