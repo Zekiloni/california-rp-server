@@ -49,7 +49,11 @@ module.exports = {
             if (target) { 
                let character = target.getCharacter();
                character.Cuff(target);
-               //if (character.cuffed) { target.playAnimation('mp_arresting', 'idle', 1, 49); }
+               if (character.cuffed) { 
+                  target.playAnimation('mp_arresting', 'idle', 1, 49); }
+               else {         
+                  target.stopAnimation()
+               }
                // target.call('client:player.cuff', [character.cuffed])
             }
          }

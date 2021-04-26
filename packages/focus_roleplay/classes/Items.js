@@ -102,6 +102,7 @@ class Inventory {
             if (dressed.drawable == undressed[index]) { 
                player.setClothes(parseInt(index), parseInt(clothing[0]), parseInt(clothing[1]), 2);
             } else { 
+               if (index == 8 || index == 11) player.setClothes(3, 15, 0, 2);
                player.setClothes(parseInt(index), undressed[index], 0, 2);
             }
          },

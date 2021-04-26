@@ -20,6 +20,16 @@ mp.events.add({
    'client:player.cuff': (entity, toggle) => { 
       mp.gui.chat.push(entity.name + ' lisice ' + JSON.stringify(toggle))
       cuff(entity, toggle);
+   },
+
+   'render': () => { 
+      if (player.cuffed) { 
+         // DISABLE SPRINT, ATTACK, AIM, JUMP
+         mp.game.controls.disableControlAction(0, 24, true);
+         mp.game.controls.disableControlAction(0, 25, true);
+         // mp.game.controls.disableControlAction(0, 21, true);
+         mp.game.controls.disableControlAction(0, 55, true);
+      }
    }
 
 })
@@ -28,15 +38,20 @@ mp.events.add({
 function cuff (entity, toggle) { 
    if (toggle) { 
       entity.setEnableHandcuffs(true);
-      mp.game.invoke("0xDF1AF8B5D56542FA", entity, true);
       entity.cuffed = true;
-      mp.gui.chat.push('turio sam')
+
+      let cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), entity.position,
+         {
+             rotation: rotation,
+             alpha: alpha,
+             dimension: dimension
+         });
+      entity.attachTo(entity2, boneIndex, xPosOffset, yPosOffset, zPosOffset, xRot, yRot, zRot, p9, useSoftPinning, collision, isPed, vertexIndex, fixedRot);
+
    }
    else {
       entity.setEnableHandcuffs(false);
-      mp.game.invoke("0xDF1AF8B5D56542FA", entity, false);
       entity.cuffed = false;
-      mp.gui.chat.push('mako sam')
    }
 }
 
