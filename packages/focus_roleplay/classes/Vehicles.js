@@ -68,8 +68,11 @@ class Vehicle {
         components.forEach(component => { vehicle.setMod(component.index, component.value) })
     }
 
-    delete (vehicle) { 
-
+    delete = (id) => { 
+        db.query("DELETE * FROM `vehicles` WHERE `id` = ?", [id], function (error, results, fields) {
+              if (error) return core.terminal(1, 'Vehicle deleting ' + error);
+              delete mp.vehicles[id];
+        });
     }
 
     update (vehicle) { 
@@ -174,7 +177,7 @@ mp.vehicles.create = (model, temporary = false, data) => {
         vehicle.info.paint(vehicle, data.color)
     }
 
-    if (temporary == false) { 
+    if (!temporary) { 
         let locked = 0;
         data.locked == true ? locked = 1 : locked = 0;
         db.query("INSERT INTO `vehicles` (model, price, owner, plate, color, position, heading, locked, spawned, dimension, kilometers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
@@ -184,10 +187,13 @@ mp.vehicles.create = (model, temporary = false, data) => {
     }
 }
 
+mp.vehicles.delete = (vehId) => {
+    this.delete(vehId);
+}
 
 mp.vehicles.save = () => { 
    mp.vehicles.forEach( (vehicle) => { 
-       vehicle.save();
+       vehicle.update(vehicle);
    })
 }
 
