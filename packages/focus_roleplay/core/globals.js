@@ -40,6 +40,10 @@ global.MESSAGES = [
    MSG_CHANNEL_WRONG_PASSWORD = 'Šifra frekvencije nije tačna !',
    MSG_FREQUENCY_ALREADY_EXISTS = 'Frekvencija već postoji !',
    MSG_ALREADY_IN_SOME_CHANNEL = 'Već ste u nekoj frekvenciji !',
+   MSG_CAR_SOLD = 'Vozilo uspešno prodato',
+   MSG_NOT_CAR_OWNER = 'Ne posedujete ovo vozilo',
+   MSG_CAR_BOUGHT = 'Uspešno ste kupili vozilo',
+   MSG_CAR_ALREADY_OWNED = 'Ovo vozilo je već u nečijem vlasništvu'
 
 ]; Object.freeze(MESSAGES)
 
