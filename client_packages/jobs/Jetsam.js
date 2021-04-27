@@ -1,5 +1,6 @@
 
 const player = mp.players.local;
+let marker = null;
 
 mp.events.addDataHandler('container', (entity, newValue, oldValue) => {
    if (entity.type === 'vehicle' && entity.model == 444583674) {
@@ -11,7 +12,9 @@ mp.events.addDataHandler('container', (entity, newValue, oldValue) => {
 
 mp.events.add({
    'entityStreamIn': (entity) => {
-      if (entity.type === 'vehicle' && entity.model == 444583674) container(entity, entity.getVariable('container'));
+      if (entity.type === 'vehicle' && entity.model == 444583674) { 
+         if (entity.getVariable('container')) container(entity, entity.getVariable('container'));
+      }
    },
 
    'render': () => { 
@@ -30,8 +33,10 @@ mp.keys.bind(0x59, false, function() {
          let vehicle = player.vehicle;
          if (vehicle.container) { 
             mp.events.callRemote('server:vehicle.detach.container'); 
+            if (marker) marker.destroy();
          } else { 
             mp.events.callRemote('server:vehicle.attach.container'); 
+            marker = mp.blips.new(0, new mp.Vector3(1111.625, -3139.361, 0), { name: 'Zona za dostavu kontenjera', color: 49, shortRange: false });
          }
       }
    }
@@ -59,11 +64,11 @@ function container (vehicle, value) {
 
 function waitEntity (entity) {
    return new Promise(resolve => {
-         let wait = setInterval(() => {
-            if (mp.game.entity.isAnEntity(entity.handle)) {
-               clearInterval(wait);
-               resolve();
-            }
-         }, 1);
+      let wait = setInterval(() => {
+         if (mp.game.entity.isAnEntity(entity.handle)) {
+            clearInterval(wait);
+            resolve();
+         }
+      }, 1);
    });
 }

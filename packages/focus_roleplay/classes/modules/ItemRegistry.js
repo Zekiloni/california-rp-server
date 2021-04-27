@@ -40,8 +40,8 @@ mp.ItemRegistry = {
       }
    },
 
-   'Flaša Vode': { 
-      name: 'Flaša Vode',
+   'Water Battle': { 
+      name: 'Water Battle',
       hash: 'prop_ld_flow_bottle',
       weight: 0.03,
       type: ItemType.Drink
