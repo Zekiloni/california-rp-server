@@ -139,7 +139,7 @@ mp.events.add({
         kmS = kmS + player.vehicle.getVariable('Kilometer');
         let data = JSON.stringify({"playerID":player.id,"distance":distance,"state":true,"vehicle":player.vehicle});
         mp.events.call('tank', player, data);
-        player.vehicle.setVariable('Kilometer',kmS);
+        player.vehicle.setVariable('Kilometer', kmS);
     }
 })
 
@@ -210,10 +210,50 @@ mp.vehicles.buy = (player, vehId) => {
             character.giveMoney(player, -vehToBuy.price);
             vehToBuy.owner = character.id;
             this.update(vehToBuy);
+            player.notification(MSG_CAR_BOUGHT, NOTIFY_SUCCESS, 4);
         }
         else  { player.notification(MSG_NOT_ENOUGH_MONEY, NOTIFY_ERROR, 4); }
     }
     else { player.notification(MSG_CAR_ALREADY_OWNED, NOTIFY_ERROR, 4); }
+}
+
+mp.vehicles.sell = (player, vehId) => {
+    let vehToSell = mp.vehicles[vehId];
+    let character = player.getCharacter();
+
+    if (character.id == vehToSell.owner) {
+        character.giveMoney(player, vehToSell.price/2);
+        player.notification(MSG_CAR_SOLD, NOTIFY_SUCCESS, 4);
+        this.delete(vehId);
+    }
+    else { player.notification(MSG_NOT_CAR_OWNER, NOTIFY_ERROR, 4); }
+}
+
+
+mp.vehicles.sellTo = (player, target, price, vehId) => {
+    let vehToSell = mp.vehicles[vehId];
+    let seller = player.getCharacter();
+    let buyer = target.getCharacter();
+
+    if (character.id == vehToSell.owner) {
+        seller.giveMoney(player, price);
+        buyer.giveMoney(player, -price);
+        seller.notification(MSG_CAR_SOLD, NOTIFY_SUCCESS, 4);
+        buyer.notification(MSG_CAR_BOUGHT, NOTIFY_SUCCESS, 4);
+        this.delete(vehId);
+    }
+    else { seller.notification(MSG_NOT_CAR_OWNER, NOTIFY_ERROR, 4); }
+}
+
+mp.vehicles.park = (player, vehId, garageId = -1) => {
+    let vehToPark = mp.vehicles[vehId];
+    if (garageId == -1) {
+        vehToPark.position = player.position;
+    }
+}
+
+mp.vehicles.adminSell = (vehId) => {
+    this.delete(vehId);
 }
 
 
