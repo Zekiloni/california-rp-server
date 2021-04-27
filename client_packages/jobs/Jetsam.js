@@ -32,11 +32,12 @@ mp.keys.bind(0x59, false, function() {
       if (player.vehicle && player.vehicle.model == 444583674) { 
          let vehicle = player.vehicle;
          if (vehicle.container) { 
-            mp.events.callRemote('server:vehicle.detach.container'); 
+            let frontOffset = vehicle.getOffsetFromInWorldCoords(0.0, 6.5, 0.0);
+            mp.events.callRemote('server:vehicle.detach.container', frontOffset); 
             if (marker) marker.destroy();
          } else { 
             mp.events.callRemote('server:vehicle.attach.container'); 
-            marker = mp.blips.new(0, new mp.Vector3(1111.625, -3139.361, 0), { name: 'Zona za dostavu kontenjera', color: 49, shortRange: false });
+            marker = mp.blips.new(1, new mp.Vector3(1111.625, -3139.361, 0), { name: 'Zona za dostavu kontenjera', color: 49, shortRange: false });
          }
       }
    }

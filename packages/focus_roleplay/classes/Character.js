@@ -23,7 +23,6 @@ class Character {
       this.thirst = p.thirst || 100;
       this.licenses = p.licenses || 'None';
       this.weapon_skill = p.weapon_skill || 'None';
-      this.job_skill = p.job_skill || 0;
       this.clothing = p.clothing || 'None';
       this.screenshot = p.screenshot || 0;
       this.experience = p.experience; 
@@ -31,9 +30,11 @@ class Character {
       this.last_positon = p.last_postion;
       this.spawn_point = p.spawn_point;
 
-      this.working = { 
+      this.working = {
+         duty: false,
+         times: 0,
          salary: p.salary || 0,
-         times: p.working_times || 0,
+         skill: p.job_skill || 0
       }
 
       this.mood = p.mood || 'normal';

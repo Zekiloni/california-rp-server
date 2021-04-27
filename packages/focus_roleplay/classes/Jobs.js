@@ -8,10 +8,9 @@ mp.jobs = {
       id: 1, name: 'Jetsam Terminal',
       description: 'Sedište San Andreas brodske kompanije Jetsam, međunarodna izvozna kompanija.' , 
       max_workers: 8, point: new mp.Vector3(816.988, -2977.546, 6.0206), blip: 569, sprite: 77,
-      job: (player) => { JetsamTerminal.start(player); }
+      job: (player, args) => { JetsamTerminal.start(player, args); }
    }
 }
-
 
 
 class Jobs { 

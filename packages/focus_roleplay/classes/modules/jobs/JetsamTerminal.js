@@ -36,11 +36,11 @@ class Container {
       }
    }
 
-   drop (vehicle) { 
+   drop (vehicle, offset) { 
       this.status = ContainerStatus.Dropzone;
       vehicle.setVariable('container', false);
-      let position = new mp.Vector3(DropZone.x + Math.floor(Math.random() * 10) + 1, DropZone.y + Math.floor(Math.random() * 10) + 1, 4.9042)
-      this.object = mp.objects.new('prop_container_03a', position, { rotation: new mp.Vector3(0, 0, Math.floor(Math.random() * 200) + 1), alpha: 255, dimension: 0 });
+      let position = new mp.Vector3(offset.x, offset.y, 4.9042)
+      this.object = mp.objects.new('prop_container_03a', position, { rotation: new mp.Vector3(0, 0, vehicle.heading + 90), alpha: 255, dimension: 0 });
    }
 
    tow (player) { 
@@ -56,10 +56,10 @@ class Port {
             if (near) { near.pickup(player.vehicle); }
          },
 
-         'server:vehicle.detach.container': function (player) { 
+         'server:vehicle.detach.container': function (player, offset) { 
             let container = containers[player.vehicle.data.container];
             if (player.dist(DropZone) < 30) { 
-               container.drop(player.vehicle);
+               container.drop(player.vehicle, offset);
             }
          }
       })
@@ -75,8 +75,19 @@ class Port {
    }
 
 
-   start (player) { 
-      console.log('JetsamTerminal started ' + player)
+   start (player, args) { 
+      let character = player.getCharacter();
+      switch (args) { 
+         case 'load': {
+            character.working.duty = true;
+            player.notification('Započeli ste posao !', NOTIFY_SUCCES, 4);
+            player.sendMessage('Koristite Y kako bi ste zakačili kontenjer za lift, takodje da bi ste otkačili.', mp.colors.help);
+            break;
+         }
+         case 'transfer': { 
+            break;
+         }
+      }
    }
 
    refresh () { 
@@ -84,14 +95,16 @@ class Port {
    }
 
    nearbyContainer (player) { 
-      for (let i in containers) { 
-         let container = containers[i];
-         if (container.status == ContainerStatus.Load) { 
-            if (player.dist(container.object.position) < 6.5) { 
-               console.log(container)
-               return container;
-            } else {
-               return false
+      if (player.vehicle) { 
+         for (let i in containers) { 
+            let container = containers[i];
+            if (container.status == ContainerStatus.Load) { 
+               if (player.vehicle.dist(container.object.position) < 6.5) { 
+                  console.log(container)
+                  return container;
+               } else {
+                  return false
+               }
             }
          }
       }

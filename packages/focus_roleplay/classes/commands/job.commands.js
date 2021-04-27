@@ -31,7 +31,8 @@ module.exports = {
 
                case 'start': { 
                   if (character.job == 0) return; // niste zaposleni
-                  // startaj job
+                  if (character.working.duty) return; // vec radite
+                  mp.jobs[character.job].job(player, args[1]);
                   break;
                }
             }
