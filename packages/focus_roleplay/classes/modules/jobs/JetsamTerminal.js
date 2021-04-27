@@ -40,7 +40,10 @@ class Container {
       vehicle.setVariable('container', false);
       let position = new mp.Vector3(DropZone.x + Math.floor(Math.random() * 10) + 1, DropZone.y + Math.floor(Math.random() * 10) + 1, 4.9042)
       this.object = mp.objects.new('prop_container_03a', position, { rotation: new mp.Vector3(0, 0, Math.floor(Math.random() * 200) + 1), alpha: 255, dimension: 0 });
+   }
 
+   tow (player) { 
+      delete containers[this.id]
    }
 }
 
@@ -70,6 +73,11 @@ class Port {
       setTimeout(() => { this.refresh(); }, RefreshInterval);
    }
 
+
+   start (player) { 
+      console.log('JetsamTerminal started ' + player)
+   }
+
    refresh () { 
 
    }
@@ -89,6 +97,8 @@ class Port {
 
 let port = new Port();
 port.load();
+
+module.exports = port;
 
 
 

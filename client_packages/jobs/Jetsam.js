@@ -17,8 +17,8 @@ mp.events.add({
    'render': () => { 
       if (player.vehicle && player.vehicle.model == 444583674) { 
          if (player.vehicle.getVariable('container') != false) { 
-            mp.game.controls.disableControlAction(32, 110, true);
-            mp.game.controls.disableControlAction(32, 111, true);
+            // mp.game.controls.disableControlAction(0, 110, true); // DISABLEATI NUM 8 i 5 da kad ima =>
+            // mp.game.controls.disableControlAction(27, 111, true); // > kontenjer ne moze da podize i spusta
          }
       }
    }
