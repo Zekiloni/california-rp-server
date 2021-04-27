@@ -18,7 +18,6 @@ class Character {
       this.health = p.health;
       this.armour = p.armour;
       this.money = p.money || 0;
-      this.salary = p.salary || 0;
       this.bank_account = p.bank_account || 0;
       this.hunger = p.hunger || 100;
       this.thirst = p.thirst || 100;
@@ -32,11 +31,17 @@ class Character {
       this.last_positon = p.last_postion;
       this.spawn_point = p.spawn_point;
 
+      this.working = { 
+         salary: p.salary || 0,
+         times: p.working_times || 0,
+      }
+
       this.mood = p.mood || 'normal';
       this.walking_style = p.walking_style || 'normal';
       this.animation = p.animation || null;
 
       this.mute = p.mute || 0;
+
       
       this.blindfolded = false;
       this.cuffed = false;

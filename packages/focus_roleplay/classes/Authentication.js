@@ -108,7 +108,7 @@ mp.events.add({
                let acc = new Account({
                   id: userID, username: result[0].username, register_date: result[0].registered_at, admin: result[0].admin,
                   ip: player.ip, donator: result[0].donator, last_login: result[0].last_login_at, warns: result[0].warns,
-                  coins: result[0].coins, email: result[0].email_adress
+                  coins: result[0].coins, email: result[0].email_adress, social: result[0].social_club
                })
                
                let values = { 

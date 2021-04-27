@@ -4,7 +4,6 @@ module.exports = {
 
       {
          name: 'f',
-         leader: true,
          desc: 'Izbacivanje iz fakcije',
          call: (player, args) => { 
             let character = player.getCharacter();

@@ -50,7 +50,7 @@ class Saving {
             if (character) { 
                let values = {
                   money: character.money,
-                  salary: character.salary,
+                  salary: character.working.salary,
                   job: character.job,
                   radio_frequency: character.frequency,
                   faction: character.faction,
@@ -58,6 +58,7 @@ class Saving {
                   faction_leader: character.leader,
                   hunger: character.hunger,
                   thirst: character.thirst,
+                  spawn_point: character.spawn_point,
                   last_position: JSON.stringify(player.position),
                   health: character.health,
                   armour: character.armour

@@ -33,6 +33,9 @@ let FingerPointing = require('./player/Interactions/FingerPointing');
 // FACTIONS
 let Police = require('./factions/police/police');
 
+// JOBS
+let Jobs = require('./jobs/Jobs');
+let Jetsam = require('./jobs/Jetsam');
 
 // let casino = require('./casino/CasinoSlots');
 // let fuel = require('./fuel');

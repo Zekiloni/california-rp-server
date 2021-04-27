@@ -58,6 +58,7 @@ mp.keys.bind(0x49, false, function() {
 
 mp.keys.bind(0x59, false, function() {
    if (player.logged && player.spawned) { 
+      if (player.vehicle || player.cuffed) return;
       mp.events.callRemote('server:item.pickup');
    }
 });

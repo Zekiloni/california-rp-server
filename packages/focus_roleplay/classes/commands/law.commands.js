@@ -73,8 +73,6 @@ module.exports = {
          faction: { type: FactionTypes.Law },
          call: (player, args) => { 
             let character = player.getCharacter(), i = args[0], roadblocks = [];
-            //if (character.faction == 0) return;
-            //if (mp.factions[character.faction].type != FactionTypes.Law) return;
 
             // prop_tyre_spike_01
             
