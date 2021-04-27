@@ -191,12 +191,30 @@ mp.vehicles.delete = (vehId) => {
     this.delete(vehId);
 }
 
-mp.vehicles.save = () => { 
-   mp.vehicles.forEach( (vehicle) => { 
-       vehicle.update(vehicle);
-   })
+mp.vehicles.save = (vehicle) => { 
+    this.update(vehicle);
 }
 
+mp.vehicles.saveAll = () => { 
+    mp.vehicles.forEach((vehicle) => { 
+        vehicle.update(vehicle);
+    })
+}
+
+mp.vehicles.buy = (player, vehId) => {
+    let vehToBuy = mp.vehicles[vehId];
+    let character = player.getCharacter();
+
+    if (vehToBuy.owner == -1) {
+        if (character.money >= vehToBuy.price) {
+            character.giveMoney(player, -vehToBuy.price);
+            vehToBuy.owner = character.id;
+            this.update(vehToBuy);
+        }
+        else  { player.notification(MSG_NOT_ENOUGH_MONEY, NOTIFY_ERROR, 4); }
+    }
+    else { player.notification(MSG_CAR_ALREADY_OWNED, NOTIFY_ERROR, 4); }
+}
 
 
 
