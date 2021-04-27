@@ -9,7 +9,6 @@ let PlayerList = require('./player/PlayerList');
 let NameTags = require('./player/NameTags');
 let PlayerInventory = require('./player/inventory/Items');
 
-
 // GAME CORE 
 let Chat = require('./chat');
 let CayoPerico = require('./heistisland');
@@ -21,7 +20,9 @@ let Streamer = require('./player/Streamer');
 let DamageSync = require('./DamageSync');
 
 // VEHICLES
+let DepartmentOfVehicles = require('./vehicles-department/DMV');
 let Vehicles = require('./Vehicles');
+
 
 // INTERACTIONS
 let Animations = require('./player/Interactions/Animations');

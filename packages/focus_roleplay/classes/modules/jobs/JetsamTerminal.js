@@ -29,10 +29,11 @@ class Container {
    }
 
    pickup (vehicle) { 
-      if (this.status != ContainerStatus.Load) return;
-      this.status = ContainerStatus.Attached;
-      this.object.destroy();
-      vehicle.setVariable('container', this.id);
+      if (this.status == ContainerStatus.Load) { 
+         this.status = ContainerStatus.Attached;
+         this.object.destroy();
+         vehicle.setVariable('container', this.id);
+      }
    }
 
    drop (vehicle) { 
@@ -51,8 +52,8 @@ class Port {
    constructor () { 
       mp.events.add({
          'server:vehicle.attach.container': (player) => { 
-            let near = this.nearbyContainer(player)
-            if (near) near.pickup(player.vehicle);
+            let near = this.nearbyContainer(player);
+            if (near) { near.pickup(player.vehicle); }
          },
 
          'server:vehicle.detach.container': function (player) { 
@@ -83,14 +84,17 @@ class Port {
    }
 
    nearbyContainer (player) { 
-      let result = false;
       for (let i in containers) { 
          let container = containers[i];
-         if (player.dist(container.object.position) < 6.5) { 
-            result = container;
+         if (container.status == ContainerStatus.Load) { 
+            if (player.dist(container.object.position) < 6.5) { 
+               console.log(container)
+               return container;
+            } else {
+               return false
+            }
          }
       }
-      return result;
    }
 
 }

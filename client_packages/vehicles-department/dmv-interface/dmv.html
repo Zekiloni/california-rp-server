@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+    </head>
+    <body>
+        <div id="dmv">
+            <div class="header">
+                <img src="src/images/dmv.png" />
+                <h2>Departman Motornih Vozila<small>San Andreas</small> </h2>
+                <i @click="close()" class="close fa fa-times" aria-hidden="true"></i>
+            </div>
+
+            <ul v-show="page == 'home'" class="navigation">
+                <li @click="page = 'registration'"> 
+                    <img class="background" src="src/images/bg_1.png">
+                    <h2>Registracija Vozila</h2>
+                    <img class="icon" src="src/images/plate.png" >
+                </li>
+                <li @click="page = 'licenses'">
+                    <img class="background" src="src/images/bg_2.png">
+                    <h2>Vozačke Dozvole</h2>
+                    <img class="icon" src="src/images/licenses.png" >
+                </li>
+            </ul>
+
+            <div v-show="page == 'licenses'" class="page" id="licenses">
+                <h2>Pozdrav {{ player.name }} </h2>
+            </div>
+
+
+        </div>
+          
+        <!-- scripts -->
+        <script src="src/vendor/js/vue.js"></script>
+        <script>
+            let dmv = new Vue({
+                el: '#dmv',
+                data: {
+                    page: 'home',
+                    player: { name: 'Zachary Parker', money: 0 },
+                },
+
+                methods: { 
+                    close: () => { mp.trigger('client:player.dmv.browser'); },
+
+                
+                }
+            })
+        </script>
+    </body>     
+</html>
