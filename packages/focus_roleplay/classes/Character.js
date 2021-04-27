@@ -21,7 +21,7 @@ class Character {
       this.bank_account = p.bank_account || 0;
       this.hunger = p.hunger || 100;
       this.thirst = p.thirst || 100;
-      this.licenses = p.licenses || 'None';
+      this.licenses = p.licenses || [];
       this.weapon_skill = p.weapon_skill || 'None';
       this.clothing = p.clothing || 'None';
       this.screenshot = p.screenshot || 0;
