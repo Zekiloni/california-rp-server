@@ -23,7 +23,6 @@ class Saving {
             if (player.data.logged && player.data.spawned) { 
                let account = mp.accounts[player.account], onlineStatus = 1;
 
-               console.log(account)
                if (account) { 
                   if (exit) { onlineStatus = 0; }
    

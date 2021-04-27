@@ -10,6 +10,7 @@ const commandFiles = [
    'item.commands',
    'vehicle.commands',
    'interior.commands',
+   'job.commands',
    'message.commands',
    'radio.commands',
    'faction.commands',

@@ -1,33 +1,66 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="Auth Page">
-        <meta name="author" content="Zekiloni">
-        <title>Focus Roleplay - Clothing UI</title>
-        <link rel="stylesheet" type="text/css" href="assets/vendor/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/style.css">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <script src="assets/vendor/js/jquery-3.5.1.js"></script>
-        <script src="assets/vendor/js/bootstrap.min.js"></script>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
     </head>
     <body>
-        <div class="box"> 
-            <h3>Ponuda za Posao <i onclick="closeJob()" class="close fa fa-times" aria-hidden="true"></i> </h3> 
-            <p>
-                Dobrodošli u <span id="jobLoc"></span>
-                <ul>
-                    <li><b>Posao</b> <span id="jobName"></span></li>
-                    <li><b>Opis Posla</b> <span id="jobDesc"></span></li>
-                </ul> 
-                <div class="actions">
-                    <button onclick="acceptJob()" class="accept"><i class="icon fas fa-check"></i> Prihvati</button>
-                    <button onclick="closeJob()" class="decline"><i class="icon fa fa-times" aria-hidden="true"></i> Odustani</button>
-                </div>
-            </p>
-        </div>
+        <div id="job_offer">
+            <div class="header">
+                <img src="src/images/job-offer.png" />
+                <h2> {{ job.name }} <small>Ponuda za posao</small> </h2>
+                
+                <i @click="close()" class="close fa fa-times" aria-hidden="true"></i>
+            </div>
 
-        <script src="assets/functions.js"></script>
-    </body>
+            <div class="content">
+                    <div class="description">
+                        <h2>opis firme</h2>
+                        <p> {{ job.desc }} </p>
+                        <h4>Da li želite da se zaposlite u ovu firmu / kompaniju ?</h4>
+                    </div>
+                    <div class="actions">
+                        <button @click="accept()"><i class="icon fas fa-check"></i> Prihvati</button>
+                        <button @click="close()" class="decline"><i class="icon fa fa-times" aria-hidden="true"></i> Odustani</button>
+                    </div>
+
+                <div class="info">
+                    <p>Dijalog za zapošljavanje, klikom na <b>Prihvati</b> prihvatate ponudu,
+                    <br>klikom na <b>X</b> ili <b>Odustani</b> odbijate, ili odustajete od ponude.</p>
+                </div>
+            </div>
+
+        </div>
+          
+        <!-- scripts -->
+        <script src="src/vendor/js/vue.js"></script>
+        <script>
+            let offer = new Vue({
+                el: '#job_offer',
+                data: {
+                    player: null,
+
+                    job: { 
+                        name: null,
+                        desc: null,
+                        id: 0
+                    }
+                },
+
+                methods: { 
+                    close: () => { mp.trigger('client:player.job.offer'); },
+
+                    accept: function () { mp.trigger('client:player.job.accept', this.job.id); }
+                }
+            })
+        </script>
+    </body>     
 </html>

@@ -101,6 +101,12 @@ class Character {
       }
    }
 
+   Job (player, job) { 
+      job = mp.jobs[job];
+      this.job = job.id;
+      player.sendMessage('Uspešno ste se zaposlili u ' + job.name + ' !', mp.colors.info)
+   }
+
    setMoney (player, amount) { 
       this.money = amount;
       player.setVariable('money', this.money);

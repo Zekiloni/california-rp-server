@@ -2,24 +2,27 @@
 
 
 const player = mp.players.local;
-var jobOfferCEF;
+let jobOffer, offerOpened = false;
 
 mp.events.add({
 
-   'client:player.job.offer': (jobId, jobName, jobLoc, jobDesc) => {
-       jobOfferCEF = mp.browsers.new('package://jobs/job-offer/job.html');
-       jobOfferCEF.execute(`jobOffer(\"${jobId}\", \"${jobName}\", \"${jobLoc}\",  \"${jobDesc}\");`); 
-       setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
+   'client:player.job.offer': (job) => {
+        if (offerOpened) { 
+            offerOpened = false;
+            jobOffer.destroy();
+            setTimeout(() => { mp.gui.cursor.show(false, false); }, 1000);
+        } else { 
+            jobOffer = mp.browsers.new('package://jobs/job-offer/job.html');
+            offerOpened = true;
+            jobOffer.execute(`offer.player = \"${player.name}\", offer.job.name = \"${job.name}\", offer.job.desc = \"${job.description}\", offer.job.id = ${job.id};`); 
+            setTimeout(() => { mp.gui.cursor.show(true, true); }, 300);
+       }
    },
 
-   'client:closeJobOffer': () => {
-       jobOfferCEF.destroy();
-       setTimeout(() => { mp.gui.cursor.show(false, false); }, 1000);
-   },
-
-   'client:player.job.accept': (jobId) => { 
-      mp.events.callRemote('server:acceptJobOffer', parseInt(jobId));
-   },
+   'client:player.job.accept': (job) => { 
+        if (offerOpened) mp.events.call('client:player.job.offer')
+        mp.events.callRemote('server:player.job.accept', job);
+    },
 
    'client:createjobWaypoint': (x, y) => { 
         mp.game.ui.setNewWaypoint(x, y);

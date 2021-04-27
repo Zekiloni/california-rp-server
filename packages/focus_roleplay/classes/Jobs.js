@@ -5,7 +5,7 @@ let JetsamTerminal = require('./modules/jobs/JetsamTerminal');
 
 mp.jobs = { 
    1: { 
-      name: 'Jetsam Terminal',
+      id: 1, name: 'Jetsam Terminal',
       description: 'Sedište San Andreas brodske kompanije Jetsam, međunarodna izvozna kompanija.' , 
       max_workers: 8, point: new mp.Vector3(816.988, -2977.546, 6.0206), blip: 569, sprite: 77,
       job: (player) => { JetsamTerminal.start(player); }
@@ -27,6 +27,11 @@ class Jobs {
             if (shape.job && player.near) { 
                player.near = null;
             }
+         },
+
+         'server:player.job.accept': (player, job) => { 
+            let character = player.getCharacter();
+            character.Job(player, job);
          }
       })
    }
@@ -39,7 +44,7 @@ class Jobs {
             job.blip = mp.blips.new(job.blip, job.point, { name: job.name, color: job.sprite, shortRange: true });
             job.colshape = mp.colshapes.newRectangle(job.point.x, job.point.y, 2, 2, 0);
             job.colshape.job = i;
-            job.label = mp.labels.new(job.name + '~n~' + '/takejob', job.point, { los: true, font: 0, drawDistance: 4 });
+            job.label = mp.labels.new(job.name + '~n~~y~' + '/job take', job.point, { los: true, font: 0, drawDistance: 4 });
          }
       }
    }
