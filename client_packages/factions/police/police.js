@@ -53,11 +53,13 @@ function cuff (entity, toggle) {
 
    }
    else {
-      entity.setEnableHandcuffs(false);
-      entity.cuffed = false;
-      if (entity.cuffs) { 
-         if (entity.cuffs.doesExist()) { 
-            entity.cuffs.destroy();
+      if (entity.getVariable('cuffed') == true) { 
+         entity.setEnableHandcuffs(false);
+         entity.cuffed = false;
+         if (entity.cuffs) { 
+            if (entity.cuffs.doesExist()) { 
+               entity.cuffs.destroy();
+            }
          }
       }
    }
