@@ -64,6 +64,7 @@ class Vehicle {
             alpha: 255,
         });
 
+        this.vehicle.uid = this.id;
         this.paint(this.vehicle, this.color);
     }
 
@@ -84,44 +85,8 @@ class Vehicle {
 
     tune (vehicle, components) { 
         components.forEach(component => { vehicle.setMod(component.index, component.value) })
-    }
+    }  
 
-    delete = (vehicle) => {
-        if (vehicle.temporary) {
-            vehicle.destroy();
-            delete mp.vehicles[vehicle.id];
-        }  
-        else {
-            vehicle.destroy();
-            db.query("DELETE * FROM `vehicles` WHERE `id` = ?", [id], function (error, results, fields) {
-                if (error) return core.terminal(1, 'Vehicle deleting ' + error);
-                delete mp.vehicles[vehicle.id];
-          });
-        }
-        
-    }
-
-    update (vehicle) { 
-        let values = { 
-            position: JSON.stringify(vehicle.position),
-            rotation: JSON.stringify(vehicle.rotation),
-            model: this.model,
-            owner: this.owner,
-            tuning: JSON.stringify(this.tuning),
-            upgrades: JSON.stringify(this.upgrades),
-            impounded: this.impounded,
-            km: this.km,
-            dimension: this.dimension,
-            locked: this.locked,
-            fuel: this.fuel,
-            color: JSON.stringify(this.color),
-            plate: this.plate,
-        }
-
-        db.query("UPDATE `vehicles` SET ? WHERE id = ?", [values, player.databaseID], function (error, results, fields) {
-            if (error) return core.terminal(1, `Saving Vehicle ${error}`);
-        });
-    }
 }
 
 
@@ -187,15 +152,12 @@ class Vehicles {
         })
     }
 
-    create (model, temporary = false, data) { 
-
-        
+    create (model, temporary = false, data) {       
         let veh = new Vehicle(temporary, { 
             id: data.id, model: model, km: 0, fuel: 100, plate: vehicle.numberPlate, spawned: true, dimension: vehicle.dimension,
             position: data.position, locked: data.locked, owner: data.owner || 0, price: data.price, upgrades: { } 
         });
 
-        
     
         if (data.color) { 
             vehicle.info.paint(vehicle, data.color)
@@ -212,15 +174,48 @@ class Vehicles {
     }
 
     update (vehicle) { 
+        let values = { 
+            model: vehicle.model, 
+            position: JSON.stringify(vehicle.vehicle.position),
+            rotation: JSON.stringify(vehicle.vehicle.rotation),
+            price: vehicle.price,
+            owner: vehicle.owner,
+            business: vehicle.business,
+            plate: vehicle.plate,
+            color: JSON.stringify(vehicle.color),
+            alpha: vehicle.alpha,
+            fuel: vehicle.fuel,
+            locked: vehicle.locked,
+            dimension: vehicle.dimension,
+            spawned: vehicle.spawned,
+            km: vehicle.km,
+            dirt: vehicle.dirt,
+            impounded: vehicle.impounded,
+            tuning: JSON.stringify(vehicle.tuning),
+            upgrades: JSON.stringify(vehicle.upgrades)                          
+        }
 
+        db.query("UPDATE `vehicles` SET ? WHERE `id` = ?", [values, vehicle.id], function (error, results, fields) {
+            if (error) return core.terminal(1, `Saving Vehicle ${error}`);
+        });
     }
 
-    delete (vehicle) { 
-
+    delete (vehicle) {
+        if (vehicle.temporary) {
+            vehicle.destroy();
+            delete mp.vehicles[vehicle.id];
+        }  
+        else {
+            vehicle.destroy();
+            db.query("DELETE * FROM `vehicles` WHERE `id` = ?", [vehicle.id], function (error, results, fields) {
+                if (error) return core.terminal(1, 'Vehicle deleting ' + error);
+                delete mp.vehicles[vehicle.id];
+          });
+        }  
     }
 
     buy (player, vehicle) { 
-        let vehToBuy = mp.vehicles[vehId];
+        let vehToBuy = mp.vehicles[vehicle.uid];
         let character = player.getCharacter();
 
         if (vehToBuy.owner == -1) {
@@ -235,12 +230,39 @@ class Vehicles {
         else { player.notification(MSG_CAR_ALREADY_OWNED, NOTIFY_ERROR, 4); }
     }
 
-    sell (player, veh, target = false) { 
-        if (target) { 
-            let vehicle = mp.vehs[veh.uid];
-        
-        } else { 
+    sell (player, veh, target = -1, price = 0) { 
+        let vehToSell = mp.vehicles[veh.uid];
+        let seller = player.getCharacter();
+        if (target != -1) {
+            let buyer = target.getCharacter();
+            if (price > 0) {
+                if (buyer.money >= price) {
+                    vehToSell.owner = buyer.id;
+                    this.update(vehToSell);
+                } 
+                else { target.notification(MSG_NOT_ENOUGH_MONEY, NOTIFY_ERROR, 4); }
+            } 
+            else { player.notification(MSG_INVALID_SELL_PRICE, NOTIFY_ERROR, 4); }        
+        } 
+        else {
+            if (seller.id == vehToSell.owner) {
+                seller.giveMoney(player, vehToSell.price/2);
+                player.notification(MSG_CAR_SOLD, NOTIFY_SUCCESS, 4);
+                this.delete(vehId);
+            }
+            else { player.notification(MSG_NOT_CAR_OWNER, NOTIFY_ERROR, 4); }
+        }
+    }
 
+    // OVO JOŠ VIDETI
+    park (player, veh, garageId = -1) {
+        let vehToPark = mp.vehicles[veh.uid];
+        let character = player.getCharacter();
+        if (vehToPark.owner == character.id) {
+            if (garageId == -1) {
+                vehToPark.position = player.position;
+                player.notification(MSG_CAR_PARKED, NOTIFY_SUCCESS, 4);
+            }
         }
     }
 
@@ -250,17 +272,16 @@ class Vehicles {
 mp.vehs = new Vehicles();
 mp.vehs.load();
 
-// mp.vehicles.sell = (player, vehId) => {
-//     let vehToSell = mp.vehicles[vehId];
-//     let character = player.getCharacter();
-
-//     if (character.id == vehToSell.owner) {
-//         character.giveMoney(player, vehToSell.price/2);
-//         player.notification(MSG_CAR_SOLD, NOTIFY_SUCCESS, 4);
-//         this.delete(vehId);
-//     }
-//     else { player.notification(MSG_NOT_CAR_OWNER, NOTIFY_ERROR, 4); }
-// }
+ mp.vehicles.sell = (player, vehId) => {
+     let vehToSell = mp.vehicles[vehId];
+     let character = player.getCharacter();
+     if (character.id == vehToSell.owner) {
+         character.giveMoney(player, vehToSell.price/2);
+         player.notification(MSG_CAR_SOLD, NOTIFY_SUCCESS, 4);
+         this.delete(vehId);
+     }
+     else { player.notification(MSG_NOT_CAR_OWNER, NOTIFY_ERROR, 4); }
+ }
 
 
 // mp.vehicles.sellTo = (player, target, price, vehId) => {

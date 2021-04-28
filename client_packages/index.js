@@ -12,7 +12,7 @@ let PlayerInventory = require('./player/inventory/Items');
 // GAME CORE 
 let Chat = require('./chat');
 let CayoPerico = require('./heistisland');
-let ChatBubble = require('./player/ChatBubble');
+//let ChatBubble = require('./player/ChatBubble');
 
 
 // SYNCHRONIZATION & STREAMER
@@ -37,6 +37,10 @@ let Police = require('./factions/police/Police');
 // JOBS
 let Jobs = require('./jobs/Jobs');
 let Jetsam = require('./jobs/Jetsam');
+
+// DIAMOND CASINO
+let Roulette = require('./casino/Roulette');
+let Slots = require('./casino/Slots');
 
 // let casino = require('./casino/CasinoSlots');
 // let fuel = require('./fuel');

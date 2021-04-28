@@ -43,7 +43,8 @@ global.MESSAGES = [
    MSG_CAR_SOLD = 'Vozilo uspešno prodato',
    MSG_NOT_CAR_OWNER = 'Ne posedujete ovo vozilo',
    MSG_CAR_BOUGHT = 'Uspešno ste kupili vozilo',
-   MSG_CAR_ALREADY_OWNED = 'Ovo vozilo je već u nečijem vlasništvu'
+   MSG_CAR_ALREADY_OWNED = 'Ovo vozilo je već u nečijem vlasništvu',
+   MSG_CAR_PARKED = 'Uspešno ste parkirali vozilo'
 
 ]; Object.freeze(MESSAGES)
 
