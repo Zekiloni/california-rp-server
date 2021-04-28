@@ -3,18 +3,37 @@ const player = mp.players.local;
 var vehiclesCEF, weaponCEF, equipCEF;
 
 
-mp.events.addDataHandler('cuffed', (entity, newValue, oldValue) => {
-   if (entity.type === 'player') {
-      if (newValue !== oldValue) { 
-         cuff(entity, newValue);
+mp.events.addDataHandler({
+   'cuffed': (entity, newValue, oldValue) => {
+      if (entity.type === 'player') {
+         if (newValue !== oldValue) { 
+            cuff(entity, newValue);
+         }
+      }
+   },
+
+   'callsign': (entity, newValue, oldValue) => {
+      if (entity.type === 'vehicle') {
+         if (newValue !== oldValue) { 
+            entity.callsign = newValue;
+            mp.gui.chat.push('ima callsign ' + newValue)
+         }
       }
    }
 });
+
 
 mp.events.add({
 
    'entityStreamIn': (entity) => {
       if (entity.type === 'player') cuff(entity, entity.getVariable('cuffed'));
+
+      if (entity.type === 'vehicle') { 
+         if (entity.getVariable('callsign')) {
+            entity.callsign = entity.getVariable('callsign');
+            mp.gui.chat.push('callsign je ' + entity.callsign);
+         }
+      }
    },
 
    'client:player.cuff': (entity, toggle) => { 
@@ -29,8 +48,15 @@ mp.events.add({
          mp.game.controls.disableControlAction(0, 21, true);
          mp.game.controls.disableControlAction(0, 55, true);
       }
-   }
 
+      mp.vehicles.forEach((vehicle) => { 
+         if (vehicle.getVariable('callsign') != null) { 
+            let position = vehicle.position;
+            callsign(vehicle, vehicle.getVariable('callsign'), position.x, position.y);
+         }
+      })
+
+   }
 })
 
 
@@ -74,3 +100,29 @@ function waitEntity (entity) {
    });
 }
 
+
+let resolution;
+let scale = 0.35;
+
+callsign = (vehicle, sign, x, y) => {
+
+   let localPos = mp.players.local.position, vehiclePosition = vehicle.position;
+   // let dist = mp.game.system.vdist(localPos.x, localPos.y, localPos.z, vehiclePosition.x, vehiclePosition.y, vehiclePosition.z);
+   // if (dist > 10) return;
+
+   resolution = mp.game.graphics.getScreenActiveResolution(0, 0);
+   y -= scale * (0.005 * (resolution.y / 1080));
+
+   drawCallsign(x, y - 0.075, sign, 255);
+}
+
+drawCallsign = (x, y, text, alpha, color = [255, 255, 255]) => {
+   mp.game.ui.setTextFont(4);
+   mp.game.ui.setTextScale(scale, scale);
+   mp.game.ui.setTextColour(color[0], color[1], color[2], alpha);
+   mp.game.ui.setTextJustification(0);
+   mp.game.invoke("0x2513DFB0FB8400FE");
+   mp.game.ui.setTextEntry("STRING");
+   mp.game.ui.addTextComponentSubstringPlayerName(text);
+   mp.game.ui.drawText(x, y);
+}

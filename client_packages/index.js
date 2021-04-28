@@ -32,7 +32,7 @@ let Crouching = require('./player/Interactions/Crouching');
 let FingerPointing = require('./player/Interactions/FingerPointing');
 
 // FACTIONS
-let Police = require('./factions/police/police');
+let Police = require('./factions/police/Police');
 
 // JOBS
 let Jobs = require('./jobs/Jobs');

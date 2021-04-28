@@ -69,6 +69,19 @@ module.exports = {
       },
 
       {
+         name: 'callsign',
+         desc: 'signa',
+         //faction: { type: FactionTypes.Law },
+         call: (player, args) => { 
+            if (!player.vehicle) return;
+            let vehicle = player.vehicle;
+            let callsign = args.splice(0).join(' ');
+            vehicle.setVariable('callsign', callsign);
+
+         }
+      },
+
+      {
          name: 'rb',
          faction: { type: FactionTypes.Law },
          call: (player, args) => { 

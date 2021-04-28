@@ -13,6 +13,21 @@ const moods = [
     { name: 'Stresirana', AnimName: 'mood_stressed_1' },
     { name: 'Uvređena', AnimName: 'mood_sulk_1' }
 ];
+
+const walkingStyles = [
+    {Name: "Normalna", AnimSet: null},
+    {Name: "Brave", AnimSet: "move_m@brave"},
+    {Name: "Confident", AnimSet: "move_m@confident"},
+    {Name: "Drunk", AnimSet: "move_m@drunk@verydrunk"},
+    {Name: "Fat", AnimSet: "move_m@fat@a"},
+    {Name: "Gangster", AnimSet: "move_m@shadyped@a"},
+    {Name: "Hurry", AnimSet: "move_m@hurry@a"},
+    {Name: "Injured", AnimSet: "move_m@injured"},
+    {Name: "Intimidated", AnimSet: "move_m@intimidation@1h"},
+    {Name: "Quick", AnimSet: "move_m@quick"},
+    {Name: "Sad", AnimSet: "move_m@sad@a"},
+    {Name: "Tough", AnimSet: "move_m@tool_belt@a"}
+];
  
 function setMood(player, mood) {
     if (mood == 'normal') {

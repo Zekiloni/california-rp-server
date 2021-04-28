@@ -37,8 +37,8 @@ class Character {
          skill: p.job_skill || 0
       }
 
-      this.mood = p.mood || 'normal';
-      this.walking_style = p.walking_style || 'normal';
+      this.mood = p.mood || null;
+      this.walking_style = p.walking_style || null;
       this.animation = p.animation || null;
 
       this.mute = p.mute || 0;
