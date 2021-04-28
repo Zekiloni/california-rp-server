@@ -29,16 +29,19 @@ const walkingStyles = [
     {Name: "Tough", AnimSet: "move_m@tool_belt@a"}
 ];
  
-function setMood(player, mood) {
-    if (mood == 'normal') {
-        player.clearFacialIdleAnimOverride();
-    } else {
-        mp.game.invoke('0xFFC24B988B938B38', player.handle, mood, 0);
-    }
-}
 
-mp.events.addDataHandler('mood', (entity, value) => {
-    if (entity.type === 'player') setMood(entity, value);
+mp.events.addDataHandler({
+    'mood': (entity, value) => {
+        if (entity.type === 'player') setMood(entity, value);
+    },
+
+    'ragdoll': (entity, newValue, oldValue) => { 
+        if (entity.type === 'player') { 
+            if (newValue != oldValue) { 
+                ragdoll(entity, newValue);
+            }
+        }
+    }
 });
 
 mp.events.add({
@@ -75,5 +78,21 @@ mp.keys.bind(0x4D, false, function() {
             mp.events.call('client:player.interactions.menu', true);
         }
     }
- });
+});
+
+function setMood (entity, mood) {
+    if (mood == 'normal') {
+        entity.clearFacialIdleAnimOverride();
+    } else {
+        mp.game.invoke('0xFFC24B988B938B38', entity.handle, mood, 0);
+    }
+}
+
+function ragdoll (entity, status) { 
+    if (status) { 
+       entity.setToRagdoll(500, 500, 0, true, true, true); 
+    } else { 
+        entity.resetRagdollTimer();
+    }
+}
  

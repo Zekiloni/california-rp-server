@@ -3,7 +3,7 @@ const rp = require('request-promise');
 const hook = 'https://discord.com/api/webhooks/776875976633876490/zjzUiip35FUX5arAdjtKnpHGP4RRQ-nP9j_Frlqs63QrRC279_Uq-CHlBi3KipFWzGRx';
 
 const vinewoodOnline = { 
-   color: '#7ec0e1',
+   color: '#ffcd1d',
    url: 'https://discord.com/api/webhooks/823659820833832971/Jcpo0AcSVsTU_labTWbnO8dSLg0yxQFd9fDDYuDH5DfL6DKHFkd1FGF7tCxJCDp1STdn'
 }
 

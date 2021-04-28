@@ -3,6 +3,7 @@ const player = mp.players.local;
 let onlinePlayers = mp.players.length;
 let playerHUD = mp.browsers.new('package://player/hud-interface/hud.html'), isDriving = false;
 
+
 let screenshotBrowser = false, photoName = null,
 	ScreenShotTimer = false;
 
@@ -88,7 +89,9 @@ mp.events.add({
 	
 
 		if (playerWeapon != mp.game.joaat('weapon_unarmed')) { 
+			if (player.weapon == 0) return;
 			let ammoCount = getAmmoCount(playerWeapon);
+			mp.gui.chat.push(JSON.stringify(playerWeapon))
 			let weapon = getWeaponString();
 			playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = ${ammoCount}, hud.weapon.hash = \"${weapon}\";`); 
 		} else if (playerWeapon == mp.game.joaat('weapon_unarmed')) { 
