@@ -48,8 +48,24 @@ class Vehicle {
             }
 		}
 
+        this.vehicle = null;
+
         mp.vehs[this.id] = this;
 	}
+
+    Spawn () {
+        let pos = new mp.Vector3(this.position.x, this.position.y, this.position.z);
+        this.vehicle = mp.vehicles.new(mp.joaat(this.model), pos,
+        {
+            numberPlate: this.plate || '0000',
+            engine: false,
+            dimenson: this.dimenson,
+            locked: this.locked,
+            alpha: 255,
+        });
+
+        this.paint(this.vehicle, this.color);
+    }
 
     paint (vehicle, color) {
         this.color = color;
@@ -70,11 +86,19 @@ class Vehicle {
         components.forEach(component => { vehicle.setMod(component.index, component.value) })
     }
 
-    delete = (id) => { 
-        db.query("DELETE * FROM `vehicles` WHERE `id` = ?", [id], function (error, results, fields) {
-              if (error) return core.terminal(1, 'Vehicle deleting ' + error);
-              delete mp.vehicles[id];
-        });
+    delete = (vehicle) => {
+        if (vehicle.temporary) {
+            vehicle.destroy();
+            delete mp.vehicles[vehicle.id];
+        }  
+        else {
+            vehicle.destroy();
+            db.query("DELETE * FROM `vehicles` WHERE `id` = ?", [id], function (error, results, fields) {
+                if (error) return core.terminal(1, 'Vehicle deleting ' + error);
+                delete mp.vehicles[vehicle.id];
+          });
+        }
+        
     }
 
     update (vehicle) { 
@@ -165,19 +189,13 @@ class Vehicles {
 
     create (model, temporary = false, data) { 
 
-        let vehicle = mp.vehicles.new(mp.joaat(model), data.position,
-        {
-            numberPlate: data.numberplate || 'none',
-            engine: false,
-            dimenson: data.dimenson,
-            locked: data.locked,
-            alpha: 255,
-        });
-    
-        vehicle.info = new Vehicle(temporary, { 
+        
+        let veh = new Vehicle(temporary, { 
             id: data.id, model: model, km: 0, fuel: 100, plate: vehicle.numberPlate, spawned: true, dimension: vehicle.dimension,
             position: data.position, locked: data.locked, owner: data.owner || 0, price: data.price, upgrades: { } 
         });
+
+        
     
         if (data.color) { 
             vehicle.info.paint(vehicle, data.color)
