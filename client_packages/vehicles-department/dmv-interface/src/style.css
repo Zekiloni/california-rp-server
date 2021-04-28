@@ -74,13 +74,21 @@ button {
    letter-spacing: 1.4px;
 }
 
-button:hover { 
-   box-shadow: 0 5px 15px rgb(100 47 163 / 38%);
-   color: white;
-   background: #642fa3;
-   border-color: transparent;
-}
+button:hover {  box-shadow: 0 5px 15px rgb(100 47 163 / 38%); color: white; background: #642fa3; border-color: transparent; }
 button:focus { outline: none; }
+
+h3.welcome { width: 80%; margin: 0 auto; }
+
+.exams {width: 400px;margin: 0 auto;margin-top: 10px;padding: 0;list-style: none;display: flex;flex-direction: column;justify-content: center;align-items: center;}
+.exams li {width: 400px;margin: 7px 0;padding: 10px 20px;font-size: 14px;background: #f9f9f9;border: 1px solid #e8e8e8;transition: all 0.35s ease;}
+.exams li:hover { background: #8537b2; color: white; }
+
+#exam {width: 600px;height: 300px;margin: 0 auto;margin-top: 60px;}
+
+.question h2 {text-align: center;border-bottom: 1.5px solid #d8d8d8;padding-bottom: 10px;}
+.answers {padding: 0;/* list-style-type: lower-alpha; */list-style: none;}
+.answers li {width: 500px;padding: 10px 20px;margin: 0 auto;font-size: 15px;margin-top: 15px;border-radius: 50px;font-weight: 500;background: #f4f4f4;transition: all 0.35s ease;border: 2px solid transparent;}
+.answers li:hover { border-color: grey; }
 
 * { user-select: none; }
 

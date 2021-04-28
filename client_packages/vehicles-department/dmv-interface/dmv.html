@@ -34,10 +34,27 @@
             </ul>
 
             <div v-show="page == 'licenses'" class="page" id="licenses">
-                <h2>Pozdrav {{ player.name }} </h2>
+                <h3 class="welcome">Pozdrav {{ player.name }}, da li ste zainteresovani za neki od naših testova ? </h3>
+                <ul class="exams">
+                    <li @click="exam('Driving')"> <b>B</b> - Motorna Vozila </li>
+                    <li @click="exam('Trucking')"> <b>C</b> - Teretna Vozila </li>
+                    <li @click="exam('Boating')"> <b>D</b> - Plovidbena Vozila </li>
+                    <li @click="exam('Flying')"> <b>F</b> - Vazduhoplovna Vozila </li>
+                    <li @click="exam('Taxi')"> <b>TX</b> - Taksi Dozvola </li>
+                </ul>
             </div>
 
-
+            <div v-show="page == 'exam'" class="page" id="exam">
+                <h2 v-if="quiz.selected"> Pitanja <b>{{ quiz.currentQuestion + 1 }}</b> od {{ quiz[quiz.selected].length }} </h2>
+                <div v-if="quiz.selected" class="question"> 
+                    <h2> {{ quiz[quiz.selected][quiz.currentQuestion].question }} </h2>
+                    <ul class="answers">
+                        <li v-for="(answer, i) in quiz[quiz.selected][quiz.currentQuestion].answers" @click="answerQuestion(answer)">
+                            <b>{{ alphabet[i] }}.</b> {{ answer.text }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
           
         <!-- scripts -->
@@ -47,13 +64,84 @@
                 el: '#dmv',
                 data: {
                     page: 'home',
+                    prices: { Driving: 200, Trucking: 160, Boating: 350, Flying: 400, Taxi: 150 },
                     player: { name: 'Zachary Parker', money: 0 },
+
+                    alphabet: ['a', 'b', 'c', 'd', 'e'],
+
+                    quiz: {
+                        selected: null,
+                        currentQuestion: 0,
+                        correctAnswers: 0,
+
+                        Driving: [
+                            {
+                                question: 'Gdriving 1 ?',
+                                answers: [
+                                    { text: 'gdriving 1 1'},
+                                    { text: 'gdriving 1 2 correct', correct: true },
+                                    { text: 'gdriving 1 3'}
+                                ]
+                            },
+
+                            {
+                                question: 'Gdriving 2 ?',
+                                answers: [
+                                    { text: 'gdriving 2 1'},
+                                    { text: 'gdriving 2 2 correct', correct: true },
+                                    { text: 'gdriving 2 3'}
+                                ]
+                            }
+                        ],
+                        
+
+                        Trucking: [
+                            {
+                                question: 'trucking 1 ?',
+                                answers: [
+                                    { text: 'trucking 1 1'},
+                                    { text: 'trucking 1 2'},
+                                    { text: 'trucking 1 3 correct', correct: true },
+                                ]
+                            }
+                        ]
+                    }
+                },
+
+                created: function () {
                 },
 
                 methods: { 
                     close: () => { mp.trigger('client:player.dmv.browser'); },
 
-                
+                    exam: function (i) {
+                        //if (this.player.money < this.prices[i]) return;
+                        this.page = 'exam';
+                        this.quiz.selected = i;
+                    },
+
+                    finish: function (status) { 
+                        if (status) { 
+                            mp.trigger('client:player.dmv.driving', this.quiz.selected)
+                        } else { 
+                            this.close();
+                        }
+                    },
+
+                    answerQuestion: function (answer) { 
+                        if (answer.correct) { this.quiz.correctAnswers ++; }
+                        this.quiz.currentQuestion ++;
+                        let selected = this.quiz.selected; 
+
+                        if (this.quiz.currentQuestion >= this.quiz[this.quiz.selected].length) {
+                            this.quiz.selected = false;
+
+                            if (this.quiz.currentQuestion > this.quiz[selected].length - 2) {
+                                this.finish(true);
+                            }
+                        }
+
+                    }
                 }
             })
         </script>

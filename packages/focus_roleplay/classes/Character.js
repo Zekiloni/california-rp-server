@@ -43,7 +43,7 @@ class Character {
 
       this.mute = p.mute || 0;
 
-      
+      this.masked = false;
       this.blindfolded = false;
       this.cuffed = false;
       this.duty = false;
@@ -71,6 +71,11 @@ class Character {
          case 1: player.position = this.last_positon; break;
          default: player.position = mp.settings.defaultSpawn; break;
       }
+   }
+
+   Mask (player) { 
+      this.masked = !this.masked;
+      player.setVariable('masked', this.masked);
    }
 
    screenShot (player, toggle) { 

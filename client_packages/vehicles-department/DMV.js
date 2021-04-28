@@ -16,5 +16,10 @@ mp.events.add({
          opened = false;
          setTimeout(() => { mp.gui.cursor.show(false, false); }, 1000);
       }
+   },
+   
+   'client:player.dmv.driving': (license) => { 
+      mp.events.call('client:player.dmv.browser');
+      mp.events.callRemote('server:dmv.driving', license);
    }
 })

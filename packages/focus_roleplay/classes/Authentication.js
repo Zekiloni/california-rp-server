@@ -78,6 +78,8 @@ mp.events.add({
                gender: characterData.gender, blendData: characterData.blendData, hair: characterData.hair,
                beard: characterData.beard, eyeColor: 0, faceFeatures: characterData.faceFeatures // FALI characterData.eyeColor
             });
+
+            newCharSkin.load(player);
             
             let newCharClothes = new Clothing({
                mask: characterData.mask, torso: characterData.torso, undershirt: characterData.clothing[1], shirt: characterData.clothing[0],
@@ -100,7 +102,6 @@ mp.events.add({
                player.data.logged = true;
                player.data.spawned = false;
 
-               console.log(1)
                // settnig money because of data handler requrie change
                player.data.money = 0;
                player.dimension = player.id;

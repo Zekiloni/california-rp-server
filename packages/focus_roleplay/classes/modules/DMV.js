@@ -1,18 +1,15 @@
 
 
 
-
 const Prices = {
-   Driving: 250,
-   Boating: 350,
-   Flying: 400
+   Driving: 200, Trucking: 160, Boating: 350, Flying: 400, Taxi: 150
 }
 
 class DMV { 
    constructor () { 
       mp.events.add({
          'server:player.dmv.finish': (player, info) => { 
-            this.finish(player, info)
+            this.finish(player, info);
          }
       })
    }

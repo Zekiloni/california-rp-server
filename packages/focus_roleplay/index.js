@@ -23,6 +23,7 @@ let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
 let Doors = require('./classes/Doors');
+let Entrances = require('./classes/Entrances');
 let Houses = require('./classes/Houses');
 let Dealerships = require('./classes/Dealership');
 let Business = require('./classes/Business');
