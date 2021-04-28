@@ -35,6 +35,10 @@ mp.events.addDataHandler({
         if (entity.type === 'player') setMood(entity, value);
     },
 
+    'walking_style': (entity, value) => {
+        if (entity.type === 'player') setWalkingStyle(entity, value);
+    },
+
     'ragdoll': (entity, newValue, oldValue) => { 
         if (entity.type === 'player') { 
             if (newValue != oldValue) { 
@@ -46,7 +50,10 @@ mp.events.addDataHandler({
 
 mp.events.add({
     'entityStreamIn': (entity) => {
-        if (entity.type === 'player') setMood(entity, entity.getVariable('mood'));
+        if (entity.type === 'player') { 
+            setMood(entity, entity.getVariable('mood')); 
+            setWalkingStyle(entity, entity.getVariable('walking_style'))
+        }
     },
 
     'client:player.interactions.menu': (toggle) => { 
@@ -65,7 +72,12 @@ mp.events.add({
 
     'client:player.mood': (mood) => { 
         mp.events.callRemote('server:player.mood', mood);
-    }
+    },
+
+    'client:player.walking_style': (style) => {
+        mp.events.callRemote('server:player.walking_style', style);
+        setMovementClipset(player, style);
+     }
 });
 
 
@@ -86,6 +98,13 @@ function setMood (entity, mood) {
     } else {
         mp.game.invoke('0xFFC24B988B938B38', entity.handle, mood, 0);
     }
+}
+
+function setWalkingStyle(entity, walkstyle) {
+    try {
+       if (walkstyle == null) entity.resetMovementClipset(0.0);
+       else entity.setMovementClipset(walkstyle, 0.0);
+    } catch (e) { }
 }
 
 function ragdoll (entity, status) { 

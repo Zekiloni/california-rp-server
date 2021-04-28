@@ -25,9 +25,8 @@ let Vehicles = require('./Vehicles');
 
 
 // INTERACTIONS
+let Interactions = require('./player/Interactions/Interactions');
 let Animations = require('./player/Interactions/Animations');
-let Emotes = require('./player/Interactions/Emotes');
-let WalkingStyle = require('./player/Interactions/Walking');
 let Crouching = require('./player/Interactions/Crouching');
 let FingerPointing = require('./player/Interactions/FingerPointing');
 
