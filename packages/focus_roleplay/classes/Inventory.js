@@ -1,6 +1,6 @@
 
 
-let { ItemEntities, ItemType } = require('./modules/ItemRegistry');
+let { ItemEntities, ItemType } = require('./modules/Items');
 
 class Item { 
    constructor (id, data) { 
@@ -153,10 +153,17 @@ class Inventory {
          'server:item.use': (player, id) => { 
             let item = mp.items[id];
             if (item) { 
+
+               if (mp.ItemRegistry[item.item].type == ItemType.Ammo) { 
+                  let ammoValid = player.giveAmmo(mp.ItemRegistry[item.item].quantity, item.item);
+                  if (ammoValid == false) return;
+               }
+
                if (mp.ItemRegistry[item.item].type !== ItemType.Weapon) {
                   item.quantity --;
                   if (item.quantity < 1) { delete mp.items[item.id]; }
                }
+
                if (mp.ItemRegistry[item.item].type == ItemType.Weapon) { 
                   item.entity = ItemEntities.Wheel;
                }

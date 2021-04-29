@@ -1,7 +1,7 @@
 
 
 let types = require('../configs/Houses.json');
-let { ItemEntities, ItemType } = require('./modules/ItemRegistry');
+let { ItemEntities, ItemType } = require('./modules/Items');
 
 mp.houses = {};
 

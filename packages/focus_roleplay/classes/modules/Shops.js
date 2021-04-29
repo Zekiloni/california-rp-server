@@ -76,7 +76,7 @@ function constructWeaponMenu () {
       new AmmunationItem('Navy Revolver', '', 21.07)
       new AmmunationItem('Micro SMG', '', 22.66)
       new AmmunationItem('SMG', '', 1)
-      new AmmunationItem('SMG Mk II', '', 1)
+      new AmmunationItem('SMG MK II', '', 1)
       new AmmunationItem('Assault SMG', '', 1)
       new AmmunationItem('Combat PDW', '', 1)
       new AmmunationItem('Machine Pistol', '', 1)
