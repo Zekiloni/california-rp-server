@@ -18,7 +18,6 @@ mp.ItemRegistry = {
 
 
 
-
    'Water Battle': { 
       name: 'Water Battle',
       hash: 'prop_ld_flow_bottle',
@@ -87,7 +86,6 @@ class Item {
          this.quantity = data.quantity;
       }
 
-      console.log(this)
       mp.ItemRegistry[this.name] = this;
    }
 }
@@ -100,9 +98,17 @@ new Item ('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, functi
 })
 
 
-// MUNICIJA 
 
-new Item ('9mm Catridge', ItemType.Ammo, 'w_pi_combatpistol_mag2', 0, { quantity: 30 }, function (player) { })
+// AMMOS / MUNICIJA 
+
+new Item ('9mm Catridge', ItemType.Ammo, 'w_pi_combatpistol_mag1', 0, { quantity: 32 }, function () { })
+new Item ('10mm Catridge', ItemType.Ammo, 'w_pi_pistol50_mag2', 0, { quantity: 27 }, function () { })
+new Item ('.357 Catridge', ItemType.Ammo, 'w_mg_mg_mag2', 0, { quantity: 15 }, function () { })
+new Item ('7.62 Catridge', ItemType.Ammo, 'w_ar_specialcarbine_mag2', 0, { quantity: 70 }, function () { })
+new Item ('5.56 Catridge', ItemType.Ammo, 'w_ar_carbinerifle_mag2', 0, { quantity: 70 }, function () { })
+new Item ('.338 Catridge', ItemType.Ammo, 'w_sr_sniperrifle_mag1', 0, { quantity: 15 }, function () { })
+new Item ('Buckshot Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag1', 0, { quantity: 25 }, function () { })
+new Item ('Slug Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag2', 0, { quantity: 25 }, function () { })
 
 
 // WEAPONS / ORUZIJE
@@ -433,8 +439,6 @@ function weaponNameByHash (i) {
 
 function isAmmoValid (weapon, ammo) { 
    let name = weaponNameByHash(weapon);
-   console.log('Ammo is ' + ammo)
-   console.log('Name is ' + name)
    for (let i in mp.ItemRegistry) { 
       let item = mp.ItemRegistry[i];
       if (item.weapon && item.weapon == name) { 

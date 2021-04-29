@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+    </head>
+    <body>
+        <div id="atm">
+            <div class="header">
+                <img src="src/images/maze-logo.png" />
+                <h2> Maze Bank <small>Ulažite u minus, to je u vašem interesu</small> </h2>
+                
+                <i @click="close()" class="close fa fa-times" aria-hidden="true"></i>
+            </div>
+
+           
+            </div>
+
+        </div>
+          
+        <!-- scripts -->
+        <script src="src/vendor/js/vue.js"></script>
+        <script>
+            let atm = new Vue({
+                el: '#atm',
+                data: {
+                    player: {
+                        money: 0,
+                        cart: []
+                    },
+
+
+                },
+
+                methods: { 
+                    close: () => { mp.trigger('client:market.toggle', false); },
+
+                    add: function (name, price) { 
+                        this.player.cart.push({ item: name, price: price })
+                    },
+
+                    remove: function (i) { 
+                        let index = this.player.cart.indexOf(i);
+                        this.player.cart.splice(index, 1);
+                    },
+
+                    total: function () { 
+                        let price = 0;
+                        for (let i in this.player.cart) { price = price + this.player.cart[i].price; }
+                        return price;
+                    },
+
+                    empty: function () {
+                        this.player.cart = [];
+                    },
+
+                    cashout: function() {
+                        let items = this.player.cart;
+                        let bill = this.total();
+                        setTimeout(() => { this.empty(); }, 200);
+                        mp.trigger('client:market.buy', bill, JSON.stringify(items))
+                    }
+                }
+            })
+        </script>
+    </body>     
+</html>
