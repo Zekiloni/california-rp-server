@@ -773,7 +773,7 @@ mp.ItemRegistry = {
 
    'BZ Gas': {
       name: 'BZ Gas', 
-      hash: '',
+      hash: 'prop_gas_grenade',
       weapon: 'weapon_bzgas', 
       type: ItemType.Weapon, 
       use: (player, ammo = 0) => { 
@@ -873,3 +873,32 @@ mp.ItemRegistry = {
 };
 
 
+// let items = {};
+// const Types = {
+//    Weapon: 0,
+//    Drug: 1,
+// }
+
+// class Item {
+//    constructor (name, type, object, data, use) { 
+//       this.name = name;
+//       this.type = type;
+//       this.object = object;
+//       this.use = use;
+//       if (data) { 
+//          this.weapon = data.weapon || 0;
+//       }
+
+//       items[this.name] = this;
+//    }
+// }
+
+
+// new Item ('Mare', Types.Weapon, 'mp_cocaine', { weapon: 'kalas' }, function (player, ) { 
+//    console.log(this.weapon)
+// })
+
+// setTimeout(() => {
+//    console.log(items)
+//    items['Mare'].use('zeki')
+// }, 500); 

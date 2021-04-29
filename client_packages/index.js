@@ -38,8 +38,8 @@ let Jobs = require('./jobs/Jobs');
 let Jetsam = require('./jobs/Jetsam');
 
 // DIAMOND CASINO
-let Roulette = require('./casino/Roulette');
-let Slots = require('./casino/Slots');
+// let Roulette = require('./casino/Roulette');
+// let Slots = require('./casino/Slots');
 
 // let casino = require('./casino/CasinoSlots');
 // let fuel = require('./fuel');
