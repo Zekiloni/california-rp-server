@@ -13,60 +13,102 @@
 
     </head>
     <body>
-        <div id="atm">
-            <div class="header">
-                <img src="src/images/maze-logo.png" />
-                <h2> Maze Bank <small>Ulažite u minus, to je u vašem interesu</small> </h2>
-                
+        <div id="atm" v-bind:class="{ logged: logged }">
+            <div class="header" >
+                <div class="logo-holder">
+                    <img src="src/images/maze-logo.png" />
+                </div>
+            </div>
+
+            <div v-if="!logged" class="authorization">
+                <div class="digits">
+                    <h4 class="welcome">Molimo prijavite se !</h4>
+                    <h3 class="pin-input"> {{ pin }} </h3>
+                    <h4 class="digit" v-for="digit in digits" @click="input(digit)"> {{ digit }} </h4>
+                    <h4 class="cc" @click="input(-1)"> <i class="fa fa-times" aria-hidden="true"></i> </h4>
+                </div>
+                <button class="login" @click="login()"> Prijava </button>
+            </div>
+
+            <div v-if="logged">
                 <i @click="close()" class="close fa fa-times" aria-hidden="true"></i>
+
             </div>
 
            
-            </div>
-
         </div>
           
         <!-- scripts -->
         <script src="src/vendor/js/vue.js"></script>
         <script>
+
             let atm = new Vue({
                 el: '#atm',
                 data: {
                     player: {
                         money: 0,
-                        cart: []
+                        balance: 0,
+                        savings: 0,
+                        number: 0,
+                        pin: 1312
                     },
+
+                    digits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
+                    loginAttempts: 0,
+                    pin: '',
+                    logged: false,
 
 
                 },
 
                 methods: { 
-                    close: () => { mp.trigger('client:market.toggle', false); },
+                    close: () => { mp.trigger('client:player.banking'); },
 
-                    add: function (name, price) { 
-                        this.player.cart.push({ item: name, price: price })
+                    input: function (i) { 
+                        let audio = new Audio('src/click.mp3'); audio.play();
+                        if (i == -1) { this.pin = this.pin.slice(0, -1); } 
+                        else { if (this.pin.length >= 4) return; this.pin += i; }
                     },
 
-                    remove: function (i) { 
-                        let index = this.player.cart.indexOf(i);
-                        this.player.cart.splice(index, 1);
+                    login: function () { 
+                        if (this.pin.length == 4) { 
+                            if (this.player.pin == this.pin) { 
+                                let audio = new Audio('src/success.mp3'); audio.play();
+                                this.logged = true;
+                            } else { 
+                                let audio = new Audio('src/error.mp3'); audio.play();
+                                this.loginAttempts ++;
+                                this.pin = '';
+                                if (this.loginAttempts > 3) { 
+                                    this.close();
+                                }
+                            }
+                        }
                     },
 
-                    total: function () { 
-                        let price = 0;
-                        for (let i in this.player.cart) { price = price + this.player.cart[i].price; }
-                        return price;
+                    withdraw: function (value) {
+                        if (this.player.balance >= value) {
+                            mp.trigger('client:player.banking.withdraw', value);
+                            // podigni
+                        } else { 
+                            // error
+                        }
                     },
 
-                    empty: function () {
-                        this.player.cart = [];
+                    deposit: function (value) { 
+                        if (value <= this.player.money) {
+                            // ostavi pare
+                        } else { 
+                            // error
+                        }
                     },
 
-                    cashout: function() {
-                        let items = this.player.cart;
-                        let bill = this.total();
-                        setTimeout(() => { this.empty(); }, 200);
-                        mp.trigger('client:market.buy', bill, JSON.stringify(items))
+                    transfer: function (target, value) { 
+                        if (value <= this.player.balance) { 
+                            // do transfer
+                        } else { 
+                            // error
+                        }
                     }
                 }
             })
