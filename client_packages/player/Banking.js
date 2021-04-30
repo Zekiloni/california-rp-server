@@ -1,7 +1,7 @@
 
 
 const player = mp.players.local;
-let browser = null, opened = false;
+let browser = null, opened = false, bank = null;
 
 const banks = { 
    506770882: 'fleeca',
@@ -11,14 +11,17 @@ const banks = {
 }
 
 mp.events.add({
-   'client:player.banking': () => { 
+   'client:player.banking': async () => { 
       if (opened) { 
          browser.destroy();
          opened = false;
          setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
       } else { 
+         let account = await mp.events.callRemoteProc('server:player.banking');
          browser = mp.browsers.new('package://player/banking-interface/atm.html');
-         browser.execute(`atm.player.money = ${player.money}`);
+         account = JSON.parse(account)
+         browser.execute(`atm.bank = \"${banks[bank]}\", atm.player.money = ${player.money}, atm.player.balance = ${account.balance}, atm.player.name = \"${player.name}\"
+            atm.player.paycheck = ${account.paycheck}, atm.player.pin = ${account.pin}, atm.player.number = ${account.number}, atm.player.savings = ${account.savings}`);
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       }
@@ -46,11 +49,13 @@ mp.keys.bind(0x59, false, function() {
 });
 
 function isNearBank () { 
-   let logo = null;
    let atm_1 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 3424098598, false, true, true);
    let atm_2 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 3168729781, false, true, true);
    let atm_3 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 2930269768, false, true, true);
    let atm_4 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 506770882, false, true, true);
-   if (atm_1 || atm_2 || atm_3 || atm_4) { return true; }
-   else {  return false; }
+   if (atm_1) { bank = 3424098598; return true; }
+   else if (atm_2) { bank = 3168729781; return true; } 
+   else if (atm_3) { bank = 2930269768; return true; } 
+   else if (atm_4) { bank = 506770882; return true; }
+   else { return false; }
 }

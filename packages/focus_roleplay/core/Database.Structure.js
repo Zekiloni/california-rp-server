@@ -36,7 +36,7 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   armour int(4) NOT NULL DEFAULT 0,
   money int(11) NOT NULL DEFAULT 800,
   salary int(6) NOT NULL DEFAULT 0,
-  bank_account int(16) NOT NULL DEFAULT 0,
+  bank_account varchar(24) NOT NULL DEFAULT 0,
   last_position text,
   spawn_point int(2) NOT NULL DEFAULT 0,
   mask_id int(6) NOT NULL DEFAULT 0,
@@ -276,12 +276,13 @@ db.query(furnitureTable, function(err, results, fields) {
 });
 
 let banksTable = `CREATE TABLE IF NOT EXISTS bank (
-  number int(16) NOT NULL,
-  pin int(3) NOT NULL,
+  id int(11) NOT NULL AUTO_INCREMENT,
+  number varchar(24) NOT NULL,
+  pin int(4) NOT NULL,
   balance int(11) NOT NULL DEFAULT 500,
   savings int(11) NOT NULL DEFAULT 0,
   paycheck int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY(number))`;
+  PRIMARY KEY(id))`;
 
 db.query(banksTable, function(err, results, fields) {
   if (err) { core.terminal(1, err.message) }

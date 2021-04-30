@@ -16,7 +16,7 @@
         <div id="atm" v-bind:class="{ logged: logged }">
             <div class="header" >
                 <div class="logo-holder">
-                    <img src="src/images/maze-logo.png" />
+                    <img v-bind:src="'src/images/' + bank + '-logo.png'" /> 
                 </div>
             </div>
 
@@ -48,11 +48,13 @@
                     bank: 'fleeca',
 
                     player: {
+                        name: null,
                         money: 0,
                         balance: 0,
                         savings: 0,
                         number: 0,
-                        pin: 1312
+                        paycheck: 0,
+                        pin: 0
                     },
 
                     digits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],

@@ -56,6 +56,7 @@ class Saving {
                   faction_rank: character.rank,
                   faction_leader: character.leader,
                   hunger: character.hunger,
+                  bank_account: character.bank_account,
                   thirst: character.thirst,
                   spawn_point: character.spawn_point,
                   last_position: JSON.stringify(player.position),
@@ -76,6 +77,7 @@ class Saving {
             if (character) { 
                let values = {
                   last_position: JSON.stringify(player.position),
+                  spawn_point: JSON.stringify(character.spawn_point),
                   health: character.health,
                   armour: character.armour
                }

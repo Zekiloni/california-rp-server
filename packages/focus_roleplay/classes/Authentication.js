@@ -46,8 +46,8 @@ mp.events.add({
                accessories: JSON.parse(char.accessories), hat: JSON.parse(char.hats), glasses: JSON.parse(char.glasses), 
                ears: JSON.parse(char.ears), watch: JSON.parse(char.watches), bracelet: JSON.parse(char.bracelet)
             })
+
             charClothes.load(player);
-      
          })
 
       });
@@ -68,6 +68,7 @@ mp.events.add({
          player.dimension = 0;
          player.position = mp.settings.defaultSpawn;
          player.defaultVariables();
+         mp.bank.create(player);
 
          let string = `["0", "0"]`;
          db.query('INSERT INTO `appearances` (`character`, `blend_data`, `face_features`, `head_overlays`, `head_overlays_colors`, `hair`, `beard`, `torso`, `shirt`, `undershirt`, `legs`, `shoes`, `bags`, `accessories`, `bracelet`, `watches`, `ears`, `glasses`, `mask`, `hats`, `body_armours`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -87,6 +88,7 @@ mp.events.add({
             });
             newCharClothes.load(player);
          });
+
       });
    
       player.sendMessage(MSG_WELCOME_ON_REGISTER, mp.colors.info);
