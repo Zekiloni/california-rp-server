@@ -8,6 +8,7 @@ let PlayerCore = require('./player/Core');
 let PlayerList = require('./player/PlayerList');
 let NameTags = require('./player/NameTags');
 let PlayerInventory = require('./player/inventory/Items');
+let PlayerBanking = require('./player/Banking');
 
 // GAME CORE 
 let Chat = require('./chat');
