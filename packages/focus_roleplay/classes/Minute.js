@@ -1,6 +1,6 @@
 
 
-let interval = 1; // minute
+const interval = 1; // minute
 
 class Minute { 
    spend = function ()  { 
@@ -14,7 +14,8 @@ class Minute {
             if (character.experience >= 60) { 
                character.hours ++;
                character.experience = 0;
-               character.payDay(target);
+               let bank = mp.bank.accounts[character.bank_account];
+               bank.payDay(target);
             }
             mp.events.call('server:save.player.character.urgent', target)
          }

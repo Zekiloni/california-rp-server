@@ -8,7 +8,6 @@ body {
    margin: 0;
    width: 100%;
    height: 100vh;
-   /* background: url('https://gmedia.playstation.com/is/image/SIEPDC/grand-theft-auto-v-screen-02-ps4-en-22jul20?$native--t$'); */
    background: transparent;
    padding: 0;
    position: relative;
@@ -16,16 +15,7 @@ body {
    display: grid;
 }
 
-body::after { 
-   width: 100%;
-   height: 100%;
-   position: absolute;
-   content: '';
-   background: rgb(0 0 0 / 40%);
-   z-index: 1;
-   top: 0;
-}
-
+body::after { width: 100%; height: 100%; position: absolute; content: ''; background: rgb(0 0 0 / 40%); z-index: 1; top: 0; }
 
 #atm {
    width: 400px;
@@ -77,13 +67,79 @@ button:focus { outline: none; }
 .digits .cc:hover { color: black; background: white; border-color: rgb(236 236 236); }
 .digits .pin-input {font-size: 18px;width: 200px;height: 40px;display: flex;background: #ececec;border-radius: 5px;/* border-bottom: 2px solid #dadada; */justify-content: center;align-items: center;margin: 10px 0;color: #5d5d5d;}
 
+
+.dashboard {width: 725px;height: 415px;padding: 5px;margin: auto;margin-top: 20px;display:flex;justify-content: space-between;}
+
+.account {width: 250px;height: 100%;border-radius: 10px;background: whitesmoke;align-items: center;position: relative;display:flex;flex-direction: column;}
+.account .profile {width: 260px;height: 90px;background: white;padding: 20px 0;border-radius: 15px;margin-top: 20px;border: 1px solid rgb(128 128 128 / 15%);box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;position:relative;}
+.profile h2 {margin: 0;padding: 0 15px;text-transform: uppercase;letter-spacing: 1.3px;font-size: 18px;}
+.profile small {margin: 0;padding: 0 15px;text-transform: uppercase;letter-spacing: 1px;color: #a0a0a0;font-weight: 300;}
+.profile .balance {position: absolute;background: linear-gradient(45deg,#49c746,#65e661);width: 200px;border-radius: 10px;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);bottom: -15px;left: 15px;height: 50px;display: flex;color: white;align-items: center;}
+
+.account .navigation {position: absolute;bottom: 5px;list-style: none;padding: 0;margin: 0;flex-wrap: wrap;display:flex;justify-content: center;}
+.navigation li {overflow: hidden;width: 100px;height: 100px;margin: 6px;border-radius: 5px;justify-content: center;align-items: center;text-transform: uppercase;background: #ffffff;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);text-align: center;font-size: 10px;position: relative;color: #3e3e3e;display: flex;transition: all 0.35s ease;}
+.navigation li i {position: absolute;font-size: 90px;color: #000000;transform: rotate(10deg);opacity: 0.05;bottom: -10px;left: -20px;transition: all 0.35s ease;}
+.navigation li:hover { filter: brightness(1.05); }
+.navigation li h3 { z-index: 3; position: relative; }
+.navigation li:hover i { transform: rotate(0deg); font-size: 100px;}
+.navigation li.active {color: white;background: #ffcd1d;box-shadow: 0 5px 15px rgb(255 205 29 / 45%);}
+.navigation li.active i { color: white; opacity: 0.15; }
+
+
+.informations { list-style: none; padding: 0; }
+.informations li {width: 325px;padding: 15px 20px;background: #ffffff;margin: 15px 0;display: flex;flex-wrap: wrap;justify-content: space-between;border-radius: 10px;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+.informations li h3 { margin: 0; text-transform: uppercase; }
+
+
+.page {overflow: hidden; position: relative; width: 450px;height: 100%;border-radius: 10px;display: flex;justify-content: center;align-items: center;background: whitesmoke;}
+
+.notification {position: absolute;bottom: 20px;right: 20px;width: auto;padding: 10px 25px;transition: all 0.35s ease; animation: notification 1.5s; color: white;background: #492e8d;box-shadow: 0 5px 15px rgb(103 68 191 / 65%);border-radius: 5px;}
+
+button.cash-me-outside {box-shadow: 0 5px 15px rgb(93 221 89 / 15%);color: whitesmoke;padding: 5px 20px;border: none;font-size: 14px;border-radius: 5px;text-transform: uppercase;letter-spacing: 2px;background: #5ddd59;transition: all 0.35s ease;}
+button.cash-me-outside:hover { box-shadow: 0 5px 15px rgb(93 221 89 / 55%); filter: brightness(1.1); }
+button.cash-me-outside:disabled,
+button.cash-me-outside[disabled]{ background-color: #cccccc; opacity: 0.4; box-shadow: none; color: #666666; }
+button.cash-me-outside:disabled:hover { filter: none; }
+
+.withdraw-handler {width: auto;background: #ffffff;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);border-radius: 10px;position: relative;}
+
+.withdraw-handler button.withdraw {position: absolute;border: none;width: 55px;right: -15px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+button.withdraw[disabled]{background: #e4e4e4;box-shadow: none;color: #ababab;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+button.withdraw:disabled:hover { filter: none; }
+
+
+.deposit-handler {width: auto;background: #ffffff;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);border-radius: 10px;position: relative;}
+
+.deposit-handler button.deposit {position: absolute;border: none;width: 55px;right: -15px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+button.deposit[disabled]{background: #e4e4e4;box-shadow: none;color: #ababab;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+button.deposit:disabled:hover { filter: none; }
+
+input {
+   border: 1px solid rgba(0,0,0,.125);
+   border-radius: 5px;
+   color: #666;
+   font-size: 14px;
+   font-weight: 700;
+   padding: 10px 21px;
+   box-shadow: 0 5px 10px rgb(0 0 0 / 7%);
+}
+
+input:focus { outline: none; }
+
 .fade-out { opacity: 0; }
+
+.page-title { text-transform: uppercase; font-weight: 400; }
 
 * { user-select: none; }
 
 @keyframes slide-in {
    0% { transform: translateY(-800px); }  
    100% { transform: translateX(0); }
+}
+
+@keyframes notification {
+   0% { transform: translateY(200px); }
+   100% { transform: translateY(0); }
 }
 
 @keyframes floyd {

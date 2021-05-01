@@ -1,5 +1,7 @@
 
 
+let { FactionTypes } = require('./Factions')
+
 
 class BankAccount { 
    constructor (number, pin, data) { 
@@ -12,6 +14,54 @@ class BankAccount {
       console.log(this)
       mp.bank.accounts[this.number] = this;
    }
+
+
+   withdraw (player, value) { 
+      let character = player.getCharacter();
+      character.giveMoney(value);
+      this.balance -= value;
+   }
+
+   deposit (player, value) { 
+      let character = player.getCharacter();
+      character.giveMoney(-value);
+      this.balance += value;
+   }
+
+   transfer (player, target, value) { 
+
+   }
+
+   payDay (player) { 
+      let character = player.getCharacter(), value = 0;
+
+      value += core.between(5, 10);
+
+      if (character.hours < 6) { 
+         value += core.between(17, 20);
+      }
+
+      if (character.job) { 
+         value += core.between(5, 10);
+         value += character.working.salary;
+
+      }
+
+      if (character.faction) { 
+         if (mp.factions[character.faction].type == FactionTypes.Law) { 
+            value += core.between(15, 25);
+
+         }
+      }
+
+      this.paycheck += value;
+
+      mp.bank.update(this);
+   }
+
+   tax (player) { 
+
+   }
 }
 
 class Bank { 
@@ -21,6 +71,25 @@ class Bank {
          let character = player.getCharacter();
          return JSON.stringify(this.accounts[character.bank_account])
       });
+
+      mp.events.add({
+         'server:player.banking.withdraw': (player, bank, value) => { 
+            bank = this.accounts[bank];
+            bank.withdraw(player, value)
+         },
+
+         'server:player.banking.deposit': (player, bank, value) => { 
+            bank = this.accounts[bank];
+            bank.deposit(player, value);
+         },
+
+         'server:player.banking.transfer': (player, bank, target, value) => { 
+            bank = this.accounts[bank];
+            if (this.accounts[target]) { 
+               // do transfer
+            }
+         }
+      })
    }
 
    accounts = {}
@@ -36,6 +105,10 @@ class Bank {
             })
          });
       })
+   }
+
+   update (bank) { 
+
    }
 
 

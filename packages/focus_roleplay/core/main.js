@@ -51,7 +51,7 @@ module.exports = {
           return parseInt(hex.replace("#",""), 16)
      },
 
-     randomInRange: (min, max) => {
+     between: (min, max) => {
           return Math.floor(Math.random() * (max - min)) + min;
      }
 }

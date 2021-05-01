@@ -140,10 +140,7 @@ class Character {
       player.setVariable('cuffed', this.cuffed);
    }
 
-   payDay (player) { 
-
-
-   }
+ 
 }
 
 const genders = [ 

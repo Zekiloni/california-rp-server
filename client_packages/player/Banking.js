@@ -4,10 +4,8 @@ const player = mp.players.local;
 let browser = null, opened = false, bank = null;
 
 const banks = { 
-   506770882: 'fleeca',
-   3424098598: 'fleeca',
-   3168729781: 'maze',
-   2930269768: 'maze'
+   506770882: 'fleeca', 3424098598: 'fleeca',
+   3168729781: 'maze', 2930269768: 'maze'
 }
 
 mp.events.add({
@@ -18,24 +16,25 @@ mp.events.add({
          setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
       } else { 
          let account = await mp.events.callRemoteProc('server:player.banking');
-         browser = mp.browsers.new('package://player/banking-interface/atm.html');
          account = JSON.parse(account)
-         browser.execute(`atm.bank = \"${banks[bank]}\", atm.player.money = ${player.money}, atm.player.balance = ${account.balance}, atm.player.name = \"${player.name}\"
-            atm.player.paycheck = ${account.paycheck}, atm.player.pin = ${account.pin}, atm.player.number = ${account.number}, atm.player.savings = ${account.savings}`);
+         browser = mp.browsers.new('package://player/banking-interface/atm.html');
+         browser.execute(`atm.bank = \"${banks[bank]}\", atm.player.money = ${player.money}, atm.player.balance = ${account.balance}, atm.player.name = \"${player.name}\";`);
+         browser.execute(`atm.player.paycheck = ${account.paycheck}, atm.player.savings = ${account.savings};`)
+         browser.execute(`atm.player.pin = ${account.pin}, atm.player.number = ${account.number};`)
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       }
    },
 
-   'client:player.banking.withdraw': (value) => { 
+   'client:player.banking.withdraw': (bank, value) => { 
 
    },
 
-   'client:player.banking.deposit': (value) => { 
+   'client:player.banking.deposit': (bank, value) => { 
 
    },
 
-   'client:player.banking.transfer': (target, value) => { 
+   'client:player.banking.transfer': (bank, target, value) => { 
 
    }
 })
