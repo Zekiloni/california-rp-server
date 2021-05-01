@@ -50,17 +50,21 @@ class BankAccount {
       if (character.faction) { 
          if (mp.factions[character.faction].type == FactionTypes.Law) { 
             value += core.between(15, 25);
-
          }
+      }
+
+      if (this.savings > 0) { 
+
       }
 
       this.paycheck += value;
 
-      mp.bank.update(this);
+      this.tax(player);
    }
 
    tax (player) { 
 
+      mp.bank.update(this);
    }
 }
 
@@ -108,7 +112,15 @@ class Bank {
    }
 
    update (bank) { 
+      let values = { 
+         balance: bank.balance,
+         savings: bank.savnigs,
+         paycheck: bank.paycheck
+      }
 
+      db.query("UPDATE `bank` SET ? WHERE `number` = ?", [values, bank.number], function (error, results, fields) {
+         if (error) return core.terminal(1, 'Bank Update Error ' + error);
+      });
    }
 
 

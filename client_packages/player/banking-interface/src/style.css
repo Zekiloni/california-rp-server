@@ -103,14 +103,14 @@ button.cash-me-outside:disabled:hover { filter: none; }
 
 .withdraw-handler {width: auto;background: #ffffff;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);border-radius: 10px;position: relative;}
 
-.withdraw-handler button.withdraw {position: absolute;border: none;width: 55px;right: -15px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+.withdraw-handler button.withdraw {position: absolute;border: none;width: 55px;right: -13px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
 button.withdraw[disabled]{background: #e4e4e4;box-shadow: none;color: #ababab;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
 button.withdraw:disabled:hover { filter: none; }
 
 
 .deposit-handler {width: auto;background: #ffffff;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);border-radius: 10px;position: relative;}
 
-.deposit-handler button.deposit {position: absolute;border: none;width: 55px;right: -15px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+.deposit-handler button.deposit {position: absolute;border: none;width: 55px;right: -11px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
 button.deposit[disabled]{background: #e4e4e4;box-shadow: none;color: #ababab;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
 button.deposit:disabled:hover { filter: none; }
 
