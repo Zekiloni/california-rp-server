@@ -17,10 +17,11 @@ mp.events.add({
       } else { 
          let account = await mp.events.callRemoteProc('server:player.banking');
          account = JSON.parse(account)
+         mp.gui.chat.push(`Broj \"${account.number}\"`)
          browser = mp.browsers.new('package://player/banking-interface/atm.html');
          browser.execute(`atm.bank = \"${banks[bank]}\", atm.player.money = ${player.money}, atm.player.balance = ${account.balance}, atm.player.name = \"${player.name}\";`);
          browser.execute(`atm.player.paycheck = ${account.paycheck}, atm.player.savings = ${account.savings};`)
-         browser.execute(`atm.player.pin = ${account.pin}, atm.player.number = ${account.number};`)
+         browser.execute(`atm.player.pin = ${account.pin}, atm.player.number = \"${account.number}\";`)
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       }

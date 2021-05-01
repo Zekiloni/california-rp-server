@@ -11,21 +11,22 @@ class BankAccount {
       this.savings = data.savings || 0;
       this.paycheck = data.paycheck || 0;
 
-      console.log(this)
       mp.bank.accounts[this.number] = this;
    }
 
 
    withdraw (player, value) { 
       let character = player.getCharacter();
-      character.giveMoney(parseInt(value));
+      character.giveMoney(player, parseInt(value));
       this.balance -= parseInt(value);
+      mp.bank.update(this)
    }
 
    deposit (player, value) { 
       let character = player.getCharacter();
-      character.giveMoney(-parseInt(value));
+      character.giveMoney(player, -parseInt(value));
       this.balance += parseInt(value);
+      mp.bank.update(this)
    }
 
    transfer (player, target, value) { 
