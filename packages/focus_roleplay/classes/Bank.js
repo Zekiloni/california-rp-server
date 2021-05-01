@@ -18,14 +18,14 @@ class BankAccount {
 
    withdraw (player, value) { 
       let character = player.getCharacter();
-      character.giveMoney(value);
-      this.balance -= value;
+      character.giveMoney(parseInt(value));
+      this.balance -= parseInt(value);
    }
 
    deposit (player, value) { 
       let character = player.getCharacter();
-      character.giveMoney(-value);
-      this.balance += value;
+      character.giveMoney(-parseInt(value));
+      this.balance += parseInt(value);
    }
 
    transfer (player, target, value) { 

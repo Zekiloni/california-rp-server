@@ -205,7 +205,7 @@
                             this.values.withdraw = 0;
                             this.player.balance -= value;
                             this.audio.ka_ching.play();
-                            mp.trigger('client:player.banking.withdraw', value);
+                            mp.trigger('client:player.banking.withdraw', this.player.number, value);
                             // podigni
                         } else { 
                             // error
@@ -218,7 +218,7 @@
                             this.player.money -= value;
                             this.player.balance += parseInt(value);
                             this.audio.ka_ching.play();
-                            mp.trigger('client:player.banking.deposit', value);
+                            mp.trigger('client:player.banking.deposit', this.player.number, value);
                         } else { 
                             // error
                         }
