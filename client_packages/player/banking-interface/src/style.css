@@ -61,7 +61,7 @@ button.login:hover { color: white;filter: brightness(1.05);box-shadow: 0 5px 15p
 button:focus { outline: none; }
 .digits {display: flex;justify-content: space-around;flex-wrap: wrap;width: 190px;margin-top: 15px;}
 .digits h4.welcome {width: 100%;margin: 5px 0;color: #5a5a5a;font-weight: 300;font-size: 16px;text-align: center;}
-.digits .digit {font-size: 18px;color: #5e3faf;width: 50px;border: 1px solid transparent;height: 50px;transition: all 0.35s ease;display: flex;justify-content: center;align-items: center;border-radius: 5px;background: #ececec;margin: 5px;}
+.digits .digit {font-size: 18px;color: #5e3faf;width: 50px;border: 1px solid transparent;height: 40px;transition: all 0.35s ease;display: flex;justify-content: center;align-items: center;border-radius: 5px;background: #ececec;margin: 5px;}
 .digits .digit:hover { color: black; background: white; border-color: rgb(236 236 236); }
 .digits .cc {font-size: 18px;color: #ff6767;width: 90px;border: 1px solid transparent;height: 40px;transition: all 0.35s ease;display: flex;justify-content: center;align-items: center;border-radius: 5px;background: #ececec;margin: 5px;}
 .digits .cc:hover { color: black; background: white; border-color: rgb(236 236 236); }

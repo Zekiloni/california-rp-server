@@ -17,7 +17,6 @@ mp.events.add({
       } else { 
          let account = await mp.events.callRemoteProc('server:player.banking');
          account = JSON.parse(account)
-         mp.gui.chat.push(`Broj \"${account.number}\"`)
          browser = mp.browsers.new('package://player/banking-interface/atm.html');
          browser.execute(`atm.bank = \"${banks[bank]}\", atm.player.money = ${player.money}, atm.player.balance = ${account.balance}, atm.player.name = \"${player.name}\";`);
          browser.execute(`atm.player.paycheck = ${account.paycheck}, atm.player.savings = ${account.savings};`)
@@ -44,7 +43,7 @@ mp.events.add({
 
 mp.keys.bind(0x59, false, function() {
    if (player.logged && player.spawned) { 
-      if (player.vehicle || player.cuffed) return;
+      if (player.vehicle || player.cuffed || mp.players.local.isTypingInTextChat) return;
       if (isNearBank()) { mp.events.call('client:player.banking') }
    }
 });

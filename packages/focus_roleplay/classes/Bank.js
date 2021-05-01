@@ -39,7 +39,7 @@ class BankAccount {
       value += core.between(5, 10);
 
       if (character.hours < 6) { 
-         value += core.between(17, 20);
+         value += core.between(15, 20);
       }
 
       if (character.job) { 
@@ -49,25 +49,37 @@ class BankAccount {
       }
 
       if (character.faction) { 
-         if (mp.factions[character.faction].type == FactionTypes.Law) { 
+         let factionType = mp.factions[character.faction].type;
+         if (factionType == FactionTypes.Law || factionType == FactionTypes.Fmd) { 
             value += core.between(15, 25);
+         } else if (factionType == FactionTypes.Gov) { 
+            value += core.between(25, 35);
          }
       }
 
       if (this.savings > 0) { 
-
+         let earnings = this.savings / 50;
+         this.savings += earnings;
       }
 
       this.paycheck += value;
 
-      this.tax(player);
+      this.tax(player, value);
    }
 
-   tax (player) { 
+   tax (player, earnings) { 
+      let character = player.getCharacter();
+      let percent = 12, tax = (earnings / 100) * percent;
+
+      if (earnings > 20) { 
+
+      }
+
 
       mp.bank.update(this);
    }
 }
+
 
 class Bank { 
 
