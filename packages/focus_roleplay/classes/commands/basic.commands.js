@@ -61,6 +61,27 @@ module.exports = {
       },
 
       {
+         name: 'pay',
+         desc: 'Pokazivanje dokumenata',
+         call: (player, args) => { 
+            let character = player.getCharacter();
+            if (character.hours < 2) { 
+               if (args[0]) { 
+                  let target = mp.players.find(args[0]);
+                  if (target && args[1]) { 
+                     let targetCharacter = target.getCharacter(), amount = args[1];
+                     if (amount > character.money) return; // nemas dovoljno novca
+                     if (amount < 0) return; // ne mozes dati minus :)
+
+                     targetCharacter.giveMoney(target, amount)
+                     character.giveMoney(player, -amount);
+                  }
+               }
+            }
+         }
+      },
+
+      {
          name: 'accept',
          desc: 'Lista Komand',
          call: (player, args) => { 
