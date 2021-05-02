@@ -53,6 +53,7 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   job_skill text,
   licenses text,
   screenshot int(1) NOT NULL DEFAULT 0,
+  ores TEXT NOT NULL DEFAULT 0,
   PRIMARY KEY(id))`;
 
 db.query(charactersTable, function(err, results, fields) {
