@@ -10,10 +10,11 @@ class Phone {
       this.contacts = contacts || {};
       this.messages = messages|| [];
 
-      this.turned = info.turned || true;
-
-      this.melody = info.melody;
-      this.background = info.background;
+      if (info) { 
+         this.turned = info.turned || true;
+         this.melody = info.melody;
+         this.background = info.background;
+      }
 
       this.ringing = false;
       this.talking = false;
@@ -87,7 +88,9 @@ setTimeout(() => { console.log(mp.phones) }, 5000);
 
 
 mp.phones.update = (phone) => { 
-
+   let values = { 
+      
+   }
 }
 
 mp.phones.user = (character) => { 

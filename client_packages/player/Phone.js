@@ -5,7 +5,7 @@ let browser = mp.browsers.new('package://player/phone-interface/phone.html'), op
 
 
 mp.events.add({
-   'client:player.phone': (phone, contacts, messages, calls) => { 
+   'client:player.phone': (phone) => { 
       if (!opened) { 
          opened = true;
          browser.execute('phone.toggle = true');

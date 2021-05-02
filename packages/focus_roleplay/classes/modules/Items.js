@@ -98,6 +98,11 @@ new Item ('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, functi
 })
 
 
+new Item('iFruit Smartphone', ItemType.Misc, 'prop_player_phone_01', 0.3, function (player) { 
+   let character = player.getCharacter(), phone = mp.phones[character.phone_number];
+   if (!phone.turned) return; // telefon ti je ugasen
+   player.call('client:player.phone', phone);
+})
 
 // AMMOS / MUNICIJA 
 
@@ -109,7 +114,6 @@ new Item ('5.56 Catridge', ItemType.Ammo, 'w_ar_carbinerifle_mag2', 0, { quantit
 new Item ('.338 Catridge', ItemType.Ammo, 'w_sr_sniperrifle_mag1', 0, { quantity: 15 }, function () { })
 new Item ('Buckshot Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag1', 0, { quantity: 25 }, function () { })
 new Item ('Slug Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag2', 0, { quantity: 25 }, function () { })
-
 
 // WEAPONS / ORUZIJE
 
