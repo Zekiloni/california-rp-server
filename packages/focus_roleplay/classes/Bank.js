@@ -70,14 +70,14 @@ class BankAccount {
    payDay (player) { 
       let character = player.getCharacter(), value = 0;
 
-      value += core.between(665, 680);
+      value += core.between(545, 455);
 
       if (character.hours < 8) { 
-         value += core.between(95, 105);
+         value += core.between(85, 95);
       }
 
       if (character.job) { 
-         value += core.between(75, 80);
+         value += core.between(75, 85);
          value += character.working.salary;
       }
 
