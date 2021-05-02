@@ -163,7 +163,7 @@
                         this.player.paycheck = 0;
                         this.player.balance += value;
                         this.notify('Uspešno ste se prebacili sa platnog računa na bankovni ' + value + '$.')
-                        mp.trigger('client:player.banking.payout', value);
+                        mp.trigger('client:player.banking.payday', this.player.number, value);
                     },  
 
                     AccountNumber: function () { 

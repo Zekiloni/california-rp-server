@@ -26,18 +26,13 @@ mp.events.add({
       }
    },
 
-   'client:player.banking.withdraw': (bank, value) => { 
-      mp.events.callRemote('server:player.banking.withdraw', bank, value);
-   },
+   'client:player.banking.withdraw': (bank, value) => { mp.events.callRemote('server:player.banking.withdraw', bank, value); },
 
-   'client:player.banking.deposit': (bank, value) => { 
-      mp.events.callRemote('server:player.banking.deposit', bank, value);
-   },
+   'client:player.banking.deposit': (bank, value) => { mp.events.callRemote('server:player.banking.deposit', bank, value); },
 
-   'client:player.banking.transfer': (bank, target, value) => { 
-      mp.events.callRemote('server:player.banking.transfer', bank, target, value);
+   'client:player.banking.payday': (bank, value) => { mp.events.callRemote('server:player.banking.payday', bank, value); },
 
-   }
+   'client:player.banking.transfer': (bank, target, value) => { mp.events.callRemote('server:player.banking.transfer', bank, target, value); }
 })
 
 

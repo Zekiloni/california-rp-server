@@ -109,6 +109,33 @@ class Character {
       }
    }
 
+   property () { 
+      let houses = [], businesess = [], vehicles = [];
+      
+      for (let h in mp.houses) { 
+         let house = mp.houses[h];
+         if (house.owner == this.id) { 
+            houses.push(house)
+         }
+      }
+
+      for (let b in mp.business) { 
+         let biz = mp.business[b];
+         if (biz.owner == this.id) { 
+            businesess.push(biz);
+         }
+      }
+
+      for (let v in mp.vehs) { 
+         let veh = mp.vehs[v];
+         if (veh.owner == this.id) { 
+            vehicles.push(veh);
+         }
+      }
+
+      return { houses: houses, business: businesess, vehicles: vehicles };
+   }
+
    Job (player, job) { 
       job = mp.jobs[job];
       this.job = job.id;

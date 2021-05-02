@@ -1,6 +1,6 @@
 
 
-let { FactionTypes } = require('./Factions')
+let { FactionTypes } = require('./Factions');
 
 
 class BankAccount { 
@@ -30,20 +30,30 @@ class BankAccount {
    }
 
    transfer (player, target, value) { 
-
+      
    }
 
+   // money transfer from paycheck to account balance
+   payout (player, value) { 
+      let character = player.getCharacter();
+      character.giveMoney(player, parseInt(value));
+      this.paycheck = 0;
+      mp.bank.update(this)
+   }
+
+
+   // giving payday
    payDay (player) { 
       let character = player.getCharacter(), value = 0;
 
-      value += core.between(5, 10);
+      value += core.between(20, 35);
 
       if (character.hours < 6) { 
-         value += core.between(15, 20);
+         value += core.between(20, 25);
       }
 
       if (character.job) { 
-         value += core.between(5, 10);
+         value += core.between(15, 25);
          value += character.working.salary;
 
       }
@@ -51,9 +61,9 @@ class BankAccount {
       if (character.faction) { 
          let factionType = mp.factions[character.faction].type;
          if (factionType == FactionTypes.Law || factionType == FactionTypes.Fmd) { 
-            value += core.between(15, 25);
+            value += core.between(20, 30);
          } else if (factionType == FactionTypes.Gov) { 
-            value += core.between(25, 35);
+            value += core.between(30, 45);
          }
       }
 
@@ -69,10 +79,31 @@ class BankAccount {
 
    tax (player, earnings) { 
       let character = player.getCharacter();
-      let percent = 12, tax = (earnings / 100) * percent;
+      let percent = 12, salaryTax = (earnings / 100) * percent;
+      let TAX = 0;
+
+      let properties = character.property();
+
+      if (properties.houses.length > 0) { 
+         properties.houses.forEach((house) => { 
+            TAX += (house.price / 100) * 0.25;
+         })
+      }
+
+      if (properties.vehicles.length > 0) { 
+         properties.vehicles.forEach((veh) => { 
+            TAX += (veh.price / 100) * 0.1;
+         })
+      }
+
+      if (properties.business.length > 0) { 
+         properties.business.forEach((biz) => { 
+            TAX += (biz.budget / 100) * 3.5;
+         })
+      }
 
       if (earnings > 20) { 
-
+         TAX += salaryTax;
       }
 
 
@@ -105,6 +136,11 @@ class Bank {
             if (this.accounts[target]) { 
                // do transfer
             }
+         },
+
+         'server:player.banking.payday': (player, bank, value) => { 
+            bank = this.accounts[bank];
+            bank.payout(player, value);
          }
       })
    }
