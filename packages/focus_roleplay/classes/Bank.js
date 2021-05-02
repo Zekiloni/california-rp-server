@@ -3,6 +3,30 @@
 let { FactionTypes } = require('./Factions');
 
 
+
+// EKONOMIJA 
+
+// NAPOMENA !! ZA OVE PROCENE SU KORISCENE NAJVECE VREDNOSTI PLATA
+
+// PROSEK PLATA NA POSLU KOJE MOZE DA ODRADI PO PROCENI 20 PUTA U SATU
+// SU OD 15 - 20 $, STO JE UKUPNO: 400 $
+// OD UKUPNO ZARADJENIH 590 DOLARA, IGRAC KOJI SE PREBIO OD POSLA, IMA MANJE OD 8 SATI OSTACEMU POSLE TAKSE 520$
+
+// POSLE 8 SATI IGRA KONSTANTNOG POSLA I SOCIJALNE POMOCI MOZE ZARADITI 4160$ (GRINDUJE) 
+
+// IGRAC KOJI IMA VISE OD 8 SATI IGRE KOJI RADI KONSTANTNO ZARADI POSLE TAKSE 430$
+
+// IGRAC KOJI NIJE ZAPOZLEN (NE RADI NISTA) KAO POCETNIIK MOZE ZARADITI PO SATU POSLE TAKSE 124$, ZA OSAM SATI 990$
+
+// IGRAC KOJI JE ZAPOSLEN A NE RADI NISTA KAO POCETNIK MOZE ZARADITI PO SATU POSLE TAKSE 175$, ZA OSAM SATI IGRE 1400$
+
+// IGRAC KOJI NIJE POCETNIK, ZAPOSLEN A NE RADI NISTA MOZE ZARADITI PO SATU POSLE TAKSE 80$ (imati na umu da je on pre mozda radio a dobijao je bonus :) )
+
+// POLICAJAC / BOLNICAR KAO POCETNIK (bez character job (side posla)) POSLE TAKSE PO SATU ZARADI 210$, ZA OSAM SATI 1680$
+// POLICAJAC / BOLNICAR KAO POCETNIK (koji je pametan i ima side job i abusa to) POSLE TAKSEE PO SATU ZARADI 255$, ZA OSAM SATI 2040$
+// POLICAJAC / BOLNICAR KOJI IMA VISE OD 8 SATI IGRE (bez side joba) POSLE TAKSE PO SATU ZARADI 125$
+// POLICAJAC / BOLNICAR KOJI IMA VISE OD 8 SATI IGRE (sa side job) POSLE TAKSE PO SATU ZARADI 170$
+
 class BankAccount { 
    constructor (number, pin, data) { 
       this.number = number;
@@ -46,24 +70,29 @@ class BankAccount {
    payDay (player) { 
       let character = player.getCharacter(), value = 0;
 
-      value += core.between(20, 35);
+      value += core.between(665, 680);
 
-      if (character.hours < 6) { 
-         value += core.between(20, 25);
+      if (character.hours < 8) { 
+         value += core.between(95, 105);
       }
 
       if (character.job) { 
-         value += core.between(15, 25);
+         value += core.between(75, 80);
          value += character.working.salary;
-
       }
 
       if (character.faction) { 
          let factionType = mp.factions[character.faction].type;
          if (factionType == FactionTypes.Law || factionType == FactionTypes.Fmd) { 
-            value += core.between(20, 30);
+            value += core.between(75, 95);
+            if (mp.factions[character.faction].leader == character.id) { 
+               value += core.between(50, 65);
+            }
          } else if (factionType == FactionTypes.Gov) { 
-            value += core.between(30, 45);
+            value += core.between(90, 105);
+            if (mp.factions[character.faction].leader == character.id) { 
+               value += core.between(100, 105);
+            }
          }
       }
 
@@ -79,7 +108,7 @@ class BankAccount {
 
    tax (player, earnings) { 
       let character = player.getCharacter();
-      let percent = 12, salaryTax = (earnings / 100) * percent;
+      let percent = 5, salaryTax = (earnings / 100) * percent;
       let TAX = 0;
 
       let properties = character.property();
@@ -209,5 +238,4 @@ function countDigits (n) {
    while (n / 10 >= 1) { n /= 10; ++ count; }
    return count;
 }
-
 
