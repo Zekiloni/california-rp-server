@@ -7,6 +7,7 @@ mp.phones = {};
 class Phone { 
    constructor (character, number, contacts, messages, info) { 
       this.character = character;
+      this.number = number;
       this.contacts = contacts || {};
       this.messages = messages|| [];
 
@@ -50,6 +51,27 @@ class Phone {
          this.talking = !this.talking; 
       }
    }
+
+
+   contactAdd (number, name) { 
+      new Contact(this.number, name, number);
+      // db query i stavi unutra model
+   }
+
+   contactRemove (number) { 
+      let contact = this.contacts.find(contact => contact.number === number);
+      let index = this.contacts.indexOf(contact);
+      this.contacts.splice(index, 1);
+
+      // db query
+   }
+
+
+   message (target, message) { 
+      new Message(this.number, target, message);
+      // db query i stavi unutra model
+   }
+
 }
 
 class Contact { 
