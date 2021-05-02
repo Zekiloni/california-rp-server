@@ -62,7 +62,7 @@ module.exports = {
 
       {
          name: 'pay',
-         desc: 'Pokazivanje dokumenata',
+         desc: 'Davanje novca',
          call: (player, args) => { 
             let character = player.getCharacter();
             if (character.hours < 2) { 
@@ -73,8 +73,10 @@ module.exports = {
                      if (amount > character.money) return; // nemas dovoljno novca
                      if (amount < 0) return; // ne mozes dati minus :)
 
-                     targetCharacter.giveMoney(target, amount)
+                     targetCharacter.giveMoney(target, amount);
                      character.giveMoney(player, -amount);
+
+                     player.proximityMessage(8.25, `* ${player.name} daje nešto novca ${target.name}. (( Pay ))`, mp.colors.purple);
                   }
                }
             }

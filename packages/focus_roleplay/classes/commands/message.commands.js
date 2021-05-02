@@ -48,7 +48,7 @@ module.exports = {
          params: '[tekst]',
          call: (player, args) => { 
             let message = args.splice(0).join(" ");
-            player.proximityMessage(distances.me, `** ${message} (( ${player.name} ))`, mp.colors.purple)
+            player.proximityMessage(distances.me, `** ${message} (( ${player.name} ))`, mp.colors.purple);
          }
       },
 
