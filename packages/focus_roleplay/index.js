@@ -22,6 +22,7 @@ let Items = require('./classes/Inventory');
 let Savings = require('./classes/Savings');
 let Vehicles = require('./classes/Vehicles');
 let Factions = require('./classes/Factions');
+let Phones = require('./classes/Phone');
 let Doors = require('./classes/Doors');
 let Entrances = require('./classes/Entrances');
 let Houses = require('./classes/Houses');

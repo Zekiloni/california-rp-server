@@ -15,6 +15,8 @@ mp.events.add({
       }
    },
 
+   
+
    'client:player.phone.contacts': (action, info) => { 
       info = JSON.parse(info)
       switch (action) { 

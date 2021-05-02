@@ -16,6 +16,7 @@ class Character {
       this.frequency = p.frequency || 0;
       this.job = p.job || 0;
       this.health = p.health;
+      this.phone_number = p.phone_number || 0;
       this.armour = p.armour;
       this.money = p.money || 0;
       this.bank_account = p.bank_account || 0;
