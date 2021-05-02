@@ -40,7 +40,7 @@ class Phone {
    }
 
    answer () {
-
+      
    }
 
    hangup () { 
