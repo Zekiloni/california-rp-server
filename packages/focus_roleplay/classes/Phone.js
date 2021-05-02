@@ -54,22 +54,36 @@ class Phone {
 
 
    contactAdd (number, name) { 
-      new Contact(this.number, name, number);
-      // db query i stavi unutra model
+      db.query("INSERT INTO `contacts` (phone, name, number) VALUES (?, ?, ?)", [this.number, name, number], function (error, results, fields) {
+         if (error) return core.terminal(1, 'Contact Adding Error ' + error);
+         let contact = new Contact(this.number, name, number);
+      });
    }
 
    contactRemove (number) { 
-      let contact = this.contacts.find(contact => contact.number === number);
-      let index = this.contacts.indexOf(contact);
-      this.contacts.splice(index, 1);
-
-      // db query
+      db.query("DELETE * FROM `contacts` WHERE `phone` = ? AND `number` = ?", [this.number, number], function (error, results, fields) {
+         if (error) return core.terminal(1, 'Contact Removing Error ' + error);
+         let contact = this.contacts.find(contact => contact.number === number);
+         let index = this.contacts.indexOf(contact);
+         this.contacts.splice(index, 1);
+      });
    }
 
 
-   message (target, message) { 
-      new Message(this.number, target, message);
-      // db query i stavi unutra model
+   message (target, message) {    
+      db.query("INSTERT INTO `messages` (sender, text, recipient) VALUES (?, ?, ?) ", [this.number, number, target], function (error, results, fields) {
+         if (error) return core.terminal(1, 'Message Adding Error ' + error);
+         new Message(results.insertedId, this.number, target, message);
+      });
+   }
+
+   messageRemove (id) {
+      db.query("DELETE * FROM `messages` WHERE `id` = ?", [id], function (error, results, fields) {
+         if (error) return core.terminal(1, 'Message Removing Error ' + error);
+         let message = this.messages.find(mes => mes.id === id);
+         let index = this.contacts.indexOf(message);
+         this.messages.splice(index, 1);
+      });
    }
 
 }
@@ -84,13 +98,14 @@ class Contact {
 }
 
 class Message { 
-   constructor (phone, target, message) { 
+   constructor (id, phone, target, message) { 
+      this.id = id;
       this.phone = phone;
       this.target = target;
       this.message = message;
 
-      mp.phones[phone].messages.push({ to: this.target, message: this.message });
-      mp.phones[target].messages.push({ from: this.phone, message: this.message });
+      mp.phones[phone].messages.push({ id: this.id, to: this.target, message: this.message });
+      mp.phones[target].messages.push({ id: this.id, from: this.phone, message: this.message });
 
    }
 }

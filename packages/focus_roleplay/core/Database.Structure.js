@@ -305,6 +305,29 @@ db.query(bansTable, function(err, results, fields) {
   core.terminal(3, `Checking bansTable | MySQL`);
 });
 
+let messagesTable = `CREATE TABLE IF NOT EXISTS messages (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  sender INT(7) NOT NULL DEFAULT 0,
+  message TEXT NOT NULL,
+  recipient INT(7) NOT NULL DEFAULT 0,
+  PRIMARY KEY(id))`;
+
+db.query(messagesTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking messagesTable | MySQL`);
+});
+
+let contactsTable = `CREATE TABLE IF NOT EXISTS contacts (
+  phone INT(7) NOT NULL,
+  name VARCHAR(64) NOT NULL,
+  number INT(7) NOT NULL,
+  PRIMARY KEY(phone))`;
+
+db.query(contactsTable, function(err, results, fields) {
+  if (err) { core.terminal(1, err.message) }
+  core.terminal(3, `Checking contactsTable | MySQL`);
+});
+
 
 
 
