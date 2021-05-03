@@ -132,8 +132,9 @@
                 },
 
                 getTime: function () { 
-                    let now = new Date();
-                    this.timestamp = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+                    let now = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Belgrade' });
+                    let split = now.split(','), time = split[1].split(':')
+                    this.timestamp = time[0] + ':' + time[1] + ':' + time[2];
                 },
 
                 cash: function () { 
