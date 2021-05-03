@@ -32,8 +32,13 @@
                                 <h3>{{ phone.time }}</h3>
                             </div>
 
+
                             <div class="locked-screen" v-if="phone.locked" v-on:click="phone.locked = false">
                                 <i class="fa fa-unlock" aria-hidden="true"> </i>
+                            </div>
+
+                            <div class="call-handler" v-if="call.show" >
+
                             </div>
 
                             <div v-if="phone.locked == false && phone.page == 'home'" class="apps">
@@ -81,12 +86,34 @@
                                     <h3> Poruke </h3>
                                     <i class="compose-icon fas fa-edit" aria-hidden="true"></i>
                                 </div>
+
                                 <ul class="conversations" >
                                     <input class="search-conversations" type="text" v-model="search.conversations">
-                                    <li v-for="(conversation, i) in Conversations">
-                                        <h3> {{ conversation.number }} <small> {{ conversation.text }} </small> </h3>
+                                    <li v-for="(c, i) in Conversations" v-on:click="conversation = c.number" >
+                                        <h3> {{ c.number }} <small> {{ c.text }} </small> </h3>
                                     </li>
                                 </ul>
+
+                                <div class="conversation-handler" v-if="conversation">
+                                    <div class="header">
+                                        <i v-on:click="conversation = false" class="go-back fas fa-angle-left"></i>
+                                        <h3> {{ isContact(conversation) }} <small> {{ numberByName(conversation) }} </small></h3>
+                                        <h3> </h3>
+                                    </div>
+                                    <ul class="conversation" id="conversation">
+                                        <li v-for="(msg, i) in getMessages"> 
+                                            <h4 class="message" v-bind:class="{ sent: isSent(msg.type) }"> {{ msg.text }} </h4>
+                                        </li>
+                                    </ul>
+                                    <div class="sending-msg-handler">
+                                        <input type="text" class="message-composing" v-model="message.text">
+                                        <button v-on:click="Send(conversation, message.text)" class="send-message" 
+                                            :disabled="message.text.length < 1" >
+                                                <i class="fas fa-arrow-up"></i> 
+                                        </button>
+                                        
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="page" v-if="phone.page == 'call'">
@@ -110,11 +137,11 @@
 
                                 <div v-else>
                                     <ul class="digits">
-                                        <h3 class="calling-number"> {{ calling.number }} </h3>
+                                        <h3 class="calling-number"> {{ call.number }} </h3>
                                         <li v-for="n in numbers" v-on:click="input('calling', n)">
                                             {{ n }}
                                         </li>
-                                        <li v-on:click="call(calling.number)" class="call"> <i class="fa fa-phone" aria-hidden="true"></i> </li>
+                                        <li v-on:click="Call(call.number)" class="call"> <i class="fa fa-phone" aria-hidden="true"></i> </li>
                                         <li v-on:click="input('calling', -1)" class="delete"> <i class="fa fa-times" aria-hidden="true"></i> </li>
                                     </ul>
                                 </div>
@@ -138,7 +165,15 @@
                     toggle: false,
 
                     numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
-                    calling: {
+                    emojis: [
+                        '😀','💓','😃','😄','😁','😆','😅','😂','🤣','😊','😇','🙂','🙃','😉','😌','😍','🥰','😘','😗',
+                        '😙','😚','😋','😛','😝','😜','🤪','🤨','🧐','🤓','😎','👋','🤚','🖐','✋','🖖','👌','🤏','✌️','🤞',
+                        '🤟','🤘','🤙','👈','👉','👆', 
+                    ],
+
+                    call: {
+                        show: false,
+                        incoming: false,
                         active: false,
                         number: '',
                         timer: null,
@@ -147,6 +182,8 @@
                     search: {
                         conversations: ''
                     },
+                    
+                    conversation: false,
 
                     message: { 
                         composing: false,
@@ -181,9 +218,18 @@
                     conversations: [],
 
                     messages: [
+                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
+                        { number: '243242', text: 'sta da radim sad ? ', type: 'from' },
+                        { number: '243242', text: 'Eeeeee', type: 'from' },
+                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
+
+                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
+
+                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
+
                         { number: '243242', text: 'Eeeeee', type: 'from' },
                         { number: '243242', text: 'Moliim', type: 'to' },
-                        { number: '243242', text: 'Opalim te golim', type: 'to' },
+                        { number: '243242', text: 'Opalim te golim', type: 'from' },
                         { number: '321199', text: 'Eeeeee', type: 'to' },
                         { number: '064915', text: 'Brate jesi tu ?', type: 'to' },
 
@@ -222,6 +268,12 @@
                             })
                         }
                     },
+
+                    getMessages: function () { 
+                        let messagges = {};
+                        messagges = this.messages.filter(msg => msg.number === this.numberByName(this.conversation));
+                        return messagges;
+                    },
                 },
 
                 methods: { 
@@ -230,37 +282,68 @@
                         this.sounds.lock.play();
                         this.phone.active = !this.phone.active;
                         this.phone.locked = this.phone.active;
-                        this.Conversations()
-                        setTimeout(() => { this.phone.page = 'home'; }, 500);
+                        setTimeout(() => { this.phone.page = 'home'; }, 700);
                     },
 
+                    isSent: function (type) { 
+                        return type == 'to' ? true : false;
+                    },
 
                     input: function (e, i) { 
                         switch (e) { 
                             case 'calling': { 
                                 if (i == -1) { 
-                                    this.calling.number = this.calling.number.slice(0, -1); 
+                                    this.call.number = this.call.number.slice(0, -1); 
                                 } else { 
                                     let audio = new Audio('src/sounds/' + i + '.mp3');
                                     audio.volume = 0.1;
                                     audio.play();
-                                    this.calling.number += i; 
+                                    this.call.number += i; 
                                 }
                                 break;
                             }
                         }
                     },
 
-                    call: function (number) { 
-                        this.calling.active = true;
-                        this.calling.number = number;
-                        this.sounds.calling.play();
-                        this.sounds.calling.volume = 0.75;
-                        this.calling.timer = setTimeout(() => {
-                            this.calling.active = false;
-                            this.calling.number = '';
+                    Send: function (target, message) { 
+                        this.message.text = '';
+                        let elementic = document.getElementById('conversation')
+                        elementic.scrollTo({ top: elementic.scrollHeight, behavior: 'smooth' })
+                        if (target == parseInt(target)) { 
+                            this.messages.push({ number: target, text: message, type: 'to' })
+                            // mp.trigger('client:player.phone.message', target, message);
+                        } else { 
+                            let number = this.numberByName(target)
+                            this.messages.push({ number: number, text: message, type: 'to' })
+                            // mp.trigger('client:player.phone.message', number, message);
+                        }
+                    },
 
+                    Call: function (number) { 
+                        this.phone.page = 'home';
+                        this.call.show = true;
+                        this.call.active = false;
+                        this.call.number = number;
+                        this.sounds.calling.play();
+                        this.sounds.calling.volume = 0.80;
+                        this.call.timer = setTimeout(() => {
+                            if (this.call.active == false) { 
+                                this.call.show = false;
+                                this.call.active = false;
+                                this.call.number = '';
+                            }
                         }, 50 * 1000);
+                    },
+
+                    numberByName: function (name) {
+                        if (name == parseInt(name)) { return name; } 
+                        else { 
+                            for (let i in this.contacts) { 
+                                if (this.contacts[i].toLowerCase() == name.toLowerCase()) { 
+                                    return i;
+                                }
+                            }
+                        }
                     },
 
                     Time: function () { 
@@ -287,3 +370,5 @@
         </script>
     </body>     
 </html>
+
+
