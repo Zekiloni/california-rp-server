@@ -289,6 +289,16 @@ class Inventory {
       }
       return result;
    }
+
+   weight = (char) => {
+      let weight = 0;
+      for (let i in mp.items) {
+         if (mp.items[i].entity == ItemEntities.Player && mp.items[i].owner == char) { 
+            weight += mp.items[i].weight;
+         }
+      }
+      return weight;
+   }
 }
 
 mp.items = {};

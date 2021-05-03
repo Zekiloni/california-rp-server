@@ -1,6 +1,7 @@
 
 
 let JetsamTerminal = require('./modules/jobs/JetsamTerminal');
+let Miner = require('./modules/jobs/Miner');
 
 
 mp.jobs = { 
@@ -9,6 +10,12 @@ mp.jobs = {
       description: 'Sedište San Andreas brodske kompanije Jetsam, međunarodna izvozna kompanija.' , 
       max_workers: 8, point: new mp.Vector3(816.988, -2977.546, 6.0206), blip: 569, sprite: 77,
       job: (player, args) => { JetsamTerminal.start(player, args); }
+   },
+   2: {
+      id: 2, name: 'Miner',
+      description: 'San Andreas ',
+      max_workers: 24, point: new mp.Vector3(0, 0, 0), blip: 650, sprite: 11,
+      job: (player, args) => { Miner.start(player, args); }
    }
 }
 
@@ -31,7 +38,9 @@ class Jobs {
          'server:player.job.accept': (player, job) => { 
             let character = player.getCharacter();
             character.Job(player, job);
-         }
+         },
+
+         
       })
    }
 

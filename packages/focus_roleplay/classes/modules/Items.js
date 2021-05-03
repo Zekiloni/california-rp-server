@@ -4,12 +4,12 @@ const Weapons = require ('../../configs/Weapons')
 const ItemEntities = { 
    Ground: -1, Player: 0, Vehicle: 1, House: 2, 
    Wheel: 3, LeftHand: 4, RightHand: 5
-}
+};
 
 const ItemType = { 
    Drug: 0, Equipable: 1, Openable: 2, Weapon: 3,
-   Ammo: 4, Misc: 5, Food: 6, Drink: 7,
-}
+   Ammo: 4, Misc: 5, Food: 6, Drink: 7
+};
 
 module.exports = { ItemType, ItemEntities }
 
@@ -59,7 +59,7 @@ mp.ItemRegistry = {
       hash: 'prop_pizza_box_02',
       weight: 0.09,
       type: ItemType.Food
-   },
+   }
 
 
    // AMMOS // MUNICIJA

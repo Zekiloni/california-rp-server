@@ -112,7 +112,7 @@ class Character {
 
    property () { 
       let houses = [], businesess = [], vehicles = [];
-      
+   ob
       for (let h in mp.houses) { 
          let house = mp.houses[h];
          if (house.owner == this.id) { 
@@ -140,6 +140,7 @@ class Character {
    Job (player, job) { 
       job = mp.jobs[job];
       this.job = job.id;
+      player.setVariable('job', this.job);
       player.sendMessage('Uspešno ste se zaposlili u ' + job.name + ' !', mp.colors.info)
    }
 
