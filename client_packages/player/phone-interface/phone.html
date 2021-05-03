@@ -38,7 +38,21 @@
                             </div>
 
                             <div class="call-handler" v-if="call.show" >
+                                <div class="call-info">
+                                    <h2> {{ isContact(call.number) }} </h2>
+                                    <h3 v-if="call.active"> U pozivu {{ call.length }}</h3>
+                                    <h3 v-else> Pozivanje... </h2>
+                                    <div class="call-actions">
+                                        <i class="fas fa-volume-mute"> </i>
+                                        <i class="fas fa-keyboard"> </i>
+                                        <i class="fa fa-volume-up"> </i>
+                                        <i class="fas fa-address-book"> </i>
+                                        <i class="fas fa-video"> </i>
+                                        <i class="fa fa-plus"> </i>
+                                        <i v-on:click="Hangup()" class="decline fa fa-phone"> </i>
 
+                                    </div>
+                                </div>
                             </div>
 
                             <div v-if="phone.locked == false && phone.page == 'home'" class="apps">
@@ -198,6 +212,7 @@
                         incoming: false,
                         active: false,
                         number: '',
+                        length: '00:00',
                         timer: null,
                     },
 
@@ -235,24 +250,20 @@
                     },
 
                     contacts: {
-                        '243242': 'Zola gey'
+                        '243242': 'Narkoman Onaj'
                     },
 
                     conversations: [],
 
                     messages: [
-                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
-                        { number: '243242', text: 'sta da radim sad ? ', type: 'from' },
-                        { number: '243242', text: 'Eeeeee', type: 'from' },
-                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
-
-                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
-
-                        { number: '243242', text: 'eee3eeeeee brate ja onom ludom youtuberu jebao majku hrvatsu', type: 'from' },
-
+                        { number: '243242', text: 'Ej brate imas li vutre ?', type: 'from' },
                         { number: '243242', text: 'Eeeeee', type: 'from' },
                         { number: '243242', text: 'Moliim', type: 'to' },
                         { number: '243242', text: 'Opalim te golim', type: 'from' },
+                        { number: '243242', text: 'Ej brate imas li vutre ?', type: 'from' },
+                        { number: '243242', text: 'Ej brate imas li vutre ?', type: 'from' },
+
+                        { number: '243242', text: 'Eeeeee', type: 'from' },
                         { number: '321199', text: 'Eeeeee', type: 'to' },
                         { number: '064915', text: 'Brate jesi tu ?', type: 'to' },
 
@@ -347,6 +358,15 @@
                             this.messages.push({ number: number, text: message, type: 'to' })
                             // mp.trigger('client:player.phone.message', number, message);
                         }
+                    },
+
+                    Hangup: function () { 
+                        this.call.active = false;
+                        this.call.show = false;
+                        this.call.number = '';
+                        this.sounds.calling.pause();
+                        this.sounds.calling.currentTime = 0;
+                        clearTimeout(this.call.timer);
                     },
 
                     Call: function (number) { 
