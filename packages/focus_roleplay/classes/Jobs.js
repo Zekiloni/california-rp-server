@@ -15,7 +15,7 @@ mp.jobs = {
    2: {
       id: 2, name: 'Miner',
       description: 'San Andreas ',
-      max_workers: 24, point: new mp.Vector3(0, 0, 0), blip: 650, sprite: 11,
+      max_workers: 24, point: new mp.Vector3(816.988, -7977, 1), blip: 650, sprite: 11,
       job: (player, args) => { Miner.start(player, args); }
    }
 }

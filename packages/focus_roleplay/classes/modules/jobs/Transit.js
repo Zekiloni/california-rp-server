@@ -12,19 +12,19 @@ class Bus {
    constructor () { 
       mp.events.add({
          'server:player.transit.start': (player, route) => { 
-            let checkpoints = {};
+            let character = player.getCharacter(), checkpoints = {};
+
             routes[route].Stations.forEach((s) => { 
                let coords = s.StationCoords;
                checkpoints[s.StationIndex] = { name: s.StationName, position: new mp.Vector3(coords.X, coords.Y, coords.Z) }
             })
-            console.log(checkpoints)
+
+            character.working.duty = true;
             player.call('client:player.transit.start', [checkpoints]);
          },
 
          'server:player.transit.stop': (player, finished) => { 
             if (finished) { 
-
-            } else { 
 
             }
          }
@@ -33,6 +33,7 @@ class Bus {
 }
 
 let transit = new Bus();
+
 
 mp.events.addCommand("bus", (player, message, i) => {
 	mp.events.call('server:player.transit.start', player, i);

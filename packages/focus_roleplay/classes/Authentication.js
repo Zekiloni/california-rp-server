@@ -28,6 +28,7 @@ mp.events.add({
 
          char.spawn(player);
          char.setName(player);
+         char.Job(player, info.job)
          char.setMoney(player, info.money);
 
          db.query('SELECT * FROM `appearances` WHERE `character` = ?', [player.character], function (err, res, field) {

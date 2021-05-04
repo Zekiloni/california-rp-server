@@ -41,6 +41,7 @@ mp.Player.prototype.defaultVariables = function () {
    this.data.tased = false;
    this.data.crouching = false;
    this.data.spawned = true;
+   this.data.job = 0;
 }
 
 mp.Player.prototype.proximityMessage = function (radius, message, colors) {
