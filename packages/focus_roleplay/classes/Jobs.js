@@ -1,6 +1,7 @@
 
 
-let JetsamTerminal = require('./modules/jobs/JetsamTerminal');
+let JetsamTerminal = require('./modules/jobs/Jetsam');
+let LS_Transit = require('./modules/jobs/Transit');
 let Miner = require('./modules/jobs/Miner');
 
 
@@ -38,8 +39,7 @@ class Jobs {
          'server:player.job.accept': (player, job) => { 
             let character = player.getCharacter();
             character.Job(player, job);
-         },
-
+         }
          
       })
    }

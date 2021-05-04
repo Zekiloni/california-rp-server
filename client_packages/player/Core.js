@@ -26,6 +26,12 @@ mp.events.addDataHandler({
       if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
          player.money = newCash;
       }
+   },
+
+   'job': (entity, newValue, oldValue) => {
+      if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
+         player.job = newValue;
+      }
    }
 });
 

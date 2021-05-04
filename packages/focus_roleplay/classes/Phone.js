@@ -111,18 +111,6 @@ class Message {
 }
 
 
-new Phone(1, 111, {}, [])
-new Phone(2, 123, {}, [])
-new Contact(111, 'Zeki', 123)
-new Contact(111, 'Mare', 321)
-new Contact(111, 'Pepsi', 124)
-new Message(111, 123, 'cao brate')
-new Message(123, 111, 'sta ima')
-
-
-setTimeout(() => { console.log(mp.phones) }, 5000);
-
-
 
 mp.phones.update = (phone) => { 
    let values = { 
