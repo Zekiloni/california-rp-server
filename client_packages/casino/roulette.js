@@ -516,7 +516,7 @@ mp.keys.bind(0x46, true, () =>  // F
 	else
 	{
 		createRouletteCamera();
-		mp.events.call('initRoulette');
+		//mp.events.call('initRoulette');
 		mp.events.call("spinRouletteWheel", lpCasinoTable, 1, "exit_7_wheel", "exit_7_ball");
 	}
 });
