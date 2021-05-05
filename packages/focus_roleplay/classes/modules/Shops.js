@@ -16,7 +16,7 @@ class MarketItem  {
       this.hash = mp.ItemRegistry[item].hash;
       this.price = (this.products * Multipliers.Shop).toFixed(2);
 
-      console.log(this.item + ' cena: ' + this.price)
+      // console.log(this.item + ' cena: ' + this.price)
       MarketShop.push(this);
    }
 }
@@ -42,7 +42,7 @@ class AmmunationItem {
       this.hash = mp.ItemRegistry[this.item].hash;
       this.price = (this.products * Multipliers.Ammunation).toFixed(2);
 
-      console.log(this.item + ' cena: ' + this.price)
+      // console.log(this.item + ' cena: ' + this.price)
       WeaponShop.push(this);
    }
 }

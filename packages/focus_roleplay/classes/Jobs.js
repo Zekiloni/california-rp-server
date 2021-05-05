@@ -12,8 +12,16 @@ mp.jobs = {
       max_workers: 8, point: new mp.Vector3(816.988, -2977.546, 6.0206), blip: 569, sprite: 77,
       job: (player, args) => { JetsamTerminal.start(player, args); }
    },
+
    2: {
       id: 2, name: 'Miner',
+      description: 'San Andreas ',
+      max_workers: 24, point: new mp.Vector3(816.988, -7977, 1), blip: 650, sprite: 11,
+      job: (player, args) => { Miner.start(player, args); }
+   },
+
+   3: {
+      id: 3, name: 'Los Santos Transit',
       description: 'San Andreas ',
       max_workers: 24, point: new mp.Vector3(816.988, -7977, 1), blip: 650, sprite: 11,
       job: (player, args) => { Miner.start(player, args); }
