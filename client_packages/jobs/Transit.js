@@ -5,7 +5,8 @@ let route = {};
 let station = false, checkpoint = false, blip = false, stations = 0;
 let browser = null, goBack = false;
 
-let jobCancel = null, timer = 5 * 60, garage = new mp.Vector3(447.428, -591.51739, 28.0754);
+let jobCancel = null;
+let garage = new mp.Vector3(447.428, -591.51739, 28.0754);
 
 const START = 0;
 
@@ -24,7 +25,6 @@ mp.events.add({
       browser.execute(`transit.current.i = ${START}, transit.current.name = \"${route[START].name}\"`);
 
       station = START;
-      mp.gui.chat.push('Number of stations is ' + stations)
 
       checkpoint = mp.checkpoints.new(0, route[START].position, 5,{ color: [ 241, 224, 90, 255 ], visible: true, dimension: player.dimension });
       blip = mp.blips.new(1, new mp.Vector3(route[START].position.x, route[START].position.y, 0), { name: route[START].name, color: 5, shortRange: false });
@@ -33,19 +33,15 @@ mp.events.add({
    'playerEnterCheckpoint': (checkpoint) => {
       if (route) { 
          if (player.job != 0) { 
-            if (goBack) { finish(true); mp.gui.chat.push('finish') }
-            else { next(); mp.gui.chat.push('stanicaa') } 
-
+            goBack ? ( finish(true) ) : ( next() );
          }
       }
    },
 
    'playerLeaveVehicle': (vehicle, seat) => {
       if (station) { 
-         if (vehicle.getClass() == 17) { 
-            browser.execute('transit.toggle = false'); 
-            jobCancel = setTimeout(() => { end(false); }, timer * 1000)
-         }
+         browser.execute('transit.toggle = false'); 
+         jobCancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
       }
    },
 
