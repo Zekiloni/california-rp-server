@@ -34,7 +34,7 @@
             </div>
 
             <div class="weapons" >
-                <div class="weapon" v-for="(weapon, key) in player.weapons" v-on:click="weaponUse(key, weapon.id)" v-on:dblclick="weaponBack(weapon)"> 
+                <div class="weapon" v-for="(weapon, key) in player.weapons" v-on:click="weaponUse(key, weapon.id)"  @mousedown.right="weaponBack(weapon)"> 
                     <h2> {{ weapon.name }} {{ key }} </h2>
                     <h5>{{ weaponphoto(weapon.hash) }}</h5>
                     <img :src="'src/images/items/' + weapon.hash + '.png'">
@@ -72,7 +72,6 @@
                         weapon = this.player.weapons.find(element => element === weapon);
                         let index = this.player.weapons.indexOf(weapon);          
                         this.player.weapons.splice(index, 1);
-                        console.log('aaa')
                         mp.trigger('client:inventory.process.item', 'put', weapon.id)
                     },
 

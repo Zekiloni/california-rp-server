@@ -56,15 +56,6 @@
     },
     {
       "StationIndex": "6",
-      "StationName": "Davis Mega Mall",
-      "StationCoords": {
-        "X": "-12.83167",
-        "Y": "-1691.88",
-        "Z": "28.26109"
-      }
-    },
-    {
-      "StationIndex": "7",
       "StationName": "Maze Bank Arena",
       "StationCoords": {
         "X": "-338.3432",
@@ -73,7 +64,7 @@
       }
     },
     {
-      "StationIndex": "8",
+      "StationIndex": "7",
       "StationName": "New Empire Way",
       "StationCoords": {
         "X": "-1004.9325",
@@ -82,7 +73,7 @@
       }
     },
     {
-      "StationIndex": "9",
+      "StationIndex": "8",
       "StationName": "LSIA",
       "StationCoords": {
         "X": "-1044.36072",
@@ -91,7 +82,7 @@
       }
     },
     {
-      "StationIndex": "10",
+      "StationIndex": "9",
       "StationName": "Maze Bank Arena",
       "StationCoords": {
         "X": "-299.956451",
@@ -100,7 +91,7 @@
       }
     },
     {
-      "StationIndex": "11",
+      "StationIndex": "10",
       "StationName": "Davis Mega Mall",
       "StationCoords": {
         "X": "-41.06901",
@@ -109,7 +100,7 @@
       }
     },
     {
-      "StationIndex": "12",
+      "StationIndex": "11",
       "StationName": "Public Library",
       "StationCoords": {
         "X": "280.81897",
@@ -118,7 +109,7 @@
       }
     },
     {
-      "StationIndex": "13",
+      "StationIndex": "12",
       "StationName": "Bilingsgate Motel",
       "StationCoords": {
         "X": "567.4367",
@@ -127,7 +118,7 @@
       }
     },
     {
-      "StationIndex": "14",
+      "StationIndex": "13",
       "StationName": "PIBWASSER",
       "StationCoords": {
         "X": "876.711731",
@@ -136,7 +127,7 @@
       }
     },
     {
-      "StationIndex": "15",
+      "StationIndex": "14",
       "StationName": "LS Tattoos",
       "StationCoords": {
         "X": "1287.48743",
@@ -145,7 +136,7 @@
       }
     },
     {
-      "StationIndex": "16",
+      "StationIndex": "15",
       "StationName": "El Rancho Blvd",
       "StationCoords": {
         "X": "1420.29248",
@@ -154,7 +145,7 @@
       }
     },
     {
-      "StationIndex": "17",
+      "StationIndex": "16",
       "StationName": "El Burro Heights",
       "StationCoords": {
         "X": "1300.203",

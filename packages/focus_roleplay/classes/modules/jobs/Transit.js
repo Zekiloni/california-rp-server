@@ -23,9 +23,11 @@ class Bus {
             player.call('client:player.transit.start', [checkpoints]);
          },
 
-         'server:player.transit.stop': (player, finished) => { 
+         'server:player.transit.stop': (player, finished, stations) => { 
             if (finished) { 
-
+               let character = player.getCharacter(), money = stations * 0.75;
+               character.working.salary += Math.ceil(money);
+               if (player.vehicle) player.vehicle.destroy();
             }
          }
       })
@@ -33,7 +35,6 @@ class Bus {
 }
 
 let transit = new Bus();
-
 
 mp.events.addCommand("bus", (player, message, i) => {
 	mp.events.call('server:player.transit.start', player, i);

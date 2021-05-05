@@ -26,6 +26,8 @@ mp.events.add({
       switch(action) { 
          case 'drop': mp.events.callRemote('server:item.drop', item, quantity); break;
          case 'use': mp.events.callRemote('server:item.use', item); break;
+         case 'put': mp.events.callRemote('server:item.weapon.put', item); break;
+
       }
   },
 
@@ -58,7 +60,7 @@ mp.keys.bind(0x49, false, function() {
 
 mp.keys.bind(0x59, false, function() {
    if (player.logged && player.spawned) { 
-      if (player.vehicle || player.cuffed) return;
+      if (player.vehicle || player.cuffed || mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:item.pickup');
    }
 });

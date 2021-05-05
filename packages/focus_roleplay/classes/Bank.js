@@ -79,6 +79,7 @@ class BankAccount {
       if (character.job) { 
          value += core.between(75, 85);
          value += character.working.salary;
+         character.working.salary = 0;
       }
 
       if (character.faction) { 

@@ -195,6 +195,11 @@ class Inventory {
                   delete mp.items[item];
                }
             }
+         },
+
+         'server:item.weapon.put': (player, weapon) => { 
+            let item = mp.items[weapon];
+            item.entity = ItemEntities.Player;
          }
       })
    }
