@@ -30,7 +30,7 @@ mp.game.streaming.requestAnimDict(dealerLibF);
 mp.game.streaming.requestIpl('vw_casino_main');
 
 
-const tablesPos = 
+let tablesPos = 
 [
 	[ "vw_prop_casino_roulette_01", 1144.4254150390625, 269.3034973144531, -52.840850830078125 ],
 	[ "vw_prop_casino_roulette_01", 1151.2305908203125, 263.14093017578125, -52.840850830078125 ],
@@ -40,7 +40,7 @@ const tablesPos =
 	[ "vw_prop_casino_roulette_01b", 1129.9976806640625, 266.93695068359375, -52.0307502746582 ] 
 ];
 
-const tablesBets = 
+let tablesBets = 
 [
 	[ 500, 2500 ],
 	[ 1000, 5000 ],
@@ -50,7 +50,7 @@ const tablesBets =
 	[ 20000, 100000 ]
 ];
 
-const tableSeatsPos =
+let tableSeatsPos =
 [
 	[-0.7, -1.28, 1, 0],
 	[0.775, -1.68, 1, 0],
@@ -516,7 +516,7 @@ mp.keys.bind(0x46, true, () =>  // F
 	else
 	{
 		createRouletteCamera();
-		mp.events.call('initRoulette');
+		//mp.events.call('initRoulette');
 		mp.events.call("spinRouletteWheel", lpCasinoTable, 1, "exit_7_wheel", "exit_7_ball");
 	}
 });
