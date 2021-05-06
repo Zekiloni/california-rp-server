@@ -1,7 +1,7 @@
 
 
 let JetsamTerminal = require('./modules/jobs/Jetsam');
-let LS_Transit = require('./modules/jobs/Transit');
+let Transit = require('./modules/jobs/Transit');
 let Miner = require('./modules/jobs/Miner');
 
 
@@ -22,9 +22,9 @@ mp.jobs = {
 
    3: {
       id: 3, name: 'Los Santos Transit',
-      description: 'San Andreas ',
-      max_workers: 24, point: new mp.Vector3(816.988, -7977, 1), blip: 650, sprite: 11,
-      job: (player, args) => { Miner.start(player, args); }
+      description: 'Los Santos Transit je mreža transportnih vlasti u Los Santosu',
+      max_workers: 32, point: new mp.Vector3(0, 0, 0), blip: 513, sprite: 76,
+      job: (player, args) => { Transit.start(player, args); }
    }
 }
 

@@ -31,18 +31,20 @@ mp.events.add({
    },
 
    'playerEnterCheckpoint': (checkpoint) => {
-      if (player.job != 0) { 
+      if (player.job == 3) { 
          let vehicle = player.vehicle;
-         if (vehicle && vehicle.getClass() == 17 && station >= 0) { 
+         if (vehicle && station >= 0) { // && vehicle.getClass() == 17
             finished ? ( finish(true) ) : ( next() );
          }
       }
    },
 
    'playerLeaveVehicle': (vehicle, seat) => {
-      if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
-         browser.execute('transit.toggle = false'); 
-         jobCancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
+      if (player.job == 3) { 
+         if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
+            browser.execute('transit.toggle = false'); 
+            jobCancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
+         }
       }
    },
 
@@ -65,14 +67,6 @@ function next () {
    station ++;
    let nextStation = route[station];
 
-   setTimeout(() => {
-      if (mp.players.local.vehicle) { 
-         player.freezePosition(true), mp.players.local.vehicle.freezePosition(true); 
-         if (mp.players.local.vehicle) { setTimeout(() => { player.freezePosition(true), mp.players.local.vehicle.freezePosition(false) }, 10 * 1000); }
-      }
-   }, 650);
-
-
    station >= stations -1 ? ( end(true) ) : (
       browser.execute(`transit.current.i = ${station}, transit.current.name = \"${nextStation.name}\", transit.next = \"${route[station + 1].name}\"`),
       blip = mp.blips.new(1, new mp.Vector3(nextStation.position.x, nextStation.position.y, 0), { name: nextStation.name, color: 5, shortRange: false }),
@@ -89,19 +83,16 @@ function end () {
 }
 
 async function distance (first, last) {
-   return first.dist(last);
+   return first.subtract(last).length();
 }
 
 function finish (done) { 
    if (blip) blip.destroy();
    if (checkpoint) checkpoint.destroy();
 
-   mp.gui.chat.push('Zadnja pozicija stanice ' + JSON.stringify(route));
-   // mp.gui.chat.push('Predzadnja pozicija stanice ' + JSON.stringify(route[stations - 1].position));
+   distance(route[START].position, route[stations - 2].position).then((dist) => { 
+      mp.events.callRemote('server:player.transit.stop', done, stations, dist);
+      stations = 0, finished = false, route = {};
+   })
 
-
-   // distance(route[START].position, route[stations].position).then((dist) => { 
-   //    mp.events.callRemote('server:player.transit.stop', done, stations, dist);
-   //    stations = 0, finished = false, route = {};
-   // })
 }

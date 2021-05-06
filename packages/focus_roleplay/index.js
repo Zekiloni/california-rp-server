@@ -175,6 +175,13 @@ mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => {
     player.call('client:vehicle.dealership', [true, mp.dealerships.sedans])
 })
 
+
+let auto = mp.vehicles.new(mp.joaat("turismor"), new mp.Vector3(-421.88, 1136.86, 326), {
+    numberPlate: "ADMIN",
+    color: [[255, 0, 0],[255,0,0]]
+});
+
+
 mp.events.addCommand("cobject", (player, fullText, model) => { 
     let position = new mp.Vector3(player.position.x, player.position.z + 10, player.position.y)
     try { 
