@@ -65,6 +65,10 @@ class Houses {
             }
          }
       })
+
+      mp.events.addProc('server:house.management.info', (player, house) => {
+         return mp.houses[house];
+      });
    }
 
    load = () => { 

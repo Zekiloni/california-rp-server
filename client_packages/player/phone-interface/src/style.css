@@ -101,6 +101,7 @@ ul.digits li {width: 60px;height: 60px;display: flex;font-size: 18px;transition:
 ul.digits li:hover { opacity: 0.45; }
 ul.digits li.call { background: #67ce67; color: white; }
 ul.digits li.call i { transform: rotate(90deg); }
+ul.digits li.call button { border: none; background: transparent; color: white; font-size: 25px; }
 ul.digits .calling-number {width: 200px;margin: 0 auto;text-align: center;font-size: 26px;height: 60px;display: flex;justify-content: center;align-items: center;}
 
 
@@ -143,6 +144,10 @@ ul.conversation li h4.message.sent {color: white;margin-left: auto;color: white;
    display: flex;
    height: 80px;
 }
+
+.notes_header i, .notes_header h3 { color: #f7c43a !important; }
+.notes {resize: none;width: 220px;height: 500px;margin-top: 65px;overflow-y: auto;border: none;padding: 0 10px; font-size: 16px;}
+textarea:focus { outline: none; }
 
 .sending-msg-handler .send-message {margin: 0 5px;border: none;font-size: 16px;border-radius: 100%;color: white;background: #0a7eff;padding: 7px 10px;transition: all 0.35s ease;}
 .sending-msg-handler .send-message:hover { opacity: 0.5; }

@@ -5,7 +5,7 @@ var loginCEF = null,
    
 mp.events.add({
   'client:login.show': () => {
-    loginCEF = mp.browsers.new('package://authentication/auth-interface/auth.html');
+    loginCEF = mp.browsers.new('package://player/authentication/auth-interface/auth.html');
     mp.players.local.freezePosition(true);
     mp.gui.chat.activate(false);
     setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);

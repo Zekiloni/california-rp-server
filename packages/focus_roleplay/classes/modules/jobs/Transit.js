@@ -25,10 +25,12 @@ class Bus {
 
          'server:player.transit.stop': (player, finished, stations, distance) => { 
             if (finished) { 
-               player.sendMessage('Broj stanica ' + stations + ', distanca ' + distance, mp.colors.info);
-               let character = player.getCharacter(), money = stations * 0.25;
-               player.sendMessage('Novac za broj stanica ' + money, mp.colors.info);
+               let character = player.getCharacter(), money = 0;
+               money += distance * 0.002, money += stations * 0.05;
+
+               player.sendMessage('Novac za rutu ' + Math.ceil(money), mp.colors.info);
                character.working.salary += Math.ceil(money);
+
                if (player.vehicle) player.vehicle.destroy();
             }
          }

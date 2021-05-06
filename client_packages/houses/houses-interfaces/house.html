@@ -13,37 +13,37 @@
 
     </head>
     <body>
-        <div id="transit" v-if="toggle">
-            <div class="header">
-                <div class="logo-holder">
-                    <img src="src/images/lst-logo.png" />
-                </div>
-            </div>
-
-            <ul class="informations" id="stations">
-                <li v-for="(station, i) in stations" v-bind:class="{ active: station.active }"> 
-                    <div class="number"> {{ number(i) }} </div>
-                    {{ station.name }}
-                </li>
-            </ul>
+        <div id="house" v-if="toggle">
+         
 
         </div>
           
         <!-- scripts -->
         <script src="src/vendor/js/vue.js"></script>
         <script>
-            let transit = new Vue({
-                el: '#transit',
+            let house = new Vue({
+                el: '#house',
                 data: {
+
                     toggle: false,
-                    stations: { },
+
+                    player: {
+                        money: null,
+                    },
+
+                    house: { 
+                        locked: false,
+                        rent: false,
+                        money: 0,
+                        tenants: {},
+                        items: {}
+                    },
+
                 },
 
 
                 methods: { 
-                    number: function (i) { 
-                        return parseInt(i) + 1;
-                    },
+ 
 
                     disable: function (i) { 
                         this.stations[i].active = false;
