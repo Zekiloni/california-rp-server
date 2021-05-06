@@ -21,5 +21,18 @@ module.exports = {
             }
          }
       },
+
+      {
+         name: 'house',
+         desc: 'Kuća',
+         call: (player, args) => { 
+            // if (player.near || player.inside) { 
+            //    if (player.near.type == 'house' || player.inside.type == 'house') { 
+
+            //    }
+            // }
+            player.call('client:player.house.management');
+         }
+      },
    ]
 }
