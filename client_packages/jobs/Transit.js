@@ -1,78 +1,94 @@
 
 
 const player = mp.players.local;
-let route = {};
-let station = false, checkpoint = false, blip = false, stations = 0;
-let browser = null, finished = false;
+let route = [], current = false, max = 0, distance = 0;
+let browser = null;
 
-let jobCancel = null;
+let cancel = null;
 let garage = new mp.Vector3(447.428, -591.51739, 28.0754);
 
-const START = 0;
+
+class Station { 
+   constructor (id, name, position) { 
+      this.id = id;
+      this.name = name;
+      this.position = new mp.Vector3(parseFloat(position.x), parseFloat(position.y), parseFloat(position.z - 1.07));
+      this.checkpoint = mp.checkpoints.new(47, this.position, 5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension });
+      this.checkpoint.station = this.id;
+      let number = this.id + 1;
+      this.blip = mp.blips.new(1, new mp.Vector3(this.position.x, this.position.y, 0), { name: number + '. ' + this.name, color: 5, shortRange: false });
+      
+      route.push(this)
+   }
+
+   delete () { 
+      this.checkpoint.destroy();
+      this.blip.destroy();
+      let i = route.indexOf(this);
+      route.splice(i, 1)
+   }
+}
 
 mp.events.add({
    'client:player.transit.start': (checkpoints) => { 
       for (let i in checkpoints) { 
-         let s = checkpoints[i];
-         let ground = mp.game.gameplay.getGroundZFor3dCoord(parseFloat(s.position.x), parseFloat(s.position.y), parseFloat(s.position.z + 5), parseFloat(0), false);
-         if (ground == 0) { ground = parseFloat(s.position.z + 0.15) }
-         route[i] = { name: s.name, position: new mp.Vector3(parseFloat(s.position.x), parseFloat(s.position.y), ground) }
-         stations ++;
+         let station = checkpoints[i];
+         new Station(parseInt(i), station.name, station.position)
       }
 
+      max = route.length - 1;
+      current = 0;
       browser = mp.browsers.new('package://jobs/transit-interface/transit.html');
-      browser.execute(`transit.toggle = true, transit.stations = ${stations}, transit.next = \"${route[START + 1].name}\"`);
-      browser.execute(`transit.current.i = ${START}, transit.current.name = \"${route[START].name}\"`);
-
-      station = START;
-
-      checkpoint = mp.checkpoints.new(0, route[START].position, 5,{ color: [ 241, 224, 90, 255 ], visible: true, dimension: player.dimension });
-      blip = mp.blips.new(1, new mp.Vector3(route[START].position.x, route[START].position.y, 0), { name: route[START].name, color: 5, shortRange: false });
+      //browser.execute(`transit.toggle = true, transit.stations = ${route};`);
    },
 
    'playerEnterCheckpoint': (checkpoint) => {
-      if (player.job == 3) { 
+      if (player.job == 3 && route.length > 0) { 
+         mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 1')
          let vehicle = player.vehicle;
-         if (vehicle && station >= 0) { // && vehicle.getClass() == 17
-            finished ? ( finish(true) ) : ( next() );
-         }
-      }
-   },
-
-   'playerLeaveVehicle': (vehicle, seat) => {
-      if (player.job == 3) { 
-         if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
-            browser.execute('transit.toggle = false'); 
-            jobCancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
-         }
-      }
-   },
-
-   'playerEnterVehicle': (vehicle, seat) => {
-      if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
-         if (vehicle.getClass() == 17) { 
-            browser.execute('transit.toggle = true'); 
-            clearTimeout(jobCancel)
+         if (vehicle && checkpoint.station >= 0) { // && vehicle.getClass() == 17
+            mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 2, Station ' + checkpoint.station)
+            checkpoint.station == max && current == max ? ( finish(true) ) : ( Next(checkpoint.station) );
          }
       }
    }
 })
 
 
-function next () { 
-   if (blip) blip.destroy();
-   if (checkpoint) checkpoint.destroy();
+   // 'playerLeaveVehicle': (vehicle, seat) => {
+   //    if (player.job == 3 && checkpoint.station) { 
+   //       if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
+   //          browser.execute('transit.toggle = false'); 
+   //          cancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
+   //       }
+   //    }
+   // },
 
-   mp.gui.chat.push('Sledeca stanica')
-   station ++;
-   let nextStation = route[station];
+   // 'playerEnterVehicle': (vehicle, seat) => {
+   //    if (player.job == 3 && checkpoint.station) { 
+   //       if (vehicle.getClass() == 17) { 
+   //          browser.execute('transit.toggle = true'); 
+   //          clearTimeout(cancel)
+   //       }
+   //    }
+   // }
 
-   station >= stations -1 ? ( end(true) ) : (
-      browser.execute(`transit.current.i = ${station}, transit.current.name = \"${nextStation.name}\", transit.next = \"${route[station + 1].name}\"`),
-      blip = mp.blips.new(1, new mp.Vector3(nextStation.position.x, nextStation.position.y, 0), { name: nextStation.name, color: 5, shortRange: false }),
-      checkpoint = mp.checkpoints.new(0, nextStation.position, 5, { color: [ 241, 224, 90, 255 ], visible: true, dimension: player.dimension }),
-      mp.gui.chat.push('id browsera ' + JSON.stringify(browser.id))
-   );
+function Next (i) { 
+   if (i == current) { 
+      let station = route.find( ({ id }) => id === i );
+      current ++;
+      let next = route.find( ({ id }) => id === current );
+
+      Distance(station.position, next.position).then((dist) => { 
+         station.delete();
+         distance += dist;
+         mp.gui.chat.push('[DEBUG] Next Station ' + current + ', Distance now ' + distance);
+      })
+
+   } else { 
+      mp.gui.chat.push('[DEBUG] Wrong Station')
+   }
+  
 }
 
 function end () { 
@@ -82,17 +98,11 @@ function end () {
    station = false, finished = true;
 }
 
-async function distance (first, last) {
-   return first.subtract(last).length();
+async function Distance (station, next) {
+   return new mp.Vector3(station.x, station.y, station.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();
 }
 
 function finish (done) { 
-   if (blip) blip.destroy();
-   if (checkpoint) checkpoint.destroy();
-
-   distance(route[START].position, route[stations - 2].position).then((dist) => { 
-      mp.events.callRemote('server:player.transit.stop', done, stations, dist);
-      stations = 0, finished = false, route = {};
-   })
-
+   distance = 0, route = [], max = 0;
+   mp.gui.chat.push('Finish !')
 }
