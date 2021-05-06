@@ -18,6 +18,7 @@ class House {
       this.intDimenison = data.intDimension;
       this.ipl = data.ipl;
       this.rent = data.rent || 0;
+      this.tenants = data.tenants || [];
 
       // mp.world.requestIpl(this.ipl);
 

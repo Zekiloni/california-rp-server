@@ -14,8 +14,23 @@
     </head>
     <body>
         <div id="house" v-if="toggle">
-         
+            <div class="management">
+                <ul class="navigation">
+                    <li v-on:click="active = 'home'" :class="{ active:active === 'home' }" > Osnovno</li>
+                    <li v-on:click="active = 'inventory'" :class="{ active:active === 'inventory' }" > Inventar</li>
+                    <li v-on:click="active = 'clothes'" :class="{ active:active === 'clothes' }" > Ormar</li>
+                    <li v-on:click="active = 'renting'" :class="{ active:active === 'renting' }" > Izdavanje</li>
+                </ul>
 
+                <i v-on:click="close()" aria-hidden="true" class="close fa fa-times"></i>
+                
+                <div class="info" v-if="active == 'home'">
+                    <h2 class="title"> Osnovne Informacije </h2>
+                    <ul class="informations">
+                        <h3> </h3>
+                    </ul>
+                </div>
+            </div>
         </div>
           
         <!-- scripts -->
@@ -25,13 +40,18 @@
                 el: '#house',
                 data: {
 
-                    toggle: false,
+                    toggle: true,
+
+                    active: 'home',
 
                     player: {
                         money: null,
+                        owner: true
                     },
 
                     house: { 
+                        location: 'Los Santos Hollywood',
+                        id: '3',
                         locked: false,
                         rent: false,
                         money: 0,
@@ -44,6 +64,7 @@
 
                 methods: { 
  
+                    close: function () { mp.trigger('client:player.house.management'); },
 
                     disable: function (i) { 
                         this.stations[i].active = false;

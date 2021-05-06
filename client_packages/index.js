@@ -24,6 +24,8 @@ let DamageSync = require('./DamageSync');
 let DepartmentOfVehicles = require('./vehicles-department/DMV');
 let Vehicles = require('./Vehicles');
 
+// HOUSES
+let Houses = require('./houses/Houses');
 
 // INTERACTIONS
 let Interactions = require('./player/Interactions/Interactions');

@@ -9,10 +9,14 @@ mp.events.add({
       browser.execute('house.toggle = !house.toggle');
       opened = !opened;
       if (opened) { 
-         let info = await mp.events.callRemoteProc('server:house.management.info', house);
-         info = JSON.stringify(info);
-         browser.execute('house.player.money = ' + player.money);
-         browser.execute('house.player.money = ' + player.money);
+         setTimeout(() => { mp.gui.cursor.show(true, true); }, 300);
+         // let info = await mp.events.callRemoteProc('server:house.management.info', house);
+         // info = JSON.stringify(info);
+         // browser.execute('house.player.money = ' + player.money);
+         // browser.execute('house.player.money = ' + player.money);
+      } else { 
+         setTimeout(() => { mp.gui.cursor.show(false, false); }, 300);
+
       }
    },
 
