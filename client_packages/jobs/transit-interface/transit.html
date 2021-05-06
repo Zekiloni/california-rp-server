@@ -20,10 +20,11 @@
                 </div>
             </div>
 
-            <ul class="informations">
-                <li> <h4>Trenutna stanica </h4 > <h3> <b> {{ current.i + 1 }}. {{ current.name }} </b> </h3> </li>
-
-                <li> <h4>Sledeća stanica </h4 > <h3> <b> {{ current.i + 2 }}. {{ next }} </b> </h3> </li>
+            <ul class="informations" id="stations">
+                <li v-for="(station, i) in stations" v-bind:class="{ active: station.active }"> 
+                    <div class="number"> {{ number(i) }} </div>
+                    {{ station.name }}
+                </li>
             </ul>
 
         </div>
@@ -35,13 +36,25 @@
                 el: '#transit',
                 data: {
                     toggle: false,
+                    stations: {
+                    },
+                },
 
-                    stations: 23,
-                    current: { i: 0, name: '' },
-                    next: ''
-            
+
+                methods: { 
+                    number: function (i) { 
+                        return parseInt(i) + 1;
+                    },
+
+                    disable: function (i) { 
+                        this.stations[i].active = false;
+                        let element = document.getElementById('stations')
+                        element.scrollTo({ top: element.scrollTop + 20, behavior: 'smooth' })
+                    }
                 }
             })
+
+
         </script>
     </body>     
 </html>

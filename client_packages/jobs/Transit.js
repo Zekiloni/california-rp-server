@@ -31,15 +31,17 @@ class Station {
 
 mp.events.add({
    'client:player.transit.start': (checkpoints) => { 
+      let stations = {};
       for (let i in checkpoints) { 
          let station = checkpoints[i];
-         new Station(parseInt(i), station.name, station.position)
+         new Station(parseInt(i), station.name, station.position);
+         stations[i] = { name: station.name, active: true };
       }
 
       max = route.length - 1;
       current = 0;
       browser = mp.browsers.new('package://jobs/transit-interface/transit.html');
-      //browser.execute(`transit.toggle = true, transit.stations = ${route};`);
+      browser.execute('transit.toggle = true, transit.stations = ' + JSON.stringify(stations) + ';');
    },
 
    'playerEnterCheckpoint': (checkpoint) => {
@@ -48,7 +50,7 @@ mp.events.add({
          let vehicle = player.vehicle;
          if (vehicle && checkpoint.station >= 0) { // && vehicle.getClass() == 17
             mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 2, Station ' + checkpoint.station)
-            checkpoint.station == max && current == max ? ( finish(true) ) : ( Next(checkpoint.station) );
+            checkpoint.station == max && current == max ? ( Finish(checkpoint.station, true) ) : ( Next(checkpoint.station) );
          }
       }
    }
@@ -79,10 +81,13 @@ function Next (i) {
       current ++;
       let next = route.find( ({ id }) => id === current );
 
+      mp.game.ui.setNewWaypoint(next.position.x, next.position.y);
+
       Distance(station.position, next.position).then((dist) => { 
          station.delete();
          distance += dist;
          mp.gui.chat.push('[DEBUG] Next Station ' + current + ', Distance now ' + distance);
+         browser.execute(`transit.disable(${i})`)
       })
 
    } else { 
@@ -102,7 +107,10 @@ async function Distance (station, next) {
    return new mp.Vector3(station.x, station.y, station.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();
 }
 
-function finish (done) { 
+function Finish (i, done) { 
+   let station = route.find( ({ id }) => id === i );
+   station.delete();
+   if (mp.browsers.at(browser.id)) browser.destroy();
    distance = 0, route = [], max = 0;
    mp.gui.chat.push('Finish !')
 }
