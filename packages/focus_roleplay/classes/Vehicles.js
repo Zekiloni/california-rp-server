@@ -115,8 +115,8 @@ class Vehicles {
                 let vehicle = player.vehicle;
                 if (vehicle && player.seat == 0) {
                     switch (indicator) {
-                        case 0: vehicle.data.IndicatorRight = !vehicle.data.IndicatorRight; break;
-                        case 1: vehicle.data.IndicatorLeft = !vehicle.data.IndicatorLeft; break;
+                        case 0: vehicle.setVariable('IndicatorRight', !vehicle.getVariable('IndicatorRight')); break;
+                        case 1: vehicle.setVariable('IndicatorLeft', !vehicle.getVariable('IndicatorLeft')); break;
                     }
                 }
             },

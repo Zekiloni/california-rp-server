@@ -55,9 +55,13 @@ mp.events.add({
       if (player.job == 3 && route.length > 0) { 
          mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 1')
          let vehicle = player.vehicle;
-         if (vehicle && checkpoint.station >= 0) { // && vehicle.getClass() == 17
+         if (vehicle && vehicle.getClass() == 17 && checkpoint.station >= 0) { 
+            player.stopped = true;
+            setTimeout(() => { 
+               player.stopped = false; 
+               checkpoint.station == max && current == max ? ( Finish(checkpoint.station, true) ) : ( Next(checkpoint.station) );
+            }, 10000)
             mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 2, Station ' + checkpoint.station)
-            checkpoint.station == max && current == max ? ( Finish(checkpoint.station, true) ) : ( Next(checkpoint.station) );
          }
       }
 
@@ -67,6 +71,15 @@ mp.events.add({
          mp.events.callRemote('server:player.transit.stop', true, max, distance);
 
          distance = 0, route = [], max = 0;
+      }
+   },
+
+   'playerExitCheckpoint': (checkpoint) => {
+      if (player.job == 3 && player.vehicle && player.vehicle.getClass() == 17 && checkpoint.station >= 0) { 
+         if (player.stopped) { 
+            mp.gui.chat.push('Izasao si jbg ');
+            player.stopped = false;
+         }
       }
    }
 })
