@@ -20,7 +20,7 @@ mp.events.add({
     'client:creator.show': () => {
         player.freezePosition(true);
         if (customizatorOpened == true) return;
-        customizationCEF = mp.browsers.new('package://creator/creator-interface/creator.html');
+        customizationCEF = mp.browsers.new('package://player/creator/creator-interface/creator.html');
         setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
         mp.game.ui.displayRadar(false);
         mp.events.call('client:creator.cam', true);

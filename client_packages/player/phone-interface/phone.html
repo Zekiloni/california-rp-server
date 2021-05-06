@@ -57,9 +57,9 @@
 
                             <div v-if="phone.locked == false && phone.page == 'home'" class="apps">
 
-                                <img class="application" src="src/images/ifruit/icons/contacts.png" >
+                                <img v-on:click="phone.page ='contacts'" class="application" src="src/images/ifruit/icons/contacts.png" >
                                 <img class="application" src="src/images/ifruit/icons/gps.png" >
-                                <img class="application" src="src/images/ifruit/icons/notes.png" >
+                                <img v-on:click="phone.page ='notes'" class="application" src="src/images/ifruit/icons/notes.png" >
                                 <img class="application" src="src/images/ifruit/icons/music.png" >
                                 <img v-on:click="phone.page ='weather'" class="application" src="src/images/ifruit/icons/weather.png" >
                                 <img class="application" src="src/images/ifruit/icons/home.png" >
@@ -152,9 +152,27 @@
                                 </div>
                             </div>
 
-                            <div class="page" v-if="phone.page == 'call'">
+                            <div class="page" v-if="phone.page == 'notes'">
+                                <div class="header notes_header">
+                                    <i v-on:click="phone.page = 'home'" class="go-back fas fa-angle-left"></i>
+                                    <h3> Beleške </h3>
+                                    <h3> </h3>
+                                </div>
+                                <textarea class="notes" v-model="phone.notes"> </textarea>
+                            </div>
+
+                            <div class="page" v-if="phone.page == 'contacts'">
                                 <div class="header transparent">
                                     <i v-on:click="phone.page = 'home'" class="go-back fas fa-angle-left"></i>
+                                    <h3> Kontakti </h3>
+                                    <h3> </h3>
+                                </div>
+                            </div>
+
+
+                            <div class="page" v-if="phone.page == 'call'">
+                                <div class="header transparent">
+                                    <i v-on:click="phone.page = 'home', call.number = ''" class="go-back fas fa-angle-left"></i>
                                     <h3> Pozivi </h3>
                                 </div>
                                 
@@ -177,7 +195,7 @@
                                         <li v-for="n in numbers" v-on:click="input('calling', n)">
                                             {{ n }}
                                         </li>
-                                        <li v-on:click="Call(call.number)" class="call"> <i class="fa fa-phone" aria-hidden="true"></i> </li>
+                                        <li class="call"><button :disabled="call.number.length < 2" v-on:click="Call(call.number)"> <i class="fa fa-phone" aria-hidden="true"></i> </button> </li>
                                         <li v-on:click="input('calling', -1)" class="delete"> <i class="fa fa-times" aria-hidden="true"></i> </li>
                                     </ul>
                                 </div>
@@ -240,7 +258,7 @@
                         page: 'home',
                         number: 321245,
                         style: 'ifruit',
-                        notes: '',
+                        notes: 'vale very gud is boy',
                         background: '2',
                         calls: 'call',
                         locked: true,
