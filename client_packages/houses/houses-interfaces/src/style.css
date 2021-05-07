@@ -35,19 +35,8 @@ body {
    justify-content: center;
 }
 
-.navigation li {
-   padding: 5px 0;
-   background: rgb(255 255 255 / 10%);
-   width: 185px;
-   text-align: center;
-   color: #adadad;
-   background: whitesmoke;
-   margin: 5px 0;
-   font-weight: 500;
-   text-transform: uppercase;
-   letter-spacing: 1.25px;
-   transition: all 0.35s ease;
-   border-radius: 5px;
+.navigation li { padding: 5px 0; background: rgb(255 255 255 / 10%); width: 185px; text-align: center; color: #adadad; background: whitesmoke;
+   margin: 5px 0; font-weight: 500; text-transform: uppercase; letter-spacing: 1.25px; transition: all 0.35s ease; border-radius: 5px;
 }
 
 .navigation li.active { background: #ffd71d; color: white; box-shadow: 0 5px 15px rgb(255 205 29 / 40%); }
@@ -58,11 +47,11 @@ body {
 
 .management { height: 350px; width: 600px; background: rgb(0 0 0 / 20%); color: #b5b5b5; position: relative; border-radius: 5px; box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px; }
 
-.page {padding: 20px;width: 450px;height: 300px;margin-left: auto;}
+.page {padding: 20px;width: 470px;height: 300px;margin-left: auto;}
 .title {font-weight: 400;margin: 0;font-size: 24px;text-transform: uppercase;}
 
 .informations {padding: 0;list-style: none;width: 400px;margin: 0 auto;margin-top: 20px;}
-.informations li {display: flex;align-items: center;justify-content: space-between;background: rgb(0 0 0 / 12%);margin: 5px 0;padding: 0 20px;border-radius: 10px;}
+.informations li {display: flex;align-items: center;justify-content: space-between;background: rgb(0 0 0 / 15%);margin: 5px 0;padding: 0 20px;border-radius: 10px;}
 .informations li h2 {padding: 5px 15px;transition: all 0.35s ease;border-radius: 5px;font-weight: 500;font-size: 14px;color: #e8e8e8;text-transform: uppercase;}
 .informations li h3 {padding: 5px 15px;transition: all 0.35s ease;border-radius: 5px;font-weight: 300;color: #cdcdcd;letter-spacing: 1.25px;}
 .informations li h3.locked { background: #e2351e; color: white; box-shadow: 0 5px 15px rgb(197 42 20 / 35%); }
@@ -71,6 +60,11 @@ body {
 
 .items {padding: 10px;list-style: none;width: 400px;margin: 0 auto;height: 260px;}
 
+ul.tenants {list-style: none;width: 325px;margin: 0 auto;margin-top: 10px;padding: 10px 30px;background: rgb(0 0 0 / 15%);border-radius: 10px;height: 215px;overflow-y: auto;}
+ul.tenants li {display: flex;justify-content: space-between;align-items: center;padding: 10px 10px;border-bottom: 1px solid rgb(245 245 245 / 12%);}
+ul.tenants li h4 {margin: 0;color: #cdcdcd;font-weight: 300;}
+ul.tenants li button {padding: 5px 15px;background: whitesmoke;border: none;border-radius: 5px;color: #949494;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);transition: all 0.35s ease;font-size: 11px;text-transform: uppercase;letter-spacing: 1.25px;}
+ul.tenants li button:hover { opacity: 0.65; }
 
 * { user-select: none; }
 

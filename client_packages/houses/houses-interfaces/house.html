@@ -56,7 +56,12 @@
 
                 <div class="page" v-if="active == 'renting'">
                     <h2 class="title"> Izdavanje </h2>
-
+                    <ul class="tenants">
+                        <li v-for="(tenant, i) in house.tenants"> 
+                            <h4> {{ tenant }}  </h4>
+                            <button v-on:click="removeTenant(i, tenant)">Isteraj</button>
+                        </li>
+                    </ul>
                 </div>
 
 
@@ -87,7 +92,7 @@
                         rent: false,
                         money: 0,
                         tenants: [
-                            'Vale Manelee', 'Boro MC Football', 'Batocann Gej'
+                            'Vale Manelee', 'Boro MC Football', 'Batocann Gej', 'flashing blue', 'Zola gey'
                         ],
                         items: {}
                     },
@@ -97,16 +102,21 @@
 
                 methods: { 
  
-                    close: function () { mp.trigger('client:player.house.management'); },
+                    close: function () { mp.trigger('client:house.management'); },
 
                     lock: function () { 
                         this.house.locked = !this.house.locked;
-                        mp.trigger('client:player.house.doors', this.house.id, this.house.locked);
+                        mp.trigger('client:house.doors', this.house.id, this.house.locked);
                     },
 
                     moneyFormat: function (i) { 
                         let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
                         return formatter.format(i);
+                    },
+
+                    removeTenant: function (i, name) { 
+                        this.house.tenants.splice(i, 1);
+                        mp.trigger('client:house.tenant.remove', )
                     },
 
                     tax: function (i) { 
