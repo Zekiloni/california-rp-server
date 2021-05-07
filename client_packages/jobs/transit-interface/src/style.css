@@ -38,6 +38,9 @@ ul.informations li::before {content: '';position: absolute;left: -20px;top: -10p
 ul.informations li.active { background: #ffd71d; color: white; box-shadow: 0 5px 15px rgb(255 205 29 / 40%); }
 ul.informations li.active .number { color: #ffd71d; }
 
+ul.informations li.wrong { background: #c52914; color: white; box-shadow: 0 5px 15px rgb(197 42 20 / 35%); }
+ul.informations li.wrong .number { color: #c52914; }
+
 * { user-select: none; }
 
 @keyframes fade-in {

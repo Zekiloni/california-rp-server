@@ -2,7 +2,7 @@
 
 const player = mp.players.local;
 let route = [], current = false, max = 0, distance = 0;
-let browser = null, finishing = false;
+let browser = null, finishing = false, wrong = false;
 
 let cancel = null;
 let garage = new mp.Vector3(447.428, -591.51739, 28.0754);
@@ -41,7 +41,7 @@ mp.events.add({
       for (let i in checkpoints) { 
          let station = checkpoints[i];
          new Station(parseInt(i), station.name, station.position);
-         stations[i] = { name: station.name, active: true };
+         stations[i] = { name: station.name, active: true, wrong: false };
       }
 
       max = route.length - 1;
@@ -77,7 +77,7 @@ mp.events.add({
    'playerExitCheckpoint': (checkpoint) => {
       if (player.job == 3 && player.vehicle && player.vehicle.getClass() == 17 && checkpoint.station >= 0) { 
          if (player.stopped) { 
-            mp.gui.chat.push('Izasao si jbg ');
+            wrong = true;
             player.stopped = false;
          }
       }
@@ -115,7 +115,12 @@ function Next (i) {
          station.delete();
          distance += dist;
          mp.gui.chat.push('[DEBUG] Next Station ' + current + ', Distance now ' + distance);
-         browser.execute(`transit.disable(${i})`)
+         if (wrong) { 
+            browser.execute(`transit.wrong(${i})`)
+         } else { 
+            browser.execute(`transit.disable(${i})`)
+         }
+         wrong = false;
       })
 
    } else { 
