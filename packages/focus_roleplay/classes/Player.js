@@ -88,3 +88,10 @@ mp.players.find = (playerName) => {
    return foundPlayer;
 }
 
+
+
+mp.events.add("server:onPlayerDamageHimself", (player, healthLoss) => {
+   // 
+ });
+ 
+ 

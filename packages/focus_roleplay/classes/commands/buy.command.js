@@ -13,7 +13,7 @@ module.exports = {
                let nearby = player.near;
                switch (nearby.type) { 
                   case 'house': { 
-                     
+                     mp.house.buy(player, mp.houses[nearby.id]);
                      break;
                   }
 

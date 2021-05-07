@@ -53,22 +53,23 @@ body {
 .navigation li.active { background: #ffd71d; color: white; box-shadow: 0 5px 15px rgb(255 205 29 / 40%); }
 .navigation li:hover { filter: brightness(1.15); }
 
-.close {position: absolute;top: 15px;right: 15px;padding: 4px 7px;border-radius: 5px;transition: all 0.5s ease;color: hsl(0deg 0% 12%);background: #ececec;border: 1px solid rgb(128 128 128 / 3%);font-size: 18px;}
+.close {position: absolute;top: 15px;right: 15px;padding: 4px 7px;border-radius: 5px;transition: all 0.5s ease;color: rgb(255 255 255 / 60%);background: rgb(0 0 0 / 29%);border: 1px solid rgb(128 128 128 / 3%);font-size: 18px;}
 .close:hover { opacity: 0.5; }
 
-.management {
-   height: 350px;
-   width: 600px;
-   background: rgb(255 255 255);
-   color: #757575;
-   position: relative;
-   border-radius: 5px;
-   box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;
-}
+.management { height: 350px; width: 600px; background: rgb(0 0 0 / 20%); color: #b5b5b5; position: relative; border-radius: 5px; box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px; }
 
-.info {padding: 20px;width: 450px;height: 300px;margin-left: auto;}
+.page {padding: 20px;width: 450px;height: 300px;margin-left: auto;}
+.title {font-weight: 400;margin: 0;font-size: 24px;text-transform: uppercase;}
 
-.title {font-weight: 400;margin: 0;}
+.informations {padding: 0;list-style: none;width: 400px;margin: 0 auto;margin-top: 20px;}
+.informations li {display: flex;align-items: center;justify-content: space-between;background: rgb(0 0 0 / 12%);margin: 5px 0;padding: 0 20px;border-radius: 10px;}
+.informations li h2 {padding: 5px 15px;transition: all 0.35s ease;border-radius: 5px;font-weight: 500;font-size: 14px;color: #e8e8e8;text-transform: uppercase;}
+.informations li h3 {padding: 5px 15px;transition: all 0.35s ease;border-radius: 5px;font-weight: 300;color: #cdcdcd;letter-spacing: 1.25px;}
+.informations li h3.locked { background: #e2351e; color: white; box-shadow: 0 5px 15px rgb(197 42 20 / 35%); }
+.informations li h3.unlocked {background: #69ba6c;color: white;box-shadow: 0 5px 15px rgb(48 185 52 / 34%);}
+.informations li h3 small { display: block; color: whitesmoke; font-size: 11px; text-transform: uppercase; }
+
+.items {padding: 10px;list-style: none;width: 400px;margin: 0 auto;height: 260px;}
 
 
 * { user-select: none; }

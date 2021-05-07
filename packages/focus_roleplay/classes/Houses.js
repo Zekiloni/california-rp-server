@@ -113,9 +113,9 @@ class Houses {
      });
    }
 
-   buy = (player, house) => { 
-      if (mp.houses[house] && house.owner == -1) {
-         if (mp.characters[player.character].cash >= house.price) { 
+   buy = function (player, house) { 
+      if (house && house.owner == -1) {
+         if (mp.characters[player.character].money <= house.price) { 
             mp.characters[player.character].giveMoney(player, -house.price);
             house.owner = player.character; 
             this.update(house);
