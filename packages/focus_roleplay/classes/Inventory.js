@@ -236,6 +236,19 @@ class Inventory {
       }
    }
 
+   weight = function (player) { 
+      let result = 0;
+      for (let i in mp.items) { 
+         let item = mp.items[i];
+         if (item.entity == ItemEntities.Player && item.owner == player.character) { 
+            if (mp.ItemRegistry[item.item].weight) { 
+               result += mp.ItemRegistry[item.item].weight;
+            }
+         } 
+      }
+      return result;
+   }
+
    clear = function (player) { 
       for (let i in mp.items) { 
          if (mp.items[i].entity == ItemEntities.Player) { 

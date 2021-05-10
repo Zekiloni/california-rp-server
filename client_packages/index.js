@@ -10,6 +10,9 @@ let NameTags = require('./player/NameTags');
 let PlayerInventory = require('./player/inventory/Items');
 let PlayerBanking = require('./player/Banking');
 
+// ADMIN
+let AdminStuffs = require('./player/Admin');
+
 // GAME CORE 
 let Chat = require('./chat');
 let CayoPerico = require('./heistisland');

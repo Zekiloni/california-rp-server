@@ -5,7 +5,7 @@ let browser = mp.browsers.new('package://houses/houses-interfaces/house.html'),
    opened = false, house = null;
 
 mp.events.add({
-   'client:player.house.management': () => { 
+   'client:house.management': () => { 
       browser.execute('house.toggle = !house.toggle');
       opened = !opened;
       if (opened) { 
@@ -21,7 +21,7 @@ mp.events.add({
    },
 
 
-   'client:player.house.money.update': (info) => { 
+   'client:house.money.update': (info) => { 
       mp.events.callRemote('server:house.update', info)
    }
 })

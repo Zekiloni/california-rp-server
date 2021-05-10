@@ -22,6 +22,7 @@ mp.events.add('render', (nametags) => {
    });
 });
 
+
 drawMpGamerTag = (player, name, x, y) => {
 
    let localPos = mp.players.local.position, playerPos = player.position;

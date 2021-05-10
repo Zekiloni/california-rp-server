@@ -21,7 +21,7 @@
             </div>
 
             <ul class="informations" id="stations">
-                <li v-for="(station, i) in stations" v-bind:class="{ active: station.active }"> 
+                <li v-for="(station, i) in stations" :class="{ active: station.active, wrong: station.wrong }"> 
                     <div class="number"> {{ number(i) }} </div>
                     {{ station.name }}
                 </li>
@@ -36,13 +36,22 @@
                 el: '#transit',
                 data: {
                     toggle: false,
-                    stations: { },
+                    stations: { 
+                    },
                 },
 
 
                 methods: { 
                     number: function (i) { 
                         return parseInt(i) + 1;
+                    },
+
+                    wrong: function (i) { 
+                        this.stations[i].active = false;
+                        this.stations[i].wrong = true;
+                        console.log(this.stations[i])
+                        let element = document.getElementById('stations')
+                        element.scrollTo({ top: element.scrollTop + 20, behavior: 'smooth' })
                     },
 
                     disable: function (i) { 

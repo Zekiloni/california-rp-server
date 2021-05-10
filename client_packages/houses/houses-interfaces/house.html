@@ -24,12 +24,47 @@
 
                 <i v-on:click="close()" aria-hidden="true" class="close fa fa-times"></i>
                 
-                <div class="info" v-if="active == 'home'">
+                <div class="page" v-if="active == 'home'">
                     <h2 class="title"> Osnovne Informacije </h2>
                     <ul class="informations">
-                        <h3> </h3>
+                        <li>
+                            <h2>Ulica i broj </h2>
+                            <h3> {{ house.location }}, <b> {{ house.id }} </b></h3>
+                        </li>
+
+                        <li> 
+                            <h2>Ulazna vrata</h2>
+                            <h3 v-on:click="lock()" v-bind:class="{ locked: house.locked, unlocked: !house.locked }" > {{ house.locked ? 'Zaključana' : 'Otključana' }}</h3>
+                        </li>
+
+                        <li>
+                            <h2>Cena Kuće</h2>
+                            <h3> 
+                                {{ moneyFormat(house.price) }} 
+                                <small> porez {{ tax(house.price) }} </small>
+                            </h3>
+                        </li>
                     </ul>
                 </div>
+
+                <div class="page" v-if="active == 'inventory'">
+                    <h2 class="title"> Inventar kuće </h2>
+                    <ul class="items">
+                        
+                    </ul>
+                </div>
+
+                <div class="page" v-if="active == 'renting'">
+                    <h2 class="title"> Izdavanje </h2>
+                    <ul class="tenants">
+                        <li v-for="(tenant, i) in house.tenants"> 
+                            <h4> {{ tenant }}  </h4>
+                            <button v-on:click="removeTenant(i, tenant)">Isteraj</button>
+                        </li>
+                    </ul>
+                </div>
+
+
             </div>
         </div>
           
@@ -40,7 +75,7 @@
                 el: '#house',
                 data: {
 
-                    toggle: true,
+                    toggle: false,
 
                     active: 'home',
 
@@ -52,10 +87,13 @@
                     house: { 
                         location: 'Los Santos Hollywood',
                         id: '3',
+                        price: 25700,
                         locked: false,
                         rent: false,
                         money: 0,
-                        tenants: {},
+                        tenants: [
+                            'Vale Manelee', 'Boro MC Football', 'Batocann Gej', 'flashing blue', 'Zola gey'
+                        ],
                         items: {}
                     },
 
@@ -64,7 +102,27 @@
 
                 methods: { 
  
-                    close: function () { mp.trigger('client:player.house.management'); },
+                    close: function () { mp.trigger('client:house.management'); },
+
+                    lock: function () { 
+                        this.house.locked = !this.house.locked;
+                        mp.trigger('client:house.doors', this.house.id, this.house.locked);
+                    },
+
+                    moneyFormat: function (i) { 
+                        let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+                        return formatter.format(i);
+                    },
+
+                    removeTenant: function (i, name) { 
+                        this.house.tenants.splice(i, 1);
+                        mp.trigger('client:house.tenant.remove', )
+                    },
+
+                    tax: function (i) { 
+                        let value = (this.house.price / 100) * 0.25;
+                        return this.moneyFormat(value)
+                    },
 
                     disable: function (i) { 
                         this.stations[i].active = false;

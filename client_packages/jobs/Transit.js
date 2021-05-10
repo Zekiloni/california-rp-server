@@ -2,7 +2,7 @@
 
 const player = mp.players.local;
 let route = [], current = false, max = 0, distance = 0;
-let browser = null, finishing = false;
+let browser = null, finishing = false, wrong = false;
 
 let cancel = null;
 let garage = new mp.Vector3(447.428, -591.51739, 28.0754);
@@ -41,7 +41,7 @@ mp.events.add({
       for (let i in checkpoints) { 
          let station = checkpoints[i];
          new Station(parseInt(i), station.name, station.position);
-         stations[i] = { name: station.name, active: true };
+         stations[i] = { name: station.name, active: true, wrong: false };
       }
 
       max = route.length - 1;
@@ -55,9 +55,13 @@ mp.events.add({
       if (player.job == 3 && route.length > 0) { 
          mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 1')
          let vehicle = player.vehicle;
-         if (vehicle && checkpoint.station >= 0) { // && vehicle.getClass() == 17
+         if (vehicle && vehicle.getClass() == 17 && checkpoint.station >= 0) { 
+            player.stopped = true;
+            setTimeout(() => { 
+               player.stopped = false; 
+               checkpoint.station == max && current == max ? ( Finish(checkpoint.station, true) ) : ( Next(checkpoint.station) );
+            }, 10000)
             mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 2, Station ' + checkpoint.station)
-            checkpoint.station == max && current == max ? ( Finish(checkpoint.station, true) ) : ( Next(checkpoint.station) );
          }
       }
 
@@ -67,6 +71,15 @@ mp.events.add({
          mp.events.callRemote('server:player.transit.stop', true, max, distance);
 
          distance = 0, route = [], max = 0;
+      }
+   },
+
+   'playerExitCheckpoint': (checkpoint) => {
+      if (player.job == 3 && player.vehicle && player.vehicle.getClass() == 17 && checkpoint.station >= 0) { 
+         if (player.stopped) { 
+            wrong = true;
+            player.stopped = false;
+         }
       }
    }
 })
@@ -102,15 +115,18 @@ function Next (i) {
          station.delete();
          distance += dist;
          mp.gui.chat.push('[DEBUG] Next Station ' + current + ', Distance now ' + distance);
-         browser.execute(`transit.disable(${i})`)
+         if (wrong) { 
+            browser.execute(`transit.wrong(${i})`)
+         } else { 
+            browser.execute(`transit.disable(${i})`)
+         }
+         wrong = false;
       })
 
    } else { 
       mp.gui.chat.push('[DEBUG] Wrong Station')
    }
-  
 }
-
 
 async function Distance (station, next) {
    return new mp.Vector3(station.x, station.y, station.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();

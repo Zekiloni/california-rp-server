@@ -78,7 +78,8 @@ class Character {
 
    Mask (player) { 
       this.masked = !this.masked;
-      player.setVariable('masked', this.masked);
+      player.setVariable('Masked', this.masked);
+      this.masked ? ( player.name = 'Maska + stranger id ' ) : ( player.name = this.first_name + ' ' + this.last_name );
    }
 
    screenShot (player, toggle) { 

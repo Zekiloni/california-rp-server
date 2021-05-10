@@ -4,12 +4,12 @@ let DOORS = require('./../configs/Doors.json')
 mp.doors = {};
 
 class Door { 
-   constructor (id, name, position, model, status) { 
+   constructor (id, name, position, model, state) { 
       this.id = id;
       this.name = name;
       this.position = position;
       this.model = model;
-      this.status = status;
+      this.state = state;
       
       this.faction = null;
 
@@ -20,7 +20,8 @@ class Door {
    }
 
    status () { 
-      this.status = !this.status;
+      this.state = !this.state;
+      mp.players.call('client:doors.state', [this.model, this.position, this.state]);
    }
 
 }
@@ -31,8 +32,8 @@ class Doors {
          'playerEnterColshape': (player, colshape) => { 
             if (colshape.doors) { 
                let door = colshape.doors;
-               let status = mp.doors[door].status, position = mp.doors[door].position, model = mp.doors[door].model;
-               player.call('client:doors.sync', [model, position, status]);
+               let state = mp.doors[door].state, position = mp.doors[door].position, model = mp.doors[door].model;
+               player.call('client:doors.sync', [model, position, state]);
                player.near = { type: 'door', id: door };
             }
          },

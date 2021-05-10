@@ -107,12 +107,20 @@ button.cash-me-outside:disabled:hover { filter: none; }
 button.withdraw[disabled]{background: #e4e4e4;box-shadow: none;color: #ababab;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
 button.withdraw:disabled:hover { filter: none; }
 
+.deposit-handler {width: auto;/* background: #ffffff; */box-shadow: 0 3px 7px rgb(0 0 0 / 15%);border-radius: 10px;position: relative;}
 
-.deposit-handler {width: auto;background: #ffffff;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);border-radius: 10px;position: relative;}
-
-.deposit-handler button.deposit {position: absolute;border: none;width: 55px;right: -11px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+.deposit-handler button.deposit {position: absolute;border: none;width: 55px;right: -5px;top: -9px;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 100%;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
 button.deposit[disabled]{background: #e4e4e4;box-shadow: none;color: #ababab;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
 button.deposit:disabled:hover { filter: none; }
+
+.transfer-handler {width: 100%;margin: 0 auto;display: flex;justify-content: center;flex-direction: column;}
+.transfer-handler input { margin: 5px 0; }
+
+button.transfer {border: none;margin: 5px 0;height: 55px;font-size: 24px;transition: all 0.35s ease;color: whitesmoke;background: linear-gradient(45deg,#49c746,#65e661);border-radius: 5px;font-weight: 600;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+button.transfer:hover { color: white; filter: brightness(1.1); }
+button.transfer[disabled]{background: #e4e4e4;box-shadow: none;color: #ababab;box-shadow: 0 3px 7px rgb(0 0 0 / 15%);}
+button.transfer:disabled:hover { filter: none; }
+
 
 input {
    border: 1px solid rgba(0,0,0,.125);
@@ -128,7 +136,7 @@ input:focus { outline: none; }
 
 .fade-out { opacity: 0; }
 
-.page-title { text-transform: uppercase; font-weight: 400; }
+.page-title {text-transform: uppercase;font-weight: 700;letter-spacing: 1.15px;margin: 0 auto;margin-bottom: 10px;}
 
 * { user-select: none; }
 
@@ -147,6 +155,18 @@ input:focus { outline: none; }
    50% { transform: scale(1.05); }
    100% { transform: scale(0.95); }
 }
+
 ::-webkit-scrollbar { width: 7px; }
 ::-webkit-scrollbar-track {background: #dedede;}
 ::-webkit-scrollbar-thumb {background: #8537b2;}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+   font-weight: 100;
+   color: #cdcdcd; 
+ }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

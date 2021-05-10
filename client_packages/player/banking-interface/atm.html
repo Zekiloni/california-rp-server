@@ -103,7 +103,14 @@
                     </div>
 
                     <div class="home-page" v-if="page == 'transfer'">
-                        transfer page
+                        <h3 class="page-title">Transfer Novca</h3>
+                        <div class="transfer-handler">
+                            <input type="number" v-model="values.target_bank" placeholder="Broj računa primaoca">
+                            <input type="number" v-model="values.transfer" placeholder="Količina novca">
+                            <button :disabled="values.target_bank == player.number || values.transfer == 0 || values.transfer > player.balance" class="transfer" @click="Transfer(values.target_bank, values.transfer)">
+                                <i class="fas fa-dollar-sign"></i> Transfer
+                            </button>
+                        </div>
                     </div>
 
                     <div v-if="notification" class="notification"> {{ notification }} </div>
@@ -124,9 +131,9 @@
                     player: {
                         name: 'Zachary Parker',
                         money: 0, balance: 0,
-                        savings: 0, number: 0,
+                        savings: 0, number: '',
                         paycheck: 0,
-                        pin: 0
+                        pin: 4777
                     },
 
                     digits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
@@ -138,9 +145,10 @@
                     notification: null,
 
                     values: {
-                        withdraw: 0,
-                        deposit: 0,
-                        transfer: 0,
+                        withdraw: '',
+                        deposit: '',
+                        target_bank: '',
+                        transfer: '',
                     },
 
                     audio: {
@@ -222,9 +230,9 @@
                         }
                     },
 
-                    transfer: function (target, value) { 
+                    Transfer: function (target, value) { 
                         if (value <= this.player.balance) { 
-                            // do transfer
+                            mp.trigger('client:player.banking.transfer', this.player.number, target, value);
                         } else { 
                             // error
                         }
