@@ -76,8 +76,6 @@ mp.events.add("server:casino.slot.spin", (player) =>
 
 
 
-
-
 //jobs.createBusRoute('Morningwood')
 //console.log(items)
 //console.log(FACTIONS[0].GARAGE_POINT)

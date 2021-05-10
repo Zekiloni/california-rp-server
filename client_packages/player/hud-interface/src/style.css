@@ -65,6 +65,8 @@ html, body {
 .vehicle .fuel-icon {width: 18px;position: absolute;right: 120px;bottom: 22px;}
 .vehicle .lights-icon {width: 18px;position: absolute;right: 160px;bottom: 22px;}
 
+.speedometer {position: relative;width: 200px;height: 100px;}
+.speedometer .speedo {position: absolute;width: 45px;height: 2px;background: red;}
 
 .weapon {position: absolute;width: 250px;padding: 5px 20px;display: flex;justify-content: space-between;align-items: center;border-radius: 10px;top: 110px;right: 2%;background: rgb(0 0 0 / 10%);border: 1px solid rgb(0 0 0 / 20%);}
 .weapon .ammo h2 {margin: 0;color: white;font-size: 27px;text-shadow: -1px -1px 0 rgb(0 0 0 / 35%), 1px -1px 0 rgb(0 0 0 / 35%), -1px 1px 0 rgb(0 0 0 / 36%), 1px 1px 0 rgb(0 0 0 / 35%);}

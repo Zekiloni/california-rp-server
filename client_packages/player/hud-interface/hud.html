@@ -39,6 +39,15 @@
                 </div>
                 
                 <div class="vehicle" v-if="vehicle.driving == true">
+                    <div class="speedometer">
+                        <div class="speedo"> </div>
+                        <div class="speedo"> </div>
+                        <div class="speedo"> </div>
+                        <div class="speedo"> </div>
+                        <div class="speedo"> </div>
+                        <div class="speedo"> </div>
+                    </div>
+
                     <div class="veh-info">
                         <h1 class="vehicle-speed">{{ vehicleSpeed() }}</h1>
                         <h4>km/h</h4>
@@ -69,7 +78,7 @@
         let hud = new Vue({
             el: '#hud',
             data: {
-                toggle: false, 
+                toggle: true, 
 
                 weapon: { 
                     have: false,
@@ -87,8 +96,9 @@
                 datestamp: null,
 
                 vehicle: { 
-                    driving: false,
-                    speed: null,
+                    speedo: 10,
+                    driving: true,
+                    speed: 0,
                     lights: 0,
                     fuel: null
                 },
@@ -147,6 +157,15 @@
 
             }
         })
+
+        let speedo = document.querySelectorAll('.speedo');
+
+        for (let i = 0, l = speedo.length; i < l; i ++) {
+            speedo[i].style.left = (50 - 35 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i* Math.PI)).toFixed(4) + "%";
+            speedo[i].style.top = (50 + 35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+            let index = i * 15;
+            speedo[i].style.transform = "rotate(" + (90 + index) + "deg)";
+        }
 
     </script>
 </html>

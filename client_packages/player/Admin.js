@@ -41,8 +41,8 @@ mp.events.add({
             scale: [1.0, 1.0],
             outline: true,
          });
-         }
-         if (camdir) {
+      }
+      if (camdir) {
          const dir = getCameraDirection();
          mp.game.graphics.drawText(`X:${dir.x}    Y:${dir.y}    Z:${dir.z}`, [0.5, 0.05],
          {
