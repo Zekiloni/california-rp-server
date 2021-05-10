@@ -31,9 +31,13 @@ class BankAccount {
    constructor (number, pin, data) { 
       this.number = number;
       this.pin = pin;
-      this.balance = data.balance;
-      this.savings = data.savings || 0;
-      this.paycheck = data.paycheck || 0;
+      if (data) { 
+         this.balance = data.balance || 0;
+         this.savings = data.savings || 0;
+         this.paycheck = data.paycheck || 0;
+      }
+
+      this.active = true;
 
       mp.bank.accounts[this.number] = this;
    }
@@ -53,8 +57,12 @@ class BankAccount {
       mp.bank.update(this)
    }
 
-   transfer (player, target, value) { 
-      
+   transfer (target, value) { 
+      this.balance -= parseInt(value);
+      target.balance += parseInt(value);
+      console.log(target)
+      mp.bank.update(this);
+      //mp.bank.update(target);
    }
 
    // money transfer from paycheck to account balance
@@ -64,7 +72,6 @@ class BankAccount {
       this.paycheck = 0;
       mp.bank.update(this)
    }
-
 
    // giving payday
    payDay (player) { 
@@ -145,10 +152,24 @@ class BankAccount {
 class Bank { 
 
    constructor () { 
-      mp.events.addProc('server:player.banking', (player) => {
-         let character = player.getCharacter();
-         return JSON.stringify(this.accounts[character.bank_account])
+      mp.events.addProc({
+         'server:player.banking': (player) => {
+            let character = player.getCharacter();
+            return JSON.stringify(this.accounts[character.bank_account])
+         },
+
+         'server:player.banking.transfer': (player, bank, recipient, value) => { 
+            bank = this.accounts[bank];
+            if (this.accounts[recipient]) { 
+               let target = this.accounts[recipient];
+               bank.transfer(target, value);
+               return true;
+            } else { 
+               return false;
+            }
+         }
       });
+
 
       mp.events.add({
          'server:player.banking.withdraw': (player, bank, value) => { 
@@ -159,13 +180,6 @@ class Bank {
          'server:player.banking.deposit': (player, bank, value) => { 
             bank = this.accounts[bank];
             bank.deposit(player, value);
-         },
-
-         'server:player.banking.transfer': (player, bank, target, value) => { 
-            bank = this.accounts[bank];
-            if (this.accounts[target]) { 
-               // do transfer
-            }
          },
 
          'server:player.banking.payday': (player, bank, value) => { 
@@ -239,4 +253,7 @@ function countDigits (n) {
    while (n / 10 >= 1) { n /= 10; ++ count; }
    return count;
 }
+
+
+new BankAccount('321199', 323);
 

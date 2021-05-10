@@ -126,9 +126,7 @@ function Next (i) {
    } else { 
       mp.gui.chat.push('[DEBUG] Wrong Station')
    }
-  
 }
-
 
 async function Distance (station, next) {
    return new mp.Vector3(station.x, station.y, station.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();

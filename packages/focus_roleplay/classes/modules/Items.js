@@ -98,6 +98,10 @@ new Item ('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, functi
 })
 
 
+// MASKA
+
+
+
 new Item('iFruit Smartphone', ItemType.Misc, 'prop_player_phone_01', 0.3, function (player) { 
    let character = player.getCharacter(), phone = mp.phones[character.phone_number];
    if (!phone.turned) return; // telefon ti je ugasen

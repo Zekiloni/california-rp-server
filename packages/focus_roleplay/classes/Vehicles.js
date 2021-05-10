@@ -75,7 +75,7 @@ class Vehicle {
 
 	window (vehicle, index) { 
 		this.windows[index] != this.windows[index];
-		vehicle.setVariable('windows', this.windows)
+		vehicle.setVariable('Windows', this.windows)
 	}
 
 	setDirt (vehicle, dirt) { 

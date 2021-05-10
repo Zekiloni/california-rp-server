@@ -32,7 +32,10 @@ mp.events.add({
 
    'client:player.banking.payday': (bank, value) => { mp.events.callRemote('server:player.banking.payday', bank, value); },
 
-   'client:player.banking.transfer': (bank, target, value) => { mp.events.callRemote('server:player.banking.transfer', bank, target, value); }
+   'client:player.banking.transfer': async (bank, target, value) => { 
+      let transfer = await mp.events.callRemoteProc('server:player.banking.transfer', bank, target, value);
+      transfer == true ? browser.execute(`atm.notify('Transakcija uspešna !')`) : browser.execute(`atm.notify('Transakcija nije uspešna, korisnik nije pronadjen !')`) 
+   } 
 })
 
 
