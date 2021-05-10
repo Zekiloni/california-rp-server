@@ -14,7 +14,7 @@ let PlayerBanking = require('./player/Banking');
 let AdminStuffs = require('./player/Admin');
 
 // GAME CORE 
-let Chat = require('./chat');
+let Chat = require('./Chat');
 let CayoPerico = require('./heistisland');
 //let ChatBubble = require('./player/ChatBubble');
 
@@ -43,6 +43,7 @@ let Police = require('./factions/police/Police');
 let Jobs = require('./jobs/Jobs');
 let Jetsam = require('./jobs/Jetsam');
 let Transit = require('./jobs/Transit');
+let Fishing = require('./jobs/Fishing');
 
 // DIAMOND CASINO
 // let Roulette = require('./casino/Roulette');
