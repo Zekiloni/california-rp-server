@@ -43,7 +43,7 @@ let Police = require('./factions/police/Police');
 let Jobs = require('./jobs/Jobs');
 let Jetsam = require('./jobs/Jetsam');
 let Transit = require('./jobs/Transit');
-let Fishing = require('./jobs/Fishing');
+// let Fishing = require('./jobs/Fishing');
 
 // DIAMOND CASINO
 // let Roulette = require('./casino/Roulette');

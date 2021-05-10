@@ -1,6 +1,6 @@
 const player = mp.players.local;
 
-const FishingObject = mp.joaat('prop_fishing_rod_01');
+const FishingObject = mp.game.joaat('prop_fishing_rod_01');
 
 function isPlayerInOrLookingAtWater() {
    var forward = player.getForwardVector();
