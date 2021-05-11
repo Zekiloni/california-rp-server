@@ -3,5 +3,12 @@
     "editor.formatOnSave": false,
     "[javascript]": {
         "editor.tabSize": 3
+    },
+    "files.exclude": {
+        "plugins/": true,
+        "BugTrap-x64.dll": true,
+        "maps/": true,
+        "bin/": true,
+        "linux_x64.tar.gz": true
     }
 }
