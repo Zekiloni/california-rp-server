@@ -38,7 +38,7 @@ mp.events.add('playerCommand', (player, command) => {
       let account = mp.accounts[player.account];
       let character = mp.characters[player.character];
 
-      if (cmd.admin && account.admin < cmd.admin) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
+      if (cmd.admin && account.Administrator < cmd.admin) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
 
       if (cmd.faction) { 
          if (cmd.faction.type && cmd.faction.type != mp.factions[character.faction].type) return;

@@ -169,6 +169,8 @@ mp.events.addCommand("dzok", (player, fullText, dict, anim) => {
     player.playAnimation(dict, anim, 5, 0)
 })
 
+let dealerships = require('./configs/Dealerships')
+
 mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => { 
     player.call('client:vehicle.dealership', [true, mp.dealerships.sedans])
 })

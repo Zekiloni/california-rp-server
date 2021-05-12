@@ -129,9 +129,8 @@ $(document).ready(function()
 
     $("body").keyup(function(event)
 	{
-        if (event.which == 84 && chat.input == null
-			&& chat.active == true)
-		{
+
+      if (event.which == 84 && chat.input == null && chat.active == true) {
 			chat.currentIndex = 0;
             enableChatInput(true);
 			event.preventDefault();
@@ -198,7 +197,8 @@ $(document).ready(function()
                 }
             }
 
-            enableChatInput(false);
-        }
+			enableChatInput(false);
+		}
+
     });
 });

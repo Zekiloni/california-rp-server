@@ -28,9 +28,9 @@ class Saving {
    
                   let values = {
                      ip_adress: player.ip,
-                     admin: account.admin,
-                     donator: account.donator,
-                     coins: account.coins,
+                     admin: account.Administrator,
+                     donator: account.Donator,
+                     coins: account.Coins,
                      online: onlineStatus
                   }
                   db.query('UPDATE `users` SET ? WHERE id = ?', [values, account.id], function (err, result, fields) {
@@ -67,6 +67,8 @@ class Saving {
                      if (err) return core.terminal(1, 'Saving Acccount Error ' + err);
                      if (exit == true) { 
                         delete mp.characters[character.id];
+                        console.log('CHARACTERS')
+                        console.log(mp.characters)
                      }
                });
             }

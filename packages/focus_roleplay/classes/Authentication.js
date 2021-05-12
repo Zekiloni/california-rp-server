@@ -13,7 +13,6 @@ mp.events.add({
          player.character = character;
          player.defaultVariables();
 
-         player.dimension = 0;
          let position = JSON.parse(info.last_position);
 
          let char = new Character({
@@ -23,23 +22,33 @@ mp.events.add({
             hunger: info.hunger, thirst: info.thirst, licenses: JSON.parse(info.licenses), weapon_skill: info.weapon_skill,
             driving_skill: info.driving_skill, job_skill: info.job_skill, screenshot: info.screenshot, experience: info.experience,
             hours: info.hours_played, health: info.health, armour: info.armour, last_postion: new mp.Vector3(position.x, position.y, position.z),
-            spawn_point: info.spawn_point
+            spawn_point: info.spawn_point, last_dimension: info.last_dimension
          })  
 
-         char.spawn(player);
-         char.setName(player);
-         char.Job(player, info.job)
-         char.setMoney(player, info.money);
 
+         char.spawn(player);
+         char.Job(player, info.job)
+
+         console.log('pre apear 2')
          db.query('SELECT * FROM `appearances` WHERE `character` = ?', [player.character], function (err, res, field) {
             if (err) return core.terminal(1, 'Appearances Loading Error ' + err);
          
             let char = res[0];
-            let charSkin = new Appearance({
-               gender: info.sex, blendData: JSON.parse(char.blend_data), hair: JSON.parse(char.hair),
-               beard: JSON.parse(char.beard), eyeColor: char.eye_color, faceFeatures: JSON.parse(char.face_features)
-            });
-            charSkin.load(player);
+            console.log('apear 1')
+            try { 
+               console.log('apear 2')
+               let charSkin = new Appearance({
+                  gender: info.sex, blendData: JSON.parse(char.blend_data), hair: JSON.parse(char.hair),
+                  beard: JSON.parse(char.beard), eyeColor: char.eye_color, faceFeatures: JSON.parse(char.face_features)
+               });
+               console.log('apear 3')
+               charSkin.load(player);
+               console.log('apear 4')
+            } catch (e) { 
+               console.log(e)
+            }
+  
+            console.log('after apear 1')
 
             let charClothes = new Clothing({
                mask: JSON.parse(char.mask), torso: char.torso, undershirt: JSON.parse(char.undershirt), shirt: JSON.parse(char.shirt),
@@ -47,6 +56,8 @@ mp.events.add({
                accessories: JSON.parse(char.accessories), hat: JSON.parse(char.hats), glasses: JSON.parse(char.glasses), 
                ears: JSON.parse(char.ears), watch: JSON.parse(char.watches), bracelet: JSON.parse(char.bracelet)
             })
+
+            console.log('after apear 2')
 
             charClothes.load(player);
          })

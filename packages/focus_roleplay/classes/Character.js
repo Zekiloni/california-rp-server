@@ -29,6 +29,7 @@ class Character {
       this.experience = p.experience; 
       this.hours = p.hours;
       this.last_positon = p.last_postion;
+      this.last_dimension = p.last_dimensiion || 0;
       this.spawn_point = p.spawn_point;
 
       this.working = {
@@ -74,6 +75,11 @@ class Character {
          case 1: player.position = this.last_positon; break;
          default: player.position = mp.settings.defaultSpawn; break;
       }
+
+      player.dimension = this.last_dimension;
+
+      this.setName(player);
+      this.setMoney(player, this.money)
    }
 
    Mask (player) { 
@@ -113,7 +119,7 @@ class Character {
 
    property () { 
       let houses = [], businesess = [], vehicles = [];
-   ob
+   
       for (let h in mp.houses) { 
          let house = mp.houses[h];
          if (house.owner == this.id) { 
@@ -139,10 +145,12 @@ class Character {
    }
 
    Job (player, job) { 
-      job = mp.jobs[job];
-      this.job = job.id;
-      player.setVariable('job', this.job);
-      player.sendMessage('Uspešno ste se zaposlili u ' + job.name + ' !', mp.colors.info)
+      if (job != 0) { 
+         job = mp.jobs[job];
+         this.job = job.id;
+         player.setVariable('job', this.job);
+         player.sendMessage('Uspešno ste se zaposlili u ' + job.name + ' !', mp.colors.info)
+      }
    }
 
    setMoney (player, amount) { 
@@ -186,6 +194,9 @@ class Appearance {
       this.beard = appearance.beard;
       this.eyeColor = appearance.eyeColor;
       this.faceFeatures = appearance.faceFeatures;
+
+      console.log('APEARENCE CREATED');
+      console.log(this)
    }
 
    load (player) {

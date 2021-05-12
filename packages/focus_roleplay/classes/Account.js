@@ -3,22 +3,18 @@
 mp.accounts = {}
 
 class Account { 
-   /**
-   * @param {Object} params
-   * @param {Integer} params.dbid
-   */
    constructor (params) { 
       this.id = params.id;
-      this.username = params.username;
-      this.email = params.email;
-      this.register_date = params.register_date;
+      this.Username = params.username;
+      this.Email = params.email;
+      this.Register = params.register_date;
       this.last_login = params.last_login;
-      this.ip_adress = params.ip;
+      this.Adress = params.ip;
       this.social_club = params.social;
-      this.admin = params.admin;
-      this.donator = params.donator;
-      this.coins = params.coins || 0;
-      this.warns = params.warns;
+      this.Administrator = params.admin;
+      this.Donator = params.donator;
+      this.Coins = params.coins || 0;
+      this.Warns = params.warns;
 
       mp.accounts[this.id] = this;
    }

@@ -38,6 +38,7 @@ let charactersTable = `CREATE TABLE IF NOT EXISTS characters (
   salary int(6) NOT NULL DEFAULT 0,
   bank_account varchar(24) NOT NULL DEFAULT 0,
   last_position text,
+  last_dimension int(11) NOT NULL DEFAULT 0,
   spawn_point int(2) NOT NULL DEFAULT 0,
   mask_id int(6) NOT NULL DEFAULT 0,
   job int(2) NOT NULL DEFAULT 0,

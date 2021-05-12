@@ -24,6 +24,7 @@ class Vehicle {
 		this.dirt = params.dirt || 0; 
         this.impounded = params.impounded || 0;
         this.tuning = params.tuning || 0;
+        this.insurance = params.insurance || 0;
         this.upgrades = { 
             engine: params.upgrades.engine || 0,
             brakes: params.upgrades.brakes || 0,

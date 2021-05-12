@@ -1,0 +1,14 @@
+html, body {
+   font-family: 'Roboto', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   line-height: 1.5;
+   margin: 0;
+   width: 100%;
+   height: 100vh;
+   background: transparent;
+   padding: 0;
+   position: relative;
+   overflow: hidden;
+   user-select: none;
+}

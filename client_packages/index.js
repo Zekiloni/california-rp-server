@@ -3,7 +3,7 @@
 // PLAYER CORE
 let Authentication = require('./player/authentication/authentication');
 let CharacterCreator = require('./player/creator/customization');
-let GameInterface = require('./player/PlayerHud');
+let GameInterface = require('./player/Hud');
 let PlayerCore = require('./player/Core');
 let PlayerList = require('./player/PlayerList');
 let NameTags = require('./player/NameTags');
@@ -26,6 +26,7 @@ let DamageSync = require('./DamageSync');
 // VEHICLES
 let DepartmentOfVehicles = require('./vehicles-department/DMV');
 let Vehicles = require('./Vehicles');
+let VehiclesDealerships = require('./vehicles-dealership/dealerships');
 
 // HOUSES
 let Houses = require('./houses/Houses');
