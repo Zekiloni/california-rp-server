@@ -24,8 +24,8 @@ let Streamer = require('./player/Streamer');
 let DamageSync = require('./DamageSync');
 
 // VEHICLES
-let DepartmentOfVehicles = require('./vehicles-department/DMV');
-let Vehicles = require('./Vehicles');
+let Vehicles = requre('./vehicles/Vehicles')
+let DepartmentOfVehicles = require('./vehicles-department/DMV'); 
 let VehiclesDealerships = require('./vehicles-dealership/dealerships');
 
 // HOUSES

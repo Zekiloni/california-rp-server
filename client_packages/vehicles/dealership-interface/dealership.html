@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+    </head>
+    <body>
+        <div id="dealership">
+
+            <div class="right">
+
+                <div class="vehicle-stats">
+                    <h2 class="title"> Opis vozila </h2>
+
+                    <div class="info">
+                        <h4> Broj Sedišta </h4>
+                        <ul class="bars"> 
+                            <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_occupants) }"></li>
+                        </ul>
+                    </div>
+
+                    <div class="info">
+                        <h4> Broj Sedišta </h4>
+                        <ul class="bars"> 
+                            <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_occupants) }"></li>
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                <div class="vehicle-buy">
+                    <h2 class="price"> {{ moneyFormat(vehicles[current].price) }} </h2>
+                    <button class="buy" v-on:click="buy()"> Kupi Vozilo </button>
+                </div>
+
+                <div class="preview">
+                    <i v-on:click="preview(current - 1)" class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <i v-on:click="preview(current + 1)" class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
+
+            </div>
+
+        </div>
+          
+        <!-- scripts -->
+        <script src="src/vendor/js/vue.js"></script>
+        <script>
+            let dealership = new Vue({
+                el: '#dealership',
+                data: {
+
+                    player: { 
+                        money: 0,
+                        name: ''
+                    },
+
+                    business: { 
+                        id: null,
+                        name: ''
+                    },
+
+                    current: 0,
+
+                    bars: 10,
+
+                    vehicles: [
+                        { model: 'elegy', name: 'Elegy Fast', price: 35000, 
+                            stats: { max_speed: 170, max_occupants: 2, max_braking: 1, max_acceleration: 0.3 }
+                        },
+
+                        { model: 'stainer', name: 'Staner Slow', price: 22500, 
+                            stats: { max_speed: 145, max_occupants: 4, max_braking: 1, max_acceleration: 0.3 }
+                        },
+
+                        { model: 'infernus', name: 'Infernus Fast', price: 122500, 
+                            stats: { max_speed: 215, max_occupants: 4, max_braking: 1, max_acceleration: 0.3 }
+                        }
+
+                    ]
+
+                },
+
+                created: function () {
+                    this.preview(0)
+                },
+
+                methods: { 
+ 
+                    close: function () { mp.trigger('client:vehicle.dealership'); },
+
+                    preview: function (i) { 
+                        this.current = i;
+                        if (this.current >= this.vehicles.length) { this.current = 0; }
+                        if (this.current < 0) { this.current = this.vehicles.length - 1; }
+                        
+                    },
+
+                    buy: function () { 
+
+                    },
+
+                    moneyFormat: function (i) { 
+                        let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+                        return formatter.format(i);
+                    },
+
+                    Bar: function (i, x) { 
+                        return i < x ? true : false;
+                    }
+                }
+            })
+
+
+        </script>
+    </body>     
+</html>

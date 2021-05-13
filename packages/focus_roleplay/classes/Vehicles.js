@@ -20,7 +20,7 @@ class Vehicle {
 		this.engine = params.engine || false;
 		this.dimension = params.dimension || 0;
 		this.spawned = params.spawned || false;
-		this.km = params.km || 0;
+		this.mileage = params.mileage || 0;
 		this.dirt = params.dirt || 0; 
         this.impounded = params.impounded || 0;
         this.tuning = params.tuning || 0;
@@ -74,14 +74,24 @@ class Vehicle {
         vehicle.setColorRGB(parseInt(color[0][0]), parseInt(color[0][1]), parseInt(color[0][2]), parseInt(color[1][0]), parseInt(color[1][1]), parseInt(color[1][2]));
     }
 
-	window (vehicle, index) { 
-		this.windows[index] != this.windows[index];
-		vehicle.setVariable('Windows', this.windows)
+    Fuel (vehicle, value) { 
+        this.fuel = value;
+        vehicle.setVariable('Fuel', this.fuel);
+    }
+
+    Mileage (vehicle, value) { 
+        this.mileage = value;
+        vehicle.setVariable('Mileage', this.mileage);
+    }
+
+    Dirt (vehicle, value) { 
+		this.dirt = value;
+		vehicle.setVariable('Dirt', this.dirt)
 	}
 
-	setDirt (vehicle, dirt) { 
-		this.dirt = dirt;
-		vehicle.setVariable('dirt', this.dirt)
+    Window (vehicle, index) { 
+		this.windows[index] != this.windows[index];
+		vehicle.setVariable('Windows', this.windows)
 	}
 
     tune (vehicle, components) { 

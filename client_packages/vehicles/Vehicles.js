@@ -10,7 +10,7 @@ mp.events.add({
       if (entity.type === 'vehicle') {
          if (entity.hasVariable('IndicatorRight')) entity.setIndicatorLights(0, entity.getVariable('IndicatorRight'));
          if (entity.hasVariable('IndicatorLeft')) entity.setIndicatorLights(1, entity.getVariable('IndicatorLeft'));
-         if (entity.hasVariable('Windows')) Windows(entity, entity.getVariable('Windows'))
+         if (entity.hasVariable('Windows')) Windows(entity, entity.getVariable('Windows'));
       }
    },
 
@@ -32,6 +32,14 @@ mp.events.addDataHandler({
 
    'Windows': (entity, value) => { 
       if (entity.type === 'vehicle') Windows(entity, value);
+   },
+
+   'Fuel': (entity, value) => { 
+      if (entity.type === 'vehicle') Fuel(entity, value);
+   },
+
+   'Mileage': (entity, value) => { 
+      if (entity.type === 'vehicle') Mileage(entity, value);
    }
 });
 
@@ -65,4 +73,12 @@ function Trunk (vehicle, value) {
 
 function Hood (vehicle, value) { 
    value ? vehicle.setDoorOpen(4, false, false) : vehicle.setDoorShut(4, false);
+}
+
+function Fuel (vehicle, value) { 
+   vehicle.Fuel = value;
+}
+
+function Mileage (vehicle, value) { 
+   vehicle.Mileage = value;
 }
