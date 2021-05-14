@@ -14,37 +14,46 @@
     </head>
     <body>
         <div id="dealership">
+            <div class="center">
+                <h2 class="business-name">
+                    {{ business.name }}
+                </h2>
+
+                <i v-on:click="close()" class="close fa fa-times"> </i>
+            </div>
 
             <div class="right">
+                <div class="preview">
+                    <i v-on:click="Preview(current - 1)" class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <i v-on:click="Preview(current + 1)" class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
 
                 <div class="vehicle-stats">
                     <h2 class="title"> Opis vozila </h2>
 
                     <div class="info">
-                        <h4> Broj Sedišta </h4>
+                        <h4> Ime Modela <b class="name"> {{ vehicles[current].name }} </b> </h4>
+                    </div>
+
+                    <div class="info">
+                        <h4> Broj Sedišta <b> {{ vehicles[current].stats.max_occupants }} </b> </h4>
                         <ul class="bars"> 
                             <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_occupants) }"></li>
                         </ul>
                     </div>
 
                     <div class="info">
-                        <h4> Broj Sedišta </h4>
+                        <h4> Ubrzanje <b> {{ vehicles[current].stats.max_acceleration }} </b> </h4>
                         <ul class="bars"> 
-                            <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_occupants) }"></li>
+                            <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_acceleration * 10) }"></li>
                         </ul>
                     </div>
-
-
                 </div>
 
                 <div class="vehicle-buy">
+                    <h4> cena </h4>
                     <h2 class="price"> {{ moneyFormat(vehicles[current].price) }} </h2>
-                    <button class="buy" v-on:click="buy()"> Kupi Vozilo </button>
-                </div>
-
-                <div class="preview">
-                    <i v-on:click="preview(current - 1)" class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <i v-on:click="preview(current + 1)" class="fa fa-arrow-right" aria-hidden="true"></i>
+                    <button class="buy" v-on:click="Buy()"> Kupi </button>
                 </div>
 
             </div>
@@ -65,24 +74,26 @@
 
                     business: { 
                         id: null,
-                        name: ''
+                        name: 'Pepsijev Dilersip vozila'
                     },
 
                     current: 0,
+                    vehicle: nul,
 
                     bars: 10,
 
+                    // test
                     vehicles: [
                         { model: 'elegy', name: 'Elegy Fast', price: 35000, 
-                            stats: { max_speed: 170, max_occupants: 2, max_braking: 1, max_acceleration: 0.3 }
+                            stats: { max_speed: 170, max_occupants: 2, max_braking: 3, max_acceleration: 0.3 }
                         },
 
                         { model: 'stainer', name: 'Staner Slow', price: 22500, 
-                            stats: { max_speed: 145, max_occupants: 4, max_braking: 1, max_acceleration: 0.3 }
+                            stats: { max_speed: 145, max_occupants: 4, max_braking: 1, max_acceleration: 0.1 }
                         },
 
                         { model: 'infernus', name: 'Infernus Fast', price: 122500, 
-                            stats: { max_speed: 215, max_occupants: 4, max_braking: 1, max_acceleration: 0.3 }
+                            stats: { max_speed: 215, max_occupants: 4, max_braking: 2, max_acceleration: 0.2 }
                         }
 
                     ]
@@ -97,15 +108,24 @@
  
                     close: function () { mp.trigger('client:vehicle.dealership'); },
 
-                    preview: function (i) { 
+                    Preview: function (i) { 
                         this.current = i;
                         if (this.current >= this.vehicles.length) { this.current = 0; }
                         if (this.current < 0) { this.current = this.vehicles.length - 1; }
                         
                     },
 
-                    buy: function () { 
+                    Stats: function (model) { 
+                        let info = await mp.events.callRemoteProc('client:vehicle.info', model);
+                        this.vehicle = { 
+                            name: info.name, 
 
+                        }
+                    },
+
+
+                    Buy: function () { 
+                        let vehicle = this.vehicles[this.current];
                     },
 
                     moneyFormat: function (i) { 

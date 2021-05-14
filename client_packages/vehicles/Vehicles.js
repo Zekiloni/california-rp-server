@@ -4,6 +4,13 @@ const blockedClasses = [13, 14, 15, 16, 21];
 
 mp.game.controls.useDefaultVehicleEntering = true;
 
+const natives = { 
+   MAX_PASSENGERS: '0x2AD93716F184EDA4',
+   MAX_SPEED: '0xF417C2502FFFED43',
+   MAX_BRAKING: '0xDC53FD41B4ED944C',
+   MAX_TRACTION: '0x539DE94D44FDFD0D',
+   MAX_ACCELERATION: '0x8C044C5C84505B6A'
+}
 
 mp.events.add({
    'entityStreamIn': (entity) => {
@@ -41,6 +48,15 @@ mp.events.addDataHandler({
    'Mileage': (entity, value) => { 
       if (entity.type === 'vehicle') Mileage(entity, value);
    }
+});
+
+mp.events.addProc('client:vehicle.info', (model) => {
+      model = mp.game.joaat(model)
+      let name = mp.game.ui.getLabelText(mp.game.vehicle.getDisplayNameFromVehicleModel(model)),
+         passengers = mp.game.invoke(natives.MAX_PASSENGERS, model), speed = mp.game.invoke(natives.MAX_SPEED, model),
+         braking = mp.game.invoke(natives.MAX_BRAKING, model), traction = mp.game.invoke(natives.MAX_TRACTION, model),
+         acceleration = mp.game.invoke(natives.MAX_ACCELERATION, model);
+   return { name: name, max_passengers: passengers, max_speed: speed, braking: braking, traction: traction, acceleration: acceleration }
 });
 
 

@@ -24,7 +24,7 @@ let Streamer = require('./player/Streamer');
 let DamageSync = require('./DamageSync');
 
 // VEHICLES
-let Vehicles = requre('./vehicles/Vehicles')
+let Vehicles = require('./vehicles/Vehicles')
 let DepartmentOfVehicles = require('./vehicles-department/DMV'); 
 let VehiclesDealerships = require('./vehicles-dealership/dealerships');
 
@@ -44,6 +44,7 @@ let Police = require('./factions/police/Police');
 let Jobs = require('./jobs/Jobs');
 let Jetsam = require('./jobs/Jetsam');
 let Transit = require('./jobs/Transit');
+let Sanitation = require('./jobs/Sanitation');
 // let Fishing = require('./jobs/Fishing');
 
 // DIAMOND CASINO
