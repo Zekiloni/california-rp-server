@@ -69,6 +69,11 @@ class Character {
       player.name = this.first_name + ' ' + this.last_name;
    }
 
+   Duty (player) { 
+      this.working.duty = !this.working.duty;
+      player.setVariable('Duty', this.working.duty);
+   }
+
    spawn (player) { 
       switch (this.spawn_point) { 
          case 0: player.position = mp.settings.defaultSpawn; break;

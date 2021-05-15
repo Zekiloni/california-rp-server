@@ -1,5 +1,5 @@
 
-const player = mp.players.local;
+const Player = mp.players.local;
 
 const InteractionObjects = [
    mp.game.joaat("prop_rub_binbag_sd_01"),
@@ -59,45 +59,35 @@ const InteractionObjects = [
 
 
 mp.events.add('click', (x, y, upOrDown, leftOrRight, relativeX, relativeY, worldPosition, hitEntity) => {
-   // if (!selectorActive || upOrDown != 'down') return;
+   if (!Player.logged || !Player.spawned || upOrDown != 'down') return;
 
    let result = mp.game.graphics.screen2dToWorld3d(new mp.Vector3(x, y, 0));
-   let handle = mp.game.object.getClosestObjectOfType(result.x, result.y, result.z, 3, 506770882, false, true, true);
+   let position = Player.position;
+   let distance = mp.game.gameplay.getDistanceBetweenCoords(position.x, position.y, position.z, result.x, result.y, result.z, true);
+   let dist = new mp.Vector3(position.x, position.y, position.z).subtract(new mp.Vector3(result.x, result.y, result.z)).length();
+   mp.gui.chat.push('Dist MATH is ' + JSON.stringify(dist))
+   mp.gui.chat.push('getDistanceBetweenCoords is ' + JSON.stringify(distance))
+   mp.gui.chat.push('Player pos is ' + JSON.stringify(position))
+   mp.gui.chat.push('Click pos is ' + JSON.stringify(result))
 
-   // mp.gui.chat.push(`Found [1] `);
-   // if (handle) { 
-   //    mp.gui.chat.push(`Found [2] ` + JSON.stringify(handle));
-   //    let object = mp.objects.atHandle(handle);
-   //    mp.gui.chat.push(`Found Object` + JSON.stringify(object));
-   // }
+   if (distance > 5.25) return mp.gui.chat.push('Too far away');
 
    for (let i in InteractionObjects) {
-      // dodati proveru za posao // da li radi
       let model = InteractionObjects[i];
       let object = mp.game.object.getClosestObjectOfType(result.x, result.y, result.z, 3, model, false, true, true);
       if (object && model) {
-         // nastavi dalje
+         mp.gui.chat.push('Trash Found');
+         Pickup(model)
          break;
       }
       else {
-         // nije pronadjen objekat
+         mp.gui.chat.push('Nothing Found');
       }
    }
- });
+});
 
-function getCameraHitCoord () 
-{
-   const camera = mp.cameras.new("gameplay"); // gets the current gameplay camera
-
-	let position = camera.getCoord();
-	let direction = camera.getDirection();
-	let farAway = new mp.Vector3((direction.x * 150) + position.x, (direction.y * 150) + position.y, (direction.z * 150) + position.z);
-	
-	let hitData = mp.raycasting.testPointToPoint(position, farAway, player);
-	
-	if(hitData != undefined)
-	{
-		return hitData;
-	}
-	return null;
+function Pickup (model) { 
+   mp.gui.chat.push('Picked up ' + JSON.stringify(model));
 }
+
+
