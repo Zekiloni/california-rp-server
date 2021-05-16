@@ -1,5 +1,7 @@
 
-const Player = mp.players.local;
+const player = mp.players.local;
+
+let picked = false;
 
 const InteractionObjects = [
    mp.game.joaat("prop_rub_binbag_sd_01"),
@@ -57,31 +59,22 @@ const InteractionObjects = [
 ];
 
 
-
-mp.events.add('click', (x, y, upOrDown, leftOrRight, relativeX, relativeY, worldPosition, hitEntity) => {
-   if (!Player.logged || !Player.spawned || upOrDown != 'down') return;
-
-   let result = mp.game.graphics.screen2dToWorld3d(new mp.Vector3(x, y, 0));
-   let position = Player.position;
-   let distance = mp.game.gameplay.getDistanceBetweenCoords(position.x, position.y, position.z, result.x, result.y, result.z, true);
-   let dist = new mp.Vector3(position.x, position.y, position.z).subtract(new mp.Vector3(result.x, result.y, result.z)).length();
-   mp.gui.chat.push('Dist MATH is ' + JSON.stringify(dist))
-   mp.gui.chat.push('getDistanceBetweenCoords is ' + JSON.stringify(distance))
-   mp.gui.chat.push('Player pos is ' + JSON.stringify(position))
-   mp.gui.chat.push('Click pos is ' + JSON.stringify(result))
-
-   if (distance > 5.25) return mp.gui.chat.push('Too far away');
-
-   for (let i in InteractionObjects) {
-      let model = InteractionObjects[i];
-      let object = mp.game.object.getClosestObjectOfType(result.x, result.y, result.z, 3, model, false, true, true);
-      if (object && model) {
-         mp.gui.chat.push('Trash Found');
-         Pickup(model)
-         break;
-      }
-      else {
-         mp.gui.chat.push('Nothing Found');
+mp.keys.bind(0x59, false, function() {
+   if (player.logged && player.spawned) { 
+      if (player.vehicle || player.cuffed || mp.players.local.isTypingInTextChat) return;
+      
+      let position = player.position;
+      for (let i in InteractionObjects) {
+         let model = InteractionObjects[i];
+         let object = mp.game.object.getClosestObjectOfType(position.x, position.y, position.z, 1, model, false, true, true);
+         if (object && model) {
+            mp.gui.chat.push('Trash Found');
+            Pickup(model)
+            break;
+         }
+         else {
+            mp.gui.chat.push('Nothing Found');
+         }
       }
    }
 });
