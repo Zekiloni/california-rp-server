@@ -22,14 +22,11 @@ mp.events.add({
       }
   },
 
-  'client:inventory.process.item': (action, item, target = -1, quantity = 1) => { 
-      switch(action) { 
-         case 'drop': mp.events.callRemote('server:item.drop', item, quantity); break;
-         case 'use': mp.events.callRemote('server:item.use', item); break;
-         case 'put': mp.events.callRemote('server:item.weapon.put', item); break;
+  'client:inventory.item.drop': Drop,
 
-      }
-  },
+  'server:inventory.weapon.put': Put,
+
+  'client:inventory.item.use': Use,
 
   'client:inventory.process.clothing': (index) => { 
       mp.events.callRemote('server:item.clothing', index);
@@ -64,6 +61,56 @@ mp.keys.bind(0x59, false, function() {
       mp.events.callRemote('server:item.pickup');
    }
 });
+
+
+function Use (item) { 
+   mp.events.callRemote('server:item.use', item);
+}
+
+function Put (item) { 
+   mp.events.callRemote('server:item.weapon.put', item);
+}
+
+async function Drop (item, hash, quantity) { 
+
+   let { position } = mp.players.local;
+   let heading = mp.players.local.getHeading();
+   let rotation = mp.players.local.getRotation(2);
+
+   let newPos = new mp.Vector3(
+     position.x + Math.cos(((heading + 90) * Math.PI) / 180) * 0.6,
+     position.y + Math.sin(((heading + 90) * Math.PI) / 180) * 0.6,
+     position.z,
+   );
+
+   let object = mp.objects.new(
+     mp.game.joaat(hash),
+     new mp.Vector3(newPos.x, newPos.y, newPos.z),
+     {
+       alpha: 255,
+       rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z),
+       dimension: mp.players.local.dimension,
+     },
+   );
+
+   while (object.handle === 0) {
+     await mp.game.waitAsync(0);
+   }
+
+   object.placeOnGroundProperly();
+
+   let fixedPosition = {
+     position: object.getCoords(false),
+     rotation: object.getRotation(2),
+   };
+
+   object.destroy();
+
+   mp.game.streaming.requestAnimDict('random@domestic');
+   player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
+
+   mp.events.callRemote('server:item.drop', item, quantity, JSON.stringify(fixedPosition));
+}
 
 
 

@@ -72,9 +72,7 @@ mp.keys.bind(0x59, false, function() {
             Pickup(model)
             break;
          }
-         else {
-            mp.gui.chat.push('Nothing Found');
-         }
+         else return;
       }
    }
 });

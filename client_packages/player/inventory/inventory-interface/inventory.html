@@ -65,14 +65,14 @@
                     },
 
                     weaponUse: function (i, w) { 
-                        mp.trigger('client:inventory.weapon.select', i, w)
+                        
                     },
 
                     weaponBack: function (weapon) { 
                         weapon = this.player.weapons.find(element => element === weapon);
                         let index = this.player.weapons.indexOf(weapon);          
                         this.player.weapons.splice(index, 1);
-                        mp.trigger('client:inventory.process.item', 'put', weapon.id)
+                        mp.trigger('server:inventory.weapon.put', weapon.id)
                     },
 
                     clothing: function (index) {
@@ -92,14 +92,14 @@
                         item = this.player.items.find(element => element === item);
                         let index = this.player.items.indexOf(item);                        
                         this.player.items.splice(index, 1);
-                        mp.trigger('client:inventory.process.item', 'use', item.id)
+                        mp.trigger('client:inventory.item.use', item.id)
                     },
 
                     drop: function (item) { 
                         item = this.player.items.find(element => element === item);
                         let index = this.player.items.indexOf(item);                        
                         this.player.items.splice(index, 1);
-                        mp.trigger('client:inventory.process.item', 'drop', item.id)
+                        mp.trigger('client:inventory.item.drop', item.id, item.hash)
                     },
 
                     itemImage: (hash) => { 

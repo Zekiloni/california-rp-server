@@ -17,7 +17,6 @@ module.exports = { ItemType, ItemEntities }
 mp.ItemRegistry = { 
 
 
-
    'Water Battle': { 
       name: 'Water Battle',
       hash: 'prop_ld_flow_bottle',
@@ -97,6 +96,10 @@ new Item ('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, functi
    // nahrani ga
 })
 
+
+new Item ('Medkit', ItemType.Misc, 'prop_ld_health_pack', 0, false, function (player) { 
+   player.health += 25;
+})
 
 // MASKA
 

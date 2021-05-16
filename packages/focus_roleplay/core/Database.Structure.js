@@ -98,6 +98,7 @@ let inventoryTable = `CREATE TABLE IF NOT EXISTS items (
   owner int(11) NOT NULL DEFAULT -1,
   dimension int(11) NOT NULL DEFAULT 0,
   position text DEFAULT NULL,
+  rotation text DEFAULT NULL,
   extra text DEFAULT NULL,
   PRIMARY KEY(id))`;
 

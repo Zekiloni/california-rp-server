@@ -67,8 +67,6 @@ class Saving {
                      if (err) return core.terminal(1, 'Saving Acccount Error ' + err);
                      if (exit == true) { 
                         delete mp.characters[character.id];
-                        console.log('CHARACTERS')
-                        console.log(mp.characters)
                      }
                });
             }

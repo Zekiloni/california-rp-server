@@ -45,6 +45,7 @@ class Character {
 
       this.animation = p.animation || null;
 
+      // this.timers
       this.mute = p.mute || 0;
 
       this.masked = false;

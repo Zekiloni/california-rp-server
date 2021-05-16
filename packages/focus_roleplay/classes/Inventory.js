@@ -10,6 +10,7 @@ class Item {
       this.owner = data.owner || -1;
       this.quantity = data.quantity;
       this.position = data.position;
+      this.rotation = data.rotation;
       this.dimension = data.dimension || 0;
       this.object = data.object || null;
       this.colshape = null;
@@ -21,9 +22,9 @@ class Item {
 
    refresh () { 
       if (this.entity == -1) { 
-         this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.93),
+         this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z),
          {
-            rotation: new mp.Vector3(-90, 0, 0),
+            rotation: new mp.Vector3(this.rotation.x, this.rotation.y, this.rotation.z),
             alpha: 255,
             dimension: this.dimension
          });
@@ -107,9 +108,14 @@ class Inventory {
             }
          },
 
-         'server:item.drop': (player, itemID, quantity) => { 
+         'server:item.drop': (player, id, quantity = 1, place) => { 
+            place = JSON.parse(place)
+            
+            const position = place.position,
+                  rotation = place.rotation;
+            
             let nearItem = this.near(player),
-               item = mp.items[itemID];
+               item = mp.items[id];
             
 
             if (nearItem) {
@@ -121,10 +127,9 @@ class Inventory {
             else {
                item.entity = ItemEntities.Ground;
                item.owner = -1;
-               item.position = player.position;
+               item.position = position;
+               item.rotation = rotation;
                item.refresh();
-
-               //this.create(player, quantity, name);              
             }
          },
 
@@ -211,7 +216,7 @@ class Inventory {
          results.forEach(result => {
             let item = new Item(result.id, { 
                item: result.item, entity: result.entity, owner: result.owner, quantity: result.quantity, 
-               position: JSON.parse(result.position), dimension: result.dimension, extra: result.extra, ammo: result.ammo
+               position: JSON.parse(result.position), rotation: JSON.parse(result.rotation), dimension: result.dimension, extra: result.extra, ammo: result.ammo
             });
             item.refresh();
             counter ++;
@@ -223,15 +228,19 @@ class Inventory {
    create = (player, quantity, name, entity = -1, owner = -1) => { 
       let found = mp.ItemRegistry[name];
       if (found) { 
-         db.query("INSERT INTO `items` (item, quantity, entity, owner, position, dimension) VALUES (?, ?, ?, ?, ?, ?)", 
-            [found.name, quantity, entity, owner, JSON.stringify(player.position), player.dimension], function(err, result, fields) {
-
+         db.query("INSERT INTO `items` (item, quantity, entity, owner, position, rotation, dimension) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+            [found.name, quantity, entity, owner, JSON.stringify(player.position), JSON.stringify(player.rotation), player.dimension], function(err, result, fields) {
             if (err) return core.terminal(1, 'Creating Item ' + err);
-            let id = result.insertId;
-            let i = new Item(id, { 
-               item: found.name, entity: entity, owner: owner, position: player.position, dimension: player.dimension, quantity: quantity
-            })
-            i.refresh();
+            try { 
+               let id = result.insertId;
+               let i = new Item(id, { 
+                  item: found.name, entity: entity, owner: owner, position: player.position, dimension: player.dimension, quantity: quantity
+               })
+               i.refresh();
+            } catch (e) { 
+               console.log(e)
+            }
+ 
          })
       }
    }
@@ -271,8 +280,8 @@ class Inventory {
 
    update = (item) => {
       if (item.quantity > 0) { 
-         db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, dimension = ?, ammo = ? WHERE id = ?", 
-            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), item.dimension, item.ammo, item.id], function(err, result, fields) {
+         db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, rotation = ?, dimension = ?, ammo = ? WHERE id = ?", 
+            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), JSON.stringify(item.rotation), item.dimension, item.ammo, item.id], function(err, result, fields) {
             if (err) return core.terminal(1, 'Update Item ' + err);
          });
       } else { 

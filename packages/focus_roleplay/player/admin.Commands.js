@@ -94,8 +94,9 @@ mp.events.addCommand({
       } else { 
          player.notification(MSG_ITEM_DOESNT_EXIST, NOTIFY_ERROR, 4);
       }
-         
    },
+
+
    
    'destroyitem': (player, text) => {
       if(player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
