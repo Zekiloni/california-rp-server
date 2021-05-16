@@ -57,7 +57,7 @@ const InteractionObjects = [
    mp.game.joaat("p_binbag_01_s"),
    mp.game.joaat('prop_forsale_lrg_04')
 ];
-
+  
 
 mp.keys.bind(0x59, false, function() {
    if (player.logged && player.spawned) { 
