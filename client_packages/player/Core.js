@@ -29,7 +29,7 @@ mp.events.addDataHandler({
 
    'job': (entity, newValue, oldValue) => {
       if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
-         player.job = newValue;
+         player.Job = newValue;
       }
    },
 

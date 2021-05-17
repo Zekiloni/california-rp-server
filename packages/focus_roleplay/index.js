@@ -115,7 +115,7 @@ var color = [[033, 343, 535], [3434, 577, 565]]
 
 mp.events.addCommand("tp", (player) => {
     mp.events.call('server:animals.spawn', player, 15);
-    player.position = new mp.Vector3(858.7689, -2926.11914, 5.2142);
+    player.position = new mp.Vector3(2706.490, 2777.513, 37.878);
 });
 
 
@@ -165,7 +165,7 @@ mp.events.addCommand("prop", (player, full, comp, draw, text) => {
 });
 
 
-mp.events.addCommand("dzok", (player, fullText, dict, anim) => { 
+mp.events.addCommand("dzok", (player, fullText) => { 
     player.playAnimation(dict, anim, 5, 0)
 })
 
@@ -173,6 +173,11 @@ let dealerships = require('./configs/Dealerships')
 
 mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => { 
     player.call('client:vehicle.dealership', [true, mp.dealerships.sedans])
+})
+
+mp.events.addCommand("scenario", (player, fullText, scenario) => { 
+   player.playScenario(scenario);
+
 })
 
 

@@ -74,6 +74,8 @@ mp.events.add({
         mp.events.callRemote('server:player.mood', mood);
     },
 
+    'client:player.scenario': Scenario,
+
     'client:player.walking_style': (style) => {
         mp.events.callRemote('server:player.walking_style', style);
         setMovementClipset(player, style);
@@ -113,5 +115,10 @@ function ragdoll (entity, status) {
     } else { 
         entity.resetRagdollTimer();
     }
+}
+
+function Scenario (name, delay, enterAnim, time) { 
+   player.taskStartScenarioInPlace(name, delay, enterAnim);
+   if (time) setTimeout(() => { player.clearTasks(); }, time * 1000);
 }
  

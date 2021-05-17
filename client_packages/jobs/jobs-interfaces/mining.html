@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/mining.css" />
+
+</head>
+<body>
+   <div id="mining" v-if="toggle">
+      <div id="numbers"> </div>
+      <div class="count" id="count" :class="{ 'disabled': clicked }"> <img src="src/images/left-mouse.png"/> </div>
+      <h4 class="hint"> Pritiskajte <b>Levi Klik</b> kako bi ste kopali. </h4>
+   </div>
+      
+   <!-- scripts -->
+   <script src="src/vendor/js/vue.js"></script>
+   <script>
+
+      let mining = new Vue({
+         el: '#mining',
+         data: {      
+            toggle: false,
+            clicked: false,   
+            numbers: [],           
+            count: 0
+         },
+
+         mounted() {
+            window.addEventListener('click', e => {
+               if (e.which === 1) this.Count();
+            });
+         },
+
+         methods: { 
+            Count: async function () { 
+
+               if (this.clicked) return;
+
+               this.count ++;
+
+               let element = document.getElementById('count');
+               let numbers = document.getElementById('numbers');
+
+               let minLeft = element.offsetLeft - 10, maxLeft = element.offsetLeft + 60;
+               let bottom = element.offsetTop + 75;
+
+               let next = this.count;
+               this.numbers[next] = document.createElement('div');
+               this.numbers[next].innerHTML = next;
+               this.numbers[next].setAttribute('class', 'number');
+               numbers.appendChild(this.numbers[next]);
+               this.numbers[next].style.left = (Math.random() * (maxLeft - minLeft) + minLeft) + 'px';
+               this.numbers[next].style.bottom = bottom + 'px';
+               this.numbers[next].timer = setTimeout(() => { this.numbers[next].remove(); }, 3000);
+
+               if (this.clicked == true) return;
+               this.clicked = true;
+               let scale = element.style.transform;
+               element.style.transform = 'scale(1.5)';
+               setTimeout(() => { element.style.transform = 'scale(1.0)'; }, 450);
+
+               if (this.count >= 6) { 
+                  mp.trigger('client:player.miner.next');
+                  this.clicked = false, this.count = 0;
+                  return;
+               }
+
+               this.clicked = true;
+
+               mp.trigger('client:player.miner:mine');
+            }
+         }
+      })
+
+
+
+   </script>
+</body>     
+</html>

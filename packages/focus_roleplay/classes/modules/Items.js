@@ -93,7 +93,7 @@ class Item {
 // HRANA 
 
 new Item ('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, function (player) { 
-   // nahrani ga
+   player.call('client:player.scenario', [])
 })
 
 

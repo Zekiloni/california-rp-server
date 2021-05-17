@@ -89,7 +89,7 @@ mp.events.add({
 	
 
 		if (playerWeapon != mp.game.joaat('weapon_unarmed')) { 
-			if (player.weapon == 0) return;
+			if (player.weapon == 0 || player.isActiveInScenario()) return;
 			let ammoCount = getAmmoCount(playerWeapon);
 			let weapon = getWeaponString();
 			playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = ${ammoCount}, hud.weapon.hash = \"${weapon}\";`); 

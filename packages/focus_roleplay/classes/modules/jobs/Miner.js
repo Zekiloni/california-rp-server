@@ -1,73 +1,39 @@
-const MiningOre = { 
-   Gold: 30, Srebro: 20, Aluminium: 9, Coal: 3, Stone: 2
-}
 
-const MiningPoints = [
-   new mp.Vector3(0, 0, 0),
-   new mp.Vector3(0, 0, 0)
-];
 
-const OreProcessingPoints = [
-   new mp.Vector3(0, 0, 0),
-   new mp.Vector3(0, 0, 0)
+
+
+const MiningSpots = [
+   [ 2955.808, 2769.739, 39.228 ], [ 2965.794, 2772.616, 39.404 ],
+   [ 2968.642, 2782.328, 39.037 ], [ 2981.407, 2780.817, 39.590 ],
+   [ 2977.299, 2791.166, 40.584 ], [ 2977.871, 2797.864, 42.583 ],
+   [ 2970.321, 2800.066, 41.402 ], [ 2957.465, 2774.163, 39.964 ],
+   [ 2938.866, 2772.893, 39.267 ], [ 2938.799, 2768.156, 39.533 ],
+   [ 2934.525, 2783.241, 39.366 ], [ 2928.315, 2792.685, 40.494 ],
+   [ 2919.107, 2798.439, 40.998 ], [ 2936.635, 2812.305, 42.972 ],
+   [ 2945.963, 2818.271, 42.655 ]
 ]
 
-mp.events.add({
-   'server:player.job.mining': (player, stage) => {
-      let invWeight = mp.item.weight(player.character), // Napraviti proveru da li igrač može da ponese sa sobom te rude, ako ima previše stvari sa sobom zabraniti onemogućiti? Možda?
-          oreWeight = Math.floor(1, 3), // grams
-          oreType = -1,
-          oreChance =  0,
-          character = player.getCharacter();
 
-         switch (stage)
-         {
-            case 1:
-               oreChance = Math.floor(0, 100);
-               oreType = MiningOre.Stone;
 
-               switch (oreChance)
-               {
-                  case oreChance >= 50:
-                     oreType = MiningOre.Coal;
-                     break;
-                  case oreChance > 60:
-                     oreType = MiningOre.Aluminium;
-                     break;
-                  case oreChance > 75:
-                     oreType = MiningOre.Silver
-                     break;
-                  case oreChance > 95:
-                     oreType = MiningOre.Gold;
-                     break;
+class Miner { 
+   constructor () { 
+      mp.events.add({
+         '': () => { 
 
-               }
-            break;
-         case 2:
-               for (let i in OreProcessingPoints) {
-                  if (player.dist(OreProcessingPoints[i]) < 3) {
-
-                     break;
-                  }
-               }
-            break;
          }
-         
-
-         player.notification(`Uspešno ste iskopali ${oreWeight} grama rude, odnesite je do mašine za preradu`, NOTIFY_SUCCSESS, 4);
-      
+      })
    }
-});
 
-class Miner {
-   start (player) {
-      for (let i in MiningPoints) {
-         let spot = MiningPoints[i];
-         if (player.dist(spot) <= 5) {
-            // moze
-            player.call('client:player.job.mining', 1);
-         }
-      }
+   start (player) { 
+      console.log('START 2');
+      player.call('client:player.miner.start', [MiningSpots]);
    }
+
+   
 }
+
+
+let miner = new Miner();
+module.exports = miner;
+
 

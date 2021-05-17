@@ -47,12 +47,12 @@ mp.events.add({
       max = route.length - 1;
       current = 0;
       route[current].visible();
-      browser = mp.browsers.new('package://jobs/transit-interface/transit.html');
+      browser = mp.browsers.new('package://jobs/jobs-interfaces/transit.html');
       browser.execute('transit.toggle = true, transit.stations = ' + JSON.stringify(stations) + ';');
    },
 
    'playerEnterCheckpoint': (checkpoint) => {
-      if (player.job == 3 && route.length > 0) { 
+      if (player.Job == 3 && route.length > 0) { 
          mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 1')
          let vehicle = player.vehicle;
          if (vehicle && vehicle.getClass() == 17 && checkpoint.station >= 0) { 
@@ -75,7 +75,7 @@ mp.events.add({
    },
 
    'playerExitCheckpoint': (checkpoint) => {
-      if (player.job == 3 && player.vehicle && player.vehicle.getClass() == 17 && checkpoint.station >= 0) { 
+      if (player.Job == 3 && player.vehicle && player.vehicle.getClass() == 17 && checkpoint.station >= 0) { 
          if (player.stopped) { 
             wrong = true;
             player.stopped = false;
@@ -86,7 +86,7 @@ mp.events.add({
 
 
    // 'playerLeaveVehicle': (vehicle, seat) => {
-   //    if (player.job == 3 && checkpoint.station) { 
+   //    if (player.Job == 3 && checkpoint.station) { 
    //       if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
    //          browser.execute('transit.toggle = false'); 
    //          cancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
@@ -95,7 +95,7 @@ mp.events.add({
    // },
 
    // 'playerEnterVehicle': (vehicle, seat) => {
-   //    if (player.job == 3 && checkpoint.station) { 
+   //    if (player.Job == 3 && checkpoint.station) { 
    //       if (vehicle.getClass() == 17) { 
    //          browser.execute('transit.toggle = true'); 
    //          clearTimeout(cancel)

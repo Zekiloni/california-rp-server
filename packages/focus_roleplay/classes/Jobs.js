@@ -1,29 +1,41 @@
 
 
-let JetsamTerminal = require('./modules/jobs/Jetsam');
+let Terminal = require('./modules/jobs/Jetsam');
 let Transit = require('./modules/jobs/Transit');
 let Miner = require('./modules/jobs/Miner');
 
 
 mp.jobs = { 
    1: { 
-      id: 1, name: 'Jetsam Terminal',
+      id: 1,
+      name: 'Jetsam Terminal',
       description: 'Sedište San Andreas brodske kompanije Jetsam, međunarodna izvozna kompanija.' , 
-      max_workers: 8, point: new mp.Vector3(816.988, -2977.546, 6.0206), blip: 569, sprite: 77,
-      job: (player, args) => { JetsamTerminal.start(player, args); }
+      max_workers: 8,
+      point: [816.988, -2977.546, 6.020],
+      blip: 569,
+      sprite: 77,
+      job: (player, args) => { Terminal.start(player, args); }
    },
 
    2: {
-      id: 2, name: 'Miner',
+      id: 2,
+      name: 'Los Santos Mine',
       description: 'San Andreas ',
-      max_workers: 24, point: new mp.Vector3(816.988, -7977, 1), blip: 650, sprite: 11,
-      job: (player, args) => { Miner.start(player, args); }
+      max_workers: 24,
+      point: [2706.490, 2777.513, 37.878],
+      blip: 527,
+      sprite: 36,
+      job: (player, args) => { Miner.start(player); console.log('START 1');   }
    },
 
    3: {
-      id: 3, name: 'Los Santos Transit',
+      id: 3,
+      name: 'Los Santos Transit',
       description: 'Los Santos Transit je mreža transportnih vlasti u Los Santosu',
-      max_workers: 32, point: new mp.Vector3(0, 0, 0), blip: 513, sprite: 76,
+      max_workers: 32,
+      point: [0, 0, 0],
+      blip: 513,
+      sprite: 76,
       job: (player, args) => { Transit.start(player, args); }
    }
 }
@@ -57,10 +69,11 @@ class Jobs {
          let job = mp.jobs[i];
 
          if (job.point) { 
+            let position = new mp.Vector3(job.point[0], job.point[1], job.point[2]);
             job.blip = mp.blips.new(job.blip, job.point, { name: job.name, color: job.sprite, shortRange: true });
-            job.colshape = mp.colshapes.newRectangle(job.point.x, job.point.y, 2, 2, 0);
+            job.colshape = mp.colshapes.newRectangle(job.point[0], job.point[1], 2, 2, 0);
             job.colshape.job = i;
-            job.label = mp.labels.new(job.name + '~n~~y~' + '/job take', job.point, { los: true, font: 0, drawDistance: 4 });
+            job.label = mp.labels.new(job.name + '~n~~y~' + '/job take', position, { los: true, font: 0, drawDistance: 4 });
          }
       }
    }

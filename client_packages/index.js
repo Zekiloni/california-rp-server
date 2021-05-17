@@ -45,7 +45,7 @@ let Jobs = require('./jobs/Jobs');
 let Jetsam = require('./jobs/Jetsam');
 let Transit = require('./jobs/Transit');
 let Sanitation = require('./jobs/Sanitation');
-// let Fishing = require('./jobs/Fishing');
+let Mining = require('./jobs/Miner');
 
 // DIAMOND CASINO
 // let Roulette = require('./casino/Roulette');
