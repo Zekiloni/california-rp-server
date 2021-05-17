@@ -56,6 +56,8 @@ class Character {
       this.casinoSlot = -1;
       this.casinoRoulette = -1;
 
+      this.attachments = [];
+
       this.tog ={
          hud: false,
          ooc: false,
@@ -184,6 +186,15 @@ class Character {
       player.setVariable('cuffed', this.cuffed);
    }
 
+   attachment = { 
+      new: (player, slot, model, bone, offset, rotation) => { 
+         let object = { slot: slot, model: model, bone: bone, offset: offset, rotation: rotation }; 
+         this.attachments.push(object);
+         console.log(this.attachments);
+         player.setVariable('Attachments', this.attachments);
+      }
+   }
+
  
 }
 
@@ -269,5 +280,7 @@ class Clothing  {
       console.log(mp.characters[player.character].clothing)
    }
 }
+
+
 
 module.exports = { Character, Clothing, Appearance };

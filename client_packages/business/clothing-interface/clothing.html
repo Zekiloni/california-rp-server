@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+</head>
+<body>
+   <div id="clothing">
+      <div class="right">
+
+         <ul class="navigation">
+            <li v-on:click="Page('home')" :class="{ 'active' : isActive('home') }"> <i class="fa fa-cart-plus"> </i> </li>
+            <li v-on:click="Page('torso')" :class="{ 'active' : isActive('torso') }"> <i class="fas fa-user-tie"></i> </li>
+            <li v-on:click="Page('shirts')" :class="{ 'active' : isActive('shirts') }"> <i class="fas fa-tshirt"></i> </li>
+            <li v-on:click="Page('undershirts')" :class="{ 'active' : isActive('undershirts') }"> <i class="fas fa-tshirt"></i> </li>
+            <li v-on:click="Page('legs')" :class="{ 'active' : isActive('legs') }"> <i class="fas fa-walking"></i> </li>
+            <li v-on:click="Page('shoes')" :class="{ 'active' : isActive('shoes') }"> <i class="fas fa-shoe-prints"></i> </li>
+
+            <li v-on:click="Page('watches')" :class="{ 'active' : isActive('watches') }"> <i class="fas fa-clock"></i> </li>
+            <li v-on:click="Page('glasses')" :class="{ 'active' : isActive('glasses') }"> <i class="fas fa-glasses"></i> </li>
+            <li v-on:click="Page('ears')" :class="{ 'active' : isActive('ears') }"> <i class="fa fa-deaf"></i> </li>
+            <li v-on:click="Page('bracelets')" :class="{ 'active' : isActive('bracelets') }"> <i class="fas fa-ring"></i> </li>
+            <li v-on:click="Page('hats')" :class="{ 'active' : isActive('hats') }"> <i class="fab fa-redhat"></i> </li>
+
+
+
+         </ul>
+
+
+      </div>
+   </div>
+      
+   <!-- scripts -->
+   <script src="src/vendor/js/vue.js"></script>
+   <script>
+
+      let clothing = new Vue({
+         el: '#clothing',
+         data: {      
+            page: 'home',
+
+            player: { 
+               money: 0,
+               clothing: [
+                  mask = [0, 0],
+                  torso = [0, 0],
+                  undershirt = [0, 0],
+                  shirt = [0, 0],
+                  legs = [0, 0],
+                  shoes = [0, 0],
+                  bags = [0, 0],
+                  armour = [0, 0],
+               ],
+
+               accessories: { 
+                  hat: [255, 0], glasses: [255, 0], ears: [255, 0], watch: [255, 0], bracelet: [255, 0]
+               }
+            },
+
+            clothings: {
+               'torso': 0, 'shirts': 0, 'undershirts': 0, 'legs': 0, 'shoes': 0,
+               'watches': 0, 'glasses': 0, 'ears': 0, 'bracelets': 0, 'hats': 0
+            },
+
+
+            cart: [],
+           
+            business: {
+               id: 0,
+               name: '',
+            }
+         },
+
+         methods: { 
+
+            Preview: function (x, i) { 
+
+            },
+
+            Page: function (i) { this.page = i; },
+
+            isActive: function (i) { return this.page == i ? true : false; }
+        
+         }
+      })
+   </script>
+</body>     
+</html>
