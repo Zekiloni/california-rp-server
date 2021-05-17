@@ -3,13 +3,14 @@
 let Terminal = require('./modules/jobs/Jetsam');
 let Transit = require('./modules/jobs/Transit');
 let Miner = require('./modules/jobs/Miner');
+let Food;
 
 
 mp.jobs = { 
    1: { 
       id: 1,
       name: 'Jetsam Terminal',
-      description: 'Sedište San Andreas brodske kompanije Jetsam, međunarodna izvozna kompanija.' , 
+      description: 'Sedište San Andreas brodske kompanije Jetsam, međunarodna izvozna kompanija. Rad u luci sa liftom za kontenjere i transfer kontenjera.', 
       max_workers: 8,
       point: [816.988, -2977.546, 6.020],
       blip: 569,
@@ -31,12 +32,22 @@ mp.jobs = {
    3: {
       id: 3,
       name: 'Los Santos Transit',
-      description: 'Los Santos Transit je mreža transportnih vlasti u Los Santosu',
+      description: 'Los Santos Transit je mreža transportnih vlasti u Los Santosu. Vozač autobusa, i mini buseva širom grada i izvan grada.',
       max_workers: 32,
       point: [0, 0, 0],
       blip: 513,
       sprite: 76,
       job: (player, args) => { Transit.start(player, args); }
+   },
+
+   4: { 
+      id: 4,
+      name: 'Burgershot',
+      description: 'Lanac restorana brze hrane Burgershot. Dostavljač hrane.',
+      point: [0, 0, 0],
+      blip: 419,
+      sprite: 0,
+      job: (player, args) => { Food.start(player, args); }
    }
 }
 
