@@ -8,6 +8,8 @@ mp.game.gameplay.setFadeOutAfterDeath(false);
 mp.game.weapon.unequipEmptyWeapons = false;
 player.setCanSwitchWeapon(false);
 
+let frontCamera;
+
 mp.events.addDataHandler({
    'logged': (entity, newValue, oldValue) => {
       if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
@@ -62,5 +64,21 @@ mp.events.add({
 
    'client:screenEffect': (effect, duration) => {
       mp.game.graphics.startScreenEffect(effect, parseInt(duration), false);
+   },
+
+   'client:player.camera:inFront': (status) => { 
+      if (status) {
+         frontCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 30);
+         let position = player.position;
+         frontCamera.setActive(true);
+         frontCamera.setCoord(position.x, position.y + 4, position.z);
+         frontCamera.pointAtCoord(position.x, position.y, position.z);
+         mp.game.cam.renderScriptCams(true, false, 0, true, false);
+      } else { 
+         let exist = frontCamera.doesExist()
+         if (exist)
+            frontCamera.destroy();
+            mp.game.cam.renderScriptCams(false, false, 0, false, false);
+      }
    }
 });

@@ -6,16 +6,7 @@
 
 //   clohing = [ 
 //     male = [
-//       masks = { id: 1, min: 0, max: 189 },
-//       hairStyles = { id: 2, min: 0, max: 74 },
-//       torsos = { id: 3, min: 0, max: 194 },
-//       legs = { id: 4, min: 0, max: 132},
-//       bags = { id: 5, min: 0, max: 88 },
-//       shoes = { id: 6, min: 0, max: 97 },
-//       accessories = { id: 7, min: 0, max: 150 },
-//       undershirts = { id: 8, min: 0, max: 177 },
-//       armours = { id: 9, min: 0, max: 55 },
-//       tops = { id: 11, min: 0, max: 361 }
+
 //     ],
 //     female = [
 //       masks = { id: 1, min: 0, max: 189 },
@@ -63,48 +54,38 @@
 // mp_m_freemode_01
 // mp_f_freemode_01
 
-var player =  mp.players.local, clothingCEF, frontPlayerCamera;
+
+const Player = mp.players.local;
+let browser = null, opened = false;
 
 mp.events.add({
 
-    'client:showClothing': () => {
-        player.freezePosition(true);
-        clothingCEF = mp.browsers.new('package://clothing/clothing-interface/clothing.html');
-        setTimeout(() => { mp.gui.cursor.show(true, true); }, 500);
-        mp.game.ui.displayRadar(false);
-        mp.events.call('client:setCameraInfrontPlayer', true);
-    },
+   'client:player.clothing:Show': () => {
+      if (opened) { 
+         browser.destroy();
+         opened = false;
+         mp.gui.cursor.show(false, false);
+         mp.events.call('client:player.camera:inFront', false);
+      } else { 
+         clothingCEF = mp.browsers.new('package://business/clothing-interface/clothing.html');
+         mp.gui.cursor.show(true, true);
+         mp.events.call('client:player.camera:inFront', true);
+      }
+   },
 
-    'client:clothingPreview': (index, value) => {
-        let palette = player.getPaletteVariation(index);
-        player.setComponentVariation(index, value, 0, palette);
-    },
+   'client:clothingPreview': (index, value) => {
+      let palette = player.getPaletteVariation(index);
+      player.setComponentVariation(index, value, 0, palette);
+   },
 
-    'client:disableClothingPreview': (clothingFinished) => {
-        mp.game.ui.displayRadar(true);
-        player.freezePosition(false);
-        mp.events.callRemote('server:updatePlayerClothing', clothingFinished);
-        clothingCEF.destroy();
-        setTimeout(() => { mp.gui.cursor.show(false, false); }, 1000);
-        mp.events.call('client:setCameraInfrontPlayer', false);
-    },
-
-    'client:setCameraInfrontPlayer': (status) => {
-        if(status) {
-          frontPlayerCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 30);
-          var position = player.position;
-          frontPlayerCamera.setActive(true);
-          frontPlayerCamera.setCoord(position.x, position.y + 4, position.z);
-          frontPlayerCamera.pointAtCoord(position.x, position.y, position.z);
-          mp.game.cam.renderScriptCams(true, false, 0, true, false);
-        }
-        else { 
-            var camExist = frontPlayerCamera.doesExist()
-            if(camExist)
-                frontPlayerCamera.destroy();
-                mp.game.cam.renderScriptCams(false, false, 0, false, false);
-        }
-    },
+   'client:disableClothingPreview': (clothingFinished) => {
+      mp.game.ui.displayRadar(true);
+      player.freezePosition(false);
+      mp.events.callRemote('server:updatePlayerClothing', clothingFinished);
+      clothingCEF.destroy();
+      setTimeout(() => { mp.gui.cursor.show(false, false); }, 1000);
+      mp.events.call('client:setCameraInfrontPlayer', false);
+   },
 
 })
 
