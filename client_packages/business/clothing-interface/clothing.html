@@ -29,30 +29,37 @@
             <li v-on:click="Page('ears')" :class="{ 'active' : isActive('ears') }"> <i class="fa fa-deaf"></i> </li>
             <li v-on:click="Page('bracelet')" :class="{ 'active' : isActive('bracelet') }"> <i class="fas fa-ring"></i> </li>
             <li v-on:click="Page('hat')" :class="{ 'active' : isActive('hat') }"> <i class="fab fa-redhat"></i> </li>
-
          </ul>
 
          <div class="page">
-            <div v-if="page == 'home'" class="info">
-               <h4> Prodavnica odeće </h4>
-               <h2 class="business-name"> {{ business.name }} </h2>
-               <div class="buy">
-                  <h3> cena </h3>
-                  <h2 class="price"> {{ moneyFormat(Cart()) }} </h2>
-                  <button class="buy" :disabled="Cart() < 1"> Potvrdi Kupovinu </button>
+            <transition name="scale" mode="out-in">
+               <div v-if="page == 'home'" class="info" :key="page">
+                  <h4> Prodavnica odeće </h4>
+                  <h2 class="business-name"> {{ business.name }} </h2>
+                  <div class="buy">
+                     <h3> cena </h3>
+                     <h2 class="price"> {{ moneyFormat(Cart()) }} </h2>
+                     <button class="buy" :disabled="Cart() < 1"> Potvrdi Kupovinu </button>
+                  </div>
                </div>
-            </div>
-            <div v-else class="window" >
-               <h2 class="title"> {{ pages[page] }} </h2>
-               <div class="changing" >
-                  <button v-on:click="Drawable(page, 0)"> - </button>
-                  <h2> {{ clothings[page].value }} </h2>
-                  <button v-on:click="Drawable(page, 1)"> + </button>
+
+               <div v-else class="window" :key="page" >
+                  <h2 class="title"> {{ pages[page] }} </h2>
+                  <div class="drawable">
+                     <h5> Model </h5>
+                     <button v-on:click="Drawable(page, 0)"> - </button>
+                     <h2> {{ clothings[page].value }} </h2>
+                     <button v-on:click="Drawable(page, 1)"> + </button>
+                  </div>
+                  <div class="texture">
+                     <h5> Tekstura </h5>
+                     <button v-on:click="Texture(page, 0)"> - </button>
+                     <h2> {{ clothings[page].texture }} </h2>
+                     <button v-on:click="Texture(page, 1)"> + </button>
+                  </div>
                </div>
-            </div>
+            </transition>
          </div>
-
-
       </div>
    </div>
       
@@ -100,22 +107,19 @@
             },
 
             clothings: {
-               'torso': { index: 0, value: 0, texture: 0, max: 100 },
-               'shirt': { index: 0, value: 0, texture: 0, max: 100 },
-               'undershirt': { index: 0, value: 0, texture: 0, max: 100 },
-               'legs': { index: 0, value: 0, texture: 0, max: 100 }, 
-               'shoes': { index: 0, value: 0, texture: 0, max: 100 },
-               'bags': { index: 0, value: 0, texture: 0, max: 100 },
-               'armour': { index: 0, value: 0, texture: 0, max: 100 },
-               'hat': { index: 0, value: 0, texture: 0, max: 100 },
-               'glasses': { index: 0, value: 0, texture: 0, max: 100 },
-               'ears': { index: 0, value: 0, texture: 0, max: 100 },
-               'watch': { index: 0, value: 0, texture: 0, max: 100 },
-               'bracelet': { index: 0, value: 0, texture: 0, max: 100 },
+               'torso': { index: 3, value: 0, texture: 0, max: { value: 195, texture: 100 } },
+               'shirt': { index: 11, value: 0, texture: 0, max: { value: 362, texture: 100 } },
+               'undershirt': { index: 8, value: 0, texture: 0, max: { value: 178, texture: 100 } },
+               'legs': { index: 4, value: 0, texture: 0, max: { value: 133, texture: 100 } }, 
+               'shoes': { index: 6, value: 0, texture: 0, max: { value: 98, texture: 100 } },
+               'bags': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'armour': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'hat': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'glasses': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'ears': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'watch': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'bracelet': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
             },
-
-
-            cart: 0,
            
             business: {
                id: 0,
@@ -125,39 +129,34 @@
 
          methods: { 
 
+            Page: function (i) { this.page = i; this.anim = true; },
+
+            isActive: function (i) { return this.page == i ? true : false; },
+
             Cart: function () { 
                let bill = 0;
                for (let i in this.clothings) { 
                   for (let c = 0; c < 12; c ++) { 
                      let item = this.clothings[i], value = this.player.clothing[c][0]; 
-                     if (item.value != value) { 
-                        bill += 0.7;
-                     }
+                     if (item.value != value) bill += 0.7;
                   }
                }
                return bill;
             },
 
             Drawable: function (x, i) { 
-               if (i == 0) { 
-                  this.clothings[x].value --;
-                  if (this.clothings[x].value < 0) this.clothings[x].value = 0;
-               } else if (i == 1) { 
-                  this.clothings[x].value ++;
-                  if (this.clothings[x].value >= this.clothings[x].max) this.clothings[x].value = this.clothings[x].max;
-               }
+               if (i == 0) { this.clothings[x].value --; if (this.clothings[x].value < 0) this.clothings[x].value = 0; }
+               else if (i == 1) { this.clothings[x].value ++; if (this.clothings[x].value >= this.clothings[x].max.value) this.clothings[x].value = this.clothings[x].max.value; }
+               mp.trigger('client:player.clothing:drawable', x, this.clothings[x].index, this.clothings[x].value);
             },
 
-            moneyFormat: function (i) { 
-               let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-               return formatter.format(i);
+            Texture: function (x, i) { 
+               if (i == 0) { this.clothings[x].texture --; if (this.clothings[x].texture < 0) this.clothings[x].texture = 0; }
+               else if (i == 1) { this.clothings[x].texture ++; if (this.clothings[x].texture >= this.clothings[x].max.texture) this.clothings[x].texture = this.clothings[x].max.texture; }
+               mp.trigger('client:player.clothing:texture', x, this.clothings[x].index, this.clothings[x].texture, this.clothings[x].value);
             },
 
-
-            Page: function (i) { this.page = i; },
-
-            isActive: function (i) { return this.page == i ? true : false; }
-        
+            moneyFormat: function (i) {  let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }); return formatter.format(i); }
          }
       })
    </script>

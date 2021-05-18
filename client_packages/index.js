@@ -19,7 +19,6 @@ let Chat = require('./Chat');
 let CayoPerico = require('./heistisland');
 //let ChatBubble = require('./player/ChatBubble');
 
-
 // SYNCHRONIZATION & STREAMER
 let Streamer = require('./player/Streamer');
 let DamageSync = require('./DamageSync');
@@ -40,6 +39,9 @@ let FingerPointing = require('./player/Interactions/FingerPointing');
 
 // FACTIONS
 let Police = require('./factions/police/Police');
+
+// BUSINESS
+let Clothing = require('./business/Clothing');
 
 // JOBS
 let Jobs = require('./jobs/Jobs');

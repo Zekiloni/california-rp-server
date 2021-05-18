@@ -179,9 +179,8 @@ mp.events.addCommand("scenario", (player, fullText, scenario) => {
    player.playScenario(scenario);
 })
 
-mp.events.addCommand("attachments", (player, fullText, slot, model, bone, offset, rotation) => { 
-   let character = player.getCharacter();
-   character.attachment.new(player, slot, model, bone, offset, rotation); 
+mp.events.addCommand("clothing", (player, fullText) => { 
+   player.call('client:player.clothing:show')
 })
 
 

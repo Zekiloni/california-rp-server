@@ -50,7 +50,7 @@ ul.navigation li {
    transition: all 0.35s ease;
 }
 
-ul.navigation li.active {background: #6845ea;color: white;box-shadow: #7665f6 0px 4px 6px -1px, #7055f1 0px 2px 4px -1px;}
+ul.navigation li.active {background: #6845ea;color: white;box-shadow: #6d51ef 0px 4px 15px -1px, #8d85fd 0px 2px 4px -1px;}
 
 .page {
    width: 350px; height: 200px;
@@ -91,7 +91,7 @@ button.buy {
 }
 
 button.buy:hover { filter: brightness(1.1); box-shadow: 0 1px 25px rgb(250 184 10 / 70%); }
-button.buy:disabled { filter: grayscale(1); opacity: 0.5; }
+button.buy:disabled { filter: grayscale(1); opacity: 0.9; }
 
 .buy {margin-top: 10px;}
 
@@ -114,16 +114,16 @@ h2.price {
    margin-bottom: 0;
 }
 
-.changing {
+.drawable, .texture {
    display: flex;
    justify-content: space-between;
    align-items: center;
-   width: 250px;
+   width: 290px;
 }
 
-.changing h2 {color: white;font-size: 28px;text-shadow: 0 0 2px rgb(0 0 0 / 77%);}
+.drawable h2, .texture h2 {color: white;font-size: 28px;width: 45px;text-align: center;text-shadow: 0 0 2px rgb(0 0 0 / 77%);}
 
-.changing button { 
+.drawable button, .texture button { 
    font-size: 25px; 
    width: 70px;   
    border: none;   
@@ -136,7 +136,10 @@ h2.price {
    transition: all 0.35s ease;
 }
 
-.changing button:hover { filter: brightness(1.1); box-shadow: 0 1px 5px rgb(250 184 10 / 70%); }
+.drawable button:hover, .texture button:hover { filter: brightness(1.1); box-shadow: 0 1px 5px rgb(250 184 10 / 70%); }
+
+.drawable h5, .texture h5 {color: white;font-size: 16px;font-weight: 400;text-align: right;width: 60px;text-shadow: 0 0 2px rgb(0 0 0 / 35%);}
+
 
 .window {animation: fade-in 0.5s ease;display: flex;justify-content: center;flex-direction: column;align-items: center;}
 .info { animation: fade-in 0.5s ease; }
@@ -156,5 +159,20 @@ h2.title {text-align: center;padding: 5px 20px;border-radius: 5px;margin: 0;font
 @keyframes bounce {
    0% { transform: scale(1.1); }
    100% { transform: scale(1.0); }
+}
+
+.scale-enter-active,
+.scale-leave-active {
+   transition: all 0.35s ease;
+}
+
+.scale-enter-from,
+.scale-leave-to { 
+   opacity: 0;
+}
+
+.scale-leave-from,
+.scale-enter-to { 
+   opacity: 1;
 }
 

@@ -82,3 +82,11 @@ mp.events.add({
       }
    }
 });
+
+
+function BrowserControls (freezeControls, mouse) {
+   mouse ? mp.gui.chat.activate(false) : mp.gui.chat.activate(true);
+   setTimeout(() => { mp.gui.cursor.show(freezeControls, mouse); }, 250);
+}
+
+player.BrowserControls = BrowserControls;

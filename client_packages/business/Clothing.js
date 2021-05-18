@@ -1,93 +1,50 @@
 
-// module.exports = { 
-//   appearance = [ 
-
-//   ],
-
-//   clohing = [ 
-//     male = [
-
-//     ],
-//     female = [
-//       masks = { id: 1, min: 0, max: 189 },
-//       hairStyles = { id: 2, min: 0, max: 78 },
-//       torsos = { id: 3, min: 0, max: 239 },
-//       legs = { id: 4, min: 0, max: 139 },
-//       bags = { id: 5, min: 0, max: 88 },
-//       shoes = { id: 6, min: 0, max: 101 },
-//       accessories = { id: 7, min: 0, max: 110 },
-//       undershirts = { id: 8, min: 0, max: 215 },
-//       armours = { id: 9, min: 0, max: 55 },
-//       tops = { id: 11, min: 0, max: 380 }
-//     ],
-//   ],
-
-//   props = [ 
-//     male = [
-//       hats = { id: 0, min: 0, max: 152 },
-//       glasses = { id: 1, min: 0, max: 33 },
-//       ears = { id: 2, min: 0, max: 40 },
-//       watches = { id: 6, min: 0, max: 40 },
-//       bracelets = { id: 7, min: 0, max: 8 }
-//     ],
-//     female = [
-//       hats = { id: 0, min: 0, max: 151 },
-//       glasses = { id: 1, min: 0, max: 35 },
-//       ears = { id: 2, min: 0, max: 21 },
-//       watches = { id: 6, min: 0, max: 29 },
-//       bracelets = { id: 7, min: 0, max: 15 }
-//     ]
-//   ]
-// }
-
-// mp.keys.bind(0x55, false, function() {
-//   if(!player.isRagdoll()) {
-//     mp.players.local.setToRagdoll(10000, 10000, 0, true, true, true);
-//   }
-//   else { 
-//     mp.players.local.resetRagdollTimer();
-//     mp.players.local.giveRagdollControl(true);
-//     mp.players.local.setToRagdoll(500, 500, 0, true, true, true);
-//   } 
-// });
-
-// mp_m_freemode_01
-// mp_f_freemode_01
-
 
 const Player = mp.players.local;
 let browser = null, opened = false;
 
 mp.events.add({
-
-   'client:player.clothing:Show': () => {
+   'client:player.clothing:show': () => {
+      opened = !opened;
       if (opened) { 
-         browser.destroy();
-         opened = false;
-         mp.gui.cursor.show(false, false);
-         mp.events.call('client:player.camera:inFront', false);
-      } else { 
-         clothingCEF = mp.browsers.new('package://business/clothing-interface/clothing.html');
-         mp.gui.cursor.show(true, true);
+         browser = mp.browsers.new('package://business/clothing-interface/clothing.html');
+         Player.BrowserControls(true, true);
          mp.events.call('client:player.camera:inFront', true);
+      } else { 
+         browser.destroy();
+         Player.BrowserControls(false, false);
+         mp.events.call('client:player.camera:inFront', false);
       }
    },
 
-   'client:clothingPreview': (index, value) => {
-      let palette = player.getPaletteVariation(index);
-      player.setComponentVariation(index, value, 0, palette);
+   'render': () => { 
+      if (browser && opened) { 
+         let heading;
+         if (mp.keys.isDown(65) === true) {
+            heading = Player.getHeading();
+            Player.setHeading(heading - 2)
+         } else if (mp.keys.isDown(68) === true) {
+            heading = Player.getHeading();
+            Player.setHeading(heading + 1.5)
+         }
+      }
    },
 
-   'client:disableClothingPreview': (clothingFinished) => {
-      mp.game.ui.displayRadar(true);
-      player.freezePosition(false);
-      mp.events.callRemote('server:updatePlayerClothing', clothingFinished);
-      clothingCEF.destroy();
-      setTimeout(() => { mp.gui.cursor.show(false, false); }, 1000);
-      mp.events.call('client:setCameraInfrontPlayer', false);
+   'client:player.clothing:drawable': (x, y, i) => { 
+      let max = Player.getNumberOfDrawableVariations(y);
+      Player.setComponentVariation(y, i, 0, 2);
+      browser.execute('clothing.clothings[\"' + x + '\"].max.value = ' + max);
    },
 
+   'client:player.clothing:texture': (x, y, z, i) => { 
+      Player.setComponentVariation(y, i, z, 2);
+      let max = mp.game.invoke('0x8F7156A3142A6BAD', Player.handle, y, i);
+      mp.gui.chat.push('max is ' + max)
+      browser.execute('clothing.clothings[\"' + x + '\"].max.texture = ' + max);
+      // let max = mp.game.invoke('0xA6E7F1CEB523E171', Player, x, z); // FOR PROPS
+   }
 })
+
 
 
 

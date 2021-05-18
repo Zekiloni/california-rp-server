@@ -116,6 +116,8 @@ mp.events.add({
                player.data.logged = true;
                player.data.spawned = false;
 
+               player.name = result[0].username;
+
                // settnig money because of data handler requrie change
                player.data.money = 0;
                player.dimension = player.id;
