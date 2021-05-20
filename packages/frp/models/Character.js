@@ -129,9 +129,6 @@ frp.Characters.prototype.SetJob = function (player, value) {
    player.setVariable('Job', this.Job);
 };
 
-frp.Characters.prototype.Save = async function (position) { 
-   await this.save();
-};
 
 
 // METODE KLASE

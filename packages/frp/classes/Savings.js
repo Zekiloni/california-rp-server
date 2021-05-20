@@ -19,8 +19,8 @@ class Saving {
                Account.Online = false;
                Character.Last_Position = Position;
 
-               Account.Save();
-               Character.Save();
+               await Account.save();
+               await Character.save();
             } 
          }
 
@@ -28,7 +28,7 @@ class Saving {
    }
 
    
-   static Save () { 
+   Save () { 
       mp.players.forEach((player) => {
          if (player.data.logged) { 
             mp.events.call('server:save.player', player);

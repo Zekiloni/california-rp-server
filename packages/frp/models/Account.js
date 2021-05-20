@@ -45,21 +45,18 @@ frp.Accounts.prototype.SetLogged = async function (player, value, character) {
    this.Online = value;
    this.Last_Character = character;
    this.Login_Date = frp.Database.literal('CURRENT_TIMESTAMP');
-   // this.IP_Adress = player.ip;
+   this.IP_Adress = player.ip;
 
-   // if (this.Hardwer == null || this.Social_Club == null) { 
-   //    this.Hardwer = player.serial;
-   //    this.Social_Club = player.socialClub;
-   // }
+   if (this.Hardwer == null || this.Social_Club == null) { 
+      this.Hardwer = player.serial;
+      this.Social_Club = player.socialClub;
+   }
 
    await this.save();
    this.Logged = value;
    player.setVariable('logged', this.Logged);
 };
 
-frp.Accounts.prototype.Save = async function () { 
-   await this.save();
-};
 
 
 (async () => {
@@ -68,5 +65,5 @@ frp.Accounts.prototype.Save = async function () {
 
 
 
-//  frp.Accounts.create({ id: 2, Username: 'Zekiloni', Password: 'kapakapa'})
+//frp.Accounts.create({ id: 2, Username: 'Zekiloni', Password: 'kapakapa'})
 

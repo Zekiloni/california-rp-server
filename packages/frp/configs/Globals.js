@@ -6,6 +6,35 @@ const GLOBALS = {
 
    Color: [3, 105, 163, 150],
 
+   Colors: { 
+      white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'], 
+      low: ['E6E6E6', 'BDBDBD', 'DEDEDE', 'A3A2A2', '909090'], 
+      purple: ['cf9ae1', 'b380c4', '9565a5', '7f508f', '673e74'],
+      ooc: ['7B8A89', 'A3B8B7', '9AADAC', '8D9E9D', '7B8A89'],
+      faction: '5DD7B8',
+      radio: 'FFFF99',
+      pm: { from: 'FCBD00', to: 'FFD500' },
+      grey: 'E8E8E8',
+      tomato: 'FF6347',
+      megaphone: ['F4D31C', 'F4D31C', 'F4D31C', 'F4D31C', 'F4D31C'],
+      admin: 'D9534F',
+      info: 'E48857',
+      success: '6BD56B',
+      error: 'FF6347',
+      help: 'DACA5D',
+      broadcast: 'FF2624',
+      server: '0792E5',
+   },
+   
+   distances: { 
+      ooc: 8.0, 
+      ic: 10.5,
+      low: 4.5,
+      shout: 18.5,  
+      do: 8.5,
+      me: 8.5,
+   },
+
    NOTIFY: { 
       SUCCES:'success',
       ERROR: 'error',
