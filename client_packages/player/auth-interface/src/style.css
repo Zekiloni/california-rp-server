@@ -1,0 +1,155 @@
+
+body {
+   font-family: 'Roboto', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   line-height: 1.5;
+   color: #8e8e8e;
+   margin: 0;
+   width: 100%;
+   height: 100vh;
+   background: transparent;
+   padding: 0;
+   position: relative;
+   overflow: hidden;
+}
+
+#start {
+   animation: fade-in 1.25s;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background: rgb(0 0 0 / 85%);
+   width: 100%;
+   height: 100%;
+}
+
+div.login {
+   width: 400px;
+   height: 450px;
+   background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
+   position: relative;
+   border-radius: 2px;
+   padding-top: 125px;
+   align-items: center;
+   justify-content: center;
+   flex-wrap: wrap;
+   display: flex;
+   box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
+}
+
+div.login div.logo {
+   position: absolute;
+   top: -70px;
+   height: 150px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 150px;
+   border-radius: 100%;
+   padding: 20px;
+   background: linear-gradient(342deg, rgb(16 16 16 / 69%), rgb(31 31 31 / 44%));
+   box-shadow: rgb(0 0 0 / 10%) 0px 4px 15px -1px, rgb(0 0 0 / 20%) 0px 2px 7px -1px;
+}
+
+div.logo img { width: 145px; height: 145px; }
+
+.login .header { width: 100%; padding: 0 20px; position: relative; text-align: center; z-index: 3; }
+.login .header h2 {color: #fbc60c;letter-spacing: 1.5px;text-transform: uppercase;font-size: 32px;margin: 0;text-shadow: 0 1px 5px rgb(250 184 10 / 80%);align-items: center;font-style: italic;}
+.login .header h4 {text-transform: uppercase;font-weight: 300;color: whitesmoke;letter-spacing: 5px;font-size: 15px;margin: 0;}
+
+button.login {
+   padding: 10px 0;
+   position: absolute;
+   background: #fbc60c;
+   font-size: 20px;
+   bottom: -65px;
+   text-transform: uppercase;
+   border: none;
+   width: 250px;
+   border-radius: 5px;
+   color: #292929;
+   font-weight: 900;
+   letter-spacing: 5px;
+   transition: all 0.55s ease;
+   box-shadow: 0 1px 25px rgb(250 184 10 / 50%);
+}
+
+button.login:hover { box-shadow: 0 1px 55px rgb(250 184 10 / 75%);  color: whitesmoke; }
+
+div.login .authentication { display: flex; flex-direction: column; width: 350px; align-items: center; position: relative; height: 250px; z-index: 2; }
+
+.authentication input, .authentication button {margin: 10px 0;}
+
+label.info {width: 242px;text-transform: uppercase;font-weight: 300;color: #a5a5a5;letter-spacing: 2.5px;}
+
+input { letter-spacing: 1.2px; width: 200px; border: none; color: #cdcdcd; background: rgb(21 21 21 / 75%); position: relative; padding: 10px 20px; font-size: 15px; font-weight: 300; box-shadow: 0 5px 10px rgb(12 12 12 / 10%); transition: all 0.45s ease; }
+input:focus { border-color: #fbc60c; }
+
+h4.forgoten-button { text-shadow: 0 1px 2px rgb(72 39 198); color: #6f4cee; letter-spacing: 2.0px; font-weight: 800; position: relative; text-transform: uppercase; transition: all 0.35s ease; }
+h4.forgoten-button:hover { color: whitesmoke; text-shadow: 0 1px 2px rgb(181 181 181); }
+
+.forgotten-modal {position: absolute;width: 250px;right: 510px;display: flex;justify-content: center;align-items: center;height: 250px;z-index: 1;}
+.forgotten-modal .forgoten-password {width: 200px;height: 200px;border-radius: 50px;background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(45 45 45 / 28%));flex-direction: column;justify-content: center;align-items: center;display: flex;box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;}
+.forgoten-password h4 {font-size: 30px;color: #fbc60c;margin: 0;text-shadow: 0 1px 5px rgb(250 184 10 / 80%);}
+.forgoten-password p {width: 90%;text-align: center;font-weight: 300;color: rgb(183 183 183);}
+
+.notification {position: absolute;lefT: 20px;bottom: 20px;padding: 10px 20px;font-weight: 300;font-size: 15px;letter-spacing: 1.1px;width: auto;color: #e2e2e2;border-radius: 10px;transition: all 0.35s ease;background: rgb(21 21 21 / 75%);box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;}
+
+.selector {width: 1000px;height: 400px;/* background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%)); */display: flex;justify-content: space-around;align-items: center;}
+.selector .account {width: 325px;height: 380px;display:flex;/* align-items: center; */justify-content: center;padding: 10px;flex-direction: column;}
+.account .username {margin: 0;font-size: 45px;font-style: italic;word-wrap: break-word;line-height: 2.5rem;text-shadow: 0 1px 5px rgb(250 184 10 / 80%);color: #fbc60c;text-transform: uppercase;}
+.account .group {margin: 0;color: grey;text-transform: uppercase;font-style: italic;letter-spacing: 1px;color: #d0d0d0;font-size: 20px;}
+
+.account ul.informations {list-style: none;padding: 0;width: 90%;}
+.account ul.informations li {margin: 10px 0;display: flex;justify-content: space-between;align-items: center;}
+ul.informations li h3 { margin: 0; color: #cdcdcd; font-weight: 300; font-size: 14px; }
+ul.informations li h3.i {font-weight: 600;color: grey;width: 150px;word-break: break-word;}
+
+
+.selector .characters {width: 650px;height: 380px;display: flex;align-items: center;justify-content: space-around; position: relative; z-index: 5; }
+.characters .character {width: 200px;height: 300px;background: linear-gradient(179deg, rgb(8 8 8 / 45%), rgb(255 255 255 / 3%));box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;transition: all 0.55s ease;border-radius: 10px;}
+.character .info { width: 100%; display: flex; flex-direction: column; position: relative; height: 100%; }
+.character .info .actions { position: absolute; width: 100%; display: flex; justify-content: space-around; bottom: -20px; }
+.character .info h3.time {opacity: 0.1;color: white;filter: brightness(1);font-size: 45px;position: absolute;left: 10px;bottom: 10px;margin: 0;}
+
+.characters .character:hover { transform: translateY(-30px); filter:brightness(1.05);}
+.character:hover .create { text-shadow: 0 1px 2px rgb(72 39 198); color: #6f4cee;}
+.character .create {transition: all 0.35s ease; display: flex;justify-content: center;width: 100%;align-items: center;height: 100%;font-size: 60px;color: whitesmoke;text-shadow: 0 1px 2px rgb(181 181 181);text-shadow: 0 0 BLACK;}
+
+button.play { box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px; background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(255 255 255 / 3%)); color: #fbc60c; }
+button.play:hover { background: #fbc60c;  box-shadow: 0 1px 25px rgb(250 184 10 / 35%); color: #1d1d1d; }
+
+button.delete { background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(255 255 255 / 3%)); color: #e2351e; box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px; }
+button.delete:hover { background: #e2351e; color: #cdcdcd; box-shadow: 0 5px 15px rgb(197 42 20 / 35%); }
+
+button.play, button.delete { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; font-size: 28px; border-radius: 100%; border: none; transition: all 0.35s ease; }
+
+.character .info .name {text-align: center;width: 100%;margin: 0;font-size: 17px;margin-top: -35px;}
+
+ul.character-info { padding: 0; list-style: none; padding: 10px;  }
+ul.character-info li {display: flex;flex-direction: column;margin: 7px 0;}
+ul.character-info li h4, ul.character-info li h3 { margin: 0 ;}
+
+.money-money-money-always-funny {color: #69ba6c !important;font-size: 14px !important;text-shadow: 0 1px 5px rgb(48 185 52 / 35%);}
+
+ul.character-info li h3 {font-size: 12.5px;color: #eaeaea;}
+ul.character-info li h4 {color: #cdcdcd;letter-spacing: 1.25px;font-weight: 400;font-size: 10px;text-transform: uppercase;}
+
+
+*:focus { outline: none; }
+* { user-select: none; }
+
+@keyframes fade-in {
+   0% { opacity: 0; }  
+   100% { opacity: 1; }
+}
+
+.bounce-enter-active { animation: bounce-in .5s; }
+.bounce-leave-active { animation: bounce-in .5s reverse; }
+@keyframes bounce-in {
+   0% { transform: scale(0); }
+   50% { transform: scale(1.15); }
+   100% { transform: scale(1); }
+}
+

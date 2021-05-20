@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/style.css" />
+
+</head>
+<body>
+   <div id="start" v-if="toggle">
+
+
+      <transition name="bounce">
+         <div class="login" v-if="page == 'login'">
+            <div class="logo"> <img src="src/images/logo.png" /> </div>
+   
+            <div class="header">
+               <h2> Focus Roleplay </h2>
+               <h4>www.focus-rp.com</h4>
+            </div>
+   
+            <div class="authentication">
+               <label class="info" for="passsword"> Korisničko ime </label>
+               <input type="text" name="username" v-model="login.username" />
+   
+               <label class="info" for="passsword"> Korisnička šifra </label>
+               <input type="password" name="passsword" v-model="login.password" />
+   
+               <h4 v-on:click="modal.forgoten = !modal.forgoten" class="forgoten-button"> Zaboravljena lozinka ? </h4>
+               <button v-on:click="Login()" class="login"> Prijavi Se </button>
+            </div>
+         </div>
+      </transition>
+
+
+      <div class="forgotten-modal">
+         <transition name="bounce">
+            <div class="forgoten-password" v-if="modal.forgoten">
+               <h4> <i class="fa fa-key" aria-hidden="true"></i> </h4>
+               <p>U slučaju zaboravljene korisničke lozinke, možete je povratiti na <b>Korisničkom Panelu</b>.</p>
+            </div>
+         </transition>
+      </div>
+
+      <transition name="bounce">
+         <div class="selector" v-if="page == 'selector'">
+            <div class="account" v-if="account">
+               <h2 class="username"> {{ account.Username }} </h2>
+               <h4 class="group"> {{ Group(account.Administrator) }} </h4>
+
+               <ul class="informations">
+                  <li> <h3> E-mail </h3> <h3 class="i"> {{ account.Email }} </h3>  </li>
+                  <li> <h3> Datum Registracije </h3> <h3  class="i"> {{ Date(account.Register_Date) }} </h3>  </li>
+                  <li> <h3> Poslednja Prijava </h3> <h3  class="i"> {{ Date(account.Login_Date) }} </h3>  </li>
+                  <li> <h3> Upozorenja </h3> <h3  class="i"> {{ account.Warns }} / 3 </h3>  </li>
+                  <li> <h3> Donator </h3> <h3  class="i"> {{ Donator(account.Donator) }} </h3>  </li>
+               </ul>
+            </div>
+
+            <div class="characters">
+               <div class="character" v-for="(i, k) in CHARS">
+                  <div class="info" v-if="characters[k]">
+                     <h2 class="name"> {{ characters[k].Name }} </h2>
+                     <h3 class="time"> {{ characters[k].Hours }}h{{ characters[k].Minutes }}m </h3>
+                     <ul class="character-info">
+                        <li>
+                           <h4> Novac </h4>
+                           <h3 class="money-money-money-always-funny"> {{ moneyFormat(characters[k].Money) }} </h3>
+                        </li>
+                        <li>
+                           <h4> Pol </h4>
+                           <h3> {{ genders[characters[k].Gender] }} </h3>
+                        </li>
+                        <li>
+                           <h4> Datum Rodjenja </h4>
+                           <h3> {{ characters[k].Birth }} </h3>
+                        </li>
+                        <li>
+                           <h4> Mesto Rodjenja </h4>
+                           <h3> {{ characters[k].Origin }} </h3>
+                        </li>
+                        <li v-if="characters[k].Faction != 0">
+                           <h4> Fakcija </h4>
+                           <h3> {{ truncate(characters[k].Faction, 16) }} </h3>
+                           <h3> {{ truncate(characters[k].Faction_Rank, 12) }} </h3>
+                        </li>
+                     </ul>
+                     <div class="actions">
+                        <button class="play" v-on:click="Play(characters[k].id)"> <i class="fa fa-play-circle" aria-hidden="true"></i>  </button>
+                        <button class="delete" v-on:click="TryDelete(characters[k].id)"> <i class="fa fa-minus" aria-hidden="true"></i>  </button>
+                     </div>
+                  </div>
+                  <div v-else class="create" v-on:click="TryCreate()">
+                     <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </transition>
+      
+      <transition name="bounce">
+         <div class="notification" v-if="notification"> {{ notification }} </div>
+      </transition>
+
+   </div>
+      
+   <!-- scripts -->
+   <script src="src/vendor/js/vue.js"></script>
+   <script>
+
+      let start = new Vue({
+         el: '#start',
+         data: {      
+            toggle: true,
+            page: 'login',
+            login: { username: null, password: null },
+           
+            account: { 
+               Username: 'Zekiloni',
+               Administrator: 0,
+               Email: 'zekirija17@gmail.com',
+               Register_Date: '2021-05-19T15:44:14.000Z',
+               Login_Date: '2021-05-19T15:44:14.000Z',
+               Warns: 0,
+               Donator: 0,
+            },
+
+            modal: {
+               forgoten: false
+            },
+
+            CHARS: 3,
+
+            genders: ['Muško', 'Žensko'],
+
+            characters: [
+               { 
+                  id: 2, Account: 2, Name: 'Zekiloni Gay', Gender: 0, Birth: '11.06.2001', Origin: 'Los Santos', Faction: 'Los Santos Police Department',
+                  Faction_Rank: 'Chief of Police', Money: 3000, Hours: 3, Minutes: 43, Mask: 0, Register_Date: '2021-05-19T15:44:14.000Z',
+               },
+
+               { 
+                  id: 3, Account: 2, Name: 'Valele Gay Floyd Juniour', Gender: 0, Birth: '11.06.2001', Origin: 'Los Santos', Faction: 0,
+                  Faction_Rank: 'none', Money: 3000, Hours: 5, Minutes: 12, Mask: 0, Register_Date: '2021-05-19T15:44:14.000Z',
+               },
+
+               { 
+                  id: 3, Account: 2, Name: 'Slick Gay + Fart', Gender: 0, Birth: '11.06.2001', Origin: 'Los Santos', Faction: 0,
+                  Faction_Rank: 'none', Money: 3000, Hours: 6, Minutes: 3, Mask: 0, Register_Date: '2021-05-19T15:44:14.000Z',
+               }
+            ],
+
+            notification: false
+         },
+
+
+         methods: { 
+
+            Login: function () { 
+               let username = this.login.username, password = this.login.password;
+               if (username && password) { 
+                  mp.trigger('client:player.login:credentials', username, password);
+               } else { 
+                  this.Notify('Molimo ispunite polja za prijavu !')
+               }
+            },
+
+            Notify: function (message) { 
+               this.notification = message;
+               setTimeout(() => { this.notification = false }, 6000);
+            },
+
+            Init: function (info) { 
+               this.account = info.Account;
+               this.characters = info.Characters;
+               this.page = false;
+               setTimeout(() => { this.page = 'selector'; }, 2000);
+            },
+
+            Date: function (i) { 
+               i = new Date(i); 
+               return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
+            },
+
+            Play: function (i) { 
+               mp.trigger('client:player.character:select');
+            },
+
+            TryDelete: function (i) { mp.trigger('client:player.character:delete', i); },
+
+            Delete: function (i) { 
+               let character = this.characters.find(char => char.id === i);
+               let index = this.characters.indexOf(character);
+               this.characters.splice(index, 1);
+               this.Notify('Uspešno ste izbrisali vaš karakter !')
+            },
+
+            TryCreate: function () { 
+               if (this.characters.length == 2) { 
+                  if (this.account.Donator < 1) { 
+                     this.Notify('Pay to play !')
+                  } else { 
+                     this.Create();
+                  }
+               } else { 
+                  this.Create();
+               }
+            },
+
+            Create: function () {  mp.trigger('client:player.character:creator'); },
+
+            Group: function (i) { return i > 0 ? ( 'Administrator ' + i ) : ( 'Igrač' ); },
+            Donator: function (i) { return i > 0 ? 'Da' : 'Ne'; },
+            truncate: function (str, n) { return (str.length > n) ? str.substr(0, n-1) + '...' : str; },
+            moneyFormat: function (i) { let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }); return formatter.format(i); }
+
+         }
+      })
+   </script>
+</body>     
+</html>

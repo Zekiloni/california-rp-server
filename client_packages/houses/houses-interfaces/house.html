@@ -13,13 +13,13 @@
 
     </head>
     <body>
-        <div id="house" v-if="toggle">
+        <div id="house">
             <div class="management">
                 <ul class="navigation">
-                    <li v-on:click="active = 'home'" :class="{ active:active === 'home' }" > Osnovno</li>
-                    <li v-on:click="active = 'inventory'" :class="{ active:active === 'inventory' }" > Inventar</li>
-                    <li v-on:click="active = 'clothes'" :class="{ active:active === 'clothes' }" > Ormar</li>
-                    <li v-on:click="active = 'renting'" :class="{ active:active === 'renting' }" > Izdavanje</li>
+                    <li v-on:click="active = 'home'" :class="{ active:active === 'home' }" > <i class="fa fa-home" aria-hidden="true"> </i> </li>
+                    <li v-on:click="active = 'inventory'" :class="{ active:active === 'inventory' }" > <i class="fa fa-list-alt" aria-hidden="true"> </i> </li>
+                    <li v-on:click="active = 'clothes'" :class="{ active:active === 'clothes' }" > <i class="fas fa-tshirt"> </i> </li>
+                    <li v-on:click="active = 'renting'" :class="{ active:active === 'renting' }" > <i class="fa fa-users-cog"></i> </li>
                 </ul>
 
                 <i v-on:click="close()" aria-hidden="true" class="close fa fa-times"></i>
@@ -74,8 +74,6 @@
             let house = new Vue({
                 el: '#house',
                 data: {
-
-                    toggle: false,
 
                     active: 'home',
 
