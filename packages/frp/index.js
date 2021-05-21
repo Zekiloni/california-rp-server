@@ -29,7 +29,7 @@ let Savings = require('./classes/Savings');
 let Discord = require('./classes/Discord');
 let Commands = require('./classes/Commands');
 let Doors = require('./classes/Doors');
-let Items = require('./classes/Items');
+let Inventory = require('./classes/Inventory');
 let Minute = require('./classes/Minute');
 let Player = require('./classes/Player');
 

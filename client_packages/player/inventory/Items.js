@@ -1,6 +1,8 @@
 
-const player = mp.players.local;
-let inventory, opened = false, nearbyPlayers = [];
+
+
+const Player = mp.players.local;
+let browser = null, opened = false, nearbyPlayers = [];
 
 
 mp.events.add({
@@ -9,16 +11,26 @@ mp.events.add({
          items = JSON.stringify(items)
          weapons = JSON.stringify(weapons)
          // mp.game.graphics.transitionToBlurred(500);
-         inventory = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
-         inventory.execute(`inventory.player.items = ${items}`);
-         inventory.execute(`inventory.player.weapons = ${weapons}`)
+         browser.execute(`inventory.player.items = ${items}`);
+         browser.execute(`inventory.player.weapons = ${weapons}`)
          opened = true;
          setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
       } else { 
          // mp.game.graphics.transitionFromBlurred(300);
-         setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
-         inventory.destroy();
-         opened = false;
+      }
+  },
+
+
+  'client:inventory.toggle': () => { 
+      opened = !opened;
+      if (opened) { 
+         browser = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
+         Player.BrowserControls(true, true);
+
+      } else { 
+         if (browser) browser.destroy();
+         Player.BrowserControls(false, false);
+
       }
   },
 
@@ -45,7 +57,7 @@ mp.events.add({
 })
 
 mp.keys.bind(0x49, false, function() {
-   if (player.logged && player.spawned) { 
+   if (Player.logged && Player.spawned) { 
       if (!opened) {
          if (mp.players.local.isTypingInTextChat) return;
          mp.events.callRemote('server:inventory.get');
@@ -56,8 +68,8 @@ mp.keys.bind(0x49, false, function() {
 });
 
 mp.keys.bind(0x59, false, function() {
-   if (player.logged && player.spawned) { 
-      if (player.vehicle || player.cuffed || mp.players.local.isTypingInTextChat) return;
+   if (Player.logged && Player.spawned) { 
+      if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:item.pickup');
    }
 });
@@ -107,7 +119,7 @@ async function Drop (item, hash, quantity) {
    object.destroy();
 
    mp.game.streaming.requestAnimDict('random@domestic');
-   player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
+   Player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
 
    mp.events.callRemote('server:item.drop', item, quantity, JSON.stringify(fixedPosition));
 }

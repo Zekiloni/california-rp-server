@@ -2,54 +2,6 @@
 
 let { ItemEntities, ItemType } = require('./modules/Items');
 
-class Item { 
-   constructor (id, data) { 
-      this.id = id;
-      this.item = data.item;
-      this.entity = data.entity;
-      this.owner = data.owner || -1;
-      this.quantity = data.quantity;
-      this.position = data.position;
-      this.rotation = data.rotation;
-      this.dimension = data.dimension || 0;
-      this.object = data.object || null;
-      this.colshape = null;
-      this.extra = data.extra || null;
-      this.ammo = data.ammo;
-
-      mp.items[this.id] = this;
-   }
-
-   refresh () { 
-      if (this.entity == -1) { 
-         this.object = mp.objects.new(mp.ItemRegistry[this.item].hash, new mp.Vector3(this.position.x, this.position.y, this.position.z),
-         {
-            rotation: new mp.Vector3(this.rotation.x, this.rotation.y, this.rotation.z),
-            alpha: 255,
-            dimension: this.dimension
-         });
-         this.object.item = this.id;
-         this.object.notifyStreaming = true;
-      } else { 
-         if (this.object) { 
-            this.object.destroy();
-         }
-      }
-   }
-
-   destroy () { 
-      this.object.destroy();
-      this.object = null;
-   }
-
-   delete () {
-      if (this.object != null) {
-         this.object.destroy();
-         this.object = null;
-      }
-      delete mp.items[this.id];
-   }
-}
 
 class Inventory { 
    constructor () { 
@@ -108,60 +60,14 @@ class Inventory {
             }
          },
 
-         'server:item.drop': (player, id, quantity = 1, place) => { 
-            place = JSON.parse(place)
-            
-            const position = place.position,
-                  rotation = place.rotation;
-            
-            let nearItem = this.near(player),
-               item = mp.items[id];
-            
 
-            if (nearItem) {
-               if (nearItem.item == item.item) {
-                  nearItem.quantity += quantity;
-                  delete mp.items[item];
-               }
-            }
-            else {
-               item.entity = ItemEntities.Ground;
-               item.owner = -1;
-               item.position = position;
-               item.rotation = rotation;
-               item.refresh();
-            }
-         },
-
-         'server:item.pickup': (player) => { 
-            let nearItem = this.near(player);
-            
-            if (nearItem) {
-               let hasItem = this.hasItem(player, nearItem.item);
-
-               if (hasItem) {
-                  hasItem.quantity += nearItem.quantity;
-                  hasItem.entity = ItemEntities.Player;
-                  nearItem.refresh();
-                  delete mp.items[nearItem.id];
-               }
-               else {
-                  nearItem.owner = player.character;
-                  nearItem.entity = ItemEntities.Player;
-                  nearItem.refresh();
-               }              
-
-               this.update(nearItem)
-            } 
-         },
 
          'server:item.use': (player, id) => { 
             let item = mp.items[id];
             if (item) { 
 
                if (mp.ItemRegistry[item.item].type == ItemType.Ammo) { 
-                  let ammoValid = player.giveAmmo(mp.ItemRegistry[item.item].quantity, item.item);
-                  if (ammoValid == false) return;
+            
                }
 
                if (mp.ItemRegistry[item.item].type !== ItemType.Weapon) {
@@ -209,123 +115,8 @@ class Inventory {
       })
    }
 
-   load = () => { 
-      let counter = 0;
-      db.query("SELECT * from items", function (err, results, fields) { 
-         if (err) return core.terminal(1, 'Loading Items ' + err);
-         results.forEach(result => {
-            let item = new Item(result.id, { 
-               item: result.item, entity: result.entity, owner: result.owner, quantity: result.quantity, 
-               position: JSON.parse(result.position), rotation: JSON.parse(result.rotation), dimension: result.dimension, extra: result.extra, ammo: result.ammo
-            });
-            item.refresh();
-            counter ++;
-         });
-         core.terminal(3, counter + ' Items loaded')
-      })
-   }
 
-   create = (player, quantity, name, entity = -1, owner = -1) => { 
-      let found = mp.ItemRegistry[name];
-      if (found) { 
-         db.query("INSERT INTO `items` (item, quantity, entity, owner, position, rotation, dimension) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-            [found.name, quantity, entity, owner, JSON.stringify(player.position), JSON.stringify(player.rotation), player.dimension], function(err, result, fields) {
-            if (err) return core.terminal(1, 'Creating Item ' + err);
-            try { 
-               let id = result.insertId;
-               let i = new Item(id, { 
-                  item: found.name, entity: entity, owner: owner, position: player.position, dimension: player.dimension, quantity: quantity
-               })
-               i.refresh();
-            } catch (e) { 
-               console.log(e)
-            }
- 
-         })
-      }
-   }
 
-   weight = function (player) { 
-      let result = 0;
-      for (let i in mp.items) { 
-         let item = mp.items[i];
-         if (item.entity == ItemEntities.Player && item.owner == player.character) { 
-            if (mp.ItemRegistry[item.item].weight) { 
-               result += mp.ItemRegistry[item.item].weight;
-            }
-         } 
-      }
-      return result;
-   }
-
-   clear = function (player) { 
-      for (let i in mp.items) { 
-         if (mp.items[i].entity == ItemEntities.Player) { 
-            if (mp.items[i].owner == player.character) { 
-               this.remove(mp.items[i]);
-            }
-         }
-      }
-   }
-
-   remove = (item) => { 
-      let found = mp.items[item.id];
-      if (found) { 
-         db.query("DELETE FROM `items` WHERE id = ?", [item.id], function(err, result, fields) {
-            if (err) return core.terminal(1, 'Remove Item ' + err);
-            delete mp.items[item.id];
-         })
-      }
-   }
-
-   update = (item) => {
-      if (item.quantity > 0) { 
-         db.query("UPDATE `items` SET quantity = ?, entity = ?, owner = ?, position = ?, rotation = ?, dimension = ?, ammo = ? WHERE id = ?", 
-            [item.quantity, item.entity, item.owner, JSON.stringify(item.position), JSON.stringify(item.rotation), item.dimension, item.ammo, item.id], function(err, result, fields) {
-            if (err) return core.terminal(1, 'Update Item ' + err);
-         });
-      } else { 
-         db.query("DELETE FROM `items` WHERE id = ?", [item.id], function(err, result, fields) {
-            if (err) return core.terminal(1, 'Remove Item ' + err);
-            delete mp.items[item.id];
-         })
-      }
-
-   }
-
-   near = (player) => { 
-      let result = null;
-      mp.objects.forEach(object => {
-         if (object.item) { 
-            if (player.dist(object.position) < 2.5) { 
-               result = mp.items[object.item];
-            }
-         }
-      });
-      return result;
-   }
-
-   hasItem = (char, item) => { 
-      let result = false;
-      for (let i in mp.items) {
-         if (mp.items[i].entity == ItemEntities.Player && mp.items[i].owner == char) { 
-            if (mp.items[i].item == item) { 
-               result = mp.items[i];
-            }
-         }
-      }
-      return result;
-   }
-
-   // weight = (char) => {
-   //    let weight = 0;
-   //    for (let i in mp.items) {
-   //       if (mp.items[i].entity == ItemEntities.Player && mp.items[i].owner == char) { 
-   //          weight += mp.items[i].weight;
-   //       }
-   //    }
-   //    return weight;
-   // }
 }
 
 mp.items = {};

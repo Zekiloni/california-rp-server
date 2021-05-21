@@ -2,7 +2,7 @@
 'use strict';
 
 const { DataTypes } = require('sequelize');
-const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items');
+const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');
 
 
 /**
@@ -19,10 +19,29 @@ frp.Items = frp.Database.define('Item', {
       Quantity: { type: DataTypes.INTEGER, defaultValue: 1 },
       Entity: { type: DataTypes.INTEGER, defaultValue: -1 },
       Owner: { type: DataTypes.STRING, defaultValue: 0 },
-      Position: { type: DataTypes.TEXT, defaultValue: null },
-      Rotation: { type: DataTypes.TEXT, defaultValue: null },
       isWeapon: { type: DataTypes.TEXT, defaultValue: false },
-      Ammo: { type: DataTypes.INTEGER, }
+      Ammo: { type: DataTypes.INTEGER, },
+      Last_Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
+
+      Position: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () {
+            return JSON.parse(this.getDataValue('Position'));
+         },
+         set: function (value) {
+            this.setDataValue('Position', JSON.stringify(value));
+         }
+      },
+
+      Rotation: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () {
+            return JSON.parse(this.getDataValue('Rotation'));
+         },
+         set: function (value) {
+            this.setDataValue('Rotation', JSON.stringify(value));
+         }
+      }
    },
 
    {
@@ -35,42 +54,43 @@ frp.Items = frp.Database.define('Item', {
 
 
 
-frp.Items.HasItem = async function (player, item) { 
-   let Character = await player.Character();
-   let Item = await frp.Items.findOne({ where: { Owner: Character.id, Item: item } });
-   return Item == null ? false : true;
+frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0) { 
+   const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation });
+   Item.Refresh();
 };
 
 
 frp.Items.Inventory = async function (player) { 
-   let Character = await player.Character();
-   const Inventory = [];
+   let Inventory = [];
    
-   let Items = await frp.Items.findAll({ where: { Owner: Character.id }});
-   
+   let Items = await frp.Items.findAll({ where: { Owner: player.character }});
+   Items.forEach((Item) => { 
+      Inventory.push(Item);
+   });
+
+   return Inventory;
 };
 
-/**
-* Refresh the Item, creating object if needed
-* @instance
-* @function refresh
-* @return {Function} Enter functions.
-* @memberof Items
-*/
+
+frp.Items.HasItem = async function (player, item) { 
+   let Item = await frp.Items.findOne({ where: { Owner: player.character, Item: item } });
+   return Item == null ? false : Item;
+};
+
 
 frp.Items.prototype.Refresh = function () { 
    if (this.Entity == ItemEntities.Ground) { 
 
-      const position = JSON.parse(this.Position);
-      const rotation = JSON.parse(this.Rotation);
+      const Position = this.Position;
+      const Rotation = this.Rotation;
 
-      this.object = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(position.x, position.y, position.z), {
-         rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z),
+      this.object = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(Position.x, Position.y, Position.z), {
+         rotation: new mp.Vector3(Rotation.x, Rotation.y, Rotation.z),
          alpha: 255,
          dimension: this.Dimension
       });
 
-      this.object.item = this.id;
+      this.object.Item = this.id;
       this.object.notifyStreaming = true;
    } else { 
       if (this.object) { 
@@ -79,50 +99,116 @@ frp.Items.prototype.Refresh = function () {
    }
 };
 
-/**
-* Deleting instance of Item 
-* @instance
-* @function delete
-* @return {Function} Enter functions.
-* @memberof Items
-*/
 
-
-frp.Items.prototype.delete = async function () { 
+frp.Items.prototype.Delete = async function () { 
    this.object.destroy();
    await this.destroy();
 };
 
 
+frp.Items.prototype.Drop = async function (player, quantity = 1, place) { 
+   const Position = JSON.parse(place);
 
-/**
-* Loading All Items
-* @method
-* @function load
-* @return {Function} Enter functions.
-* @memberof Items
-*/
+   if (this.Quantity == quantity) { 
+      this.Entity = ItemEntities.Ground;
+      this.Position = Position.position;
+      this.Rotation = Position.rotation;
+      this.Dimension = player.dimension;
+
+      this.Refresh();
+   } else { 
+      this.Quantity -= Quantity;
+      frp.Items.New(this.Item, quantity, ItemEntities.Ground, 0, Position.position, Position.rotation, player.dimension);
+   }
+
+   await this.save();
+};
+
+
+frp.Items.prototype.Pickup = async function (player) { 
+   // PROKS PORUKA: Podigao taj i taj predmet /me
+   this.Entity = ItemEntities.Player;
+   this.Owner = player.character;
+   this.Refresh();
+   await this.save();
+};
+
+
+frp.Items.prototype.Give = async function (player, target, quantity) { 
+
+   if (player.dist(target.position) < 2.5) return; // PORUKA: Taj igrac se ne nalazi u vasoj blizini
+   let Has = await frp.Items.HasItem(target, this.Item);
+
+   if (this.Quantity == quantity) { 
+      this.Owner = target.character;
+   } else { 
+      this.Quantity -= Quantity;
+      if (Has) { 
+         Has.Quantity += quantity;
+      } else { 
+         frp.Items.New(this.Item, quantity, ItemEntities.Player, target.character);
+      }
+   }
+
+   // PORUKA: Taj igrac je dao taj predmet tom i tom
+   await this.save();
+};
+
+
+frp.Items.Near = async function (player) { 
+   const Position = player.position;
+   mp.objects.forEachInRange(Position, 3.0, (Object) => { 
+      if (Object.Dimension == player.dimension) { 
+         if (Object.Item) { 
+            let Near = await frp.Items.findOne({ where: { id: object.Item } });
+            return Near;
+         }
+      }
+   });
+};
+
+
+frp.Items.prototype.Use = async function (player) { 
+   const Type = ItemRegistry[this.Item].type;
+   
+   if (Type == ItemType.Ammo) { 
+      // giive ammo current weapo
+   }
+
+};
+
+
+frp.Items.Clear = async function (player) { 
+   let Character = await player.Character();
+
+   const Items = await frp.Items.findAll({ where: { Owner: Character.id } });
+
+   Items.forEach(async (Item) => { 
+      await Item.destroy();
+   });
+};
+
+
+frp.Items.Weight = async function (player) { 
+   const Inventory = await frp.Items.Inventory(player);
+   let Weight = 0;
+
+   Inventory.forEach((Item) => { 
+      Weight += ItemRegistry[Item.Item].weight;
+   });
+
+   return Weight;
+};
+
+
+
 
 (async () => { 
    frp.Items.sync();
 
-   let Items = await frp.Items.findAll();
+   const Items = await frp.Items.findAll();
    Items.forEach((Item) => { 
       Item.Refresh();
    });
 })();
-
-
-/**
-* Creating instance of Item
-* @method
-* @function create
-* @return {Function} Enter functions.
-* @memberof Items
-*/
-
-frp.Items.create = async function (player, name, quantity, entity, owner) { 
-   const Item = await frp.Items.create({ Item: name, Quantity: quantity, Entity: entity, Owner: owner  });
-   Item.Refresh();
-};
 
