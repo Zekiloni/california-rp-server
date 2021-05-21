@@ -1,16 +1,18 @@
 
+let Channels = require('../classes/Channels');
+
 module.exports = { 
    commands: [ 
       {
          name: 'r',
          desc: 'Radio komunikacija',
-         call: (player, args) => { 
-            let character = player.getCharacter();
-            if (character.frequency == 0) return player.sendMessage('Niste ni u jednoj frekvenciji !', mp.colors.tomato);
+         call: async (player, args) => { 
+            let Character = await player.Character();
+            if (Character.Frequency == 0) return; // PORUKA: Niste ni u jednoj frekvenciji
             if (!mp.item.hasItem(character.id, 'Radio Prijemnik')) return player.sendMessage('Ne posedujete radio prijemnik !', mp.colors.tomato);
-            let message = args.splice(0).join(" ");
+            let message = args.splice(0).join(' ');
             if (message) { 
-               mp.channels.send(character.frequency, `[CH: ${character.frequency}] ${player.name}: ${message}`)
+               Channels.Send(Character.Frequency, player.name + ': ' + message);
             }
          }
       },

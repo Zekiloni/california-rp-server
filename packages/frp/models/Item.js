@@ -34,6 +34,22 @@ frp.Items = frp.Database.define('Item', {
 );
 
 
+
+frp.Items.HasItem = async function (player, item) { 
+   let Character = await player.Character();
+   let Item = await frp.Items.findOne({ where: { Owner: Character.id, Item: item } });
+   return Item == null ? false : true;
+};
+
+
+frp.Items.Inventory = async function (player) { 
+   let Character = await player.Character();
+   const Inventory = [];
+   
+   let Items = await frp.Items.findAll({ where: { Owner: Character.id }});
+   
+};
+
 /**
 * Refresh the Item, creating object if needed
 * @instance
@@ -42,7 +58,7 @@ frp.Items = frp.Database.define('Item', {
 * @memberof Items
 */
 
-frp.Items.prototype.refresh = function () { 
+frp.Items.prototype.Refresh = function () { 
    if (this.Entity == ItemEntities.Ground) { 
 
       const position = JSON.parse(this.Position);
@@ -90,9 +106,9 @@ frp.Items.prototype.delete = async function () {
 (async () => { 
    frp.Items.sync();
 
-   let items = await frp.Items.findAll();
-   items.forEach((item) => { 
-      item.refresh();
+   let Items = await frp.Items.findAll();
+   Items.forEach((Item) => { 
+      Item.Refresh();
    });
 })();
 
@@ -106,7 +122,7 @@ frp.Items.prototype.delete = async function () {
 */
 
 frp.Items.create = async function (player, name, quantity, entity, owner) { 
-   const item = await frp.Items.create({ Item: name, Quantity: quantity, Entity: entity, Owner: owner  });
-   item.refresh();
-}
+   const Item = await frp.Items.create({ Item: name, Quantity: quantity, Entity: entity, Owner: owner  });
+   Item.Refresh();
+};
 

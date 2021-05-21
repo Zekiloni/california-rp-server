@@ -1,28 +1,38 @@
 
 
-const minute = 60 * 1000;
+const interval = 60 * 1000;
 
-class Minute { 
-   static Spend () { 
-      mp.players.forEach((player) => { 
-         if (player.data.logged && player.data.spawned) { 
-            let character = player.Character(), account = player.Account();
 
-            character.Minutes ++;
+async function Update (player) { 
+   let character = await player.Character(), account = await player.Account();
 
-            if (character.Minutes >= 60) { 
-               character.Hours ++;
-               character.Minutes = 0;
-               let bank = a;
-
-            }
+   character.increment('Minutes', { by: frp.Settings.DoubleXP == true ? 2 : 1 }).then(
+      async (Char) => { 
+         if (Char.Minutes >= 60) { 
+            await character.increment('Hours', { by: 1 });
+            Char.update({ Minutes: 0 })
          }
-      })
-      setTimeout(() => { this.Spend(); }, minute);
+      }
+   );
+
+
+   if (character.Muted > 0) { 
+      await character.increment('Muted', { by: -1 });
    }
+
 }
 
-Minute.Spend();
+function Minute () { 
+   mp.players.forEach( (player) => { 
+      if (player.data.logged && player.data.spawned) { 
+         Update(player);
+      }
+   })
+   setTimeout(() => { Minute(); }, interval);
+}
+
+
+Minute();
 
 
 

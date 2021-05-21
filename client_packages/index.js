@@ -2,7 +2,7 @@
 
 // PLAYER CORE
 let Authentication = require('./player/Authorization');
-let CharacterCreator = require('./player/creator/customization');
+let CharacterCreator = require('./player/Creator');
 let GameInterface = require('./player/Hud');
 let PlayerCore = require('./player/Core');
 let PlayerList = require('./player/PlayerList');

@@ -83,7 +83,7 @@ div.login .authentication { display: flex; flex-direction: column; width: 350px;
 
 label.info {width: 242px;text-transform: uppercase;font-weight: 300;color: #a5a5a5;letter-spacing: 2.5px;}
 
-input { letter-spacing: 1.2px; width: 200px; border: none; color: #cdcdcd; background: rgb(21 21 21 / 75%); position: relative; padding: 10px 20px; font-size: 15px; font-weight: 300; box-shadow: 0 5px 10px rgb(12 12 12 / 10%); transition: all 0.45s ease; }
+input {letter-spacing: 1.2px;width: 200px;/* border: none; */border: 1px solid rgb(121 121 121 / 13%);color: #cdcdcd;background: rgb(21 21 21 / 75%);position: relative;padding: 10px 20px;font-size: 15px;font-weight: 300;box-shadow: 0 5px 10px rgb(12 12 12 / 10%);transition: all 0.45s ease;}
 input:focus { border-color: #fbc60c; }
 
 h4.forgoten-button { text-shadow: 0 1px 2px rgb(72 39 198); color: #6f4cee; letter-spacing: 2.0px; font-weight: 800; position: relative; text-transform: uppercase; transition: all 0.35s ease; }

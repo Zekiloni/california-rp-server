@@ -6,7 +6,7 @@ let customizationCEF = null,
     bodyCam = null,
     bodyCamStart = null;
 
-const genders = [ mp.game.joaat('mp_m_freemode_01'), mp.game.joaat('mp_f_freemode_01')  ];
+const genders = [  ];
 
 getCameraOffset = (pos, angle, dist) => {
     angle = angle * 0.0174533;
@@ -115,7 +115,6 @@ mp.events.add({
             }
             case 'faceFeatures': { 
                 mp.events.call('client:creator.cam.set', 2);
-                player.setFaceFeature(parseInt(data[0]), parseFloat(data[1])); 
                 break;
             }
             case 'gender': { 
@@ -124,12 +123,10 @@ mp.events.add({
             }
             case 'beard': {
                 mp.events.call('client:creator.cam.set', 2);
-                player.setHeadOverlay(1, parseInt(data[0]), 1.0, parseInt(data[1]), 0);
                 break;
             }
             case 'blendData': { 
                 mp.events.call('client:creator.cam.set', 1);
-                player.setHeadBlendData(parseInt(data[0]), parseInt(data[1]), 0, parseInt(data[2]), parseInt(data[3]), 0, parseFloat(data[4]), parseFloat(data[5]), 0, true);
                 break;
             }
             case 'clothing': { 
@@ -159,14 +156,7 @@ mp.events.add({
 
     'render': () => { 
         if (customizatorOpened) { 
-            let heading;
-            if (mp.keys.isDown(65) === true) {
-                heading = player.getHeading();
-                player.setHeading(heading - 2)
-            } else if (mp.keys.isDown(68) === true) {
-                heading = player.getHeading();
-                player.setHeading(heading + 1.5)
-            }
+            
         }
     }
 });

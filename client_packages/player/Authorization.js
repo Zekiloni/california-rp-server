@@ -14,7 +14,7 @@ mp.events.add({
    'client:player.login:show': () => { 
       opened = !opened;
       if (opened) { 
-         browser = mp.browsers.new('package://player/auth-interface/start.html');
+         browser = mp.browsers.new('package://player/start-interfaces/auth.html');
          Player.BrowserControls(true, true);
          Player.freezePosition(true);
          Player.LoginCamera(true);
@@ -30,7 +30,6 @@ mp.events.add({
 
    'client:player.login:credentials': async (username, password) => { 
       let response = await mp.events.callRemoteProc('server:player.login:credentials', username, password);
-      mp.gui.chat.push(JSON.stringify(response));
       if (response) { 
          browser.execute('start.Init(' + JSON.stringify(response) + ')');
       } else { 
@@ -41,6 +40,11 @@ mp.events.add({
    'client:player.character:select': (character) => { 
       mp.events.call('client:player.login:show');
       mp.events.callRemote('server:player.character:select', character);
+   },
+
+   'client:palyer.character:creator': () => { 
+      mp.events.call('client:player.login:show');
+      mp.events.call('client:player.character.creator:show');
    },
 
    'client:player.character:delete': async (character) => { 

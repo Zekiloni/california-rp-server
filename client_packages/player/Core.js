@@ -86,6 +86,7 @@ mp.events.add({
 
 function BrowserControls (freezeControls, mouse) {
    mouse ? mp.gui.chat.activate(false) : mp.gui.chat.activate(true);
+   // mp.game.invoke('setTypingInChatState', mouse);
    setTimeout(() => { mp.gui.cursor.show(freezeControls, mouse); }, 250);
 }
 

@@ -36,7 +36,17 @@ frp.Characters = frp.Database.define('Character', {
       Walking_Style: { type: DataTypes.STRING, defaultValue: 'normal' },
 
       Phone: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Radio: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
+
+      Licenses: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () {
+            return JSON.parse(this.getDataValue('Licenses'));
+         },
+         set: function (value) {
+            this.setDataValue('Licenses', JSON.stringify(value));
+         }
+      },
 
       Cuffed: { type: DataTypes.BOOLEAN, defaultValue: false },
       Freezed: { type: DataTypes.BOOLEAN, defaultValue: false },
@@ -53,6 +63,7 @@ frp.Characters = frp.Database.define('Character', {
       updatedAt: "Update_Date"
    }
 );
+
 
 (async () => { 
    frp.Characters.sync();
@@ -129,6 +140,20 @@ frp.Characters.prototype.SetJob = function (player, value) {
    player.setVariable('Job', this.Job);
 };
 
+frp.Characters.prototype.LicenseAdd = function (license) { 
+   let Licenses = this.Licenses;
+   Licenses.push(license);
+   this.Licenses = Licenses;
+};
+
+frp.Characters.prototype.RemoveLicense = function (license) { 
+   let Licenses = this.Licenses;
+   let x = Licenses.find(name => name === license);
+   let i = Licenses.indexOf(x);
+
+   Licenses.splice(i, 1);
+   this.Licenses = Licenses;
+};
 
 
 // METODE KLASE
@@ -139,5 +164,6 @@ frp.Characters.SaveAll = function () {
 
 
 
-// frp.Characters.create({ Name: 'Zachary Parker', Account: 2 });
-// frp.Characters.create({ Name: 'Valele Gay', Account: 2 });
+//  frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
+//  frp.Characters.create({ Name: 'Valele Gipsy', Account: 2 });
+//   frp.Characters.create({ Name: 'Pepsi Gay', Account: 2, Licenses: ["Driving"] });

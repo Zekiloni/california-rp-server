@@ -2,6 +2,9 @@
 
 'use strict';
 
+let Accounts = require('../models/Account');
+let Bans = require('../models/Ban');
+
 mp.events.add({
    'playerJoin': (player) => { 
       player.call('client:player.login:show');

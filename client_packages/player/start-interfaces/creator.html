@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/creator.css" />
+
+</head>
+<body>
+   <div id="creator" v-if="toggle">
+
+      <ul class="navigation">
+         <li v-on:click="page = 0" :class="{ 'active' : page == 0 }"> 1 </li>
+         <li v-on:click="page = 1" :class="{ 'active' : page == 1 }"> 2 </li>
+         <li v-on:click="page = 2" :class="{ 'active' : page == 2 }"> 3 </li>
+         <li v-on:click="page = 3" :class="{ 'active' : page == 3 }"> 4 </li>
+         <li v-on:click="page = 4" :class="{ 'active' : page == 4 }"> 5 </li>
+      </ul>
+
+      <img src="src/images/logo.png" class="logo" />
+
+      <div class="content">
+         <div class="page" v-if="page == 0">
+            <div class="header">
+               <h3> Identitet & Opšte informacije</h3>
+               <small> kreiranje identiteta i opšte informacije karaktera </small>
+            </div>
+
+            <div class="identity">
+               <label> Ime </label>
+               <input type="text" v-model="character.First_Name">
+
+               <label> Prezime </label>
+               <input type="text" v-model="character.Last_Name">
+
+               <label> Datum Rodjenja </label>
+               <input class="unstyled" type="date" :class="{ 'error' : errors.Birth }" v-model="character.Birth" min="1918-01-01" max="2001-01-30" />
+
+               <label> Mesto Rodjenja </label>
+               <input type="text" v-model="character.Origin">
+
+               <div class="genders">
+                  <label> Pol </label>
+                  <button v-on:click="Gender(0)" :class="{ 'selected': character.Gender == 0 }"> <i class="fa fa-male" aria-hidden="true"> </i> </button>
+                  <button v-on:click="Gender(1)" :class="{ 'selected': character.Gender == 1 }"> <i class="fa fa-female" aria-hidden="true"> </i> </button>
+               </div>
+            </div>
+         </div>
+
+         <div class="page" v-if="page == 1">
+            <div class="header">
+               <h3> Oblik lica & Genetika </h3>
+               <small> Oblik lica, boja kože, miks </small>
+            </div>
+
+            <div class="blend">
+               <div class="single" v-for="(blend, i) in Data.Blends">
+                  <label> {{ blend[0] }} <b> {{ character.Blend[i] }} </b> </label>
+                  <input type="range" class="slider" v-model="character.Blend[i]" v-on:change="Blend(i, character.Blend[i])" :step="blend[3]" :min="blend[1]" :max="blend[2]" >
+               </div>
+            </div>
+         </div>
+
+         <div class="page" v-if="page == 2">
+            <div class="header">
+               <h3> Detalji lica & Konture </h3>
+               <small> Detaljniji izgled lica i Konture </small>
+            </div>
+
+            <div class="face">
+               <div class="single" v-for="(face, i) in Data.Face">
+                  <label> {{ face }} <b> {{ character.Face[i] }} </b> </label>
+                  <input type="range" class="slider" v-model="character.Face[i]" v-on:change="Face(i, character.Face[i])" step="0.1" :min="-1.0" :max="1.0" >
+               </div>
+            </div>
+         </div>
+
+         <div class="page" v-if="page == 3">
+            <div class="header">
+               <h3> Kosa & Brada </h3>
+               <small> Dlakavost, model frizure i boja kose kao i brade </small>
+            </div>
+
+            <div class="hairiness">
+               <div class="single">
+                  <label> Frizura <b> {{ character.Hair[0] }} </b> </label>
+                  <input type="range" class="slider" v-model="character.Hair[0]" v-on:change="Hair(0, character.Hair[0])" step="1" min="0" max="74" >
+               </div>
+
+               <div class="single">
+                  <label> Boja Kose </label>
+                  <ul class="list-colors">
+                     <li v-for="(h, i) of Data.HairColors" :class="{ 'selected': Selected.HairColor == i }" v-on:click="Hair(1, i)" v-bind:style="{ backgroundColor: Data.HairColors[i] }"> </li>
+                  </ul>
+               </div>
+
+               <div class="single">
+                  <label> Boja Brade </label>
+                  <ul class="list-colors">
+                     <li v-for="(h, i) of Data.BeardColors" :class="{ 'selected': Selected.BeardColor == h }" v-on:click="Beard(1, h)" v-bind:style="{ backgroundColor: Data.HairColors[h] }"> </li>
+                  </ul>
+               </div>
+
+            </div>
+         </div>
+
+         <div class="page" v-if="page == 4">
+            5
+         </div>
+      </div>
+
+      <h1 class="website"> www.focus-rp.com </h1>
+   </div>
+      
+   <!-- scripts -->
+   <script src="src/vendor/js/vue.js"></script>
+   <script>
+
+      let creator = new Vue({
+         el: '#creator',
+         data: {      
+            toggle: true,
+            page: 0,
+
+            errors: { 
+               birth: false
+            },
+
+            character: {
+               First_Name: null,
+               Last_Name: null,
+               Birth: null,
+               Origin: null,
+               Gender: null,
+               Blend: [0, 0, 0, 0, 0, 0],
+               Overlays: [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+               Overlays_Colors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+               Hair: [0, 0, 0],
+               Beard: [0, 0],
+               Torso: 0,
+               Face: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               Clothing: [ [0, 0], [0, 0], [0, 0], [0, 0] ]
+            },
+
+            Selected: { 
+               HairColor: 0,
+               BeardColor: 0
+            },
+
+            Data: { 
+               Face: [
+                  'Nos širina', 'Nos visina', 'Nos dužina', 'Nos - širina mosta', 'Nos - pozicija', 'Nos - pomak mosta nosa', 'Obrve visina', 'Obrve širina', 'Jagodična kost visina', 
+                  'Jagodična kost širina', 'Obrazi širina', 'Oči', 'Usne', 'Dužina vilice', 'Visina vilice', 'Dužina brade', 'Pozicija brade', 'Širina brade', 'Oblik brade',  'Sirina vrata', 
+               ],
+
+               HairColors: [
+                  '#0c0c0c', '#1d1a17', '#281d18', '#3d1f15', '#682e19', '#954b29', '#a35234', '#9b5f3d', '#b57e54', '#c19167', '#af7f53', '#be9560', '#d0ac75', '#b37f43', '#dbac68', '#e4ba7e', '#bd895a', '#83422c', '#8e3a28', '#8a241c',
+                  '#962b20', '#a7271d', '#c4351f', '#d8421f', '#c35731', '#d24b21', '#816755', '#917660', '#a88c74', '#d0b69e', '#513442', '#744557', '#a94663', '#cb1e8e', '#f63f78', '#ed9393', '#0b917e', '#248081', '#1b4d6b', '#578d4b',
+                  '#235433', '#155146', '#889e2e', '#71881b', '#468f21', '#cc953d', '#ebb010', '#ec971a', '#e76816', '#e64810', '#ec4d0e', '#c22313', '#e43315', '#ae1b18', '#6d0c0e', '#281914', '#3d241a', '#4c281a', '#5d3929', '#69402b',
+                  '#291b16', '#0e0e10', '#e6bb84', '#d8ac74'
+               ],
+
+               BeardColors: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29, 55, 56, 57, 58, 59, 60, 61, 62, 63],
+               headOverlays: ['Mrlje', 'Obrve', 'Starost, pore', 'Šminka', 'Rumenilo', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
+
+               validTorsos: [
+                  [0, 0, 2, 14, 14, 5, 14, 14, 8, 0, 14, 15, 12],
+                  [0, 5, 2, 3, 4, 4, 5, 5, 5, 0]
+               ],
+
+               clothings: ['Majca', 'Podmajca', 'Pantalone', 'Patike'], 
+               clothingMax: [361, 132, 97],
+
+               Blends: [ 
+                  ['Oblik lica majke', 0, 45, 1], ['Oblik lica oca', 0, 45, 1], ['Boja kože majke', 0, 45, 1],
+                  ['Boja kože oca', 0, 45, 1], ['Miks oblika', -1, 1, 0.1], ['Miks boje kože',-1, 1, 0.1]
+               ]
+            }
+
+         },
+
+         methods: { 
+
+            Gender: function(x) { this.character.Gender = x; mp.trigger('client:player.character.creator:gender', x); },
+            Hair: function (i, x) { 
+               this.character.Hair[i] = x; 
+               if (i == 1) this.Selected.HairColor = x; 
+               mp.trigger('client:player.character.creator:hair', i, x); 
+            },
+            Beard: function (i, x) { 
+               this.character.Beard[i] = x;
+               if (i == 1) this.Selected.BeardColor = x;
+               mp.trigger('client:player.character.creator:beard', JSON.stringify(this.character.Beard)); 
+            },
+            Face: function (i, x) { this.character.Face[i] = x; mp.trigger('client:player.character.creator:face', i, x); },
+            
+            Blend: function (i, x) { mp.trigger('client:player.character.creator:blend', JSON.stringify(this.character.Blend)); },
+
+            Create: function () { 
+               
+            }
+         }
+      })
+   </script>
+</body>     
+</html>
