@@ -94,7 +94,7 @@ mp.events.add("server:casino.slot.spin", (player) =>
 *   player.notifiation(message, type, time) - Tekst, tip (error, uspesno, info), time: broj sekundi za koliko nestaje
 *   player.isNear(target) - Da li je blizu targeta u radiusu manjem od 3, vraca true, false
 *   mp.players.find(id / ime) - Pronalazi igraca
-*   player.proximityMessage(radius, message, colors) - Proks fade poruka u datom radiusu, colors: lista od 5 boja
+*   player.ProximityMessage(radius, message, colors) - Proks fade poruka u datom radiusu, colors: lista od 5 boja
 *   player.nearPleayers(radius) - Vraca igrace u blizini igraca u datom radiusu
 */
 

@@ -8,6 +8,7 @@ let browser = null, opened = false, nearbyPlayers = [];
 mp.events.add({
    'client:inventory.toggle': (toggle, items = 0, weapons = 0) => {
       if (toggle) { 
+         CompareVectors
          items = JSON.stringify(items)
          weapons = JSON.stringify(weapons)
          // mp.game.graphics.transitionToBlurred(500);

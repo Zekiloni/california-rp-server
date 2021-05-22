@@ -1,12 +1,7 @@
-
-
 const FactionTypes = {
-   Law: 0, Fmd: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Party: 6, Cartel: 7
-}
-
-module.exports = { FactionTypes }
-
-
+    Law: 0, Fmd: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Party: 6, Cartel: 7
+};
+module.exports = { FactionTypes };
 // mp.factions = {
 //    1: { 
 //       id: 1, name: 'Los Santos Police Department', motd: 'To protect & Serve', type: FactionTypes.Law, sprite: 60,
@@ -15,7 +10,6 @@ module.exports = { FactionTypes }
 //       armory: new mp.Vector3(452.0938415, -980.22052, 30.68961), vehicle: new mp.Vector3(439.02337, -1019.7479, 28.72946),
 //    }
 // };
-
 // class Factions { 
 //    constructor () { 
 //       mp.events.add({
@@ -24,7 +18,6 @@ module.exports = { FactionTypes }
 //             player.giveWeapon(weaponHash, parseInt(ammo) || 15);
 //             account.sendProxMessage(player, CHAT_RADIUS.ME, `* ${player.name} uzima ${name} iz ormarica.`, PURPLE_1, PURPLE_2, PURPLE_3, PURPLE_4, PURPLE_5);
 //          },
-
 //          'server:police.spawnVehicle': (player, name, model) => {
 //             let faction = factions.getFaction(player.faction);
 //             let vPos = faction.VEH_POINT;
@@ -37,7 +30,6 @@ module.exports = { FactionTypes }
 //          }
 //       })
 //    }
-
 //    init () { 
 //       let counter = 0;
 //       for (let i in mp.factions) { 
@@ -45,7 +37,6 @@ module.exports = { FactionTypes }
 //          if (faction.label) { 
 //             mp.labels.new(faction.name + '~n~' + faction.motd, faction.label, { los: true, font: 0, drawDistance: 4} );
 //          }
-
 //          if (faction.blip) { 
 //             mp.blips.new(faction.sprite, faction.blip, {
 //                name: faction.name,
@@ -53,8 +44,6 @@ module.exports = { FactionTypes }
 //                shortRange: true,
 //             })
 //          }
-
-
 //          if (faction.garage) { 
 //             faction.garage.marker = mp.markers.new(27, faction.garage, 0.85, {
 //                color: mp.settings.color.rgba, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: 0
@@ -62,8 +51,6 @@ module.exports = { FactionTypes }
 //             faction.garage.colshape = mp.colshapes.newRectangle(faction.garage.x, faction.garage.y, 1.75, 2, 0);
 //             faction.garage.colshape.name = 'garage';
 //          }
-
-
 //          if (faction.equip) { 
 //             faction.equip.marker = mp.markers.new(27, faction.equip, 0.85, {
 //                color: mp.settings.color.rgba, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: 0
@@ -71,7 +58,6 @@ module.exports = { FactionTypes }
 //             faction.equip.colshape = mp.colshapes.newRectangle(faction.equip.x, faction.equip.y, 1.5, 2, 0);
 //             faction.equip.colshape.name = 'equip';
 //          }
-
 //          if (faction.armory) { 
 //             faction.armory.marker = mp.markers.new(27, faction.armory, 0.85, {
 //                color: mp.settings.color.rgba, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: 0
@@ -79,12 +65,10 @@ module.exports = { FactionTypes }
 //             faction.armory.colshape = mp.colshapes.newRectangle(faction.armory.x, faction.armory.y, 1.5, 2, 0);
 //             faction.armory.colshape.name = 'weapon';
 //          }
-
 //          counter ++;
 //       } 
 //       core.terminal(3, counter + ' Factions loaded')
 //    }
-
 //    leader (player, f) { 
 //       let character = player.getCharacter();
 //       let faction = mp.factions[f];
@@ -98,20 +82,17 @@ module.exports = { FactionTypes }
 //          });
 //       }
 //    }
-
 //    invite (player, target) { 
 //       let character = player.getCharacter(), targetcharacter = target.getCharacter();
 //       if (character && targetcharacter) { 
 //          if (character.faction == 0) return;
 //          if (mp.factions[character.faction].leader != character.id) return;
-
 //          player.sendMessage('Pozvali ste ' + target.name + ' u vasu fakciju.', mp.colors.info);
 //          target.sendMessage(target.name + ' vam je poslao zahtev za pridruzivanje ' + mp.factions[character.faction].name + '.', mp.colors.info);
 //          target.sendMessage('Koristite /accept invite kako bi prihvatili zahtev.', mp.colors.help);
 //          targetcharacter.invite_request = character.faction;
 //       }
 //    }
-
 //    uninvite (player, target) { 
 //       let character = player.getCharacter(), targetcharacter = target.getCharacter();
 //       if (character && targetcharacter) { 
@@ -122,7 +103,6 @@ module.exports = { FactionTypes }
 //          target.sendMessage(target.name + ' vas je izbacio iz fakcije ' + mp.factions[character.faction].name + '.', mp.colors.info);
 //       }
 //    }
-
 //    rank (player, target, rank) { 
 //       let targetcharacter = target.getCharacter(), character = player.getCharacter();
 //       if (targetcharacter && character) { 
@@ -133,7 +113,6 @@ module.exports = { FactionTypes }
 //          target.sendMessage(target.name + ' vam je postavio rank na ' + rank + '.', mp.colors.info);
 //       }
 //    }
-
 //    chat (faction, message) { 
 //       mp.players.forEach( (target) => { 
 //          if (target.data.logged && target.data.spawned) { 
@@ -147,7 +126,5 @@ module.exports = { FactionTypes }
 //       })
 //    }
 // }
-
 // mp.faction = new Factions();
 // mp.faction.init();
-

@@ -1,5 +1,8 @@
 
 
+// UTILs
+let Utils = require('./Utils');
+
 // PLAYER CORE
 let Authentication = require('./player/Authorization');
 let CharacterCreator = require('./player/Creator');
@@ -10,6 +13,7 @@ let NameTags = require('./player/NameTags');
 let Attachments = require('./player/Attachments');
 let PlayerInventory = require('./player/inventory/Items');
 let PlayerBanking = require('./player/Banking');
+let AntiAFK = require('./player/AFK');
 
 // ADMIN
 let AdminStuffs = require('./player/Admin');
@@ -57,7 +61,6 @@ let Mining = require('./jobs/Miner');
 // let casino = require('./casino/CasinoSlots');
 // let fuel = require('./fuel');
 
-// let binds = require('./player/binds');
 
 // var animals = require('./animals');
 // var charClohing = require('./clothing/clothing');

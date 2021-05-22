@@ -33,7 +33,7 @@ mp.events.add({
       if (response) { 
          browser.execute('start.Init(' + JSON.stringify(response) + ')');
       } else { 
-         browser.execute('start.Notify(`Password nije tacan ili ne postojis`);')
+         browser.execute('start.Notify(`Password nije tacan ili ne postojis`);');
       }
    },
 

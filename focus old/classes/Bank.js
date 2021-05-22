@@ -43,28 +43,6 @@ class BankAccount {
    }
 
 
-   withdraw (player, value) { 
-      let character = player.getCharacter();
-      character.giveMoney(player, parseInt(value));
-      this.balance -= parseInt(value);
-      mp.bank.update(this)
-   }
-
-   deposit (player, value) { 
-      let character = player.getCharacter();
-      character.giveMoney(player, -parseInt(value));
-      this.balance += parseInt(value);
-      mp.bank.update(this)
-   }
-
-   transfer (target, value) { 
-      this.balance -= parseInt(value);
-      target.balance += parseInt(value);
-      console.log(target)
-      mp.bank.update(this);
-      //mp.bank.update(target);
-   }
-
    // money transfer from paycheck to account balance
    payout (player, value) { 
       let character = player.getCharacter();
@@ -74,78 +52,6 @@ class BankAccount {
    }
 
    // giving payday
-   payDay (player) { 
-      let character = player.getCharacter(), value = 0;
-
-      value += core.between(445, 455);
-
-      if (character.hours < 8) { 
-         value += core.between(85, 95);
-      }
-
-      if (character.job) { 
-         value += core.between(75, 85);
-         value += character.working.salary;
-         character.working.salary = 0;
-      }
-
-      if (character.faction) { 
-         let factionType = mp.factions[character.faction].type;
-         if (factionType == FactionTypes.Law || factionType == FactionTypes.Fmd) { 
-            value += core.between(75, 95);
-            if (mp.factions[character.faction].leader == character.id) { 
-               value += core.between(50, 65);
-            }
-         } else if (factionType == FactionTypes.Gov) { 
-            value += core.between(90, 105);
-            if (mp.factions[character.faction].leader == character.id) { 
-               value += core.between(100, 105);
-            }
-         }
-      }
-
-      if (this.savings > 0) { 
-         let earnings = this.savings / 50;
-         this.savings += earnings;
-      }
-
-      this.paycheck += value;
-
-      this.tax(player, value);
-   }
-
-   tax (player, earnings) { 
-      let character = player.getCharacter();
-      let percent = 5, salaryTax = (earnings / 100) * percent;
-      let TAX = 0;
-
-      let properties = character.property();
-
-      if (properties.houses.length > 0) { 
-         properties.houses.forEach((house) => { 
-            TAX += (house.price / 100) * 0.25;
-         })
-      }
-
-      if (properties.vehicles.length > 0) { 
-         properties.vehicles.forEach((veh) => { 
-            TAX += (veh.price / 100) * 0.1;
-         })
-      }
-
-      if (properties.business.length > 0) { 
-         properties.business.forEach((biz) => { 
-            TAX += (biz.budget / 100) * 3.5;
-         })
-      }
-
-      if (earnings > 20) { 
-         TAX += salaryTax;
-      }
-
-
-      mp.bank.update(this);
-   }
 }
 
 
@@ -238,21 +144,7 @@ mp.bank = new Bank();
 
 mp.bank.load();
 
-function generateNumber (n) { 
-   let add = 1, max = 12 - add;     
-   if ( n > max ) { return generateNumber(max) + generateNumber(n - max); }
-   max        = Math.pow(10, n+add);
-   let min    = max/10; 
-   let number = Math.floor( Math.random() * (max - min + 1) ) + min;
-   return ("" + number).substring(add); 
-}
 
-function countDigits (n) {
-   let count = 0;
-   if (n >= 1) ++ count;
-   while (n / 10 >= 1) { n /= 10; ++ count; }
-   return count;
-}
 
 
 new BankAccount('321199', 323);

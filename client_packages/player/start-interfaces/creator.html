@@ -64,6 +64,13 @@
                   <label> {{ blend[0] }} <b> {{ character.Blend[i] }} </b> </label>
                   <input type="range" class="slider" v-model="character.Blend[i]" v-on:change="Blend(i, character.Blend[i])" :step="blend[3]" :min="blend[1]" :max="blend[2]" >
                </div>
+
+               <div class="single">
+                  <label> Boja Očiju </label>
+                  <ul class="list-colors">
+                     <li v-for="(e, i) of Data.EyesColors" :class="{ 'selected': Selected.EyeColor == e }" v-on:click="Eyes(e)" v-bind:style="{ backgroundColor: Data.HairColors[e] }"> </li>
+                  </ul>
+               </div>
             </div>
          </div>
 
@@ -143,6 +150,7 @@
                Overlays_Colors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
                Hair: [0, 0, 0],
                Beard: [0, 0],
+               Eyes: 0,
                Torso: 0,
                Face: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                Clothing: [ [0, 0], [0, 0], [0, 0], [0, 0] ]
@@ -150,7 +158,8 @@
 
             Selected: { 
                HairColor: 0,
-               BeardColor: 0
+               BeardColor: 0,
+               EyeColor: 0,
             },
 
             Data: { 
@@ -167,6 +176,7 @@
                ],
 
                BeardColors: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29, 55, 56, 57, 58, 59, 60, 61, 62, 63],
+               EyesColors: [0, 40, 41, 4, 3 , 6, 37, 36 , 39],
                headOverlays: ['Mrlje', 'Obrve', 'Starost, pore', 'Šminka', 'Rumenilo', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
 
                validTorsos: [
@@ -198,6 +208,7 @@
                if (i == 1) this.Selected.BeardColor = x;
                mp.trigger('client:player.character.creator:beard', JSON.stringify(this.character.Beard)); 
             },
+            Eyes: function (x) { this.Selected.EyeColor = x; this.Character.Eyes = x; mp.trigger('client:player.character.creator:eyes', x); },
             Face: function (i, x) { this.character.Face[i] = x; mp.trigger('client:player.character.creator:face', i, x); },
             
             Blend: function (i, x) { mp.trigger('client:player.character.creator:blend', JSON.stringify(this.character.Blend)); },

@@ -1,157 +1,157 @@
 {
-  "Stations": [
-    {
-      "StationIndex": "0",
-      "StationName": "El Burro Heights",
-      "StationCoords": {
-        "X": "1310.6311",
-        "Y": "-2037.793",
-        "Z": "45.6425552"
-      }
-    },
-    {
-      "StationIndex": "1",
-      "StationName": "El Rancho Blvd",
-      "StationCoords": {
-        "X": "1434.71716",
-        "Y": "-1814.44031",
-        "Z": "68.63488"
-      }
-    },
-    {
-      "StationIndex": "2",
-      "StationName": "LS Tattoos",
-      "StationCoords": {
-        "X": "1298.199",
-        "Y": "-1638.694",
-        "Z": "51.42203"
-      }
-    },
-    {
-      "StationIndex": "3",
-      "StationName": "PIBWASSER",
-      "StationCoords": {
-        "X": "935.4361",
-        "Y": "-1754.26245",
-        "Z": "31.1251411"
-      }
-    },
-    {
-      "StationIndex": "4",
-      "StationName": "Bilingsgate Motel",
-      "StationCoords": {
-        "X": "583.518433",
-        "Y": "-1710.93555",
-        "Z": "29.2126389"
-      }
-    },
-    {
-      "StationIndex": "5",
-      "StationName": "Public Library",
-      "StationCoords": {
-        "X": "192.208466",
-        "Y": "-1578.31189",
-        "Z": "29.248703"
-      }
-    },
-    {
-      "StationIndex": "6",
-      "StationName": "Maze Bank Arena",
-      "StationCoords": {
-        "X": "-338.3432",
-        "Y": "-1814.657",
-        "Z": "22.63967"
-      }
-    },
-    {
-      "StationIndex": "7",
-      "StationName": "New Empire Way",
-      "StationCoords": {
-        "X": "-1004.9325",
-        "Y": "-2464.66016",
-        "Z": "13.685647"
-      }
-    },
-    {
-      "StationIndex": "8",
-      "StationName": "LSIA",
-      "StationCoords": {
-        "X": "-1044.36072",
-        "Y": "-2715.903",
-        "Z": "13.7070751"
-      }
-    },
-    {
-      "StationIndex": "9",
-      "StationName": "Maze Bank Arena",
-      "StationCoords": {
-        "X": "-299.956451",
-        "Y": "-1842.74915",
-        "Z": "25.5684566"
-      }
-    },
-    {
-      "StationIndex": "10",
-      "StationName": "Davis Mega Mall",
-      "StationCoords": {
-        "X": "-41.06901",
-        "Y": "-1721.156",
-        "Z": "28.25072"
-      }
-    },
-    {
-      "StationIndex": "11",
-      "StationName": "Public Library",
-      "StationCoords": {
-        "X": "280.81897",
-        "Y": "-1550.41357",
-        "Z": "29.0736179"
-      }
-    },
-    {
-      "StationIndex": "12",
-      "StationName": "Bilingsgate Motel",
-      "StationCoords": {
-        "X": "567.4367",
-        "Y": "-1728.69214",
-        "Z": "29.1911373"
-      }
-    },
-    {
-      "StationIndex": "13",
-      "StationName": "PIBWASSER",
-      "StationCoords": {
-        "X": "876.711731",
-        "Y": "-1765.69641",
-        "Z": "29.8396168"
-      }
-    },
-    {
-      "StationIndex": "14",
-      "StationName": "LS Tattoos",
-      "StationCoords": {
-        "X": "1287.48743",
-        "Y": "-1655.6814",
-        "Z": "49.65646"
-      }
-    },
-    {
-      "StationIndex": "15",
-      "StationName": "El Rancho Blvd",
-      "StationCoords": {
-        "X": "1420.29248",
-        "Y": "-1825.39221",
-        "Z": "69.45802"
-      }
-    },
-    {
-      "StationIndex": "16",
-      "StationName": "El Burro Heights",
-      "StationCoords": {
-        "X": "1300.203",
-        "Y": "-2020.744",
-        "Z": "45.53681"
-      }
-    }
-  ]
+    "Stations": [
+        {
+            "StationIndex": "0",
+            "StationName": "El Burro Heights",
+            "StationCoords": {
+                "X": "1310.6311",
+                "Y": "-2037.793",
+                "Z": "45.6425552"
+            }
+        },
+        {
+            "StationIndex": "1",
+            "StationName": "El Rancho Blvd",
+            "StationCoords": {
+                "X": "1434.71716",
+                "Y": "-1814.44031",
+                "Z": "68.63488"
+            }
+        },
+        {
+            "StationIndex": "2",
+            "StationName": "LS Tattoos",
+            "StationCoords": {
+                "X": "1298.199",
+                "Y": "-1638.694",
+                "Z": "51.42203"
+            }
+        },
+        {
+            "StationIndex": "3",
+            "StationName": "PIBWASSER",
+            "StationCoords": {
+                "X": "935.4361",
+                "Y": "-1754.26245",
+                "Z": "31.1251411"
+            }
+        },
+        {
+            "StationIndex": "4",
+            "StationName": "Bilingsgate Motel",
+            "StationCoords": {
+                "X": "583.518433",
+                "Y": "-1710.93555",
+                "Z": "29.2126389"
+            }
+        },
+        {
+            "StationIndex": "5",
+            "StationName": "Public Library",
+            "StationCoords": {
+                "X": "192.208466",
+                "Y": "-1578.31189",
+                "Z": "29.248703"
+            }
+        },
+        {
+            "StationIndex": "6",
+            "StationName": "Maze Bank Arena",
+            "StationCoords": {
+                "X": "-338.3432",
+                "Y": "-1814.657",
+                "Z": "22.63967"
+            }
+        },
+        {
+            "StationIndex": "7",
+            "StationName": "New Empire Way",
+            "StationCoords": {
+                "X": "-1004.9325",
+                "Y": "-2464.66016",
+                "Z": "13.685647"
+            }
+        },
+        {
+            "StationIndex": "8",
+            "StationName": "LSIA",
+            "StationCoords": {
+                "X": "-1044.36072",
+                "Y": "-2715.903",
+                "Z": "13.7070751"
+            }
+        },
+        {
+            "StationIndex": "9",
+            "StationName": "Maze Bank Arena",
+            "StationCoords": {
+                "X": "-299.956451",
+                "Y": "-1842.74915",
+                "Z": "25.5684566"
+            }
+        },
+        {
+            "StationIndex": "10",
+            "StationName": "Davis Mega Mall",
+            "StationCoords": {
+                "X": "-41.06901",
+                "Y": "-1721.156",
+                "Z": "28.25072"
+            }
+        },
+        {
+            "StationIndex": "11",
+            "StationName": "Public Library",
+            "StationCoords": {
+                "X": "280.81897",
+                "Y": "-1550.41357",
+                "Z": "29.0736179"
+            }
+        },
+        {
+            "StationIndex": "12",
+            "StationName": "Bilingsgate Motel",
+            "StationCoords": {
+                "X": "567.4367",
+                "Y": "-1728.69214",
+                "Z": "29.1911373"
+            }
+        },
+        {
+            "StationIndex": "13",
+            "StationName": "PIBWASSER",
+            "StationCoords": {
+                "X": "876.711731",
+                "Y": "-1765.69641",
+                "Z": "29.8396168"
+            }
+        },
+        {
+            "StationIndex": "14",
+            "StationName": "LS Tattoos",
+            "StationCoords": {
+                "X": "1287.48743",
+                "Y": "-1655.6814",
+                "Z": "49.65646"
+            }
+        },
+        {
+            "StationIndex": "15",
+            "StationName": "El Rancho Blvd",
+            "StationCoords": {
+                "X": "1420.29248",
+                "Y": "-1825.39221",
+                "Z": "69.45802"
+            }
+        },
+        {
+            "StationIndex": "16",
+            "StationName": "El Burro Heights",
+            "StationCoords": {
+                "X": "1300.203",
+                "Y": "-2020.744",
+                "Z": "45.53681"
+            }
+        }
+    ]
 }

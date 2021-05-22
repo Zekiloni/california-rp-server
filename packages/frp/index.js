@@ -1,5 +1,4 @@
 
-
 global.frp = {};
 
 frp.Settings = require('./configs/Settings');
@@ -16,7 +15,6 @@ let Globals = require('./configs/Globals');
 
 // MODELS 
 let Logs = require('./models/Logs');
-
 let Appearances = require('./models/Appearance');
 let Characters = require('./models/Character');
 let Channels = require('./models/Channel');
@@ -24,6 +22,7 @@ let Houses = require('./models/House');
 
 
 // CLASSES
+
 let Player = require('./classes/Player');
 let Accounts = require('./classes/Account');
 let Savings = require('./classes/Savings');
@@ -33,36 +32,38 @@ let Doors = require('./classes/Doors');
 let Inventory = require('./classes/Inventory');
 let Minute = require('./classes/Minute');
 let Business = require('./classes/Business');
-
 let Weather = require('./classes/Weather');
-let Jobs = require('./classes/Jobs')
-// let Vehicles;
+let Jobs = require('./classes/Jobs');
 
-// let Business;
 
+(async () => {
+    const Chars = await frp.Characters.count();
+    const Users = await frp.Accounts.count();
+    frp.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
+})();
 
 
 mp.events.addCommand("koo", (player, fullText) => {
-   player.outputChatBox('Position ' + JSON.stringify(player.position))
-   player.outputChatBox('Heading ' + JSON.stringify(player.heading))
-   player.outputChatBox('Rotation ' + JSON.stringify(player.rotation))
+    player.outputChatBox('Position ' + JSON.stringify(player.position));
+    player.outputChatBox('Heading ' + JSON.stringify(player.heading));
+    player.outputChatBox('Rotation ' + JSON.stringify(player.rotation));
 });
+
 
 mp.events.addCommand("cer", (player, fullText) => {
-   player.call('client:player.character.creator:show');
+    player.call('client:player.character.creator:show');
 });
 
+const Exit = async () => {
+    frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');
+    // await mp.players.broadcast(`!{red}Server se gasi. Pridružite se na F1.`);
+    // for (let player of mp.players.toArray()) {
+    //    player.kick('Server se gasi...');
+    // };
+    // await - send broadcast to players
+    process.exit();
+};
 
-
-const Exit = async () => { 
-   frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');
-   // await mp.players.broadcast(`!{red}Server se gasi. Pridružite se na F1.`);
-   // for (let player of mp.players.toArray()) {
-   //    player.kick('Server se gasi...');
-   // };
-   // await - send broadcast to players
-   process.exit();
-}
 
 process.on('SIGHUP', Exit);
 process.on('SIGQUIT', Exit);

@@ -55,7 +55,7 @@ input[type=date]:focus { color: #d0d0d0; }
 
 .error { border-color: tomato !important; }
 
-.blend { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px; width: 225px; margin: 0 auto; }
+.blend {display: flex;flex-direction: column;align-items: center;justify-content: center;width: 255px;margin: 0 auto;height: 370px;margin-top: 10px;padding: 20px;overflow-y: auto;}
 .blend .single { width: 100%; padding: 10px; margin-top: 5px; }
 .blend .single .slider { width: 100%; }
 

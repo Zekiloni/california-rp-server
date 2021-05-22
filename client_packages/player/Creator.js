@@ -52,9 +52,13 @@ mp.events.add({
       }
    },
 
-   'client:player.character.creator:gender': (i) => { 
-      Player.model = Genders[i];
+   'client:player.character.creator:gender': (x) => { 
+      Player.model = Genders[x];
    },
+
+   'client:player.character.creator:eyes': (x) => { 
+      Player.setEyeColor(x);
+   } ,
 
    'client:player.character.creator:hair': (i, x) => { 
       Hair[i] = parseInt(x);
