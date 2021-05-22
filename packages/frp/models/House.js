@@ -31,7 +31,7 @@ frp.Houses = frp.Database.define('House', {
 );
 
 
-frp.Houses.prototype.init = function () { 
+frp.Houses.prototype.Init = function () { 
    if (this.colshape && this.blip) return;
    let Position = JSON.parse(this.Position);
 
@@ -39,10 +39,10 @@ frp.Houses.prototype.init = function () {
    this.colshape.house = this.id;
    this.blip = mp.blips.new(40, new mp.Vector3(Position.x, Position.y, Position.z), { dimension: this.Dimension, name: 'Kuca', color: 36, shortRange: true });
 
-   this.refresh();
+   this.Refresh();
 };
 
-frp.Houses.prototype.refresh = function () { 
+frp.Houses.prototype.Refresh = function () { 
    this.Owner == 0 ? ( this.blip.color = 1 ) : ( this.blip.color = 2 );
    this.Owner == 0 ? ( this.blip.name = 'Kuca na prodaju !' ) : ( this.blip.name = 'Kuca' );
 };
@@ -52,13 +52,12 @@ frp.Houses.prototype.refresh = function () {
 
    frp.Houses.sync()
 
-   let houses = await frp.Houses.findAll();
-   houses.forEach((house) => { 
-      house.init();
-      //console.log(house)
+   const Houses = await frp.Houses.findAll();
+   Houses.forEach((House) => { 
+      House.Init();
    });
    
-   frp.Main.Terminal(3, houses.length + ' Houses Loaded !')
+   frp.Main.Terminal(3, Houses.length + ' Houses Loaded !')
 
 })();
 

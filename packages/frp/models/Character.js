@@ -70,13 +70,6 @@ frp.Characters = frp.Database.define('Character', {
 })();
 
 
-/**
-* Spawning Player and Assigning Character to Player
-* @instance
-* @function spawn
-* @return {Function} Enter functions.
-* @memberof Characters
-*/
 
 frp.Characters.prototype.Spawn = async function (player) { 
 
@@ -125,14 +118,15 @@ frp.Characters.prototype.SetArmour = function (player, value) {
    player.armour = this.Armour;
 };
 
-frp.Characters.prototype.GiveMoney = function (player, value) { 
-   this.Money += value;
-   player.setVariable('Money', this.Money);
+frp.Characters.prototype.GiveMoney = async function (player, value) { 
+   let Money = await this.increment('Money', { by: value });
+   await player.setVariable('Money', this.Money);
 };
 
-frp.Characters.prototype.SetMoney = function (player, value) { 
+frp.Characters.prototype.SetMoney = async function (player, value) { 
    this.Money = value;
    player.setVariable('Money', this.Money);
+   await this.save();
 };
 
 frp.Characters.prototype.SetJob = function (player, value) { 
@@ -157,6 +151,20 @@ frp.Characters.prototype.RemoveLicense = function (license) {
 
 
 // METODE KLASE
+
+
+frp.Characters.New = async function (player, informations, appearance) { 
+
+   const Identity = JSON.parse(informations);
+   const Appearance = JSON.parse(appearance);
+
+   frp.Characters.create({
+      Name: Identity.Firt_Name + ' ' + Identity.Last_Name,
+      Birth: Identity.Birth, Origin: Identity.Origin,
+      Gender: Identity.Gender, Armour: 0
+   });
+
+};
 
 frp.Characters.SaveAll = function () { 
 

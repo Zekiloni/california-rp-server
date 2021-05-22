@@ -22,28 +22,17 @@ frp.Items = frp.Database.define('Item', {
       isWeapon: { type: DataTypes.TEXT, defaultValue: false },
       Ammo: { type: DataTypes.INTEGER, },
       Last_Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
-
       Position: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () {
-            return JSON.parse(this.getDataValue('Position'));
-         },
-         set: function (value) {
-            this.setDataValue('Position', JSON.stringify(value));
-         }
+         get: function () { return JSON.parse(this.getDataValue('Position')); },
+         set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
       },
-
       Rotation: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () {
-            return JSON.parse(this.getDataValue('Rotation'));
-         },
-         set: function (value) {
-            this.setDataValue('Rotation', JSON.stringify(value));
-         }
+         get: function () { return JSON.parse(this.getDataValue('Rotation')); },
+         set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
       }
    },
-
    {
       timestamps: true,
       underscrored: true,
@@ -157,7 +146,7 @@ frp.Items.prototype.Give = async function (player, target, quantity) {
 
 frp.Items.Near = async function (player) { 
    const Position = player.position;
-   mp.objects.forEachInRange(Position, 3.0, (Object) => { 
+   mp.objects.forEachInRange(Position, 3.0, async (Object) => { 
       if (Object.Dimension == player.dimension) { 
          if (Object.Item) { 
             let Near = await frp.Items.findOne({ where: { id: object.Item } });

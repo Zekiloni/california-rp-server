@@ -1,6 +1,6 @@
 
 
-let { ItemRegistry } = require('../classes/Items');
+let { ItemRegistry } = require('../classes/Items.Registry');
 
 let MarketShop = [], WeaponShop = [];
 

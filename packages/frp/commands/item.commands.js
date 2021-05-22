@@ -1,4 +1,4 @@
-let { ItemEntities } = require('../classes/Items');
+let { ItemEntities } = require('../classes/Inventory');
 
 module.exports = {
    commands: [ 

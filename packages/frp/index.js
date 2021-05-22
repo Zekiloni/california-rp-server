@@ -24,6 +24,7 @@ let Houses = require('./models/House');
 
 
 // CLASSES
+let Player = require('./classes/Player');
 let Accounts = require('./classes/Account');
 let Savings = require('./classes/Savings');
 let Discord = require('./classes/Discord');
@@ -31,7 +32,7 @@ let Commands = require('./classes/Commands');
 let Doors = require('./classes/Doors');
 let Inventory = require('./classes/Inventory');
 let Minute = require('./classes/Minute');
-let Player = require('./classes/Player');
+let Business = require('./classes/Business');
 
 let Weather = require('./classes/Weather');
 let Jobs = require('./classes/Jobs')
