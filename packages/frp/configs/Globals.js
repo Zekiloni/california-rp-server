@@ -1,5 +1,6 @@
 const GLOBALS = {
     Color: [3, 105, 163, 150],
+
     Colors: {
         white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'],
         low: ['E6E6E6', 'BDBDBD', 'DEDEDE', 'A3A2A2', '909090'],
@@ -19,6 +20,7 @@ const GLOBALS = {
         broadcast: 'FF2624',
         server: '0792E5',
     },
+
     distances: {
         ooc: 8.0,
         ic: 10.5,
@@ -27,11 +29,13 @@ const GLOBALS = {
         do: 8.5,
         me: 8.5,
     },
+
     NOTIFY: {
         SUCCES: 'success',
         ERROR: 'error',
         INFO: 'info'
     },
+    
     messages: {
         NOT_ALLOWED: 'Niste ovlašteni za korišćenje ove komande.',
         USER_NOT_FOUND: 'Korisnik nije pronadjen.',

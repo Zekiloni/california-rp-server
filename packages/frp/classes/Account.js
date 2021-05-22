@@ -1,13 +1,17 @@
 'use strict';
 let Accounts = require('../models/Account');
 let Bans = require('../models/Ban');
+
+
 mp.events.add({
     'playerJoin': (player) => {
         player.call('client:player.login:show');
     },
+    
     'playerReady': (player) => {
         player.dimension = player.id + 1;
     },
+
     'server:player.character:select': async (player, id) => {
         let character = await frp.Characters.findOne({ where: { id: id } });
         if (character) {
@@ -15,6 +19,8 @@ mp.events.add({
         }
     }
 });
+
+
 mp.events.addProc({
     'server:player.login:credentials': async (player, username, password) => {
         let account = await frp.Accounts.findOne({ where: { Username: username } });

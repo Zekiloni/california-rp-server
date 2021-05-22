@@ -1,10 +1,15 @@
+
+
 class Channels {
+   
     static Create(player, frequency, password = null, name = null) {
         frp.Channels.New(player, frequency, name, password);
     }
+
     static Delete(palyer) {
         frp.Channels.Delete(player);
     }
+
     static async Send(frequency, message) {
         mp.players.forEach(async (player) => {
             if (!player.data.logged || !player.data.spawned)
@@ -16,4 +21,5 @@ class Channels {
         });
     }
 }
+
 module.exports = Channels;

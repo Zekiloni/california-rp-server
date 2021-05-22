@@ -1,4 +1,7 @@
+
+
 const { Sequelize, DataTypes } = require('sequelize');
+
 const sequelize = new Sequelize(frp.Config.database.name, frp.Config.database.user, frp.Config.database.password, {
     host: frp.Config.database.host,
     dialect: 'mysql',
@@ -10,6 +13,7 @@ const sequelize = new Sequelize(frp.Config.database.name, frp.Config.database.us
         idle: 10000
     },
 });
+
 sequelize
     .authenticate()
     .then(() => {
@@ -18,4 +22,6 @@ sequelize
     .catch((err) => {
     frp.Main.Terminal(1, 'Error Connecting to Database ' + err);
 });
+
+
 module.exports = sequelize;

@@ -29,13 +29,15 @@ class DMV {
             }
         }
     }
-    finish(player, info) {
+
+   finish(player, info) {
         let character = player.getCharacter(), exam = JSON.parse(info);
         if (exam.points > 8) {
             character.licenses.push(info.license);
         }
-    }
-    register(player, vehicle) {
-    }
+   }
+
+   register(player, vehicle) {
+   }
 }
 let DMV = new DMV();

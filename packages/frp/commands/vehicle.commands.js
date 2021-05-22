@@ -5,8 +5,7 @@ module.exports = {
             desc: 'Kontrola motora vozila',
             admin: 2,
             call: (player, args) => {
-                if (player.vehicle)
-                    return;
+                if (player.vehicle) return;
                 let model = args[0], colors1 = args[1], colors2 = args[2];
                 let c1 = colors1.split(','), c2 = colors2.split(',');
                 mp.vehicles.create(model, false, {
