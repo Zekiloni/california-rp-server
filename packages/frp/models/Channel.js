@@ -18,41 +18,28 @@ frp.Channels = frp.Database.define('Channel', {
 
 
 frp.Channels.New = async function (player, frequency, name = null, password = null) {
-    let exist = await frp.Channels.count({ where: { Frequency: frequency } });
-    if (exist != 0)
-        return; // PORUKA: Vec Postoji frekvencija
-    let Character = await player.Character();
-    frp.Channels.create({ Frequency: frequency, Name: name, Password: password, Owner: Character.id });
-    Character.Frequency = Frequency;
-    // PORUKA: Uspesno ste kreirali frekvenciju
-};
-
-
-frp.Channels.Delete = async function (player) {
-    let Character = await player.Character();
-    let Channel = await this.findOne({ where: { Frequency: Character.Frequency } });
-    await Channel.destroy();
-    // PORUKA: Uspesno ste se izbrisali frekvenciju
-};
-
-
-frp.Channels.Join = async function (player, frequency, password = null) {
+   let exist = await frp.Channels.count({ where: { Frequency: frequency } });
+   if (exist != 0) return; // PORUKA: Vec Postoji frekvencija
    let Character = await player.Character();
-   let Channel = await frp.Channels.findOne({ where: { Frequency: frequency } });
-   if (Channel) {
-      if (Channel.Password != null) {
-         if (Channel.Password != password) {
-               // PORUKA: Nije tacna sifra frekvencije
-               return;
-         }
-      }
-      Character.Frequency = frequency;
-      // PORUKA: Uspesno ste se prodruzili frekvenciji
-   }
-   else {
-      // PORUKA: Frekvencija ne postoji
-   }
+   frp.Channels.create({ Frequency: frequency, Name: name, Password: password, Owner: Character.id });
+   Character.Frequency = Frequency;
+   // PORUKA: Uspesno ste kreirali frekvenciju
 };
+
+
+frp.Channels.prototype.Delete = async function (player) {
+   await this.destroy();
+   // PORUKA: Uspesno ste se izbrisali frekvenciju
+};
+
+
+frp.Channels.prototype.Join = async function (player, password = null) { 
+   let Character = await player.Character();
+
+   if (this.Password != null && this.Password != password) return; // PORUKA: Nije tacna sifra frekvencij 
+   Character.Frequency = frequency;
+};
+
 
 
 (async () => {
