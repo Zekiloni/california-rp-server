@@ -1,5 +1,6 @@
 const req = require('request-promise');
 const laWeather = 'http://api.weatherapi.com/v1/current.json?key=c5aab2441e9248e49ee81903201910&q=los_angeles';
+
 class Weather {
     Sync() {
         setInterval(() => {
@@ -43,5 +44,6 @@ class Weather {
         }, 1800000);
     }
 }
+
 frp.Weather = new Weather();
 frp.Weather.Sync();

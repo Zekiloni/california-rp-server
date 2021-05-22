@@ -1,5 +1,6 @@
 class Saving {
-    constructor() {
+   
+   constructor() {
         mp.events.add({
             'playerQuit': async (player, exit) => {
                 switch (exit) {
@@ -27,15 +28,15 @@ class Saving {
             }
         });
     }
-    Save() {
-        mp.players.forEach((player) => {
-            if (player.data.logged) {
-                mp.events.call('server:save.player', player);
-            }
-        });
-        mp.vehicles.forEach((vehicle) => {
-            mp.events.call('server:save.vehicle', vehicle);
-        });
-    }
+
+   Save () {
+      mp.players.forEach((player) => {
+         if (player.data.logged) { mp.events.call('server:save.player', player); }
+      });
+
+      mp.vehicles.forEach((vehicle) => { 
+         mp.events.call('server:save.vehicle', vehicle);
+      });
+   }
 }
 frp.Saving = new Saving();
