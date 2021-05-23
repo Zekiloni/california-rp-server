@@ -30,7 +30,6 @@ let DamageSync = require('./DamageSync');
 // VEHICLES
 let Vehicles = require('./vehicles/Vehicles')
 let DepartmentOfVehicles = require('./vehicles-department/DMV'); 
-let VehiclesDealerships = require('./vehicles-dealership/dealerships');
 
 // HOUSES
 let Houses = require('./houses/Houses');
