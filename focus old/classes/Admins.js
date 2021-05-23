@@ -1,12 +1,11 @@
 
 mp.admins = {
-   1: 'Supporter/Tester',
+   1: 'Helper',
    2: 'Junior Admin',
    3: 'Admin',
    4: 'Senior Admin',
-   5: 'Lead Admin',
-   6: 'Developer',
-   7: 'Founder'
+   5: 'Leadership',
+   6: 'CEO',
 }
 
 class Admin { 
@@ -30,6 +29,18 @@ class Admin {
             if (mp.accounts[target.account]) {
                if (mp.accounts[target.account].admin >= 1) { 
                   target.sendMessage(`(( ${mp.admins[mp.accounts[player.account].admin]} ${player.name} [${player.id}]: ${message} ))`, mp.colors.admin)
+               }
+            }
+         }
+      })
+   }
+
+   helperChat = (player, message) => { 
+      mp.players.forEach( (target) => { 
+         if (target.data.logged) {
+            if (mp.accounts[target.account]) {
+               if (mp.accounts[target.account].admin == 1) { 
+                  target.sendMessage(`(( ${mp.admins[mp.accounts[player.account].admin]} ${player.name} [${player.id}]: ${message} ))`, mp.colors.helper)
                }
             }
          }
