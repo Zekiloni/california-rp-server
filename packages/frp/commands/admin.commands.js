@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { fileURLToPath } = require("url");
 const savedPosition = 'saved_position.txt';
 module.exports = {
     commands: [
@@ -28,6 +29,28 @@ module.exports = {
             call: (player, args) => {
                 let message = args.slice(0).join(' ');
                 mp.admin.broadcast(player, message);
+            }
+        },
+        {
+            name: 'h',
+            admin: 1,
+            call: (player, args) => {
+                let message = args.slice(0).join(' ');
+                mp.admin.helperChat(player, message);
+            }
+        },
+        {
+            name: 'duty',
+            admin: 1,
+            call: (player, args) => {
+                if (frp.Characters.Faction == frp.Globals.Factions.Police) {
+                    // PD DUTY
+                } else if (frp.Accounts.Administrator > 0) {
+                    let code = args.slice(0).join(' ');
+                    if (frp.Accounts.Admin_Code == code) {
+                        player.duty = true;
+                    }
+                }
             }
         },
         {
@@ -94,7 +117,7 @@ module.exports = {
             }
         },
         {
-            name: 'health',
+            name: 'sethp',
             admin: 3,
             call: (player, args) => {
                 let target = mp.players.find(args[0]), amount = parseInt(args[1]);
@@ -114,7 +137,7 @@ module.exports = {
             }
         },
         {
-            name: 'armour',
+            name: 'setarmour',
             admin: 4,
             call: (player, args) => {
                 let target = mp.players.find(args[0]), amount = parseInt(args[1]);
