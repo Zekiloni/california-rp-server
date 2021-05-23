@@ -3,9 +3,15 @@
 const Player = mp.players.local;
 
 
-let camdir = false;
-let noclip = false;
-let charpos = false;
+let camdir = false,
+    noclip = false,
+    charpos = false,
+    Spectating = false,
+    SpecTarget = null;
+
+mp.events.add("spmode", (target, toggle) => {
+	
+});
 
 
 mp.events.add({
@@ -17,6 +23,21 @@ mp.events.add({
       Player.setCollision(!noclip, !noclip);
       Player.setHasGravity(!noclip);
       noclip ? Player.setMaxSpeed(0.0001) : Player.setMaxSpeed(10)
+   },
+
+   'client:spectate': (target, toggle) => {
+      localplayer.freezePosition(toggle);
+      if(toggle) {
+         if (target && mp.players.exists(target)) {
+            SpecTarget = target;
+            Spectating = true;
+            Player.attachTo(target.handle,  -1, -1.5, -1.5, 2, 0, 0, 0, true, false, false, false, 0, false);
+         } else { mp.events.call("client:spectate", -1, false); }
+      } else {
+         SpecTarget = null;
+         Player.detach(true, true);
+         Spectating = false;
+      }
    },
 
    'render': () => { 

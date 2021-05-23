@@ -47,7 +47,7 @@ class Admin {
       })
    }
 
-   broadcast = (player, message) => { 
+   broadcast = (player, message) => { // LOG ?
       mp.players.forEach( (target) => { 
          if (target.data.logged) {
             target.sendMessage(`[!] ${mp.admins[mp.accounts[player.account].admin]} ${player.name}: ${message}`, mp.colors.broadcast)

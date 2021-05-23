@@ -42,14 +42,70 @@ module.exports = {
         {
             name: 'duty',
             admin: 1,
-            call: (player, args) => {
-                if (frp.Characters.Faction == frp.Globals.Factions.Police) {
+            call: async (player, args) => {
+                let Character = await player.Character();
+                let Account = await player.Account();
+                if (Character.Faction == frp.Globals.Factions.Police) {
                     // PD DUTY
-                } else if (frp.Accounts.Administrator > 0) {
+                } else if (Account.Administrator > 0) {
                     let code = args.slice(0).join(' ');
-                    if (frp.Accounts.Admin_Code == code) {
-                        player.duty = true;
+                    if (Account.Admin_Code == code) {
+                        player.duty = !player.duty;
+                    } else { 
+                        player.notification(MSG_ADMIN_WRONG_DUTY_CODE, NOTIFY_ERROR, 4); // MSG_ADMIN_WRONG_DUTY_CODE = 'Pogrešan admin kod 1/3';
+                    } 
+                }
+            }
+        },
+        {
+            name: 'slap',
+            admin: 1,
+            call: async (player, args) => {
+                let Target = mp.players.find(args[0]), Reason = args.slice(1).join(' ');
+                if (Target && Reason) {
+                    let Slap = new mp.Vector3(Target.position.x, Target.position.y, Target.position.z + 3);
+                    Target.position = Slap;
+                    player.sendMessage(`Ošamareni ste od strane admina, razlog: ${Reason}`);
+                    // Taj i taj je ošamario tog i tog
+                }
+            }
+        },
+        {
+            name: 'ar', 
+            admin: 1,
+            call: async (player, args) => {
+                // ACCEPT REPORT
+            }
+        },
+        {
+            name: 'spec', 
+            admin: 2,
+            call: async (player, args) => {
+                let Target = mp.players.find(args[0]);
+                if (Target) { player.call('client:spectate', target, true); } else { player.notification(frp.Globals.messages.USER_NOT_FOUND, NOTIFY_ERROR, 4); }
+            }
+        },
+        {
+            name: 'rtc', 
+            admin: 2,
+            call: (player, args) => {
+                if (args) {
+                    let VehId = parseInt(args[0]);
+                    let TargetVeh = mp.vehicles.at(VehId);
+                    if (TargetVeh) {
+                        TargetVeh.destroy();
+                        setTimeout(() => {
+                            TargetVeh.spawn(mp.vehi); // ovo proveriti, verovatno ce morati iz modela vozila koordinate
+                        }, 300);
                     }
+                } else {
+                    if(player.vehicle) {
+                        let Veh = player.vehicle;
+                        Veh.destroy();
+                        setTimeout(() => {
+                            Veh.spawn();
+                        }, 300);
+                    } else { player.notification('Niste u vozilu, koristite /rtc [Veh ID] ', NOTIFY_ERROR, 4); }
                 }
             }
         },
@@ -90,9 +146,9 @@ module.exports = {
             name: 'kick',
             admin: 3,
             call: (player, args) => {
-                let target = mp.players.find(args[0]), reason = args.slice(1).join(' ');
-                if (target) {
-                    target.kick(reason);
+                let Target = mp.players.find(args[0]), Reason = args.slice(1).join(' ');
+                if (Target) {
+                    Target.kick(Reason);
                 }
             }
         },
