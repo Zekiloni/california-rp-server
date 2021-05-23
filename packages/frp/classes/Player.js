@@ -7,14 +7,22 @@ mp.Player.prototype.notification = function (message, type, time = 4) {
 
 mp.Player.prototype.Character = async function () {
    if (this.character) {
-      let character = await frp.Characters.findOne({ where: { id: this.character } });
+      const character = await frp.Characters.findOne({ where: { id: this.character } });
       return character;
+   }
+};
+
+
+mp.Player.prototype.Appearance = async function () { 
+   if (this.character) { 
+      const appearance = await frp.Appearances.findOne({ where: { id: this.character }});
+      return appearance;
    }
 };
 
 mp.Player.prototype.Account = async function () {
    if (this.account) {
-      let account = await frp.Accounts.findOne({ where: { id: this.account } });
+      const account = await frp.Accounts.findOne({ where: { id: this.account } });
       return account;
    }
 };

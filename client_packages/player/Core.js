@@ -10,27 +10,28 @@ player.setCanSwitchWeapon(false);
 
 let frontCamera;
 
+
 mp.events.addDataHandler({
    'logged': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
+      if (entity && entity.remoteId === player.remoteId) {
          player.logged = newValue;
       }
    },
 
    'spawned': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
+      if (entity && entity.remoteId === player.remoteId) {
          player.spawned = newValue;
       }
    },
 
    'Money': (entity, newCash, oldCash) => {
-      if (entity && entity.remoteId === player.remoteId && newCash !== oldCash) {
+      if (entity && entity.remoteId === player.remoteId) {
          player.money = newCash;
       }
    },
 
-   'job': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === player.remoteId && newValue !== oldValue) {
+   'Job': (entity, newValue, oldValue) => {
+      if (entity && entity.remoteId === player.remoteId) {
          player.Job = newValue;
       }
    },
@@ -46,16 +47,6 @@ mp.events.add({
    
    'client:player.freeze': (toggle) => {
       player.freezePosition(toggle);
-   },
-
-   'client:createCheckpoint': (posX, posY, posZ) => {
-      mp.checkpoints.new(1, new mp.Vector3(posX, posY, posZ), 10,
-      {
-         direction: new mp.Vector3(posX, posY, posZ),
-         color: [ 255, 255, 255, 255 ],
-         visible: true,
-         dimension: player.dimension
-      });
    },
 
    'client:player.rotate': (value) => {
