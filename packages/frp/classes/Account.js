@@ -22,19 +22,23 @@ mp.events.add({
 
 mp.events.addProc({
    'server:player.login:credentials': async (player, username, password) => {
+      let result = false;
       let account = await frp.Accounts.findOne({ where: { Username: username } });
       if (account) {
-         let success = account.login(password);
+         let success = await account.login(password);
+         console.log(account);
          if (success) {
+            console.log(success);
             let characters = await frp.Characters.findAll({ where: { Account: account.id } });
             player.account = account.id;
-            return { Account: account, Characters: characters };
+            return await { Account: account, Characters: characters };
          } else {
             return false;
          }
       } else {
          return false;
       }
+
    },
 
    'server:player.character:delete': async (player, character) => {

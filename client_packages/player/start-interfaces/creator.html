@@ -62,7 +62,7 @@
             <div class="blend">
                <div class="single" v-for="(blend, i) in Data.Blends">
                   <label> {{ blend[0] }} <b> {{ character.Blend[i] }} </b> </label>
-                  <input type="range" class="slider" v-model="character.Blend[i]" v-on:change="Blend(i, character.Blend[i])" :step="blend[3]" :min="blend[1]" :max="blend[2]" >
+                  <input type="range" class="slider" v-model="character.Blend[i]" v-on:change="Blend()" :step="blend[3]" :min="blend[1]" :max="blend[2]" >
                </div>
 
                <div class="single">
@@ -107,7 +107,12 @@
                   </ul>
                </div>
 
-               <div class="single">
+               <div class="single" v-if="character.Gender != 1">
+                  <label> Model Brade <b> {{ character.Beard[0] }} </b> </label>
+                  <input type="range" class="slider" v-model="character.Beard[0]" v-on:change="Beard(0, character.Beard[0])" step="1" min="0" max="28" >
+               </div>
+
+               <div class="single" v-if="character.Gender != 1">
                   <label> Boja Brade </label>
                   <ul class="list-colors">
                      <li v-for="(h, i) of Data.BeardColors" :class="{ 'selected': Selected.BeardColor == h }" v-on:click="Beard(1, h)" v-bind:style="{ backgroundColor: Data.HairColors[h] }"> </li>
@@ -118,7 +123,21 @@
          </div>
 
          <div class="page" v-if="page == 4">
-            5
+            <div class="header">
+               <h3> Detalji & Šminka </h3>
+               <small> Detalji karaktera i šminka </small>
+            </div>
+
+            <div class="overlays">
+               <div class="single" v-for="(o, i) in Data.Overlays" >
+                  <label class="container">
+                     <small> {{ o }} <b> {{ character.Overlays[i] }} </b> </small>
+                     <input type="checkbox" type="checkbox" :id="o" v-model="character.Overlays[i]" v-on:change="Overlay(i)" true-value="255" false-value="0">
+                     <span class="checkmark"></span>
+                  </label>
+                  <input v-if="character.Overlays[i] != 255" type="range" class="slider" v-model="character.Overlays[i]" v-on:change="Overlay(i)" min="0" :max="Data.OverlaysMaximums[i]" >
+               </div>
+            </div>
          </div>
       </div>
 
@@ -147,7 +166,7 @@
                Gender: null,
                Blend: [0, 0, 0, 0, 0, 0],
                Overlays: [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-               Overlays_Colors: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+               Overlays_Colors: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                Hair: [0, 0, 0],
                Beard: [0, 0],
                Eyes: 0,
@@ -177,7 +196,9 @@
 
                BeardColors: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29, 55, 56, 57, 58, 59, 60, 61, 62, 63],
                EyesColors: [0, 40, 41, 4, 3 , 6, 37, 36 , 39],
-               headOverlays: ['Mrlje', 'Obrve', 'Starost, pore', 'Šminka', 'Rumenilo', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
+               Overlays: ['Mrlje', 'Obrve', 'Starost, pore', 'Šminka', 'Rumenilo', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
+
+               OverlaysMaximums: [23, 33, 14, 74, 32, 11, 10, 9, 17, 16],
 
                validTorsos: [
                   [0, 0, 2, 14, 14, 5, 14, 14, 8, 0, 14, 15, 12],
@@ -195,6 +216,10 @@
 
          },
 
+         created () {
+            window.addEventListener('wheel', this.Zoom);
+         },
+
          methods: { 
 
             Gender: function(x) { this.character.Gender = x; mp.trigger('client:player.character.creator:gender', x); },
@@ -208,10 +233,12 @@
                if (i == 1) this.Selected.BeardColor = x;
                mp.trigger('client:player.character.creator:beard', JSON.stringify(this.character.Beard)); 
             },
+            Overlay: function (i) { mp.trigger('client:player.character.creator:overlay', i, this.character.Overlays[i], this.character.Overlays_Colors[i]); },
             Eyes: function (x) { this.Selected.EyeColor = x; this.Character.Eyes = x; mp.trigger('client:player.character.creator:eyes', x); },
-            Face: function (i, x) { this.character.Face[i] = x; mp.trigger('client:player.character.creator:face', i, x); },
-            
-            Blend: function (i, x) { mp.trigger('client:player.character.creator:blend', JSON.stringify(this.character.Blend)); },
+            Face: function (i, x) { mp.trigger('client:player.character.creator:face', i, x); },
+            Blend: function () { mp.trigger('client:player.character.creator:blend', JSON.stringify(this.character.Blend)); },
+
+            Zoom: function (event) { mp.trigger('client:player.character.creator:zoom', event.deltaY); },
 
             Create: function () { 
                

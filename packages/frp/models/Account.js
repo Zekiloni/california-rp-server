@@ -32,13 +32,13 @@ frp.Accounts = frp.Database.define('Account', {
 
 
 frp.Accounts.beforeCreate(async (account, options) => {
-    const hashed = await bcrypt.hash(account.Password, salt);
-    account.Password = hashed;
+   const hashed = await bcrypt.hash(account.Password, salt);
+   account.Password = hashed;
 });
 
 
 frp.Accounts.prototype.login = function (password) {
-    return bcrypt.compareSync(password, this.Password);
+   return bcrypt.compareSync(password, this.Password);
 };
 
 
@@ -60,5 +60,8 @@ frp.Accounts.prototype.SetLogged = async function (player, value, character) {
 
 
 (async () => {
-    frp.Accounts.sync();
+   frp.Accounts.sync();
+
+   // await frp.Accounts.create({ Username: 'Zekiloni', Password: 'kapakapa' });
 })();
+

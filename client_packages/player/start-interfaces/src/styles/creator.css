@@ -35,7 +35,7 @@ ul.navigation li.active { transform: scale(1.45); opacity: 1; background: #fbc60
 .identity {width: 275px;display: flex;flex-direction: column;justify-content: space-around;align-items: center;margin: 0 auto;margin-top: 15px;min-height: 125px;}
 
 
-label { width: 242px;text-transform: uppercase;font-weight: 300; color: #a5a5a5; letter-spacing: 2.5px; margin-top: 10px; }
+label {width: 242px;text-transform: uppercase;font-weight: 300;color: #a5a5a5;letter-spacing: 2.5px;margin-top: 10px;justify-content: space-between;display: flex;}
 
 input[type=text] {letter-spacing: 1.2px;width: 200px;border: 1px solid rgb(121 121 121 / 13%);color: #cdcdcd;background: rgb(21 21 21 / 75%);position: relative;padding: 10px 20px;font-size: 15px;font-weight: 300;box-shadow: 0 5px 10px rgb(12 12 12 / 10%);transition: all 0.45s ease;}
 input[type=text]:focus { border-color: #fbc60c; }
@@ -55,13 +55,13 @@ input[type=date]:focus { color: #d0d0d0; }
 
 .error { border-color: tomato !important; }
 
-.blend {display: flex;flex-direction: column;align-items: center;justify-content: center;width: 255px;margin: 0 auto;height: 370px;margin-top: 10px;padding: 20px;overflow-y: auto;}
+.blend {/* display: flex; */flex-direction: column;align-items: center;justify-content: center;width: 265px;margin: 0 auto;height: 380px;margin-top: 10px;padding: 5px 40px;overflow-y: auto;}
 .blend .single { width: 100%; padding: 10px; margin-top: 5px; }
 .blend .single .slider { width: 100%; }
 
 
 .face {display: flex;flex-direction: column;width: 285px;padding: 0 20px;margin: 0 auto;height: 400px;overflow-y: auto;margin-top: 5px;}
-.face .single {width: 100%;margin-top: 5px;}
+.face .single {width: 100%;margin-top: 15px;}
 .face .single .slider { width: 100%; }
 
 .hairiness { display: flex;flex-direction: column;width: 285px;padding: 0 20px;margin: 0 auto;height: 400px;overflow-y: auto;margin-top: 5px; }
@@ -72,6 +72,11 @@ ul.list-colors {display: flex;padding: 0;margin: 0;flex-direction: row;flex-wrap
 ul.list-colors li {width: 25px;height: 25px;opacitY: 0.5;margin: 2px 5px;transition: all 0.35s ease;box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px;}
 ul.list-colors li:hover { opacity: 1; }
 ul.list-colors li.selected { opacity: 1; }
+
+.overlays {/* display: flex; */flex-direction: column;align-items: center;justify-content: center;width: 275px;margin: 0 auto;height: 370px;margin-top: 10px;padding: 20px;overflow-y: auto;}
+.overlays .single {width: 100%;margin-top: 15px;}
+.overlays .single .slider { width: 100%; }
+.overlays .single .container small { font-size: 13px; display: flex; justify-content: space-between; }
 
 *:focus { outline: none; }
 * { user-select: none; }
@@ -95,24 +100,17 @@ ul.list-colors li.selected { opacity: 1; }
 
 
 input[type=range] { -webkit-appearance: none; }
-
-input[type=range]::-webkit-slider-runnable-track {
-   width: 300px;
-   height: 5px;
-   background: rgb(187 187 187);
-   border: none;
-   border-radius: 3px;
-}
-
-input[type=range]::-webkit-slider-thumb {
-   -webkit-appearance: none;
-   border: none;
-   height: 16px;
-   width: 16px;
-   border-radius: 50%;
-   background: #ffffff;
-   margin-top: -4px;
-}
-
+input[type=range]::-webkit-slider-runnable-track { width: 300px; height: 5px; background: rgb(187 187 187);  border: none; border-radius: 3px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; border: none; height: 16px; width: 16px; border-radius: 50%; background: #ffffff; margin-top: -4px; }
 input[type=range]:focus { outline: none; }
 input[type=range]:focus::-webkit-slider-runnable-track { background: #ccc; }
+
+
+.container {display: block;position: relative;padding-left: 35px;margin-bottom: 12px;cursor: pointer;font-size: 22px;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+.container input {position: absolute;opacity: 0;cursor: pointer;height: 0;width: 0;}
+.checkmark {position: absolute;top: 0;left: 0;height: 20px;transition: all 0.35s ease;width: 20px;background-color: rgb(255 255 255 / 60%);}
+.container:hover input ~ .checkmark {background-color: #ccc;}
+.container input:checked ~ .checkmark {background-color: #5b35e0;}
+.checkmark:after { content: ""; position: absolute;display: none; }
+.container input:checked ~ .checkmark:after { display: block; }
+.container .checkmark:after {left: 6px;top: 3px;width: 4px;height: 8px;border: solid white;border-width: 0 3px 3px 0;-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);transform: rotate(45deg);}

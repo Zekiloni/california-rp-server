@@ -19,9 +19,17 @@ frp.Characters = frp.Database.define('Character', {
       Hunger: { type: DataTypes.INTEGER, defaultValue: 100 },
       Thirst: { type: DataTypes.INTEGER, defaultValue: 100 },
 
-      Last_Position: { type: DataTypes.TEXT },
+      Last_Position: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Last_Position')); },
+         set: function (value) { this.setDataValue('Last_Position', JSON.stringify(value)); }
+      },
       Spawn_Point: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Inside: { type: DataTypes.TEXT, defaultValue: 'no' },
+      Inside: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Inside')); },
+         set: function (value) { this.setDataValue('Inside', JSON.stringify(value)); }
+      },
 
       Muted: { type: DataTypes.INTEGER, defaultValue: 0 },
       Hours: { type: DataTypes.INTEGER, defaultValue: 0 },
@@ -47,7 +55,8 @@ frp.Characters = frp.Database.define('Character', {
       underscrored: true,
       createdAt: "Register_Date",
       updatedAt: "Update_Date"
-});
+   }
+);
 
 
 frp.Characters.prototype.Spawn = async function (player) {
@@ -104,6 +113,84 @@ frp.Characters.prototype.GiveMoney = async function (player, value) {
 frp.Characters.prototype.SetMoney = async function (player, value) {
    this.Money = value;
    player.setVariable('Money', this.Money);
+   await this.save();
+};
+
+frp.Characters.prototype.Enter = async function (player, type, id) { 
+
+   switch (type) { 
+      case 'house': { 
+         const House = await frp.Houses.findOne({ where: { id: id }});
+         player.position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
+         player.dimension = House.Interior_Dimension;
+         if (House.IPL != null) player.call('client:interior:request.ipl', House.IPL);
+         break;
+      }
+
+      case 'business': { 
+         const Business = await frp.Business.findOne({ where: { id: id }});
+         player.position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
+         player.dimension = Business.Interior_Dimension;
+         if (Business.IPL != null) player.call('client:interior:request.ipl', Business.IPL);
+         break;
+      }
+
+      case 'entrance': { 
+         const Entrance = frp.Entrances[id];
+         player.position = new mp.Vector3(Entrance.Position.x, Entrance.Position.y, Entrance.Position.z);
+         player.dimension = Entrance.Interior_Dimension;
+
+         break;
+      }
+
+      default:
+         return;
+   }
+
+   let Inside = { type: type, id: id };
+   this.Inside = Inside
+   player.Inside = Inside;
+   await this.save();
+};
+
+
+frp.Characters.prototype.Exit = async function (player) { 
+   if (player.Inside)  {
+      const Inside = player.Inside;
+      player.Inside = null;
+      this.Inside = null;
+
+      switch (Inside.type) { 
+         case 'house': { 
+            const House = await frp.Houses.findOne({ where: { id: Inside.id }});
+            player.position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
+            player.dimension = House.Dimension;
+            if (House.IPL != null) player.call('client:interior:request.ipl', House.IPL);
+            break;
+         }
+   
+         case 'business': { 
+            const Business = await frp.Business.findOne({ where: { id: Inside.id }});
+            player.position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
+            player.dimension = Business.Dimension;
+            if (Business.IPL != null) player.call('client:interior:request.ipl', Business.IPL);
+            break;
+         }
+   
+         case 'entrance': { 
+            const Entrance = frp.Entrances[Inside.id];
+            player.position = new mp.Vector3(Entrance.Position.x, Entrance.Position.y, Entrance.Position.z);
+            player.dimension = Entrance.Dimension;
+   
+            break;
+         }
+   
+         default:
+            return;
+      }
+      
+   }
+
    await this.save();
 };
 
@@ -169,6 +256,6 @@ frp.Characters.New = async function (player, informations, appearance) {
 })();
 
 
-// frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
-//  frp.Characters.create({ Name: 'Valele Gipsy', Account: 2 });
-//   frp.Characters.create({ Name: 'Pepsi Gay', Account: 2, Licenses: ["Driving"] });
+//  frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
+//   frp.Characters.create({ Name: 'Valele Gipsy', Account: 2 });
+//    frp.Characters.create({ Name: 'Pepsi Gay', Account: 2, Licenses: ["Driving"] });

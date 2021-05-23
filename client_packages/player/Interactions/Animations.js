@@ -31,14 +31,6 @@ mp.events.addDataHandler("animData", function(a, b) {
 		 } //else a.clearTasksImmediately()
 });
 
-function loadAnimDict(a, b) {
-	if (mp.game.streaming.hasAnimDictLoaded(a)) return void b();
-	mp.game.streaming.requestAnimDict(a);
-	let c = setInterval(function() {
-		 mp.game.streaming.hasAnimDictLoaded(a) && (clearInterval(c), b())
-	}, 100)
-}
-
 mp.keys.bind(0x20, true, function() {
 	if (player.logged && player.spawned) { 
 		if (entity.hasVariable("animData")) {
