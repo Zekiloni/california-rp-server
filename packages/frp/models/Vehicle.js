@@ -9,6 +9,19 @@ frp.Vehicles = frp.Database.define('Vehicle', {
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Numberplate: { type: DataTypes.STRING, defaultValue: null },
+      Fuel: { type: DataTypes.INTEGER, defaultValue: 100 },
+      Dirt: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Mileage: { type: DataTypes.DOUBLE, defaultValue: 0.00 },
+      Color: { 
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Color')); },
+         set: function (value) { this.setDataValue('Color', JSON.stringify(value)); }  
+      },
+      Components: { 
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Components')); },
+         set: function (value) { this.setDataValue('Components', JSON.stringify(value)); } 
+      },
       Position: {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Position')); },
@@ -28,33 +41,16 @@ frp.Vehicles = frp.Database.define('Vehicle', {
 );
 
 
-// paint (vehicle, color) {
-//    this.color = color;
-//    vehicle.setColorRGB(parseInt(color[0][0]), parseInt(color[0][1]), parseInt(color[0][2]), parseInt(color[1][0]), parseInt(color[1][1]), parseInt(color[1][2]));
-// }
-
-// Fuel (vehicle, value) { 
-//    this.fuel = value;
-//    vehicle.setVariable('Fuel', this.fuel);
-// }
-
-// Mileage (vehicle, value) { 
-//    this.mileage = value;
-//    vehicle.setVariable('Mileage', this.mileage);
-// }
-
-// Dirt (vehicle, value) { 
-//  this.dirt = value;
-//  vehicle.setVariable('Dirt', this.dirt)
-// }
-
-// tune (vehicle, components) { 
-//    components.forEach(component => { vehicle.setMod(component.index, component.value) })
-// }  
-
 frp.Vehicles.prototype.Window = function (vehicle, index) { 
    this.windows[index] != this.windows[index];
    vehicle.setVariable('Windows', this.windows)
+};
+
+
+frp.Vehicles.prototype.Paint = async function (color) { 
+   this.Color = color;
+   this.vehicle.setColorRGB(color[0][0], color[0][1], color[0][2], color[1][0], color[1][1], color[1][2]);
+   await this.save();
 };
 
 
@@ -72,7 +68,31 @@ frp.Vehicles.prototype.Numberplate = function () {
    await this.save();
 };
 
+frp.Vehicles.prototype.SetFuel = function (value) { 
+   this.Fuel = value;
+   this.vehicle.setVariable('Fuel', this.Fuel);
+   await this.save();
+};
 
+frp.Vehicles.prototype.SetDirt = function (value) { 
+   this.Dirt = value;
+   this.vehicle.setVariable('Dirt', this.Dirt);
+   await this.save();
+};
+
+frp.Vehicles.prototype.SetMileage = function (value) { 
+   this.Mileage = value;
+   this.vehicle.setVariable('Mileage', this.Mileage);
+   await this.save();
+};
+
+frp.Vehicles.prototype.Tune = function () { 
+   const Components = this.Components;
+   Components.forEach(component => {
+      this.vehicle.setMod(component.index, component.value);
+   });
+};
+ 
 frp.Vehicles.Create = function () { 
 
 };
