@@ -61,6 +61,15 @@ module.exports = class Main {
       return count;
    }
 
+   static GenerateString (length) { 
+      const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = ' ';
+      for ( let i = 0; i < length; i++ ) {
+         result += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return result;
+   }
+
    static Range (start, end, step) {
       return (
          Array.from(

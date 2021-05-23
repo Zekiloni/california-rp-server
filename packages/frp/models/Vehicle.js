@@ -8,6 +8,7 @@ frp.Vehicles = frp.Database.define('Vehicle', {
       Model: { type: DataTypes.STRING },
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
+      Numberplate: { type: DataTypes.STRING, defaultValue: null },
       Position: {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Position')); },
@@ -57,9 +58,18 @@ frp.Vehicles.prototype.Window = function (vehicle, index) {
 };
 
 
-frp.Vehicles.prototype.Lock = function (vehicle) {
+frp.Vehicles.prototype.Lock = async function () {
    this.Locked = !this.Locked;
-   vehicle.setVariable('Locked', this.Locked);
+   this.vehicle.locked = this.Locked;
+   await this.save();
+};
+
+
+frp.Vehicles.prototype.Numberplate = function () { 
+   const Plate = frp.Main.GenerateString(6);
+   this.Numberplate = Plate;
+   this.vehicle.numberPlate = Plate;
+   await this.save();
 };
 
 
