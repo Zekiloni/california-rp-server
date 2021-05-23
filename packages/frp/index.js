@@ -30,6 +30,7 @@ let Discord = require('./classes/Discord');
 let Commands = require('./classes/Commands');
 let Doors = require('./classes/Doors');
 let Inventory = require('./classes/Inventory');
+let Vehicles = require('./classes/Vehicles');
 let Minute = require('./classes/Minute');
 let Business = require('./classes/Business');
 let Weather = require('./classes/Weather');

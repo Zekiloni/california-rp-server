@@ -94,7 +94,6 @@ var chatAPI =
 			enableChatInput(false);
 			
 		chat.active = toggle;
-		console.log('poksauo je ugasiti chat ' + JSON.stringify(toggle))
 	},
 	
 	show: (toggle) =>

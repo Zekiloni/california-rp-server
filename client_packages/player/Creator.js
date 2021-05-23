@@ -104,7 +104,8 @@ mp.events.add({
    },
 
    'client:player.character.creator:overlay': (i, e, x) => { 
-      Player.setHeadOverlay(1, parseInt(x[0]), 1.0, parseInt(x[1]), 0);
+      Player.setHeadOverlay(parseInt(i), parseInt(e), 1.0, parseInt(x), 0);
+
    },
 
    'client:player.character.creator:blend': (x) => { 
