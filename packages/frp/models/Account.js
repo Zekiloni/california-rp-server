@@ -12,6 +12,7 @@ frp.Accounts = frp.Database.define('Account', {
       Email: { type: DataTypes.STRING, unique: true },
       Password: { type: DataTypes.STRING },
       Administrator: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Admin_Code: { type: DataTypes.INTEGER, defaultValue: 0 },
       Login_Date: { type: DataTypes.DATE },
       IP_Adress: { type: DataTypes.STRING },
       Social_Club: { type: DataTypes.STRING, unique: true },
@@ -21,6 +22,7 @@ frp.Accounts = frp.Database.define('Account', {
       Coins: { type: DataTypes.INTEGER, defaultValue: 0 },
       Online: { type: DataTypes.INTEGER, defaultValue: false },
       Last_Character: { type: DataTypes.INTEGER, defaultValue: 0 }
+      
    }, 
    {
       timestamps: true,
@@ -56,6 +58,15 @@ frp.Accounts.prototype.SetLogged = async function (player, value, character) {
    await this.save();
    this.Logged = value;
    player.setVariable('logged', this.Logged);
+};
+
+frp.Accounts.prototype.SetAdmin = async function (player, value) {
+   this.Administrator = value;
+   this.Admin_Code = frp.Main.GenerateNumber(5);
+   
+   player.sendMessage(`Dodeljen vam je admin level ${value}.
+                       Admin kod: ${this.Admin_Code}, zapišite negde svoj admin kod.`, frp.Globals.Colors.info);
+   await this.save();
 };
 
 

@@ -35,6 +35,10 @@ const GLOBALS = {
       ERROR: 'error',
       INFO: 'info'
    },
+
+   Factions: {
+      Police: 0
+   },
    
    messages: {
       NOT_ALLOWED: 'Niste ovlašteni za korišćenje ove komande.',
