@@ -92,15 +92,17 @@ frp.Characters.prototype.Spawn = async function (player) {
 };
 
 
-frp.Characters.prototype.SetHealth = function (player, value) {
+frp.Characters.prototype.SetHealth = async function (player, value) {
    this.Health = value;
    player.health = this.Health;
+   await this.save();
 };
 
 
-frp.Characters.prototype.SetArmour = function (player, value) {
+frp.Characters.prototype.SetArmour = async function (player, value) {
    this.Armour = value;
    player.armour = this.Armour;
+   await this.save();
 };
 
 
@@ -191,6 +193,12 @@ frp.Characters.prototype.Exit = async function (player) {
       
    }
 
+   await this.save();
+};
+
+
+frp.Characters.prototype.SetAdmin = async function (level) { 
+   this.Admin = level;
    await this.save();
 };
 

@@ -42,6 +42,7 @@ mp.events.add('playerCommand', (player, command) => {
       // }
       // if (cmd.job && character.job != cmd.job) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);;
       
+      if (cmd.params && cmd.params.length != args.length) return player.sendMessage('Komanda /' + commandName + ' ' + cmd.params.join(' '), frp.Globals.Colors.help);
       cmd.call(player, args);
    } else {
       player.notification('aaaaa', 'error', 4);

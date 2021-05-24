@@ -11,6 +11,7 @@ frp.Vehicles = frp.Database.define('Vehicle', {
       Numberplate: { type: DataTypes.STRING, defaultValue: null },
       Fuel: { type: DataTypes.INTEGER, defaultValue: 100 },
       Dirt: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Heading: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mileage: { type: DataTypes.DOUBLE, defaultValue: 0.00 },
       Color: { 
          type: DataTypes.TEXT, defaultValue: null,
@@ -31,7 +32,13 @@ frp.Vehicles = frp.Database.define('Vehicle', {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Rotation')); },
          set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
-      }
+      },
+
+      Parking: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Parking')); },
+         set: function (value) { this.setDataValue('Parking', JSON.stringify(value)); }
+      },
    }, {
       timestamps: true,
       underscrored: true,
@@ -45,6 +52,14 @@ frp.Vehicles.prototype.Window = function (vehicle, index) {
    this.windows[index] != this.windows[index];
    vehicle.setVariable('Windows', this.windows)
 };
+
+
+frp.Vehicles.prototype.Respawn = function () { 
+   if (this.vehicle) { 
+      this.vehicle.position = new mp.Vector3(this.Parking.x, this.Parking.y, this.Parking.z);;
+      this.vehicle.setHeading(this.Heading);
+   }
+}
 
 
 frp.Vehicles.prototype.Paint = async function (primary, secondary) { 
@@ -61,26 +76,26 @@ frp.Vehicles.prototype.Lock = async function () {
 };
 
 
-frp.Vehicles.prototype.Numberplate = function () { 
+frp.Vehicles.prototype.SetNumberplate = async function () { 
    const Plate = frp.Main.GenerateString(6);
    this.Numberplate = Plate;
    this.vehicle.numberPlate = Plate;
    await this.save();
 };
 
-frp.Vehicles.prototype.SetFuel = function (value) { 
+frp.Vehicles.prototype.SetFuel = async function (value) { 
    this.Fuel = value;
    this.vehicle.setVariable('Fuel', this.Fuel);
    await this.save();
 };
 
-frp.Vehicles.prototype.SetDirt = function (value) { 
+frp.Vehicles.prototype.SetDirt = async function (value) { 
    this.Dirt = value;
    this.vehicle.setVariable('Dirt', this.Dirt);
    await this.save();
 };
 
-frp.Vehicles.prototype.SetMileage = function (value) { 
+frp.Vehicles.prototype.SetMileage = async function (value) { 
    this.Mileage = value;
    this.vehicle.setVariable('Mileage', this.Mileage);
    await this.save();

@@ -1,6 +1,7 @@
 const fs = require("fs");
-const { fileURLToPath } = require("url");
 const savedPosition = 'saved_position.txt';
+
+
 module.exports = {
     commands: [
         {
@@ -60,14 +61,12 @@ module.exports = {
         {
             name: 'slap',
             admin: 1,
+            params: ['igrac'],
             call: async (player, args) => {
-                let Target = mp.players.find(args[0]), Reason = args.slice(1).join(' ');
-                if (Target && Reason) {
-                    let Slap = new mp.Vector3(Target.position.x, Target.position.y, Target.position.z + 3);
-                    Target.position = Slap;
-                    player.sendMessage(`Ošamareni ste od strane admina, razlog: ${Reason}`);
-                    // Taj i taj je ošamario tog i tog
-                }
+               let Target = mp.players.find(args[0]);
+               if (Target) { 
+                  Target.position = new mp.Vector3(Target.position.x, Target.position.y, Target.position.z + 3);;
+               }
             }
         },
         {
@@ -88,25 +87,24 @@ module.exports = {
         {
             name: 'rtc', 
             admin: 2,
-            call: (player, args) => {
-                if (args) {
-                    let VehId = parseInt(args[0]);
-                    let TargetVeh = mp.vehicles.at(VehId);
-                    if (TargetVeh) {
-                        TargetVeh.destroy();
-                        setTimeout(() => {
-                            TargetVeh.spawn(mp.vehi); // ovo proveriti, verovatno ce morati iz modela vozila koordinate
-                        }, 300);
-                    }
-                } else {
-                    if(player.vehicle) {
-                        let Veh = player.vehicle;
-                        Veh.destroy();
-                        setTimeout(() => {
-                            Veh.spawn();
-                        }, 300);
-                    } else { player.notification('Niste u vozilu, koristite /rtc [Veh ID] ', NOTIFY_ERROR, 4); }
-                }
+            call: async (player, args) => {
+               let Vehicle = null;
+               if (args[0]) { 
+                  Vehicle = await frp.Vehicles.findOne({ where: { id: args[0] }});
+                  if (Vehicle) { 
+                     Vehicle.Respawn();
+                  } else { 
+                     Vehicle = mp.vehicles.at(args[0]);
+                     Vehicle.destroy();
+                  }
+               } else if (player.vehicle) { 
+                  Vehicle = await frp.Vehicles.findOne({ where: { vehicle: player.vehicle }});
+                  if (Vehicle) { 
+                     Vehicle.Respawn();
+                  } else { 
+                     player.vehicle.destroy();
+                  }
+               }
             }
         },
         {
@@ -146,10 +144,10 @@ module.exports = {
             name: 'kick',
             admin: 3,
             call: (player, args) => {
-                let Target = mp.players.find(args[0]), Reason = args.slice(1).join(' ');
-                if (Target) {
-                    Target.kick(Reason);
-                }
+               let Target = mp.players.find(args[0]), Reason = args.slice(1).join(' ');
+               if (Target) {
+                  Target.kick(Reason);
+               }
             }
         },
         {
@@ -167,20 +165,21 @@ module.exports = {
                 if (args[0] === parseInt(args[0])) {
                     mp.world.weather = weathers[args[0]];
                 }
-                else {
-                    mp.world.weather = args[0];
-                }
+               else {
+                  mp.world.weather = args[0];
+               }
             }
         },
         {
-            name: 'sethp',
+            name: 'health',
             admin: 3,
-            call: (player, args) => {
-                let target = mp.players.find(args[0]), amount = parseInt(args[1]);
-                if (target) {
-                    let character = target.getCharacter();
-                    character.setHealth(target, amount);
-                }
+            params: ['igrac', 'hp'],
+            call: async (player, args) => {
+               let Target = mp.players.find(args[0]), Health = parseInt(args[1]);
+               if (Target) {
+                  let Character = await Target.Character();
+                  Character.SetHealth(Target, Health);
+               }
             }
         },
         {
@@ -193,14 +192,15 @@ module.exports = {
             }
         },
         {
-            name: 'setarmour',
-            admin: 4,
-            call: (player, args) => {
-                let target = mp.players.find(args[0]), amount = parseInt(args[1]);
-                if (target) {
-                    let character = target.getCharacter();
-                    character.setArmour(target, amount);
-                }
+            name: 'armour',
+            admin: 3,
+            params: ['igrac'],
+            call: async (player, args) => {
+               let Target = mp.players.find(args[0]), Armour = parseInt(args[1]);
+               if (Target) {
+                  let Character = await Target.Character();
+                  Character.SetArmour(Target, Armour);
+               }
             }
         },
         {
@@ -266,11 +266,13 @@ module.exports = {
         {
             name: 'makeadmin',
             admin: 6,
-            call: (player, args) => {
-                let target = mp.players.find(args[0]);
-                if (target) {
-                    mp.accounts[target.account].admin = args[1];
-                }
+            params: ['igrac', 'level'],
+            call: async (player, args) => {
+               let Target = mp.players.find(args[0]), Level = parseInt(args[1]);
+               if (Target) {
+                  let Character = await Target.Character();
+                  Character.SetAdmin(Level);
+               }
             }
         },
         {
@@ -342,7 +344,7 @@ module.exports = {
         },
         {
             name: 'setmoney',
-            admin: 3,
+            admin: 4,
             call: (player, args) => {
                 let target = mp.players.find(args[0]);
                 if (target) {
@@ -355,15 +357,14 @@ module.exports = {
         },
         {
             name: 'givemoney',
-            admin: 3,
-            call: (player, args) => {
-                let target = mp.players.find(args[0]);
-                if (target) {
-                    let TargetCharacter = mp.characters[target.character];
-                    TargetCharacter.giveMoney(player, args[1]);
-                    target.sendMessage(player.name + ' vam je dao novac ' + args[1] + '$', mp.colors.tomato);
-                    player.sendMessage('Dali ste novac ' + target.name + ' na ' + args[1] + '$', mp.colors.tomato);
-                }
+            admin: 4,
+            params: ['igrac', 'kolicina'],
+            call: async (player, args) => {
+               let Target = mp.players.find(args[0]), Money = parseInt(args[1]);
+               if (Target) {
+                  let Character = await Target.Character();
+                  Character.GiveMoney(Target, Money);
+               }
             }
         },
     ]

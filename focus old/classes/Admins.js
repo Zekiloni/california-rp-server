@@ -1,5 +1,5 @@
 
-mp.admins = {
+frp.Admin.Levels = {
    1: 'Helper',
    2: 'Junior Admin',
    3: 'Admin',
@@ -56,9 +56,9 @@ class Admin {
    }
 }
 
-mp.admin = new Admin();
+frp.Admin = new Admin();
 
-mp.reports = {};
+frp.Reports = {};
 
 class Report { 
    constructor (player, message) { 
