@@ -47,9 +47,9 @@ frp.Vehicles.prototype.Window = function (vehicle, index) {
 };
 
 
-frp.Vehicles.prototype.Paint = async function (color) { 
-   this.Color = color;
-   this.vehicle.setColorRGB(color[0][0], color[0][1], color[0][2], color[1][0], color[1][1], color[1][2]);
+frp.Vehicles.prototype.Paint = async function (primary, secondary) { 
+   this.Color = [primary, secondary];
+   this.vehicle.setColorRGB(primary[0], primary[1], primary[2], secondary[0], secondary[1], secondary[2]);
    await this.save();
 };
 
@@ -84,6 +84,11 @@ frp.Vehicles.prototype.SetMileage = function (value) {
    this.Mileage = value;
    this.vehicle.setVariable('Mileage', this.Mileage);
    await this.save();
+};
+
+frp.Vehicles.prototype.Window = function (i) { 
+   this.Windows[i] = !this.Windows[i];
+   this.vehicle.setVariable('Windows', this.Windows);
 };
 
 frp.Vehicles.prototype.Tune = function () { 

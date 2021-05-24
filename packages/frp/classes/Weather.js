@@ -1,11 +1,16 @@
 const req = require('request-promise');
 const laWeather = 'http://api.weatherapi.com/v1/current.json?key=c5aab2441e9248e49ee81903201910&q=los_angeles';
 
+
 class Weather {
-   Sync() {
+   constructor () { 
+      this.current = 0;
+   }
+
+   Sync () {
       setInterval(() => {
          req (laWeather)
-               .then (function (data) {
+            .then (function (data) {
                let jsonData = JSON.parse(data), code = jsonData.current.condition.code;
                switch (code) {
                   case 1000: mp.world.weather = 0; break;
