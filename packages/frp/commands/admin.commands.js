@@ -29,7 +29,7 @@ module.exports = {
                 let message = args.slice(0).join(' ');
                 mp.admin.broadcast(player, message);
             }
-        },
+        },  
         {
             name: 'position',
             admin: 4,
