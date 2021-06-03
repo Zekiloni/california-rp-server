@@ -19,13 +19,13 @@ let AntiAFK = require('./player/AFK');
 let AdminStuffs = require('./player/Admin');
 
 // GAME CORE 
-let Chat = require('./Chat');
-let CayoPerico = require('./heistisland');
+let Chat = require('./chat/Chat');
+let CayoPerico = require('./cayo-perico/heistisland');
 //let ChatBubble = require('./player/ChatBubble');
 
 // SYNCHRONIZATION & STREAMER
 let Streamer = require('./player/Streamer');
-let DamageSync = require('./DamageSync');
+let DamageSync = require('./player/DamageSync');
 
 // VEHICLES
 let Vehicles = require('./vehicles/Vehicles')
@@ -61,7 +61,6 @@ let Mining = require('./jobs/Miner');
 // let fuel = require('./fuel');
 
 
-// var animals = require('./animals');
 // var charClohing = require('./clothing/clothing');
 // // var interactionsMenu = require('./interactions-menu/interactions')
 // var bankingATM = require('./banking/atm');

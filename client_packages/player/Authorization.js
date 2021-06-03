@@ -42,7 +42,7 @@ mp.events.add({
       mp.events.callRemote('server:player.character:select', character);
    },
 
-   'client:palyer.character:creator': () => { 
+   'client:player.character:creator': () => { 
       mp.events.call('client:player.login:show');
       mp.events.call('client:player.character.creator:show');
    },

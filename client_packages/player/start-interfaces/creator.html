@@ -21,6 +21,7 @@
          <li v-on:click="page = 2" :class="{ 'active' : page == 2 }"> 3 </li>
          <li v-on:click="page = 3" :class="{ 'active' : page == 3 }"> 4 </li>
          <li v-on:click="page = 4" :class="{ 'active' : page == 4 }"> 5 </li>
+         <li v-on:click="page = 5" :class="{ 'active' : page == 5 }"> 6 </li>
       </ul>
 
       <img src="src/images/logo.png" class="logo" />
@@ -139,9 +140,16 @@
                </div>
             </div>
          </div>
+
+         <div class="page" v-if="page == 5">
+            page
+         </div>
       </div>
 
-      <h1 class="website"> www.focus-rp.com </h1>
+      <div class="create">
+         <button v-on:click="Create($event)"> Kreiraj Karaktera </button>
+      </div>
+
    </div>
       
    <!-- scripts -->
@@ -224,13 +232,11 @@
          methods: { 
 
             Gender: function(x) { this.character.Gender = x; mp.trigger('client:player.character.creator:gender', x); },
-            Hair: function (i, x) { 
-               this.character.Hair[i] = x; 
+            Hair: function (i, x) { this.character.Hair[i] = x; 
                if (i == 1) this.Selected.HairColor = x; 
                mp.trigger('client:player.character.creator:hair', i, x); 
             },
-            Beard: function (i, x) { 
-               this.character.Beard[i] = x;
+            Beard: function (i, x) { this.character.Beard[i] = x;
                if (i == 1) this.Selected.BeardColor = x;
                mp.trigger('client:player.character.creator:beard', JSON.stringify(this.character.Beard)); 
             },
@@ -241,8 +247,11 @@
 
             Zoom: function (event) { mp.trigger('client:player.character.creator:zoom', event.deltaY); },
 
-            Create: function () { 
-               
+            Create: function (event) { 
+               event.target.classList.add('bounce-out-top');
+               event.target.disabled = true;
+               mp.trigger('client:player.character.creator:finish', JSON.stringify(this.character));
+
             }
          }
       })

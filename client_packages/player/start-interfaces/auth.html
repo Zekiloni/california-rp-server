@@ -26,8 +26,9 @@
             </div>
    
             <div class="authentication">
-               <label class="info" for="passsword"> Korisničko ime </label>
-               <input type="text" name="username" v-model="login.username" />
+               <!-- MADE BY VALELE -->
+               <label class="info" for="passsword" > Korisničko ime </label>
+               <input type="text" name="username" autofocus ref="focus" v-model="login.username" />
    
                <label class="info" for="passsword"> Korisnička šifra </label>
                <input type="password" name="passsword" v-model="login.password" />
@@ -159,6 +160,9 @@
             notification: false
          },
 
+         mounted: function () {
+            this.$refs.focus.focus();
+         },
 
          methods: { 
 

@@ -1,4 +1,9 @@
+
+
 const { DataTypes } = require('sequelize');
+
+const BusinessTypes = require('../data/Businesses.json');
+
 frp.Business = frp.Database.define('Business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Name: { type: DataTypes.STRING },
@@ -113,3 +118,5 @@ frp.Business.prototype.WorkersRemove = async function (player) {
 
    frp.Main.Terminal(3, Businesses.length + ' Businesses Loaded !');
 })();
+
+

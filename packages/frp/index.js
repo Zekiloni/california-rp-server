@@ -16,7 +16,6 @@ let Globals = require('./configs/Globals');
 // MODELS 
 let Logs = require('./models/Logs');
 let Appearances = require('./models/Appearance');
-let Characters = require('./models/Character');
 let Channels = require('./models/Channel');
 let Houses = require('./models/House');
 
@@ -25,6 +24,7 @@ let Houses = require('./models/House');
 
 let Player = require('./classes/Player');
 let Accounts = require('./classes/Account');
+let Characters = require('./classes/Character');
 let Savings = require('./classes/Savings');
 let Discord = require('./classes/Discord');
 let Commands = require('./classes/Commands');
@@ -41,6 +41,7 @@ let Jobs = require('./classes/Jobs');
    const Chars = await frp.Characters.count();
    const Users = await frp.Accounts.count();
    frp.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
+
 })();
 
 
@@ -51,9 +52,6 @@ mp.events.addCommand("koo", (player, fullText) => {
 });
 
 
-mp.events.addCommand("cer", (player, fullText) => {
-   player.call('client:player.character.creator:show');
-});
 
 const Exit = () => {
    frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');

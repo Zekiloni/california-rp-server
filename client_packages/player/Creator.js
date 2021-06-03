@@ -58,6 +58,15 @@ mp.events.add({
       }
    },
 
+   'client:player.character.creator:finish': async (character) => { 
+      await utils.LoadAnimDict('anim@amb@nightclub@peds@');
+      Player.taskPlayAnim('anim@amb@nightclub@peds@', 'mini_strip_club_lap_dance_ld_girl_a_song_a_p1', 8.0, 1, -1, 1, 0.0, false, false, false);
+      mp.game.cam.doScreenFadeOut(5000);
+      setTimeout(() => { if (browser) browser.destroy(); }, 3000);
+      mp.events.callRemote('server:player.character.create', character);
+
+   },
+
    'client:player.character.creator:gender': (x) => { 
       Player.model = Genders[x];
    },
@@ -105,7 +114,6 @@ mp.events.add({
 
    'client:player.character.creator:overlay': (i, e, x) => { 
       Player.setHeadOverlay(parseInt(i), parseInt(e), 1.0, parseInt(x), 0);
-
    },
 
    'client:player.character.creator:blend': (x) => { 

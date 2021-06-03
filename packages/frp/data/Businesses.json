@@ -1,0 +1,24 @@
+
+
+[
+   { 
+      "id": 0,
+      "name": "24 / 7 Market",
+      "default_position": { "x": 1, "y": 2, "z": 3 },
+      "default_ipl": "iplname"
+   },
+
+   {
+      "id": 1,
+      "name": "24 / 7 Market",
+      "default_position": { "x": 1, "y": 2, "z": 3 },
+      "default_ipl": "iplname"
+   },
+
+   {      
+      "id": 2,
+      "name": "24 / 7 Market",
+      "default_position": { "x": 1, "y": 2, "z": 3 },
+      "default_ipl": "iplname"
+   }
+]

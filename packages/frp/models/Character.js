@@ -233,20 +233,19 @@ frp.Characters.prototype.Properties = async function () {
 };
 
 
-frp.Characters.New = async function (player, informations, appearance) { 
-   const Identity = JSON.parse(informations);
-   const Appearance = JSON.parse(appearance);
+frp.Characters.New = async function (player, informations) { 
+   const Character = JSON.parse(informations);
 
    const Bank = await frp.Bank.New(player);
 
 
    let NewCharacter = await frp.Characters.create({
-      Name: Identity.Firt_Name + ' ' + Identity.Last_Name,
-      Birth: Identity.Birth, Origin: Identity.Origin,
-      Gender: Identity.Gender, Armour: 0
+      Name: Character.First_Name + ' ' + Character.Last_Name,
+      Birth: Character.Birth, Origin: Character.Origin,
+      Gender: Character.Gender, Armour: 0, Health: 100
    });
 
-   let NewAppearance = await frp.Characters.create({
+   let NewAppearance = await frp.Appearances.create({
       Character: NewCharacter.id, 
       Hair: Appearance.Hair, Beard: Appearance.Beard, Eyes: Appearance.Eyes,
       Shirt: Appearance.Shirt, Undershirt: Appearance.Undershirt, 
@@ -260,10 +259,12 @@ frp.Characters.New = async function (player, informations, appearance) {
 
 
 (async () => {
-    frp.Characters.sync();
+   frp.Characters.sync();
+
+ //  await frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
+
 })();
 
 
-//  frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
 //   frp.Characters.create({ Name: 'Valele Gipsy', Account: 2 });
 //    frp.Characters.create({ Name: 'Pepsi Gay', Account: 2, Licenses: ["Driving"] });

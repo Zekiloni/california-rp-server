@@ -112,8 +112,18 @@ frp.Vehicles.prototype.Tune = function () {
       this.vehicle.setMod(component.index, component.value);
    });
 };
+
+frp.Vehicles.prototype.Park = async function (position = null) { 
+   if (this.vehicle) { 
+      if (position) this.Parking = position;
+      this.vehicle.destroy();
+      await this.save();
+   }
+};
+
  
-frp.Vehicles.Create = function () { 
+frp.Vehicles.Create = async function (model, owner, position) { 
+   
 
 };
 

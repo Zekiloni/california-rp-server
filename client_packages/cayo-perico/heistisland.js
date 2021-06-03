@@ -1,4 +1,4 @@
-let island = JSON.parse(require('./island'));
+let island = JSON.parse(require('./cayo-perico/island'));
 
 class HeistIslandMP {
     isLoaded = false;

@@ -19,7 +19,7 @@ body {
 .website { position: absolute; font-style: italic; left: 40px; bottom: 40px; text-transform: uppercase; opacity: 0.2; letter-spacing: 5px; color: white; filter: brightness(1);font-size: 95px;margin: 0;}
 img.logo { position: absolute; left: 80px; top: 40px; }
 
-ul.navigation { min-height: 425px; padding: 0; list-style: none; position: absolute; width: 250px; height: auto; left: 40px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+ul.navigation {min-height: 425px;padding: 0;list-style: none;position: absolute;width: 250px;height: auto;margin-top: 70px;left: 40px;display: flex;flex-direction: column;align-items: center;justify-content: space-between;}
 ul.navigation li { margin: 15px 0; position: relative; background: rgb(21 21 21 / 75%); color: rgb(173, 173, 173); box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px; font-size: 23px; font-weight: 500; display: flex; justify-content: center; align-items: center;width: 55px;height: 55px;opacity: 0.75;transition: all 0.35s ease;border-radius: 100%;}
 ul.navigation li.active { transform: scale(1.45); opacity: 1; background: #fbc60c; box-shadow: 0 1px 25px rgb(250 184 10 / 50%); color: #292929; }
 
@@ -114,3 +114,63 @@ input[type=range]:focus::-webkit-slider-runnable-track { background: #ccc; }
 .checkmark:after { content: ""; position: absolute;display: none; }
 .container input:checked ~ .checkmark:after { display: block; }
 .container .checkmark:after {left: 6px;top: 3px;width: 4px;height: 8px;border: solid white;border-width: 0 3px 3px 0;-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);transform: rotate(45deg);}
+
+.create {bottom: 50px;position: absolute;}
+.create button {  background: #fbc60c; border: none; border-radius: 5px; padding: 10px 25px; font-weight: 800; text-transform: uppercase; color: #292929; font-size: 22px; transition: all 0.35s ease; box-shadow: 0 1px 25px rgb(250 184 10 / 50%); }
+.create button:hover { transform: scale(1.07); box-shadow: 0 1px 25px rgb(250 184 10 / 65%); color: white; }
+
+.bounce-out-top {
+   animation: bounce-out-top 1.0s forwards;
+}
+
+
+@keyframes bounce-out-top {
+   0% { 
+      transform: translate(1px, 1px) rotate(0deg);
+      animation-timing-function: ease-out;
+   }
+   5% {
+      transform: translate(-1px, -2px) rotate(-1deg);
+      animation-timing-function: ease-in;
+   }
+   10% { 
+      transform: translate(-3px, 0px) rotate(1deg);
+      animation-timing-function: ease-out;
+   }
+   15% {
+      transform: translate(3px, 2px) rotate(0deg);
+      animation-timing-function: ease-in;
+   }
+   20% {
+      transform: translate(1px, -1px) rotate(1deg);
+      animation-timing-function: ease-out;
+   }
+   25% {
+      transform: translate(-1px, 2px) rotate(-1deg);
+      animation-timing-function: ease-in;
+   }
+   30% {
+      transform: translate(-3px, 1px) rotate(0deg);
+      animation-timing-function: ease-out;
+
+   }
+   35% {
+      transform: translate(3px, 1px) rotate(-1deg);
+      animation-timing-function: ease-in;
+   }
+   50% {
+      transform: translate(-1px, -1px) rotate(1deg);
+      animation-timing-function: ease-out;
+   }
+   70% {
+      transform: translate(1px, 2px) rotate(0deg);
+      animation-timing-function: ease-in;
+   }
+   85% {
+      opacity: 1;
+   }
+   100% {
+               transform: translateY(-800px);
+      opacity: 0;
+   }
+}
