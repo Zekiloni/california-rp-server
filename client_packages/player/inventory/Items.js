@@ -86,9 +86,9 @@ function Put (item) {
 
 async function Drop (item, hash, quantity) { 
 
-   let { position } = mp.players.local;
-   let heading = mp.players.local.getHeading();
-   let rotation = mp.players.local.getRotation(2);
+   let { position } = Player;
+   let heading = Player.getHeading();
+   let rotation = Player.getRotation(2);
 
    let newPos = new mp.Vector3(
      position.x + Math.cos(((heading + 90) * Math.PI) / 180) * 0.6,
@@ -102,7 +102,7 @@ async function Drop (item, hash, quantity) {
      {
        alpha: 255,
        rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z),
-       dimension: mp.players.local.dimension,
+       dimension: Player.dimension,
      },
    );
 
@@ -122,7 +122,7 @@ async function Drop (item, hash, quantity) {
    mp.game.streaming.requestAnimDict('random@domestic');
    Player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
 
-   mp.events.callRemote('server:item.drop', item, quantity, JSON.stringify(fixedPosition));
+   mp.events.callRemote('server:player.inventory.item:drop', item, JSON.stringify(fixedPosition), quantity);
 }
 
 

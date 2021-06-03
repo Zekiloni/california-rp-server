@@ -79,7 +79,7 @@ frp.Items.prototype.Delete = async function () {
 };
 
 
-frp.Items.prototype.Drop = async function (player, quantity = 1, place) {
+frp.Items.prototype.Drop = async function (player, place, quantity = 1) {
    const Position = JSON.parse(place);
    if (this.Quantity == quantity) {
       this.Entity = ItemEntities.Ground;

@@ -1,132 +1,153 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- meta tags-->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   <head>
+      <!-- meta tags-->
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-        <!-- source -->
-        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
-        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+      <!-- source -->
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
 
-        <link rel="stylesheet" type="text/css" href="src/style.css" />
+      <link rel="stylesheet" type="text/css" href="src/style.css" />
 
-    </head>
-    <body>
+   </head>
+   <body>
 
-        <div class="ground"> </div>
+      <div id="inventory">
+         <div class="ground"> </div>
 
-        <div id="inventory">
+         <div class="box">
             <div class="clothing">
-                <div class="cloth" v-for="(item, key) in player.clothing" v-on:click="clothing(item)">
-                    <img :src="'src/images/clothes/' + clothingNames[key] + '.png'">
 
-                </div>
             </div>
 
-            <!--  // v-if="player.items.length > 0" -->
-            <div class="items">
-                <div class="item" v-for="item in player.items" v-if="item" :key="item.id" v-on:click="use(item)" :data-id="item.id" >
-                    <h2 class="name">{{ item.name }}</h2>
-                    <img class="icon" :src="itemImage(item.hash)" />
-                    <h4 class="quantity">{{ item.quantity }}</h4>
-                </div>
+            <div class="inventory">
+               <div class="header">
+                  <h2> Inventar </h2>
+                  <h4> {{ Weight() }} <b>/ {{ player.maximum }} kg</b> </h4>
+               </div>
+               <div class="items">
+                  <div class="item" v-for="(item, i) in player.items" v-on:contextmenu="Menu($event, item.id)" >
+                     <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
+                     <h3 class="quantity"> {{ item.quantity }} </h3>
+                  </div>
+               </div>
             </div>
 
-            <div class="weapons" >
-                <div class="weapon" v-for="(weapon, key) in player.weapons" v-on:click="weaponUse(key, weapon.id)"  @mousedown.right="weaponBack(weapon)"> 
-                    <h2> {{ weapon.name }} {{ key }} </h2>
-                    <h5>{{ weaponphoto(weapon.hash) }}</h5>
-                    <img :src="'src/images/items/' + weapon.hash + '.png'">
-                </div>
+            <div class="vehicle" v-if="vehicle">
+
             </div>
-        </div>
-          
-        <!-- scripts -->
-        <script src="src/vendor/js/jquery-3.5.1.js"></script>
-        <script src="src/vendor/js/jquery-ui.min.js"></script>
-        <script src="src/vendor/js/vue.js"></script>
-        <script>
-            let inventory = new Vue({
-                el: '#inventory',
-                data: {
-                    player: {
-                        money: null, 
-                        
-                        weapons: [], 
-                        items: null, 
-						
+         </div>
 
-                        clothing: [1, 11, 8, 4, 6],
-                    },
+         <transition name="bounce">
+            <ul class="options" v-if="menu.item" v-bind:style="{ top: menu.top + 'px', left: menu.left + 'px' }" ref="menu" tabindex="-1" v-on:blur="CloseMenu()">
+               <h4> {{ player.items.find(element => element.id === menu.item).name }} </h4>
+               <li v-on:click="Drop(menu.item)"> Baci Predmet </li>
+               <li> Daj Predmet </li>
+            </ul>
+         </transition>
 
-                    clothingNames: ['hat', 'shirt', 'undershirt', 'bottoms', 'shoes']
-                },
+      </div>
 
-                methods: { 
 
-                    load: function (items) { 
-                        this.player.items = items;
-                    },
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"> </script>
+      <script>
+         let inventory = new Vue({
+            el: '#inventory',
+            data: {
+               player: {
+                  money: null, 
+                  maximum: 25,
+                  items: [
+                     { id: 1, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
+                     { id: 2, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
+                     { id: 3, name: 'Radio Prijemnik', hash: 'prop_cs_hand_radio', quantity: 4, weight: 0.3 },
+                     { id: 4, name: 'Combat Pistol', hash: 'w_pi_sns_pistolmk2', quantity: 1, weight: 0.7 },
+                     { id: 5, name: 'Pistol Mag', hash: 'w_pi_combatpistol_mag2', quantity: 3, weight: 0.3 },
+                     { id: 6, name: 'Upaljac', hash: 'p_cs_lighter_01', quantity: 2, weight: 0.6 },
+                     { id: 7, name: 'Flasa Vode', hash: 'prop_ld_flow_bottle', quantity: 2, weight: 0.4 },
+                     { id: 8, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
+                     { id: 9, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
+         
+                  ], 
+            
+                  clothing: [1, 11, 8, 4, 6],
+               },
 
-                    weaponUse: function (i, w) { 
-                        
-                    },
+               menu: {
+                  item: null,
+                  top: 0,
+                  left: 0
+               },
 
-                    weaponBack: function (weapon) { 
-                        weapon = this.player.weapons.find(element => element === weapon);
-                        let index = this.player.weapons.indexOf(weapon);          
-                        this.player.weapons.splice(index, 1);
-                        mp.trigger('server:inventory.weapon.put', weapon.id)
-                    },
+               vehicle: false,
 
-                    clothing: function (index) {
-                        mp.trigger('client:inventory.process.clothing', index)
-                    },
+               clothingNames: ['hat', 'shirt', 'undershirt', 'bottoms', 'shoes']
+            },
 
-                    weaponIndex: (i) => { 
-                        let names = ['Primarno Oružije', 'Sekundardno oružije'];
-                        return names[i];
-                    },
+            methods: { 
 
-                    weaponphoto: function (hash) {
-                        console.log('src/images/items/' + hash + '.png')
-                    },
+               Menu: function (event, i) { 
+                  this.menu.item = i;
+                  this.menu.top = event.clientY - 5;
+                  this.menu.left = event.clientX - 5;
 
-                    use: function (item) {
-                        item = this.player.items.find(element => element === item);
-                        let index = this.player.items.indexOf(item);                        
-                        this.player.items.splice(index, 1);
-                        mp.trigger('client:inventory.item.use', item.id)
-                    },
+                  console.log(event.$el)
+                  
+                  Vue.nextTick(function() {
+                     this.$refs.menu.focus();
+                  }.bind(this));
 
-                    drop: function (item) { 
-                        item = this.player.items.find(element => element === item);
-                        let index = this.player.items.indexOf(item);                        
-                        this.player.items.splice(index, 1);
-                        mp.trigger('client:inventory.item.drop', item.id, item.hash)
-                    },
+                  event.preventDefault();
+               },
 
-                    itemImage: (hash) => { 
-                        let source = 'src/images/items/' + hash + '.png'; 
-                        return source;
-                    }
-                }
-            })
+               CloseMenu: function () { 
+                  console.log('aa');
+                  this.menu.item = null
 
-            setTimeout(() => {
-                $('.item').draggable({ revert: true });
+               },
 
-                $(".ground").droppable({
-                    accept: '.item',
-                    drop: function(event, ui) {
-                        let item = inventory.player.items.find(element => element.id === parseInt(ui.draggable[0].attributes[0].value))
-                        inventory.drop(item)
-                        $(".item").draggable({ revert: true });
-                    }
-                });
-            }, 1000);
+               Weight: function () { 
+                  let weight = 0;
+                  this.player.items.forEach(item => { weight += (item.weight * item.quantity); });
+                  return weight.toFixed(2);
+               },
 
-        </script>
-    </body>     
+
+               weaponBack: function (weapon) { 
+                  weapon = this.player.weapons.find(element => element === weapon);
+                  let index = this.player.weapons.indexOf(weapon);          
+                  this.player.weapons.splice(index, 1);
+                  mp.trigger('server:inventory.weapon.put', weapon.id)
+               },
+
+               clothing: function (index) {
+                  mp.trigger('client:inventory.process.clothing', index)
+               },
+
+               use: function (item) {
+                  item = this.player.items.find(element => element.id === item);
+                  let index = this.player.items.indexOf(item);                        
+                  this.player.items.splice(index, 1);
+                  mp.trigger('client:inventory.item.use', item.id)
+               },
+
+               Drop: function (item) { 
+                  this.menu.item = null;
+                  item = this.player.items.find(element => element.id === item);
+                  let index = this.player.items.indexOf(item);                        
+                  this.player.items.splice(index, 1);
+                  mp.trigger('client:inventory.item.drop', item.id, item.hash)
+               }
+            }
+         })
+         
+
+         //window.addEventListener('contextmenu', e => e.preventDefault());
+
+
+      </script>
+   </body>     
 </html>
