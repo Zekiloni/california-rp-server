@@ -17,14 +17,14 @@
       <div id="inventory">
          <div class="ground"> </div>
 
-         <div class="box">
+         <div class="main">
             <div class="clothing">
 
             </div>
 
             <div class="inventory">
                <div class="header">
-                  <h2> Inventar </h2>
+                  <h2> <i class="fa fa-list-alt" aria-hidden="true"> </i> Inventar </h2>
                   <h4> {{ Weight() }} <b>/ {{ player.maximum }} kg</b> </h4>
                </div>
                <div class="items">
@@ -35,10 +35,25 @@
                </div>
             </div>
 
-            <div class="vehicle" v-if="vehicle">
-
+            <div class="wheel">
+               <div class="header">
+                  <h2> <img src="src/icons/weapon.png" class="icon"> </i> Oružije </h2>
+                  <h4> {{ player.wheel.length }} <b>/ {{ wheelMaximum.length }} </b> </h4>
+               </div>
+               <div class="weapons">
+                  <div class="weapon" v-for="i in wheelMaximum">
+                     <div class="inner" v-if="player.wheel[i]">
+                        <img class="photo" :src="'src/images/items/' + player.wheel[i].hash + '.png'" />
+                        <h3 class="ammo"> {{ player.wheel[i].ammo }} </h3>
+                     </div>
+                     <div class="inner" v-else>
+                        <i class="george-floyd fa fa-times" aria-hidden="true"></i>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
+
 
          <transition name="bounce">
             <ul class="options" v-if="menu.item" v-bind:style="{ top: menu.top + 'px', left: menu.left + 'px' }" ref="menu" tabindex="-1" v-on:blur="CloseMenu()">
@@ -47,9 +62,7 @@
                <li> Daj Predmet </li>
             </ul>
          </transition>
-
       </div>
-
 
       <!-- scripts -->
       <script src="src/vendor/js/vue.js"> </script>
@@ -63,15 +76,17 @@
                   items: [
                      { id: 1, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
                      { id: 2, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
-                     { id: 3, name: 'Radio Prijemnik', hash: 'prop_cs_hand_radio', quantity: 4, weight: 0.3 },
-                     { id: 4, name: 'Combat Pistol', hash: 'w_pi_sns_pistolmk2', quantity: 1, weight: 0.7 },
-                     { id: 5, name: 'Pistol Mag', hash: 'w_pi_combatpistol_mag2', quantity: 3, weight: 0.3 },
-                     { id: 6, name: 'Upaljac', hash: 'p_cs_lighter_01', quantity: 2, weight: 0.6 },
-                     { id: 7, name: 'Flasa Vode', hash: 'prop_ld_flow_bottle', quantity: 2, weight: 0.4 },
+                     { id: 3, name: 'Radio Prijemnik', hash: 'prop_cs_hand_radio', quantity: 4, weight: 0.25 },
+                     { id: 4, name: 'Combat Pistol', hash: 'w_pi_sns_pistolmk2', quantity: 1, weight: 1.01 },
+                     { id: 5, name: 'Pistol Mag', hash: 'w_pi_combatpistol_mag2', quantity: 3, weight: 0.8 },
+                     { id: 6, name: 'Upaljac', hash: 'p_cs_lighter_01', quantity: 2, weight: 0.07 },
+                     { id: 7, name: 'Flasa Vode', hash: 'prop_ld_flow_bottle', quantity: 2, weight: 0.1 },
                      { id: 8, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
                      { id: 9, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
-         
                   ], 
+                  wheel: [
+                     { id: 10, name: 'Combat Pistol', hash: 'w_pi_combatpistol', ammo: 2 }
+                  ],
             
                   clothing: [1, 11, 8, 4, 6],
                },
@@ -82,8 +97,7 @@
                   left: 0
                },
 
-               vehicle: false,
-
+               wheelMaximum: [0, 1, 2, 3],
                clothingNames: ['hat', 'shirt', 'undershirt', 'bottoms', 'shoes']
             },
 
@@ -93,8 +107,6 @@
                   this.menu.item = i;
                   this.menu.top = event.clientY - 5;
                   this.menu.left = event.clientX - 5;
-
-                  console.log(event.$el)
                   
                   Vue.nextTick(function() {
                      this.$refs.menu.focus();
@@ -105,7 +117,7 @@
 
                CloseMenu: function () { 
                   console.log('aa');
-                  this.menu.item = null
+                  this.menu.item = null;
 
                },
 

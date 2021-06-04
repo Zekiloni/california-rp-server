@@ -1,10 +1,11 @@
 module.exports = {
    
-   DoubleXP: false,
+   HappyHours: false,
 
    default: {
       spawn: new mp.Vector3(-206.5116, -1014.2664, 30.1380),
-      heading: -15
+      heading: -15,
+      dimension: 0
    },
 
    database: {

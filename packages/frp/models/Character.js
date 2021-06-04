@@ -79,6 +79,7 @@ frp.Characters.prototype.Spawn = async function (player) {
    switch (this.Spawn_Point) {
       case 0: {
          player.position = frp.Settings.default.spawn;
+         player.dimension = frp.Settings.default.dimension;
          break;
       }
       case 1: {

@@ -3,7 +3,6 @@
 const { DataTypes } = require('sequelize');
 const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');
 
-
 frp.Items = frp.Database.define('Item', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Item: { type: DataTypes.STRING },
@@ -22,8 +21,10 @@ frp.Items = frp.Database.define('Item', {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Rotation')); },
          set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
-      }
-   }, {
+      },
+      Dimension: { type: DataTypes.INTEGER, defaultValue: 0 }
+   }, 
+   {
       timestamps: true,
       underscrored: true,
       createdAt: "Created_Date",
@@ -33,18 +34,23 @@ frp.Items = frp.Database.define('Item', {
 
 
 frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0) {
-   const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation });
-   Item.Refresh();
+   console.log('DEBUG ' + 2);
+   const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation, Dimension: dimension });
+   await Item.Refresh();
 };
 
 
 frp.Items.Inventory = async function (player) {
-   let Inventory = [];
+   let Inventory = [], Wheel = [];
    let Items = await frp.Items.findAll({ where: { Owner: player.character } });
    Items.forEach((Item) => {
-      Inventory.push(Item);
+      if (Item.Entity == ItemEntities.Player) { 
+         Inventory.push(Item);
+      } else if (Item.Entity == ItemEntities.Wheel) { 
+         Wheel.push(Item);
+      }
    });
-   return Inventory;
+   return { Items: Inventory, Wheel: Wheel };
 };
 
 
@@ -55,9 +61,12 @@ frp.Items.HasItem = async function (player, item) {
 
 
 frp.Items.prototype.Refresh = function () {
+   console.log('DEBUG ' + 3);
    if (this.Entity == ItemEntities.Ground) {
+      console.log('DEBUG ' + 4);
       const Position = this.Position;
       const Rotation = this.Rotation;
+      console.log(Position);
       this.object = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(Position.x, Position.y, Position.z), {
          rotation: new mp.Vector3(Rotation.x, Rotation.y, Rotation.z),
          alpha: 255,
@@ -66,6 +75,7 @@ frp.Items.prototype.Refresh = function () {
       this.object.Item = this.id;
       this.object.notifyStreaming = true;
    } else {
+      console.log('DEBUG ' + 5);
       if (this.object) {
          this.object.destroy();
       }
@@ -100,7 +110,6 @@ frp.Items.prototype.Pickup = async function (player) {
    // PROKS PORUKA: Podigao taj i taj predmet /me
    this.Entity = ItemEntities.Player;
    this.Owner = player.character;
-   this.Refresh();
    await this.save();
 };
 
@@ -126,15 +135,21 @@ frp.Items.prototype.Give = async function (player, target, quantity) {
 
 
 frp.Items.Near = async function (player) {
-   const Position = player.position;
-   mp.objects.forEachInRange(Position, 3.0, async (Object) => {
-      if (Object.Dimension == player.dimension) {
-         if (Object.Item) {
-            let Near = await frp.Items.findOne({ where: { id: object.Item } });
-            return Near;
+   return new Promise((resolve, reject) => { 
+      const Position = player.position;
+      mp.objects.forEachInRange(Position, 3.0, async (object) => {
+         if (object.dimension == player.dimension) {
+            if (object.Item) {
+               let Nearby = await frp.Items.findOne({ where: { id: object.Item }});
+               if (Nearby) { 
+                  resolve(Nearby);
+               } else { 
+                  reject(false);
+               }
+            }
          }
-      }
-   });
+      });
+   })   
 };
 
 

@@ -4,10 +4,10 @@ const Player = mp.players.local;
 
 
 let camdir = false,
-    noclip = false,
-    charpos = false,
-    Spectating = false,
-    SpecTarget = null;
+   noclip = false,
+   charpos = false,
+   Spectating = false,
+   SpecTarget = null;
 
 mp.events.add("spmode", (target, toggle) => {
 	
@@ -15,8 +15,8 @@ mp.events.add("spmode", (target, toggle) => {
 
 
 mp.events.add({
-   'client:player.noClip': () => { 
-      noClip = !noClip;
+   'client:player.administrator:fly': () => { 
+      noclip = !noclip;
       Player.setInvincible(noclip);
       Player.freezePosition(false);
       Player.setVisible(!noclip, !noclip);

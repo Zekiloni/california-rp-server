@@ -1,10 +1,11 @@
-const interval = 60 * 1000;
 
+
+const interval = 60 * 1000;
 
 async function Update(player) {
    let character = await player.Character(), account = await player.Account();
    
-   character.increment('Minutes', { by: frp.Settings.DoubleXP == true ? 2 : 1 }).then(async (Char) => {
+   character.increment('Minutes', { by: frp.Settings.HappyHours == true ? 2 : 1 }).then(async (Char) => {
       if (Char.Minutes >= 60) {
          await character.increment('Hours', { by: 1 });
          Char.update({ Minutes: 0 });

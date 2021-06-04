@@ -6,32 +6,15 @@ let browser = null, opened = false, nearbyPlayers = [];
 
 
 mp.events.add({
-   'client:inventory.toggle': (toggle, items = 0, weapons = 0) => {
-      if (toggle) { 
-         CompareVectors
-         items = JSON.stringify(items)
-         weapons = JSON.stringify(weapons)
-         // mp.game.graphics.transitionToBlurred(500);
-         browser.execute(`inventory.player.items = ${items}`);
-         browser.execute(`inventory.player.weapons = ${weapons}`)
-         opened = true;
-         setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
-      } else { 
-         // mp.game.graphics.transitionFromBlurred(300);
-      }
-  },
-
 
   'client:inventory.toggle': () => { 
       opened = !opened;
       if (opened) { 
-         browser = mp.browsers.new('package://player/inventory/inventory-interface/inventory.html');
+         browser = mp.browsers.new('package://player/inventory/inventory-interface/Inventory.html');
          Player.BrowserControls(true, true);
-
       } else { 
          if (browser) browser.destroy();
          Player.BrowserControls(false, false);
-
       }
   },
 
@@ -59,19 +42,15 @@ mp.events.add({
 
 mp.keys.bind(0x49, false, function() {
    if (Player.logged && Player.spawned) { 
-      if (!opened) {
-         if (mp.players.local.isTypingInTextChat) return;
-         mp.events.callRemote('server:inventory.get');
-      } else { 
-         mp.events.call('client:inventory.toggle', false);
-      }
+      if (mp.players.local.isTypingInTextChat) return;
+      mp.events.call('client:inventory.toggle');
    }
 });
 
 mp.keys.bind(0x59, false, function() {
    if (Player.logged && Player.spawned) { 
       if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
-      mp.events.callRemote('server:item.pickup');
+      mp.events.callRemote('server:player.inventory.item:pickup');
    }
 });
 

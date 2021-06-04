@@ -1,15 +1,18 @@
-let Items = require('../models/Item');
+
 const Weapons = require('../data/Weapons.json');
+
 const ItemEntities = {
-    Ground: -1, Player: 0, Vehicle: 1, House: 2,
-    Wheel: 3, LeftHand: 4, RightHand: 5
+   Ground: -1, Player: 0, Vehicle: 1, House: 2,
+   Wheel: 3, LeftHand: 4, RightHand: 5
 };
+
 const ItemType = {
-    Drug: 0, Equipable: 1, Openable: 2, Weapon: 3,
-    Ammo: 4, Misc: 5, Food: 6, Drink: 7
+   Drug: 0, Equipable: 1, Openable: 2, Weapon: 3,
+   Ammo: 4, Misc: 5, Food: 6, Drink: 7
 };
+
 let ItemRegistry = {};
-module.exports = { ItemType, ItemEntities, ItemRegistry };
+
 class Item {
     constructor(name, type, object, weight, data, use) {
         this.name = name;
@@ -27,13 +30,16 @@ class Item {
         ItemRegistry[this.name] = this;
     }
 }
+
 // HRANA 
 new Item('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, function (player) {
     player.call('client:player.scenario', []);
 });
+
 new Item('Medkit', ItemType.Misc, 'prop_ld_health_pack', 0, false, function (player) {
     player.health += 25;
 });
+
 // MASKA
 new Item('iFruit Smartphone', ItemType.Misc, 'prop_player_phone_01', 0.3, function (player) {
     let character = player.getCharacter(), phone = mp.phones[character.phone_number];
@@ -41,6 +47,7 @@ new Item('iFruit Smartphone', ItemType.Misc, 'prop_player_phone_01', 0.3, functi
         return; // telefon ti je ugasen
     player.call('client:player.phone', phone);
 });
+
 // AMMOS / MUNICIJA 
 new Item('9mm Catridge', ItemType.Ammo, 'w_pi_combatpistol_mag1', 0, { quantity: 32 }, function () { });
 new Item('10mm Catridge', ItemType.Ammo, 'w_pi_pistol50_mag2', 0, { quantity: 27 }, function () { });
@@ -50,6 +57,7 @@ new Item('5.56 Catridge', ItemType.Ammo, 'w_ar_carbinerifle_mag2', 0, { quantity
 new Item('.338 Catridge', ItemType.Ammo, 'w_sr_sniperrifle_mag1', 0, { quantity: 15 }, function () { });
 new Item('Buckshot Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag1', 0, { quantity: 25 }, function () { });
 new Item('Slug Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag2', 0, { quantity: 25 }, function () { });
+
 // WEAPONS / ORUZIJE
 new Item('Antique Cavalry Dagger', ItemType.Weapon, 'w_me_dagger', 0, { weapon: 'weapon_dagger' }, function (player, ammo = 0) {
     player.giveWeapon(mp.joaat(this.weapon), ammo);
@@ -282,7 +290,11 @@ new Item('Parachute', ItemType.Weapon, 'p_parachute_s', 0, { weapon: 'gadget_par
 new Item('Fire Extinguisher', ItemType.Weapon, 'w_am_fire_exting', 0, { weapon: 'weapon_fireextingusher' }, function (player, ammo = 0) {
     player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
+
+
 // mp.ItemRegistry = {};
+
+
 function weaponNameByHash(i) {
     let query = "0x" + i.toString(16).toUpperCase();
     for (let f in Weapons) {
@@ -292,6 +304,8 @@ function weaponNameByHash(i) {
         }
     }
 }
+
+
 function isAmmoValid(weapon, ammo) {
     let name = weaponNameByHash(weapon);
     for (let i in mp.ItemRegistry) {
@@ -306,6 +320,8 @@ function isAmmoValid(weapon, ammo) {
         }
     }
 }
+
+
 mp.Player.prototype.giveAmmo = function (quantity, catridge) {
     let weapon = this.weapon;
     if (weapon) {
@@ -322,3 +338,6 @@ mp.Player.prototype.giveAmmo = function (quantity, catridge) {
         return false;
     }
 };
+
+
+module.exports = { ItemType, ItemEntities, ItemRegistry };

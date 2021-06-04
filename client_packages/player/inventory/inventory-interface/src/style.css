@@ -12,34 +12,70 @@ body {
    position: relative;
    overflow: hidden;
    box-sizing: border-box;
+   display: grid;
+   background: linear-gradient(179deg, rgb(0 0 0 / 85%), rgb(35 35 35 / 35%));
 }
 
-#inventory { 
-   width: 100%; height: 100%; 
-   background: rgb(0 0 0 / 70%);
-   display: flex; justify-content: center; align-items: center;
+#inventory {
+   width: 100%;
+   height: 100%;
+   flex-wrap: wrap;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin: 0 auto;
+   animation: 0.3s bounce-in ease;
 }
 
 
-.box {
+.main {
    min-width: 750px;
    width: auto;
-   padding: 0 5px;
-   height: 525px;
-   background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
+   padding: 15px 10px;
+   /* height: 525px; */
+   background: linear-gradient(179deg, rgb(25 25 25 / 75%), rgb(0 0 0 / 0%));
    box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
    display: flex;
    justify-content: space-around;
-   align-items: center;
+   /* align-items: center; */
+   /* border: 1px solid rgb(60 60 60 / 10%); */
 }
 
+
+.wheel {
+   width: 275px;
+   height: 110px;
+   padding: 10px 0;
+   box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
+   background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
+   border: 1px solid rgb(60 60 60 / 15%);
+}
+
+i.fa, i.fas { 
+   color: #fbc60c;
+   position: relative;
+   text-shadow: 0 1px 20px rgb(250 184 10 / 45%);
+}
+
+/* i.fa::after, i.fas::after, img.icon::after {
+   content: '';
+   position: absolute;
+   top: -5px;
+   left: -8px;
+   width: 35px;
+   height: 35px;
+   background-image: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 12%) 1px, transparent 0);
+   background-size: 15px 15px;
+} */
 
 .clothing {
    width: 275px;
    height: 475px;
-   background: red;
+   background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
    padding: 10px 0;
    margin: 0 5px;
+   border: 1px solid rgb(60 60 60 / 10%);
+   box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
 }
 
 
@@ -47,11 +83,12 @@ body {
    width: 425px;
    height: 475px;
    box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
-   background: rgb(21 21 21 / 25%);
+   background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
    overflow-y: scroll;
    overflow-x: hidden;
    padding: 10px 0;
    margin: 0 5px;
+   border: 1px solid rgb(60 60 60 / 10%);
 }
 
 .inventory .items { 
@@ -72,38 +109,33 @@ body {
 
 .items .item img { width: 50px; transition: all 0.15s ease; opacity: 0.65; }
 .items .item h3.quantity { position: absolute; color: white; opacity: 0.45; transition: all 0.15s ease; font-weight: 500; bottom: 1px; right: 3px; margin: 0; font-size: 10px; }
-.items .item:hover { border-color: #fbc60c; }
+.items .item:hover { border-color: #fbc60c; box-shadow: 0 1px 20px rgb(250 184 10 / 15%); }
 .items .item:hover img { opacity: 1; }
 .items .item:hover h3.quantity { opacity: 1; }
 
-.vehicle {
-   width: 270px;
-   height: 475px;
-   padding: 10px 0;
-   margin: 0 5px;
-   background: green;
-}
+.weapons {display: flex;justify-content: center;align-items: center;width: 100%;margin: 0 auto;flex-wrap: wrap;}
+.weapons .weapon {width: 50px;height: 50px;margin: 5px;border: 1px solid rgb(121 121 121 / 13%);box-shadow: 0 3px 7px rgb(12 12 12 / 10%);background: rgb(21 21 21 / 45%);transition: all 0.15s ease;}
+.weapon .inner { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; position: relative; }
+.weapon .inner i.george-floyd {font-size: 40px;color: grey;text-shadow: none;opacity: 0.3;}
+.weapon:hover { border-color: #fbc60c; box-shadow: 0 1px 20px rgb(250 184 10 / 15%); }
+.weapon:hover .inner img.photo { opacity: 1; }
+.weapon .inner img.photo { width: 40px; opacity: 0.65; transition: all 0.15s ease; }
+.weapon .inner h3.ammo {position: absolute;bottom: -1px;right: 5px;margin: 0;opacity: 0.45;}
 
-ul.options {
-   width: 130px;
-   height: 90px;
-   position: absolute;
-   list-style: none;
-   z-index: 999999;
-   padding: 5px;
-}
+ul.options { width: 130px; height: 90px; position: absolute; list-style: none; z-index: 999999; padding: 5px; }
 
 ul.options li { padding: 2px 15px; margin: 5px; border-radius: 5px; background: #fbc60c; color: #1b1b1b; font-weight: 400; box-shadow: 0 1px 20px rgb(250 184 10 / 45%); transition: all 0.2s ease; }
 ul.options li:hover { color: whitesmoke; background: transparent; box-shadow: none; }
 ul.options:focus { outline: none; }
-ul.options h4 { text-align: center; font-style: italic; color: #cdcdcd; letter-spacing: 1.25px; }
+ul.options h4 { text-align: center; font-style: italic; color: #e2e2e2; letter-spacing: 1.25px; text-shadow: 0 0 2px rgb(0 0 0 / 77%); }
 
 .header { display: flex; justify-content: space-between; padding: 10px 25px; align-items: center; }
 .header h2, h4 { margin: 0; }
-.header h2 {text-transform: uppercase;font-weight: 300;color: #b7b7b7;letter-spacing: 2.5px;text-shadow: 0 0 2px rgb(0 0 0 / 77%);}
-.header h4 {font-size: 1.4em;color: #a2a2a2;}
+.header h2 { display: flex; justify-content: center; align-items: center; text-transform: uppercase; font-weight: 300; color: #b7b7b7; letter-spacing: 2.5px; text-shadow: 0 0 2px rgb(0 0 0 / 77%); }
+.header h4 { font-size: 1.4em; color: #a2a2a2; }
 .header h4 b { font-size: 12px; color: rgb(83, 83, 83); }
-
+.header img.icon { margin-right: 10px; position: relative; width: 27.5px; -webkit-filter: drop-shadow(0 1px 20px rgb(250 184 10 / 45%)); filter: drop-shadow(0 1px 20px rgb(250 184 10 / 45%)); }
+.header h2 i.fa { margin-right: 10px; }
 
 * { user-select: none; }
 
