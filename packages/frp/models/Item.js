@@ -3,6 +3,7 @@
 const { DataTypes } = require('sequelize');
 const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');
 
+
 frp.Items = frp.Database.define('Item', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Item: { type: DataTypes.STRING },
@@ -22,7 +23,14 @@ frp.Items = frp.Database.define('Item', {
          get: function () { return JSON.parse(this.getDataValue('Rotation')); },
          set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
       },
-      Dimension: { type: DataTypes.INTEGER, defaultValue: 0 }
+      Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
+      GameObject: { 
+         type: DataTypes.VIRTUAL,
+         set: function (x) { 
+            this.setDataValue('GameObject', x);
+         },
+         
+      }
    }, 
    {
       timestamps: true,
@@ -61,23 +69,22 @@ frp.Items.HasItem = async function (player, item) {
 
 
 frp.Items.prototype.Refresh = function () {
-   console.log('DEBUG ' + 3);
    if (this.Entity == ItemEntities.Ground) {
-      console.log('DEBUG ' + 4);
       const Position = this.Position;
       const Rotation = this.Rotation;
       console.log(Position);
-      this.object = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(Position.x, Position.y, Position.z), {
+      this.GameObject = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(Position.x, Position.y, Position.z), {
          rotation: new mp.Vector3(Rotation.x, Rotation.y, Rotation.z),
          alpha: 255,
          dimension: this.Dimension
       });
-      this.object.Item = this.id;
-      this.object.notifyStreaming = true;
+      this.GameObject.Item = this.id;
+
+      console.log('Turilo game object ' + this.GameObject.Item);
+   
    } else {
-      console.log('DEBUG ' + 5);
-      if (this.object) {
-         this.object.destroy();
+      if (this.GameObject) {
+         this.GameObject.destroy();
       }
    }
 };
@@ -191,6 +198,14 @@ frp.Items.Weight = async function (player) {
    Items.forEach((Item) => {
       Item.Refresh();
    });
+
+   setTimeout(async () => {
+      const objs = await frp.Items.findAll();
+      objs.forEach((obj) => { 
+         console.log(obj.GameObject)
+      })
+   }, 5000);
+
 
    frp.Main.Terminal(3, Items.length + ' Items Loaded !');
 })();

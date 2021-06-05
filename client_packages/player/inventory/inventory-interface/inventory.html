@@ -28,7 +28,7 @@
                   <h4> {{ Weight() }} <b>/ {{ player.maximum }} kg</b> </h4>
                </div>
                <div class="items">
-                  <div class="item" v-for="(item, i) in player.items" v-on:contextmenu="Menu($event, item.id)" >
+                  <div class="item" v-for="(item, i) in player.items" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
                      <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
                      <h3 class="quantity"> {{ item.quantity }} </h3>
                   </div>
@@ -42,7 +42,7 @@
                </div>
                <div class="weapons">
                   <div class="weapon" v-for="i in wheelMaximum">
-                     <div class="inner" v-if="player.wheel[i]">
+                     <div class="inner" v-if="player.wheel[i]" v-on:click="Put(player.wheel[i])">
                         <img class="photo" :src="'src/images/items/' + player.wheel[i].hash + '.png'" />
                         <h3 class="ammo"> {{ player.wheel[i].ammo }} </h3>
                      </div>
@@ -77,15 +77,18 @@
                      { id: 1, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
                      { id: 2, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
                      { id: 3, name: 'Radio Prijemnik', hash: 'prop_cs_hand_radio', quantity: 4, weight: 0.25 },
-                     { id: 4, name: 'Combat Pistol', hash: 'w_pi_sns_pistolmk2', quantity: 1, weight: 1.01 },
                      { id: 5, name: 'Pistol Mag', hash: 'w_pi_combatpistol_mag2', quantity: 3, weight: 0.8 },
                      { id: 6, name: 'Upaljac', hash: 'p_cs_lighter_01', quantity: 2, weight: 0.07 },
-                     { id: 7, name: 'Flasa Vode', hash: 'prop_ld_flow_bottle', quantity: 2, weight: 0.1 },
                      { id: 8, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
                      { id: 9, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
                   ], 
+
+                  backpack: [
+                     // TODO
+                  ],
+                  
                   wheel: [
-                     { id: 10, name: 'Combat Pistol', hash: 'w_pi_combatpistol', ammo: 2 }
+                     { id: 10, name: 'Combat Pistol', hash: 'w_pi_combatpistol', ammo: 2, quantity: 1 }
                   ],
             
                   clothing: [1, 11, 8, 4, 6],
@@ -95,6 +98,13 @@
                   item: null,
                   top: 0,
                   left: 0
+               },
+
+               modal: null,
+               selected: null,
+
+               audio: {
+                  hover: new Audio('src/sounds/hover.mp3')
                },
 
                wheelMaximum: [0, 1, 2, 3],
@@ -108,10 +118,7 @@
                   this.menu.top = event.clientY - 5;
                   this.menu.left = event.clientX - 5;
                   
-                  Vue.nextTick(function() {
-                     this.$refs.menu.focus();
-                  }.bind(this));
-
+                  Vue.nextTick(function() { this.$refs.menu.focus(); }.bind(this));
                   event.preventDefault();
                },
 
@@ -127,23 +134,16 @@
                   return weight.toFixed(2);
                },
 
-
-               weaponBack: function (weapon) { 
-                  weapon = this.player.weapons.find(element => element === weapon);
-                  let index = this.player.weapons.indexOf(weapon);          
-                  this.player.weapons.splice(index, 1);
-                  mp.trigger('server:inventory.weapon.put', weapon.id)
+               Put: function (weapon) { 
+                  let index = this.player.wheel.indexOf(weapon);
+                  this.player.wheel.splice(index, 1);
+                  this.player.items.push(weapon);
+                  mp.trigger('client:inventory.item.weapon:put', weapon.id)
                },
 
-               clothing: function (index) {
-                  mp.trigger('client:inventory.process.clothing', index)
-               },
 
-               use: function (item) {
-                  item = this.player.items.find(element => element.id === item);
-                  let index = this.player.items.indexOf(item);                        
-                  this.player.items.splice(index, 1);
-                  mp.trigger('client:inventory.item.use', item.id)
+               Use: function (item) {
+                  mp.trigger('client:inventory.item:use', item.id)
                },
 
                Drop: function (item) { 
@@ -151,7 +151,7 @@
                   item = this.player.items.find(element => element.id === item);
                   let index = this.player.items.indexOf(item);                        
                   this.player.items.splice(index, 1);
-                  mp.trigger('client:inventory.item.drop', item.id, item.hash)
+                  mp.trigger('client:inventory.item:drop', item.id, item.hash)
                }
             }
          })

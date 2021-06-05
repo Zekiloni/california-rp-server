@@ -45,6 +45,7 @@ let Police = require('./factions/police/Police');
 
 // BUSINESS
 let Clothing = require('./business/Clothing');
+let Dealeships = require('./vehicles/Dealerships');
 
 // JOBS
 let Jobs = require('./jobs/Jobs');
@@ -63,8 +64,6 @@ let Mining = require('./jobs/Miner');
 
 // var charClohing = require('./clothing/clothing');
 // // var interactionsMenu = require('./interactions-menu/interactions')
-// var bankingATM = require('./banking/atm');
-// var vehDealership = require('./vehicles-dealership/dealerships');
 // var jobs = require('./jobs/jobs');
 // var furniture = require('./furniture/furniture');
 // var syncObjects = require('./syncObjects');

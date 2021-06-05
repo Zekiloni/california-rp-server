@@ -1,5 +1,6 @@
 
 
+
 mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 = "0,0,0") => {
     let c1 = color.split(','), c2 = color2.split(',');
     var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
@@ -24,9 +25,21 @@ mp.events.addCommand("dzok", (player, fullText) => {
     player.playAnimation(dict, anim, 5, 0);
 });
 
-// let dealerships = require('./configs/Dealerships')
+const Vozila = require('./data/Vehicles.json');
+let Dealer = [];
+const MAX = 25;
+let counter = 0;
+
+for (let i in Vozila) { 
+   if (counter > MAX) break;
+   counter ++;
+   Dealer.push(Vozila[i]);
+}
+console.log(Dealer)
+
 mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => {
-    player.call('client:vehicle.dealership', [true, mp.dealerships.sedans]);
+   console.log('Pozvao komandu')
+   player.call('client:vehicle.dealership', [Dealer]);
 });
 
 mp.events.addCommand("scenario", (player, fullText, scenario) => {
@@ -40,8 +53,8 @@ mp.events.addCommand("clothing", (player, fullText) => {
 
 
 let auto = mp.vehicles.new(mp.joaat("turismor"), new mp.Vector3(-421.88, 1136.86, 326), {
-    numberPlate: "ADMIN",
-    color: [[255, 0, 0], [255, 0, 0]]
+   numberPlate: "ADMIN",
+   color: [[255, 0, 0], [255, 0, 0]]
 });
 
 

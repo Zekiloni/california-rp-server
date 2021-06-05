@@ -6,7 +6,7 @@ class Vehicles {
       mp.events.add({
 
          'playerEnterVehicle': (player, vehicle, seat) => { 
-            let character = player.Character(), veh = mp.vehs[vehicle.uid];
+            let character = player.Character();
             if (vehicle.info) { 
                if (vehicle.info.job && vehicle.info.job != character.job) return player.removeFromVehicle();
                if (vehicle.info.faction && vehicle.info.faction != character.faction) return player.removeFromVehicle();

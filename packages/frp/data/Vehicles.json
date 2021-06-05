@@ -1,7 +1,8 @@
 {
    "chimera": {
-     "name": "chimera",
+     "model": "chimera",
      "category": "motorcycles",
+     "price": 30000,
      "stats": {
          "max_speed": 127,
          "max_occupants": 1,
@@ -11,8 +12,9 @@
    },
 
    "carbon": {
-     "name": "carbon",
+     "model": "carbon",
      "category": "motorcycles",
+     "price": 70000,
      "stats": {
          "max_speed": 169,
          "max_occupants": 2,
@@ -22,8 +24,9 @@
    },
 
    "hermes": {
-     "name": "hermes",
+     "model": "hermes",
      "category": "muscle",
+     "price": 30000,
      "stats": {
          "max_speed": 148,
          "max_occupants": 2,
@@ -33,8 +36,9 @@
    },
 
    "virgo3": {
-     "name": "virgo3",
+     "model": "virgo3",
      "category": "muscle",
+     "price": 25000,
      "stats": {
          "max_speed": 130,
          "max_occupants": 2,
@@ -44,8 +48,9 @@
    },
 
    "hotknife": {
-     "name": "hotknife",
+     "model": "hotknife",
      "category": "muscle",
+     "price": 75000,
      "stats": {
          "max_speed": 162,
          "max_occupants": 2,
@@ -55,8 +60,9 @@
    },
 
    "tiptruck": {
-     "name": "tiptruck",
+     "model": "tiptruck",
      "category": "industrial",
+     "price": 30000,
      "stats": {
        "max_speed": 103,
        "max_occupants": 2,
@@ -65,8 +71,9 @@
      }
    },
    "faggio": {
-     "name": "faggio",
+     "model": "faggio",
      "category": "motorcycles",
+     "price": 4000,
      "stats": {
        "max_speed": 84,
        "max_occupants": 2,
@@ -75,8 +82,9 @@
      }
    },
    "youga": {
-     "name": "youga",
+     "model": "youga",
      "category": "vans",
+     "price": 20000,
      "stats": {
        "max_speed": 121,
        "max_occupants": 2,
@@ -85,8 +93,9 @@
      }
    },
    "glendale": {
-     "name": "glendale",
+     "model": "glendale",
      "category": "sedans",
+     "price": 30000,
      "stats": {
        "max_speed": 142,
        "max_occupants": 4,
@@ -95,8 +104,9 @@
      }
    },
    "dominato": {
-     "name": "dominato",
+     "model": "dominato",
      "category": "muscle",
+     "price": 75000,
      "stats": {
        "max_speed": 174,
        "max_occupants": 2,
@@ -105,8 +115,9 @@
      }
    },
    "bf400": {
-     "name": "bf400",
+     "model": "bf400",
      "category": "motorcycles",
+     "price": 25000,
      "stats": {
        "max_speed": 158,
        "max_occupants": 2,
@@ -115,8 +126,9 @@
      }
    },
    "kalahari": {
-     "name": "kalahari",
+     "model": "kalahari",
      "category": "off-road",
+     "price": 35000,
      "stats": {
        "max_speed": 126,
        "max_occupants": 2,
@@ -125,8 +137,9 @@
      }
    },
    "trophy": {
-     "name": "trophy",
+     "model": "trophy",
      "category": "off-road",
+     "price": 90000,
      "stats": {
        "max_speed": 156,
        "max_occupants": 2,
@@ -135,8 +148,9 @@
      }
    },
    "coquette": {
-     "name": "coquette",
+     "model": "coquette",
      "category": "sports",
+     "price": 70000,
      "stats": {
        "max_speed": 181,
        "max_occupants": 2,
@@ -145,8 +159,9 @@
      }
    },
    "roosevelt": {
-     "name": "roosevelt",
+     "model": "roosevelt",
      "category": "sports classics",
+     "price": 100000,
      "stats": {
        "max_speed": 150,
        "max_occupants": 6,
@@ -155,8 +170,9 @@
      }
    },
    "boxville": {
-     "name": "boxville",
+     "model": "boxville",
      "category": "vans",
+     "price": 25000,
      "stats": {
        "max_speed": 103,
        "max_occupants": 6,
@@ -165,8 +181,9 @@
      }
    },
    "baller2": {
-     "name": "baller2",
+     "model": "baller2",
      "category": "suvs",
+     "price": 50000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 4,
@@ -175,8 +192,9 @@
      }
    },
    "ardent": {
-     "name": "ardent",
+     "model": "ardent",
      "category": "sports classics",
+     "price": 85000,
      "stats": {
        "max_speed": 172,
        "max_occupants": 2,
@@ -185,8 +203,9 @@
      }
    },
    "miljet": {
-     "name": "miljet",
+     "model": "miljet",
      "category": "planes",
+     "price": 500000,
      "stats": {
        "max_speed": 330,
        "max_occupants": 16,
@@ -195,8 +214,9 @@
      }
    },
    "phantom3": {
-     "name": "phantom3",
+     "model": "phantom3",
      "category": "commercial",
+     "price": 67500,
      "stats": {
        "max_speed": 150,
        "max_occupants": 5,
@@ -205,7 +225,7 @@
      }
    },
    "freight": {
-     "name": "freight",
+     "model": "freight",
      "category": "trains",
      "stats": {
        "max_speed": 96,
@@ -215,8 +235,9 @@
      }
    },
    "elegy": {
-     "name": "elegy",
+     "model": "elegy",
      "category": "sports",
+     "price": 65000,
      "stats": {
        "max_speed": 169,
        "max_occupants": 2,
@@ -225,8 +246,9 @@
      }
    },
    "speedo4": {
-     "name": "speedo4",
+     "model": "speedo4",
      "category": "vans",
+     "price": 40000,
      "stats": {
        "max_speed": 153,
        "max_occupants": 4,
@@ -235,8 +257,9 @@
      }
    },
    "cheetah2": {
-     "name": "cheetah2",
+     "model": "cheetah2",
      "category": "sports classics",
+     "price": 67500,
      "stats": {
        "max_speed": 179,
        "max_occupants": 2,
@@ -245,8 +268,9 @@
      }
    },
    "sabregt2": {
-     "name": "sabregt2",
+     "model": "sabregt2",
      "category": "muscle",
+     "price": 45000,
      "stats": {
        "max_speed": 168,
        "max_occupants": 2,
@@ -255,8 +279,9 @@
      }
    },
    "speeder": {
-     "name": "speeder",
+     "model": "speeder",
      "category": "boats",
+     "price": 70000,
      "stats": {
        "max_speed": 159,
        "max_occupants": 4,
@@ -265,8 +290,9 @@
      }
    },
    "reaper": {
-     "name": "reaper",
+     "model": "reaper",
      "category": "super",
+     "price": 120000,
      "stats": {
        "max_speed": 178,
        "max_occupants": 2,
@@ -274,19 +300,10 @@
        "max_braking": 1.1
      }
    },
-   "buffalo3": {
-     "name": "buffalo3",
-     "category": "sports",
-     "stats": {
-       "max_speed": 173,
-       "max_occupants": 4,
-       "max_acceleration": 0.31,
-       "max_braking": 1
-     }
-   },
    "tempesta": {
-     "name": "tempesta",
+     "model": "tempesta",
      "category": "super",
+     "price": 115000,
      "stats": {
        "max_speed": 176,
        "max_occupants": 2,
@@ -295,8 +312,9 @@
      }
    },
    "dinghy": {
-     "name": "dinghy",
+     "model": "dinghy",
      "category": "boats",
+     "price": 25000,
      "stats": {
        "max_speed": 150,
        "max_occupants": 4,
@@ -305,8 +323,9 @@
      }
    },
    "tropic": {
-     "name": "tropic",
+     "model": "tropic",
      "category": "boats",
+     "price": 30000,
      "stats": {
        "max_speed": 138,
        "max_occupants": 4,
@@ -315,8 +334,9 @@
      }
    },
    "gburrito2": {
-     "name": "gburrito2",
+     "model": "gburrito2",
      "category": "vans",
+     "price": 27500,
      "stats": {
        "max_speed": 143,
        "max_occupants": 4,
@@ -325,8 +345,9 @@
      }
    },
    "hexer": {
-     "name": "hexer",
+     "model": "hexer",
      "category": "motorcycles",
+     "price": 15000,
      "stats": {
        "max_speed": 155,
        "max_occupants": 2,
@@ -335,8 +356,9 @@
      }
    },
    "dynasty": {
-     "name": "dynasty",
+     "model": "dynasty",
      "category": "sports classics",
+     "price": 45000,
      "stats": {
        "max_speed": 128,
        "max_occupants": 4,
@@ -345,8 +367,9 @@
      }
    },
    "stafford": {
-     "name": "stafford",
+     "model": "stafford",
      "category": "sedans",
+     "price": 55000,
      "stats": {
        "max_speed": 137,
        "max_occupants": 2,
@@ -355,8 +378,9 @@
      }
    },
    "crusader": {
-     "name": "crusader",
+     "model": "crusader",
      "category": "military",
+     "price": 30000,
      "stats": {
        "max_speed": 129,
        "max_occupants": 4,
@@ -365,8 +389,9 @@
      }
    },
    "cogcabri": {
-     "name": "cogcabri",
+     "model": "cogcabri",
      "category": "coupes",
+     "price": 45000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 2,
@@ -375,8 +400,9 @@
      }
    },
    "vacca": {
-     "name": "vacca",
+     "model": "vacca",
      "category": "super",
+     "price": 110000,
      "stats": {
        "max_speed": 181,
        "max_occupants": 2,
@@ -385,8 +411,9 @@
      }
    },
    "pbus2": {
-     "name": "pbus2",
+     "model": "pbus2",
      "category": "service",
+     "price": 25000,
      "stats": {
        "max_speed": 83,
        "max_occupants": 11,
@@ -395,8 +422,9 @@
      }
    },
    "gauntlet2": {
-     "name": "gauntlet2",
+     "model": "gauntlet2",
      "category": "muscle",
+     "price": 62500,
      "stats": {
        "max_speed": 174,
        "max_occupants": 2,
@@ -405,8 +433,9 @@
      }
    },
    "chino": {
-     "name": "chino",
+     "model": "chino",
      "category": "muscle",
+     "price": 25000,
      "stats": {
        "max_speed": 126,
        "max_occupants": 2,
@@ -415,8 +444,9 @@
      }
    },
    "polmav": {
-     "name": "polmav",
+     "model": "polmav",
      "category": "helicopters",
+     "price": 150000,
      "stats": {
        "max_speed": 203,
        "max_occupants": 4,
@@ -425,7 +455,7 @@
      }
    },
    "proptrailer": {
-     "name": "proptrailer",
+     "model": "proptrailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -435,8 +465,9 @@
      }
    },
    "cargopl": {
-     "name": "cargopl",
+     "model": "cargopl",
      "category": "planes",
+     "price": 700000,
      "stats": {
        "max_speed": 284,
        "max_occupants": 2,
@@ -445,8 +476,9 @@
      }
    },
    "slamvan5": {
-     "name": "slamvan5",
+     "model": "slamvan5",
      "category": "muscle",
+     "price": 35000,
      "stats": {
        "max_speed": 149,
        "max_occupants": 2,
@@ -455,8 +487,9 @@
      }
    },
    "surano": {
-     "name": "surano",
+     "model": "surano",
      "category": "sports",
+     "price": 70000,
      "stats": {
        "max_speed": 181,
        "max_occupants": 2,
@@ -465,8 +498,9 @@
      }
    },
    "hauler2": {
-     "name": "hauler2",
+     "model": "hauler2",
      "category": "commercial",
+     "price": 60000,
      "stats": {
        "max_speed": 150,
        "max_occupants": 2,
@@ -475,8 +509,9 @@
      }
    },
    "cliffhanger": {
-     "name": "cliffhanger",
+     "model": "cliffhanger",
      "category": "motorcycles",
+     "price": 37500,
      "stats": {
        "max_speed": 176,
        "max_occupants": 2,
@@ -485,7 +520,7 @@
      }
    },
    "trailer": {
-     "name": "trailer",
+     "model": "trailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -495,8 +530,9 @@
      }
    },
    "squalo": {
-     "name": "squalo",
+     "model": "squalo",
      "category": "boats",
+     "price": 45000,
      "stats": {
        "max_speed": 132,
        "max_occupants": 2,
@@ -505,8 +541,9 @@
      }
    },
    "turismor": {
-     "name": "turismor",
+     "model": "turismor",
      "category": "super",
+     "price": 125000,
      "stats": {
        "max_speed": 183,
        "max_occupants": 2,
@@ -515,8 +552,9 @@
      }
    },
    "avenger": {
-     "name": "avenger",
+     "model": "avenger",
      "category": "planes",
+     "price": 1000000,
      "stats": {
        "max_speed": 345,
        "max_occupants": 3,
@@ -524,19 +562,10 @@
        "max_braking": 8.46573448
      }
    },
-   "kuruma2": {
-     "name": "kuruma2",
-     "category": "sports",
-     "stats": {
-       "max_speed": 165,
-       "max_occupants": 4,
-       "max_acceleration": 0.31,
-       "max_braking": 0.5
-     }
-   },
    "infernus": {
-     "name": "infernus",
+     "model": "infernus",
      "category": "super",
+     "price": 95000,
      "stats": {
        "max_speed": 176,
        "max_occupants": 2,
@@ -544,19 +573,10 @@
        "max_braking": 0.5
      }
    },
-   "nightshark": {
-     "name": "nightshark",
-     "category": "off-road",
-     "stats": {
-       "max_speed": 132,
-       "max_occupants": 4,
-       "max_acceleration": 0.27,
-       "max_braking": 0.75
-     }
-   },
    "handler": {
-     "name": "handler",
+     "model": "handler",
      "category": "industrial",
+     "price": 40000,
      "stats": {
        "max_speed": 30,
        "max_occupants": 1,
@@ -565,8 +585,9 @@
      }
    },
    "imperator": {
-     "name": "imperator",
+     "model": "imperator",
      "category": "muscle",
+     "price": 55000,
      "stats": {
        "max_speed": 174,
        "max_occupants": 2,
@@ -575,8 +596,9 @@
      }
    },
    "volatol": {
-     "name": "volatol",
+     "model": "volatol",
      "category": "planes",
+     "price": 1200000,
      "stats": {
        "max_speed": 289,
        "max_occupants": 4,
@@ -585,8 +607,9 @@
      }
    },
    "cruiser": {
-     "name": "cruiser",
+     "model": "cruiser",
      "category": "cycles",
+     "price": 250,
      "stats": {
        "max_speed": 54,
        "max_occupants": 1,
@@ -595,8 +618,9 @@
      }
    },
    "policet": {
-     "name": "policet",
+     "model": "policet",
      "category": "emergency",
+     "price": 25000,
      "stats": {
        "max_speed": 133,
        "max_occupants": 4,
@@ -605,8 +629,9 @@
      }
    },
    "tornado": {
-     "name": "tornado",
+     "model": "tornado",
      "category": "sports classics",
+     "price": 17500,
      "stats": {
        "max_speed": 133,
        "max_occupants": 2,
@@ -615,8 +640,9 @@
      }
    },
    "lguard": {
-     "name": "lguard",
+     "model": "lguard",
      "category": "emergency",
+     "price": 25000,
      "stats": {
        "max_speed": 135,
        "max_occupants": 4,
@@ -624,19 +650,10 @@
        "max_braking": 0.8
      }
    },
-   "baller5": {
-     "name": "baller5",
-     "category": "suvs",
-     "stats": {
-       "max_speed": 162,
-       "max_occupants": 4,
-       "max_acceleration": 0.27,
-       "max_braking": 0.58
-     }
-   },
    "mixer2": {
-     "name": "mixer2",
+     "model": "mixer2",
      "category": "industrial",
+     "price": 30000,
      "stats": {
        "max_speed": 116,
        "max_occupants": 2,
@@ -645,8 +662,9 @@
      }
    },
    "lynx": {
-     "name": "lynx",
+     "model": "lynx",
      "category": "sports",
+     "price": 100000,
      "stats": {
        "max_speed": 176,
        "max_occupants": 2,
@@ -655,8 +673,9 @@
      }
    },
    "huntley": {
-     "name": "huntley",
+     "model": "huntley",
      "category": "suvs",
+     "price": 57500,
      "stats": {
        "max_speed": 163,
        "max_occupants": 4,
@@ -665,8 +684,9 @@
      }
    },
    "fusilade": {
-     "name": "fusilade",
+     "model": "fusilade",
      "category": "sports",
+     "price": 95000,
      "stats": {
        "max_speed": 175,
        "max_occupants": 2,
@@ -675,8 +695,9 @@
      }
    },
    "swinger": {
-     "name": "swinger",
+     "model": "swinger",
      "category": "sports classics",
+     "price": 85000,
      "stats": {
        "max_speed": 175,
        "max_occupants": 2,
@@ -685,8 +706,9 @@
      }
    },
    "utiltruc": {
-     "name": "utiltruc",
+     "model": "utiltruc",
      "category": "utility",
+     "price": 35000,
      "stats": {
        "max_speed": 109,
        "max_occupants": 2,
@@ -695,8 +717,9 @@
      }
    },
    "voodoo": {
-     "name": "voodoo",
+     "model": "voodoo",
      "category": "muscle",
+     "price": 25000,
      "stats": {
        "max_speed": 138,
        "max_occupants": 2,
@@ -705,7 +728,7 @@
      }
    },
    "boattrailer": {
-     "name": "boattrailer",
+     "model": "boattrailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -715,8 +738,9 @@
      }
    },
    "moonbeam": {
-     "name": "moonbeam",
+     "model": "moonbeam",
      "category": "muscle",
+     "price": 35000,
      "stats": {
        "max_speed": 150,
        "max_occupants": 4,
@@ -724,29 +748,10 @@
        "max_braking": 0.4
      }
    },
-   "dune2": {
-     "name": "dune2",
-     "category": "off-road",
-     "stats": {
-       "max_speed": 136,
-       "max_occupants": 2,
-       "max_acceleration": 0.24,
-       "max_braking": 0.63
-     }
-   },
-   "zr380": {
-     "name": "zr380",
-     "category": "sports",
-     "stats": {
-       "max_speed": 181,
-       "max_occupants": 2,
-       "max_acceleration": 0.35,
-       "max_braking": 0.8
-     }
-   },
    "khamel": {
-     "name": "khamel",
+     "model": "khamel",
      "category": "sports",
+     "price": 95000,
      "stats": {
        "max_speed": 114,
        "max_occupants": 2,
@@ -755,7 +760,7 @@
      }
    },
    "apc": {
-     "name": "apc",
+     "model": "apc",
      "category": "military",
      "stats": {
        "max_speed": 82,
@@ -765,8 +770,9 @@
      }
    },
    "packer": {
-     "name": "packer",
+     "model": "packer",
      "category": "commercial",
+     "price": 70000,
      "stats": {
        "max_speed": 130,
        "max_occupants": 2,
@@ -775,8 +781,9 @@
      }
    },
    "hustler": {
-     "name": "hustler",
+     "model": "hustler",
      "category": "muscle",
+     "price": 65000,
      "stats": {
        "max_speed": 158,
        "max_occupants": 2,
@@ -785,8 +792,9 @@
      }
    },
    "luxor": {
-     "name": "luxor",
+     "model": "luxor",
      "category": "planes",
+     "price": 1200000,
      "stats": {
        "max_speed": 326,
        "max_occupants": 10,
@@ -795,8 +803,9 @@
      }
    },
    "romero": {
-     "name": "romero",
+     "model": "romero",
      "category": "sedans",
+     "price": 20000,
      "stats": {
        "max_speed": 115,
        "max_occupants": 2,
@@ -805,8 +814,9 @@
      }
    },
    "fcr": {
-     "name": "fcr",
+     "model": "fcr",
      "category": "motorcycles",
+     "price": 67500,
      "stats": {
        "max_speed": 167,
        "max_occupants": 1,
@@ -815,8 +825,9 @@
      }
    },
    "issi4": {
-     "name": "issi4",
+     "model": "issi4",
      "category": "compacts",
+     "price": 35000,
      "stats": {
        "max_speed": 161,
        "max_occupants": 2,
@@ -825,7 +836,7 @@
      }
    },
    "barracks": {
-     "name": "barracks",
+     "model": "barracks",
      "category": "military",
      "stats": {
        "max_speed": 116,
@@ -835,8 +846,9 @@
      }
    },
    "banshee2": {
-     "name": "banshee2",
+     "model": "banshee2",
      "category": "super",
+     "price": 100000,
      "stats": {
        "max_speed": 161,
        "max_occupants": 2,
@@ -845,8 +857,9 @@
      }
    },
    "baller4": {
-     "name": "baller4",
+     "model": "baller4",
      "category": "suvs",
+     "price": 55000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 4,
@@ -855,8 +868,9 @@
      }
    },
    "lectro": {
-     "name": "lectro",
+     "model": "lectro",
      "category": "motorcycles",
+     "price": 110000,
      "stats": {
        "max_speed": 155,
        "max_occupants": 2,
@@ -865,8 +879,9 @@
      }
    },
    "comet5": {
-     "name": "comet5",
+     "model": "comet5",
      "category": "sports",
+     "price": 120000,
      "stats": {
        "max_speed": 168,
        "max_occupants": 2,
@@ -875,8 +890,9 @@
      }
    },
    "baller6": {
-     "name": "baller6",
+     "model": "baller6",
      "category": "suvs",
+     "price": 210000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 4,
@@ -885,8 +901,9 @@
      }
    },
    "bruiser": {
-     "name": "bruiser",
+     "model": "bruiser",
      "category": "off-road",
+     "price": 350000,
      "stats": {
        "max_speed": 138,
        "max_occupants": 4,
@@ -895,8 +912,9 @@
      }
    },
    "cerberus2": {
-     "name": "cerberus2",
+     "model": "cerberus2",
      "category": "commercial",
+     "price": 5000000,
      "stats": {
        "max_speed": 133,
        "max_occupants": 2,
@@ -905,8 +923,9 @@
      }
    },
    "boxville5": {
-     "name": "boxville5",
+     "model": "boxville5",
      "category": "vans",
+     "price": 3000000,
      "stats": {
        "max_speed": 142,
        "max_occupants": 5,
@@ -915,8 +934,9 @@
      }
    },
    "contender": {
-     "name": "contender",
+     "model": "contender",
      "category": "suvs",
+     "price": 190000,
      "stats": {
        "max_speed": 148,
        "max_occupants": 4,
@@ -925,8 +945,9 @@
      }
    },
    "drafter": {
-     "name": "drafter",
+     "model": "drafter",
      "category": "sports",
+     "price": 250000,
      "stats": {
        "max_speed": 172,
        "max_occupants": 2,
@@ -935,8 +956,9 @@
      }
    },
    "surfer": {
-     "name": "surfer",
+     "model": "surfer",
      "category": "vans",
+     "price": 12000,
      "stats": {
        "max_speed": 74,
        "max_occupants": 2,
@@ -945,8 +967,9 @@
      }
    },
    "cog552": {
-     "name": "cog552",
+     "model": "cog552",
      "category": "sedans",
+     "price": 90000,
      "stats": {
        "max_speed": 164,
        "max_occupants": 4,
@@ -955,8 +978,9 @@
      }
    },
    "svolito": {
-     "name": "svolito",
+     "model": "svolito",
      "category": "helicopters",
+     "price": 1500000,
      "stats": {
        "max_speed": 223,
        "max_occupants": 4,
@@ -965,8 +989,9 @@
      }
    },
    "ruston": {
-     "name": "ruston",
+     "model": "ruston",
      "category": "sports",
+     "price": 320000,
      "stats": {
        "max_speed": 168,
        "max_occupants": 2,
@@ -975,8 +1000,9 @@
      }
    },
    "gauntlet3": {
-     "name": "gauntlet3",
+     "model": "gauntlet3",
      "category": "muscle",
+     "price": 45000,
      "stats": {
        "max_speed": 158,
        "max_occupants": 2,
@@ -985,8 +1011,9 @@
      }
    },
    "dukes": {
-     "name": "dukes",
+     "model": "dukes",
      "category": "muscle",
+     "price": 32000,
      "stats": {
        "max_speed": 172,
        "max_occupants": 2,
@@ -995,8 +1022,9 @@
      }
    },
    "speedo2": {
-     "name": "speedo2",
+     "model": "speedo2",
      "category": "vans",
+     "price": 20000,
      "stats": {
        "max_speed": 143,
        "max_occupants": 4,
@@ -1005,8 +1033,9 @@
      }
    },
    "slamvan": {
-     "name": "slamvan",
+     "model": "slamvan",
      "category": "muscle",
+     "price": 18000,
      "stats": {
        "max_speed": 143,
        "max_occupants": 2,
@@ -1015,8 +1044,9 @@
      }
    },
    "sadler": {
-     "name": "sadler",
+     "model": "sadler",
      "category": "utility",
+     "price": 120000,
      "stats": {
        "max_speed": 135,
        "max_occupants": 4,
@@ -1024,9 +1054,10 @@
        "max_braking": 0.6
      }
    },
-   "buffalo02": {
-     "name": "buffalo02",
+   "buffalo2": {
+     "model": "buffalo2",
      "category": "sports",
+     "price": 270000,
      "stats": {
        "max_speed": 166,
        "max_occupants": 4,
@@ -1035,8 +1066,9 @@
      }
    },
    "gargoyle": {
-     "name": "gargoyle",
+     "model": "gargoyle",
      "category": "motorcycles",
+     "price": 110000,
      "stats": {
        "max_speed": 173,
        "max_occupants": 2,
@@ -1045,7 +1077,7 @@
      }
    },
    "pranger": {
-     "name": "pranger",
+     "model": "pranger",
      "category": "emergency",
      "stats": {
        "max_speed": 135,
@@ -1055,8 +1087,9 @@
      }
    },
    "sovereign": {
-     "name": "sovereign",
+     "model": "sovereign",
      "category": "motorcycles",
+     "price": 31000,
      "stats": {
        "max_speed": 158,
        "max_occupants": 1,
@@ -1065,8 +1098,9 @@
      }
    },
    "frogger": {
-     "name": "frogger",
+     "model": "frogger",
      "category": "helicopters",
+     "price": 1200000,
      "stats": {
        "max_speed": 204,
        "max_occupants": 4,
@@ -1075,8 +1109,9 @@
      }
    },
    "buzzard2": {
-     "name": "buzzard2",
+     "model": "buzzard2",
      "category": "helicopters",
+     "price": 1500000,
      "stats": {
        "max_speed": 208,
        "max_occupants": 4,
@@ -1085,8 +1120,9 @@
      }
    },
    "ztype": {
-     "name": "ztype",
+     "model": "ztype",
      "category": "sports classics",
+     "price": 3000000,
      "stats": {
        "max_speed": 184,
        "max_occupants": 2,
@@ -1095,8 +1131,9 @@
      }
    },
    "alpha": {
-     "name": "alpha",
+     "model": "alpha",
      "category": "sports",
+     "price": 1700000,
      "stats": {
        "max_speed": 178,
        "max_occupants": 2,
@@ -1105,8 +1142,9 @@
      }
    },
    "submers": {
-     "name": "submers",
+     "model": "submers",
      "category": "boats",
+     "price": 5000000,
      "stats": {
        "max_speed": 90,
        "max_occupants": 1,
@@ -1115,8 +1153,9 @@
      }
    },
    "ruiner": {
-     "name": "ruiner",
+     "model": "ruiner",
      "category": "muscle",
+     "price": 100000,
      "stats": {
        "max_speed": 174,
        "max_occupants": 2,
@@ -1125,7 +1164,7 @@
      }
    },
    "rhino": {
-     "name": "rhino",
+     "model": "rhino",
      "category": "military",
      "stats": {
        "max_speed": 66,
@@ -1135,8 +1174,9 @@
      }
    },
    "coquette3": {
-     "name": "coquette3",
+     "model": "coquette3",
      "category": "muscle",
+     "price": 77000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 2,
@@ -1145,8 +1185,9 @@
      }
    },
    "sanchez01": {
-     "name": "sanchez01",
+     "model": "sanchez01",
      "category": "motorcycles",
+     "price": 17000,
      "stats": {
        "max_speed": 141,
        "max_occupants": 2,
@@ -1155,8 +1196,9 @@
      }
    },
    "buzzard": {
-     "name": "buzzard",
+     "model": "buzzard",
      "category": "helicopters",
+     "price": 5000000,
      "stats": {
        "max_speed": 208,
        "max_occupants": 4,
@@ -1165,8 +1207,9 @@
      }
    },
    "sheava": {
-     "name": "sheava",
+     "model": "sheava",
      "category": "super",
+     "price": 1100000,
      "stats": {
        "max_speed": 175,
        "max_occupants": 2,
@@ -1175,8 +1218,9 @@
      }
    },
    "defiler": {
-     "name": "defiler",
+     "model": "defiler",
      "category": "motorcycles",
+     "price": 150000,
      "stats": {
        "max_speed": 175,
        "max_occupants": 1,
@@ -1185,8 +1229,9 @@
      }
    },
    "slamvan2": {
-     "name": "slamvan2",
+     "model": "slamvan2",
      "category": "muscle",
+     "price": 20000,
      "stats": {
        "max_speed": 145,
        "max_occupants": 4,
@@ -1195,8 +1240,9 @@
      }
    },
    "annihl": {
-     "name": "annihl",
+     "model": "annihl",
      "category": "helicopters",
+     "price": 4000000,
      "stats": {
        "max_speed": 170,
        "max_occupants": 6,
@@ -1205,8 +1251,9 @@
      }
    },
    "z190": {
-     "name": "z190",
+     "model": "z190",
      "category": "sports classics",
+     "price": 720000,
      "stats": {
        "max_speed": 158,
        "max_occupants": 2,
@@ -1215,8 +1262,9 @@
      }
    },
    "monster4": {
-     "name": "monster4",
+     "model": "monster4",
      "category": "off-road",
+     "price": 450000,
      "stats": {
        "max_speed": 138,
        "max_occupants": 2,
@@ -1225,8 +1273,9 @@
      }
    },
    "rhapsody": {
-     "name": "rhapsody",
+     "model": "rhapsody",
      "category": "compacts",
+     "price": 16000,
      "stats": {
        "max_speed": 148,
        "max_occupants": 2,
@@ -1235,8 +1284,9 @@
      }
    },
    "bjxl": {
-     "name": "bjxl",
+     "model": "bjxl",
      "category": "suvs",
+     "price": 38000,
      "stats": {
        "max_speed": 130,
        "max_occupants": 4,
@@ -1245,8 +1295,9 @@
      }
    },
    "biff": {
-     "name": "biff",
+     "model": "biff",
      "category": "commercial",
+     "price": 45000,
      "stats": {
        "max_speed": 124,
        "max_occupants": 2,
@@ -1255,8 +1306,9 @@
      }
    },
    "jetmax": {
-     "name": "jetmax",
+     "model": "jetmax",
      "category": "boats",
+     "price": 350000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 2,
@@ -1265,8 +1317,9 @@
      }
    },
    "pariah": {
-     "name": "pariah",
+     "model": "pariah",
      "category": "sports",
+     "price": 1100000,
      "stats": {
        "max_speed": 175,
        "max_occupants": 2,
@@ -1275,8 +1328,9 @@
      }
    },
    "sentinel2": {
-     "name": "sentinel2",
+     "model": "sentinel2",
      "category": "coupes",
+     "price": 350000,
      "stats": {
        "max_speed": 163,
        "max_occupants": 4,
@@ -1285,8 +1339,9 @@
      }
    },
    "habanero": {
-     "name": "habanero",
+     "model": "habanero",
      "category": "suvs",
+     "price": 150000,
      "stats": {
        "max_speed": 143,
        "max_occupants": 4,
@@ -1295,8 +1350,9 @@
      }
    },
    "oppressor": {
-     "name": "oppressor",
+     "model": "oppressor",
      "category": "motorcycles",
+     "price": 150000,
      "stats": {
        "max_speed": 174,
        "max_occupants": 1,
@@ -1305,8 +1361,9 @@
      }
    },
    "stromberg": {
-     "name": "stromberg",
+     "model": "stromberg",
      "category": "sports classics",
+     "price": 930000,
      "stats": {
        "max_speed": 165,
        "max_occupants": 2,
@@ -1315,8 +1372,9 @@
      }
    },
    "intruder": {
-     "name": "intruder",
+     "model": "intruder",
      "category": "sedans",
+     "price": 40000,
      "stats": {
        "max_speed": 141,
        "max_occupants": 4,
@@ -1325,8 +1383,9 @@
      }
    },
    "burrito": {
-     "name": "burrito",
+     "model": "burrito",
      "category": "vans",
+     "price": 23000,
      "stats": {
        "max_speed": 133,
        "max_occupants": 4,
@@ -1335,8 +1394,9 @@
      }
    },
    "savestra": {
-     "name": "savestra",
+     "model": "savestra",
      "category": "sports classics",
+     "price": 470000,
      "stats": {
        "max_speed": 157,
        "max_occupants": 2,
@@ -1345,8 +1405,9 @@
      }
    },
    "mule": {
-     "name": "mule",
+     "model": "mule",
      "category": "commercial",
+     "price": 15000,
      "stats": {
        "max_speed": 103,
        "max_occupants": 2,
@@ -1355,8 +1416,9 @@
      }
    },
    "cog55": {
-     "name": "cog55",
+     "model": "cog55",
      "category": "sedans",
+     "price": 26400,
      "stats": {
        "max_speed": 166,
        "max_occupants": 4,
@@ -1365,8 +1427,9 @@
      }
    },
    "toro": {
-     "name": "toro",
+     "model": "toro",
      "category": "boats",
+     "price": 150000,
      "stats": {
        "max_speed": 159,
        "max_occupants": 4,
@@ -1375,8 +1438,9 @@
      }
    },
    "mesa": {
-     "name": "mesa",
+     "model": "mesa",
      "category": "suvs",
+     "price": 18000,
      "stats": {
        "max_speed": 124,
        "max_occupants": 4,
@@ -1385,8 +1449,9 @@
      }
    },
    "rrocket": {
-     "name": "rrocket",
+     "model": "rrocket",
      "category": "motorcycles",
+     "price": 76000,
      "stats": {
        "max_speed": 149,
        "max_occupants": 1,
@@ -1395,8 +1460,9 @@
      }
    },
    "xa21": {
-     "name": "xa21",
+     "model": "xa21",
      "category": "super",
+     "price": 1100000,
      "stats": {
        "max_speed": 178,
        "max_occupants": 2,
@@ -1405,8 +1471,9 @@
      }
    },
    "issi3": {
-     "name": "issi3",
+     "model": "issi3",
      "category": "compacts",
+     "price": 125000,
      "stats": {
        "max_speed": 143,
        "max_occupants": 2,
@@ -1415,8 +1482,9 @@
      }
    },
    "ruiner2": {
-     "name": "ruiner2",
+     "model": "ruiner2",
      "category": "muscle",
+     "price": 320000,
      "stats": {
        "max_speed": 179,
        "max_occupants": 2,
@@ -1425,8 +1493,9 @@
      }
    },
    "casco": {
-     "name": "casco",
+     "model": "casco",
      "category": "sports classics",
+     "price": 2500000,
      "stats": {
        "max_speed": 181,
        "max_occupants": 2,
@@ -1435,8 +1504,9 @@
      }
    },
    "pony": {
-     "name": "pony",
+     "model": "pony",
      "category": "vans",
+     "price": 15000,
      "stats": {
        "max_speed": 133,
        "max_occupants": 4,
@@ -1445,8 +1515,9 @@
      }
    },
    "duster": {
-     "name": "duster",
+     "model": "duster",
      "category": "planes",
+     "price": 5500000,
      "stats": {
        "max_speed": 249,
        "max_occupants": 2,
@@ -1455,7 +1526,7 @@
      }
    },
    "hydra": {
-     "name": "hydra",
+     "model": "hydra",
      "category": "planes",
      "stats": {
        "max_speed": 395,
@@ -1465,8 +1536,9 @@
      }
    },
    "sultan": {
-     "name": "sultan",
+     "model": "sultan",
      "category": "sports",
+     "price": 160000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 4,
@@ -1475,8 +1547,9 @@
      }
    },
    "tampa": {
-     "name": "tampa",
+     "model": "tampa",
      "category": "muscle",
+     "price": 130000,
      "stats": {
        "max_speed": 152,
        "max_occupants": 2,
@@ -1485,8 +1558,9 @@
      }
    },
    "voltic2": {
-     "name": "voltic2",
+     "model": "voltic2",
      "category": "super",
+     "price": 200000,
      "stats": {
        "max_speed": 129,
        "max_occupants": 2,
@@ -1495,8 +1569,9 @@
      }
    },
    "sandkin2": {
-     "name": "sandkin2",
+     "model": "sandkin2",
      "category": "off-road",
+     "price": 180000,
      "stats": {
        "max_speed": 138,
        "max_occupants": 2,
@@ -1505,8 +1580,9 @@
      }
    },
    "impaler2": {
-     "name": "impaler2",
+     "model": "impaler2",
      "category": "muscle",
+     "price": 290000,
      "stats": {
        "max_speed": 182,
        "max_occupants": 2,
@@ -1515,8 +1591,9 @@
      }
    },
    "coquette2": {
-     "name": "coquette2",
+     "model": "coquette2",
      "category": "sports classics",
+     "price": 1450000,
      "stats": {
        "max_speed": 178,
        "max_occupants": 2,
@@ -1525,7 +1602,7 @@
      }
    },
    "graintraile": {
-     "name": "graintraile",
+     "model": "graintraile",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -1535,8 +1612,9 @@
      }
    },
    "youga2": {
-     "name": "youga2",
+     "model": "youga2",
      "category": "vans",
+     "price": 22500,
      "stats": {
        "max_speed": 121,
        "max_occupants": 4,
@@ -1545,8 +1623,9 @@
      }
    },
    "tezeract": {
-     "name": "tezeract",
+     "model": "tezeract",
      "category": "super",
+     "price": 850000,
      "stats": {
        "max_speed": 165,
        "max_occupants": 2,
@@ -1555,8 +1634,9 @@
      }
    },
    "ninef": {
-     "name": "ninef",
+     "model": "ninef",
      "category": "sports",
+     "price": 1000000,
      "stats": {
        "max_speed": 175,
        "max_occupants": 2,
@@ -1565,8 +1645,9 @@
      }
    },
    "nero": {
-     "name": "nero",
+     "model": "nero",
      "category": "super",
+     "price": 4200000,
      "stats": {
        "max_speed": 189,
        "max_occupants": 2,
@@ -1575,8 +1656,9 @@
      }
    },
    "nokota": {
-     "name": "nokota",
+     "model": "nokota",
      "category": "planes",
+     "price": 7000000,
      "stats": {
        "max_speed": 315,
        "max_occupants": 1,
@@ -1585,8 +1667,9 @@
      }
    },
    "blista2": {
-     "name": "blista2",
+     "model": "blista2",
      "category": "sports",
+     "price": 520000,
      "stats": {
        "max_speed": 150,
        "max_occupants": 2,
@@ -1595,8 +1678,9 @@
      }
    },
    "tula": {
-     "name": "tula",
+     "model": "tula",
      "category": "planes",
+     "price": 8000000,
      "stats": {
        "max_speed": 249,
        "max_occupants": 5,
@@ -1605,8 +1689,9 @@
      }
    },
    "thrax": {
-     "name": "thrax",
+     "model": "thrax",
      "category": "super",
+     "price": 2500000,
      "stats": {
        "max_speed": 180,
        "max_occupants": 2,
@@ -1615,8 +1700,9 @@
      }
    },
    "skylift": {
-     "name": "skylift",
+     "model": "skylift",
      "category": "helicopters",
+     "price": 5500000,
      "stats": {
        "max_speed": 172,
        "max_occupants": 2,
@@ -1625,8 +1711,9 @@
      }
    },
    "michelli": {
-     "name": "michelli",
+     "model": "michelli",
      "category": "sports classics",
+     "price": 740000,
      "stats": {
        "max_speed": 160,
        "max_occupants": 2,
@@ -1635,8 +1722,9 @@
      }
    },
    "jb700": {
-     "name": "jb700",
+     "model": "jb700",
      "category": "sports classics",
+     "price": 1500000,
      "stats": {
        "max_speed": 180,
        "max_occupants": 2,
@@ -1645,7 +1733,7 @@
      }
    },
    "jet": {
-     "name": "jet",
+     "model": "jet",
      "category": "planes",
      "stats": {
        "max_speed": 284,
@@ -1655,8 +1743,9 @@
      }
    },
    "bobcatxl": {
-     "name": "bobcatxl",
+     "model": "bobcatxl",
      "category": "vans",
+     "price": 19000,
      "stats": {
        "max_speed": 126,
        "max_occupants": 2,
@@ -1665,7 +1754,7 @@
      }
    },
    "barracks2": {
-     "name": "barracks2",
+     "model": "barracks2",
      "category": "military",
      "stats": {
        "max_speed": 128,
@@ -1675,8 +1764,9 @@
      }
    },
    "specter2": {
-     "name": "specter2",
+     "model": "specter2",
      "category": "sports",
+     "price": 1800000,
      "stats": {
        "max_speed": 177,
        "max_occupants": 2,
@@ -1685,8 +1775,9 @@
      }
    },
    "swift2": {
-     "name": "swift2",
+     "model": "swift2",
      "category": "helicopters",
+     "price": 5050000,
      "stats": {
        "max_speed": 211,
        "max_occupants": 4,
@@ -1695,8 +1786,9 @@
      }
    },
    "velum2": {
-     "name": "velum2",
+     "model": "velum2",
      "category": "planes",
+     "price": 7050000,
      "stats": {
        "max_speed": 268,
        "max_occupants": 5,
@@ -1705,8 +1797,9 @@
      }
    },
    "pigalle": {
-     "name": "pigalle",
+     "model": "pigalle",
      "category": "sports classics",
+     "price": 2000000,
      "stats": {
        "max_speed": 178,
        "max_occupants": 2,
@@ -1715,8 +1808,9 @@
      }
    },
    "nero2": {
-     "name": "nero2",
+     "model": "nero2",
      "category": "super",
+     "price": 3200000,
      "stats": {
        "max_speed": 190,
        "max_occupants": 2,
@@ -1725,8 +1819,9 @@
      }
    },
    "verlier": {
-     "name": "verlier",
+     "model": "verlier",
      "category": "sports",
+     "price": 2250000,
      "stats": {
        "max_speed": 180,
        "max_occupants": 2,
@@ -1735,8 +1830,9 @@
      }
    },
    "sentinel3": {
-     "name": "sentinel3",
+     "model": "sentinel3",
      "category": "sports",
+     "price": 750000,
      "stats": {
        "max_speed": 160,
        "max_occupants": 2,
@@ -1745,8 +1841,9 @@
      }
    },
    "hotring": {
-     "name": "hotring",
+     "model": "hotring",
      "category": "sports",
+     "price": 1400000,
      "stats": {
        "max_speed": 173,
        "max_occupants": 2,
@@ -1755,8 +1852,9 @@
      }
    },
    "slamvan3": {
-     "name": "slamvan3",
+     "model": "slamvan3",
      "category": "muscle",
+     "price": 20000,
      "stats": {
        "max_speed": 145,
        "max_occupants": 2,
@@ -1765,8 +1863,9 @@
      }
    },
    "superd": {
-     "name": "superd",
+     "model": "superd",
      "category": "sedans",
+     "price": 24000,
      "stats": {
        "max_speed": 162,
        "max_occupants": 4,
@@ -1775,8 +1874,9 @@
      }
    },
    "bfinject": {
-     "name": "bfinject",
+     "model": "bfinject",
      "category": "off-road",
+     "price": 45000,
      "stats": {
        "max_speed": 146,
        "max_occupants": 2,
@@ -1785,7 +1885,7 @@
      }
    },
    "fbi": {
-     "name": "fbi",
+     "model": "fbi",
      "category": "emergency",
      "stats": {
        "max_speed": 166,
@@ -1795,8 +1895,9 @@
      }
    },
    "tribike": {
-     "name": "tribike",
+     "model": "tribike",
      "category": "cycles",
+     "price": 5000,
      "stats": {
        "max_speed": 75,
        "max_occupants": 1,
@@ -1805,8 +1906,9 @@
      }
    },
    "bmx": {
-     "name": "bmx",
+     "model": "bmx",
      "category": "cycles",
+     "price": 9000,
      "stats": {
        "max_speed": 52,
        "max_occupants": 1,
@@ -1815,8 +1917,9 @@
      }
    },
    "caddy": {
-     "name": "caddy",
+     "model": "caddy",
      "category": "utility",
+     "price": 14000,
      "stats": {
        "max_speed": 78,
        "max_occupants": 2,
@@ -1825,8 +1928,9 @@
      }
    },
    "rumpo": {
-     "name": "rumpo",
+     "model": "rumpo",
      "category": "vans",
+     "price": 16000,
      "stats": {
        "max_speed": 138,
        "max_occupants": 2,
@@ -1835,7 +1939,7 @@
      }
    },
    "ambulan": {
-     "name": "ambulan",
+     "model": "ambulan",
      "category": "emergency",
      "stats": {
        "max_speed": 143,
@@ -1845,8 +1949,9 @@
      }
    },
    "dubsta": {
-     "name": "dubsta",
+     "model": "dubsta",
      "category": "suvs",
+     "price": 15000,
      "stats": {
        "max_speed": 135,
        "max_occupants": 4,
@@ -1855,8 +1960,9 @@
      }
    },
    "technical2": {
-     "name": "technical2",
+     "model": "technical2",
      "category": "off-road",
+     "price": 21000,
      "stats": {
        "max_speed": 142,
        "max_occupants": 3,
@@ -1865,8 +1971,9 @@
      }
    },
    "akula": {
-     "name": "akula",
+     "model": "akula",
      "category": "helicopters",
+     "price": 4000000,
      "stats": {
        "max_speed": 219,
        "max_occupants": 4,
@@ -1875,8 +1982,9 @@
      }
    },
    "xls": {
-     "name": "xls",
+     "model": "xls",
      "category": "suvs",
+     "price": 32000,
      "stats": {
        "max_speed": 158,
        "max_occupants": 4,
@@ -1885,8 +1993,9 @@
      }
    },
    "seminole": {
-     "name": "seminole",
+     "model": "seminole",
      "category": "suvs",
+     "price": 21000,
      "stats": {
        "max_speed": 132,
        "max_occupants": 4,
@@ -1895,8 +2004,9 @@
      }
    },
    "marshall": {
-     "name": "marshall",
+     "model": "marshall",
      "category": "off-road",
+     "price": 14000,
      "stats": {
        "max_speed": 122,
        "max_occupants": 2,
@@ -1905,7 +2015,7 @@
      }
    },
    "gp1": {
-     "name": "gp1",
+     "model": "gp1",
      "category": "super",
      "stats": {
        "max_speed": 181,
@@ -1915,7 +2025,7 @@
      }
    },
    "issi6": {
-     "name": "issi6",
+     "model": "issi6",
      "category": "compacts",
      "stats": {
        "max_speed": 161,
@@ -1925,7 +2035,7 @@
      }
    },
    "caracara": {
-     "name": "caracara",
+     "model": "caracara",
      "category": "off-road",
      "stats": {
        "max_speed": 139,
@@ -1935,7 +2045,7 @@
      }
    },
    "hakuchou": {
-     "name": "hakuchou",
+     "model": "hakuchou",
      "category": "motorcycles",
      "stats": {
        "max_speed": 178,
@@ -1945,7 +2055,7 @@
      }
    },
    "landstal": {
-     "name": "landstal",
+     "model": "landstal",
      "category": "suvs",
      "stats": {
        "max_speed": 132,
@@ -1955,7 +2065,7 @@
      }
    },
    "bestiagts": {
-     "name": "bestiagts",
+     "model": "bestiagts",
      "category": "sports",
      "stats": {
        "max_speed": 172,
@@ -1965,7 +2075,7 @@
      }
    },
    "deviant": {
-     "name": "deviant",
+     "model": "deviant",
      "category": "muscle",
      "stats": {
        "max_speed": 152,
@@ -1975,7 +2085,7 @@
      }
    },
    "airbus": {
-     "name": "airbus",
+     "model": "airbus",
      "category": "service",
      "stats": {
        "max_speed": 92,
@@ -1985,7 +2095,7 @@
      }
    },
    "emerus": {
-     "name": "emerus",
+     "model": "emerus",
      "category": "super",
      "stats": {
        "max_speed": 183,
@@ -1995,7 +2105,7 @@
      }
    },
    "serrano": {
-     "name": "serrano",
+     "model": "serrano",
      "category": "suvs",
      "stats": {
        "max_speed": 145,
@@ -2005,7 +2115,7 @@
      }
    },
    "vestra": {
-     "name": "vestra",
+     "model": "vestra",
      "category": "planes",
      "stats": {
        "max_speed": 349,
@@ -2015,7 +2125,7 @@
      }
    },
    "oracle2": {
-     "name": "oracle2",
+     "model": "oracle2",
      "category": "coupes",
      "stats": {
        "max_speed": 162,
@@ -2025,7 +2135,7 @@
      }
    },
    "sentinel": {
-     "name": "sentinel",
+     "model": "sentinel",
      "category": "coupes",
      "stats": {
        "max_speed": 163,
@@ -2035,7 +2145,7 @@
      }
    },
    "sc1": {
-     "name": "sc1",
+     "model": "sc1",
      "category": "super",
      "stats": {
        "max_speed": 170,
@@ -2045,7 +2155,7 @@
      }
    },
    "flatbed": {
-     "name": "flatbed",
+     "model": "flatbed",
      "category": "industrial",
      "stats": {
        "max_speed": 101,
@@ -2055,7 +2165,7 @@
      }
    },
    "technical3": {
-     "name": "technical3",
+     "model": "technical3",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -2065,7 +2175,7 @@
      }
    },
    "warrener": {
-     "name": "warrener",
+     "model": "warrener",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -2075,7 +2185,7 @@
      }
    },
    "cyclone": {
-     "name": "cyclone",
+     "model": "cyclone",
      "category": "super",
      "stats": {
        "max_speed": 147,
@@ -2085,7 +2195,7 @@
      }
    },
    "cargobob": {
-     "name": "cargobob",
+     "model": "cargobob",
      "category": "helicopters",
      "stats": {
        "max_speed": 179,
@@ -2095,7 +2205,7 @@
      }
    },
    "paragon2": {
-     "name": "paragon2",
+     "model": "paragon2",
      "category": "sports",
      "stats": {
        "max_speed": 161,
@@ -2105,7 +2215,7 @@
      }
    },
    "fmj": {
-     "name": "fmj",
+     "model": "fmj",
      "category": "super",
      "stats": {
        "max_speed": 190,
@@ -2115,7 +2225,7 @@
      }
    },
    "tractor2": {
-     "name": "tractor2",
+     "model": "tractor2",
      "category": "utility",
      "stats": {
        "max_speed": 52,
@@ -2125,7 +2235,7 @@
      }
    },
    "tulip": {
-     "name": "tulip",
+     "model": "tulip",
      "category": "muscle",
      "stats": {
        "max_speed": 175,
@@ -2135,7 +2245,7 @@
      }
    },
    "rumpo3": {
-     "name": "rumpo3",
+     "model": "rumpo3",
      "category": "vans",
      "stats": {
        "max_speed": 129,
@@ -2145,7 +2255,7 @@
      }
    },
    "deluxo": {
-     "name": "deluxo",
+     "model": "deluxo",
      "category": "sports classics",
      "stats": {
        "max_speed": 153,
@@ -2155,7 +2265,7 @@
      }
    },
    "paradise": {
-     "name": "paradise",
+     "model": "paradise",
      "category": "vans",
      "stats": {
        "max_speed": 138,
@@ -2165,7 +2275,7 @@
      }
    },
    "thruster": {
-     "name": "thruster",
+     "model": "thruster",
      "category": "military",
      "stats": {
        "max_speed": 207,
@@ -2175,7 +2285,7 @@
      }
    },
    "schafter4": {
-     "name": "schafter4",
+     "model": "schafter4",
      "category": "sports",
      "stats": {
        "max_speed": 141,
@@ -2185,7 +2295,7 @@
      }
    },
    "sanctus": {
-     "name": "sanctus",
+     "model": "sanctus",
      "category": "motorcycles",
      "stats": {
        "max_speed": 167,
@@ -2195,7 +2305,7 @@
      }
    },
    "fork": {
-     "name": "fork",
+     "model": "fork",
      "category": "utility",
      "stats": {
        "max_speed": 36,
@@ -2205,7 +2315,7 @@
      }
    },
    "trlarge": {
-     "name": "trlarge",
+     "model": "trlarge",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -2215,7 +2325,7 @@
      }
    },
    "torero": {
-     "name": "torero",
+     "model": "torero",
      "category": "sports classics",
      "stats": {
        "max_speed": 171,
@@ -2225,7 +2335,7 @@
      }
    },
    "picador": {
-     "name": "picador",
+     "model": "picador",
      "category": "muscle",
      "stats": {
        "max_speed": 146,
@@ -2235,7 +2345,7 @@
      }
    },
    "hauler": {
-     "name": "hauler",
+     "model": "hauler",
      "category": "commercial",
      "stats": {
        "max_speed": 103,
@@ -2245,7 +2355,7 @@
      }
    },
    "tornado2": {
-     "name": "tornado2",
+     "model": "tornado2",
      "category": "sports classics",
      "stats": {
        "max_speed": 133,
@@ -2255,7 +2365,7 @@
      }
    },
    "issi5": {
-     "name": "issi5",
+     "model": "issi5",
      "category": "compacts",
      "stats": {
        "max_speed": 161,
@@ -2265,7 +2375,7 @@
      }
    },
    "scarab2": {
-     "name": "scarab2",
+     "model": "scarab2",
      "category": "military",
      "stats": {
        "max_speed": 84,
@@ -2275,7 +2385,7 @@
      }
    },
    "valkyri2": {
-     "name": "valkyri2",
+     "model": "valkyri2",
      "category": "helicopters",
      "stats": {
        "max_speed": 197,
@@ -2285,7 +2395,7 @@
      }
    },
    "stinger": {
-     "name": "stinger",
+     "model": "stinger",
      "category": "sports classics",
      "stats": {
        "max_speed": 162,
@@ -2295,7 +2405,7 @@
      }
    },
    "brioso": {
-     "name": "brioso",
+     "model": "brioso",
      "category": "compacts",
      "stats": {
        "max_speed": 149,
@@ -2305,7 +2415,7 @@
      }
    },
    "airtug": {
-     "name": "airtug",
+     "model": "airtug",
      "category": "utility",
      "stats": {
        "max_speed": 39,
@@ -2315,7 +2425,7 @@
      }
    },
    "comet4": {
-     "name": "comet4",
+     "model": "comet4",
      "category": "sports",
      "stats": {
        "max_speed": 169,
@@ -2325,7 +2435,7 @@
      }
    },
    "molotok": {
-     "name": "molotok",
+     "model": "molotok",
      "category": "planes",
      "stats": {
        "max_speed": 328,
@@ -2335,7 +2445,7 @@
      }
    },
    "windsor": {
-     "name": "windsor",
+     "model": "windsor",
      "category": "coupes",
      "stats": {
        "max_speed": 172,
@@ -2345,7 +2455,7 @@
      }
    },
    "deveste": {
-     "name": "deveste",
+     "model": "deveste",
      "category": "super",
      "stats": {
        "max_speed": 189,
@@ -2355,7 +2465,7 @@
      }
    },
    "fagaloa": {
-     "name": "fagaloa",
+     "model": "fagaloa",
      "category": "sports classics",
      "stats": {
        "max_speed": 123,
@@ -2365,7 +2475,7 @@
      }
    },
    "imperator2": {
-     "name": "imperator2",
+     "model": "imperator2",
      "category": "muscle",
      "stats": {
        "max_speed": 174,
@@ -2375,7 +2485,7 @@
      }
    },
    "tractor": {
-     "name": "tractor",
+     "model": "tractor",
      "category": "utility",
      "stats": {
        "max_speed": 48,
@@ -2385,7 +2495,7 @@
      }
    },
    "rancherx": {
-     "name": "rancherx",
+     "model": "rancherx",
      "category": "off-road",
      "stats": {
        "max_speed": 126,
@@ -2395,7 +2505,7 @@
      }
    },
    "pounder2": {
-     "name": "pounder2",
+     "model": "pounder2",
      "category": "commercial",
      "stats": {
        "max_speed": 133,
@@ -2405,7 +2515,7 @@
      }
    },
    "t20": {
-     "name": "t20",
+     "model": "t20",
      "category": "super",
      "stats": {
        "max_speed": 178,
@@ -2415,7 +2525,7 @@
      }
    },
    "akuma": {
-     "name": "akuma",
+     "model": "akuma",
      "category": "motorcycles",
      "stats": {
        "max_speed": 174,
@@ -2425,7 +2535,7 @@
      }
    },
    "dilettan": {
-     "name": "dilettan",
+     "model": "dilettan",
      "category": "compacts",
      "stats": {
        "max_speed": 86,
@@ -2435,7 +2545,7 @@
      }
    },
    "strikeforce": {
-     "name": "strikeforce",
+     "model": "strikeforce",
      "category": "planes",
      "stats": {
        "max_speed": 254,
@@ -2445,7 +2555,7 @@
      }
    },
    "monster3": {
-     "name": "monster3",
+     "model": "monster3",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -2455,7 +2565,7 @@
      }
    },
    "stratum": {
-     "name": "stratum",
+     "model": "stratum",
      "category": "sedans",
      "stats": {
        "max_speed": 149,
@@ -2465,7 +2575,7 @@
      }
    },
    "rapidgt": {
-     "name": "rapidgt",
+     "model": "rapidgt",
      "category": "sports",
      "stats": {
        "max_speed": 180,
@@ -2475,7 +2585,7 @@
      }
    },
    "bison": {
-     "name": "bison",
+     "model": "bison",
      "category": "vans",
      "stats": {
        "max_speed": 135,
@@ -2485,7 +2595,7 @@
      }
    },
    "streiter": {
-     "name": "streiter",
+     "model": "streiter",
      "category": "sports",
      "stats": {
        "max_speed": 154,
@@ -2495,7 +2605,7 @@
      }
    },
    "slamvan6": {
-     "name": "slamvan6",
+     "model": "slamvan6",
      "category": "muscle",
      "stats": {
        "max_speed": 149,
@@ -2505,7 +2615,7 @@
      }
    },
    "stockade": {
-     "name": "stockade",
+     "model": "stockade",
      "category": "commercial",
      "stats": {
        "max_speed": 124,
@@ -2515,7 +2625,7 @@
      }
    },
    "enduro": {
-     "name": "enduro",
+     "model": "enduro",
      "category": "motorcycles",
      "stats": {
        "max_speed": 142,
@@ -2525,7 +2635,7 @@
      }
    },
    "tornado3": {
-     "name": "tornado3",
+     "model": "tornado3",
      "category": "sports classics",
      "stats": {
        "max_speed": 133,
@@ -2535,7 +2645,7 @@
      }
    },
    "dloader": {
-     "name": "dloader",
+     "model": "dloader",
      "category": "off-road",
      "stats": {
        "max_speed": 119,
@@ -2545,7 +2655,7 @@
      }
    },
    "washingt": {
-     "name": "washingt",
+     "model": "washingt",
      "category": "sedans",
      "stats": {
        "max_speed": 153,
@@ -2555,7 +2665,7 @@
      }
    },
    "mower": {
-     "name": "mower",
+     "model": "mower",
      "category": "utility",
      "stats": {
        "max_speed": 24,
@@ -2565,7 +2675,7 @@
      }
    },
    "diablous2": {
-     "name": "diablous2",
+     "model": "diablous2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 171,
@@ -2575,7 +2685,7 @@
      }
    },
    "besra": {
-     "name": "besra",
+     "model": "besra",
      "category": "planes",
      "stats": {
        "max_speed": 315,
@@ -2585,7 +2695,7 @@
      }
    },
    "peyote": {
-     "name": "peyote",
+     "model": "peyote",
      "category": "sports classics",
      "stats": {
        "max_speed": 133,
@@ -2595,7 +2705,7 @@
      }
    },
    "thrust": {
-     "name": "thrust",
+     "model": "thrust",
      "category": "motorcycles",
      "stats": {
        "max_speed": 177,
@@ -2605,7 +2715,7 @@
      }
    },
    "retinue": {
-     "name": "retinue",
+     "model": "retinue",
      "category": "sports classics",
      "stats": {
        "max_speed": 153,
@@ -2615,7 +2725,7 @@
      }
    },
    "issi7": {
-     "name": "issi7",
+     "model": "issi7",
      "category": "sports",
      "stats": {
        "max_speed": 151,
@@ -2625,7 +2735,7 @@
      }
    },
    "zion3": {
-     "name": "zion3",
+     "model": "zion3",
      "category": "sports classics",
      "stats": {
        "max_speed": 160,
@@ -2635,7 +2745,7 @@
      }
    },
    "yosemite": {
-     "name": "yosemite",
+     "model": "yosemite",
      "category": "muscle",
      "stats": {
        "max_speed": 149,
@@ -2645,7 +2755,7 @@
      }
    },
    "ratbike": {
-     "name": "ratbike",
+     "model": "ratbike",
      "category": "motorcycles",
      "stats": {
        "max_speed": 132,
@@ -2655,7 +2765,7 @@
      }
    },
    "camper": {
-     "name": "camper",
+     "model": "camper",
      "category": "vans",
      "stats": {
        "max_speed": 109,
@@ -2665,7 +2775,7 @@
      }
    },
    "baller3": {
-     "name": "baller3",
+     "model": "baller3",
      "category": "suvs",
      "stats": {
        "max_speed": 162,
@@ -2675,7 +2785,7 @@
      }
    },
    "specter": {
-     "name": "specter",
+     "model": "specter",
      "category": "sports",
      "stats": {
        "max_speed": 175,
@@ -2685,7 +2795,7 @@
      }
    },
    "bulldoze": {
-     "name": "bulldoze",
+     "model": "bulldoze",
      "category": "industrial",
      "stats": {
        "max_speed": 18,
@@ -2695,7 +2805,7 @@
      }
    },
    "tropos": {
-     "name": "tropos",
+     "model": "tropos",
      "category": "sports",
      "stats": {
        "max_speed": 154,
@@ -2705,7 +2815,7 @@
      }
    },
    "moonbeam2": {
-     "name": "moonbeam2",
+     "model": "moonbeam2",
      "category": "muscle",
      "stats": {
        "max_speed": 150,
@@ -2715,7 +2825,7 @@
      }
    },
    "dune3": {
-     "name": "dune3",
+     "model": "dune3",
      "category": "off-road",
      "stats": {
        "max_speed": 139,
@@ -2725,7 +2835,7 @@
      }
    },
    "fugitive": {
-     "name": "fugitive",
+     "model": "fugitive",
      "category": "sedans",
      "stats": {
        "max_speed": 145,
@@ -2735,7 +2845,7 @@
      }
    },
    "gb200": {
-     "name": "gb200",
+     "model": "gb200",
      "category": "sports",
      "stats": {
        "max_speed": 160,
@@ -2745,7 +2855,7 @@
      }
    },
    "cerberus3": {
-     "name": "cerberus3",
+     "model": "cerberus3",
      "category": "commercial",
      "stats": {
        "max_speed": 133,
@@ -2755,7 +2865,7 @@
      }
    },
    "police": {
-     "name": "police",
+     "model": "police",
      "category": "emergency",
      "stats": {
        "max_speed": 153,
@@ -2765,7 +2875,7 @@
      }
    },
    "trash": {
-     "name": "trash",
+     "model": "trash",
      "category": "service",
      "stats": {
        "max_speed": 131,
@@ -2775,7 +2885,7 @@
      }
    },
    "schafter6": {
-     "name": "schafter6",
+     "model": "schafter6",
      "category": "sedans",
      "stats": {
        "max_speed": 134,
@@ -2785,7 +2895,7 @@
      }
    },
    "sheriff2": {
-     "name": "sheriff2",
+     "model": "sheriff2",
      "category": "emergency",
      "stats": {
        "max_speed": 135,
@@ -2795,7 +2905,7 @@
      }
    },
    "stalion": {
-     "name": "stalion",
+     "model": "stalion",
      "category": "muscle",
      "stats": {
        "max_speed": 162,
@@ -2805,7 +2915,7 @@
      }
    },
    "gauntlet4": {
-     "name": "gauntlet4",
+     "model": "gauntlet4",
      "category": "muscle",
      "stats": {
        "max_speed": 175,
@@ -2815,7 +2925,7 @@
      }
    },
    "firetruk": {
-     "name": "firetruk",
+     "model": "firetruk",
      "category": "emergency",
      "stats": {
        "max_speed": 141,
@@ -2825,7 +2935,7 @@
      }
    },
    "vagner": {
-     "name": "vagner",
+     "model": "vagner",
      "category": "super",
      "stats": {
        "max_speed": 189,
@@ -2835,7 +2945,7 @@
      }
    },
    "tourbus": {
-     "name": "tourbus",
+     "model": "tourbus",
      "category": "service",
      "stats": {
        "max_speed": 92,
@@ -2845,7 +2955,7 @@
      }
    },
    "mule4": {
-     "name": "mule4",
+     "model": "mule4",
      "category": "commercial",
      "stats": {
        "max_speed": 103,
@@ -2855,7 +2965,7 @@
      }
    },
    "taco": {
-     "name": "taco",
+     "model": "taco",
      "category": "vans",
      "stats": {
        "max_speed": 103,
@@ -2865,7 +2975,7 @@
      }
    },
    "tanker": {
-     "name": "tanker",
+     "model": "tanker",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -2875,7 +2985,7 @@
      }
    },
    "titan": {
-     "name": "titan",
+     "model": "titan",
      "category": "planes",
      "stats": {
        "max_speed": 281,
@@ -2885,7 +2995,7 @@
      }
    },
    "osiris": {
-     "name": "osiris",
+     "model": "osiris",
      "category": "super",
      "stats": {
        "max_speed": 178,
@@ -2895,7 +3005,7 @@
      }
    },
    "daemon": {
-     "name": "daemon",
+     "model": "daemon",
      "category": "motorcycles",
      "stats": {
        "max_speed": 155,
@@ -2905,17 +3015,18 @@
      }
    },
    "voodoo2": {
-     "name": "voodoo2",
+     "model": "voodoo2",
      "category": "muscle",
+     "price": 12500,
      "stats": {
-       "max_speed": 143,
+       "max_speed": 138,
        "max_occupants": 2,
        "max_acceleration": 0.18,
        "max_braking": 0.7
      }
    },
    "cavcade": {
-     "name": "cavcade",
+     "model": "cavcade",
      "category": "suvs",
      "stats": {
        "max_speed": 138,
@@ -2925,7 +3036,7 @@
      }
    },
    "futo": {
-     "name": "futo",
+     "model": "futo",
      "category": "sports",
      "stats": {
        "max_speed": 162,
@@ -2935,7 +3046,7 @@
      }
    },
    "esskey": {
-     "name": "esskey",
+     "model": "esskey",
      "category": "motorcycles",
      "stats": {
        "max_speed": 158,
@@ -2945,7 +3056,7 @@
      }
    },
    "brutus3": {
-     "name": "brutus3",
+     "model": "brutus3",
      "category": "off-road",
      "stats": {
        "max_speed": 152,
@@ -2955,7 +3066,7 @@
      }
    },
    "menacer": {
-     "name": "menacer",
+     "model": "menacer",
      "category": "off-road",
      "stats": {
        "max_speed": 114,
@@ -2965,7 +3076,7 @@
      }
    },
    "rapidgt3": {
-     "name": "rapidgt3",
+     "model": "rapidgt3",
      "category": "sports classics",
      "stats": {
        "max_speed": 169,
@@ -2975,7 +3086,7 @@
      }
    },
    "benson": {
-     "name": "benson",
+     "model": "benson",
      "category": "commercial",
      "stats": {
        "max_speed": 133,
@@ -2985,7 +3096,7 @@
      }
    },
    "tyrus": {
-     "name": "tyrus",
+     "model": "tyrus",
      "category": "super",
      "stats": {
        "max_speed": 181,
@@ -2995,7 +3106,7 @@
      }
    },
    "lurcher": {
-     "name": "lurcher",
+     "model": "lurcher",
      "category": "muscle",
      "stats": {
        "max_speed": 169,
@@ -3005,7 +3116,7 @@
      }
    },
    "oppressor2": {
-     "name": "oppressor2",
+     "model": "oppressor2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 169,
@@ -3015,7 +3126,7 @@
      }
    },
    "insurgent2": {
-     "name": "insurgent2",
+     "model": "insurgent2",
      "category": "off-road",
      "stats": {
        "max_speed": 127,
@@ -3025,7 +3136,7 @@
      }
    },
    "carboniz": {
-     "name": "carboniz",
+     "model": "carboniz",
      "category": "sports",
      "stats": {
        "max_speed": 174,
@@ -3035,7 +3146,7 @@
      }
    },
    "pounder": {
-     "name": "pounder",
+     "model": "pounder",
      "category": "commercial",
      "stats": {
        "max_speed": 121,
@@ -3045,7 +3156,7 @@
      }
    },
    "prototipo": {
-     "name": "prototipo",
+     "model": "prototipo",
      "category": "super",
      "stats": {
        "max_speed": 191,
@@ -3055,7 +3166,7 @@
      }
    },
    "rocoto": {
-     "name": "rocoto",
+     "model": "rocoto",
      "category": "suvs",
      "stats": {
        "max_speed": 148,
@@ -3065,7 +3176,7 @@
      }
    },
    "brutus": {
-     "name": "brutus",
+     "model": "brutus",
      "category": "off-road",
      "stats": {
        "max_speed": 152,
@@ -3075,7 +3186,7 @@
      }
    },
    "bagger": {
-     "name": "bagger",
+     "model": "bagger",
      "category": "motorcycles",
      "stats": {
        "max_speed": 136,
@@ -3085,7 +3196,7 @@
      }
    },
    "docktrailer": {
-     "name": "docktrailer",
+     "model": "docktrailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -3095,7 +3206,7 @@
      }
    },
    "phantom": {
-     "name": "phantom",
+     "model": "phantom",
      "category": "commercial",
      "stats": {
        "max_speed": 121,
@@ -3105,7 +3216,7 @@
      }
    },
    "dump": {
-     "name": "dump",
+     "model": "dump",
      "category": "industrial",
      "stats": {
        "max_speed": 51,
@@ -3115,7 +3226,7 @@
      }
    },
    "blazer": {
-     "name": "blazer",
+     "model": "blazer",
      "category": "off-road",
      "stats": {
        "max_speed": 122,
@@ -3125,7 +3236,7 @@
      }
    },
    "manana": {
-     "name": "manana",
+     "model": "manana",
      "category": "sports classics",
      "stats": {
        "max_speed": 133,
@@ -3135,7 +3246,7 @@
      }
    },
    "stunt": {
-     "name": "stunt",
+     "model": "stunt",
      "category": "planes",
      "stats": {
        "max_speed": 284,
@@ -3145,7 +3256,7 @@
      }
    },
    "entity2": {
-     "name": "entity2",
+     "model": "entity2",
      "category": "super",
      "stats": {
        "max_speed": 193,
@@ -3155,7 +3266,7 @@
      }
    },
    "faction": {
-     "name": "faction",
+     "model": "faction",
      "category": "muscle",
      "stats": {
        "max_speed": 168,
@@ -3165,7 +3276,7 @@
      }
    },
    "avarus": {
-     "name": "avarus",
+     "model": "avarus",
      "category": "motorcycles",
      "stats": {
        "max_speed": 158,
@@ -3175,7 +3286,7 @@
      }
    },
    "guardian": {
-     "name": "guardian",
+     "model": "guardian",
      "category": "industrial",
      "stats": {
        "max_speed": 142,
@@ -3185,7 +3296,7 @@
      }
    },
    "rallytruck": {
-     "name": "rallytruck",
+     "model": "rallytruck",
      "category": "service",
      "stats": {
        "max_speed": 146,
@@ -3195,7 +3306,7 @@
      }
    },
    "tug": {
-     "name": "tug",
+     "model": "tug",
      "category": "boats",
      "stats": {
        "max_speed": 21,
@@ -3205,7 +3316,7 @@
      }
    },
    "stingerg": {
-     "name": "stingerg",
+     "model": "stingerg",
      "category": "sports classics",
      "stats": {
        "max_speed": 162,
@@ -3215,7 +3326,7 @@
      }
    },
    "technical": {
-     "name": "technical",
+     "model": "technical",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -3225,7 +3336,7 @@
      }
    },
    "impaler": {
-     "name": "impaler",
+     "model": "impaler",
      "category": "muscle",
      "stats": {
        "max_speed": 162,
@@ -3235,7 +3346,7 @@
      }
    },
    "phoenix": {
-     "name": "phoenix",
+     "model": "phoenix",
      "category": "muscle",
      "stats": {
        "max_speed": 170,
@@ -3245,7 +3356,7 @@
      }
    },
    "gt500": {
-     "name": "gt500",
+     "model": "gt500",
      "category": "sports classics",
      "stats": {
        "max_speed": 165,
@@ -3255,7 +3366,7 @@
      }
    },
    "coach": {
-     "name": "coach",
+     "model": "coach",
      "category": "service",
      "stats": {
        "max_speed": 92,
@@ -3265,7 +3376,7 @@
      }
    },
    "slamvan4": {
-     "name": "slamvan4",
+     "model": "slamvan4",
      "category": "muscle",
      "stats": {
        "max_speed": 149,
@@ -3275,7 +3386,7 @@
      }
    },
    "trailers3": {
-     "name": "trailers3",
+     "model": "trailers3",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -3285,7 +3396,7 @@
      }
    },
    "italigtb": {
-     "name": "italigtb",
+     "model": "italigtb",
      "category": "super",
      "stats": {
        "max_speed": 187,
@@ -3295,7 +3406,7 @@
      }
    },
    "rebel02": {
-     "name": "rebel02",
+     "model": "rebel02",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -3305,7 +3416,7 @@
      }
    },
    "bruiser3": {
-     "name": "bruiser3",
+     "model": "bruiser3",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -3315,7 +3426,7 @@
      }
    },
    "primo2": {
-     "name": "primo2",
+     "model": "primo2",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -3325,7 +3436,7 @@
      }
    },
    "faction3": {
-     "name": "faction3",
+     "model": "faction3",
      "category": "muscle",
      "stats": {
        "max_speed": 126,
@@ -3335,7 +3446,7 @@
      }
    },
    "cognosc": {
-     "name": "cognosc",
+     "model": "cognosc",
      "category": "sedans",
      "stats": {
        "max_speed": 164,
@@ -3345,7 +3456,7 @@
      }
    },
    "comet3": {
-     "name": "comet3",
+     "model": "comet3",
      "category": "sports",
      "stats": {
        "max_speed": 180,
@@ -3355,7 +3466,7 @@
      }
    },
    "pbus": {
-     "name": "pbus",
+     "model": "pbus",
      "category": "emergency",
      "stats": {
        "max_speed": 101,
@@ -3365,7 +3476,7 @@
      }
    },
    "feltzer": {
-     "name": "feltzer",
+     "model": "feltzer",
      "category": "sports",
      "stats": {
        "max_speed": 178,
@@ -3375,7 +3486,7 @@
      }
    },
    "terbyte": {
-     "name": "terbyte",
+     "model": "terbyte",
      "category": "commercial",
      "stats": {
        "max_speed": 110,
@@ -3385,7 +3496,7 @@
      }
    },
    "havok": {
-     "name": "havok",
+     "model": "havok",
      "category": "helicopters",
      "stats": {
        "max_speed": 208,
@@ -3395,7 +3506,7 @@
      }
    },
    "police4": {
-     "name": "police4",
+     "model": "police4",
      "category": "emergency",
      "stats": {
        "max_speed": 153,
@@ -3405,7 +3516,7 @@
      }
    },
    "stretch": {
-     "name": "stretch",
+     "model": "stretch",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -3415,7 +3526,7 @@
      }
    },
    "niteshad": {
-     "name": "niteshad",
+     "model": "niteshad",
      "category": "muscle",
      "stats": {
        "max_speed": 145,
@@ -3425,7 +3536,7 @@
      }
    },
    "windsor2": {
-     "name": "windsor2",
+     "model": "windsor2",
      "category": "coupes",
      "stats": {
        "max_speed": 172,
@@ -3435,7 +3546,7 @@
      }
    },
    "impaler3": {
-     "name": "impaler3",
+     "model": "impaler3",
      "category": "muscle",
      "stats": {
        "max_speed": 182,
@@ -3445,7 +3556,7 @@
      }
    },
    "insurgent3": {
-     "name": "insurgent3",
+     "model": "insurgent3",
      "category": "off-road",
      "stats": {
        "max_speed": 127,
@@ -3455,7 +3566,7 @@
      }
    },
    "wastlndr": {
-     "name": "wastlndr",
+     "model": "wastlndr",
      "category": "service",
      "stats": {
        "max_speed": 146,
@@ -3465,7 +3576,7 @@
      }
    },
    "astrope": {
-     "name": "astrope",
+     "model": "astrope",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -3475,7 +3586,7 @@
      }
    },
    "surge": {
-     "name": "surge",
+     "model": "surge",
      "category": "sedans",
      "stats": {
        "max_speed": 87,
@@ -3485,7 +3596,7 @@
      }
    },
    "brutus2": {
-     "name": "brutus2",
+     "model": "brutus2",
      "category": "off-road",
      "stats": {
        "max_speed": 152,
@@ -3495,7 +3606,7 @@
      }
    },
    "premier": {
-     "name": "premier",
+     "model": "premier",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -3505,7 +3616,7 @@
      }
    },
    "emperor": {
-     "name": "emperor",
+     "model": "emperor",
      "category": "sedans",
      "stats": {
        "max_speed": 121,
@@ -3515,7 +3626,7 @@
      }
    },
    "trsmall2": {
-     "name": "trsmall2",
+     "model": "trsmall2",
      "category": "military",
      "stats": {
        "max_speed": -1,
@@ -3525,7 +3636,7 @@
      }
    },
    "insurgent": {
-     "name": "insurgent",
+     "model": "insurgent",
      "category": "off-road",
      "stats": {
        "max_speed": 127,
@@ -3535,7 +3646,7 @@
      }
    },
    "neon": {
-     "name": "neon",
+     "model": "neon",
      "category": "sports",
      "stats": {
        "max_speed": 140,
@@ -3545,7 +3656,7 @@
      }
    },
    "volatus": {
-     "name": "volatus",
+     "model": "volatus",
      "category": "helicopters",
      "stats": {
        "max_speed": 213,
@@ -3555,7 +3666,7 @@
      }
    },
    "faggion": {
-     "name": "faggion",
+     "model": "faggion",
      "category": "motorcycles",
      "stats": {
        "max_speed": 101,
@@ -3565,7 +3676,7 @@
      }
    },
    "pfister811": {
-     "name": "pfister811",
+     "model": "pfister811",
      "category": "super",
      "stats": {
        "max_speed": 191,
@@ -3575,7 +3686,7 @@
      }
    },
    "novak": {
-     "name": "novak",
+     "model": "novak",
      "category": "suvs",
      "stats": {
        "max_speed": 169,
@@ -3585,7 +3696,7 @@
      }
    },
    "deathbike2": {
-     "name": "deathbike2",
+     "model": "deathbike2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 173,
@@ -3595,7 +3706,7 @@
      }
    },
    "asea": {
-     "name": "asea",
+     "model": "asea",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -3605,7 +3716,7 @@
      }
    },
    "peyote2": {
-     "name": "peyote2",
+     "model": "peyote2",
      "category": "muscle",
      "stats": {
        "max_speed": 168,
@@ -3615,7 +3726,7 @@
      }
    },
    "gauntlet": {
-     "name": "gauntlet",
+     "model": "gauntlet",
      "category": "muscle",
      "stats": {
        "max_speed": 169,
@@ -3625,7 +3736,7 @@
      }
    },
    "tornado5": {
-     "name": "tornado5",
+     "model": "tornado5",
      "category": "sports classics",
      "stats": {
        "max_speed": 133,
@@ -3635,7 +3746,7 @@
      }
    },
    "faction2": {
-     "name": "faction2",
+     "model": "faction2",
      "category": "muscle",
      "stats": {
        "max_speed": 168,
@@ -3645,7 +3756,7 @@
      }
    },
    "policeo2": {
-     "name": "policeo2",
+     "model": "policeo2",
      "category": "emergency",
      "stats": {
        "max_speed": 153,
@@ -3655,7 +3766,7 @@
      }
    },
    "granger": {
-     "name": "granger",
+     "model": "granger",
      "category": "suvs",
      "stats": {
        "max_speed": 130,
@@ -3665,7 +3776,7 @@
      }
    },
    "microlight": {
-     "name": "microlight",
+     "model": "microlight",
      "category": "planes",
      "stats": {
        "max_speed": 108,
@@ -3675,7 +3786,7 @@
      }
    },
    "penetrator": {
-     "name": "penetrator",
+     "model": "penetrator",
      "category": "super",
      "stats": {
        "max_speed": 177,
@@ -3685,7 +3796,7 @@
      }
    },
    "seven70": {
-     "name": "seven70",
+     "model": "seven70",
      "category": "sports",
      "stats": {
        "max_speed": 183,
@@ -3695,7 +3806,7 @@
      }
    },
    "mammatus": {
-     "name": "mammatus",
+     "model": "mammatus",
      "category": "planes",
      "stats": {
        "max_speed": 249,
@@ -3705,7 +3816,7 @@
      }
    },
    "gburrito": {
-     "name": "gburrito",
+     "model": "gburrito",
      "category": "vans",
      "stats": {
        "max_speed": 133,
@@ -3715,7 +3826,7 @@
      }
    },
    "impaler4": {
-     "name": "impaler4",
+     "model": "impaler4",
      "category": "muscle",
      "stats": {
        "max_speed": 182,
@@ -3725,7 +3836,7 @@
      }
    },
    "rubble": {
-     "name": "rubble",
+     "model": "rubble",
      "category": "industrial",
      "stats": {
        "max_speed": 120,
@@ -3735,7 +3846,7 @@
      }
    },
    "starling": {
-     "name": "starling",
+     "model": "starling",
      "category": "planes",
      "stats": {
        "max_speed": 315,
@@ -3745,7 +3856,7 @@
      }
    },
    "scrap": {
-     "name": "scrap",
+     "model": "scrap",
      "category": "utility",
      "stats": {
        "max_speed": 115,
@@ -3755,7 +3866,7 @@
      }
    },
    "bullet": {
-     "name": "bullet",
+     "model": "bullet",
      "category": "super",
      "stats": {
        "max_speed": 179,
@@ -3765,7 +3876,7 @@
      }
    },
    "bruiser2": {
-     "name": "bruiser2",
+     "model": "bruiser2",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -3775,7 +3886,7 @@
      }
    },
    "riot2": {
-     "name": "riot2",
+     "model": "riot2",
      "category": "emergency",
      "stats": {
        "max_speed": 129,
@@ -3785,7 +3896,7 @@
      }
    },
    "sabregt": {
-     "name": "sabregt",
+     "model": "sabregt",
      "category": "muscle",
      "stats": {
        "max_speed": 168,
@@ -3795,7 +3906,7 @@
      }
    },
    "sheriff": {
-     "name": "sheriff",
+     "model": "sheriff",
      "category": "emergency",
      "stats": {
        "max_speed": 154,
@@ -3805,7 +3916,7 @@
      }
    },
    "velum": {
-     "name": "velum",
+     "model": "velum",
      "category": "planes",
      "stats": {
        "max_speed": 268,
@@ -3815,7 +3926,7 @@
      }
    },
    "svolito2": {
-     "name": "svolito2",
+     "model": "svolito2",
      "category": "helicopters",
      "stats": {
        "max_speed": 223,
@@ -3825,7 +3936,7 @@
      }
    },
    "double": {
-     "name": "double",
+     "model": "double",
      "category": "motorcycles",
      "stats": {
        "max_speed": 172,
@@ -3835,7 +3946,7 @@
      }
    },
    "dune": {
-     "name": "dune",
+     "model": "dune",
      "category": "off-road",
      "stats": {
        "max_speed": 139,
@@ -3845,7 +3956,7 @@
      }
    },
    "mamba": {
-     "name": "mamba",
+     "model": "mamba",
      "category": "sports classics",
      "stats": {
        "max_speed": 177,
@@ -3855,7 +3966,7 @@
      }
    },
    "maverick": {
-     "name": "maverick",
+     "model": "maverick",
      "category": "helicopters",
      "stats": {
        "max_speed": 194,
@@ -3865,7 +3976,7 @@
      }
    },
    "radi": {
-     "name": "radi",
+     "model": "radi",
      "category": "suvs",
      "stats": {
        "max_speed": 141,
@@ -3875,7 +3986,7 @@
      }
    },
    "phantom2": {
-     "name": "phantom2",
+     "model": "phantom2",
      "category": "commercial",
      "stats": {
        "max_speed": 155,
@@ -3885,7 +3996,7 @@
      }
    },
    "fbi2": {
-     "name": "fbi2",
+     "model": "fbi2",
      "category": "emergency",
      "stats": {
        "max_speed": 135,
@@ -3895,7 +4006,7 @@
      }
    },
    "armytrailer": {
-     "name": "armytrailer",
+     "model": "armytrailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -3905,7 +4016,7 @@
      }
    },
    "police2": {
-     "name": "police2",
+     "model": "police2",
      "category": "emergency",
      "stats": {
        "max_speed": 166,
@@ -3915,7 +4026,7 @@
      }
    },
    "voltic": {
-     "name": "voltic",
+     "model": "voltic",
      "category": "super",
      "stats": {
        "max_speed": 129,
@@ -3925,7 +4036,7 @@
      }
    },
    "neo": {
-     "name": "neo",
+     "model": "neo",
      "category": "sports",
      "stats": {
        "max_speed": 184,
@@ -3935,7 +4046,7 @@
      }
    },
    "nightblade": {
-     "name": "nightblade",
+     "model": "nightblade",
      "category": "motorcycles",
      "stats": {
        "max_speed": 168,
@@ -3945,7 +4056,7 @@
      }
    },
    "valkyrie": {
-     "name": "valkyrie",
+     "model": "valkyrie",
      "category": "helicopters",
      "stats": {
        "max_speed": 197,
@@ -3955,7 +4066,7 @@
      }
    },
    "blazer5": {
-     "name": "blazer5",
+     "model": "blazer5",
      "category": "off-road",
      "stats": {
        "max_speed": 147,
@@ -3965,7 +4076,7 @@
      }
    },
    "feltzer3": {
-     "name": "feltzer3",
+     "model": "feltzer3",
      "category": "sports classics",
      "stats": {
        "max_speed": 165,
@@ -3975,7 +4086,7 @@
      }
    },
    "clique": {
-     "name": "clique",
+     "model": "clique",
      "category": "muscle",
      "stats": {
        "max_speed": 165,
@@ -3985,7 +4096,7 @@
      }
    },
    "tornado6": {
-     "name": "tornado6",
+     "model": "tornado6",
      "category": "sports classics",
      "stats": {
        "max_speed": 144,
@@ -3995,7 +4106,7 @@
      }
    },
    "gresley": {
-     "name": "gresley",
+     "model": "gresley",
      "category": "suvs",
      "stats": {
        "max_speed": 138,
@@ -4005,7 +4116,7 @@
      }
    },
    "policeo1": {
-     "name": "policeo1",
+     "model": "policeo1",
      "category": "emergency",
      "stats": {
        "max_speed": 126,
@@ -4015,7 +4126,7 @@
      }
    },
    "riata": {
-     "name": "riata",
+     "model": "riata",
      "category": "off-road",
      "stats": {
        "max_speed": 145,
@@ -4025,7 +4136,7 @@
      }
    },
    "raiden": {
-     "name": "raiden",
+     "model": "raiden",
      "category": "sports",
      "stats": {
        "max_speed": 137,
@@ -4035,7 +4146,7 @@
      }
    },
    "alphaz1": {
-     "name": "alphaz1",
+     "model": "alphaz1",
      "category": "planes",
      "stats": {
        "max_speed": 360,
@@ -4045,7 +4156,7 @@
      }
    },
    "manchez": {
-     "name": "manchez",
+     "model": "manchez",
      "category": "motorcycles",
      "stats": {
        "max_speed": 158,
@@ -4055,7 +4166,7 @@
      }
    },
    "schafter3": {
-     "name": "schafter3",
+     "model": "schafter3",
      "category": "sports",
      "stats": {
        "max_speed": 180,
@@ -4065,7 +4176,7 @@
      }
    },
    "brawler": {
-     "name": "brawler",
+     "model": "brawler",
      "category": "off-road",
      "stats": {
        "max_speed": 168,
@@ -4075,7 +4186,7 @@
      }
    },
    "zr3803": {
-     "name": "zr3803",
+     "model": "zr3803",
      "category": "sports",
      "stats": {
        "max_speed": 181,
@@ -4085,7 +4196,7 @@
      }
    },
    "stanier": {
-     "name": "stanier",
+     "model": "stanier",
      "category": "sedans",
      "stats": {
        "max_speed": 153,
@@ -4095,7 +4206,7 @@
      }
    },
    "ninef2": {
-     "name": "ninef2",
+     "model": "ninef2",
      "category": "sports",
      "stats": {
        "max_speed": 175,
@@ -4105,7 +4216,7 @@
      }
    },
    "sanchez02": {
-     "name": "sanchez02",
+     "model": "sanchez02",
      "category": "motorcycles",
      "stats": {
        "max_speed": 141,
@@ -4115,7 +4226,7 @@
      }
    },
    "prairie": {
-     "name": "prairie",
+     "model": "prairie",
      "category": "compacts",
      "stats": {
        "max_speed": 146,
@@ -4125,7 +4236,7 @@
      }
    },
    "bodhi2": {
-     "name": "bodhi2",
+     "model": "bodhi2",
      "category": "off-road",
      "stats": {
        "max_speed": 127,
@@ -4135,7 +4246,7 @@
      }
    },
    "khanjali": {
-     "name": "khanjali",
+     "model": "khanjali",
      "category": "military",
      "stats": {
        "max_speed": 65,
@@ -4145,7 +4256,7 @@
      }
    },
    "infernus2": {
-     "name": "infernus2",
+     "model": "infernus2",
      "category": "sports classics",
      "stats": {
        "max_speed": 172,
@@ -4155,7 +4266,7 @@
      }
    },
    "daemon2": {
-     "name": "daemon2",
+     "model": "daemon2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 156,
@@ -4165,7 +4276,7 @@
      }
    },
    "zentorno": {
-     "name": "zentorno",
+     "model": "zentorno",
      "category": "super",
      "stats": {
        "max_speed": 178,
@@ -4175,7 +4286,7 @@
      }
    },
    "pyro": {
-     "name": "pyro",
+     "model": "pyro",
      "category": "planes",
      "stats": {
        "max_speed": 360,
@@ -4185,7 +4296,7 @@
      }
    },
    "dominator5": {
-     "name": "dominator5",
+     "model": "dominator5",
      "category": "muscle",
      "stats": {
        "max_speed": 174,
@@ -4195,7 +4306,7 @@
      }
    },
    "deathbike3": {
-     "name": "deathbike3",
+     "model": "deathbike3",
      "category": "motorcycles",
      "stats": {
        "max_speed": 173,
@@ -4205,7 +4316,7 @@
      }
    },
    "kuruma": {
-     "name": "kuruma",
+     "model": "kuruma",
      "category": "sports",
      "stats": {
        "max_speed": 168,
@@ -4215,7 +4326,7 @@
      }
    },
    "chino2": {
-     "name": "chino2",
+     "model": "chino2",
      "category": "muscle",
      "stats": {
        "max_speed": 130,
@@ -4225,7 +4336,7 @@
      }
    },
    "vindicator": {
-     "name": "vindicator",
+     "model": "vindicator",
      "category": "motorcycles",
      "stats": {
        "max_speed": 177,
@@ -4235,7 +4346,7 @@
      }
    },
    "caracara2": {
-     "name": "caracara2",
+     "model": "caracara2",
      "category": "off-road",
      "stats": {
        "max_speed": 141,
@@ -4245,7 +4356,7 @@
      }
    },
    "towtruck": {
-     "name": "towtruck",
+     "model": "towtruck",
      "category": "utility",
      "stats": {
        "max_speed": 120,
@@ -4255,7 +4366,7 @@
      }
    },
    "surfer2": {
-     "name": "surfer2",
+     "model": "surfer2",
      "category": "vans",
      "stats": {
        "max_speed": 74,
@@ -4265,7 +4376,7 @@
      }
    },
    "cheetah": {
-     "name": "cheetah",
+     "model": "cheetah",
      "category": "super",
      "stats": {
        "max_speed": 180,
@@ -4275,7 +4386,7 @@
      }
    },
    "jester": {
-     "name": "jester",
+     "model": "jester",
      "category": "sports",
      "stats": {
        "max_speed": 165,
@@ -4285,7 +4396,7 @@
      }
    },
    "nimbus": {
-     "name": "nimbus",
+     "model": "nimbus",
      "category": "planes",
      "stats": {
        "max_speed": 340,
@@ -4295,7 +4406,7 @@
      }
    },
    "dominator6": {
-     "name": "dominator6",
+     "model": "dominator6",
      "category": "muscle",
      "stats": {
        "max_speed": 174,
@@ -4305,7 +4416,7 @@
      }
    },
    "entityxf": {
-     "name": "entityxf",
+     "model": "entityxf",
      "category": "super",
      "stats": {
        "max_speed": 183,
@@ -4315,7 +4426,7 @@
      }
    },
    "ingot": {
-     "name": "ingot",
+     "model": "ingot",
      "category": "sedans",
      "stats": {
        "max_speed": 115,
@@ -4325,7 +4436,7 @@
      }
    },
    "faggio3": {
-     "name": "faggio3",
+     "model": "faggio3",
      "category": "motorcycles",
      "stats": {
        "max_speed": 98,
@@ -4335,7 +4446,7 @@
      }
    },
    "lazer": {
-     "name": "lazer",
+     "model": "lazer",
      "category": "planes",
      "stats": {
        "max_speed": 328,
@@ -4345,7 +4456,7 @@
      }
    },
    "blazer03": {
-     "name": "blazer03",
+     "model": "blazer03",
      "category": "off-road",
      "stats": {
        "max_speed": 122,
@@ -4355,7 +4466,7 @@
      }
    },
    "ellie": {
-     "name": "ellie",
+     "model": "ellie",
      "category": "muscle",
      "stats": {
        "max_speed": 165,
@@ -4365,7 +4476,7 @@
      }
    },
    "flashgt": {
-     "name": "flashgt",
+     "model": "flashgt",
      "category": "sports",
      "stats": {
        "max_speed": 158,
@@ -4375,7 +4486,7 @@
      }
    },
    "schafter": {
-     "name": "schafter",
+     "model": "schafter",
      "category": "sedans",
      "stats": {
        "max_speed": 141,
@@ -4385,7 +4496,7 @@
      }
    },
    "vigilante": {
-     "name": "vigilante",
+     "model": "vigilante",
      "category": "super",
      "stats": {
        "max_speed": 188,
@@ -4395,7 +4506,7 @@
      }
    },
    "dubsta3": {
-     "name": "dubsta3",
+     "model": "dubsta3",
      "category": "off-road",
      "stats": {
        "max_speed": 139,
@@ -4405,7 +4516,7 @@
      }
    },
    "tribike2": {
-     "name": "tribike2",
+     "model": "tribike2",
      "category": "cycles",
      "stats": {
        "max_speed": 75,
@@ -4415,7 +4526,7 @@
      }
    },
    "le7b": {
-     "name": "le7b",
+     "model": "le7b",
      "category": "super",
      "stats": {
        "max_speed": 181,
@@ -4425,7 +4536,7 @@
      }
    },
    "adder": {
-     "name": "adder",
+     "model": "adder",
      "category": "super",
      "stats": {
        "max_speed": 186,
@@ -4435,7 +4546,7 @@
      }
    },
    "shamal": {
-     "name": "shamal",
+     "model": "shamal",
      "category": "planes",
      "stats": {
        "max_speed": 326,
@@ -4445,7 +4556,7 @@
      }
    },
    "luxor2": {
-     "name": "luxor2",
+     "model": "luxor2",
      "category": "planes",
      "stats": {
        "max_speed": 328,
@@ -4455,7 +4566,7 @@
      }
    },
    "tampa3": {
-     "name": "tampa3",
+     "model": "tampa3",
      "category": "muscle",
      "stats": {
        "max_speed": 164,
@@ -4465,7 +4576,7 @@
      }
    },
    "rebel01": {
-     "name": "rebel01",
+     "model": "rebel01",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -4475,7 +4586,7 @@
      }
    },
    "blade": {
-     "name": "blade",
+     "model": "blade",
      "category": "muscle",
      "stats": {
        "max_speed": 152,
@@ -4485,7 +4596,7 @@
      }
    },
    "riot": {
-     "name": "riot",
+     "model": "riot",
      "category": "emergency",
      "stats": {
        "max_speed": 124,
@@ -4495,7 +4606,7 @@
      }
    },
    "zion2": {
-     "name": "zion2",
+     "model": "zion2",
      "category": "coupes",
      "stats": {
        "max_speed": 168,
@@ -4505,7 +4616,7 @@
      }
    },
    "sandking": {
-     "name": "sandking",
+     "model": "sandking",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -4515,7 +4626,7 @@
      }
    },
    "issi2": {
-     "name": "issi2",
+     "model": "issi2",
      "category": "compacts",
      "stats": {
        "max_speed": 150,
@@ -4525,7 +4636,7 @@
      }
    },
    "toros": {
-     "name": "toros",
+     "model": "toros",
      "category": "suvs",
      "stats": {
        "max_speed": 175,
@@ -4535,7 +4646,7 @@
      }
    },
    "primo": {
-     "name": "primo",
+     "model": "primo",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -4545,7 +4656,7 @@
      }
    },
    "scarab": {
-     "name": "scarab",
+     "model": "scarab",
      "category": "military",
      "stats": {
        "max_speed": 84,
@@ -4555,7 +4666,7 @@
      }
    },
    "fq2": {
-     "name": "fq2",
+     "model": "fq2",
      "category": "suvs",
      "stats": {
        "max_speed": 143,
@@ -4565,7 +4676,7 @@
      }
    },
    "taipan": {
-     "name": "taipan",
+     "model": "taipan",
      "category": "super",
      "stats": {
        "max_speed": 193,
@@ -4575,7 +4686,7 @@
      }
    },
    "minivan2": {
-     "name": "minivan2",
+     "model": "minivan2",
      "category": "vans",
      "stats": {
        "max_speed": 127,
@@ -4585,7 +4696,7 @@
      }
    },
    "zion": {
-     "name": "zion",
+     "model": "zion",
      "category": "coupes",
      "stats": {
        "max_speed": 168,
@@ -4595,7 +4706,7 @@
      }
    },
    "jester2": {
-     "name": "jester2",
+     "model": "jester2",
      "category": "sports",
      "stats": {
        "max_speed": 168,
@@ -4605,7 +4716,7 @@
      }
    },
    "zr3802": {
-     "name": "zr3802",
+     "model": "zr3802",
      "category": "sports",
      "stats": {
        "max_speed": 181,
@@ -4615,7 +4726,7 @@
      }
    },
    "rentbus": {
-     "name": "rentbus",
+     "model": "rentbus",
      "category": "service",
      "stats": {
        "max_speed": 92,
@@ -4625,7 +4736,7 @@
      }
    },
    "furore": {
-     "name": "furore",
+     "model": "furore",
      "category": "sports",
      "stats": {
        "max_speed": 182,
@@ -4635,7 +4746,7 @@
      }
    },
    "tampa2": {
-     "name": "tampa2",
+     "model": "tampa2",
      "category": "sports",
      "stats": {
        "max_speed": 164,
@@ -4645,7 +4756,7 @@
      }
    },
    "submers2": {
-     "name": "submers2",
+     "model": "submers2",
      "category": "boats",
      "stats": {
        "max_speed": 90,
@@ -4655,7 +4766,7 @@
      }
    },
    "comet2": {
-     "name": "comet2",
+     "model": "comet2",
      "category": "sports",
      "stats": {
        "max_speed": 180,
@@ -4665,7 +4776,7 @@
      }
    },
    "marquis": {
-     "name": "marquis",
+     "model": "marquis",
      "category": "boats",
      "stats": {
        "max_speed": 36,
@@ -4675,7 +4786,7 @@
      }
    },
    "banshee": {
-     "name": "banshee",
+     "model": "banshee",
      "category": "sports",
      "stats": {
        "max_speed": 171,
@@ -4685,7 +4796,7 @@
      }
    },
    "seashark": {
-     "name": "seashark",
+     "model": "seashark",
      "category": "boats",
      "stats": {
        "max_speed": 156,
@@ -4695,7 +4806,7 @@
      }
    },
    "buccanee2": {
-     "name": "buccanee2",
+     "model": "buccanee2",
      "category": "muscle",
      "stats": {
        "max_speed": 166,
@@ -4705,7 +4816,7 @@
      }
    },
    "zombiea": {
-     "name": "zombiea",
+     "model": "zombiea",
      "category": "motorcycles",
      "stats": {
        "max_speed": 160,
@@ -4715,7 +4826,7 @@
      }
    },
    "tailgate": {
-     "name": "tailgate",
+     "model": "tailgate",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -4725,7 +4836,7 @@
      }
    },
    "howard": {
-     "name": "howard",
+     "model": "howard",
      "category": "planes",
      "stats": {
        "max_speed": 360,
@@ -4735,7 +4846,7 @@
      }
    },
    "cutter": {
-     "name": "cutter",
+     "model": "cutter",
      "category": "industrial",
      "stats": {
        "max_speed": 45,
@@ -4745,7 +4856,7 @@
      }
    },
    "visione": {
-     "name": "visione",
+     "model": "visione",
      "category": "super",
      "stats": {
        "max_speed": 184,
@@ -4755,7 +4866,7 @@
      }
    },
    "cheburek": {
-     "name": "cheburek",
+     "model": "cheburek",
      "category": "sports classics",
      "stats": {
        "max_speed": 160,
@@ -4765,7 +4876,7 @@
      }
    },
    "dominator3": {
-     "name": "dominator3",
+     "model": "dominator3",
      "category": "muscle",
      "stats": {
        "max_speed": 169,
@@ -4775,7 +4886,7 @@
      }
    },
    "turismo2": {
-     "name": "turismo2",
+     "model": "turismo2",
      "category": "sports classics",
      "stats": {
        "max_speed": 178,
@@ -4785,7 +4896,7 @@
      }
    },
    "rogue": {
-     "name": "rogue",
+     "model": "rogue",
      "category": "planes",
      "stats": {
        "max_speed": 360,
@@ -4795,7 +4906,7 @@
      }
    },
    "cablecar": {
-     "name": "cablecar",
+     "model": "cablecar",
      "category": "trains",
      "stats": {
        "max_speed": 96,
@@ -4805,7 +4916,7 @@
      }
    },
    "taxi": {
-     "name": "taxi",
+     "model": "taxi",
      "category": "service",
      "stats": {
        "max_speed": 153,
@@ -4815,7 +4926,7 @@
      }
    },
    "tiptruck2": {
-     "name": "tiptruck2",
+     "model": "tiptruck2",
      "category": "industrial",
      "stats": {
        "max_speed": 103,
@@ -4825,7 +4936,7 @@
      }
    },
    "locust": {
-     "name": "locust",
+     "model": "locust",
      "category": "sports",
      "stats": {
        "max_speed": 175,
@@ -4835,7 +4946,7 @@
      }
    },
    "dominato2": {
-     "name": "dominato2",
+     "model": "dominato2",
      "category": "muscle",
      "stats": {
        "max_speed": 176,
@@ -4845,7 +4956,7 @@
      }
    },
    "pcj": {
-     "name": "pcj",
+     "model": "pcj",
      "category": "motorcycles",
      "stats": {
        "max_speed": 143,
@@ -4855,7 +4966,7 @@
      }
    },
    "dodo": {
-     "name": "dodo",
+     "model": "dodo",
      "category": "planes",
      "stats": {
        "max_speed": 249,
@@ -4865,8 +4976,9 @@
      }
    },
    "virgo2": {
-     "name": "virgo2",
+     "model": "virgo2",
      "category": "muscle",
+     "price": 30000,
      "stats": {
        "max_speed": 131,
        "max_occupants": 2,
@@ -4875,7 +4987,7 @@
      }
    },
    "ruffian": {
-     "name": "ruffian",
+     "model": "ruffian",
      "category": "motorcycles",
      "stats": {
        "max_speed": 168,
@@ -4885,7 +4997,7 @@
      }
    },
    "bati2": {
-     "name": "bati2",
+     "model": "bati2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 177,
@@ -4895,7 +5007,7 @@
      }
    },
    "schafter5": {
-     "name": "schafter5",
+     "model": "schafter5",
      "category": "sedans",
      "stats": {
        "max_speed": 180,
@@ -4905,7 +5017,7 @@
      }
    },
    "docktug": {
-     "name": "docktug",
+     "model": "docktug",
      "category": "utility",
      "stats": {
        "max_speed": 88,
@@ -4915,7 +5027,7 @@
      }
    },
    "nebula": {
-     "name": "nebula",
+     "model": "nebula",
      "category": "sports classics",
      "stats": {
        "max_speed": 136,
@@ -4925,7 +5037,7 @@
      }
    },
    "ripley": {
-     "name": "ripley",
+     "model": "ripley",
      "category": "utility",
      "stats": {
        "max_speed": 84,
@@ -4935,7 +5047,7 @@
      }
    },
    "monster": {
-     "name": "monster",
+     "model": "monster",
      "category": "off-road",
      "stats": {
        "max_speed": 122,
@@ -4945,7 +5057,7 @@
      }
    },
    "fixter": {
-     "name": "fixter",
+     "model": "fixter",
      "category": "cycles",
      "stats": {
        "max_speed": 64,
@@ -4955,7 +5067,7 @@
      }
    },
    "btype2": {
-     "name": "btype2",
+     "model": "btype2",
      "category": "sports classics",
      "stats": {
        "max_speed": 162,
@@ -4965,7 +5077,7 @@
      }
    },
    "dune4": {
-     "name": "dune4",
+     "model": "dune4",
      "category": "off-road",
      "stats": {
        "max_speed": 177,
@@ -4975,7 +5087,7 @@
      }
    },
    "vigero": {
-     "name": "vigero",
+     "model": "vigero",
      "category": "muscle",
      "stats": {
        "max_speed": 168,
@@ -4985,7 +5097,7 @@
      }
    },
    "speedo": {
-     "name": "speedo",
+     "model": "speedo",
      "category": "vans",
      "stats": {
        "max_speed": 143,
@@ -4995,7 +5107,7 @@
      }
    },
    "baller": {
-     "name": "baller",
+     "model": "baller",
      "category": "suvs",
      "stats": {
        "max_speed": 142,
@@ -5005,7 +5117,7 @@
      }
    },
    "patriot": {
-     "name": "patriot",
+     "model": "patriot",
      "category": "suvs",
      "stats": {
        "max_speed": 138,
@@ -5015,7 +5127,7 @@
      }
    },
    "cerberus": {
-     "name": "cerberus",
+     "model": "cerberus",
      "category": "commercial",
      "stats": {
        "max_speed": 133,
@@ -5025,7 +5137,7 @@
      }
    },
    "mixer": {
-     "name": "mixer",
+     "model": "mixer",
      "category": "industrial",
      "stats": {
        "max_speed": 116,
@@ -5035,7 +5147,7 @@
      }
    },
    "freighttrai": {
-     "name": "freighttrai",
+     "model": "freighttrai",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -5045,7 +5157,7 @@
      }
    },
    "omnis": {
-     "name": "omnis",
+     "model": "omnis",
      "category": "sports",
      "stats": {
        "max_speed": 157,
@@ -5055,7 +5167,7 @@
      }
    },
    "caddy3": {
-     "name": "caddy3",
+     "model": "caddy3",
      "category": "utility",
      "stats": {
        "max_speed": 76,
@@ -5065,7 +5177,7 @@
      }
    },
    "fcr2": {
-     "name": "fcr2",
+     "model": "fcr2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 168,
@@ -5075,7 +5187,7 @@
      }
    },
    "imperator3": {
-     "name": "imperator3",
+     "model": "imperator3",
      "category": "muscle",
      "stats": {
        "max_speed": 174,
@@ -5085,7 +5197,7 @@
      }
    },
    "mogul": {
-     "name": "mogul",
+     "model": "mogul",
      "category": "planes",
      "stats": {
        "max_speed": 276,
@@ -5095,7 +5207,7 @@
      }
    },
    "schwarze": {
-     "name": "schwarze",
+     "model": "schwarze",
      "category": "sports",
      "stats": {
        "max_speed": 173,
@@ -5105,7 +5217,7 @@
      }
    },
    "sparrow": {
-     "name": "sparrow",
+     "model": "sparrow",
      "category": "helicopters",
      "stats": {
        "max_speed": 203,
@@ -5115,7 +5227,7 @@
      }
    },
    "monster5": {
-     "name": "monster5",
+     "model": "monster5",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -5125,7 +5237,7 @@
      }
    },
    "bus": {
-     "name": "bus",
+     "model": "bus",
      "category": "service",
      "stats": {
        "max_speed": 92,
@@ -5135,7 +5247,7 @@
      }
    },
    "chernobog": {
-     "name": "chernobog",
+     "model": "chernobog",
      "category": "military",
      "stats": {
        "max_speed": 81,
@@ -5145,7 +5257,7 @@
      }
    },
    "dominator4": {
-     "name": "dominator4",
+     "model": "dominator4",
      "category": "muscle",
      "stats": {
        "max_speed": 174,
@@ -5155,7 +5267,7 @@
      }
    },
    "buccanee": {
-     "name": "buccanee",
+     "model": "buccanee",
      "category": "muscle",
      "stats": {
        "max_speed": 166,
@@ -5165,7 +5277,7 @@
      }
    },
    "zorrusso": {
-     "name": "zorrusso",
+     "model": "zorrusso",
      "category": "super",
      "stats": {
        "max_speed": 183,
@@ -5175,7 +5287,7 @@
      }
    },
    "raptor": {
-     "name": "raptor",
+     "model": "raptor",
      "category": "sports",
      "stats": {
        "max_speed": 154,
@@ -5185,7 +5297,7 @@
      }
    },
    "rloader": {
-     "name": "rloader",
+     "model": "rloader",
      "category": "muscle",
      "stats": {
        "max_speed": 134,
@@ -5195,7 +5307,7 @@
      }
    },
    "krieger": {
-     "name": "krieger",
+     "model": "krieger",
      "category": "super",
      "stats": {
        "max_speed": 189,
@@ -5205,7 +5317,7 @@
      }
    },
    "trophy2": {
-     "name": "trophy2",
+     "model": "trophy2",
      "category": "off-road",
      "stats": {
        "max_speed": 156,
@@ -5215,7 +5327,7 @@
      }
    },
    "cuban800": {
-     "name": "cuban800",
+     "model": "cuban800",
      "category": "planes",
      "stats": {
        "max_speed": 276,
@@ -5225,7 +5337,7 @@
      }
    },
    "scramjet": {
-     "name": "scramjet",
+     "model": "scramjet",
      "category": "super",
      "stats": {
        "max_speed": 177,
@@ -5235,7 +5347,7 @@
      }
    },
    "nemesis": {
-     "name": "nemesis",
+     "model": "nemesis",
      "category": "motorcycles",
      "stats": {
        "max_speed": 162,
@@ -5245,7 +5357,7 @@
      }
    },
    "massacro2": {
-     "name": "massacro2",
+     "model": "massacro2",
      "category": "sports",
      "stats": {
        "max_speed": 181,
@@ -5255,7 +5367,7 @@
      }
    },
    "jackal": {
-     "name": "jackal",
+     "model": "jackal",
      "category": "coupes",
      "stats": {
        "max_speed": 165,
@@ -5265,7 +5377,7 @@
      }
    },
    "wolfsbane": {
-     "name": "wolfsbane",
+     "model": "wolfsbane",
      "category": "motorcycles",
      "stats": {
        "max_speed": 132,
@@ -5275,7 +5387,7 @@
      }
    },
    "blimp2": {
-     "name": "blimp2",
+     "model": "blimp2",
      "category": "planes",
      "stats": {
        "max_speed": 252,
@@ -5285,7 +5397,7 @@
      }
    },
    "vortex": {
-     "name": "vortex",
+     "model": "vortex",
      "category": "motorcycles",
      "stats": {
        "max_speed": 175,
@@ -5295,7 +5407,7 @@
      }
    },
    "cognosc2": {
-     "name": "cognosc2",
+     "model": "cognosc2",
      "category": "sedans",
      "stats": {
        "max_speed": 162,
@@ -5305,7 +5417,7 @@
      }
    },
    "roosevelt2": {
-     "name": "roosevelt2",
+     "model": "roosevelt2",
      "category": "sports classics",
      "stats": {
        "max_speed": 150,
@@ -5315,7 +5427,7 @@
      }
    },
    "blista3": {
-     "name": "blista3",
+     "model": "blista3",
      "category": "sports",
      "stats": {
        "max_speed": 150,
@@ -5325,7 +5437,7 @@
      }
    },
    "f620": {
-     "name": "f620",
+     "model": "f620",
      "category": "coupes",
      "stats": {
        "max_speed": 172,
@@ -5335,7 +5447,7 @@
      }
    },
    "rloader2": {
-     "name": "rloader2",
+     "model": "rloader2",
      "category": "muscle",
      "stats": {
        "max_speed": 141,
@@ -5345,7 +5457,7 @@
      }
    },
    "scarab3": {
-     "name": "scarab3",
+     "model": "scarab3",
      "category": "military",
      "stats": {
        "max_speed": 84,
@@ -5355,7 +5467,7 @@
      }
    },
    "zombieb": {
-     "name": "zombieb",
+     "model": "zombieb",
      "category": "motorcycles",
      "stats": {
        "max_speed": 160,
@@ -5365,7 +5477,7 @@
      }
    },
    "elegy2": {
-     "name": "elegy2",
+     "model": "elegy2",
      "category": "sports",
      "stats": {
        "max_speed": 175,
@@ -5375,7 +5487,7 @@
      }
    },
    "oracle": {
-     "name": "oracle",
+     "model": "oracle",
      "category": "coupes",
      "stats": {
        "max_speed": 166,
@@ -5385,7 +5497,7 @@
      }
    },
    "schlagen": {
-     "name": "schlagen",
+     "model": "schlagen",
      "category": "sports",
      "stats": {
        "max_speed": 187,
@@ -5395,8 +5507,9 @@
      }
    },
    "virgo": {
-     "name": "virgo",
+     "model": "virgo",
      "category": "muscle",
+     "price": 27500,
      "stats": {
        "max_speed": 130,
        "max_occupants": 2,
@@ -5405,7 +5518,7 @@
      }
    },
    "predator": {
-     "name": "predator",
+     "model": "predator",
      "category": "boats",
      "stats": {
        "max_speed": 144,
@@ -5415,7 +5528,7 @@
      }
    },
    "italigtb2": {
-     "name": "italigtb2",
+     "model": "italigtb2",
      "category": "super",
      "stats": {
        "max_speed": 188,
@@ -5425,7 +5538,7 @@
      }
    },
    "paragon": {
-     "name": "paragon",
+     "model": "paragon",
      "category": "sports",
      "stats": {
        "max_speed": 161,
@@ -5435,7 +5548,7 @@
      }
    },
    "blazer4": {
-     "name": "blazer4",
+     "model": "blazer4",
      "category": "off-road",
      "stats": {
        "max_speed": 139,
@@ -5445,7 +5558,7 @@
      }
    },
    "monroe": {
-     "name": "monroe",
+     "model": "monroe",
      "category": "sports classics",
      "stats": {
        "max_speed": 180,
@@ -5455,7 +5568,7 @@
      }
    },
    "xls2": {
-     "name": "xls2",
+     "model": "xls2",
      "category": "suvs",
      "stats": {
        "max_speed": 158,
@@ -5465,7 +5578,7 @@
      }
    },
    "panto": {
-     "name": "panto",
+     "model": "panto",
      "category": "compacts",
      "stats": {
        "max_speed": 146,
@@ -5475,7 +5588,7 @@
      }
    },
    "patriot2": {
-     "name": "patriot2",
+     "model": "patriot2",
      "category": "suvs",
      "stats": {
        "max_speed": 129,
@@ -5485,7 +5598,7 @@
      }
    },
    "revolter": {
-     "name": "revolter",
+     "model": "revolter",
      "category": "sports",
      "stats": {
        "max_speed": 161,
@@ -5495,7 +5608,7 @@
      }
    },
    "shotaro": {
-     "name": "shotaro",
+     "model": "shotaro",
      "category": "motorcycles",
      "stats": {
        "max_speed": 184,
@@ -5505,7 +5618,7 @@
      }
    },
    "stalion2": {
-     "name": "stalion2",
+     "model": "stalion2",
      "category": "muscle",
      "stats": {
        "max_speed": 171,
@@ -5515,7 +5628,7 @@
      }
    },
    "tribike3": {
-     "name": "tribike3",
+     "model": "tribike3",
      "category": "cycles",
      "stats": {
        "max_speed": 75,
@@ -5525,7 +5638,7 @@
      }
    },
    "baletrailer": {
-     "name": "baletrailer",
+     "model": "baletrailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -5535,7 +5648,7 @@
      }
    },
    "seabreeze": {
-     "name": "seabreeze",
+     "model": "seabreeze",
      "category": "planes",
      "stats": {
        "max_speed": 293,
@@ -5545,7 +5658,7 @@
      }
    },
    "viseris": {
-     "name": "viseris",
+     "model": "viseris",
      "category": "sports classics",
      "stats": {
        "max_speed": 169,
@@ -5555,7 +5668,7 @@
      }
    },
    "felon": {
-     "name": "felon",
+     "model": "felon",
      "category": "coupes",
      "stats": {
        "max_speed": 164,
@@ -5565,7 +5678,7 @@
      }
    },
    "penumbra": {
-     "name": "penumbra",
+     "model": "penumbra",
      "category": "sports",
      "stats": {
        "max_speed": 146,
@@ -5575,7 +5688,7 @@
      }
    },
    "tyrant": {
-     "name": "tyrant",
+     "model": "tyrant",
      "category": "super",
      "stats": {
        "max_speed": 191,
@@ -5585,7 +5698,7 @@
      }
    },
    "hellion": {
-     "name": "hellion",
+     "model": "hellion",
      "category": "off-road",
      "stats": {
        "max_speed": 145,
@@ -5595,7 +5708,7 @@
      }
    },
    "bifta": {
-     "name": "bifta",
+     "model": "bifta",
      "category": "off-road",
      "stats": {
        "max_speed": 162,
@@ -5605,7 +5718,7 @@
      }
    },
    "blista": {
-     "name": "blista",
+     "model": "blista",
      "category": "compacts",
      "stats": {
        "max_speed": 150,
@@ -5615,7 +5728,7 @@
      }
    },
    "swift": {
-     "name": "swift",
+     "model": "swift",
      "category": "helicopters",
      "stats": {
        "max_speed": 209,
@@ -5625,7 +5738,7 @@
      }
    },
    "italigto": {
-     "name": "italigto",
+     "model": "italigto",
      "category": "sports",
      "stats": {
        "max_speed": 188,
@@ -5635,7 +5748,7 @@
      }
    },
    "dukes2": {
-     "name": "dukes2",
+     "model": "dukes2",
      "category": "muscle",
      "stats": {
        "max_speed": 167,
@@ -5645,7 +5758,7 @@
      }
    },
    "s80": {
-     "name": "s80",
+     "model": "s80",
      "category": "super",
      "stats": {
        "max_speed": 178,
@@ -5655,7 +5768,7 @@
      }
    },
    "autarch": {
-     "name": "autarch",
+     "model": "autarch",
      "category": "super",
      "stats": {
        "max_speed": 184,
@@ -5665,7 +5778,7 @@
      }
    },
    "dune5": {
-     "name": "dune5",
+     "model": "dune5",
      "category": "off-road",
      "stats": {
        "max_speed": 175,
@@ -5675,7 +5788,7 @@
      }
    },
    "minivan": {
-     "name": "minivan",
+     "model": "minivan",
      "category": "vans",
      "stats": {
        "max_speed": 127,
@@ -5685,7 +5798,7 @@
      }
    },
    "blimp3": {
-     "name": "blimp3",
+     "model": "blimp3",
      "category": "planes",
      "stats": {
        "max_speed": 252,
@@ -5695,7 +5808,7 @@
      }
    },
    "brickade": {
-     "name": "brickade",
+     "model": "brickade",
      "category": "service",
      "stats": {
        "max_speed": 118,
@@ -5705,7 +5818,7 @@
      }
    },
    "buffalo": {
-     "name": "buffalo",
+     "model": "buffalo",
      "category": "sports",
      "stats": {
        "max_speed": 162,
@@ -5715,7 +5828,7 @@
      }
    },
    "sultanrs": {
-     "name": "sultanrs",
+     "model": "sultanrs",
      "category": "super",
      "stats": {
        "max_speed": 177,
@@ -5725,7 +5838,7 @@
      }
    },
    "rcbandito": {
-     "name": "rcbandito",
+     "model": "rcbandito",
      "category": "off-road",
      "stats": {
        "max_speed": 94,
@@ -5735,7 +5848,7 @@
      }
    },
    "suntrap": {
-     "name": "suntrap",
+     "model": "suntrap",
      "category": "boats",
      "stats": {
        "max_speed": 132,
@@ -5745,7 +5858,7 @@
      }
    },
    "hakuchou2": {
-     "name": "hakuchou2",
+     "model": "hakuchou2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 187,
@@ -5755,7 +5868,7 @@
      }
    },
    "diablous": {
-     "name": "diablous",
+     "model": "diablous",
      "category": "motorcycles",
      "stats": {
        "max_speed": 170,
@@ -5765,7 +5878,7 @@
      }
    },
    "jester3": {
-     "name": "jester3",
+     "model": "jester3",
      "category": "sports",
      "stats": {
        "max_speed": 173,
@@ -5775,7 +5888,7 @@
      }
    },
    "barrage": {
-     "name": "barrage",
+     "model": "barrage",
      "category": "military",
      "stats": {
        "max_speed": 143,
@@ -5785,7 +5898,7 @@
      }
    },
    "jugular": {
-     "name": "jugular",
+     "model": "jugular",
      "category": "sports",
      "stats": {
        "max_speed": 175,
@@ -5795,7 +5908,7 @@
      }
    },
    "scorcher": {
-     "name": "scorcher",
+     "model": "scorcher",
      "category": "cycles",
      "stats": {
        "max_speed": 54,
@@ -5805,7 +5918,7 @@
      }
    },
    "innovation": {
-     "name": "innovation",
+     "model": "innovation",
      "category": "motorcycles",
      "stats": {
        "max_speed": 162,
@@ -5815,7 +5928,7 @@
      }
    },
    "blimp": {
-     "name": "blimp",
+     "model": "blimp",
      "category": "planes",
      "stats": {
        "max_speed": 252,
@@ -5825,7 +5938,7 @@
      }
    },
    "massacro": {
-     "name": "massacro",
+     "model": "massacro",
      "category": "sports",
      "stats": {
        "max_speed": 181,
@@ -5835,7 +5948,7 @@
      }
    },
    "vader": {
-     "name": "vader",
+     "model": "vader",
      "category": "motorcycles",
      "stats": {
        "max_speed": 152,
@@ -5845,7 +5958,7 @@
      }
    },
    "kamacho": {
-     "name": "kamacho",
+     "model": "kamacho",
      "category": "off-road",
      "stats": {
        "max_speed": 147,
@@ -5855,7 +5968,7 @@
      }
    },
    "journey": {
-     "name": "journey",
+     "model": "journey",
      "category": "vans",
      "stats": {
        "max_speed": 115,
@@ -5865,7 +5978,7 @@
      }
    },
    "limo2": {
-     "name": "limo2",
+     "model": "limo2",
      "category": "sedans",
      "stats": {
        "max_speed": 141,
@@ -5875,7 +5988,7 @@
      }
    },
    "bati": {
-     "name": "bati",
+     "model": "bati",
      "category": "motorcycles",
      "stats": {
        "max_speed": 177,
@@ -5885,7 +5998,7 @@
      }
    },
    "felon2": {
-     "name": "felon2",
+     "model": "felon2",
      "category": "coupes",
      "stats": {
        "max_speed": 156,
@@ -5895,7 +6008,7 @@
      }
    },
    "savage": {
-     "name": "savage",
+     "model": "savage",
      "category": "helicopters",
      "stats": {
        "max_speed": 234,
@@ -5905,7 +6018,7 @@
      }
    },
    "freecrawler": {
-     "name": "freecrawler",
+     "model": "freecrawler",
      "category": "off-road",
      "stats": {
        "max_speed": 131,
@@ -5915,7 +6028,7 @@
      }
    },
    "vamos": {
-     "name": "vamos",
+     "model": "vamos",
      "category": "muscle",
      "stats": {
        "max_speed": 164,
@@ -5925,7 +6038,7 @@
      }
    },
    "blazer2": {
-     "name": "blazer2",
+     "model": "blazer2",
      "category": "off-road",
      "stats": {
        "max_speed": 88,
@@ -5935,7 +6048,7 @@
      }
    },
    "hunter": {
-     "name": "hunter",
+     "model": "hunter",
      "category": "helicopters",
      "stats": {
        "max_speed": 210,
@@ -5945,7 +6058,7 @@
      }
    },
    "policeb": {
-     "name": "policeb",
+     "model": "policeb",
      "category": "emergency",
      "stats": {
        "max_speed": 158,
@@ -5955,7 +6068,7 @@
      }
    },
    "bombushka": {
-     "name": "bombushka",
+     "model": "bombushka",
      "category": "planes",
      "stats": {
        "max_speed": 131,
@@ -5965,7 +6078,7 @@
      }
    },
    "halftrack": {
-     "name": "halftrack",
+     "model": "halftrack",
      "category": "military",
      "stats": {
        "max_speed": 75,
@@ -5975,7 +6088,7 @@
      }
    },
    "deathbike": {
-     "name": "deathbike",
+     "model": "deathbike",
      "category": "motorcycles",
      "stats": {
        "max_speed": 173,
@@ -5985,7 +6098,7 @@
      }
    },
    "regina": {
-     "name": "regina",
+     "model": "regina",
      "category": "sedans",
      "stats": {
        "max_speed": 110,
@@ -5995,7 +6108,7 @@
      }
    },
    "exemplar": {
-     "name": "exemplar",
+     "model": "exemplar",
      "category": "coupes",
      "stats": {
        "max_speed": 173,

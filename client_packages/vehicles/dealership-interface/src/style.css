@@ -7,7 +7,9 @@ body {
 
 #dealership { position: absolute; width: 100%; height: 100%; }
 
-.right { position: absolute; right: 25px; top: 150px; width: 425px; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: slide-right 1.25s ease; }
+.right {position: absolute;right: 25px;top: 150px;width: 425px;display: flex;flex-direction: column;justify-content: center;background: linear-gradient(
+178deg
+, rgb(18 18 19 / 50%), transparent);align-items: center;animation: slide-right 1.25s ease;}
 .center { position: absolute; top: 30px; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; animation: slide-top 1.25s ease; }
 .left { position: absolute; top: 30px; left: 0; top: 150px; width: 425px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
@@ -25,7 +27,7 @@ h2.business-name {letter-spacing: 1.25px;padding: 5px 50px;text-align: center;fo
 .info b.name { display: block; }
 
 .bars { display: flex; justify-content: space-between; padding: 0; list-style: none;}
-.bars li {width: 45px;height: 15px;margin: 0 5px;border-radius: 2px;box-shadow: rgb(0 0 0 / 10%) 0px 1px 3px 1px;background: rgb(90 90 90 / 35%);transition: all 0.35s ease;}
+.bars li {width: 45px;height: 15px;margin: 0 5px;border-radius: 2px;box-shadow: rgb(0 0 0 / 10%) 0px 1px 3px 1px;background: rgb(255 255 255 / 35%);transition: all 0.35s ease;}
 li.juppy {box-shadow: 0 1px 10px rgb(250 184 10 / 80%);background: #fab80a;}
 
 .preview { width: 250px; display: flex; justify-content: space-around; align-items: center; margin-top: 10px; }
@@ -71,6 +73,7 @@ ul.colors li:hover { border-color: white; }
 ul.colors li.selected { border-color: white; }
 
 * { user-select: none; }
+*:focus { outline: none; }
 
 @keyframes slide-top {
    0% { transform: translateY(-150px); }  
