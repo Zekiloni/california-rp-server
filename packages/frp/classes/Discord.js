@@ -14,7 +14,7 @@ class Discord {
                 },
                 title: subtitle,
                 description: message,
-                color: core.hexToDecimal(color)
+                color: frp.Main.HexToDecimal(color)
             };
             var params = {
                 username: 'Focus Roleplay',
@@ -35,18 +35,18 @@ class Discord {
         };
         // screenshot
         mp.events.add({
-            'server:disord.screenshot.send': (player, image, zone, street) => {
+            'server:disord.screenshot:send': (player, image, zone, street) => {
                 let res = JSON.parse(image);
                 var myEmbed = {
                     author: {
-                        name: MSG_LIVE_PHOTO_FROM_SERVER
+                        name: 'Uživo slika sa servera'
                     },
                     title: player.name,
                     description: zone + ', ' + street,
                     image: {
                         url: res.data.image.url
                     },
-                    color: core.hexToDecimal(vinewoodOnline.color)
+                    color: frp.Main.HexToDecimal(vinewoodOnline.color)
                 };
                 var params = {
                     username: 'focus.online',

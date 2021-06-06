@@ -14,13 +14,7 @@
 </head>
 <body>
    <div id="dealership" v-on:keyup.72="console.log('aa')">
-      <div class="center">
-         <h2 class="business-name">
-            {{ business.name }}
-         </h2>
 
-         <i v-on:click="close()" class="close fa fa-times"> </i>
-      </div>
 
       <div class="left">
          <div class="customization" v-if="customization"> 
@@ -32,42 +26,51 @@
       </div>
 
       <div class="right">
-         <div class="preview">
-            <i v-on:click="Preview(current - 1)" class="fa fa-arrow-left" aria-hidden="true"></i>
-            <i v-on:click="customization = !customization" class="fa fa-paint-brush" aria-hidden="true"></i>
-            <i v-on:click="Preview(current + 1)" class="fa fa-arrow-right" aria-hidden="true"></i>
-         </div>
-
-         <div class="vehicle-stats">
-            <h2 class="title"> Opis vozila </h2>
-
-            <div class="info">
-               <h4> Ime Modela <b class="name"> {{ vehicles[current].model }} </b> </h4>
+         <h2 class="business-name">
+            {{ business.name }}
+         </h2>
+   
+         <i v-on:click="Close()" class="close fa fa-times"> </i>
+   
+         <div class="box">
+            <div class="preview">
+               <i v-on:click="Preview(current - 1)" class="fa fa-arrow-left" aria-hidden="true"></i>
+               <i v-on:click="customization = !customization" class="fa fa-paint-brush" aria-hidden="true"></i>
+               <i v-on:click="Preview(current + 1)" class="fa fa-arrow-right" aria-hidden="true"></i>
             </div>
-
-            <div class="info">
-               <h4> Broj Sedišta <b> {{ vehicles[current].stats.max_occupants }} </b> </h4>
-               <ul class="bars"> 
-                  <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_occupants) }"></li>
-               </ul>
+   
+            <div class="vehicle-stats">
+               <h2 class="title"> Opis vozila </h2>
+   
+               <div class="info">
+                  <h4> Ime Modela <b class="name" v-if="vehicles[current].model"> {{ vehicles[current].model }} </b> </h4>
+               </div>
+   
+               <div class="info">
+                  <h4> Broj Sedišta <b> {{ vehicles[current].stats.max_occupants }} </b> </h4>
+                  <ul class="bars"> 
+                     <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_occupants) }"></li>
+                  </ul>
+               </div>
+   
+               <div class="info">
+                  <h4> Ubrzanje <b> {{ vehicles[current].stats.max_acceleration }} </b> </h4>
+                  <ul class="bars"> 
+                     <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_acceleration * 10) }"></li>
+                  </ul>
+               </div>
+   
             </div>
-
-            <div class="info">
-               <h4> Ubrzanje <b> {{ vehicles[current].stats.max_acceleration }} </b> </h4>
-               <ul class="bars"> 
-                  <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_acceleration * 10) }"></li>
-               </ul>
+   
+            <div class="vehicle-buy">
+               <h4> cena </h4>
+               <h2 class="price"> {{ moneyFormat(vehicles[current].price) }} </h2>
+               <button class="buy" v-on:click="Buy()"> Kupi </button>
             </div>
-
+   
          </div>
-
-         <div class="vehicle-buy">
-            <h4> cena </h4>
-            <h2 class="price"> {{ moneyFormat(vehicles[current].price) }} </h2>
-            <button class="buy" v-on:click="Buy()"> Kupi </button>
-         </div>
-
       </div>
+
 
    </div>
       
@@ -83,8 +86,6 @@
                   money: 0,
                   name: ''
                },
-
-               SLICK: 0,
 
                business: { 
                   id: null,
@@ -126,9 +127,9 @@
 
                // test
                vehicles: [
-                  // { model: 'elegy', name: 'Elegy Fast', price: 35000, 
-                  //       stats: { max_speed: 170, max_occupants: 2, max_braking: 3, max_acceleration: 0.3 }
-                  // },
+                  { model: 'elegy', name: 'Elegy Fast', price: 35000, 
+                        stats: { max_speed: 170, max_occupants: 2, max_braking: 3, max_acceleration: 0.3 }
+                  },
 
                   // { model: 'stainer', name: 'Staner Slow', price: 22500, 
                   //       stats: { max_speed: 145, max_occupants: 4, max_braking: 1, max_acceleration: 0.1 }
@@ -141,21 +142,24 @@
 
             },
 
-            mounted: function () {
-      
+            created () {
+               window.addEventListener('wheel', this.Zoom);
             },
             
             methods: { 
 
-               close: function () { mp.trigger('client:vehicle.dealership'); },
+               Close: function () { mp.trigger('client:vehicle.dealership'); },
 
                Preview: function (i) { 
                   this.current = i;
                   if (this.current >= this.vehicles.length) { this.current = 0; }
                   if (this.current < 0) { this.current = this.vehicles.length - 1; }
                   
-                  mp.trigger('client:vehicle.dealership.preview', this.vehicles[i].model);
+                  mp.trigger('client:vehicle.dealership:preview', this.vehicles[i].model);
                },
+
+               Zoom: function (event) { mp.trigger('client:vehicle.dealership:zoom', event.deltaY); },
+
 
                isColor: function (i, x) { 
                   return parseInt(this.vehicle.color[i]) == parseInt(x) ? true : false;
@@ -163,6 +167,7 @@
 
                Color: function (i, x) { 
                   this.colors[i] = x;
+                  mp.trigger('client:vehicle.dealership:customization', this.colors.primary, this.colors.secondary);
                },
 
                Buy: function () { 

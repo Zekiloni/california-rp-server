@@ -24,6 +24,7 @@ let Houses = require('./models/House');
 
 let Player = require('./classes/Player');
 let Accounts = require('./classes/Account');
+let Admin = require('./classes/Admin');
 let Characters = require('./classes/Character');
 let Savings = require('./classes/Savings');
 let Discord = require('./classes/Discord');

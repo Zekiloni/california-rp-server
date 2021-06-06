@@ -124,7 +124,7 @@ mp.events.add({
 		let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0);
 		let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
 		let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
-		mp.events.callRemote('server:disord.screenshot.send', base64, zoneName, streetName);
+		mp.events.callRemote('server:disord.screenshot:send', base64, zoneName, streetName);
 		setTimeout(() => {
 			screenshotBrowser.destroy();
 			screenshotBrowser = false;

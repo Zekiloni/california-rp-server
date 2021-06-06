@@ -19,45 +19,22 @@ module.exports = {
       {
          name: 'a',
          admin: 1,
+         params: ['tekst'],
          call: (player, args) => {
-               let message = args.slice(0).join(' ');
-               mp.admin.chat(player, message);
+            let Message = args.slice(0).join(' ');
+            frp.Admin.Chat(player, Message);
          }
       },
       {
          name: 'ao',
          admin: 2,
+         params: ['tekst'],
          call: (player, args) => {
-               let message = args.slice(0).join(' ');
-               mp.admin.broadcast(player, message);
+            let Message = args.slice(0).join(' ');
+            frp.Admin.Broadcast(player, Message);
          }
       },  
-      {
-         name: 'h',
-         admin: 1,
-         call: (player, args) => {
-               let message = args.slice(0).join(' ');
-               mp.admin.helperChat(player, message);
-         }
-      },
-      {
-         name: 'duty',
-         admin: 1,
-         call: async (player, args) => {
-               let Character = await player.Character();
-               let Account = await player.Account();
-               if (Character.Faction == frp.Globals.Factions.Police) {
-                  // PD DUTY
-               } else if (Account.Administrator > 0) {
-                  let code = args.slice(0).join(' ');
-                  if (Account.Admin_Code == code) {
-                     player.duty = !player.duty;
-                  } else { 
-                     player.notification(MSG_ADMIN_WRONG_DUTY_CODE, NOTIFY_ERROR, 4); // MSG_ADMIN_WRONG_DUTY_CODE = 'Pogrešan admin kod 1/3';
-                  } 
-               }
-         }
-      },
+
       {
          name: 'slap',
          admin: 1,

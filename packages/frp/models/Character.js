@@ -210,19 +210,21 @@ frp.Characters.prototype.SetJob = function (player, value) {
 };
 
 
-frp.Characters.prototype.LicenseAdd = function (license) {
+frp.Characters.prototype.LicenseAdd = async function (license) {
    let Licenses = this.Licenses;
    Licenses.push(license);
    this.Licenses = Licenses;
+   await this.save();
 };
 
 
-frp.Characters.prototype.RemoveLicense = function (license) {
+frp.Characters.prototype.RemoveLicense = async function (license) {
    let Licenses = this.Licenses;
    let x = Licenses.find(name => name === license);
    let i = Licenses.indexOf(x);
    Licenses.splice(i, 1);
    this.Licenses = Licenses;
+   await this.save();
 };
 
 
@@ -238,7 +240,6 @@ frp.Characters.New = async function (player, informations) {
    const Character = JSON.parse(informations);
 
    const Bank = await frp.Bank.New(player);
-
 
    let NewCharacter = await frp.Characters.create({
       Name: Character.First_Name + ' ' + Character.Last_Name,
@@ -262,7 +263,7 @@ frp.Characters.New = async function (player, informations) {
 (async () => {
    frp.Characters.sync();
 
- //  await frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
+   //  await frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
 
 })();
 

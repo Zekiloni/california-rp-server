@@ -11,6 +11,7 @@ let PlayerCore = require('./player/Core');
 let PlayerList = require('./player/PlayerList');
 let NameTags = require('./player/NameTags');
 let Attachments = require('./player/Attachments');
+let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
 let Banking = require('./player/Banking');
 let AntiAFK = require('./player/AFK');

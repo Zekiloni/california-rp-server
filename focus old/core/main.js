@@ -27,9 +27,6 @@ module.exports = {
 
 
 
-     hexToDecimal: (hex) => {
-          return parseInt(hex.replace("#",""), 16)
-     },
 
      between: (min, max) => {
           return Math.floor(Math.random() * (max - min)) + min;

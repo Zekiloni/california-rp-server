@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link href='https://fonts.googleapis.com/css?family=Sacramento' rel='stylesheet'>
+
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/identity.css" />
+
+   </head>
+   <body>
+
+      <div id="identity">
+         <div id="id">
+            <div class="header header_bg header_bottom">
+               <h2> Država San Andreas </h2>
+               <h4> lična karta </h4>
+            </div>
+   
+            <ul class="info">
+               <li>I. Ime: <b> {{ FirstName() }} </b> </li>
+               <li>II. Prezime: <b> {{ LastName() }} </b> </li>
+               <li>III. Datum rodjenja: <b> {{ player.Birth }} </b> </li>
+               <li>IV. Mesto rodjenja: <b> {{ player.Origin }} </b> </li>
+               <li>V. Pol: <b> {{ Gender(player.Gender) }} </b> </li>
+            </ul>
+   
+            <h2 class="signature"> {{ player.Name }} </h2>
+   
+            <img class="gov-logo" src="src/images/ls-gov.png" />
+         </div>
+      </div>
+
+         
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"></script>
+      <script>
+         let identity = new Vue({
+            el: '#identity',
+            data: {
+               player: { 
+                  Name: '',
+                  Birth: '11 / 06 / 2001',
+                  Origin: '',
+                  Gender: 0
+               },
+
+               Genders: ['Muško', 'Žensko']
+            },
+
+            methods: { 
+               FirstName: function () { return this.player.Name.split(' ')[0]; },
+               LastName: function () { return this.player.Name.split(' ')[1]; },
+               Gender: function (i) { return this.Genders[0]; }
+            }
+         })
+
+      </script>
+   </body>     
+</html>

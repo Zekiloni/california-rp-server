@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- source -->
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+        <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="src/styles/licenses.css" />
+
+    </head>
+    <body>
+
+      <div id="licenses">
+         <div id="card">
+            <div class="header">
+               <h2> Država San Andreas </h2>
+               <h4> Dozvole </h4>
+            </div>
+   
+            <ul class="info">
+               <li>I. Ime: <b> {{ FirstName() }} </b></li>
+               <li>II. Prezime: <b> {{ LastName() }} </b></li>
+               <li>III. Datum rodjenja: <b> {{ player.Birth }} </b></li>
+               <li>IV. Mesto rodjenja: <b> {{ player.Origin }} </b></li>
+               <li>V. Pol: <b> {{ Gender(player.Gender) }} </b></li>
+            </ul>
+   
+            <ul class="licenses">
+               <li>V. Dozvole: 
+                  <b v-if="player.Licenses.length > 0" v-for="(license, key) in player.Licenses">
+                     {{ license }}
+                  </b>
+               </li>
+            </ul>
+   
+            <ul class="data">
+               <li> <b>B</b> - motorna vozila</li>
+               <li> <b>C</b> - teretna vozila</li>
+               <li> <b>D</b> - plovidbena vozila</li>
+               <li> <b>F</b> - vazduhoplovna vozila</li>
+            </ul>
+   
+            <img class="gov-logo" src="src/images/ls-gov.png" />
+         </div>
+      </div>
+
+          
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"></script>
+      <script>
+         let licenses = new Vue({
+            el: '#licenses',
+            data: {
+               player: { 
+                  Name: 'Zeki Loni',
+                  Birth: '11 / 06 / 2001',
+                  Origin: 'Novi Pazar',
+                  Gender: 0,
+                  Licenses: ['A', 'B', 'C', 'D']
+               },
+
+               Genders: ['Muško', 'Žensko']
+            },
+
+            methods: { 
+               FirstName: function () { return this.player.Name.split(' ')[0]; },
+               LastName: function () { return this.player.Name.split(' ')[1]; },
+               Gender: function (i) { return this.Genders[0]; }
+            }
+         })
+
+      </script>
+    </body>     
+</html>

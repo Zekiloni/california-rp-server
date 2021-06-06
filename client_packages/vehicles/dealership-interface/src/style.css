@@ -7,17 +7,16 @@ body {
 
 #dealership { position: absolute; width: 100%; height: 100%; }
 
-.right {position: absolute;right: 25px;top: 150px;width: 425px;display: flex;flex-direction: column;justify-content: center;background: linear-gradient(
-178deg
-, rgb(18 18 19 / 50%), transparent);align-items: center;animation: slide-right 1.25s ease;}
+.box {position: relative;width: 425px;display: flex;flex-direction: column;justify-content: center;background: linear-gradient(178deg, rgb(18 18 19 / 50%), transparent);align-items: center;}
+.right { right: 25px; top: 150px; width: 425px; position: absolute; animation: slide-right 1.25s ease; }
 .center { position: absolute; top: 30px; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; animation: slide-top 1.25s ease; }
-.left { position: absolute; top: 30px; left: 0; top: 150px; width: 425px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.left {position: absolute;top: 30px;left: 0;top: 300px;width: 425px;display: flex;flex-direction: column;justify-content: center;align-items: center;}
 
 
-.close {position: absolute;top: 20px;right: 55px;padding: 4px 7px;border-radius: 5px;transition: all 0.5s ease;color: rgb(255 255 255 / 60%);background: rgb(0 0 0 / 29%);border: 1px solid rgb(128 128 128 / 3%);font-size: 18px;}
+.close {position: absolute;top: 15.4px;right: 8px;padding: 4px 7px;border-radius: 5px;transition: all 0.5s ease;color: rgb(255 255 255 / 60%);background: rgb(0 0 0 / 29%);border: 1px solid rgb(128 128 128 / 3%);font-size: 18px;}
 .close:hover { opacity: 0.5; }
 
-h2.business-name {letter-spacing: 1.25px;padding: 5px 50px;text-align: center;font-weight: 400;color: whitesmoke;border-radius: 5px;background: rgb(0 0 0 / 20%);box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;}
+h2.business-name {letter-spacing: 1.25px;padding: 5px 50px;text-align: center;margin: 10px 0;font-weight: 400;color: whitesmoke;background: rgb(0 0 0 / 40%);box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;}
 
 .vehicle-stats { width: 330px; height: 300px; border-radius: 5px; margin-top: 35px; }
 .vehicle-stats h2.title {color: whitesmoke;text-shadow: 0 0 1px rgb(0 0 0 / 45%);text-transform: uppercase;letter-spacing: 2.5px;font-weight: 400;}
@@ -47,13 +46,13 @@ li.juppy {box-shadow: 0 1px 10px rgb(250 184 10 / 80%);background: #fab80a;}
    padding: 10px 5px;
    box-shadow: rgb(0 0 0 / 10%) 0px 1px 3px 1px;
    overflow-y: auto;
-   background: rgb(0 0 0 / 40%);
+   background: linear-gradient(178deg, rgb(18 18 19 / 50%), transparent);
    animation: slide-left 1.25s ease;
 }
 
 .customization .title {
    margin: 5px 5px;
-   color: #d4d4d4;
+   color: #ececec;
    font-weight: 300;
    letter-spacing: 1.25px;
 }
@@ -91,6 +90,6 @@ ul.colors li.selected { border-color: white; }
 }
 
 
-::-webkit-scrollbar {width: 10px;}
-::-webkit-scrollbar-track {background: rgb(0 0 0 / 50%);}
-::-webkit-scrollbar-thumb {background: linear-gradient(45deg, #e8e8e8, #ffffff);transition: all 0.5s ease;}
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: rgb(0 0 0 / 45%); }
+::-webkit-scrollbar-thumb { background: linear-gradient(45deg, rgb(230 230 230 / 30%), #ffffff); }

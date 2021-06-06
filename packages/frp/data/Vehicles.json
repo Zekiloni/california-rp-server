@@ -11,8 +11,8 @@
      }
    },
 
-   "carbon": {
-     "model": "carbon",
+   "carbonrs": {
+     "model": "carbonrs",
      "category": "motorcycles",
      "price": 70000,
      "stats": {
@@ -103,8 +103,8 @@
        "max_braking": 0.65
      }
    },
-   "dominato": {
-     "model": "dominato",
+   "dominator": {
+     "model": "dominator",
      "category": "muscle",
      "price": 75000,
      "stats": {

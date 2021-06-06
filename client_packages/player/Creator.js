@@ -145,11 +145,10 @@ function MoveCamera () {
    let { pointX: camPointX, pointY: camPointY, pointZ: camPointZ } = camera.getDirection();
 
    camPosZ = camPosZ + Data.DeltaY * 0.001;
-   const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
+   const { x: charPosX, y: charPosY, z: charPosZ } = Vehicle.getCoords(true);
 
    if (camPosZ < charPosZ + 0.7 && camPosZ > charPosZ - 0.8) { 
       camera.setPosition(camPosX, camPosY, camPosZ);
       camera.pointAtCoord(charPosX, charPosY, camPosZ);
    }
-
 }
