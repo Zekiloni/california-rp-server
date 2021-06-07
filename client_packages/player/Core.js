@@ -26,7 +26,7 @@ mp.events.addDataHandler({
 
    'Money': (entity, newCash, oldCash) => {
       if (entity && entity.remoteId === player.remoteId) {
-         player.money = newCash;
+         player.Money = newCash;
       }
    },
 

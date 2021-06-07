@@ -1,7 +1,7 @@
 
 
-mp.Player.prototype.notification = function (message, type, time = 4) {
-   this.call('client:player.notification:show', [message, type, time]);
+mp.Player.prototype.Notification = function (message, type, time = 4) {
+   this.call('client:player.interface:notification', [message, type, time]);
 };
 
 

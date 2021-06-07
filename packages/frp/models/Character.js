@@ -1,4 +1,6 @@
 const { DataTypes } = require('sequelize');
+
+
 frp.Characters = frp.Database.define('Character', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Account: { type: DataTypes.INTEGER, allowNull: false },
@@ -71,6 +73,9 @@ frp.Characters.prototype.Spawn = async function (player) {
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
 
+   await player.call('client:player.interface:toggle');
+   await player.Notification('Dobrodošli na Focus Roleplay ! Uživajte u igri.', frp.Globals.Notification.Info, 4);
+
    // aplyying appearance & clothing
    //let Appearance = await frp.Appearances.findOne({ where: { id: this.id } });
    // Appearance.Apply(this, player);
@@ -109,13 +114,13 @@ frp.Characters.prototype.SetArmour = async function (player, value) {
 
 frp.Characters.prototype.GiveMoney = async function (player, value) {
    let Money = await this.increment('Money', { by: value });
-   await player.setVariable('Money', this.Money);
+   await player.setVariable('Money', this.Money + value);
 };
 
 
 frp.Characters.prototype.SetMoney = async function (player, value) {
    this.Money = value;
-   player.setVariable('Money', this.Money);
+   player.setVariable('Money', value);
    await this.save();
 };
 

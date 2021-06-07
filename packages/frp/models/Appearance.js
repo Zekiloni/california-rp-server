@@ -3,7 +3,7 @@
 const { DataTypes } = require('sequelize');
 
 frp.Appearances = frp.Database.define('Appearance', {
-      Character: { type: DataTypes.TEXT, unique: true },
+      Character: { type: DataTypes.INTEGER, unique: true },
       Mask: { type: DataTypes.TEXT, defaultValue: '[0, 0]' },
       Shirt: { type: DataTypes.TEXT, defaultValue: '[0, 0]' },
       Undershirt: { type: DataTypes.TEXT, defaultValue: '[0, 0]' },

@@ -1,21 +1,28 @@
 const { DataTypes } = require("sequelize/types");
+
+
 frp.Furnitures = frp.Database.define('Furniture', {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    House: { type: DataTypes.INTEGER, allowNull: false },
-    Name: { type: DataTypes.STRING },
-    Model: { type: DataTypes.STRING, allowNull: false },
-    Position: { type: DataTypes.TEXT },
-    Rotation: { type: DataTypes.TEXT },
-    Dimension: { type: DataTypes.INTEGER, defaultValue: this.House },
-}, {
-    timestamps: true,
-    underscrored: true,
-    createdAt: true,
-    updatedAt: true
-});
+      id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+      House: { type: DataTypes.INTEGER, allowNull: false },
+      Name: { type: DataTypes.STRING },
+      Model: { type: DataTypes.STRING, allowNull: false },
+      Position: { type: DataTypes.TEXT },
+      Rotation: { type: DataTypes.TEXT },
+      Dimension: { type: DataTypes.INTEGER, defaultValue: this.House },
+   }, {
+      timestamps: true,
+      underscrored: true,
+      createdAt: true,
+      updatedAt: true
+   }
+);
+
+
 (async () => {
-    frp.Furnitures.sync();
+   frp.Furnitures.sync();
 });
+
+
 mp.furniture = [];
 const FURNITURE_TYPES = [
     { type: 'Dnevna soba', name: 'Kauc', model: 'prop_couch_lg_06', price: 200 },

@@ -37,13 +37,28 @@ module.exports = {
                player.sendMessage('Promenili ste mesto spawna na ' + spawns[args[0]], mp.colors.info);
          }
       },
+
       {
          name: 'blindfold',
          desc: 'Povez preko ociju',
          call: (player, args) => {
-               player.call('client:hud.black_screen');
+            player.call('client:player.interface:black');
          }
       },
+
+      {
+         name: 'tog',
+         desc: 'Podešavanja igre',
+         params: ['akcija'],
+         call: (player, args) => {
+            let Action = args[0];
+            
+            switch (Action) { 
+               case 'hud':  player.call('client:player.interface:toggle'); break;
+            }
+         }
+      },
+
       {
          name: 'showid',
          desc: 'Pokazivanje dokumenata',
@@ -57,6 +72,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'showlicenses',
          desc: 'Pokazivanje dozvoli',
@@ -70,6 +86,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'pay',
          desc: 'Davanje novca',
@@ -92,6 +109,7 @@ module.exports = {
                }
          }
       },
+
       {
          name: 'accept',
          desc: 'Lista Komand',

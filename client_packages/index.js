@@ -6,7 +6,7 @@ let Utils = require('./Utils');
 // PLAYER CORE
 let Authentication = require('./player/Authorization');
 let CharacterCreator = require('./player/Creator');
-let GameInterface = require('./player/Hud');
+let Interface = require('./player/Interface');
 let PlayerCore = require('./player/Core');
 let PlayerList = require('./player/PlayerList');
 let NameTags = require('./player/NameTags');
@@ -15,6 +15,7 @@ let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
 let Banking = require('./player/Banking');
 let AntiAFK = require('./player/AFK');
+
 
 // ADMIN
 let AdminStuffs = require('./player/Admin');
