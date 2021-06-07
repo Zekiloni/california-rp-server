@@ -910,3 +910,30 @@ clearTableMarkers = () =>
 	}
 	tableMarkers = [];
 }
+/*
+mp.events.add('click', (x, y, upOrDown, leftOrRight, relativeX, relativeY, worldPosition, hitEntity) => {
+	mp.gui.chat.push("Mouse X:" + x + " | Mouse Y:" + y); // Displays mouse position on click.
+	
+	const camera = mp.cameras.new("gameplay");
+	var entity = GetPlayerClickData(x, y, camera.getDirection());
+	mp.gui.chat.push(`1`);
+	if (entity != null) {
+		mp.gui.chat.push(`Nasao ${entity}`);
+	}
+	mp.gui.chat.push(`2`);
+
+});
+
+
+GetPlayerClickData = (x, y, direction) =>
+{
+	 let pos3d = mp.game.graphics.screen2dToWorld3d(new mp.Vector3(x, y, 0));
+    let farAway = new mp.Vector3((direction.x * 150) + pos3d.x, (direction.y * 150) + pos3d.y, (direction.z * 150) + pos3d.z);
+    let hitData = mp.raycasting.testPointToPoint(pos3d, farAway, mp.players.local);
+    
+    if(hitData != undefined)
+    {
+        return hitData;
+    }
+    return null;
+}*/
