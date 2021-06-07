@@ -15,4 +15,11 @@ function LoadAnimDict (i) {
    })
 };
 
-global.utils = { CompareVectors, LoadAnimDict };
+function weaponString (weapon) {
+	if (typeof weapon !== 'undefined')
+		return '0x' + weapon.toString(16).toUpperCase()
+	else 
+		return '0xA2719263'
+}
+
+global.utils = { CompareVectors, LoadAnimDict, weaponString };

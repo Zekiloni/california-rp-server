@@ -168,11 +168,5 @@ function getAmmoInClip (weaponHash){
 	return 0
 }
 
-function getWeaponString (){
-	let weapon = mp.players.local.weapon 
-	if (typeof weapon !== "undefined")
-		return "0x" + mp.players.local.weapon.toString(16).toUpperCase()
-	else 
-		return "0xA2719263"
-}
+
 

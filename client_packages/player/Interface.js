@@ -23,6 +23,11 @@ mp.events.add({
       HideDefault();
 
       if (Player.vehicle) Vehicle();
+
+      if (Player.weapon) { 
+         let Weapon = utils.weaponString(Player.weapon);
+         
+      }
    },
 
    'playerEnterVehicle': (vehicle, seat) => { 
@@ -63,12 +68,14 @@ function Vehicle () {
    let Gear = getGear(vehicle.gear).toString();
    let Lights = vehicle.getLightsState(1, 1);
    let Indicators = [vehicle.getVariable('IndicatorLeft'), vehicle.getVariable('IndicatorRight')];
+   let EngineFailure = vehicle.getEngineHealth() < 300 ? true : false;
    // Mileage, Fuel...
 
    browser.execute('hud.Speed(' + Speed + ')');
    browser.execute('hud.Fuel(' + (100 - Speed) + ')');
    browser.execute('hud.vehicle.gear = \"' + Gear + '\";');
    browser.execute('hud.vehicle.indicators = ' + JSON.stringify(Indicators));
+   browser.execute('hud.vehicle.engine_failure = ' + EngineFailure);
 
 }
 
