@@ -22,10 +22,9 @@ mp.events.add({
       }
    },
 
-   'client:player.vehicle': (hud, engine) => { 
+   'client:player.vehicle:enter': (hud, engine) => { 
       mp.game.vehicle.defaultEngineBehaviour = false;
       player.setConfigFlag(429, true);
-      mp.events.call('client:hud.vehicle', hud);
    }
 });
 
@@ -51,14 +50,6 @@ mp.events.addDataHandler({
    }
 });
 
-mp.events.addProc('client:vehicle.info', (model) => {
-      model = mp.game.joaat(model)
-      let name = mp.game.ui.getLabelText(mp.game.vehicle.getDisplayNameFromVehicleModel(model)),
-         passengers = mp.game.invoke(natives.MAX_PASSENGERS, model), speed = mp.game.invoke(natives.MAX_SPEED, model),
-         braking = mp.game.invoke(natives.MAX_BRAKING, model), traction = mp.game.invoke(natives.MAX_TRACTION, model),
-         acceleration = mp.game.invoke(natives.MAX_ACCELERATION, model);
-   return { name: name, max_passengers: passengers, max_speed: speed, braking: braking, traction: traction, acceleration: acceleration }
-});
 
 
 // left

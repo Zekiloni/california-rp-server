@@ -73,6 +73,9 @@ frp.Characters.prototype.Spawn = async function (player) {
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
 
+   player.data.Seatbelt = false;
+   console.log('Seatbelt ' + player.data.Seatbelt)
+
    await player.call('client:player.interface:toggle');
    await player.Notification('Dobrodošli na Focus Roleplay ! Uživajte u igri.', frp.Globals.Notification.Info, 4);
 

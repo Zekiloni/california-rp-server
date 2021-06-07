@@ -72,10 +72,9 @@
    
                         <div class="indicators">
                            <i class="indicator fa fa-angle-left" v-bind:class="{ 'blinking': vehicle.indicators[0] }"> </i>
+                           <img class="indicator" src="src/images/vehicle/lights-on.png" >
                            <i class="indicator fa fa-angle-right" v-bind:class="{ 'blinking': vehicle.indicators[1] }"> </i>
                            <i class="indicator fas fa-gas-pump" v-bind:class="{ 'out-of-gas': vehicle.fuel < 20 }"> </i>
-                           <i class="indicator fa fa-engine" > </i>
-
                         </div>
                      </div>
                   </transition>
@@ -116,7 +115,8 @@
                   engine_failure: false,
                   doors: [0, 0, 0, 0],
                   mileage: 0,
-                  max_speed: 20000
+                  seatbelt: false,
+                  max_speed: 225
                },
 
                black: false,

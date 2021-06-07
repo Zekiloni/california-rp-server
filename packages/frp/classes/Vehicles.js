@@ -16,10 +16,11 @@ class Vehicles {
          
          'playerStartExitVehicle': (player) => {
             if (player.vehicle.engine) player.vehicle.engine = true;
+            if (player.data.Seatbelt) player.data.Seatbelt = false;
          },
       
          'playerExitVehicle': (player, vehicle) => { 
-            player.call('client:player.vehicle', [false, vehicle.engine])
+            
          },
       
          'server:vehicle.indicators': (player, indicator) => {
