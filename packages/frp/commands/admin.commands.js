@@ -357,7 +357,7 @@ module.exports = {
             let Target = mp.players.find(args[0]), Money = parseInt(args[1]);
             if (Target) {
                let Character = await frp.Characters.findOne({ where: { id: Target.character }});
-               TargetCharacter.SetMoney(Target, Money);
+               Character.SetMoney(Target, Money);
                // PORUKA: novac
             }
          }
@@ -365,7 +365,7 @@ module.exports = {
       {
          name: 'givemoney',
          admin: 4,
-         params: ['igrac', 'kolicina'],
+         params: ['igrac', 'vrednost'],
          call: async (player, args) => {
             let Target = mp.players.find(args[0]), Money = parseInt(args[1]);
             if (Target) {

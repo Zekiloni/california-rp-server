@@ -9,10 +9,10 @@ frp.Vehicles = frp.Database.define('Vehicle', {
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Numberplate: { type: DataTypes.STRING, defaultValue: null },
-      Fuel: { type: DataTypes.INTEGER, defaultValue: 100 },
+      Fuel: { type: DataTypes.FLOAT(3, 1), defaultValue: 99 },
       Dirt: { type: DataTypes.INTEGER, defaultValue: 0 },
       Heading: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Mileage: { type: DataTypes.DOUBLE, defaultValue: 0.00 },
+      Mileage: { type: DataTypes.FLOAT, defaultValue: 0.0 },
       Color: { 
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Color')); },

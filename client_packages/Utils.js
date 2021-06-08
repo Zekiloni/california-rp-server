@@ -22,4 +22,8 @@ function weaponString (weapon) {
 		return '0xA2719263'
 }
 
-global.utils = { CompareVectors, LoadAnimDict, weaponString };
+function Distance (first, next) {
+   return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();
+}
+
+global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance };

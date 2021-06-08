@@ -16,7 +16,7 @@ class Vehicles {
          
          'playerStartExitVehicle': (player) => {
             if (player.vehicle.engine) player.vehicle.engine = true;
-            if (player.data.Seatbelt) player.data.Seatbelt = false;
+            if (player.data.Seatbelt) player.setVariable('Seatbelt', false);
          },
       
          'playerExitVehicle': (player, vehicle) => { 

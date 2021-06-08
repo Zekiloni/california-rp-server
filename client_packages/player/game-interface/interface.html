@@ -60,6 +60,7 @@
                <div class="bottom-right">
                   <transition name="slide-up">
                      <div class="vehicle" v-if="vehicle.toggle">
+                        <H2 class="mileage"> {{ vehicle.mileage }} </H2>
                         <div class="engine"> 
                            <h2> {{ vehicle.gear }} </h2>
                         </div>
@@ -68,14 +69,16 @@
                            <span class="value-text">km / h</span>
                         </div>
 
-                         <div id="fuel" class="gauge-container fuel"> </div>
-   
+                        <div id="fuel" class="gauge-container fuel"> </div>
+
                         <div class="indicators">
+                           <img class="seatbelt" src="src/images/vehicle/seatbelt.png" v-if="!seatbelt" >
                            <i class="indicator fa fa-angle-left" v-bind:class="{ 'blinking': vehicle.indicators[0] }"> </i>
-                           <img class="indicator" src="src/images/vehicle/lights-on.png" >
+                           <img class="lights" :src="'src/images/vehicle/' + Lights() + '.png'" >
                            <i class="indicator fa fa-angle-right" v-bind:class="{ 'blinking': vehicle.indicators[1] }"> </i>
                            <i class="indicator fas fa-gas-pump" v-bind:class="{ 'out-of-gas': vehicle.fuel < 20 }"> </i>
                         </div>
+
                      </div>
                   </transition>
                </div>
@@ -94,7 +97,7 @@
             el: '#hud',
             data: {
 
-               toggle: true, 
+               toggle: false, 
 
                id: 0,
                money: 0,
@@ -109,15 +112,16 @@
                   toggle: false,
                   speed: 0,
                   indicators: [false, false],
-                  lights: 0,
+                  lights: { lightsOn: false, highbeamsOn: false },
                   fuel: 0,
                   gear: 'N',
                   engine_failure: false,
                   doors: [0, 0, 0, 0],
                   mileage: 0,
-                  seatbelt: false,
                   max_speed: 225
                },
+
+               seatbelt: false,
 
                black: false,
 
@@ -136,7 +140,10 @@
 
                sounds: { 
                   notification: new Audio('src/sounds/notification.mp3'),
-                  money: new Audio('src/sounds/money.mp3')
+                  money: new Audio('src/sounds/money.mp3'),
+                  seatbelt: { 
+                     put: new Audio('src/sounds/seatbelt_put.mp3'), remove: new Audio('src/sounds/seatbelt_remove.mp3')
+                  }
                }
                
             },
@@ -148,6 +155,13 @@
                   this.changeValue = newValue - oldValue;
                   setTimeout(() => { this.change = null; }, 3000);
                   this.sounds.money.play();
+               },
+
+               seatbelt: function (toggle) { 
+                  if (toggle)
+                     this.sounds.seatbelt.put.play()
+                  else
+                     this.sounds.seatbelt.remove.play()
                }
             },
 
@@ -155,7 +169,6 @@
                this.Time();
                this.Date();
                setInterval(() => { this.Check(); }, 1000);
-
             },
 
             methods: { 
@@ -203,7 +216,14 @@
                   }
                },
 
-               Gear: function (i) { this.vehicle.gear = i; },
+               Lights: function () { 
+                  let status = 0;
+                  if (this.vehicle.lights.lightsOn == 0 && this.vehicle.lights.highbeamsOn == 0) { status = 'lights-off'; }
+                  else if (this.vehicle.lights.lightsOn == 0 && this.vehicle.lights.highbeamsOn == 1) { status = 'lights-high'; }
+                  else if (this.vehicle.lights.lightsOn == 1 && this.vehicle.lights.highbeamsOn == 0) { status = 'lights-on'; }
+                  else if (this.vehicle.lights.lightsOn == 1 && this.vehicle.lights.highbeamsOn == 1) { status = 'lights-high'; }
+                  return status;
+               },
 
                Dollars: function (i) { 
                   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);

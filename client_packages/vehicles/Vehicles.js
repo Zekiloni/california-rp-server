@@ -1,6 +1,9 @@
 
-const player = mp.players.local;
+const Player = mp.players.local;
 const blockedClasses = [13, 14, 15, 16, 21]; 
+
+let DistanceNow = null;
+let DistanceTemporary;
 
 mp.game.controls.useDefaultVehicleEntering = true;
 
@@ -17,14 +20,28 @@ mp.events.add({
    'entityStreamIn': (entity) => {
       if (entity.type === 'vehicle') {
          if (entity.hasVariable('IndicatorRight')) entity.setIndicatorLights(0, entity.getVariable('IndicatorRight'));
-         if (entity.hasVariable('IndicatorLeft')) entity.setIndicatorLights(1, entity.getVariable('IndicatorLeft'));
+         if (entity.hasVariable('IndicatorLeft')) entity.setIndicatorLights(1, entity.getVariable('IndicatorLeft')); 
          if (entity.hasVariable('Windows')) Windows(entity, entity.getVariable('Windows'));
+         if (entity.hasVariable('Fuel')) entity.Fuel = entity.getVariable('IndicatorLeft');
+         if (entity.hasVariable('Mileage')) entity.Mileage = entity.getVariable('Mileage');
       }
    },
 
-   'client:player.vehicle:enter': (hud, engine) => { 
+   'playerEnterVehicle': (vehicle, seat) => { 
       mp.game.vehicle.defaultEngineBehaviour = false;
-      player.setConfigFlag(429, true);
+      Player.setConfigFlag(429, true);
+
+      if (vehicle.Fuel && seat == -1) { 
+         DistanceNow = Date.now();
+         DistanceTemporary = 0;
+         mp.events.add('render', Driving);
+      }
+   },
+
+   'playerLeaveVehicle': (vehicle, seat) => { 
+      if (seat == -1) { 
+        mp.events.remove('render', Driving);
+      }
    }
 });
 
@@ -42,11 +59,11 @@ mp.events.addDataHandler({
    },
 
    'Fuel': (entity, value) => { 
-      if (entity.type === 'vehicle') Fuel(entity, value);
+      if (entity.type === 'vehicle') entity.Fuel = value;
    },
 
    'Mileage': (entity, value) => { 
-      if (entity.type === 'vehicle') Mileage(entity, value);
+      if (entity.type === 'vehicle') entity.Mileage = value;
    }
 });
 
@@ -54,7 +71,7 @@ mp.events.addDataHandler({
 
 // left
 mp.keys.bind(0x25, false, () => {
-   if (!player.logged) return false;
+   if (!Player.logged) return false;
    if (mp.players.local.isTypingInTextChat) return false;
    let vehicle = mp.players.local.vehicle;
    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle.indicators', 1);
@@ -62,11 +79,29 @@ mp.keys.bind(0x25, false, () => {
 
 // right
 mp.keys.bind(0x27, false, () => {
-   if (!player.logged) return false;
+   if (!Player.logged) return false;
    if (mp.players.local.isTypingInTextChat) return false;
    let vehicle = mp.players.local.vehicle;
    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle.indicators', 0);
 });
+
+
+
+function Driving () { 
+   if (Player.vehicle && Player.vehicle.getPedInSeat(-1) === Player.handle) { 
+      let vehicle = Player.vehicle;
+      let Speed = vehicle.getSpeed() * 3.6;
+
+      if (Date.now() >= DistanceNow + 1 && Speed > 1) { 
+         let Calculating = Speed * ((Date.now() - DistanceNow) / 1000);
+         let Trip = parseFloat(Calculating / 3600);
+
+         DistanceTemporary += Trip; 
+         vehicle.Mileage += (DistanceTemporary / 1000);
+         DistanceNow = Date.now();
+      }   
+   }
+}
 
 
 function Windows (vehicle, value) { 
@@ -84,10 +119,4 @@ function Hood (vehicle, value) {
    value ? vehicle.setDoorOpen(4, false, false) : vehicle.setDoorShut(4, false);
 }
 
-function Fuel (vehicle, value) { 
-   vehicle.Fuel = value;
-}
 
-function Mileage (vehicle, value) { 
-   vehicle.Mileage = value;
-}

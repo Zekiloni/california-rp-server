@@ -36,6 +36,12 @@ mp.events.addDataHandler({
       }
    },
 
+   'Seatbelt': (entity, newValue, oldValue) => { 
+      if (entity && entity.remoteId === player.remoteId) { 
+         player.Seatbelt = newValue;
+      }
+   },
+
    'Duty': (entity, newValue, oldValue) => {
       if (entity && entity.remoteId === player.remoteId) {
          player.Duty = newValue;
