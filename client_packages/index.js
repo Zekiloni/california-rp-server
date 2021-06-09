@@ -14,7 +14,6 @@ let Attachments = require('./player/Attachments');
 let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
 let Banking = require('./player/Banking');
-let AntiAFK = require('./player/AFK');
 
 
 // ADMIN

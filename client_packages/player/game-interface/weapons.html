@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/weapons.css" />
+
+   </head>
+   <body>
+
+      <div id="weapons">
+         <transition name="fade" >
+            <div class="weapons" >
+               <svg id="selector" data-name="Weapon Selector Zekiloni" viewBox="0 0 525 525" width="525" height="525">
+                  <path class="cls-1" d="M258.5,358.94v113C145,471.91,53.09,380,53.09,266.5h113A92.44,92.44,0,0,0,258.5,358.94Z" transform="translate(-52.59 -52.59)"/>
+                  <path class="cls-1" d="M471.91,266.5c0,113.45-92,205.41-205.41,205.41v-113a92.44,92.44,0,0,0,92.44-92.44Z" transform="translate(-52.59 -52.59)"/>
+                  <path class="cls-1" d="M471.91,258.5h-113a92.44,92.44,0,0,0-92.44-92.44v-113C380,53.09,471.91,145,471.91,258.5Z" transform="translate(-52.59 -52.59)"/>
+                  <path class="cls-1" d="M258.5,53.09v113a92.44,92.44,0,0,0-92.44,92.44h-113C53.09,145,145,53.09,258.5,53.09Z" transform="translate(-52.59 -52.59)"/>
+                  <g>
+                     <circle cx="262.91" cy="260.91" r="75.17" class="cls-1"> </circle>
+                     <image href="src/images/weapons/0xA2719263.png" x="133" y="227" width="256" height="65" />
+                  </g>
+
+               </svg>
+            </div>
+         </transition>
+      </div>
+
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"> </script>
+      <script>
+         let weapons = new Vue({
+            el: '#weapons',
+            data: {
+
+               toggle: true, 
+
+               sounds: { 
+                  notification: new Audio('src/sounds/notification.mp3'),
+                  money: new Audio('src/sounds/money.mp3'),
+                  seatbelt: { 
+                     put: new Audio('src/sounds/seatbelt_put.mp3'), remove: new Audio('src/sounds/seatbelt_remove.mp3')
+                  }
+               }
+               
+            },
+
+
+            methods: { 
+
+
+            }
+         });
+
+         
+      </script>
+   </body>     
+</html>

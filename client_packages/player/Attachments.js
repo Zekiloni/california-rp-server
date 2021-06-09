@@ -35,3 +35,4 @@ function Attach (entity, attachment) {
 
    mp.gui.chat.push(JSON.stringify(attachment));
 }
+

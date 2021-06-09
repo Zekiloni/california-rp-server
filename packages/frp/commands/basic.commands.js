@@ -17,24 +17,12 @@ module.exports = {
       {
          name: 'changespawn',
          desc: 'Promena mesta spavna',
-         call: (player, args) => {
-               let Character = player.Character();
-               let character = player.getCharacter();
-               const spawns = ['Default spawn', 'Zadnja pozicija', 'Fakcija'];
-               if (!args[0]) {
-                  player.sendMessage('Komanda zahteva argument broja.', mp.colors.help);
-                  player.sendMessage('0 - Default Spawn, 1 - Zadnja Pozicija, 2 - Fakcija.', mp.colors.help);
-                  return false;
-               }
-               switch (args[0]) {
-                  case 0: {
-                     character.spawn_point = 0;
-                  }
-                  case 1: {
-                     character.spawn_point = 1;
-                  }
-               }
-               player.sendMessage('Promenili ste mesto spawna na ' + spawns[args[0]], mp.colors.info);
+         params: ['mesto'],
+         call: async (player, args) => {
+            let Character = await player.Character();
+            const spawns = ['Default spawn', 'Zadnja pozicija', 'Fakcija'];
+            Character.SetSpawn(args[0]);
+            player.sendMessage('Promenili ste mesto spawna na ' + spawns[args[0]], frp.Globals.Colors.info);
          }
       },
 
@@ -43,6 +31,16 @@ module.exports = {
          desc: 'Povez preko ociju',
          call: (player, args) => {
             player.call('client:player.interface:black');
+         }
+      },
+
+      {
+         name: 'report',
+         desc: 'Slanje pitanja administraciji',
+         params: ['sadrzaj'],
+         call: (player, args) => {
+            let Message = args.splice(0).join(' ');
+            frp.Admin.Report.Add(player, Message);
          }
       },
 

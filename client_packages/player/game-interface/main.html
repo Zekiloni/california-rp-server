@@ -9,7 +9,7 @@
    <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
    <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
 
-   <link rel="stylesheet" type="text/css" href="src/style.css" />
+   <link rel="stylesheet" type="text/css" href="src/styles/main.css" />
 
    </head>
    <body>
@@ -30,6 +30,11 @@
                         <h4 class="changes plus" v-if="change == 0" v-bind:style=""> + {{ Dollars(changeValue) }} </h4>
                         <h4 class="changes minus" v-else-if="change == 1"> {{ Dollars(changeValue) }} </h4>
                      </transition>
+                  </div>
+
+                  <div class="weapon" v-if="weapon.hash">
+                     <img :src="'src/images/weapons/' + weapon.hash + '.png'" />
+                     <h3 v-if="weapon.ammo"> {{ weapon.ammo }} </h3>
                   </div>
                </div>
 
@@ -60,7 +65,7 @@
                <div class="bottom-right">
                   <transition name="slide-up">
                      <div class="vehicle" v-if="vehicle.toggle">
-                        <H2 class="mileage"> {{ vehicle.mileage }} </H2>
+                        <h2 class="mileage"> {{ vehicle.mileage }} <small>km</small> </h2>
                         <div class="engine"> 
                            <h2> {{ vehicle.gear }} </h2>
                         </div>
@@ -97,7 +102,7 @@
             el: '#hud',
             data: {
 
-               toggle: false, 
+               toggle: true, 
 
                id: 0,
                money: 0,
@@ -106,6 +111,11 @@
                   street: 'Strawberry Ave',
                   zone: 'Los Santos Downtown',
                   heading: 'N'
+               },
+
+               weapon: { 
+                  hash: '0x1D073A89',
+                  ammo: 0
                },
 
                vehicle: { 
@@ -117,7 +127,7 @@
                   gear: 'N',
                   engine_failure: false,
                   doors: [0, 0, 0, 0],
-                  mileage: 0,
+                  mileage: 0.00,
                   max_speed: 225
                },
 
@@ -214,6 +224,10 @@
                   if (this.vehicle.toggle && this.Fuelmeter) { 
                      this.Fuelmeter.setValueAnimated(l, 0.35);
                   }
+               },
+
+               Mileage: function (i) { 
+                  if (this.vehicle.toggle) this.vehicle.mileage = i;
                },
 
                Lights: function () { 

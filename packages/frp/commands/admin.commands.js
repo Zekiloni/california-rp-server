@@ -327,17 +327,18 @@ module.exports = {
                }
          }
       },
+
       {
-         name: 'cc',
-         admin: 3,
+         name: 'reports',
+         admin: 1,
          call: (player, args) => {
-               mp.players.forEach((target) => {
-                  if (target.data.logged) {
-                     target.call('chat:clear');
-                  }
-               });
+            frp.Admin.Reports.forEach((Report) => { 
+               let Index = frp.Admin.Reports.indexOf(Report);
+               player.sendMessage(Report, frp.Globals.Colors.grey);
+            })
          }
       },
+
       {
          name: 'fixveh',
          admin: 3,

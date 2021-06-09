@@ -1,7 +1,7 @@
 
 
 const Player = mp.players.local;
-let browser = mp.browsers.new('package://player/game-interface/interface.html');
+let browser = mp.browsers.new('package://player/game-interface/main.html');
 let active = false, Timer = null;
 
 global.GameInterface = browser;
@@ -25,9 +25,12 @@ mp.events.add({
 
       if (Player.vehicle) Vehicle();
 
-      if (Player.weapon) { 
+      if (Player.weapon != mp.game.joaat('weapon_unarmed')) { 
          let Weapon = utils.weaponString(Player.weapon);
-
+         let ammoCount = getAmmoCount(playerWeapon);
+         browser.execute('hud.weapon.hash = \"' + Weapon + '\", hud.weapon.ammo = ')
+      } else if (Player.weapon == mp.game.joaat('weapon_unarmed')) { 
+         browser.execute('hud.weapon.hash = null;')
       }
    },
 
@@ -69,18 +72,14 @@ function Vehicle () {
    let Gear = getGear(vehicle.gear).toString();
    let Lights = vehicle.getLightsState(1, 1);
    let Indicators = [vehicle.getVariable('IndicatorLeft'), vehicle.getVariable('IndicatorRight')];
-   let Mileage = vehicle.getVariable('Mileage');
    let EngineFailure = vehicle.getEngineHealth() < 300 ? true : false;
    // Mileage, Fuel...
 
-   browser.execute('hud.Speed(' + Speed + ')');
    browser.execute('hud.Fuel(' + (100 - Speed) + ')');
    browser.execute('hud.vehicle.gear = \"' + Gear + '\";');
    browser.execute('hud.vehicle.indicators = ' + JSON.stringify(Indicators));
    browser.execute('hud.vehicle.engine_failure = ' + EngineFailure);
    browser.execute('hud.vehicle.lights = ' + JSON.stringify(Lights));
-   browser.execute('hud.vehicle.mileage = ' + Mileage);
-
    browser.execute('hud.seatbelt = ' + Player.getVariable('Seatbelt'));
 }
 

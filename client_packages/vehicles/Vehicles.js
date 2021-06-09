@@ -40,7 +40,8 @@ mp.events.add({
 
    'playerLeaveVehicle': (vehicle, seat) => { 
       if (seat == -1) { 
-        mp.events.remove('render', Driving);
+         mp.events.remove('render', Driving);
+         if (vehicle) mp.events.callRemote('server:vehicle:mileage', vehicle, vehicle.Mileage)
       }
    }
 });
@@ -74,7 +75,7 @@ mp.keys.bind(0x25, false, () => {
    if (!Player.logged) return false;
    if (mp.players.local.isTypingInTextChat) return false;
    let vehicle = mp.players.local.vehicle;
-   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle.indicators', 1);
+   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 1);
 });
 
 // right
@@ -82,7 +83,7 @@ mp.keys.bind(0x27, false, () => {
    if (!Player.logged) return false;
    if (mp.players.local.isTypingInTextChat) return false;
    let vehicle = mp.players.local.vehicle;
-   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle.indicators', 0);
+   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 0);
 });
 
 
@@ -97,9 +98,15 @@ function Driving () {
          let Trip = parseFloat(Calculating / 3600);
 
          DistanceTemporary += Trip; 
+
          vehicle.Mileage += (DistanceTemporary / 1000);
          DistanceNow = Date.now();
       }   
+
+      // Updating Vehicle.Mileage in GameInterface 
+      GameInterface.execute('hud.Mileage(' + vehicle.Mileage.toFixed(3) + ')');
+      GameInterface.execute('hud.Speed(' + Speed + ')');
+
    }
 }
 

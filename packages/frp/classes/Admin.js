@@ -11,12 +11,8 @@ const Ranks = {
 }
 
 class Admin { 
-   constructor () { /*
-      mp.events.add({
-         'event': (player, ...args) => { 
-
-         }
-      })*/
+   constructor () { 
+      this.Reports = [];
    }
 
    Chat (player, message) { 
@@ -33,7 +29,7 @@ class Admin {
       })
    }
 
-    async Broadcast (player, message) {
+   async Broadcast (player, message) {
       if (!message.trim()) return;
 
       let Account = await frp.Accounts.findOne({ where: { id: player.account }});
@@ -45,28 +41,23 @@ class Admin {
          }
       });
    }
+
+   Report = { 
+      Add: (player, message) => { 
+
+         let Report = { Sender: player, Content: message };
+         this.Reports.push(Report);
+
+         console.log(this.Reports)
+      },
+
+      Remove: (i) => { 
+         this.Reports.splice(i, 1);
+      }
+    
+   }
 }
 
 frp.Admin = new Admin();
 
-frp.Reports = {};
-
-class Report { 
-   constructor (player, message) { 
-      this.player = player;
-      this.message = message;
-
-      mp.reports[this.player] = this.message;
-   }
-}
-
-mp.report = { 
-   new: (player, message) => { 
-      let report = new Report(player, message);
-   },
-
-   delete: (player) => { 
-      delete mp.reports[player];
-   }
-}
 

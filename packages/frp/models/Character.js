@@ -92,6 +92,7 @@ frp.Characters.prototype.Spawn = async function (player) {
       }
       case 1: {
          const Position = JSON.parse(this.Last_Position);
+         player.position = new mp.Vector3(Position.x, Position.y, Position.z)
          break;
       }
       case 2: {
@@ -107,6 +108,10 @@ frp.Characters.prototype.SetHealth = async function (player, value) {
    await this.save();
 };
 
+frp.Characters.prototype.SetSpawn = async function (point) {
+   this.Spawn_Point = point;
+   await this.save();
+};
 
 frp.Characters.prototype.SetArmour = async function (player, value) {
    this.Armour = value;
