@@ -3,7 +3,7 @@
 const { DataTypes } = require('sequelize');
 
 
-frp.Vehicles = frp.Database.define('Vehicle', {
+frp.Vehicles = frp.Database.define('vehicle', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Model: { type: DataTypes.STRING },
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },

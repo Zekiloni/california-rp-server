@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 
-frp.Characters = frp.Database.define('Character', {
+frp.Characters = frp.Database.define('character', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Account: { type: DataTypes.INTEGER, allowNull: false },
       Name: { type: DataTypes.STRING, unique: true },
@@ -62,16 +62,23 @@ frp.Characters = frp.Database.define('Character', {
 
 
 frp.Characters.prototype.Spawn = async function (player) {
+   console.log('SPAWN 4');
    let account = await player.Account();
+
+   console.log('SPAWN 5');
 
    account.SetLogged(player, true, this.id);
    player.character = this.id;
    player.name = this.Name;
    player.setVariable('spawned', true);
 
+   console.log('SPAWN 6');
+
    // setting money & health
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
+
+   console.log('SPAWN 7');
 
    player.data.Seatbelt = false;
    console.log('Seatbelt ' + player.data.Seatbelt)
@@ -84,21 +91,27 @@ frp.Characters.prototype.Spawn = async function (player) {
    // Appearance.Apply(this, player);
    // spawning player on desired point
 
+   console.log('SPAWN 8');
+
    switch (this.Spawn_Point) {
       case 0: {
          player.position = frp.Settings.default.spawn;
          player.dimension = frp.Settings.default.dimension;
+         console.log('SPAWN 8.1');
          break;
       }
       case 1: {
          const Position = JSON.parse(this.Last_Position);
-         player.position = new mp.Vector3(Position.x, Position.y, Position.z)
+         player.position = new mp.Vector3(Position.x, Position.y, Position.z);
+         console.log('SPAWN 8.2');
          break;
       }
       case 2: {
          break;
       }
    }
+
+   console.log('SPAWN 9');
 };
 
 

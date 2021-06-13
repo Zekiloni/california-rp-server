@@ -2,7 +2,7 @@
 
 const { DataTypes } = require('sequelize');
 
-frp.Channels = frp.Database.define('Channel', {
+frp.Channels = frp.Database.define('channel', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Frequency: { type: DataTypes.INTEGER, unique: true, allowNull: false },
       Name: { type: DataTypes.STRING, defaultValue: null },

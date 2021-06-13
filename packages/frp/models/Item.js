@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize');
 const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');
 
 
-frp.Items = frp.Database.define('Item', {
+frp.Items = frp.Database.define('item', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Item: { type: DataTypes.STRING },
       Quantity: { type: DataTypes.INTEGER, defaultValue: 1 },
@@ -73,18 +73,18 @@ frp.Items.prototype.Refresh = function () {
       const Position = this.Position;
       const Rotation = this.Rotation;
       console.log(Position);
-      this.GameObject = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(Position.x, Position.y, Position.z), {
-         rotation: new mp.Vector3(Rotation.x, Rotation.y, Rotation.z),
-         alpha: 255,
-         dimension: this.Dimension
-      });
-      this.GameObject.Item = this.id;
+      // this.GameObject = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(Position.x, Position.y, Position.z), {
+      //    rotation: new mp.Vector3(Rotation.x, Rotation.y, Rotation.z),
+      //    alpha: 255,
+      //    dimension: this.Dimension
+      // });
+      // this.GameObject.Item = this.id;
 
-      console.log('Turilo game object ' + this.GameObject.Item);
+      // console.log('Turilo game object ' + this.GameObject.Item);
    
    } else {
       if (this.GameObject) {
-         this.GameObject.destroy();
+         // this.GameObject.destroy();
       }
    }
 };
@@ -198,13 +198,6 @@ frp.Items.Weight = async function (player) {
    Items.forEach((Item) => {
       Item.Refresh();
    });
-
-   setTimeout(async () => {
-      const objs = await frp.Items.findAll();
-      objs.forEach((obj) => { 
-         console.log(obj.GameObject)
-      })
-   }, 5000);
 
 
    frp.Main.Terminal(3, Items.length + ' Items Loaded !');

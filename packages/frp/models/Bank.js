@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-frp.Bank = frp.Database.define('Bank', {
+frp.Bank = frp.Database.define('bank', {
       Number: { type: DataTypes.INTEGER, unique: true },
       Pin: { type: DataTypes.INTEGER, allowNull: false },
       Character: { type: DataTypes.INTEGER, allowNull: false },

@@ -10,7 +10,7 @@ const Types = {
     5: 'give'
 };
 
-frp.Logs = frp.Database.define('Log', {
+frp.Logs = frp.Database.define('log', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Type: { type: DataTypes.STRING, defaultValue: 0 },
       Account: { type: DataTypes.INTEGER },

@@ -1,7 +1,7 @@
 
 const { DataTypes } = require('sequelize');
 
-frp.Contacts = frp.Database.define('Contact', {
+frp.Contacts = frp.Database.define('contact', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Phone: { type: DataTypes.INTEGER, unique: true, allowNull: false },
       Name: { type: DataTypes.STRING, allowNull: false },
@@ -15,7 +15,7 @@ frp.Contacts = frp.Database.define('Contact', {
 );
 
 
-frp.Messages = frp.Database.define('Message', {
+frp.Messages = frp.Database.define('message', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Phone: { type: DataTypes.INTEGER, unique: true, allowNull: false },
       Target: { type: DataTypes.INTEGER, allowNull: false },

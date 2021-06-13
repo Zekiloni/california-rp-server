@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 
-frp.Houses = frp.Database.define('House', {
+frp.Houses = frp.Database.define('house', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Owner: { type: DataTypes.STRING, defaultValue: 0 },
       Type: { type: DataTypes.STRING },

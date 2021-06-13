@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize');
 
 const BusinessTypes = require('../data/Businesses.json');
 
-frp.Business = frp.Database.define('Business', {
+frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Name: { type: DataTypes.STRING },
       Type: { type: DataTypes.INTEGER, defaultValue: 0 },
