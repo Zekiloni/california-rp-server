@@ -33,7 +33,7 @@ setInterval(() => {
          }
       }
    }
-   else { Player.stopAnimation(); lpWorkout = null; workout = null;}
+   else { Player.stopAnimation(); lpWorkout = null; workout = null; }
 }, 1000);
 
 setTimeout(() => {
@@ -43,17 +43,22 @@ setTimeout(() => {
 	}
 }, 1000);
 
-
-
 mp.events.add({
-   /*'render': () => { 
-
+   'render': () => { 
+      if (isTraining != null) {
+         mp.game.graphics.drawText("PRITISKAJTE ~g~LMB DA VEZBATE", [0.5, 0.005], { 
+            font: 4, 
+            color: [255, 255, 255, 185], 
+            scale: [1.2, 1.2], 
+            outline: true
+         });
+      }
       
       if(mp.game.controls.isDisabledControlJustReleased(0, 24) && isTraining &&!mp.gui.cursor.visible) { // Left Click
          
       }
 
-   },*/
+   },
 
    'playerEnterColshape': (shape) => {
       if (shape.workout != null) {

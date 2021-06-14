@@ -40,6 +40,12 @@ mp.events.addDataHandler({
       if (entity && entity.remoteId === player.remoteId) {
          player.Duty = newValue;
       }
+   },
+
+   'Bubble': (entity, newValue, oldValue) => {
+      if (entity && entity.remoteId === player.remoteId && newValue != oldValue) {
+         player.Bubble = newValue;
+      }
    }
 });
 

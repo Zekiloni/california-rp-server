@@ -190,7 +190,7 @@ frp.Items.Weight = async function (player) {
 };
 
 
-(async () => {
+(async () => { 
 
    frp.Items.sync();
 
