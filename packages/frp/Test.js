@@ -37,7 +37,6 @@ for (let i in Vozila) {
    counter ++;
    Dealer.push(Vozila[i]);
 }
-console.log(Dealer)
 
 mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => {
    console.log('Pozvao komandu')

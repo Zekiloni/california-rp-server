@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, BOOLEAN } = require('sequelize');
 
 
 frp.Characters = frp.Database.define('character', {
@@ -20,6 +20,12 @@ frp.Characters = frp.Database.define('character', {
       Armour: { type: DataTypes.INTEGER, defaultValue: 100 },
       Hunger: { type: DataTypes.INTEGER, defaultValue: 100 },
       Thirst: { type: DataTypes.INTEGER, defaultValue: 100 },
+      Wounded: { 
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Wounded')); },
+         set: function (value) { this.setDataValue('Wounded', JSON.stringify(value)); }
+      },
+      
 
       Last_Position: {
          type: DataTypes.TEXT, defaultValue: null,
@@ -62,26 +68,23 @@ frp.Characters = frp.Database.define('character', {
 
 
 frp.Characters.prototype.Spawn = async function (player) {
-   console.log('SPAWN 4');
    let account = await player.Account();
-
-   console.log('SPAWN 5');
 
    account.SetLogged(player, true, this.id);
    player.character = this.id;
    player.name = this.Name;
    player.setVariable('spawned', true);
 
-   console.log('SPAWN 6');
-
    // setting money & health
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
 
-   console.log('SPAWN 7');
+   player.data.Wounded = this.Wounded;
+   if (this.Wounded) { 
+
+   }
 
    player.data.Seatbelt = false;
-   console.log('Seatbelt ' + player.data.Seatbelt)
 
    await player.call('client:player.interface:toggle');
    await player.Notification('Dobrodošli na Focus Roleplay ! Uživajte u igri.', frp.Globals.Notification.Info, 4);
@@ -91,19 +94,15 @@ frp.Characters.prototype.Spawn = async function (player) {
    // Appearance.Apply(this, player);
    // spawning player on desired point
 
-   console.log('SPAWN 8');
-
    switch (this.Spawn_Point) {
       case 0: {
          player.position = frp.Settings.default.spawn;
          player.dimension = frp.Settings.default.dimension;
-         console.log('SPAWN 8.1');
          break;
       }
       case 1: {
          const Position = JSON.parse(this.Last_Position);
          player.position = new mp.Vector3(Position.x, Position.y, Position.z);
-         console.log('SPAWN 8.2');
          break;
       }
       case 2: {
@@ -111,7 +110,6 @@ frp.Characters.prototype.Spawn = async function (player) {
       }
    }
 
-   console.log('SPAWN 9');
 };
 
 
@@ -124,6 +122,14 @@ frp.Characters.prototype.SetHealth = async function (player, value) {
 frp.Characters.prototype.SetSpawn = async function (point) {
    this.Spawn_Point = point;
    await this.save();
+};
+
+frp.Characters.prototype.Wound = async function (player, info = null) { 
+   if (this.Wounded) { 
+      // play animation / freeze
+   } else { 
+      // put info and wound him
+   }
 };
 
 frp.Characters.prototype.SetArmour = async function (player, value) {

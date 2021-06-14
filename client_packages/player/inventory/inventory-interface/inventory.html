@@ -28,7 +28,7 @@
                   <h4> {{ Weight() }} <b>/ {{ player.maximum }} kg</b> </h4>
                </div>
                <div class="items">
-                  <div class="item" v-for="(item, i) in player.items" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
+                  <div class="item" v-for="(item, i) in player.items" v-if="item.entity == entity.Player" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
                      <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
                      <h3 class="quantity"> {{ item.quantity }} </h3>
                   </div>
@@ -38,13 +38,13 @@
             <div class="wheel">
                <div class="header">
                   <h2> <img src="src/icons/weapon.png" class="icon"> </i> Oružije </h2>
-                  <h4> {{ player.wheel.length }} <b>/ {{ wheelMaximum.length }} </b> </h4>
+                  <h4> {{ Weapons().length }} <b>/ {{ wheelMaximum.length }} </b> </h4>
                </div>
                <div class="weapons">
-                  <div class="weapon" v-for="i in wheelMaximum">
-                     <div class="inner" v-if="player.wheel[i]" v-on:click="Put(player.wheel[i])">
-                        <img class="photo" :src="'src/images/items/' + player.wheel[i].hash + '.png'" />
-                        <h3 class="ammo"> {{ player.wheel[i].ammo }} </h3>
+                   <div class="weapon" v-for="i in wheelMaximum">
+                     <div class="inner" v-if="Weapons()[i]" v-on:click="Put(Weapons()[i])">
+                        <img class="photo" :src="'src/images/items/' + Weapons()[i].hash + '.png'" />
+                        <h3 class="ammo"> {{ Weapons()[i].ammo }} </h3>
                      </div>
                      <div class="inner" v-else>
                         <i class="george-floyd fa fa-times" aria-hidden="true"></i>
@@ -74,25 +74,20 @@
                   money: null, 
                   maximum: 25,
                   items: [
-                     { id: 1, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
-                     { id: 2, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
-                     { id: 3, name: 'Radio Prijemnik', hash: 'prop_cs_hand_radio', quantity: 4, weight: 0.25 },
-                     { id: 5, name: 'Pistol Mag', hash: 'w_pi_combatpistol_mag2', quantity: 3, weight: 0.8 },
-                     { id: 6, name: 'Upaljac', hash: 'p_cs_lighter_01', quantity: 2, weight: 0.07 },
-                     { id: 8, name: 'Cigarete', hash: 'prop_cigar_pack_01', quantity: 20, weight: 0.002 },
-                     { id: 9, name: 'Burger', hash: 'prop_cs_burger_01', quantity: 1, weight: 0.3 },
+                     { id: 3, name: 'Assault Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     { id: 4, name: 'awdawd Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     { id: 5, name: 'awdawd Rifle', quantity: 1, entity: 3, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     { id: 6, name: 'awdaww Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' }
                   ], 
 
                   backpack: [
                      // TODO
                   ],
-                  
-                  wheel: [
-                     { id: 10, name: 'Combat Pistol', hash: 'w_pi_combatpistol', ammo: 2, quantity: 1 }
-                  ],
             
                   clothing: [1, 11, 8, 4, 6],
                },
+
+               entity: { Player: 0, Wheel: 3 },
 
                menu: {
                   item: null,
@@ -122,10 +117,15 @@
                   event.preventDefault();
                },
 
-               CloseMenu: function () { 
-                  console.log('aa');
-                  this.menu.item = null;
+               CloseMenu: function () { this.menu.item = null; },
 
+               Weapons: function () { 
+                  let list = [];
+                  for (let item of this.player.items) { 
+                     if (item.entity == this.entity.Wheel) list.push(item) 
+                  }
+                  console.log(list)
+                  return list;
                },
 
                Weight: function () { 
@@ -135,9 +135,10 @@
                },
 
                Put: function (weapon) { 
-                  let index = this.player.wheel.indexOf(weapon);
-                  this.player.wheel.splice(index, 1);
-                  this.player.items.push(weapon);
+                  // let index = this.player.items.indexOf(weapon);
+                  weapon.entity = this.entity.Player;
+                  // this.player.wheel.splice(index, 1);
+                  // this.player.items.push(weapon);
                   mp.trigger('client:inventory.item.weapon:put', weapon.id)
                },
 

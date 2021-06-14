@@ -7,6 +7,10 @@ frp.Main = require('./classes/Main');
 frp.Database = require('./classes/Database');
 
 
+frp.GameObjects = {
+   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}
+};
+
 // !!! TEST //
 require('./Test');
 
@@ -38,6 +42,12 @@ let Weather = require('./classes/Weather');
 let Jobs = require('./classes/Jobs');
 
 
+// mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
+// let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
+// let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta
+
+
+
 (async () => {
    const Chars = await frp.Characters.count();
    const Users = await frp.Accounts.count();
@@ -51,6 +61,10 @@ mp.events.addCommand("koo", (player, fullText) => {
    player.outputChatBox('Heading ' + JSON.stringify(player.heading));
    player.outputChatBox('Rotation ' + JSON.stringify(player.rotation));
 });
+
+
+
+
 
 
 

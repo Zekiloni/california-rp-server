@@ -7,22 +7,25 @@ let browser = null, opened = false, nearbyPlayers = [];
 
 mp.events.add({
 
-  'client:inventory.toggle': () => { 
+  'client:inventory.toggle': async () => { 
       opened = !opened;
       if (opened) { 
          browser = mp.browsers.new('package://player/inventory/inventory-interface/Inventory.html');
+         const Inventory = await mp.events.callRemoteProc('server:player.inventory:get');
+         browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
          Player.BrowserControls(true, true);
+
       } else { 
          if (browser) browser.destroy();
          Player.BrowserControls(false, false);
       }
   },
 
-  'client:inventory.item.drop': Drop,
+  'client:inventory.item:drop': Drop,
 
-  'server:inventory.weapon.put': Put,
+  'client:inventory.item.weapon:put': Put,
 
-  'client:inventory.item.use': Use,
+  'client:inventory.item:use': Use,
 
   'client:inventory.process.clothing': (index) => { 
       mp.events.callRemote('server:item.clothing', index);
@@ -57,13 +60,14 @@ mp.keys.bind(0x59, false, function() {
 
 function Use (item) { 
    mp.events.callRemote('server:item.use', item);
+   mp.events.callRemoteProc('')
 }
 
 function Put (item) { 
-   mp.events.callRemote('server:item.weapon.put', item);
+   mp.events.callRemote('server:player.inventory.item.weapon:put', item);
 }
 
-async function Drop (item, hash, quantity) { 
+async function Drop (item, hash, quantity = 1) { 
 
    let { position } = Player;
    let heading = Player.getHeading();

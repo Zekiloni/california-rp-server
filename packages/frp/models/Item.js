@@ -9,8 +9,8 @@ frp.Items = frp.Database.define('item', {
       Item: { type: DataTypes.STRING },
       Quantity: { type: DataTypes.INTEGER, defaultValue: 1 },
       Entity: { type: DataTypes.INTEGER, defaultValue: -1 },
-      Owner: { type: DataTypes.STRING, defaultValue: 0 },
-      isWeapon: { type: DataTypes.TEXT, defaultValue: false },
+      Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
+      isWeapon: { type: DataTypes.BOOLEAN, defaultValue: false },
       Ammo: { type: DataTypes.INTEGER, defaultValue: 0 },
       Last_Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Position: {
@@ -26,8 +26,11 @@ frp.Items = frp.Database.define('item', {
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
       GameObject: { 
          type: DataTypes.VIRTUAL,
-         set: function (x) { 
-            this.setDataValue('GameObject', x);
+         get () { 
+            return frp.GameObjects.Items[this.getDataValue('id')];
+         },
+         set (x) { 
+            frp.GameObjects.Items[this.getDataValue('id')] = x;
          },
          
       }
@@ -49,16 +52,14 @@ frp.Items.New = async function (item, quantity, entity, owner, position = null, 
 
 
 frp.Items.Inventory = async function (player) {
-   let Inventory = [], Wheel = [];
-   let Items = await frp.Items.findAll({ where: { Owner: player.character } });
+   let Inventory = [];
+   const Items = await frp.Items.findAll({ where: { Owner: player.character } });
    Items.forEach((Item) => {
       if (Item.Entity == ItemEntities.Player) { 
-         Inventory.push(Item);
-      } else if (Item.Entity == ItemEntities.Wheel) { 
-         Wheel.push(Item);
+         Inventory.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, entity: Item.Entity, ammo: Item.Ammo, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
       }
    });
-   return { Items: Inventory, Wheel: Wheel };
+   return Inventory;
 };
 
 
@@ -70,21 +71,21 @@ frp.Items.HasItem = async function (player, item) {
 
 frp.Items.prototype.Refresh = function () {
    if (this.Entity == ItemEntities.Ground) {
-      const Position = this.Position;
-      const Rotation = this.Rotation;
-      console.log(Position);
-      // this.GameObject = mp.objects.new(ItemRegistry[this.Item].hash, new mp.Vector3(Position.x, Position.y, Position.z), {
-      //    rotation: new mp.Vector3(Rotation.x, Rotation.y, Rotation.z),
-      //    alpha: 255,
-      //    dimension: this.Dimension
-      // });
-      // this.GameObject.Item = this.id;
 
-      // console.log('Turilo game object ' + this.GameObject.Item);
-   
+      const Position = new mp.Vector3(this.Position.x, this.Position.y, this.Position.z);
+      const Rotation = new mp.Vector3(this.Rotation.x, this.Rotation.y, this.Rotation.z);
+
+      this.GameObject = mp.objects.new(ItemRegistry[this.Item].hash, Position, {
+         rotation: Rotation,
+         alpha: 255,
+         dimension: this.Dimension
+      });
+
+      this.GameObject.Item = this.id;
+
    } else {
       if (this.GameObject) {
-         // this.GameObject.destroy();
+         this.GameObject.destroy();
       }
    }
 };
@@ -117,6 +118,7 @@ frp.Items.prototype.Pickup = async function (player) {
    // PROKS PORUKA: Podigao taj i taj predmet /me
    this.Entity = ItemEntities.Player;
    this.Owner = player.character;
+   this.Refresh();
    await this.save();
 };
 
@@ -164,6 +166,8 @@ frp.Items.prototype.Use = async function (player) {
    const Type = ItemRegistry[this.Item].type;
    if (Type == ItemType.Ammo) {
       // giive ammo current weapo
+   } else { 
+      ItemRegistry[this.Item].use
    }
 };
 
@@ -202,3 +206,5 @@ frp.Items.Weight = async function (player) {
 
    frp.Main.Terminal(3, Items.length + ' Items Loaded !');
 })();
+
+
