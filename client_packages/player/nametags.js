@@ -7,6 +7,7 @@ let resolution;
 let widthText = 0.0;
 let scale = 0.35;
 let distance = 10;
+let ameText = null;
 
 mp.events.add('render', (nametags) => {
    nametags.forEach(nametag => {
@@ -16,7 +17,7 @@ mp.events.add('render', (nametags) => {
            player.getAlpha() != 0 &&
            mp.players.local.hasClearLosTo(player.handle, 17)
        ) {
-           let username = `${player.name} [${player.remoteId}]`;
+           let username = player.Bubble ? `~p~${player.Bubble}~n~~s~${player.name} [${player.remoteId}]` : `${player.name} [${player.remoteId}]`
            drawMpGamerTag(player, username, x, y);
        }
    });
