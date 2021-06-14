@@ -193,7 +193,7 @@
             },
 
             Play: function (i) { 
-               mp.trigger('client:player.character:select');
+               mp.trigger('client:player.character:select', i);
             },
 
             TryDelete: function (i) { mp.trigger('client:player.character:delete', i); },

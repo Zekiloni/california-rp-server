@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
-frp.Characters = frp.Database.define('Character', {
+
+
+frp.Characters = frp.Database.define('character', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Account: { type: DataTypes.INTEGER, allowNull: false },
       Name: { type: DataTypes.STRING, unique: true },
@@ -60,36 +62,56 @@ frp.Characters = frp.Database.define('Character', {
 
 
 frp.Characters.prototype.Spawn = async function (player) {
+   console.log('SPAWN 4');
    let account = await player.Account();
+
+   console.log('SPAWN 5');
 
    account.SetLogged(player, true, this.id);
    player.character = this.id;
    player.name = this.Name;
    player.setVariable('spawned', true);
 
+   console.log('SPAWN 6');
+
    // setting money & health
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
+
+   console.log('SPAWN 7');
+
+   player.data.Seatbelt = false;
+   console.log('Seatbelt ' + player.data.Seatbelt)
+
+   await player.call('client:player.interface:toggle');
+   await player.Notification('Dobrodošli na Focus Roleplay ! Uživajte u igri.', frp.Globals.Notification.Info, 4);
 
    // aplyying appearance & clothing
    //let Appearance = await frp.Appearances.findOne({ where: { id: this.id } });
    // Appearance.Apply(this, player);
    // spawning player on desired point
 
+   console.log('SPAWN 8');
+
    switch (this.Spawn_Point) {
       case 0: {
          player.position = frp.Settings.default.spawn;
          player.dimension = frp.Settings.default.dimension;
+         console.log('SPAWN 8.1');
          break;
       }
       case 1: {
          const Position = JSON.parse(this.Last_Position);
+         player.position = new mp.Vector3(Position.x, Position.y, Position.z);
+         console.log('SPAWN 8.2');
          break;
       }
       case 2: {
          break;
       }
    }
+
+   console.log('SPAWN 9');
 };
 
 
@@ -99,6 +121,10 @@ frp.Characters.prototype.SetHealth = async function (player, value) {
    await this.save();
 };
 
+frp.Characters.prototype.SetSpawn = async function (point) {
+   this.Spawn_Point = point;
+   await this.save();
+};
 
 frp.Characters.prototype.SetArmour = async function (player, value) {
    this.Armour = value;
@@ -109,13 +135,13 @@ frp.Characters.prototype.SetArmour = async function (player, value) {
 
 frp.Characters.prototype.GiveMoney = async function (player, value) {
    let Money = await this.increment('Money', { by: value });
-   await player.setVariable('Money', this.Money);
+   await player.setVariable('Money', this.Money + value);
 };
 
 
 frp.Characters.prototype.SetMoney = async function (player, value) {
    this.Money = value;
-   player.setVariable('Money', this.Money);
+   player.setVariable('Money', value);
    await this.save();
 };
 

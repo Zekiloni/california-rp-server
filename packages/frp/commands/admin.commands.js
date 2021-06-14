@@ -16,6 +16,7 @@ module.exports = {
                }
          }
       },
+
       {
          name: 'a',
          admin: 1,
@@ -25,6 +26,7 @@ module.exports = {
             frp.Admin.Chat(player, Message);
          }
       },
+
       {
          name: 'ao',
          admin: 2,
@@ -32,6 +34,17 @@ module.exports = {
          call: (player, args) => {
             let Message = args.slice(0).join(' ');
             frp.Admin.Broadcast(player, Message);
+         }
+      },  
+
+      {
+         name: 'notify',
+         admin: 2,
+         params: ['igrac', 'tip', 'tekst'],
+         call: (player, args) => {
+            let Target = mp.players.find(args[0]);
+            let Message = args.slice(2).join(' ');
+            if (Target) Target.Notification(Message, args[1], 4);
          }
       },  
 
@@ -314,17 +327,18 @@ module.exports = {
                }
          }
       },
+
       {
-         name: 'cc',
-         admin: 3,
+         name: 'reports',
+         admin: 1,
          call: (player, args) => {
-               mp.players.forEach((target) => {
-                  if (target.data.logged) {
-                     target.call('chat:clear');
-                  }
-               });
+            frp.Admin.Reports.forEach((Report) => { 
+               let Index = frp.Admin.Reports.indexOf(Report);
+               player.sendMessage(Report, frp.Globals.Colors.grey);
+            })
          }
       },
+
       {
          name: 'fixveh',
          admin: 3,
@@ -339,25 +353,26 @@ module.exports = {
       {
          name: 'setmoney',
          admin: 4,
-         call: (player, args) => {
-               let target = mp.players.find(args[0]);
-               if (target) {
-                  let TargetCharacter = mp.characters[target.character];
-                  TargetCharacter.setMoney(player, args[1]);
-                  target.sendMessage(player.name + ' vam je postavio novac na ' + args[1] + '$', mp.colors.tomato);
-                  player.sendMessage('Postavili ste novac ' + target.name + ' na ' + args[1] + '$', mp.colors.tomato);
-               }
+         params: ['igrac', 'vrednost'],
+         call: async (player, args) => {
+            let Target = mp.players.find(args[0]), Money = parseInt(args[1]);
+            if (Target) {
+               let Character = await frp.Characters.findOne({ where: { id: Target.character }});
+               Character.SetMoney(Target, Money);
+               // PORUKA: novac
+            }
          }
       },
       {
          name: 'givemoney',
          admin: 4,
-         params: ['igrac', 'kolicina'],
+         params: ['igrac', 'vrednost'],
          call: async (player, args) => {
             let Target = mp.players.find(args[0]), Money = parseInt(args[1]);
             if (Target) {
-               let Character = await Target.Character();
+               let Character = await frp.Characters.findOne({ where: { id: Target.character }});
                Character.GiveMoney(Target, Money);
+               // PORUKA: novac
             }
          }
       },

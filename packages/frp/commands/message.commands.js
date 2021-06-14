@@ -40,7 +40,7 @@ module.exports = {
       {
          name: 'l',
          desc: 'Izgovoriti nesto tiho',
-         params: '[tekst]',
+         params: ['tekst'],
          call: (player, args) => {
             let message = args.splice(0).join(' ');
             if (!message.trim()) return;
@@ -51,11 +51,22 @@ module.exports = {
       {
          name: 's',
          desc: 'Izgovoriti nesto glasnije',
-         params: '[tekst]',
+         params: ['tekst'],
          call: (player, args) => {
             let message = args.splice(0).join(' ');
             if (!message.trim()) return;
             player.ProximityMessage(frp.Globals.distances.shout, player.name + ' se dere: ' + message, frp.Globals.Colors.white);
+         }
+      },
+
+      {
+         name: 'b',
+         desc: 'Lokana OOC komunikacija',
+         params: ['tekst'],
+         call: (player, args) => {
+            let message = args.splice(0).join(' ');
+            if (!message.trim()) return;
+            player.ProximityMessage(frp.Globals.distances.ooc, '(( ' + player.name + '[' + player.id + ']: ' + message + ' ))', frp.Globals.Colors.ooc);
          }
       },
 
@@ -80,12 +91,18 @@ module.exports = {
       },
 
       {
-         name: 'b',
-         desc: 'Lokana OOC komunikacija',
-         params: '[tekst]',
+         name: 'pm',
+         desc: 'Privatna poruka',
+         params: ['igrac', 'poruka'],
          call: (player, args) => {
-               let message = args.splice(0).join(" ");
-               player.ProximityMessage(distances.ooc, `(( ${player.name} [${player.id}]: ${message} ))`, mp.colors.white);
+            let target = mp.players.find(args[0]);
+            if (target) { 
+               if (player.id == target.id) return;
+               let message = args.splice(1).join(' ');
+               if (!message.trim()) return;
+               target.sendMessage('(( PM od ' + player.name + '[' + player.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.from);
+               player.sendMessage('(( PM za ' + target.name + '[' + target.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.to);
+            }
          }
       },
 
@@ -96,24 +113,6 @@ module.exports = {
          call: (player, args) => {
                let message = args.splice(0).join(" ");
                player.call('client:player.chat.bubble', [15, message, true]);
-         }
-      },
-      
-      {
-         name: 'pm',
-         desc: 'Privatna poruka',
-         params: '[id / ime] [tekst]',
-         call: (player, args) => {
-               if (args.length < 2 || !args[0].length || !args[1].length)
-                  return false;
-               let target = mp.players.find(args[0]);
-               if (target) {
-                  let message = args.slice(1).join(' ');
-                  target.sendMessage(`(( PM od ${player.name} [${player.id}]: ${message} ))`, mp.colors.pm.from);
-                  player.sendMessage(`(( PM za ${target.name} [${target.id}]: ${message} ))`, mp.colors.pm.to);
-               }
-               else
-                  return false;
          }
       }
    ]

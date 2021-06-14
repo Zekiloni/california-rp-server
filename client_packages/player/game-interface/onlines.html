@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/onlines.css" />
+
+   </head>
+   <body>
+
+      <div id="onlines">
+
+
+      </div>
+
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"> </script>
+      <script>
+         let onlines = new Vue({
+            el: '#onlines',
+            data: {
+
+               players: [
+                  { id: 0, name: 'Zachary Parker' },
+                  { id: 1, name: 'Marin Aadwda' },
+                  { id: 2, name: 'Hannah Stevenson' },
+                  { id: 3, name: 'Steve Lalala' },
+                  { id: 4, name: 'George Isisis' },
+                  { id: 5, name: 'Petar Hoffman' },
+                  { id: 6, name: 'Milasin Drug' },
+                  { id: 7, name: 'Dragan Petrovic' },
+                  { id: 8, name: 'Zekirija alomerovic' },
+                  { id: 9, name: 'Eldar Dautovic' },
+                  { id: 10, name: 'Buladin Adawdf' },
+                  { id: 11, name: 'Saladin Geroea' },
+                  { id: 12, name: 'Aladin Milanetov' },
+                  { id: 13, name: 'Sin Dragan' }
+               ]
+               
+            },
+
+
+            methods: { 
+
+               Close: function () { 
+                  mp.trigger('client:players:online');
+               }
+
+            }
+         });
+
+         
+      </script>
+   </body>     
+</html>

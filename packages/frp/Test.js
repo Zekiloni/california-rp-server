@@ -11,6 +11,8 @@ mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 =
     veh.numberPlate = 'focus rp beta';
     veh.engine = false;
     player.putIntoVehicle(veh, 0);
+    veh.data.Mileage = 0.0;
+    veh.data.Fuel = 100;
 });
 
 mp.events.addCommand("clot", (player, full, comp, draw, text, pal) => {

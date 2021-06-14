@@ -139,10 +139,7 @@ vehicle = () => {
 	let lightsStatus = 0;
 	vehicleSpeed = vehicleSpeed * 3.6;
 
-	if (lights.lightsOn == 0 && lights.highbeamsOn == 0) { lightsStatus = 0; }
-	else if (lights.lightsOn == 0 && lights.highbeamsOn == 1) { lightsStatus = 2; }
-	else if (lights.lightsOn == 1 && lights.highbeamsOn == 0) { lightsStatus = 1; }
-	else if (lights.lightsOn == 1 && lights.highbeamsOn == 1) { lightsStatus = 2; }
+
 	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
 }
 
@@ -168,11 +165,5 @@ function getAmmoInClip (weaponHash){
 	return 0
 }
 
-function getWeaponString (){
-	let weapon = mp.players.local.weapon 
-	if (typeof weapon !== "undefined")
-		return "0x" + mp.players.local.weapon.toString(16).toUpperCase()
-	else 
-		return "0xA2719263"
-}
+
 

@@ -33,7 +33,7 @@ mp.events.add('playerCommand', (player, command) => {
    if (cmd) {
       let Account = player.Account(), Character = player.Character();
       
-      if (cmd.admin && Account.Administrator < cmd.admin) return player.notification('not allowed', 'error', 4);
+      if (cmd.admin && Account.Administrator < cmd.admin) return player.Notification('Nije vam dozvoljeno !', frp.Globals.Notification.Error, 4);
       
       if (cmd.job && Character.Job != cmd.job) return;
 
@@ -42,10 +42,10 @@ mp.events.add('playerCommand', (player, command) => {
          if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       }
       
-      if (cmd.params && cmd.params.length != args.length) return player.sendMessage('Komanda: /' + commandName + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
+      if (cmd.params && cmd.params.length > args.length) return player.sendMessage('Komanda: /' + commandName + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
 
       cmd.call(player, args);
    } else {
-      player.notification('aaaaa', 'error', 4);
+      player.Notification('Komanda ne postoji !', frp.Globals.Notification.Error, 4);
    }
 });

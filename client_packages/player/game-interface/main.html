@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/main.css" />
+
+   </head>
+   <body>
+
+      <div id="hud">
+         <transition name="fade" >
+            <div class="screen" v-if="toggle">
+               <div class="top-right">
+                  <div class="server">
+                     <h3> <i class="fa fa-user" aria-hidden="true"></i> <b> {{ id }} </b> </h3>
+                     <h3> <i class="fa fa-users" aria-hidden="true"></i> <b> {{ players }} </b> </h3>
+                     <img class="logo" src="src/images/logo.png" />
+                  </div>
+      
+                  <div class="player">
+                     <h2 class="money"> {{ Dollars(money) }} </h2>
+                     <transition name="change">
+                        <h4 class="changes plus" v-if="change == 0" v-bind:style=""> + {{ Dollars(changeValue) }} </h4>
+                        <h4 class="changes minus" v-else-if="change == 1"> {{ Dollars(changeValue) }} </h4>
+                     </transition>
+                  </div>
+
+                  <div class="weapon" v-if="weapon.hash">
+                     <img :src="'src/images/weapons/' + weapon.hash + '.png'" />
+                     <h3 v-if="weapon.ammo"> {{ weapon.ammo }} </h3>
+                  </div>
+               </div>
+
+               <ul class="notifications">
+                  <li class="notification" v-for="(notification, i) in notifications">
+                     <div class="type"> 
+                        <i class="" v-bind:class="NotifyType(notification.Type)" aria-hidden="true"></i>
+                     </div>
+                     <h4> {{ notification.Message }} </h4>
+                  </li>
+               </ul>
+
+               <div class="bottom-left">
+                  <ul class="location">
+                     <i class="icon fas fa-map-marker-alt"> </i>
+                     <li class="heading"> {{ location.heading }} </li>
+                     <li> {{ location.zone }} </li>
+                     <li> {{ location.street }} </li>
+                  </ul>
+      
+                  <ul class="time">
+                     <i class="icon fas fa-clock"> </i>
+                     <li> {{ time }} </li>
+                     <li> {{ date }} </li>
+                  </ul>
+               </div>
+
+               <div class="bottom-right">
+                  <transition name="slide-up">
+                     <div class="vehicle" v-if="vehicle.toggle">
+                        <h2 class="mileage"> {{ vehicle.mileage }} <small>km</small> </h2>
+                        <div class="engine"> 
+                           <h2> {{ vehicle.gear }} </h2>
+                        </div>
+
+                        <div id="speedo" class="gauge-container speedo">
+                           <span class="value-text">km / h</span>
+                        </div>
+
+                        <div id="fuel" class="gauge-container fuel"> </div>
+
+                        <div class="indicators">
+                           <img class="seatbelt" src="src/images/vehicle/seatbelt.png" v-if="!seatbelt" >
+                           <i class="indicator fa fa-angle-left" v-bind:class="{ 'blinking': vehicle.indicators[0] }"> </i>
+                           <img class="lights" :src="'src/images/vehicle/' + Lights() + '.png'" >
+                           <i class="indicator fa fa-angle-right" v-bind:class="{ 'blinking': vehicle.indicators[1] }"> </i>
+                           <i class="indicator fas fa-gas-pump" v-bind:class="{ 'out-of-gas': vehicle.fuel < 20 }"> </i>
+                        </div>
+
+                     </div>
+                  </transition>
+               </div>
+
+               <div class="black" v-if="black"> </div>
+
+            </div>
+         </transition>
+      </div>
+
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"> </script>
+      <script src="src/vendor/js//gauge.js"> </script>
+      <script>
+         let hud = new Vue({
+            el: '#hud',
+            data: {
+
+               toggle: true, 
+
+               id: 0,
+               money: 0,
+
+               location: { 
+                  street: 'Strawberry Ave',
+                  zone: 'Los Santos Downtown',
+                  heading: 'N'
+               },
+
+               weapon: { 
+                  hash: '0x1D073A89',
+                  ammo: 0
+               },
+
+               vehicle: { 
+                  toggle: false,
+                  speed: 0,
+                  indicators: [false, false],
+                  lights: { lightsOn: false, highbeamsOn: false },
+                  fuel: 0,
+                  gear: 'N',
+                  engine_failure: false,
+                  doors: [0, 0, 0, 0],
+                  mileage: 0.00,
+                  max_speed: 225
+               },
+
+               seatbelt: false,
+
+               black: false,
+
+               change: null,
+               changeValue: 0,
+
+               time: null,
+               date: null,
+            
+               Speedometer: null,
+               Fuelmeter: null,
+
+               notifications: [],
+
+               players: 100,
+
+               sounds: { 
+                  notification: new Audio('src/sounds/notification.mp3'),
+                  money: new Audio('src/sounds/money.mp3'),
+                  seatbelt: { 
+                     put: new Audio('src/sounds/seatbelt_put.mp3'), remove: new Audio('src/sounds/seatbelt_remove.mp3')
+                  }
+               }
+               
+            },
+
+            watch: {
+               money: function (newValue, oldValue) { 
+                  if (oldValue == 0) return;
+                  newValue > oldValue ? this.change = 0 : this.change = 1;
+                  this.changeValue = newValue - oldValue;
+                  setTimeout(() => { this.change = null; }, 3000);
+                  this.sounds.money.play();
+               },
+
+               seatbelt: function (toggle) { 
+                  if (toggle)
+                     this.sounds.seatbelt.put.play()
+                  else
+                     this.sounds.seatbelt.remove.play()
+               }
+            },
+
+            created () {
+               this.Time();
+               this.Date();
+               setInterval(() => { this.Check(); }, 1000);
+            },
+
+            methods: { 
+
+               Date: function () { 
+                  let now = new Date(),
+                     year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(now),
+                     month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'short' }).format(now),
+                     day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
+                  this.date = day + '. ' + month + ' ' + year;
+
+                  setTimeout(() => { this.Date(); }, 60000);
+               },
+
+               Vehicle: function (toggle) { 
+                  this.vehicle.toggle = toggle;
+                  if (toggle) { 
+                     setTimeout(() => {
+                        this.Speedometer = Gauge( document.getElementById('speedo'), { max: 225, dialStartAngle: 90, dialEndAngle: 0, value: 0 } );
+                        this.Fuelmeter = Gauge( document.getElementById('fuel'), { max: 100, dialStartAngle: 90, dialEndAngle: -140, value: 90 } );    
+                     }, 200);
+                  } else { 
+                     this.Speedometer = null, this.Fuelmeter = null;
+                  }
+               },
+
+               Time: function () { 
+                  let now = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Belgrade' });
+                  let split = now.split(','), time = split[1].split(':')
+                  this.time = time[0] + ':' + time[1] + ':' + time[2];
+
+                  setTimeout(() => { this.Time(); }, 1000);
+               },
+
+               Speed: function (kmh) { 
+                  if (this.vehicle.toggle && this.Speedometer) { 
+                     kmh = parseInt(kmh);
+                     this.Speedometer.setValueAnimated(kmh, 0.35);
+                  }
+               },
+
+               Fuel: function (l) { 
+                  if (this.vehicle.toggle && this.Fuelmeter) { 
+                     this.Fuelmeter.setValueAnimated(l, 0.35);
+                  }
+               },
+
+               Mileage: function (i) { 
+                  if (this.vehicle.toggle) this.vehicle.mileage = i;
+               },
+
+               Lights: function () { 
+                  let status = 0;
+                  if (this.vehicle.lights.lightsOn == 0 && this.vehicle.lights.highbeamsOn == 0) { status = 'lights-off'; }
+                  else if (this.vehicle.lights.lightsOn == 0 && this.vehicle.lights.highbeamsOn == 1) { status = 'lights-high'; }
+                  else if (this.vehicle.lights.lightsOn == 1 && this.vehicle.lights.highbeamsOn == 0) { status = 'lights-on'; }
+                  else if (this.vehicle.lights.lightsOn == 1 && this.vehicle.lights.highbeamsOn == 1) { status = 'lights-high'; }
+                  return status;
+               },
+
+               Dollars: function (i) { 
+                  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
+               },
+
+               Notification: function (message, type, time = 3) { 
+                  this.sounds.notification.play();
+                  this.notifications.push({ Message: message, Type: type, Time: time });
+               },
+
+               Check: function (i) { 
+                  if (this.notifications.length == 0) return;
+                  this.notifications.forEach(notification => {
+                     notification.Time --;
+                     if (notification.Time == 0) {
+                        let index = this.notifications.indexOf(notification);
+                        this.notifications.splice(index, 1);
+                     }
+                  });
+               },
+
+               NotifyType: function (i) { 
+                  const Types = ['fa fa-check', 'fas fa-exclamation', 'fa fa-info'];
+                  return Types[i];
+               }
+            }
+         });
+         
+      </script>
+   </body>     
+</html>

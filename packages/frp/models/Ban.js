@@ -2,7 +2,7 @@
 const { DataTypes } = require('sequelize');
 
 
-frp.Bans = frp.Database.define('Ban', {
+frp.Bans = frp.Database.define('ban', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Account: { type: DataTypes.INTEGER, defaultValue: 0 },
       Character: { type: DataTypes.INTEGER, defaultValue: 0 },

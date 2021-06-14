@@ -3,9 +3,9 @@ const GLOBALS = {
 
    Colors: {
       white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'],
-      low: ['E6E6E6', 'BDBDBD', 'DEDEDE', 'A3A2A2', '909090'],
+      low: ['BDBDBD', 'DEDEDE', 'A3A2A2', '909090', '909090'],
       purple: ['cf9ae1', 'b380c4', '9565a5', '7f508f', '673e74'],
-      ooc: ['7B8A89', 'A3B8B7', '9AADAC', '8D9E9D', '7B8A89'],
+      ooc: ['b0c4c3', '9cb2b1', '8da1a0', '819493', '778a89'],
       faction: '5DD7B8',
       radio: 'FFFF99',
       pm: { from: 'FCBD00', to: 'FFD500' },
@@ -30,10 +30,10 @@ const GLOBALS = {
       me: 8.5,
    },
 
-   NOTIFY: {
-      SUCCES: 'success',
-      ERROR: 'error',
-      INFO: 'info'
+   Notification: {
+      Succes: 0,
+      Error: 1,
+      Info: 2
    },
 
    Factions: {

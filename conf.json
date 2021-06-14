@@ -4,6 +4,7 @@
 	"gamemode" : "roleplay", 
 	"stream-distance" : 500.0,
 	"announce" : false,
+	"allow-cef-debugging": true,
 	"csharp" : "disabled",
 	"port": 22005
 }

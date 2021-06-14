@@ -6,7 +6,7 @@ let salt = bcrypt.genSaltSync(10);
 const { DataTypes } = require('sequelize');
 
 
-frp.Accounts = frp.Database.define('Account', {
+frp.Accounts = frp.Database.define('account', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Username: { type: DataTypes.STRING, unique: true },
       Email: { type: DataTypes.STRING, unique: true },
@@ -73,6 +73,11 @@ frp.Accounts.prototype.SetAdmin = async function (player, value) {
 (async () => {
    frp.Accounts.sync();
 
-   // await frp.Accounts.create({ Username: 'Zekiloni', Password: 'kapakapa' });
+   // await frp.Accounts.create({ Username: 'Zekiloni', Password: 'kapakapa', Administrator: 6 });
+   //await frp.Accounts.create({ Username: 'Kopra', Password: '123', Administrator: 6 });
+
+   //await frp.Characters.create({ Name: 'Zachary Parker', Account: 1 });
+   // await frp.Characters.create({ Name: 'Frank Lawrence', Account: 2 });
+
 })();
 

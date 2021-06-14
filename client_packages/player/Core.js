@@ -26,13 +26,19 @@ mp.events.addDataHandler({
 
    'Money': (entity, newCash, oldCash) => {
       if (entity && entity.remoteId === player.remoteId) {
-         player.money = newCash;
+         player.Money = newCash;
       }
    },
 
    'Job': (entity, newValue, oldValue) => {
       if (entity && entity.remoteId === player.remoteId) {
          player.Job = newValue;
+      }
+   },
+
+   'Seatbelt': (entity, newValue, oldValue) => { 
+      if (entity && entity.remoteId === player.remoteId) { 
+         player.Seatbelt = newValue;
       }
    },
 
