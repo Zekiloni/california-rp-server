@@ -73,7 +73,7 @@ frp.Accounts.prototype.SetAdmin = async function (player, value) {
 (async () => {
    frp.Accounts.sync();
 
-   // await frp.Accounts.create({ Username: 'Zekiloni', Password: 'kapakapa', Administrator: 6 });
+   //await frp.Accounts.create({ Username: 'Zekiloni', Password: 'kapakapa', Administrator: 6 });
    //await frp.Accounts.create({ Username: 'Kopra', Password: '123', Administrator: 6 });
 
    //await frp.Characters.create({ Name: 'Zachary Parker', Account: 1 });

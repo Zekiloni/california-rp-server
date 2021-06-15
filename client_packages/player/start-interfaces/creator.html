@@ -14,6 +14,9 @@
 </head>
 <body>
    <div id="creator" v-if="toggle">
+      <transition name="bounce">
+         <h2 v-if="warning" class="warning"> {{ warning }} </h2>
+      </transition>
 
       <ul class="navigation">
          <li v-on:click="page = 0" :class="{ 'active' : page == 0 }"> 1 </li>
@@ -147,7 +150,7 @@
       </div>
 
       <div class="create">
-         <button v-on:click="Create($event)"> Kreiraj Karaktera </button>
+         <button v-on:click="Create($event)" id="create-button"> Kreiraj Karaktera </button>
       </div>
 
    </div>
@@ -165,6 +168,8 @@
             errors: { 
                birth: false
             },
+
+            warning: false,
 
             character: {
                First_Name: null,
@@ -248,10 +253,22 @@
             Zoom: function (event) { mp.trigger('client:player.character.creator:zoom', event.deltaY); },
 
             Create: function (event) { 
-               event.target.classList.add('bounce-out-top');
-               event.target.disabled = true;
-               mp.trigger('client:player.character.creator:finish', JSON.stringify(this.character));
+               if (this.character.First_Name != null && this.character.Last_Name != null && this.character.Birth != null && this.character.Origin != null && this.character.Gender != null) { 
+                  mp.trigger('client:player.character.creator:finish', JSON.stringify(this.character));
+               } else { 
+                  this.Warning('Niste ispunili sva potrebna polja za identitet karaktera.')
+               }
+            },
 
+            Warning: function (msg) { 
+               this.warning = msg;
+               setTimeout(() => { this.warning = false; }, 3500);
+            },
+
+            AnimateButton: function () { 
+               let button = document.getElementById('create-button');
+               button.classList.add('bounce-out-top');
+               button.disabled = true;
             }
          }
       })

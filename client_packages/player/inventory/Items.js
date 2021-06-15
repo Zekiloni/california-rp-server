@@ -43,12 +43,14 @@ mp.events.add({
   }
 })
 
+
 mp.keys.bind(0x49, false, function() {
    if (Player.logged && Player.spawned) { 
       if (mp.players.local.isTypingInTextChat) return;
       mp.events.call('client:inventory.toggle');
    }
 });
+
 
 mp.keys.bind(0x59, false, function() {
    if (Player.logged && Player.spawned) { 
@@ -58,9 +60,10 @@ mp.keys.bind(0x59, false, function() {
 });
 
 
-function Use (item) { 
-   mp.events.callRemote('server:item.use', item);
-   mp.events.callRemoteProc('')
+async function Use (item) { 
+   const Inventory = mp.events.callRemoteProc('server:player.inventory.item:use', item);
+   mp.gui.chat.push(JSON.stringify(Inventory));
+   if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
 
 function Put (item) { 

@@ -47,6 +47,7 @@ frp.Characters = frp.Database.define('character', {
       
       Phone: { type: DataTypes.INTEGER, defaultValue: 0 },
       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
+
       Licenses: {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Licenses')); },
@@ -150,6 +151,19 @@ frp.Characters.prototype.SetMoney = async function (player, value) {
    player.setVariable('Money', value);
    await this.save();
 };
+
+
+frp.Characters.prototype.SetMood = function (player, mood) { 
+   this.Mood = mood;
+   player.setVariable('Mood', mood);
+};
+
+
+frp.Characters.prototype.SetWalkingStyle = function (player, style) {
+   this.Walking_Style = style;
+   player.setVariable('Walking_Style', style);
+};
+
 
 frp.Characters.prototype.Enter = async function (player, type, id) { 
 
@@ -268,27 +282,33 @@ frp.Characters.prototype.Properties = async function () {
 };
 
 
-frp.Characters.New = async function (player, informations) { 
-   const Character = JSON.parse(informations);
+frp.Characters.New = async function (player, Character) { 
+   // const Bank = await frp.Bank.New(player);
 
-   const Bank = await frp.Bank.New(player);
+   console.log(Character);
 
-   let NewCharacter = await frp.Characters.create({
-      Name: Character.First_Name + ' ' + Character.Last_Name,
-      Birth: Character.Birth, Origin: Character.Origin,
-      Gender: Character.Gender, Armour: 0, Health: 100
+   const Created = await frp.Characters.create({
+      Account: player.account, Name: Character.First_Name + ' ' + Character.Last_Name,
+      Birth: Character.Birth, Origin: Character.Origin, Gender: Character.Gender, 
+      Armour: 0, Health: 100
    });
 
-   let NewAppearance = await frp.Appearances.create({
-      Character: NewCharacter.id, 
-      Hair: Appearance.Hair, Beard: Appearance.Beard, Eyes: Appearance.Eyes,
-      Shirt: Appearance.Shirt, Undershirt: Appearance.Undershirt, 
-      Legs: Appearance.Legs, Shoes: Appearance.Shoes, 
+
+
+
+
+
+   const Appearance = await frp.Appearances.create({
+      Character: Created.id, 
+      Hair: Character.Hair, Beard: Character.Beard, Eyes: Character.Eyes,
+      Shirt: Character.Shirt, Undershirt: Character.Undershirt, 
+      Legs: Character.Legs, Shoes: Character.Shoes, 
       Bags: [0, 0], Armour: [0, 0], Mask: [0, 0], 
    });
 
 
-   await Character.Spawn(player);
+   if (Created) return Created;
+
 };
 
 
@@ -300,5 +320,3 @@ frp.Characters.New = async function (player, informations) {
 })();
 
 
-//   frp.Characters.create({ Name: 'Valele Gipsy', Account: 2 });
-//    frp.Characters.create({ Name: 'Pepsi Gay', Account: 2, Licenses: ["Driving"] });

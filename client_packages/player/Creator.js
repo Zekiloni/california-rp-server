@@ -26,9 +26,6 @@ mp.events.add({
          Player.freezePosition(true);
          mp.game.ui.displayRadar(false);
 
-         await utils.LoadAnimDict('anim@amb@nightclub@gt_idle@');
-         Player.taskPlayAnim('anim@amb@nightclub@gt_idle@', 'base', 8.0, 1, -1, 1, 0.0, false, false, false);
-
          camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
          const CameraPositon = new mp.Vector3(Player.position.x + Player.getForwardX() * 1.5, Player.position.y + Player.getForwardY() * 1.5, Player.position.z);
          camera.setCoord(CameraPositon.x, CameraPositon.y, CameraPositon.z);
@@ -43,6 +40,10 @@ mp.events.add({
          Player.BrowserControls(false, false);
          Player.freezePosition(false);
          mp.game.ui.displayRadar(true);
+         mp.events.remove('render', MoveCamera);
+         if (camera) camera.destroy();
+         camera = null;
+         mp.game.cam.renderScriptCams(false, false, 0, false, false);
       }
    },
 
@@ -59,12 +60,18 @@ mp.events.add({
    },
 
    'client:player.character.creator:finish': async (character) => { 
-      await utils.LoadAnimDict('anim@amb@nightclub@peds@');
-      Player.taskPlayAnim('anim@amb@nightclub@peds@', 'mini_strip_club_lap_dance_ld_girl_a_song_a_p1', 8.0, 1, -1, 1, 0.0, false, false, false);
-      mp.game.cam.doScreenFadeOut(5000);
-      setTimeout(() => { if (browser) browser.destroy(); }, 3000);
-      mp.events.callRemote('server:player.character.create', character);
-
+      const response = await mp.events.callRemoteProc('server:player.character:create', character);
+      if (response) { 
+         mp.game.cam.doScreenFadeOut(4000);
+         browser.execute('creator.AnimateButton()');
+         setTimeout(() => { 
+            mp.events.call('client:player.character.creator:show');
+            mp.game.cam.doScreenFadeIn(2000);
+            mp.events.callRemote('server:player.character:select', response);
+         }, 5000);
+      } else { 
+         browser.execute('Karakter već postoji ! Odaberite drugo ime.')
+      }
    },
 
    'client:player.character.creator:gender': (x) => { 
@@ -145,7 +152,7 @@ function MoveCamera () {
    let { pointX: camPointX, pointY: camPointY, pointZ: camPointZ } = camera.getDirection();
 
    camPosZ = camPosZ + Data.DeltaY * 0.001;
-   const { x: charPosX, y: charPosY, z: charPosZ } = Vehicle.getCoords(true);
+   const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
 
    if (camPosZ < charPosZ + 0.7 && camPosZ > charPosZ - 0.8) { 
       camera.setPosition(camPosX, camPosY, camPosZ);

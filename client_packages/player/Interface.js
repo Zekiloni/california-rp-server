@@ -25,13 +25,13 @@ mp.events.add({
 
       if (Player.vehicle) Vehicle();
 
-      if (Player.weapon != mp.game.joaat('weapon_unarmed')) { 
-         let Weapon = utils.weaponString(Player.weapon);
-         let ammoCount = getAmmoCount(playerWeapon);
-         browser.execute('hud.weapon.hash = \"' + Weapon + '\", hud.weapon.ammo = ')
-      } else if (Player.weapon == mp.game.joaat('weapon_unarmed')) { 
-         browser.execute('hud.weapon.hash = null;')
-      }
+      // if (Player.weapon != mp.game.joaat('weapon_unarmed')) { 
+      //    let Weapon = utils.weaponString(Player.weapon);
+      //    let ammoCount = getAmmoCount(Player.weapon);
+      //    browser.execute('hud.weapon.hash = \"' + Weapon + '\", hud.weapon.ammo = ')
+      // } else if (Player.weapon == mp.game.joaat('weapon_unarmed')) { 
+      //    browser.execute('hud.weapon.hash = null;')
+      // }
    },
 
    'playerEnterVehicle': (vehicle, seat) => { 
@@ -87,6 +87,19 @@ function Notify (message, type, time = 3) {
    if (browser) browser.execute('hud.Notification(\"' + message + '\", \"' + type + '\");')
 }
 
+
+function hasWeapon (weaponHash){
+	return mp.game.invoke("0x8DECB02F88F428BC", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
+}
+
+function getAmmoCount (weaponHash){
+	if (hasWeapon(weaponHash)){
+		let ammoCount = mp.game.invoke("0x015A522136D7F951", mp.players.local.handle, parseInt(weaponHash) >> 0)
+		if (ammoCount > 999) ammoCount = null
+		return ammoCount
+	}
+	return 0
+}
 
 function getHeading () { 
    let H = Player.getHeading(), Heading;
