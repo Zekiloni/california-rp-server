@@ -221,14 +221,15 @@ module.exports = {
          name: 'goto',
          description: 'Teleport do igraca.',
          admin: 3,
+         params: ['igrac'],
          call: (player, args) => {
-               let target = mp.players.find(args[0]);
-               if (target) {
-                  player.position = target.position;
-                  player.dimension = target.dimension;
-                  target.sendMessage('Admin ' + player.name + ' se teleportovao do vas !', mp.colors.tomato);
-                  player.sendMessage('Teleportovali ste se do ' + target.name + ' !', mp.colors.tomato);
-               }
+            let target = mp.players.find(args[0]);
+            if (target) {
+               player.position = target.position;
+               player.dimension = target.dimension;
+               target.sendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
+               player.sendMessage('Teleportovali ste se do ' + target.name + ' !', frp.Globals.Colors.tomato);
+            }
          }
       },
       {
@@ -374,6 +375,14 @@ module.exports = {
                Character.GiveMoney(Target, Money);
                // PORUKA: novac
             }
+         }
+      },
+
+      {
+         name: 'cloneped',
+         admin: 5,
+         call: (player, args) => {
+            player.call('client:clone.ped', true);
          }
       },
    ]

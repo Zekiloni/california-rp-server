@@ -108,11 +108,15 @@ module.exports = {
 
       {
          name: 'ame',
-         desc: 'Lokana OOC komunikacija',
-         params: '[tekst]',
+         desc: 'Radnja-Akcija',
+         params: ['tekst'],
          call: (player, args) => {
-               let message = args.splice(0).join(" ");
-               player.call('client:player.chat.bubble', [15, message, true]);
+            let message = args.splice(0).join(" ");
+            player.data.Bubble = message;
+            console.log(message);
+            setTimeout(() => {
+               player.data.Bubble = null;
+            }, 7000);
          }
       }
    ]

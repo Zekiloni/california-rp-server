@@ -51,6 +51,7 @@ mp.events.addDataHandler({
    'Bubble': (entity, newValue, oldValue) => {
       if (entity && entity.remoteId === player.remoteId && newValue != oldValue) {
          player.Bubble = newValue;
+         mp.gui.chat.push(JSON.stringify(player.Bubble));
       }
    }
 });

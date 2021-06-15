@@ -83,7 +83,8 @@ frp.Characters.prototype.Spawn = async function (player) {
    if (this.Wounded) { 
 
    }
-
+   
+   player.data.Bubble = null;
    player.data.Seatbelt = false;
 
    await player.call('client:player.interface:toggle');
