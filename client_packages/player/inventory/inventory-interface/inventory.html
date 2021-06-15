@@ -28,7 +28,7 @@
                   <h4> {{ Weight() }} <b>/ {{ player.maximum }} kg</b> </h4>
                </div>
                <div class="items">
-                  <div class="item" v-for="(item, i) in player.items" v-if="item.entity == entity.Player" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
+                  <div class="item" v-for="(item, i) in player.items" v-if="item.entity == entity.Player" v-on:click="Use(item.id)" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
                      <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
                      <h3 class="quantity"> {{ item.quantity }} </h3>
                   </div>
@@ -143,8 +143,8 @@
                },
 
 
-               Use: function (item) {
-                  mp.trigger('client:inventory.item:use', item.id)
+               Use: function (id) {
+                  mp.trigger('client:inventory.item:use', id)
                },
 
                Drop: function (item) { 

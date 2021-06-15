@@ -55,9 +55,7 @@ frp.Items.Inventory = async function (player) {
    let Inventory = [];
    const Items = await frp.Items.findAll({ where: { Owner: player.character } });
    Items.forEach((Item) => {
-      if (Item.Entity == ItemEntities.Player) { 
-         Inventory.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, entity: Item.Entity, ammo: Item.Ammo, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
-      }
+      Inventory.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, entity: Item.Entity, ammo: Item.Ammo, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
    });
    return Inventory;
 };
@@ -164,10 +162,14 @@ frp.Items.Near = async function (player) {
 
 frp.Items.prototype.Use = async function (player) {
    const Type = ItemRegistry[this.Item].type;
-   if (Type == ItemType.Ammo) {
-      // giive ammo current weapo
-   } else { 
-      ItemRegistry[this.Item].use
+   if (Type == ItemType.Weapon) {
+      this.Entity = ItemEntities.Wheel;
+      ItemRegistry[this.Item].use(player, this.Ammo);
+      await this.save();
+   } else {
+      await this.increment('Quantity', { by: -1 });
+      ItemRegistry[this.Item].use(player);
+      // if quantity == 0 destroy item
    }
 };
 

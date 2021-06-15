@@ -147,18 +147,7 @@ vehicle = () => {
 	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
 }
 
-function hasWeapon (weaponHash){
-	return mp.game.invoke("0x8DECB02F88F428BC", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
-}
 
-function getAmmoCount (weaponHash){
-	if (hasWeapon(weaponHash)){
-		let ammoCount = mp.game.invoke("0x015A522136D7F951", mp.players.local.handle, parseInt(weaponHash) >> 0)
-		if (ammoCount > 999) ammoCount = null
-		return ammoCount
-	}
-	return 0
-}
 
 function getAmmoInClip (weaponHash){
 	if (hasWeapon(weaponHash)){

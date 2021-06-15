@@ -31,11 +31,11 @@ const walkingStyles = [
  
 
 mp.events.addDataHandler({
-    'mood': (entity, value) => {
+    'Mood': (entity, value) => {
         if (entity.type === 'player') setMood(entity, value);
     },
 
-    'walking_style': (entity, value) => {
+    'Walking_Style': (entity, value) => {
         if (entity.type === 'player') setWalkingStyle(entity, value);
     },
 
@@ -51,8 +51,8 @@ mp.events.addDataHandler({
 mp.events.add({
     'entityStreamIn': (entity) => {
         if (entity.type === 'player') { 
-            setMood(entity, entity.getVariable('mood')); 
-            setWalkingStyle(entity, entity.getVariable('walking_style'))
+            setMood(entity, entity.getVariable('Mood')); 
+            setWalkingStyle(entity, entity.getVariable('Walking_Style'))
         }
     },
 

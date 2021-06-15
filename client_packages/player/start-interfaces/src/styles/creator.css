@@ -20,7 +20,7 @@ body {
 img.logo { position: absolute; left: 80px; top: 40px; }
 
 ul.navigation {min-height: 425px;padding: 0;list-style: none;position: absolute;width: 250px;height: auto;margin-top: 70px;left: 40px;display: flex;flex-direction: column;align-items: center;justify-content: space-between;}
-ul.navigation li { margin: 15px 0; position: relative; background: rgb(21 21 21 / 75%); color: rgb(173, 173, 173); box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px; font-size: 23px; font-weight: 500; display: flex; justify-content: center; align-items: center;width: 55px;height: 55px;opacity: 0.75;transition: all 0.35s ease;border-radius: 100%;}
+ul.navigation li {margin: 15px 0;position: relative;background: rgb(21 21 21 / 75%);color: rgb(173, 173, 173);box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;font-size: 23px;font-weight: 500;display: flex;justify-content: center;align-items: center;width: 55px;height: 55px;opacity: 0.75;transition: all 0.35s ease;/* border-radius: 100%; */}
 ul.navigation li.active { transform: scale(1.45); opacity: 1; background: #fbc60c; box-shadow: 0 1px 25px rgb(250 184 10 / 50%); color: #292929; }
 
 .content {position: absolute;width: 400px;height: 505px;right: 40px;}
@@ -77,6 +77,8 @@ ul.list-colors li.selected { opacity: 1; }
 .overlays .single {width: 100%;margin-top: 15px;}
 .overlays .single .slider { width: 100%; }
 .overlays .single .container small { font-size: 13px; display: flex; justify-content: space-between; }
+
+.warning { position: absolute; top: 50px; margin: 0; color: rgb(255 71 71);text-shadow: 0 2px 5px rgb(255 99 71 / 55%); }
 
 *:focus { outline: none; }
 * { user-select: none; }

@@ -14,38 +14,38 @@ const ItemType = {
 let ItemRegistry = {};
 
 class Item {
-    constructor(name, type, object, weight, data, use) {
-        this.name = name;
-        this.type = type;
-        this.hash = object;
-        this.weight = weight || 0.25;
-        this.use = use;
-        if (data.weapon) {
-            this.weapon = data.weapon || null;
-            this.ammo = data.ammo || null;
-        }
-        if (data.quantity) {
-            this.quantity = data.quantity;
-        }
-        ItemRegistry[this.name] = this;
-    }
+   constructor(name, type, object, weight, data, use) {
+      this.name = name;
+      this.type = type;
+      this.hash = object;
+      this.weight = weight || 0.25;
+      this.use = use;
+      if (data.weapon) {
+         this.weapon = data.weapon || null;
+         this.ammo = data.ammo || null;
+      }
+      if (data.quantity) {
+         this.quantity = data.quantity;
+      }
+      ItemRegistry[this.name] = this;
+   }
 }
 
 // HRANA 
 new Item('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, function (player) {
-    player.call('client:player.scenario', []);
+   player.call('client:player.scenario', []);
 });
 
 new Item('Medkit', ItemType.Misc, 'prop_ld_health_pack', 0, false, function (player) {
-    player.health += 25;
+   player.health += 25;
 });
 
 // MASKA
 new Item('iFruit Smartphone', ItemType.Misc, 'prop_player_phone_01', 0.3, function (player) {
-    let character = player.getCharacter(), phone = mp.phones[character.phone_number];
-    if (!phone.turned)
-        return; // telefon ti je ugasen
-    player.call('client:player.phone', phone);
+   let character = player.getCharacter(), phone = mp.phones[character.phone_number];
+   if (!phone.turned)
+      return; // telefon ti je ugasen
+   player.call('client:player.phone', phone);
 });
 
 // AMMOS / MUNICIJA 

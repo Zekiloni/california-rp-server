@@ -14,11 +14,8 @@ class Inventory {
          },
 
          'server:player.inventory.item:pickup': async (player) => {
-            console.log('aaa')
             let Near = await frp.Items.Near(player);
-            if (Near) {
-               Near.Pickup(player);
-            }
+            if (Near) { Near.Pickup(player); }
          },
 
          'server:player.inventory.item:give': async (player, target, item, quantity = 1) => {
@@ -47,14 +44,17 @@ class Inventory {
       mp.events.addProc({
          'server:player.inventory:get': async (player) => {
             const Inventory = await frp.Items.Inventory(player);
-            console.log(Inventory)
             return Inventory;
          },
 
-         'server:player.inventory:use': async (player, item) => {
-            const Inventory = await frp.Items.Inventory(player);
-            console.log(Inventory)
-            return Inventory;
+         'server:player.inventory.item:use': async (player, itemID) => {
+            const Item = await frp.Items.findOne({ where: { id: itemID }})
+            Item.Use(player).then(async () => { 
+               const Inventory = await frp.Items.Inventory(player);
+               console.log(Inventory);
+               return Inventory;
+            });
+
          }
       });
    }
