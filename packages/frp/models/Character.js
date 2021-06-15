@@ -299,14 +299,24 @@ frp.Characters.New = async function (player, Character) {
 
 
 
+
+
+
+
+
+
    const Appearance = await frp.Appearances.create({
       Character: Created.id, 
+      Blend: Created.Blend, Overlays: Created.Overlays,
+      Overlays_Colors: Created.Overlays_Colors, Hair: Created.Hair, 
+      Beard: Created.Beard, Eyes: Created.Eyes, Torso: Created.Torso,
+      Face: Created.Face, Clothing: Created.Clothing
+   });
+   /*Character: Created.id, 
       Hair: Character.Hair, Beard: Character.Beard, Eyes: Character.Eyes,
       Shirt: Character.Shirt, Undershirt: Character.Undershirt, 
       Legs: Character.Legs, Shoes: Character.Shoes, 
-      Bags: [0, 0], Armour: [0, 0], Mask: [0, 0], 
-   });
-
+      Bags: [0, 0], Armour: [0, 0], Mask: [0, 0],  */
 
    if (Created) return Created;
 
