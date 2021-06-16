@@ -83,4 +83,5 @@ const GLOBALS = {
       CAR_PARKED: 'Uspešno ste parkirali vozilo'
    }
 };
+
 frp.Globals = GLOBALS;

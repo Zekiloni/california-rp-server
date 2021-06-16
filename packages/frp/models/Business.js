@@ -9,6 +9,7 @@ frp.Business = frp.Database.define('business', {
       Name: { type: DataTypes.STRING },
       Type: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
+      Walk_in: { type: DataTypes.BOOLEAN, defaultValue: false },
       Price: { type: DataTypes.INTEGER, defaultValue: 0 },
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Products: { type: DataTypes.INTEGER, defaultValue: 200 },

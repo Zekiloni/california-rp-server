@@ -34,4 +34,6 @@ function OnlinePlayers () {
    return list;
 }
 
+
+
 global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers };

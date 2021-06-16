@@ -77,8 +77,8 @@ mp.events.add({
 		mp.game.invoke('0x9E4CFFF989258472');
 		mp.game.invoke('0xF4F2C0D4EE209E20');
 
-		// disable tab weapon wheel
-		mp.game.controls.disableControlAction(32, 37, true); 
+		// disable tab weapon wheel // ENABLE LATER
+		// mp.game.controls.disableControlAction(32, 37, true); 
 
 
 		// show Crosshair if player is aiming with AWP
@@ -88,14 +88,15 @@ mp.events.add({
 		}
 	
 
-		if (playerWeapon != mp.game.joaat('weapon_unarmed')) { 
-			if (player.weapon == 0 || player.isActiveInScenario()) return;
-			let ammoCount = getAmmoCount(playerWeapon);
-			let weapon = getWeaponString();
-			playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = ${ammoCount}, hud.weapon.hash = \"${weapon}\";`); 
-		} else if (playerWeapon == mp.game.joaat('weapon_unarmed')) { 
-			playerHUD.execute(`hud.weapon.have = false;`);
-		}
+      // FINISH
+		// if (playerWeapon != mp.game.joaat('weapon_unarmed')) { 
+		// 	if (player.weapon == 0 || player.isActiveInScenario()) return;
+		// 	let ammoCount = getAmmoCount(playerWeapon);
+		// 	let weapon = getWeaponString();
+		// 	playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = ${ammoCount}, hud.weapon.hash = \"${weapon}\";`); 
+		// } else if (playerWeapon == mp.game.joaat('weapon_unarmed')) { 
+		// 	playerHUD.execute(`hud.weapon.have = false;`);
+		// }
 
 		// update veh speed if driver
 		if (player.vehicle && isDriving) { vehicle() }

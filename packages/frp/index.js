@@ -64,10 +64,6 @@ mp.events.addCommand("koo", (player, fullText) => {
 
 
 
-
-
-
-
 const Exit = () => {
    frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');
    // await mp.players.broadcast(`!{red}Server se gasi. Pridružite se na F1.`);

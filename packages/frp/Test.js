@@ -49,7 +49,17 @@ mp.events.addCommand("scenario", (player, fullText, scenario) => {
 
 
 mp.events.addCommand("clothing", (player, fullText) => {
-    player.call('client:player.clothing:show');
+   player.call('client:player.clothing:show');
+});
+
+
+mp.events.add('posalji_odecu', (player, odeca) => { 
+   odeca = JSON.parse(odeca);
+   console.log(odeca);
+});
+
+mp.events.addCommand("odecalista", (player, fullText) => {
+   player.call('odeca_lista');
 });
 
 

@@ -66,8 +66,8 @@ mp.events.add({
       player.setHeading(value);
    },
 
-   'client:screenEffect': (effect, duration) => {
-      mp.game.graphics.startScreenEffect(effect, parseInt(duration), false);
+   'odeca_lista': () => {
+      ClothingMenu();
    },
 
    'client:player.camera:inFront': (status) => { 
@@ -89,14 +89,36 @@ mp.events.add({
 
 
 
-
-
-
-
 function BrowserControls (freezeControls, mouse) {
    mouse ? mp.gui.chat.activate(false) : mp.gui.chat.activate(true);
    // mp.game.invoke('setTypingInChatState', mouse);
    setTimeout(() => { mp.gui.cursor.show(freezeControls, mouse); }, 250);
 }
 
+
 player.BrowserControls = BrowserControls;
+
+
+function ClothingMenu () { 
+   let list = {
+      0: { variations: {} }, 1: { variations: {} }, 2: { variations: {} },
+      3: { variations: {} }, 4: { variations: {} }, 5: { variations: {} },
+      6: { variations: {} }, 7: { variations: {} }, 8: { variations: {} },
+      9: { variations: {} }, 10: { variations: {} }, 11: { variations: {} }
+   };
+   for (const i in list) { 
+      mp.gui.chat.push(i);
+      const MaxVariations = player.getNumberOfDrawableVariations(parseInt(i));
+      for (let v = 0; v < MaxVariations; v ++) { 
+         list[i].variations[v] = { textures: {} }; 
+         for (let t = 0; t < 16; t ++) { 
+            list[i].variations[v].textures[t] = 'aa';
+            // player.isComponentVariationValid(parseInt(i), v, t);
+         }
+      }
+   }
+
+   // mp.events.callRemote('posalji_odecu', JSON.stringify(list));
+   mp.gui.chat.push(JSON.stringify(list));
+   
+}

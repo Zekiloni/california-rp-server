@@ -54,7 +54,7 @@ class Admin {
    Report = { 
       Add: (player, message) => { 
 
-         let Report = { Sender: player, Content: message };
+         const Report = { Sender: player, Content: message };
          this.Reports.push(Report);
 
          console.log(this.Reports)

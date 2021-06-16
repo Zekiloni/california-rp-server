@@ -21,8 +21,8 @@ mp.events.add({
 
 mp.keys.bind(0x50, false, function() {
    if (mp.players.local.isTypingInTextChat) return;
-   if (player.logged && player.spawned) { 
-      mp.events.call('client:players:online')
+   if (Player.logged && Player.spawned) { 
+      mp.events.call('client:players:online');
    }
 });
 

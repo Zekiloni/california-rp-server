@@ -4,21 +4,92 @@
    { 
       "id": 0,
       "name": "24 / 7 Market",
-      "default_position": { "x": 1, "y": 2, "z": 3 },
-      "default_ipl": "iplname"
+      "position": { "x": 1, "y": 2, "z": 3 },
+      "ipl": "iplname"
    },
 
    {
       "id": 1,
-      "name": "24 / 7 Market",
-      "default_position": { "x": 1, "y": 2, "z": 3 },
-      "default_ipl": "iplname"
+      "name": "Gas Station & Market"
    },
 
    {      
       "id": 2,
-      "name": "24 / 7 Market",
-      "default_position": { "x": 1, "y": 2, "z": 3 },
-      "default_ipl": "iplname"
+      "name": "Electronic Shop"
+   },
+
+   {
+      "id": 3,
+      "name": "Rent a Car"
+   },
+
+   {
+      "id": 4,
+      "name": "Vehicle Dealership"
+   },
+
+   {
+      "id": 5,
+      "name": "Clothing Shop"
+   },
+
+   {
+      "id": 6,
+      "name": "Fast Food Restaurant"
+   },
+
+   {
+      "id": 7,
+      "name": "Fastfood Stand"
+   },
+
+   {
+      "id": 8,
+      "name": "Restaurant"
+   },
+
+   {
+      "id": 9,
+      "name": "Bar & Cafe"
+   },
+
+   {
+      "id": 10,
+      "name": "Night Club"
+   },
+
+   {
+      "id": 11,
+      "name": "Gun Shop & Ammunation"
+   },
+
+   {
+      "id": 12,
+      "name": "Furniture Shop"
+   },
+
+   {
+      "id": 13,
+      "name": "Pawn Shop"
+   },
+
+   {
+      "id": 14,
+      "name": "Tattoo Shop"
+   },
+
+   {
+      "id": 15,
+      "name": "Barber Shop"
+   },
+
+   {
+      "id": 16,
+      "name": "Weed Dispensary"
+   },
+
+   {
+      "id": 17,
+      "name": "Pharmacy"
    }
 ]
