@@ -27,13 +27,14 @@ frp.Bans.prototype.New = async function (player, target, reason, date, expiring)
 
    if (IP) { 
       let Account = await frp.Accounts.findOne({ where: { IP_Adress: IP } });
+      const Banned = await frp.Bans.create({ IP: IP, Reason: reason, Date: date, Expiring: expiring, Issuer: player.account });s
       if (Account) { 
-         frp.Bans.create({ Account: Account.id, IP: IP, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.account });
+         Banned.Account = Account.id;
+         Banned.Hardwer = Account.Hardwer;
+         Banned.Social = Account.Social_Club;
+      } 
+      await Banned.save();
 
-      } else { 
-         frp.Bans.create({ IP: IP, Reason: reason, Date: date, Expiring: expiring, Issuer: Issuer });
-
-      }
    } else { 
       let Online = mp.players.find(target);
       if (Online) { 

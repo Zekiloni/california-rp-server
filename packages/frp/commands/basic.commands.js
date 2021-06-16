@@ -39,7 +39,7 @@ module.exports = {
          desc: 'Slanje pitanja administraciji',
          params: ['sadrzaj'],
          call: (player, args) => {
-            let Message = args.splice(0).join(' ');
+            const Message = args.splice(0).join(' ');
             frp.Admin.Report.Add(player, Message);
          }
       },
@@ -49,7 +49,7 @@ module.exports = {
          desc: 'Podešavanja igre',
          params: ['akcija'],
          call: (player, args) => {
-            let Action = args[0];
+            const Action = args[0];
             
             switch (Action) { 
                case 'hud':  player.call('client:player.interface:toggle'); break;
@@ -75,7 +75,7 @@ module.exports = {
          name: 'showlicenses',
          desc: 'Pokazivanje dozvoli',
          call: async (player, args) => {
-            let Character = await frp.Characters.findOne({ where: { id: player.character }});
+            const Character = await frp.Characters.findOne({ where: { id: player.character }});
             if (args[0]) { 
                let Target = mp.players.find(args[0]);
                if (Target) Target.call('client:player.documents:show', ['licenses', Character]);
@@ -88,23 +88,23 @@ module.exports = {
       {
          name: 'pay',
          desc: 'Davanje novca',
-         call: (player, args) => {
-               let character = player.getCharacter();
-               if (character.hours < 2) {
-                  if (args[0]) {
-                     let target = mp.players.find(args[0]);
-                     if (target && args[1]) {
-                           let targetCharacter = target.getCharacter(), amount = args[1];
-                           if (amount > character.money)
-                              return; // nemas dovoljno novca
-                           if (amount < 0)
-                              return; // ne mozes dati minus :)
-                           targetCharacter.giveMoney(target, amount);
-                           character.giveMoney(player, -amount);
-                           player.ProximityMessage(8.25, `* ${player.name} daje nešto novca ${target.name}. (( Pay ))`, mp.colors.purple);
-                     }
-                  }
-               }
+         params: ['igrac', 'kolicina'],
+         call: async (player, args) => {
+            const Character = await frp.Characters.findOne({ where: { id: player.character } });
+            if (Character.Hours < 2) return; // PORUKA: Potrebno vam je minimalno dva sata igre.
+            
+            const Target = mp.players.find(args[0]);
+            if (Target) {
+               const TargetCharacter = await frp.Characters.findOne({ where: { id: Target.character } });
+               const Amount = args[1];
+
+               if (Amount > Character.Money) return; // PORUKA: Nemate dovoljno novca
+               if (Amount < 0) return; // PORUKA: Ne mozes dati minus
+
+               TargetCharacter.GiveMoney(target, Amount);
+               Character.GiveMoney(player, -Amount);
+               player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje nešto novca ${target.name}. (( Pay ))`, frp.Globals.Colors.purple);
+            }
          }
       },
 

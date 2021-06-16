@@ -22,7 +22,7 @@ module.exports = {
          admin: 1,
          params: ['tekst'],
          call: (player, args) => {
-            let Message = args.slice(0).join(' ');
+            const Message = args.slice(0).join(' ');
             frp.Admin.Chat(player, Message);
          }
       },
@@ -32,7 +32,7 @@ module.exports = {
          admin: 2,
          params: ['tekst'],
          call: (player, args) => {
-            let Message = args.slice(0).join(' ');
+            const Message = args.slice(0).join(' ');
             frp.Admin.Broadcast(player, Message);
          }
       },  

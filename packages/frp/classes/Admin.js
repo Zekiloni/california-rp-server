@@ -21,7 +21,7 @@ class Admin {
 
       mp.players.forEach(async (target) => { 
          if (target.data.logged && target.data.spawned) { 
-            let Account = await frp.Accounts.findOne({ where: { id: target.account }});
+            const Account = await frp.Accounts.findOne({ where: { id: target.account }});
             if (Account.Administrator > 0) { 
                let Rank = Account.Administrator;
                target.sendMessage('(( ' + Ranks[Rank] + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.admin);
@@ -33,8 +33,8 @@ class Admin {
    async Broadcast (player, message) {
       if (!message.trim()) return;
 
-      let Account = await frp.Accounts.findOne({ where: { id: player.account }});
-      let Rank = Account.Administrator;
+      const Account = await frp.Accounts.findOne({ where: { id: player.account }});
+      const Rank = Account.Administrator;
 
       mp.players.forEach((target) => { 
          if (target.data.logged && target.data.spawned) { 
