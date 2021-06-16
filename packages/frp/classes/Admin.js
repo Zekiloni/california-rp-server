@@ -43,6 +43,15 @@ class Admin {
       });
    }
 
+   async Warning (message) {
+      mp.players.forEach(async (target) => { 
+         const Account = await frp.Accounts.findOne({ where: { id: target.account }});
+         if (Account.Administrator > 0) { 
+            target.sendMessage('[ !!! ] : ' + message, frp.Globals.Colors.admin);
+         }
+      })
+   }
+
    async Ban (player, target, reason, days = 9999) { 
       const Now = Date.now();
       let Expiring = Now + (86400 * days);
