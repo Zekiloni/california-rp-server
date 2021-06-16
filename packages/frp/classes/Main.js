@@ -5,16 +5,16 @@ module.exports = class Main {
       let time = this.DateTime();
       switch (status) {
          case 1: {
-               return console.error(`${colors[0]}[ERROR - ${time}]${colors[3]} ${msg}`);
+            return console.error(`${colors[0]}[ERROR - ${time}]${colors[3]} ${msg}`);
          }
          case 2: {
-               return console.log(`${colors[1]}[INFO - ${time}]${colors[3]} ${msg}`);
+            return console.log(`${colors[1]}[INFO - ${time}]${colors[3]} ${msg}`);
          }
          case 3: {
-               return console.log(`${colors[2]}[SUCCESS - ${time}]${colors[3]} ${msg}`);
+            return console.log(`${colors[2]}[SUCCESS - ${time}]${colors[3]} ${msg}`);
          }
          case 4: {
-               return console.log(`${colors[1]}[WARNING - ${time}]${colors[3]} ${msg}`);
+            return console.log(`${colors[1]}[WARNING - ${time}]${colors[3]} ${msg}`);
          }
       }
    }
@@ -39,6 +39,14 @@ module.exports = class Main {
    static Between(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
    }
+
+   static ValidateIP (ip) {  
+      if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip)) {  
+         return true;
+      } else { 
+         return false; 
+      }  
+   }  
 
    static GenerateNumber(n) {
       let add = 1, max = 12 - add;

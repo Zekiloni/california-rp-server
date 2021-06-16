@@ -1,5 +1,6 @@
 
 
+const Ban = require('../models/Ban');
 
 const Ranks = {
    1: 'Helper',
@@ -42,6 +43,14 @@ class Admin {
       });
    }
 
+   async Ban (player, target, reason, days = 9999) { 
+      const Now = Date.now();
+      let Expiring = Now + (86400 * days);
+      
+      frp.Bans.New(player, target, reason, Now, Expiring);
+
+   }
+
    Report = { 
       Add: (player, message) => { 
 
@@ -59,5 +68,6 @@ class Admin {
 }
 
 frp.Admin = new Admin();
+
 
 

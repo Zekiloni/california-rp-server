@@ -1,5 +1,7 @@
 const { DataTypes, BOOLEAN } = require('sequelize');
 
+let Appearance = require('./Appearance');
+
 
 frp.Characters = frp.Database.define('character', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -62,8 +64,8 @@ frp.Characters = frp.Database.define('character', {
       // Options
       timestamps: true,
       underscrored: true,
-      createdAt: "Register_Date",
-      updatedAt: "Update_Date"
+      createdAt: 'Register_Date',
+      updatedAt: 'Update_Date'
    }
 );
 
@@ -91,11 +93,11 @@ frp.Characters.prototype.Spawn = async function (player) {
    await player.call('client:player.interface:toggle');
    await player.Notification('Dobrodošli na Focus Roleplay ! Uživajte u igri.', frp.Globals.Notification.Info, 4);
 
-   // aplyying appearance & clothing
-   //let Appearance = await frp.Appearances.findOne({ where: { id: this.id } });
-   // Appearance.Apply(this, player);
+   // Applying appearance & clothing
+   const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
+   if (Appearance) Appearance.Apply(player, this.Gender);
+   
    // spawning player on desired point
-
    switch (this.Spawn_Point) {
       case 0: {
          player.position = frp.Settings.default.spawn;
@@ -294,29 +296,13 @@ frp.Characters.New = async function (player, Character) {
       Armour: 0, Health: 100
    });
 
-
-
-
-
-
-
-
-
-
-
-
    const Appearance = await frp.Appearances.create({
-      Character: Created.id, 
-      Blend: Created.Blend, Overlays: Created.Overlays,
-      Overlays_Colors: Created.Overlays_Colors, Hair: Created.Hair, 
-      Beard: Created.Beard, Eyes: Created.Eyes, Torso: Created.Torso,
-      Face: Created.Face, Clothing: Created.Clothing
+      Character: Created.id, Shirt: Character.Clothing[0], Undershirt: Character.Clothing[1], Legs: Character.Clothing[2], Shoes: Character.Clothing[3],
+      Torso: Character.Torso, Blend_Data: Character.Blend, Overlays: Character.Overlays, Overlays_Colors: Character.Overlays_Colors, Hair: Character.Hair, 
+      Beard: Character.Beard, Eyes: Character.Eyes, Face_Features: Character.Face
    });
-   /*Character: Created.id, 
-      Hair: Character.Hair, Beard: Character.Beard, Eyes: Character.Eyes,
-      Shirt: Character.Shirt, Undershirt: Character.Undershirt, 
-      Legs: Character.Legs, Shoes: Character.Shoes, 
-      Bags: [0, 0], Armour: [0, 0], Mask: [0, 0],  */
+
+   console.log(Appearance)
 
    if (Created) return Created;
 
@@ -326,7 +312,17 @@ frp.Characters.New = async function (player, Character) {
 (async () => {
    frp.Characters.sync();
 
-   //  await frp.Characters.create({ Name: 'Zachary Parker', Account: 2, Licenses: ["Driving", "Driving"] });
+   // await frp.Characters.create({ Name: 'Zachary Parker', Account: 1 });
+   // await frp.Characters.create({ Name: 'Tester 1', Account: 2 });
+   // await frp.Characters.create({ Name: 'Tester Dva', Account: 3 });
+   // await frp.Characters.create({ Name: 'Tester Tri', Account: 4 });
+   // await frp.Characters.create({ Name: 'Tester Cetri', Account: 5 });
+   // await frp.Characters.create({ Name: 'Tester Pet', Account: 6 });
+   // await frp.Characters.create({ Name: 'Tester Sest', Account: 7 });
+   // await frp.Characters.create({ Name: 'Tester Sedam', Account: 8 });
+   // await frp.Characters.create({ Name: 'Tester Osam', Account: 9 });
+   // await frp.Characters.create({ Name: 'Tester Devet', Account: 10 });
+   // await frp.Characters.create({ Name: 'Tester Deset', Account: 11 });
 
 })();
 

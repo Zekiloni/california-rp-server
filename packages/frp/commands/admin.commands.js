@@ -135,9 +135,7 @@ module.exports = {
          admin: 3,
          call: (player, args) => {
             let Target = mp.players.find(args[0]), Reason = args.slice(1).join(' ');
-            if (Target) {
-               Target.kick(Reason);
-            }
+            if (Target) Target.kick(Reason);
          }
       },
       {
@@ -225,8 +223,15 @@ module.exports = {
          call: (player, args) => {
             let target = mp.players.find(args[0]);
             if (target) {
-               player.position = target.position;
-               player.dimension = target.dimension;
+               if (player.vehicle) { 
+                  const Seat = player.seat, Vehicle = player.vehicle;
+                  Vehicle.position = new mp.Vector3(target.position.x + 2, target.position.y, target.position.z);
+                  Vehicle.dimension = target.dimension;
+                  player.putIntoVehicle(Vehicle, Seat);
+               } else { 
+                  player.position = target.position;
+                  player.dimension = target.dimension;
+               }
                target.sendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
                player.sendMessage('Teleportovali ste se do ' + target.name + ' !', frp.Globals.Colors.tomato);
             }
@@ -237,38 +242,46 @@ module.exports = {
          description: 'Teleport igraca do sebe.',
          admin: 2,
          call: (player, args) => {
-               let target = mp.players.find(args[0]);
-               if (target) {
+            let target = mp.players.find(args[0]);
+            if (target) {
+               if (target.vehicle) { 
+                  const Seat = target.seat, Vehicle = target.vehicle;
+                  Vehicle.position = new mp.Vector3(player.position.x + 2, player.position.y, player.position.z);
+                  Vehicle.dimension = player.dimension;
+                  player.putIntoVehicle(Vehicle, Seat);
+               } else { 
                   target.position = player.position;
                   target.dimension = player.dimension;
-                  target.sendMessage('Admin ' + player.name + ' vas je teleportovao do sebe !', mp.colors.tomato);
-                  player.sendMessage('Teleportovali ste ' + target.name + ' do sebe !', mp.colors.tomato);
                }
+               target.sendMessage('Admin ' + player.name + ' vas je teleportovao do sebe !', mp.colors.tomato);
+               player.sendMessage('Teleportovali ste ' + target.name + ' do sebe !', mp.colors.tomato);
+            }
          }
       },
       {
          name: 'revive',
          admin: 2,
          call: (player, args) => {
-               let target = mp.players.find(args[0]);
-               if (target) {
-                  let position = target.position;
-                  clearTimeout(target.respawnTimer);
-                  target.isDead = false;
-                  setTimeout(() => { target.spawn(position); }, 350);
-               }
+            let target = mp.players.find(args[0]);
+            if (target) {
+               let position = target.position;
+               clearTimeout(target.respawnTimer);
+               target.isDead = false;
+               setTimeout(() => { target.spawn(position); }, 350);
+            }
          }
       },
       {
          name: 'givegun',
          admin: 5,
          desc: 'Davanje oruzija',
+         params: ['igrac', 'oruzije', 'municija'],
          call: (player, args) => {
-               let target = mp.players.find(args[0]);
-               if (target) {
-                  let weaponHash = mp.joaat(args[1]);
-                  target.giveWeapon(weaponHash, parseInt(args[2]) || 500);
-               }
+            let target = mp.players.find(args[0]);
+            if (target) {
+               let weaponHash = mp.joaat(args[1]);
+               target.giveWeapon(weaponHash, parseInt(args[2]) || 500);
+            }
          }
       },
       {
@@ -300,14 +313,14 @@ module.exports = {
          name: 'freeze',
          admiin: 2,
          call: (player, args) => {
-               let target = mp.players.find(args[0]), message = null;
-               if (target) {
-                  target.frozen = !target.frozen;
-                  target.call('client:player.freeze', [target.frozen]);
-                  target.frozen ? message = [' admin vas je zaledio.', 'Zaledili ste '] : message = [' admin vas je odledio.', 'Odledil ste '];
-                  target.sendMessage(player.name + message[0], mp.colors.tomato);
-                  player.sendMessage(message[1] + target.name, mp.colors.tomato);
-               }
+            let target = mp.players.find(args[0]), message = null;
+            if (target) {
+               target.frozen = !target.frozen;
+               target.call('client:player.freeze', [target.frozen]);
+               target.frozen ? message = [' admin vas je zaledio.', 'Zaledili ste '] : message = [' admin vas je odledio.', 'Odledil ste '];
+               target.sendMessage(player.name + message[0], mp.colors.tomato);
+               player.sendMessage(message[1] + target.name, mp.colors.tomato);
+            }
          }
       },
       {
@@ -380,9 +393,10 @@ module.exports = {
 
       {
          name: 'cloneped',
-         admin: 5,
+         admin: 4,
          call: (player, args) => {
-            player.call('client:clone.ped', true);
+            console.log('pozvan')
+            player.call('client:clone.ped', [true]);
          }
       },
    ]

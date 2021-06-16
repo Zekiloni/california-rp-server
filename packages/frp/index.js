@@ -19,7 +19,6 @@ let Globals = require('./configs/Globals');
 
 // MODELS 
 let Logs = require('./models/Logs');
-let Appearances = require('./models/Appearance');
 let Channels = require('./models/Channel');
 let Houses = require('./models/House');
 
@@ -40,6 +39,7 @@ let Minute = require('./classes/Minute');
 let Business = require('./classes/Business');
 let Weather = require('./classes/Weather');
 let Jobs = require('./classes/Jobs');
+
 
 
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure

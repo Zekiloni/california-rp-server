@@ -131,9 +131,6 @@ mp.events.add({
 		}, 6500);
 	},
 
-	'client:clone.ped' : (toggle) => {
-		cloneLocalPedToScreen(toggle);
-	}
 })
 
 vehicle = () => { 
@@ -158,30 +155,7 @@ function getAmmoInClip (weaponHash){
 	return 0
 }
 
-async function cloneLocalPedToScreen (toggle) {
-	try {
-		if (toggle) {
-			const Ped = await mp.peds.atHandle(mp.game.player.getPed());
-			if (Ped != null) {
-				var ClonedPed = await mp.peds.atHandle(mp.game.invoke('0xEF29A16337FACADB', Ped, true, false, true)); // Clone ped = returna PED handle od klona
-				//mp.game.invoke('0xE135A9FF3F5D05D8', ClonedPed); Da klon bude nevidljiv
-				mp.game.invoke('0xEF01D36B9C9D0C7B', mp.game.joaat('FE_MENU_VERSION_EMPTY_NO_BACKGROUND'), false, -1); // ACTIVATE_FRONTEND_MENU (Probati: fe_menu_version_corona_lobby)
-				mp.game.invoke('0xAC0BFBDC3BE00E14', ClonedPed, 1); // GivePedToPauseMenu
-				mp.game.invoke('0x3CA6050692BC61B0', true); // Osvetljenje
-				mp.game.invoke('0xECF128344E9FF9F1', 1); // Animacija budjenja
-			}
-		}
-		else {
-			mp.game.invoke('0xECF128344E9FF9F1', 0); // Animacija spavanja
-			mp.game.invoke('0x3CA6050692BC61B0', false); // Gasi se svetlo
-			mp.game.invoke('0x10706DC6AD2D49C0', mp.game.joaat('FE_MENU_VERSION_EMPTY_NO_BACKGROUND'), -1); // RESTART_FRONTEND_MENU
-		}
-	}
-	catch(e) {
-		mp.gui.chat.push(e);
-	}
-	
-}
+
 
 
 
