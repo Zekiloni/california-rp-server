@@ -128,7 +128,7 @@ async function Drop (item, hash, quantity = 1) {
    mp.game.streaming.requestAnimDict('random@domestic');
    Player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
 
-   mp.events.callRemote('server:player.inventory.item:drop', item, JSON.stringify(fixedPosition), quantity);
+   const inventory = await mp.events.callRemote('server:player.inventory.item:drop', item, JSON.stringify(fixedPosition), quantity);
 }
 
 

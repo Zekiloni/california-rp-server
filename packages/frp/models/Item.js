@@ -106,9 +106,11 @@ frp.Items.prototype.Drop = async function (player, place, quantity = 1) {
       frp.Items.New(this.Item, quantity, ItemEntities.Ground, 0, Position.position, Position.rotation, player.dimension);
    }
    // PORUKA: Bacio taj i taj predmet
-   
+
    this.Last_Owner = player.character;
+
    await this.save();
+   return frp.Items.Inventory(player);
 };
 
 

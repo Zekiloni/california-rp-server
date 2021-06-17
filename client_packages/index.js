@@ -18,6 +18,7 @@ let Banking = require('./player/Banking');
 
 // ADMIN
 let AdminStuffs = require('./player/Admin');
+let AntiCheat = require('./Anticheat');
 
 // GAME CORE 
 let Chat = require('./chat/Chat');

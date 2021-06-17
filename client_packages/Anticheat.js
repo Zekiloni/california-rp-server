@@ -14,7 +14,7 @@ const FlaggedWords = ['Cit', 'Čit', 'Admin'],
 function UnAllowedWeapons () {
    for (const WeaponHash in BlacklistedWeapons) {
       if (Player.Weapon === WeaponHash) {
-         mp.events.callRemote('server:ac.detected', 6, 'ban');
+         mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
       }
    }
 }
@@ -22,7 +22,7 @@ function UnAllowedWeapons () {
 function FlyHack () {
    if (Player.isInAir()) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane()) {
-         mp.events.callRemote('server:ac.detected', 4, 'warn');
+         mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
       }
    }
 }
@@ -31,10 +31,10 @@ function SpeedHack () {
    if (Player.vehicle) {
       let Vehicle = Player.vehicle;
       let CurrSpeed = Vehicle.getSpeed();
-      let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.hash);
+      let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (CurrSpeed > MaxSpeed + 10) {
-         mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
+         mp.events.callRemote('server:anti_cheat:detected', 12, 'warn'); // 6 Warnova kick/ban
       }
    } else {
 
@@ -45,7 +45,7 @@ function SpeedHack () {
 setInterval(() => {
    SpeedHack ();
    FlyHack ();
-   AllowedWeapons ();
+   UnAllowedWeapons ();
 }, 1000);
 
 
