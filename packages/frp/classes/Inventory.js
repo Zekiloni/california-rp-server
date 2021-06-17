@@ -2,24 +2,15 @@
 
 let { ItemRegistry, ItemEntities } = require('./Items.Registry');
 
-let Items = require('../models/Item');
-
+require('../models/Item');
 
 class Inventory {
    constructor() {
       mp.events.add({
 
          'server:player.inventory.item:pickup': async (player) => {
-            let Near = await frp.Items.Near(player);
-            if (Near) { Near.Pickup(player); }
-         },
-
-         'server:player.inventory.item.weapon:take': async (player, item) => {
-            let Item = await frp.Items.findOne({ where: { id: item } });
-            Item.Entity = ItemEntities.Wheel;
-            let Weapon = ItemRegistry[Item.item].weapon;
-            player.giveWeapon(mp.joaat(Weapon), Item.Ammo);
-            await Item.save();
+            const Near = await frp.Items.Near(player);
+            if (Near) Near.Pickup(player);
          },
 
          'server:player.inventory.item.weapon:put': async (player, item, ammo) => {
@@ -63,7 +54,6 @@ class Inventory {
                const Inventory = await frp.Items.Inventory(player);
                return Inventory;
             });
-
          }
       });
    }
