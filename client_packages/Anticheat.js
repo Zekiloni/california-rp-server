@@ -9,7 +9,9 @@ const FlaggedWords = ['Cit', 'Čit', 'Admin'],
       Player = mp.players.local;
 
 
-      
+function TeleportHack() {
+   
+}
 
 function UnAllowedWeapons () {
    for (const WeaponHash in BlacklistedWeapons) {
@@ -31,15 +33,15 @@ function SpeedHack () {
    if (Player.vehicle) {
       let Vehicle = Player.vehicle;
       let VehSpeed = Vehicle.getSpeed();
-      let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.hash);
+      let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (VehSpeed > MaxSpeed + 10) {
          mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
       }
    } 
    else {
-      let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player);
-      mp.gui.chat.push('OnFoot speed' + PedSpeed);
+      let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player.handle);
+      mp.gui.chat.push('OnFoot speed ' + PedSpeed);
    }
 }
 
