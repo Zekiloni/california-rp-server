@@ -47,7 +47,7 @@ class Admin {
       mp.players.forEach(async (target) => { 
          const Account = await frp.Accounts.findOne({ where: { id: target.account }});
          if (Account.Administrator > 0) { 
-            target.sendMessage('[ !!! ] : ' + message, frp.Globals.Colors.admin);
+            target.sendMessage('[ ! ! ! ] : ' + message, frp.Globals.Colors.admin);
          }
       })
    }

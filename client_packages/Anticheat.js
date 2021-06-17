@@ -10,7 +10,11 @@ const FlaggedWords = ['Cit', 'Čit', 'Admin'],
 
 
 function TeleportHack() {
-   
+   if (Player.isRagdoll()) {
+      mp.gui.chat.push('jeste ragdoll')
+   } else {
+      mp.gui.chat.push('nije ragdoll');
+   }
 }
 
 function UnAllowedWeapons () {
@@ -50,6 +54,7 @@ setInterval(() => {
    SpeedHack ();
    FlyHack ();
    AllowedWeapons ();
+   TeleportHack ();
 }, 1000);
 
 
