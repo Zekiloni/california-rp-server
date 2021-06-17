@@ -44,8 +44,9 @@ function SpeedHack () {
       }
    } 
    else {
-      let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player);
-     //  mp.gui.chat.push('OnFoot speed' + PedSpeed);
+      //let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player);
+     let PedSpeed = Player.getSpeed();
+     mp.gui.chat.push('OnFoot speed ' + PedSpeed);
    }
 }
 
