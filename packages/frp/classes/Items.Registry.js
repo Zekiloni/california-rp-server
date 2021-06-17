@@ -59,30 +59,35 @@ new Item('Buckshot Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag1', 0, { quan
 new Item('Slug Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag2', 0, { quantity: 25 }, function () { });
 
 // WEAPONS / ORUZIJE
+
 new Item('Antique Cavalry Dagger', ItemType.Weapon, 'w_me_dagger', 0, { weapon: 'weapon_dagger' }, function (player, ammo = 0) {
-    player.giveWeapon(mp.joaat(this.weapon), ammo);
+   player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
 new Item('Baseball Bat', ItemType.Weapon, 'w_me_bat', 0, { weapon: 'weapon_bat' }, function (player, ammo = 0) {
-    player.giveWeapon(mp.joaat(this.weapon), ammo);
+   player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
 new Item('Crowbar', ItemType.Weapon, 'w_me_crowbar', 0, { weapon: 'weapon_crowbar' }, function (player, ammo = 0) {
-    player.giveWeapon(mp.joaat(this.weapon), ammo);
+   player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
 new Item('Flashlight', ItemType.Weapon, 'w_me_flashlight', 0, { weapon: 'weapon_flashlight' }, function (player, ammo = 0) {
-    player.giveWeapon(mp.joaat(this.weapon), ammo);
+   player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
 new Item('Golf Club', ItemType.Weapon, 'w_me_gclub', 0, { weapon: 'weapon_golfclub' }, function (player, ammo = 0) {
-    player.giveWeapon(mp.joaat(this.weapon), ammo);
+   player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
+
 new Item('Hammer', ItemType.Weapon, 'w_me_hammer', 0, { weapon: 'weapon_hammer' }, function (player, ammo = 0) {
-    player.giveWeapon(mp.joaat(this.weapon), ammo);
+   player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
+
 new Item('Hatchet', ItemType.Weapon, 'w_me_hatchet', 0, { weapon: 'weapon_hatchet' }, function (player, ammo = 0) {
     player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
+
 new Item('Brass Knuckles', ItemType.Weapon, 'w_me_knuckle_dmd', 0, { weapon: 'weapon_knuckle' }, function (player, ammo = 0) {
     player.giveWeapon(mp.joaat(this.weapon), ammo);
 });
+
 new Item('Knife', ItemType.Weapon, 'w_me_knife_01', 0, { weapon: 'weapon_knife' }, function (player, ammo = 0) {
     player.giveWeapon(mp.joaat(this.weapon), ammo);
 });

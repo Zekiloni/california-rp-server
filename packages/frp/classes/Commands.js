@@ -23,7 +23,7 @@ for (const file of commandFiles) {
    });
 }
 
-mp.events.add('playerCommand', (player, command) => {
+mp.events.add('playerCommand', async (player, command) => {
    if (!player.data.logged) return false;
 
    let args = command.split(/ +/);
@@ -31,7 +31,8 @@ mp.events.add('playerCommand', (player, command) => {
    let cmd = frp.Commands[commandName];
 
    if (cmd) {
-      let Account = player.Account(), Character = player.Character();
+      const Account = frp.Accounts.findOne({ where: { id: player.account } });
+      const Character = frp.Characters.findOne({ where: { id: player.character } });
       
       if (cmd.admin && Account.Administrator < cmd.admin) return player.Notification('Nije vam dozvoljeno !', frp.Globals.Notification.Error, 4);
       

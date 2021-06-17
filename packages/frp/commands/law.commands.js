@@ -1,14 +1,16 @@
 let { FactionTypes } = require('../classes/Factions');
+
 module.exports = {
-    commands: [
+   commands: [
       {
          name: 'equip',
          call: async (player, args) => {
             const character = await frp.Characters.findOne({ where: { id: player.character }});
             
-            const Weapons = ['weapon_stungun', 'weapon_combatpistol', 'weapon_nightstick', 'weapon_flashlight', 'weapon_pumpshotgun', 'weapon_carbinerifle'];
+            const Weapons = ['Pump Shotgun', 'Combat Pistol', 'Nightstick', 'Flashlight', 'Carbine Rifle', 'Stun Gun'];
             for (let i in Weapons) {
-               player.giveWeapon(mp.joaat(Weapons[i]), 9999);
+               const Weapon = Weapons[i];
+               frp.Items.New(Weapon, 1, 0, player.character, null, null, 0, 100);
             }
             
             if (character.Gender == 1) {

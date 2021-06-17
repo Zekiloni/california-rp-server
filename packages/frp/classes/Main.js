@@ -1,6 +1,6 @@
 module.exports = class Main {
 
-   static Terminal(status, msg) {
+   static Terminal (status, msg) {
       const colors = ['\x1b[31m', '\x1b[33m', '\x1b[32m', '\x1b[37m'];
       let time = this.DateTime();
       switch (status) {
@@ -22,6 +22,14 @@ module.exports = class Main {
    static Logger(type, message, account = 0, character = 0, participant = 0) {
       frp.Logs.create({ Type: Types[type], Account: account, Character: character, Participant: participant, Message: message });
    }
+   
+  static Size (object) {
+      let size = 0, key;
+      for (key in object) {
+        if (object.hasOwnProperty(key)) size ++;
+      }
+      return size;
+    };
 
    static HexToDecimal(hex) {
       return parseInt(hex.replace('#', ''), 16);
