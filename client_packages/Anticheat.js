@@ -12,8 +12,8 @@ const FlaggedWords = ['Cit', 'Čit', 'Admin'],
       
 
 function AllowedWeapons () {
-   for (const Weapon in BlacklistedWeapons) {
-      if (Player.Weapon === Weapon) {
+   for (const WeaponHash in BlacklistedWeapons) {
+      if (Player.Weapon === WeaponHash) {
          mp.events.callRemote('server:ac.detected', 6, 'ban');
       }
    }
