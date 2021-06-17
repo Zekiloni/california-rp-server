@@ -49,7 +49,7 @@ class Anticheat {
       },
       'server:ac.chat', async (player, message) => {
          const Character = await frp.Characters.findOne({ where: { id: player.character } })
-         frp.Admin.Warning(`[! ! !] ${Character.Name}: ${message}`);
+         frp.Admin.Warning(`${Character.Name}: ${message}`);
       });
    }
 }
