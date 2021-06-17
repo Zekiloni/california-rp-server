@@ -30,14 +30,16 @@ function FlyHack () {
 function SpeedHack () {
    if (Player.vehicle) {
       let Vehicle = Player.vehicle;
-      let CurrSpeed = Vehicle.getSpeed();
+      let VehSpeed = Vehicle.getSpeed();
       let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
-      if (CurrSpeed > MaxSpeed + 10) {
-         mp.events.callRemote('server:anti_cheat:detected', 12, 'warn'); // 6 Warnova kick/ban
+      if (VehSpeed > MaxSpeed + 10) {
+         mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
       }
-   } else {
-
+   } 
+   else {
+      let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player);
+      mp.gui.chat.push('OnFoot speed' + PedSpeed);
    }
 }
 
