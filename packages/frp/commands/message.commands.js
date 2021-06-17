@@ -73,13 +73,13 @@ module.exports = {
       {
          name: 'w',
          desc: 'Sapnuti nekome nesto',
-         params: '[id / ime] [tekst]',
+         params: ['igrac', 'tekst'],
          call: (player, args) => {
                if (args.length < 2 || !args[0].length || !args[1].length)
                   return false;
                let target = mp.players.find(args[0]);
                if (target) {
-                  if (!player.isNear(target))
+                  if (!player.IsNear(target))
                      return false;
                   let message = args.slice(1).join(' ');
                   target.sendMessage(`${player.name} vam sapuće: ${message}`, mp.colors.white[2]);

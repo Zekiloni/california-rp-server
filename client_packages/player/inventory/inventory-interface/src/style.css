@@ -32,13 +32,11 @@ body {
    min-width: 750px;
    width: auto;
    padding: 15px 10px;
-   /* height: 525px; */
    background: linear-gradient(179deg, rgb(25 25 25 / 75%), rgb(0 0 0 / 0%));
    box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
    display: flex;
    justify-content: space-around;
-   /* align-items: center; */
-   /* border: 1px solid rgb(60 60 60 / 10%); */
+   transition: all 0.35s ease;
 }
 
 
@@ -57,16 +55,9 @@ i.fa, i.fas {
    text-shadow: 0 1px 20px rgb(250 184 10 / 45%);
 }
 
-/* i.fa::after, i.fas::after, img.icon::after {
-   content: '';
-   position: absolute;
-   top: -5px;
-   left: -8px;
-   width: 35px;
-   height: 35px;
-   background-image: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 12%) 1px, transparent 0);
-   background-size: 15px 15px;
-} */
+.close {transition: all 0.35s ease;position: absolute !important;top: 15px;right: 15px;color: rgb(255 255 255 / 62%) !important;font-size: 20px;text-shadow: none !important;}
+.close:hover { opacity: 0.2; }
+
 
 .clothing {
    width: 275px;
@@ -138,6 +129,30 @@ ul.options h4 { text-align: center; font-style: italic; color: #e2e2e2; letter-s
 .header h2 i.fa { margin-right: 10px; }
 
 * { user-select: none; }
+
+
+.give-modal { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+.give-modal .give-box {width: 320px;height: 225px;padding: 15px 10px;background: linear-gradient(179deg, rgb(25 25 25 / 75%), rgb(0 0 0 / 0%));position: relative;box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;display: flex;flex-direction: column;}
+.give-box:focus { outline: none; }
+.give-box h2 { margin: 0; text-transform: uppercase; font-weight: 300; color: #b7b7b7; letter-spacing: 2.5px; text-shadow: 0 0 2px rgb(0 0 0 / 77%); }
+
+.item-to-give {color: #cdcdcd;font-weight: 300;margin: 2.5px 0;}
+.item-to-give b { color: whitesmoke; }
+
+.players-list { padding: 0; list-style: none; }
+.players-list li {transition: all 0.35s ease;font-size: 13px;padding: 5px 10px;background: rgb(0 0 0 / 24%);margin: 3px 0;}
+.players-list li:hover { color: #fbc60c; background: rgb(0 0 0 / 14%); }
+
+input[type=number] {letter-spacing: 1.2px;border: 1px solid rgb(121 121 121 / 13%);color: #cdcdcd;background: rgb(21 21 21 / 75%);position: relative;padding: 1px 15px;font-size: 15px;font-weight: 300;box-shadow: 0 5px 10px rgb(12 12 12 / 10%);transition: all 0.45s ease;}
+input[type=number]:focus { color: white; }
+
+.invalid { border-color: tomato !important; }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+
+*:focus { outline: none; }
 
 @keyframes slide-in {
    0% { transform: translateY(-800px); }  

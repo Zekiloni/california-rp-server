@@ -10,7 +10,6 @@ frp.Items = frp.Database.define('item', {
       Quantity: { type: DataTypes.INTEGER, defaultValue: 1 },
       Entity: { type: DataTypes.INTEGER, defaultValue: -1 },
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
-      isWeapon: { type: DataTypes.BOOLEAN, defaultValue: false },
       Ammo: { type: DataTypes.INTEGER, defaultValue: 0 },
       Last_Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Position: {
@@ -45,7 +44,6 @@ frp.Items = frp.Database.define('item', {
 
 
 frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0) {
-   console.log('DEBUG ' + 2);
    const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation, Dimension: dimension });
    await Item.Refresh();
 };
@@ -61,8 +59,8 @@ frp.Items.Inventory = async function (player) {
 };
 
 
-frp.Items.HasItem = async function (player, item) {
-   let Item = await frp.Items.findOne({ where: { Owner: player.character, Item: item } });
+frp.Items.HasItem = async function (character, item) {
+   const Item = await frp.Items.findOne({ where: { Owner: character, Item: item } });
    return Item == null ? false : Item;
 };
 
@@ -104,10 +102,12 @@ frp.Items.prototype.Drop = async function (player, place, quantity = 1) {
       this.Dimension = player.dimension;
       this.Refresh();
    } else {
-      this.Quantity -= Quantity;
+      this.increment('Quantity', { by: -quantity });
       frp.Items.New(this.Item, quantity, ItemEntities.Ground, 0, Position.position, Position.rotation, player.dimension);
    }
    // PORUKA: Bacio taj i taj predmet
+   
+   this.Last_Owner = player.character;
    await this.save();
 };
 
@@ -122,22 +122,31 @@ frp.Items.prototype.Pickup = async function (player) {
 
 
 frp.Items.prototype.Give = async function (player, target, quantity) {
-   if (player.dist(target.position) < 2.5) return; // PORUKA: Taj igrac se ne nalazi u vasoj blizini
-   let Has = await frp.Items.HasItem(target, this.Item);
+   if (player.dist(target.position) > 3.5) return; // PORUKA: Taj igrac se ne nalazi u vasoj blizini
 
+   const Has = await frp.Items.HasItem(target.character, this.Item);
+
+   console.log(this.Quantity + ' je kolicina itema, data kolicina je ' + quantity);
    if (this.Quantity == quantity) {
       this.Owner = target.character;
+      await this.save();
+      console.log('Item prepisan igracu.');
    } else {
-      this.Quantity -= Quantity;
-      if (Has) {
-         Has.Quantity += quantity;
+      console.log('Nije data cela kolicina predmeta');
+      this.increment('Quantity', { by: -quantity });
+      console.log('Oduzeta je kolicina predmeta koju je igrac imao');
+      if (Has && ItemRegistry[Has.Item].type != ItemType.Weapon) {
+         console.log('Meta je imala vec predmet dodata je kolicina');
+         Has.increment('Quantity', { by: quantity });
       } else {
+         console.log('Meta nije imala predmet, napravljen joj je');
          frp.Items.New(this.Item, quantity, ItemEntities.Player, target.character);
       }
    }
 
-   // PORUKA: Taj igrac je dao taj predmet tom i tom
-   await this.save();
+   player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje ${this.Item} ${target.name}. (( Give ))`, frp.Globals.Colors.purple);
+
+   return frp.Items.Inventory(player);
 };
 
 
@@ -167,7 +176,8 @@ frp.Items.prototype.Use = async function (player) {
       ItemRegistry[this.Item].use(player, this.Ammo);
       await this.save();
    } else {
-      await this.increment('Quantity', { by: -1 });
+      const Used = await this.increment('Quantity', { by: -1 });
+      console.log(Used)
       ItemRegistry[this.Item].use(player);
       // if quantity == 0 destroy item
    }

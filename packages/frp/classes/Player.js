@@ -31,7 +31,7 @@ mp.Player.prototype.sendMessage = function (message, color) {
    this.outputChatBox(`!{${color}}${message}`);
 };
 
-mp.Player.prototype.isNear = function (target) {
+mp.Player.prototype.IsNear = function (target) {
    return this.dist(target.position) < 3 ? true : false;
 };
 
@@ -96,10 +96,10 @@ mp.players.find = (playerName) => {
    if (!foundPlayer) {
       mp.players.forEach((target) => {
          if (target.name === playerName) {
-               foundPlayer = target;
+            foundPlayer = target;
          }
          else if (target.name.includes(playerName)) {
-               foundPlayer = target;
+            foundPlayer = target;
          }
       });
    }

@@ -17,7 +17,7 @@
       <div id="inventory">
          <div class="ground"> </div>
 
-         <div class="main">
+         <div class="main" v-bind:style="{ opacity: give.modal ? '0.2' : '1.0' }">
             <div class="clothing">
 
             </div>
@@ -54,12 +54,32 @@
             </div>
          </div>
 
+         <transition name="bounce">
+            <div class="give-modal" v-if="give.modal">
+               <div class="give-box" >
+                  <h2> <i class="fas fa-exchange-alt" aria-hidden="true"></i> Davanje Predmeta </h2>
+                  <i v-on:click="give.modal = false, give.item = null" class="close fa fa-times" aria-hidden="true"> </i>
+
+                  <h4 class="item-to-give"> Predmet za davanje <b>{{ Item(give.item).name }}</b> </h4>
+                  <h4 class="item-to-give"> Količina 
+                     <input type="number" min="1" v-model="give.quantity" :max="Item(give.item).quantity" :value="Item(give.item).quantity"
+                     :class="{ 'invalid': give.quantity > Item(give.item).quantity || give.quantity < 1 }"> 
+                  </h4>
+                  <ul class="players-list" v-if="nearbyPlayers.length > 0">
+                     <li v-for="(player, i) in nearbyPlayers" v-on:click="Give(player.id, give.item, give.quantity)"> 
+                        <small> {{ player.id }}. </small>{{ player.name }}
+                     </li>
+                  </ul>
+                  <h4 v-else> Nema igrača u vašoj blizini. </h4>
+               </div>
+            </div>
+         </transition>
 
          <transition name="bounce">
             <ul class="options" v-if="menu.item" v-bind:style="{ top: menu.top + 'px', left: menu.left + 'px' }" ref="menu" tabindex="-1" v-on:blur="CloseMenu()">
                <h4> {{ player.items.find(element => element.id === menu.item).name }} </h4>
                <li v-on:click="Drop(menu.item)"> Baci Predmet </li>
-               <li> Daj Predmet </li>
+               <li v-on:click="GiveTry(menu.item)"> Daj Predmet </li>
             </ul>
          </transition>
       </div>
@@ -75,9 +95,9 @@
                   maximum: 25,
                   items: [
                      { id: 3, name: 'Assault Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     { id: 4, name: 'awdawd Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     { id: 5, name: 'awdawd Rifle', quantity: 1, entity: 3, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     { id: 6, name: 'awdaww Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' }
+                     { id: 4, name: 'awdawd Rifle', quantity: 4, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     { id: 5, name: 'awdawd Rifle', quantity: 4, entity: 3, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     { id: 6, name: 'awdaww Rifle', quantity: 3, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' }
                   ], 
 
                   backpack: [
@@ -89,6 +109,12 @@
 
                entity: { Player: 0, Wheel: 3 },
 
+               give: { 
+                  modal: false,
+                  item: null,
+                  quantity: null,
+               },
+
                menu: {
                   item: null,
                   top: 0,
@@ -97,6 +123,11 @@
 
                modal: null,
                selected: null,
+
+               nearbyPlayers: [
+                  { id: 1, name: 'Dimitrije Hodzic' },
+                  { id: 2, name: 'Muharem Petkovic' }
+               ],
 
                audio: {
                   hover: new Audio('src/sounds/hover.mp3')
@@ -124,7 +155,6 @@
                   for (let item of this.player.items) { 
                      if (item.entity == this.entity.Wheel) list.push(item) 
                   }
-                  console.log(list)
                   return list;
                },
 
@@ -147,12 +177,34 @@
                   mp.trigger('client:inventory.item:use', id)
                },
 
+               Item: function (id) {
+                  for (let item of this.player.items) {
+                     if (item.id == id) return item;
+                  }
+               },
+
                Drop: function (item) { 
                   this.menu.item = null;
                   item = this.player.items.find(element => element.id === item);
                   let index = this.player.items.indexOf(item);                        
                   this.player.items.splice(index, 1);
                   mp.trigger('client:inventory.item:drop', item.id, item.hash)
+               },
+
+               Give: function (player, item, quantity) {
+                  if (this.give.quantity > this.Item(item).quantity) return;
+                  this.give.item = null;
+                  this.give.modal = false;
+                  mp.trigger('client:inventory.item:give', player, item, quantity);
+               },
+
+               GiveTry: function (item) {
+                  if (this.give.modal) return;
+                  this.menu.item = null;
+                  this.give.modal = true;
+                  this.give.quantity = this.Item(item).quantity;
+                  this.give.item = item;
+                  mp.trigger('client:inventory.player:nearby');
                }
             }
          })
