@@ -8,16 +8,35 @@ const FlaggedWords = ['Cit', 'Čit', 'Admin'],
                               mp.game.joaat("weapon_raycarbine"), mp.game.joaat("weapon_raypistol")],
       Player = mp.players.local;
 
+let AnticheatSafe = false,
+    AnticheatSafeTimer = null,
+    Positions = [];
+
+// Main timer
+setInterval(() => {
+   SpeedHack ();
+   FlyHack ();
+   UnAllowedWeapons ();
+}, 1000);
+
+/* Teleport hack timer
+setInterval(() => {
+   TeleportHack ();
+}, 2500);*/
 
 function TeleportHack() {
-   if (Player.isRagdoll()) {
-      mp.gui.chat.push('jeste ragdoll')
-   } else {
-      mp.gui.chat.push('nije ragdoll');
+   Positions.push(Player.position);
+   if (Positions.length === 2) {
+      const Vector1 = Positions[0].position;
+      const Vector2 = Positions[1].position;
+
+      const distance = Vector1.subtract(Vector2).length();
+      // mp.gui.chat.push('Distance is ' + distance); // PROVERITI KOLIKO SE PRELAZI PESKE/U KOLIMA/ U HELISU
    }
 }
 
 function UnAllowedWeapons () {
+   if (AnticheatSafe) return;
    for (const WeaponHash in BlacklistedWeapons) {
       if (Player.Weapon === WeaponHash) {
          mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
@@ -26,14 +45,16 @@ function UnAllowedWeapons () {
 }
 
 function FlyHack () {
+   if (AnticheatSafe) return;
    if (Player.isInAir()) {
-      if (!Player.isInAnyHeli() && !Player.isInAnyPlane()) {
+      if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling() && !Player.isJumping()) {
          mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
       }
    }
 }
 
 function SpeedHack () {
+   if (AnticheatSafe) return;
    if (Player.vehicle) {
       let Vehicle = Player.vehicle;
       let VehSpeed = Vehicle.getSpeed();
@@ -44,20 +65,28 @@ function SpeedHack () {
       }
    } 
    else {
-      //let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player);
-     let PedSpeed = Player.getSpeed();
-     mp.gui.chat.push('OnFoot speed ' + PedSpeed);
+      let PedSpeed = Player.getSpeed();
+      if (PedSpeed > 6.2) {
+         mp.events.callRemote('server:ac.detected', 11, 'warn');
+      }
    }
 }
 
-// Main timer
-setInterval(() => {
-   SpeedHack ();
-   FlyHack ();
-   UnAllowedWeapons ();
-   TeleportHack ();
-}, 1000);
-
+mp.events.addDataHandler({
+   'ac_safe': (entity, newValue, oldValue) => {
+      if (entity.type === 'player') {
+         if (newValue) {
+            AnticheatSafe = true;
+            if (AnticheatSafeTimer != null) {
+               clearTimeout(AnticheatSafeTimer);
+               AnticheatSafeTimer = setTimeout(() => {
+                  AnticheatSafe = false;
+               }, 1000);
+            }
+         }
+      }
+   }
+});
 
 // Chat filter
 mp.events.add("playerChat", (text) => {
