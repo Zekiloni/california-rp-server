@@ -23,6 +23,8 @@ let Channels = require('./models/Channel');
 let Houses = require('./models/House');
 
 
+const AntiCheat = require('./classes/Anticheat');
+
 // CLASSES
 
 let Player = require('./classes/Player');

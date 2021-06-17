@@ -20,7 +20,7 @@ function TeleportHack() {
 function UnAllowedWeapons () {
    for (const WeaponHash in BlacklistedWeapons) {
       if (Player.Weapon === WeaponHash) {
-         mp.events.callRemote('server:ac.detected', 6, 'ban');
+         mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
       }
    }
 }
@@ -28,7 +28,7 @@ function UnAllowedWeapons () {
 function FlyHack () {
    if (Player.isInAir()) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane()) {
-         mp.events.callRemote('server:ac.detected', 4, 'warn');
+         mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
       }
    }
 }
@@ -44,8 +44,8 @@ function SpeedHack () {
       }
    } 
    else {
-      let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player.handle);
-      mp.gui.chat.push('OnFoot speed ' + PedSpeed);
+      let PedSpeed = mp.game.invoke('0xD5037BA82E12416F', Player);
+     //  mp.gui.chat.push('OnFoot speed' + PedSpeed);
    }
 }
 
@@ -53,7 +53,7 @@ function SpeedHack () {
 setInterval(() => {
    SpeedHack ();
    FlyHack ();
-   AllowedWeapons ();
+   UnAllowedWeapons ();
    TeleportHack ();
 }, 1000);
 

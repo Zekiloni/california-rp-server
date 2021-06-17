@@ -22,9 +22,9 @@ const Flags = {
 class Anticheat {
    constructor () {
       mp.events.add(
-         'server:ac.detected', async (player, flag, action) => {
+         'server:anti_cheat:detected', async (player, flag, action) => {
             const Character = await frp.Characters.findOne({ where: { id: player.character } })
-            const Account = await frp.Account.findOne({ where: { id: player.account } })
+            const Account = await frp.Accounts.findOne({ where: { id: player.account } })
        
             switch (action) 
             {

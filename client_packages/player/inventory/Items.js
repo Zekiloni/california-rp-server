@@ -2,12 +2,16 @@
 
 
 const Player = mp.players.local;
+
 let browser = null, opened = false, nearbyPlayers = [];
 
+const Keys = {
+   0: 0x31, 1: 0x32, 2: 0x33, 3:0x34
+}
 
 mp.events.add({
 
-  'client:inventory.toggle': async () => { 
+   'client:inventory.toggle': async () => { 
       opened = !opened;
       if (opened) { 
          browser = mp.browsers.new('package://player/inventory/inventory-interface/Inventory.html');
@@ -19,17 +23,17 @@ mp.events.add({
          if (browser) browser.destroy();
          Player.BrowserControls(false, false);
       }
-  },
+   },
 
-  'client:inventory.item:drop': Drop,
+   'client:inventory.item:drop': Drop,
 
-  'client:inventory.item.weapon:put': Put,
+   'client:inventory.item.weapon:put': Put,
 
-  'client:inventory.item:use': Use,
+   'client:inventory.item:use': Use,
 
-  'client:inventory.item:give': Give,
+   'client:inventory.item:give': Give,
 
-  'client:inventory.process.clothing': (index) => { 
+   'client:inventory.process.clothing': (index) => { 
       mp.events.callRemote('server:item.clothing', index);
    },
 
@@ -45,15 +49,8 @@ mp.events.add({
          }
       })
       browser.execute('inventory.nearbyPlayers = ' + JSON.stringify(Nearby));
-   },
-
-  'entityStreamIn': (entity) => {
-      if (entity.type === 'object') {
-         if (entity.item) { 
-         }
-      }
-  }
-})
+   }
+});
 
 
 mp.keys.bind(0x49, false, function() {
@@ -63,6 +60,20 @@ mp.keys.bind(0x49, false, function() {
    }
 });
 
+
+function WeaponSelector () { 
+   for (let i in Keys) {
+      const key = Keys[i];
+      mp.keys.bind(key, false, function() {
+         if (Player.logged && Player.spawned) { 
+            if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
+            mp.gui.chat.push(JSON.stringify(key))
+         }
+      });
+   }
+}
+
+WeaponSelector();
 
 mp.keys.bind(0x59, false, function() {
    if (Player.logged && Player.spawned) { 
@@ -125,10 +136,12 @@ async function Drop (item, hash, quantity = 1) {
 
    object.destroy();
 
+   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:drop', item, JSON.stringify(fixedPosition), quantity);
+   browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+
    mp.game.streaming.requestAnimDict('random@domestic');
    Player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
 
-   mp.events.callRemote('server:player.inventory.item:drop', item, JSON.stringify(fixedPosition), quantity);
 }
 
 

@@ -50,12 +50,21 @@ frp.Items.New = async function (item, quantity, entity, owner, position = null, 
 
 
 frp.Items.Inventory = async function (player) {
-   let Inventory = [];
+   let PlayerInventory = [];
    const Items = await frp.Items.findAll({ where: { Owner: player.character } });
    Items.forEach((Item) => {
-      Inventory.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, entity: Item.Entity, ammo: Item.Ammo, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
+      PlayerInventory.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, entity: Item.Entity, ammo: Item.Ammo, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
    });
-   return Inventory;
+   return PlayerInventory;
+};
+
+frp.Items.Weapons = async function (player) { 
+   let PlayerWeapons = [];
+   const Weapons = await frp.Items.findAll({ where: { Owner: player.character, Entity: ItemEntities.Wheel } });
+   Weapons.forEach((Weapon) => { 
+      PlayerWeapons.push({ id: Weapon.id, name: Weapon.item, ammo: Weapon.Ammo, weapon: ItemRegistry[Weapon.Item].weapon });
+   });
+   return PlayerWeapons;
 };
 
 
@@ -100,15 +109,17 @@ frp.Items.prototype.Drop = async function (player, place, quantity = 1) {
       this.Position = Position.position;
       this.Rotation = Position.rotation;
       this.Dimension = player.dimension;
+      this.Last_Owner = player.character;
       this.Refresh();
+      await this.save();
    } else {
       this.increment('Quantity', { by: -quantity });
       frp.Items.New(this.Item, quantity, ItemEntities.Ground, 0, Position.position, Position.rotation, player.dimension);
    }
-   // PORUKA: Bacio taj i taj predmet
-   
-   this.Last_Owner = player.character;
-   await this.save();
+
+   player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} baca ${this.Item} na zemlju. (( Drop ))`, frp.Globals.Colors.purple);
+
+   return frp.Items.Inventory(player);
 };
 
 

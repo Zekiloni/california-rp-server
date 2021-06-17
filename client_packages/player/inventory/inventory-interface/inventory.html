@@ -186,8 +186,6 @@
                Drop: function (item) { 
                   this.menu.item = null;
                   item = this.player.items.find(element => element.id === item);
-                  let index = this.player.items.indexOf(item);                        
-                  this.player.items.splice(index, 1);
                   mp.trigger('client:inventory.item:drop', item.id, item.hash)
                },
 
