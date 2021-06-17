@@ -27,12 +27,24 @@ mp.events.add({
 
   'client:inventory.item:use': Use,
 
+  'client:inventory.item:give': Give,
+
   'client:inventory.process.clothing': (index) => { 
       mp.events.callRemote('server:item.clothing', index);
    },
 
    'client:inventory.weapon.select': (key, id) => { 
       mp.events.callRemote('server:weapon.select', key, id);
+   },
+
+   'client:inventory.player:nearby': () => { 
+      let Nearby = [];
+      mp.players.forEachInRange(Player.position, 4, (target) => { 
+         if (target.dimension === Player.dimension && target.remoteId != Player.remoteId) { 
+            Nearby.push({ id: target.remoteId, name: target.name });
+         }
+      })
+      browser.execute('inventory.nearbyPlayers = ' + JSON.stringify(Nearby));
    },
 
   'entityStreamIn': (entity) => {
@@ -60,9 +72,17 @@ mp.keys.bind(0x59, false, function() {
 });
 
 
+async function Give (target, item, quantity) {
+   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:give', target, item, quantity);
+   if (Inventory) {
+      mp.gui.chat.push('usaoo u if posle rezultata')
+      browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+      mp.gui.chat.push(JSON.stringify(Inventory));
+   }
+}
+
 async function Use (item) { 
    const Inventory = mp.events.callRemoteProc('server:player.inventory.item:use', item);
-   mp.gui.chat.push(JSON.stringify(Inventory));
    if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
 

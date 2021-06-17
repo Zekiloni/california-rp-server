@@ -34,8 +34,6 @@ class Vehicles {
          },
       
          'server:vehicle:mileage': (player, vehicle, mileage) => {
-            console.log('WORKANG')
-            console.log('Mileage saved my precious');
             console.log('Mileage is ' + mileage);
             vehicle.setVariable('Mileage', mileage);
          }

@@ -3,8 +3,8 @@ module.exports = {
    HappyHours: false,
 
    default: {
-      spawn: new mp.Vector3(-1345.5257, -511.7109, 23.2693),
-      heading: 125,
+      spawn: new mp.Vector3(-1355.6395, -519.5300, 23.4648),
+      heading: 120,
       dimension: 0
    },
 

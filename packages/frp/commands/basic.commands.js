@@ -96,14 +96,14 @@ module.exports = {
             const Target = mp.players.find(args[0]);
             if (Target) {
                const TargetCharacter = await frp.Characters.findOne({ where: { id: Target.character } });
-               const Amount = args[1];
+               const Amount = parseInt(args[1]);
 
                if (Amount > Character.Money) return; // PORUKA: Nemate dovoljno novca
-               if (Amount < 0) return; // PORUKA: Ne mozes dati minus
+               if (Amount < 1) return; // PORUKA: Ne mozes dati minus
 
-               TargetCharacter.GiveMoney(target, Amount);
+               TargetCharacter.GiveMoney(Target, Amount);
                Character.GiveMoney(player, -Amount);
-               player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje nešto novca ${target.name}. (( Pay ))`, frp.Globals.Colors.purple);
+               player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje nešto novca ${Target.name}. (( Pay ))`, frp.Globals.Colors.purple);
             }
          }
       },

@@ -143,7 +143,7 @@ class Houses {
             mp.characters[player.character].giveMoney(player, price / 2);
             player.notification(MSG_HOUSE_SOLD_SUCCSESSFULY, NOTIFY_SUCCESS, 4);
          } else {
-            if (player.isNear(target)) {
+            if (player.IsNear(target)) {
                let targetCharacter = mp.characters[target.character],
                    sellerCharacter = mp.characters[player.character]; 
 

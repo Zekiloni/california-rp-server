@@ -53,6 +53,7 @@ let Jobs = require('./classes/Jobs');
    const Users = await frp.Accounts.count();
    frp.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
+
 })();
 
 
