@@ -16,7 +16,6 @@ class Inventory {
          'server:player.inventory.item.weapon:take': async (player, key) => {
             if (key == 666) { 
                if (frp.Main.Size(player.allWeapons) > 1) { 
-                  console.log(player.allWeapons);
                   player.removeAllWeapons();
               }
             } else { 
@@ -67,9 +66,8 @@ class Inventory {
 
          'server:player.inventory.item:use': async (player, itemID) => {
             const Item = await frp.Items.findOne({ where: { id: itemID }})
-            Item.Use(player).then(async () => { 
-               const Inventory = await frp.Items.Inventory(player);
-               return Inventory;
+            return Item.Use(player).then((inventory) => { 
+               return inventory;
             });
          }
       });

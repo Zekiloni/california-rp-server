@@ -86,20 +86,18 @@ mp.keys.bind(0x59, false, function() {
 async function Give (target, item, quantity) {
    const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:give', target, item, quantity);
    if (Inventory) {
-      mp.gui.chat.push('usaoo u if posle rezultata')
       browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-      mp.gui.chat.push(JSON.stringify(Inventory));
    }
 }
 
 async function Use (item) { 
-   const Inventory = mp.events.callRemoteProc('server:player.inventory.item:use', item);
+   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:use', item);
+   mp.gui.chat.push(JSON.stringify(Inventory))
    if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
 
 async function Put (weapon) { 
-   const Inventory = mp.events.callRemoteProc('server:player.inventory.weapon:put', weapon);
-   mp.gui.chat.push(JSON.stringify(Inventory));
+   const Inventory = await mp.events.callRemoteProc('server:player.inventory.weapon:put', weapon);
    if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
 

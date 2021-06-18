@@ -14,14 +14,14 @@ let AnticheatSafe = false,
     Waypoint = null;
 
 // Main timer
-setInterval(() => {
-   //if (Player.admin) return;
-   //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
+// setInterval(() => {
+//    //if (Player.admin) return;
+//    //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
 
-   SpeedHack ();
-   FlyHack ();
-   UnAllowedWeapons ();
-}, 1000);
+//    SpeedHack ();
+//    FlyHack ();
+//    UnAllowedWeapons ();
+// }, 1000);
 
 
 /*
@@ -60,7 +60,7 @@ function UnAllowedWeapons () {
    if (AnticheatSafe) return;
    for (const WeaponHash in BlacklistedWeapons) {
       if (Player.Weapon === WeaponHash) {
-         mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
+        // mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
       }
    }
 }
@@ -81,8 +81,8 @@ function FlyHack () {
    const GroundZ = mp.game.gameplay.getGroundZFor3dCoord(Player.position.x, Player.position.y, Player.position.z, parseFloat(0), false);
    if (Player.position.z > GroundZ + 5) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
-         mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
-         mp.gui.chat.push(`Ground z: ${GroundZ}`);
+         // mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
+         // mp.gui.chat.push(`Ground z: ${GroundZ}`);
       }
    }
 }
@@ -100,13 +100,13 @@ function SpeedHack () {
       let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (VehSpeed > MaxSpeed + 10) {
-         mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
+        // mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
       }
    } 
    else {
       let PedSpeed = Player.getSpeed();
       if (PedSpeed > 6.2) {
-         mp.events.callRemote('server:ac.detected', 11, 'warn');
+        // mp.events.callRemote('server:ac.detected', 11, 'warn');
       }
    }
 }
@@ -133,7 +133,7 @@ mp.events.add({
    'playerChat': (text) => {
       for (const i of FlaggedWords) {
          if (text.toLowerCase().includes(i.toLowerCase())) {
-            mp.events.callRemote('server:ac.chat', text);
+           // mp.events.callRemote('server:ac.chat', text);
          }
       }
    },

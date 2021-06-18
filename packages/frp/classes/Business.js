@@ -1,1 +1,6 @@
-let Business = require('../models/Business');
+
+
+require('../models/Business');
+
+
+

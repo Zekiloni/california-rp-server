@@ -75,7 +75,6 @@ frp.Items.HasItem = async function (character, item) {
 
 
 frp.Items.prototype.Disarm = async function (player) { 
-   this.Entity = ItemEntities.Player;
    const Weapons = await frp.Items.findAll({ where: { Owner: player.character, Entity: ItemEntities.Wheel } });
    Weapons.forEach(async (Weapon) => { 
       const Hash = mp.joaat(ItemRegistry[Weapon.Item].weapon);
@@ -87,6 +86,9 @@ frp.Items.prototype.Disarm = async function (player) {
          await Weapon.save();  
       }
    });
+
+   this.Entity = ItemEntities.Player;
+   await this.save();
 
    return frp.Items.Inventory(player);
 };
@@ -210,6 +212,8 @@ frp.Items.prototype.Use = async function (player) {
       ItemRegistry[this.Item].use(player);
       // if quantity == 0 destroy item
    }
+   
+   return frp.Items.Inventory(player);
 };
 
 

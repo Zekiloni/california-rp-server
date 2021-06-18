@@ -51,6 +51,8 @@ frp.Accounts.prototype.SetLogged = async function (player, value, character) {
    this.IP_Adress = player.ip;
    
    if (this.Hardwer == null || this.Social_Club == null) {
+      const Already = await frp.Accounts.findOne({ where: { Social_Club: player.socialClub, Hardwer: player.serial } });
+      if (Already) player.kick('Korisnicki racun sa tim socialom vec postoji');
       this.Hardwer = player.serial;
       this.Social_Club = player.socialClub;
    }
