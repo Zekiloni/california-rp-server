@@ -25,8 +25,8 @@ const Flags = {
 
 class Anticheat {
    constructor () {
-      mp.events.add(
-         'server:anti_cheat:detected', async (player, flag, action, comment = undefined) => {
+      mp.events.add({
+         'server:anti_cheat:detected': async (player, flag, action, comment = undefined) => {
             const Character = await frp.Characters.findOne({ where: { id: player.character } })
             const Account = await frp.Accounts.findOne({ where: { id: player.account } })
        
@@ -50,20 +50,12 @@ class Anticheat {
                   // Ban
                   break;
             }
-<<<<<<< HEAD
          },
-
+         
          'server:ac.chat': async (player, message) => {
             const Character = await frp.Characters.findOne({ where: { id: player.character } })
             frp.Admin.Warning(`${Character.Name}: ${message}`);
          }
-=======
-      },
-      
-      'server:ac.chat', async (player, message) => {
-         const Character = await frp.Characters.findOne({ where: { id: player.character } })
-         frp.Admin.Warning(`${Character.Name}: ${message}`);
->>>>>>> d3d826cde902e5a31ca9312729df6cb2b7a3a29c
       });
    }
 }
