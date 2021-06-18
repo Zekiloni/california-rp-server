@@ -6,8 +6,8 @@ module.exports = {
          call: (player, args) => {
             let help = '';
             for (let i in frp.Commands) {
-               const command = frp.Commands[i], command = cmd.desc;
-               if (!command.admin) help += `/${command.name} `;
+               const command = frp.Commands[i]
+               if (!command.admin) help += ('/' + command.name + ' - ' + command.desc);
             }
             player.sendMessage(help, frp.Globals.Colors.info);
          }

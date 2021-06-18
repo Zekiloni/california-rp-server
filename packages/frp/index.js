@@ -59,12 +59,12 @@ let Jobs = require('./classes/Jobs');
 
 
 
-const Exit = () => {
+const Exit = async () => {
    frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');
-   // await mp.players.broadcast(`!{red}Server se gasi. Pridružite se na F1.`);
-   // for (let player of mp.players.toArray()) {
-   //    player.kick('Server se gasi...');
-   // };
+   mp.players.broadcast('Server se gasi. Pridružite se na F1.');
+   for (let player of mp.players.toArray()) {
+      player.kick('Server se gasi...');
+   };
    // await - send broadcast to players
    process.exit();
 };
