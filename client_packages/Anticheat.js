@@ -60,7 +60,7 @@ function UnAllowedWeapons () {
    if (AnticheatSafe) return;
    for (const WeaponHash in BlacklistedWeapons) {
       if (Player.Weapon === WeaponHash) {
-         mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
+        // mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
       }
    }
 }
@@ -69,7 +69,7 @@ function FlyHack () {
    if (AnticheatSafe) return;
    if (Player.isInAir()) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling() && !Player.isJumping()) {
-         mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
+        // mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
       }
    }
 }
@@ -82,13 +82,13 @@ function SpeedHack () {
       let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (VehSpeed > MaxSpeed + 10) {
-         mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
+        // mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
       }
    } 
    else {
       let PedSpeed = Player.getSpeed();
       if (PedSpeed > 6.2) {
-         mp.events.callRemote('server:ac.detected', 11, 'warn');
+        // mp.events.callRemote('server:ac.detected', 11, 'warn');
       }
    }
 }
@@ -116,7 +116,7 @@ mp.events.add(
    'playerChat', (text) => {
       for (const i of FlaggedWords) {
          if (text.toLowerCase().includes(i.toLowerCase())) {
-            mp.events.callRemote('server:ac.chat', text);
+           // mp.events.callRemote('server:ac.chat', text);
          }
       }
    },

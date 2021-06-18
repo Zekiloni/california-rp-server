@@ -46,7 +46,23 @@ frp.Business = frp.Database.define('business', {
 );
 
 
-frp.Business.prototype.Init = async function () {
+
+frp.Business.New = async function (player, type, walkin, price) {
+
+   if (!BusinessTypes[type]) return;
+
+   const Position = player.position;
+   const Dimension = player.dimension;
+   const Walk_in = walkin == 1 ? true : false;
+   const Products = BusinessTypes[type].products;
+
+
+   const Business = await frp.Business.create({ Name: ime, Price: price, Walk_in: Walk_in, Products: Products });
+   await Business.Refresh();
+};
+
+
+frp.Business.prototype.Refresh = async function () {
    if (this.colshape && this.blip) return;
    if (this.Position && this.Rotation) {
       this.colshape = mp.colshapes.newRectangle(this.Position.x, this.Position.y, 3, 2, 0);
@@ -138,7 +154,7 @@ frp.Business.prototype.WorkersRemove = async function (player) {
 
 
 (async () => {
-   await frp.Business.sync();
+   await frp.Business.sync({ force: true });
 
    const Businesses = await frp.Business.findAll();
    Businesses.forEach(async (Bussines) => {

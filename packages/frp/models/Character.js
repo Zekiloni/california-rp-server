@@ -73,7 +73,11 @@ frp.Characters = frp.Database.define('character', {
 frp.Characters.prototype.Spawn = async function (player) {
    let account = await player.Account();
 
-   account.SetLogged(player, true, this.id);
+   try { 
+      await account.SetLogged(player, true, this.id);
+   } catch (e) { 
+      console.log(e);
+   }
    player.character = this.id;
    player.name = this.Name;
    player.setVariable('spawned', true);
