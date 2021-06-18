@@ -5,21 +5,20 @@ const Flags = {
    1 : 'Armour hack',
    2 : 'Godmode',
    3 : 'Teleport hack',
-   4 : 'Fly hack',
-   5 : 'Ammo hack',
-   6 : 'Blacklisted weapon',
-   7 : 'High ping',
-   8 : 'Headshot Aim',
-   9 : 'Aim',
-   10 : 'No Reload',
-   11 : 'Speed hack (OnFoot)',
-   12 : 'Speed hack (Vehicle)',
-   13 : 'Vehicle Repair',
-   14 : 'Vehicle Mods',
-   15 : 'Teleport Hack (OnFoot)',
-   16 : 'Teleport Hack (Vehicle)',
-   17 : 'Teleport Hack (Water)',
-   18 : 'Teleport Hack (Waypoint)'
+   4 : 'Ammo hack',
+   5 : 'Blacklisted weapon',
+   6 : 'High ping',
+   7 : 'Headshot Aim',
+   8 : 'Aim',
+   9 : 'No Reload',
+   10 : 'Speed hack (OnFoot)',
+   11 : 'Speed hack (Vehicle)',
+   12 : 'Vehicle Repair',
+   13 : 'Vehicle Mods',
+   14 : 'Fly/Teleport Hack (OnFoot)',
+   15 : 'Fly/Teleport Hack (Vehicle)',
+   16 : 'Fly/Teleport Hack (Water)',
+   17 : 'Fly/Teleport Hack (Waypoint)'
 }
 
 
@@ -37,7 +36,7 @@ class Anticheat {
                   //player.kick();
                   break;
                case 'warn':
-                  Account.Warns ++;
+                  //Account.Warns ++;
                   if (Account.Warns > 5) {
                      frp.Admin.Warning(`${Character.Name} je banovan od strane antičita. Razlog: ${Flags[flag]}[6/6].`);
                      // Ban
