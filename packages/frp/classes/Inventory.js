@@ -13,10 +13,19 @@ class Inventory {
             if (Near) Near.Pickup(player);
          },
 
-         'server:player.inventory.item.weapon:put': async (player, item, ammo) => {
-            let Item = await frp.Items.findOne({ where: { id: item } });
-            Item.Entity = ItemEntities.Player;
-            await Item.save();
+         'server:player.inventory.item.weapon:take': async (player, key) => {
+            if (key == 666) { 
+               if (frp.Main.Size(player.allWeapons) > 1) { 
+                  console.log(player.allWeapons);
+                  player.removeAllWeapons();
+              }
+            } else { 
+               const Weapons = await frp.Items.Weapons(player);
+               if (Weapons.length > 0 && Weapons[key]) { 
+                  const Item = Weapons[key];
+                  ItemRegistry[Item.name].use(player, Item.ammo);
+               }
+            }
          }
       });
 
@@ -27,6 +36,14 @@ class Inventory {
                return Item.Drop(player, position, quantity).then((inventory) => { 
                   return inventory;
                });
+            });
+         },
+
+         'server:player.inventory.weapon:put': (player, item) => { 
+            return frp.Items.findOne({ where: { id: item } }).then((Weapon) => { 
+               return Weapon.Disarm(player).then((inventory) => { 
+                  return inventory;
+               }) 
             });
          },
 
@@ -58,4 +75,7 @@ class Inventory {
       });
    }
 }
+
+
 new Inventory();
+

@@ -43,8 +43,8 @@ frp.Items = frp.Database.define('item', {
 );
 
 
-frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0) {
-   const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation, Dimension: dimension });
+frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0, ammo = 0) {
+   const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation, Dimension: dimension, Ammo: ammo });
    await Item.Refresh();
 };
 
@@ -62,7 +62,7 @@ frp.Items.Weapons = async function (player) {
    let PlayerWeapons = [];
    const Weapons = await frp.Items.findAll({ where: { Owner: player.character, Entity: ItemEntities.Wheel } });
    Weapons.forEach((Weapon) => { 
-      PlayerWeapons.push({ id: Weapon.id, name: Weapon.item, ammo: Weapon.Ammo, weapon: ItemRegistry[Weapon.Item].weapon });
+      PlayerWeapons.push({ id: Weapon.id, name: Weapon.Item, ammo: Weapon.Ammo, weapon: ItemRegistry[Weapon.Item].weapon });
    });
    return PlayerWeapons;
 };
@@ -71,6 +71,24 @@ frp.Items.Weapons = async function (player) {
 frp.Items.HasItem = async function (character, item) {
    const Item = await frp.Items.findOne({ where: { Owner: character, Item: item } });
    return Item == null ? false : Item;
+};
+
+
+frp.Items.prototype.Disarm = async function (player) { 
+   this.Entity = ItemEntities.Player;
+   const Weapons = await frp.Items.findAll({ where: { Owner: player.character, Entity: ItemEntities.Wheel } });
+   Weapons.forEach(async (Weapon) => { 
+      const Hash = mp.joaat(ItemRegistry[Weapon.Item].weapon);
+      if (player.allWeapons[Hash]) {
+         const Ammo = player.allWeapons[Hash];
+         console.log('Weapon Hash je ' + Hash);
+         console.log('Weapon Ammo iz liste igracevih oruzija je ' + Ammo);   
+         Weapon.Ammo = Ammo;
+         await Weapon.save();  
+      }
+   });
+
+   return frp.Items.Inventory(player);
 };
 
 

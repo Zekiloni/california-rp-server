@@ -6,7 +6,7 @@ const Player = mp.players.local;
 let browser = null, opened = false, nearbyPlayers = [];
 
 const Keys = {
-   0: 0x31, 1: 0x32, 2: 0x33, 3:0x34
+   0: 0x31, 1: 0x32, 2: 0x33, 3:0x34, 666: 0x09
 }
 
 mp.events.add({
@@ -66,8 +66,8 @@ function WeaponSelector () {
       const key = Keys[i];
       mp.keys.bind(key, false, function() {
          if (Player.logged && Player.spawned) { 
-            if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
-            mp.gui.chat.push(JSON.stringify(key))
+            if (Player.cuffed || mp.players.local.isTypingInTextChat) return;
+            mp.events.callRemote('server:player.inventory.item.weapon:take', i);
          }
       });
    }
@@ -97,8 +97,10 @@ async function Use (item) {
    if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
 
-function Put (item) { 
-   mp.events.callRemote('server:player.inventory.item.weapon:put', item);
+async function Put (weapon) { 
+   const Inventory = mp.events.callRemoteProc('server:player.inventory.weapon:put', weapon);
+   mp.gui.chat.push(JSON.stringify(Inventory));
+   if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
 
 async function Drop (item, hash, quantity = 1) { 
@@ -108,30 +110,30 @@ async function Drop (item, hash, quantity = 1) {
    let rotation = Player.getRotation(2);
 
    let newPos = new mp.Vector3(
-     position.x + Math.cos(((heading + 90) * Math.PI) / 180) * 0.6,
-     position.y + Math.sin(((heading + 90) * Math.PI) / 180) * 0.6,
-     position.z,
+      position.x + Math.cos(((heading + 90) * Math.PI) / 180) * 0.6,
+      position.y + Math.sin(((heading + 90) * Math.PI) / 180) * 0.6,
+      position.z,
    );
 
    let object = mp.objects.new(
-     mp.game.joaat(hash),
-     new mp.Vector3(newPos.x, newPos.y, newPos.z),
-     {
-       alpha: 255,
-       rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z),
-       dimension: Player.dimension,
-     },
+      mp.game.joaat(hash),
+      new mp.Vector3(newPos.x, newPos.y, newPos.z),
+      {
+         alpha: 255,
+         rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z),
+         dimension: Player.dimension,
+      },
    );
 
    while (object.handle === 0) {
-     await mp.game.waitAsync(0);
+      await mp.game.waitAsync(0);
    }
 
    object.placeOnGroundProperly();
 
    let fixedPosition = {
-     position: object.getCoords(false),
-     rotation: object.getRotation(2),
+      position: object.getCoords(false),
+      rotation: object.getRotation(2),
    };
 
    object.destroy();

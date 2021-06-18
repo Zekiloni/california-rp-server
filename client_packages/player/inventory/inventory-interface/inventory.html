@@ -124,10 +124,7 @@
                modal: null,
                selected: null,
 
-               nearbyPlayers: [
-                  { id: 1, name: 'Dimitrije Hodzic' },
-                  { id: 2, name: 'Muharem Petkovic' }
-               ],
+               nearbyPlayers: [],
 
                audio: {
                   hover: new Audio('src/sounds/hover.mp3')
@@ -165,10 +162,6 @@
                },
 
                Put: function (weapon) { 
-                  // let index = this.player.items.indexOf(weapon);
-                  weapon.entity = this.entity.Player;
-                  // this.player.wheel.splice(index, 1);
-                  // this.player.items.push(weapon);
                   mp.trigger('client:inventory.item.weapon:put', weapon.id)
                },
 
