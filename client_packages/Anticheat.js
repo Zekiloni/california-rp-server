@@ -10,30 +10,51 @@ const FlaggedWords = ['Cit', 'Čit', 'Admin'],
 
 let AnticheatSafe = false,
     AnticheatSafeTimer = null,
-    Positions = [];
+    Positions = [],
+    Waypoint = null;
 
 // Main timer
 setInterval(() => {
+   //if (Player.admin) return;
+   //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
+
    SpeedHack ();
    FlyHack ();
    UnAllowedWeapons ();
 }, 1000);
 
-/* Teleport hack timer
+
+/*
+// Teleport hack timer
 setInterval(() => {
    TeleportHack ();
-}, 2500);*/
+}, 1000);
+
 
 function TeleportHack() {
    Positions.push(Player.position);
    if (Positions.length === 2) {
-      const Vector1 = Positions[0].position;
-      const Vector2 = Positions[1].position;
+      const Vector1 = Positions[0];
+      const Vector2 = Positions[1];
 
-      const distance = Vector1.subtract(Vector2).length();
-      // mp.gui.chat.push('Distance is ' + distance); // PROVERITI KOLIKO SE PRELAZI PESKE/U KOLIMA/ U HELISU
+      const Distance = utils.Distance(Vector1, Vector2);
+      if (Player.vehicle) {
+         if (Distance > 55) {
+            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 16, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 17, 'warn', 'WP');
+         }
+      } else if (!Player.vehicle) { 
+         if (Distance > 7 && !Player.isFalling()) {
+            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 15, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
+         }
+      } else if (Player.isInWater()) {
+         if (Distance > 5) {
+            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 17, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
+         }
+      }
+      Positions = [];
    }
 }
+*/
 
 function UnAllowedWeapons () {
    if (AnticheatSafe) return;
@@ -72,6 +93,7 @@ function SpeedHack () {
    }
 }
 
+/*
 mp.events.addDataHandler({
    'ac_safe': (entity, newValue, oldValue) => {
       if (entity.type === 'player') {
@@ -87,12 +109,29 @@ mp.events.addDataHandler({
       }
    }
 });
-
+*/
 // Chat filter
-mp.events.add("playerChat", (text) => {
-   for (const i of FlaggedWords) {
-      if (text.toLowerCase().includes(i.toLowerCase())) {
-         mp.events.callRemote('server:ac.chat', text);
+mp.events.add(
+
+   'playerChat', (text) => {
+      for (const i of FlaggedWords) {
+         if (text.toLowerCase().includes(i.toLowerCase())) {
+            mp.events.callRemote('server:ac.chat', text);
+         }
       }
+   },
+
+   'playerCreateWaypoint', (position) => {
+      if (Player.position === position) return;
+      Waypoint = position;
+   },
+
+   'playerRemoveWaypoint', () => {
+      if ( Waypoint != null )
+         Waypoint = null;
+   },
+
+   'render', () => {
+      
    }
-});
+);
