@@ -14,14 +14,14 @@ let AnticheatSafe = false,
     Waypoint = null;
 
 // Main timer
-setInterval(() => {
-   //if (Player.admin) return;
-   //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
+// setInterval(() => {
+//    //if (Player.admin) return;
+//    //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
 
-   SpeedHack ();
-   FlyHack ();
-   UnAllowedWeapons ();
-}, 1000);
+//    SpeedHack ();
+//    FlyHack ();
+//    UnAllowedWeapons ();
+// }, 1000);
 
 
 /*
@@ -73,10 +73,6 @@ function FlyHack () {
    /*
    if (AnticheatSafe) return;
    if (Player.isInAir()) {
-<<<<<<< HEAD
-      if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling() && !Player.isJumping()) {
-        // mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
-=======
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
          mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
       } 
@@ -85,9 +81,8 @@ function FlyHack () {
    const GroundZ = mp.game.gameplay.getGroundZFor3dCoord(Player.position.x, Player.position.y, Player.position.z, parseFloat(0), false);
    if (Player.position.z > GroundZ + 5) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
-         mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
-         mp.gui.chat.push(`Ground z: ${GroundZ}`);
->>>>>>> d65cdf95cc785f5f848a8b68b46248de6ca89aee
+         // mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
+         // mp.gui.chat.push(`Ground z: ${GroundZ}`);
       }
    }
 }
