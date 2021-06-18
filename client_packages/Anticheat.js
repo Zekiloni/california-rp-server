@@ -23,10 +23,13 @@ setInterval(() => {
    UnAllowedWeapons ();
 }, 1000);
 
+
+/*
 // Teleport hack timer
 setInterval(() => {
    TeleportHack ();
 }, 1000);
+
 
 function TeleportHack() {
    Positions.push(Player.position);
@@ -36,21 +39,22 @@ function TeleportHack() {
 
       const Distance = utils.Distance(Vector1, Vector2);
       if (Player.vehicle) {
-         if (Distance > 110) {
-            WayPoint === null ? mp.events.callRemote('server:anti_cheat:detected', 16, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 17, 'warn', 'WP');
+         if (Distance > 55) {
+            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 16, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 17, 'warn', 'WP');
          }
       } else if (!Player.vehicle) { 
-         if (Distance > 17 && !Player.isFalling()) {
-            WayPoint === null ? mp.events.callRemote('server:anti_cheat:detected', 15, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
+         if (Distance > 7 && !Player.isFalling()) {
+            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 15, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
          }
       } else if (Player.isInWater()) {
-         if (Distance > 11) {
-            WayPoint === null ? mp.events.callRemote('server:anti_cheat:detected', 17, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
+         if (Distance > 5) {
+            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 17, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
          }
       }
       Positions = [];
    }
 }
+*/
 
 function UnAllowedWeapons () {
    if (AnticheatSafe) return;
@@ -125,5 +129,9 @@ mp.events.add(
    'playerRemoveWaypoint', () => {
       if ( Waypoint != null )
          Waypoint = null;
+   },
+
+   'render', () => {
+      
    }
 );

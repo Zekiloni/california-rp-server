@@ -42,7 +42,7 @@ class Anticheat {
                      frp.Admin.Warning(`${Character.Name} je banovan od strane antičita. Razlog: ${Flags[flag]}[6/6].`);
                      // Ban
                   } else {
-                     comment === undefined ? frp.Admin.Warning(`${Character.Name}[${player.remoteId}] je označen da koristi ${Flags[flag]}[${Account.Warns}/6]. Ping: ${player.ping}ms.`) : frp.Admin.Warning(`${Character.Name}[${player.remoteId}] je označen da koristi ${Flags[flag]}[${Account.Warns}/6](${comment}). Ping: ${player.ping}ms.`);
+                     comment === undefined ? frp.Admin.Warning(`${Character.Name}[${player.id}] je označen da koristi ${Flags[flag]}[${Account.Warns}/6]. Ping: ${player.ping}ms.`) : frp.Admin.Warning(`${Character.Name}[${player.remoteId}] je označen da koristi ${Flags[flag]}[${Account.Warns}/6](${comment}). Ping: ${player.ping}ms.`);
                   }
                   break;
                case 'ban':
