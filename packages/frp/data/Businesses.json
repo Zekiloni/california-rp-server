@@ -6,14 +6,7 @@
       "name": "24 / 7 Market",
       "position": { "x": 1, "y": 2, "z": 3 },
       "ipl": "iplname",
-<<<<<<< HEAD
-      "products" : {
-         
-      }
-      
-=======
       "products": { }
->>>>>>> f459402b70421e98e4a7308536943291be57a3f3
    },
 
    {
