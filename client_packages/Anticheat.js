@@ -65,13 +65,31 @@ function UnAllowedWeapons () {
    }
 }
 
+function SubtractVector(v1, v2) {
+   return {"x": v1.x - v2.x,"y": v1.y - v2.y,"z": v1.z - v2.z}
+}
+
 function FlyHack () {
+   /*
    if (AnticheatSafe) return;
    if (Player.isInAir()) {
-      if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling() && !Player.isJumping()) {
+      if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
          mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
+      } 
+   }*/
+
+   const GroundZ = mp.game.gameplay.getGroundZFor3dCoord(Player.position.x, Player.position.y, Player.position.z, parseFloat(0), false);
+   if (Player.position.z > GroundZ + 5) {
+      if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
+         mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
+         mp.gui.chat.push(`Ground z: ${GroundZ}`);
       }
    }
+}
+
+function IsOnFoot() {
+   if(mp.players.local.isFalling() || mp.players.local.isRagdoll()) return false
+   else if(!mp.players.local.vehicle) return true
 }
 
 function SpeedHack () {
@@ -111,9 +129,8 @@ mp.events.addDataHandler({
 });
 */
 // Chat filter
-mp.events.add(
-
-   'playerChat', (text) => {
+mp.events.add({
+   'playerChat': (text) => {
       for (const i of FlaggedWords) {
          if (text.toLowerCase().includes(i.toLowerCase())) {
             mp.events.callRemote('server:ac.chat', text);
@@ -121,17 +138,21 @@ mp.events.add(
       }
    },
 
-   'playerCreateWaypoint', (position) => {
+   'playerCreateWaypoint': (position) => {
       if (Player.position === position) return;
       Waypoint = position;
    },
 
-   'playerRemoveWaypoint', () => {
+   'playerRemoveWaypoint': () => {
       if ( Waypoint != null )
          Waypoint = null;
    },
 
-   'render', () => {
+   'render': () => {
+      
+   },
+
+   'playerWeaponShot': (targetPosition, targetEntity) => {
       
    }
-);
+});
