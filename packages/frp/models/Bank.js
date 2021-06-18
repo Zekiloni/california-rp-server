@@ -43,20 +43,20 @@ frp.Bank.prototype.Deposit = async function (player, value) {
 
 
 frp.Bank.prototype.Tax = async function (player, earnings) {
-   let Character = await player.Character();
-   const Properties = await Character.Properties();
+   const Character = await player.Character();
+   const { Vehicles, Houses, Businesses } = await Character.Properties();
 
    let Tax = 0;
 
-   Properties.Houses.forEach(House => {
+   Houses.forEach(House => {
       Tax += (House.Price / 100) * frp.Settings.Taxes.House;
    });
 
-   Properties.Vehicles.forEach(Vehicle => {
+   Vehicles.forEach(Vehicle => {
       Tax += (Vehicle.Price / 100) * frp.Settings.Taxes.Vehicle;
    });
 
-   Properties.Businesses.forEach(Business => {
+   Businesses.forEach(Business => {
       Tax += (Business.Cash / 100) * frp.Settings.Taxes.Business;
    });
 

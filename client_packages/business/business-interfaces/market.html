@@ -29,13 +29,29 @@
                   </li>
                </ul>
 
-               <transition name="bounce">
-                  <div class="cart" v-if="player.cart.length > 0">
-                     <div class="item" v-for="(item, i) in player.cart" v-on:click="Remove(item, i)" v-on:dblclick="RemoveAll(i)"> 
-                        {{ item.name }}
+               <div class="cart">               
+                  <h2 class="title"> Vaša korpa - <b> {{ ItemsNumber() }} </b> </h2>
+                  <transition-group name="slide" tag="ul" class="items" v-if="player.cart.length > 0">
+                     <li class="item" v-for="(item, i) in player.cart" v-bind:key="item"> 
+                        <h4> {{ truncate(item.name, 16) }} </h4>
+                        <div class="info">
+                           <button v-on:click="Remove(item, i)" class="minus"> <i class="fa fa-minus" aria-hidden="true"></i> </button>
+                           <h3> {{ item.quantity }} </h3>
+                           <button v-on:click="item.quantity ++" class="plus"> <i class="fa fa-plus" aria-hidden="true"></i> </button>
+                           <button v-on:click="RemoveAll(i)" class="trash"> <i class="fa fa-trash" aria-hidden="true"></i> </button>
+                        </div>
+                     </li>
+                  </transition-group>
+                  <h3 v-else class="empty-cart"> Vaša korpa je prazna. </h3>
+
+                  <div class="bill">
+                     <div class="price">
+                        <h4> Cena </h4>
+                        <h2> {{ Dollars(Total()) }} </h2>
                      </div>
+                     <button :disabled="player.cart.length == 0" class="buy" v-on:click="Buy()"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> </button>
                   </div>
-               </transition>
+               </div>
             </div>
          </div>
 
@@ -56,7 +72,7 @@
                   name: 'Davis 24 / 7 Market', id: 1, multiplier: 0.3,
                   products: {
                      'Kanister': { icon: 'kanister', multiplier: 19 },
-                     'awdawg Piva': { icon: 'pivo', multiplier: 3 },
+                     'awdawg Paaaaaaaaiva': { icon: 'pivo', multiplier: 3 },
                      'awdawdwa': { icon: 'kanister', multiplier: 19 },
                      'Flasa Piva': { icon: 'pivo', multiplier: 3 },
                      'Aaaa': { icon: 'kanister', multiplier: 19 },
@@ -67,24 +83,7 @@
                      'awdawdfawg Piva': { icon: 'pivo', multiplier: 3 },
                      'awda': { icon: 'kanister', multiplier: 19 },
                      'f Piva': { icon: 'pivo', multiplier: 3 },
-                     'fawdawd': { icon: 'kanister', multiplier: 19 },
-                     'awfawfawfg Piva': { icon: 'pivo', multiplier: 3 },
-                     'awda': { icon: 'kanister', multiplier: 19 },
-                     'fsrgrgdr Piva': { icon: 'pivo', multiplier: 3 },
-                     'awfawfawgaw': { icon: 'kanister', multiplier: 19 },
-                     'awgagr Piva': { icon: 'pivo', multiplier: 3 },
-                     'tfhfthfthft': { icon: 'kanister', multiplier: 19 },
-                     'estsgftgft Piva': { icon: 'pivo', multiplier: 3 },
-                     'setythdfthft': { icon: 'kanister', multiplier: 19 },
-                     'rthrttser Piva': { icon: 'pivo', multiplier: 3 },
-                     'sefr5htrttr': { icon: 'kanister', multiplier: 19 },
-                     'rtyrtresf Piva': { icon: 'pivo', multiplier: 3 },
-                     'rtyrtujrtrt': { icon: 'kanister', multiplier: 19 },
-                     'tyjtyjtyjrrt Piva': { icon: 'pivo', multiplier: 3 },
-                     'yjtyjtyjty': { icon: 'kanister', multiplier: 19 },
-                     'fthftjkyugj Piva': { icon: 'pivo', multiplier: 3 },
-                     'rdhfthfh': { icon: 'kanister', multiplier: 19 },
-                     'awdawrggr Piva': { icon: 'pivo', multiplier: 3 },
+                     'fawdawd': { icon: 'kanister', multiplier: 19 }
                   },
                },
             },
@@ -92,24 +91,47 @@
             methods: { 
                Close: () => { mp.trigger('client:business.market:menu'); },
 
-               Add: function (name, product) { 
+               Add: function (name, multiplier) { 
                   const Already = this.player.cart.find(item => item.name == name);
                   if (Already) Already.quantity ++;
-                  else this.player.cart.push({ name: name, product: product, quantity: 1 });
+                  else this.player.cart.push({ name: name, multiplier: multiplier, quantity: 1 });
                },
 
                Remove: function (item, index) {
                   item.quantity --;
                   if (item.quantity < 1) this.player.cart.splice(index, 1);
                },
-
                
                RemoveAll: function (index) {
                   this.player.cart.splice(index, 1);
                },
 
-               Buy: function () { 
+               Total: function () { 
+                  let price = 0;
+                  for (const item of this.player.cart) { 
+                     price += (item.multiplier * this.business.multiplier) * item.quantity;
+                  }
+                  return price;
+               },
 
+               ItemsNumber: function () { 
+                  let count = 0;
+                  for (const item of this.player.cart) { 
+                     count += 1 * item.quantity;
+                  }
+                  return count;
+               },
+
+               truncate: function (str, n) { return (str.length > n) ? str.substr(0, n-1) + '...' : str; },
+
+               Dollars: (i) => {  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); },
+
+               Buy: function () { 
+                  if (this.player.cart.length < 1) return;
+                  const Price = this.Total(), Items = this.player.cart;
+                  console.log(Price);
+                  console.log(Items)
+                  // mp.trigger('');
                }
                
             }

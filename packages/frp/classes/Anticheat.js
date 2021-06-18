@@ -56,6 +56,7 @@ class Anticheat {
             const Character = await frp.Characters.findOne({ where: { id: player.character } })
             frp.Admin.Warning(`${Character.Name}: ${message}`);
          }
+         
       });
    }
 }
