@@ -5,22 +5,43 @@
       "id": 0,
       "name": "24 / 7 Market",
       "position": { "x": 1, "y": 2, "z": 3 },
-      "ipl": "iplname"
+      "ipl": "iplname",
+      "products" : {
+         
+      }
+      
    },
 
    {
       "id": 1,
-      "name": "Gas Station & Market"
+      "name": "Gas Station & Market",
+      "products": {
+         
+      }
    },
 
    {      
       "id": 2,
-      "name": "Electronic Shop"
+      "name": "Electronic Shop",
+      "products": {
+         "iFruit 10" : 0.3,
+         "Prenosni radio sa zvucnicima" : 0.4,
+         "Motorola" : 0.2
+       }
    },
 
    {
       "id": 3,
-      "name": "Rent a Car"
+      "name": "Rent a Car",
+      "products": {
+         "faggio" : 0.1,
+         "faggio2" : 0.1,
+         "faggio3" : 0.1,
+         "jackal" : 0.4,
+         "felon2" : 0.4,
+         "oracle2" : 0.4,
+         "panto" : 0.4
+      }
    },
 
    {
@@ -30,27 +51,42 @@
 
    {
       "id": 5,
-      "name": "Clothing Shop"
+      "name": "Clothing Shop",
+      "products" : {
+         
+      }
    },
 
    {
       "id": 6,
-      "name": "Fast Food Restaurant"
+      "name": "Fast Food Restaurant",
+      "products" : {
+         
+      }
    },
 
    {
       "id": 7,
-      "name": "Fastfood Stand"
+      "name": "Fastfood Stand",
+      "products" : {
+         
+      }
    },
 
    {
       "id": 8,
-      "name": "Restaurant"
+      "name": "Restaurant",
+      "products" : {
+         
+      }
    },
 
    {
       "id": 9,
-      "name": "Bar & Cafe"
+      "name": "Bar & Cafe",
+      "products" : {
+         
+      }
    },
 
    {
@@ -60,17 +96,26 @@
 
    {
       "id": 11,
-      "name": "Gun Shop & Ammunation"
+      "name": "Gun Shop & Ammunation",
+      "products" : {
+         
+      }
    },
 
    {
       "id": 12,
-      "name": "Furniture Shop"
+      "name": "Furniture Shop",
+      "products" : {
+         
+      }
    },
 
    {
       "id": 13,
-      "name": "Pawn Shop"
+      "name": "Pawn Shop",
+      "products" : {
+         
+      }
    },
 
    {
@@ -85,11 +130,20 @@
 
    {
       "id": 16,
-      "name": "Weed Dispensary"
+      "name": "Weed Dispensary",
+      "products" : {
+         "Rizla" : 0.01,
+         "Srolan joint" : 0.3,
+         "Trava 1g" : 0.7,
+         "Dippo upaljac" : 0.2
+      }
    },
 
    {
       "id": 17,
-      "name": "Pharmacy"
+      "name": "Pharmacy",
+      "products" : {
+
+      }
    }
 ]
