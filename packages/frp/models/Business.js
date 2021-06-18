@@ -12,8 +12,7 @@ frp.Business = frp.Database.define('business', {
       Walk_in: { type: DataTypes.BOOLEAN, defaultValue: false },
       Price: { type: DataTypes.INTEGER, defaultValue: 0 },
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Products: { type: DataTypes.INTEGER, defaultValue: 200 },
-      Cash: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Budget: { type: DataTypes.INTEGER, defaultValue: 0 },
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
       Position: {
          type: DataTypes.TEXT, defaultValue: null,
@@ -31,14 +30,18 @@ frp.Business = frp.Database.define('business', {
          type: DataTypes.TEXT, defaultValue: '[]',
          get: function () { return JSON.parse(this.getDataValue('Workers')); },
          set: function (value) { this.setDataValue('Workers', JSON.stringify(value)); }
+      },
+      Products: { 
+         type: DataTypes.TEXT, defaultValue: '{}',
+         get: function () { return JSON.parse(this.getDataValue('Products')); },
+         set: function (value) { this.setDataValue('Products', JSON.stringify(value)); }
       }
    },
    {
-      // Options
       timestamps: true,
       underscrored: true,
-      createdAt: "Created_Date",
-      updatedAt: "Update_Date",
+      createdAt: 'Created_Date',
+      updatedAt: 'Update_Date',
    }
 );
 
@@ -89,6 +92,31 @@ frp.Business.prototype.Sell = async function (player, target = 0, price = 0) {
 };
 
 
+frp.Business.prototype.AddProduct = async function (player, product, multiplier, amount = 5) {
+   let Products = this.Products;
+   Products[product] = { price: multiplier, supplies: amount };
+   this.Products = Products;
+   // PORUKA: Uspesno ste dodali produkt u vas bizni
+   await this.save();
+   return this.Products;
+};
+
+frp.Business.prototype.EditProduct = async function (player, product, multiplier) {
+   let Products = this.Products;
+   Products[product] = multiplier;
+   this.Products = Products;
+   // PORUKA: Uspesno ste editovali produkt
+   await this.save();
+};
+
+frp.Business.prototype.RemoveProduct = async function (player, product) {
+   let Products = this.Products;
+   delete Products[product];
+   this.Products = Products;
+   // PORUKA: Uspesno ste izbrisali produkt
+   await this.save();
+};
+
 frp.Business.prototype.WorkersAdd = async function (player) {
    let Workers = this.Workers;
    Workers.push(player.character);
@@ -110,12 +138,13 @@ frp.Business.prototype.WorkersRemove = async function (player) {
 
 
 (async () => {
-   frp.Business.sync();
+   await frp.Business.sync();
 
    const Businesses = await frp.Business.findAll();
    Businesses.forEach(async (Bussines) => {
       await Bussines.Init();
    });
+
 
    frp.Main.Terminal(3, Businesses.length + ' Businesses Loaded !');
 })();

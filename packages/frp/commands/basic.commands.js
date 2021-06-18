@@ -4,14 +4,12 @@ module.exports = {
          name: 'help',
          desc: 'Lista Komand',
          call: (player, args) => {
-               let result = '';
-               for (let i in mp.cmds) {
-                  let cmd = mp.cmds[i], desc = cmd.desc;
-                  if (!cmd.admin) {
-                     result += `/${cmd.name} `;
-                  }
-               }
-               player.sendMessage(result, mp.colors.server);
+            let help = '';
+            for (let i in frp.Commands) {
+               const command = frp.Commands[i], command = cmd.desc;
+               if (!command.admin) help += `/${command.name} `;
+            }
+            player.sendMessage(help, frp.Globals.Colors.info);
          }
       },
       {

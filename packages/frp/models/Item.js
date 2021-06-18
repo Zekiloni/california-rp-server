@@ -237,7 +237,7 @@ frp.Items.Weight = async function (player) {
 
 (async () => { 
 
-   frp.Items.sync();
+   await frp.Items.sync();
 
    const Items = await frp.Items.findAll();
    Items.forEach((Item) => {

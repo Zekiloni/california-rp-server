@@ -303,10 +303,10 @@ module.exports = {
          admin: 6,
          params: ['igrac', 'level'],
          call: async (player, args) => {
-            let Target = mp.players.find(args[0]), Level = parseInt(args[1]);
+            const Target = mp.players.find(args[0]), Level = parseInt(args[1]);
             if (Target) {
-               let Character = await Target.Character();
-               Character.SetAdmin(Level);
+               const Account = await frp.Accounts.findOne({ where: { id: player.account } });
+               Account.SetAdmin(Level);
             }
          }
       },
@@ -314,13 +314,13 @@ module.exports = {
          name: 'makeleader',
          admin: 5,
          call: (player, args) => {
-               let target = mp.players.find(args[0]);
-               if (target) {
-                  if (mp.factions[args[1]]) {
-                     mp.faction.leader(target, args[1]);
-                     player.notification('Uspešno ste postavili lidera fakcije igraču ' + target.name, NOTIFY_SUCCESS, 4);
-                  }
+            let target = mp.players.find(args[0]);
+            if (target) {
+               if (mp.factions[args[1]]) {
+                  mp.faction.leader(target, args[1]);
+                  player.notification('Uspešno ste postavili lidera fakcije igraču ' + target.name, NOTIFY_SUCCESS, 4);
                }
+            }
          }
       },
       {

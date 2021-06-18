@@ -55,15 +55,7 @@ let Jobs = require('./classes/Jobs');
    const Users = await frp.Accounts.count();
    frp.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
-
 })();
-
-
-mp.events.addCommand("koo", (player, fullText) => {
-   player.outputChatBox('Position ' + JSON.stringify(player.position));
-   player.outputChatBox('Heading ' + JSON.stringify(player.heading));
-   player.outputChatBox('Rotation ' + JSON.stringify(player.rotation));
-});
 
 
 

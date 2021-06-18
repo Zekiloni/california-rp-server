@@ -156,13 +156,12 @@ mp.keys.bind(0x42, true, () => {
 
 mp.keys.bind(0x42, false, () => {
    pointing.stop();
-
 });
 
-function getPlayerByRemoteId(remoteId) {
+function getPlayerByRemoteId (remoteId) {
    let pla = mp.players.atRemoteId(remoteId);
    if (pla == undefined || pla == null) {
-       return null;
+      return null;
    }
    return pla;
 }

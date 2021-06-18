@@ -21,11 +21,12 @@ const Flags = {
 
 class Anticheat {
    constructor () {
-      mp.events.add(
-         'server:anti_cheat:detected', async (player, flag, action) => {
-            const Character = await frp.Characters.findOne({ where: { id: player.character } })
-            const Account = await frp.Accounts.findOne({ where: { id: player.account } })
-       
+      mp.events.add({
+         'server:anti_cheat:detected': async (player, flag, action) => {
+            const Character = await frp.Characters.findOne({ where: { id: player.character } });
+            const Account = await frp.Accounts.findOne({ where: { id: player.account } });
+
+         
             switch (action) 
             {
                case 'kick':
@@ -46,10 +47,12 @@ class Anticheat {
                   // Ban
                   break;
             }
-      },
-      'server:ac.chat', async (player, message) => {
-         const Character = await frp.Characters.findOne({ where: { id: player.character } })
-         frp.Admin.Warning(`${Character.Name}: ${message}`);
+         },
+
+         'server:ac.chat': async (player, message) => {
+            const Character = await frp.Characters.findOne({ where: { id: player.character } })
+            frp.Admin.Warning(`${Character.Name}: ${message}`);
+         }
       });
    }
 }

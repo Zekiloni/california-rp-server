@@ -1,4 +1,6 @@
+
 frp.Commands = {};
+
 const commandFiles = [
     'basic.commands',
     'admin.commands',
@@ -31,8 +33,8 @@ mp.events.add('playerCommand', async (player, command) => {
    let cmd = frp.Commands[commandName];
 
    if (cmd) {
-      const Account = frp.Accounts.findOne({ where: { id: player.account } });
-      const Character = frp.Characters.findOne({ where: { id: player.character } });
+      const Account = await frp.Accounts.findOne({ where: { id: player.account } });
+      const Character = await frp.Characters.findOne({ where: { id: player.character } });
       
       if (cmd.admin && Account.Administrator < cmd.admin) return player.Notification('Nije vam dozvoljeno !', frp.Globals.Notification.Error, 4);
       

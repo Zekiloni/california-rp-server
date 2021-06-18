@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- meta tags-->
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+      <!-- source -->
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+      <link rel="stylesheet" type="text/css" href="src/styles/market.css" />
+
+   </head>
+   <body>
+      <div id="market">
+      
+         <div class="shop">
+            <div class="header">
+               <small> Prodavnica </small>
+               <h2> {{ business.name }} </h2>
+               <i v-on:click="Close()" class="close fa fa-times"></i>
+            </div>
+
+            <div class="content">
+               <ul class="products">
+                  <li class="product" v-for="(product, i) in business.products" v-on:click="Add(i, product.multiplier)"> 
+
+                  </li>
+               </ul>
+
+               <transition name="bounce">
+                  <div class="cart" v-if="player.cart.length > 0">
+                     <div class="item" v-for="(item, i) in player.cart" v-on:click="Remove(item, i)" v-on:dblclick="RemoveAll(i)"> 
+                        {{ item.name }}
+                     </div>
+                  </div>
+               </transition>
+            </div>
+         </div>
+
+      </div>
+          
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"></script>
+      <script>
+         let market = new Vue({
+            el: '#market',
+            data: {
+               player: {
+                  money: 0,
+                  cart: []
+               },
+
+               business: { 
+                  name: 'Davis 24 / 7 Market', id: 1, multiplier: 0.3,
+                  products: {
+                     'Kanister': { icon: 'kanister', multiplier: 19 },
+                     'awdawg Piva': { icon: 'pivo', multiplier: 3 },
+                     'awdawdwa': { icon: 'kanister', multiplier: 19 },
+                     'Flasa Piva': { icon: 'pivo', multiplier: 3 },
+                     'Aaaa': { icon: 'kanister', multiplier: 19 },
+                     'bbb Piva': { icon: 'pivo', multiplier: 3 },
+                     'awda': { icon: 'kanister', multiplier: 19 },
+                     'wadawd Piva': { icon: 'pivo', multiplier: 3 },
+                     'awdawd': { icon: 'kanister', multiplier: 19 },
+                     'awdawdfawg Piva': { icon: 'pivo', multiplier: 3 },
+                     'awda': { icon: 'kanister', multiplier: 19 },
+                     'f Piva': { icon: 'pivo', multiplier: 3 },
+                     'fawdawd': { icon: 'kanister', multiplier: 19 },
+                     'awfawfawfg Piva': { icon: 'pivo', multiplier: 3 },
+                     'awda': { icon: 'kanister', multiplier: 19 },
+                     'fsrgrgdr Piva': { icon: 'pivo', multiplier: 3 },
+                     'awfawfawgaw': { icon: 'kanister', multiplier: 19 },
+                     'awgagr Piva': { icon: 'pivo', multiplier: 3 },
+                     'tfhfthfthft': { icon: 'kanister', multiplier: 19 },
+                     'estsgftgft Piva': { icon: 'pivo', multiplier: 3 },
+                     'setythdfthft': { icon: 'kanister', multiplier: 19 },
+                     'rthrttser Piva': { icon: 'pivo', multiplier: 3 },
+                     'sefr5htrttr': { icon: 'kanister', multiplier: 19 },
+                     'rtyrtresf Piva': { icon: 'pivo', multiplier: 3 },
+                     'rtyrtujrtrt': { icon: 'kanister', multiplier: 19 },
+                     'tyjtyjtyjrrt Piva': { icon: 'pivo', multiplier: 3 },
+                     'yjtyjtyjty': { icon: 'kanister', multiplier: 19 },
+                     'fthftjkyugj Piva': { icon: 'pivo', multiplier: 3 },
+                     'rdhfthfh': { icon: 'kanister', multiplier: 19 },
+                     'awdawrggr Piva': { icon: 'pivo', multiplier: 3 },
+                  },
+               },
+            },
+
+            methods: { 
+               Close: () => { mp.trigger('client:business.market:menu'); },
+
+               Add: function (name, product) { 
+                  const Already = this.player.cart.find(item => item.name == name);
+                  if (Already) Already.quantity ++;
+                  else this.player.cart.push({ name: name, product: product, quantity: 1 });
+               },
+
+               Remove: function (item, index) {
+                  item.quantity --;
+                  if (item.quantity < 1) this.player.cart.splice(index, 1);
+               },
+
+               
+               RemoveAll: function (index) {
+                  this.player.cart.splice(index, 1);
+               },
+
+               Buy: function () { 
+
+               }
+               
+            }
+         })
+      </script>
+   </body>     
+</html>

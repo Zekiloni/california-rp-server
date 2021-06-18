@@ -100,8 +100,8 @@ module.exports = {
                if (player.id == target.id) return;
                let message = args.splice(1).join(' ');
                if (!message.trim()) return;
-               target.sendMessage('(( PM od ' + player.name + '[' + player.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.from);
-               player.sendMessage('(( PM za ' + target.name + '[' + target.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.to);
+               target.sendMessage('(( PM od ' + player.name + ' [' + player.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.from);
+               player.sendMessage('(( PM za ' + target.name + ' [' + target.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.to);
             }
          }
       },

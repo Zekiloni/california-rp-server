@@ -106,8 +106,9 @@ frp.Characters.prototype.Spawn = async function (player) {
          break;
       }
       case 1: {
-         const Position = JSON.parse(this.Last_Position);
-         player.position = new mp.Vector3(Position.x, Position.y, Position.z);
+         const Position = this.Last_Position;
+         if (this.Last_Position) 
+            player.position = new mp.Vector3(Position.x, Position.y, Position.z);
          break;
       }
       case 2: {
