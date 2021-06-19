@@ -158,7 +158,7 @@ class Character {
          job = mp.jobs[job];
          this.job = job.id;
          player.setVariable('job', this.job);
-         player.sendMessage('Uspešno ste se zaposlili u ' + job.name + ' !', mp.colors.info)
+         player.SendMessage('Uspešno ste se zaposlili u ' + job.name + ' !', mp.colors.info)
       }
    }
 
