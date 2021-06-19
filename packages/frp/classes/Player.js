@@ -6,41 +6,59 @@ mp.Player.prototype.Notification = function (message, type, time = 4) {
 
 
 mp.Player.prototype.Character = async function () {
-   if (this.character) {
-      const character = await frp.Characters.findOne({ where: { id: this.character } });
-      return character;
-   }
+   const character = await frp.Characters.findOne({ where: { id: this.character } });
+   return character ? character : null;
 };
 
 
 mp.Player.prototype.Appearance = async function () { 
-   if (this.character) { 
-      const appearance = await frp.Appearances.findOne({ where: { id: this.character }});
-      return appearance;
-   }
+   const appearance = await frp.Appearances.findOne({ where: { id: this.character }});
+   return appearance ? appearance : null;
 };
+
 
 mp.Player.prototype.Account = async function () {
-   if (this.account) {
-      const account = await frp.Accounts.findOne({ where: { id: this.account } });
-      return account;
-   }
+   const account = await frp.Accounts.findOne({ where: { id: this.account } });
+   return account ? account : null;
 };
 
-mp.Player.prototype.sendMessage = function (message, color) {
+
+mp.Player.prototype.SendMessage = function (message, color) {
    this.outputChatBox(`!{${color}}${message}`);
 };
 
+
 mp.Player.prototype.IsNear = function (target) {
-   return this.dist(target.position) < 3 ? true : false;
+   return this.dist(target.position) < 3.5 ? true : false;
 };
 
-mp.Player.prototype.nearPleayers = function (radius) {
+mp.Player.prototype.NearbyPlayers = function (radius) {
    let near = [];
    mp.players.forEachInRange(this.position, radius, (player) => {
       near.push(player);
    });
    return near;
+};
+
+
+mp.Player.prototype.Nearest = async function () { 
+
+   const Businesses = await frp.Business.findAll();
+   for (const Business of Businesses) { 
+      const Position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
+      if (this.dist(Position) < 3.5) return Business;
+   }
+
+   const Houses = await frp.Houses.findAll();
+   for (const House of Houses) { 
+      const Position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
+      if (this.dist(Position) < 3.5) return House;
+   }
+
+   // const Vehicles = await frp.Vehicles.findAll();
+   // for (const Vehicle of Vehicles) { 
+   //    if (this.dist(Pos))
+   // }
 };
 
 mp.Player.prototype.defaultVariables = function () {
@@ -54,24 +72,19 @@ mp.Player.prototype.defaultVariables = function () {
 
 mp.Player.prototype.ProximityMessage = function (radius, message, colors) {
    mp.players.forEachInRange(this.position, radius, (target) => {
-      let distanceGap = radius / 5;
-      let distance = target.dist(this.position), color = colors[0];
-      if (distance < distanceGap) {
-         color = colors[0];
+      const distanceGap = radius / 5;
+      const distance = target.dist(this.position)
+      let color = null;
+
+      switch (true) {
+         case (distance < distanceGap): color = colors[0]; break;
+         case (distance < distanceGap * 2): color = colors[1]; break;
+         case (distance < distanceGap * 3): color = colors[2]; break;
+         case (distance < distanceGap * 4): color = colors[3]; break;
+         default: color = colors[0]; break;
       }
-      else if (distance < distanceGap * 2) {
-         color = colors[1];
-      }
-      else if (distance < distanceGap * 3) {
-         color = colors[2];
-      }
-      else if (distance < distanceGap * 4) {
-         color = colors[3];
-      }
-      else {
-         color = colors[3];
-      }
-      target.outputChatBox(`!{${color}}${message}`);
+      
+      target.outputChatBox('!{' + color + '}' + message);
    });
 };
 

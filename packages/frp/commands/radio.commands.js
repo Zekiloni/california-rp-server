@@ -9,7 +9,7 @@ module.exports = {
                 if (Character.Frequency == 0)
                     return; // PORUKA: Niste ni u jednoj frekvenciji
                 if (!mp.item.hasItem(character.id, 'Radio Prijemnik'))
-                    return player.sendMessage('Ne posedujete radio prijemnik !', mp.colors.tomato);
+                    return player.SendMessage('Ne posedujete radio prijemnik !', mp.colors.tomato);
                 let message = args.splice(0).join(' ');
                 if (message) {
                     Channels.Send(Character.Frequency, player.name + ': ' + message);
@@ -21,9 +21,9 @@ module.exports = {
             desc: 'Podešavanje frekvencije',
             call: (player, args) => {
                 if (!mp.item.hasItem(player.character, 'Radio Prijemnik'))
-                    return player.sendMessage('Ne posedujete radio prijemnik !', mp.colors.tomato);
+                    return player.SendMessage('Ne posedujete radio prijemnik !', mp.colors.tomato);
                 if (!args[0])
-                    return player.sendMessage('Komanda /freq set - create - leave - delete - password !', mp.colors.help);
+                    return player.SendMessage('Komanda /freq set - create - leave - delete - password !', mp.colors.help);
                 switch (args[0]) {
                     case 'set': {
                         mp.channels.join(player, args[1], args[2]);

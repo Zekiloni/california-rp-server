@@ -16,7 +16,7 @@ class Channels {
                 return;
             let Character = await player.Character();
             if (Character.Frequency == frequency) {
-                player.sendMessage('[CH: ' + frequency + '] ' + message, frp.Globals.Colors.radio);
+                player.SendMessage('[CH: ' + frequency + '] ' + message, frp.Globals.Colors.radio);
             }
         });
     }

@@ -12,8 +12,8 @@ mp.events.add({
    },
 
    'server:player.character:select': async (player, selected) => {
-      const character = await frp.Characters.findOne({ where: { id: selected } });
-      if (character) character.Spawn(player);
+      const Character = await frp.Characters.findOne({ where: { id: selected } });
+      if (Character) Character.Spawn(player);
    }
 });
 

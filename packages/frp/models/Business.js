@@ -35,6 +35,15 @@ frp.Business = frp.Database.define('business', {
          type: DataTypes.TEXT, defaultValue: '{}',
          get: function () { return JSON.parse(this.getDataValue('Products')); },
          set: function (value) { this.setDataValue('Products', JSON.stringify(value)); }
+      },
+      GameObject: { 
+         type: DataTypes.VIRTUAL, defaultValue: null,
+         get () { 
+            return frp.GameObjects.Businesses[this.getDataValue('id')];
+         },
+         set (x) { 
+            frp.GameObjects.Businesses[this.getDataValue('id')] = x;
+         }
       }
    },
    {
@@ -51,35 +60,43 @@ frp.Business.New = async function (player, type, walkin, price) {
 
    if (!BusinessTypes[type]) return;
 
+   console.log('uso u new 1');
    const Position = player.position;
    const Dimension = player.dimension;
    const Walk_in = walkin == 1 ? true : false;
-   const Products = BusinessTypes[type].products;
+   const Default = BusinessTypes[type];
+   console.log('uso u new 2');
 
-
-   const Business = await frp.Business.create({ Name: ime, Price: price, Walk_in: Walk_in, Products: Products });
-   await Business.Refresh();
+   const Business = await frp.Business.create({ Name: Default.name, Type: type, Price: price, Walk_in: Walk_in, Products: Default.products, Position: Position, Dimension: Dimension });
+   console.log(Business);
 };
 
 
-frp.Business.prototype.Refresh = async function () {
-   if (this.colshape && this.blip) return;
-   if (this.Position && this.Rotation) {
-      this.colshape = mp.colshapes.newRectangle(this.Position.x, this.Position.y, 3, 2, 0);
-      this.colshape.business = this.id;
-      this.blip = mp.blips.new(40, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 36, shortRange: true });
-      await this.Refresh();
-   }
-};
+frp.Business.afterCreate(async (Business, Options) => {
+   Business.Refresh();
+});
 
 
-frp.Business.prototype.Refresh = async function () {
-   this.Owner == 0 ? (this.blip.color = 1) : (this.blip.color = 2);
+frp.Business.prototype.Refresh = function () {
+
+   const Info = BusinessTypes[this.Type];
+
+   if (this.GameObject == null) { 
+      const GameObjects = { 
+         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 3, 2, 0),
+         blip: mp.blips.new(Info.blip, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 })
+      };
+
+      if (Info.color) GameObjects.blip.color = Info.color;
+
+      this.GameObject = GameObjects;
+   } 
+
 };
 
 
 frp.Business.prototype.Buy = async function (player) {
-   let Character = await player.Character();
+   const Character = await player.Character();
 
    if (this.Owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
    if (this.Price > Character.Money) return; // PORUKA: Nemate dovoljno novca
@@ -154,11 +171,11 @@ frp.Business.prototype.WorkersRemove = async function (player) {
 
 
 (async () => {
-   await frp.Business.sync({ force: true });
+   await frp.Business.sync();
 
    const Businesses = await frp.Business.findAll();
-   Businesses.forEach(async (Bussines) => {
-      await Bussines.Init();
+   Businesses.forEach((Bussines) => {
+      Bussines.Refresh();
    });
 
 

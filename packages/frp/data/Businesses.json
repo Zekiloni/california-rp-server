@@ -6,91 +6,110 @@
       "name": "24 / 7 Market",
       "position": { "x": 1, "y": 2, "z": 3 },
       "ipl": "iplname",
-      "products": { }
+      "blip": 52,
+      "color": 24
    },
 
    {
       "id": 1,
-      "name": "Gas Station & Market"
+      "name": "Gas Station & Market",
+      "blip": 361,
+      "color": 75
    },
 
    {      
       "id": 2,
-      "name": "Electronic Shop"
+      "name": "Electronic Shop",
+      "blip": 619,
+      "color": 54
    },
 
    {
       "id": 3,
-      "name": "Rent a Car"
+      "name": "Rent a Car",
+      "blip": 724,
+      "color": 60
    },
 
    {
       "id": 4,
-      "name": "Vehicle Dealership"
+      "name": "Vehicle Dealership",
+      "blip": 524
    },
 
    {
       "id": 5,
-      "name": "Clothing Shop"
+      "name": "Clothing Shop",
+      "blip": 73 
    },
 
    {
       "id": 6,
-      "name": "Fast Food Restaurant"
+      "name": "Restaurant",
+      "blip": 739,
+      "color": 56
    },
 
    {
       "id": 7,
-      "name": "Fastfood Stand"
+      "name": "Bar & Cafe",
+      "blip": 93
    },
 
    {
       "id": 8,
-      "name": "Restaurant"
+      "name": "Night Club",
+      "blip": 766
    },
 
    {
       "id": 9,
-      "name": "Bar & Cafe"
+      "name": "Gun Shop & Ammunation",
+      "blip": 313
    },
 
    {
       "id": 10,
-      "name": "Night Club"
+      "name": "Furniture Shop",
+      "blip": 478,
+      "color": 20
    },
 
    {
       "id": 11,
-      "name": "Gun Shop & Ammunation"
+      "name": "Pawn Shop",
+      "blip": 628,
+      "color": 16
    },
 
    {
       "id": 12,
-      "name": "Furniture Shop"
+      "name": "Tattoo Shop",
+      "blip": 75
    },
 
    {
       "id": 13,
-      "name": "Pawn Shop"
+      "name": "Barber Shop",
+      "blip": 71
    },
 
    {
       "id": 14,
-      "name": "Tattoo Shop"
+      "name": "Weed Dispensary",
+      "blip": 469
    },
 
    {
       "id": 15,
-      "name": "Barber Shop"
+      "name": "Pharmacy",
+      "blip": 51,
+      "color": 24
    },
 
    {
       "id": 16,
-      "name": "Weed Dispensary"
-   },
-
-   {
-      "id": 17,
-      "name": "Pharmacy"
+      "name": "Boat Dealership",
+      "blip": 455
    }
 ]

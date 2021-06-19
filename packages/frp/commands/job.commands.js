@@ -24,7 +24,7 @@ module.exports = {
                         if (character.job == 0)
                             return; // vi niste zaposleni
                         character.job = 0;
-                        player.sendMessage('Dali ste otkaz !', mp.colors.info);
+                        player.SendMessage('Dali ste otkaz !', mp.colors.info);
                         break;
                     }
                     case 'start': {

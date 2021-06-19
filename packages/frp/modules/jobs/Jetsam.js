@@ -67,7 +67,7 @@ class Port {
             case 'load': {
                 character.working.duty = true;
                 player.notification('Započeli ste posao !', NOTIFY_SUCCES, 4);
-                player.sendMessage('Koristite Y kako bi ste zakačili kontenjer za lift, takodje da bi ste otkačili.', mp.colors.help);
+                player.SendMessage('Koristite Y kako bi ste zakačili kontenjer za lift, takodje da bi ste otkačili.', mp.colors.help);
                 break;
             }
             case 'transfer': {

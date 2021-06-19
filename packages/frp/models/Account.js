@@ -66,7 +66,7 @@ frp.Accounts.prototype.SetAdmin = async function (player, value) {
    this.Administrator = value;
    this.Admin_Code = frp.Main.GenerateNumber(5);
    
-   player.sendMessage(`Dodeljen vam je admin level ${value}.
+   player.SendMessage(`Dodeljen vam je admin level ${value}.
                        Admin kod: ${this.Admin_Code}, zapišite negde svoj admin kod.`, frp.Globals.Colors.info);
    await this.save();
 };

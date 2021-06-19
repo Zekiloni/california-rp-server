@@ -9,7 +9,7 @@ module.exports = {
                const command = frp.Commands[i]
                if (!command.admin) help += ('/' + command.name + ' - ' + command.desc);
             }
-            player.sendMessage(help, frp.Globals.Colors.info);
+            player.SendMessage(help, frp.Globals.Colors.info);
          }
       },
       {
@@ -17,10 +17,11 @@ module.exports = {
          desc: 'Promena mesta spavna',
          params: ['mesto'],
          call: async (player, args) => {
-            let Character = await player.Character();
             const spawns = ['Default spawn', 'Zadnja pozicija', 'Fakcija'];
-            Character.SetSpawn(args[0]);
-            player.sendMessage('Promenili ste mesto spawna na ' + spawns[args[0]], frp.Globals.Colors.info);
+            const [point] = args;
+            let Character = await player.Character();
+            Character.SetSpawn(point);
+            player.SendMessage('Promenili ste mesto spawna na ' + spawns[point], frp.Globals.Colors.info);
          }
       },
 
@@ -93,15 +94,19 @@ module.exports = {
             
             const Target = mp.players.find(args[0]);
             if (Target) {
-               const TargetCharacter = await frp.Characters.findOne({ where: { id: Target.character } });
-               const Amount = parseInt(args[1]);
-
-               if (Amount > Character.Money) return; // PORUKA: Nemate dovoljno novca
-               if (Amount < 1) return; // PORUKA: Ne mozes dati minus
-
-               TargetCharacter.GiveMoney(Target, Amount);
-               Character.GiveMoney(player, -Amount);
-               player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje nešto novca ${Target.name}. (( Pay ))`, frp.Globals.Colors.purple);
+               if (player.IsNear(Target)) {
+                  const TargetCharacter = await frp.Characters.findOne({ where: { id: Target.character } });
+                  const Amount = parseInt(args[1]);
+   
+                  if (Amount > Character.Money) return; // PORUKA: Nemate dovoljno novca
+                  if (Amount < 1) return; // PORUKA: Ne mozes dati minus
+   
+                  TargetCharacter.GiveMoney(Target, Amount);
+                  Character.GiveMoney(player, -Amount);
+                  player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje nešto novca ${Target.name}. (( Pay ))`, frp.Globals.Colors.purple);
+               } else { 
+                  // PORUKA NIJE BLIZU
+               }
             }
          }
       },
@@ -121,7 +126,7 @@ module.exports = {
                      character.faction = faction;
                      character.invite_request = 0;
                      character.rank = 'Newbie';
-                     player.sendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[faction].name + '.', mp.colors.success);
+                     player.SendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[faction].name + '.', mp.colors.success);
                   }
                }
          }

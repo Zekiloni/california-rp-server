@@ -30,8 +30,7 @@ frp.Items = frp.Database.define('item', {
          },
          set (x) { 
             frp.GameObjects.Items[this.getDataValue('id')] = x;
-         },
-         
+         }
       }
    }, 
    {

@@ -24,7 +24,7 @@ class Admin {
             const Account = await frp.Accounts.findOne({ where: { id: target.account }});
             if (Account.Administrator > 0) { 
                let Rank = Account.Administrator;
-               target.sendMessage('(( ' + Ranks[Rank] + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.admin);
+               target.SendMessage('(( ' + Ranks[Rank] + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.admin);
             }
          }
       })
@@ -38,7 +38,7 @@ class Admin {
 
       mp.players.forEach((target) => { 
          if (target.data.logged && target.data.spawned) { 
-            target.sendMessage('(( [ ! ] ' + Ranks[Rank] + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.broadcast);
+            target.SendMessage('(( [ ! ] ' + Ranks[Rank] + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.broadcast);
          }
       });
    }
@@ -47,7 +47,7 @@ class Admin {
       mp.players.forEach(async (target) => { 
          const Account = await frp.Accounts.findOne({ where: { id: target.account }});
          if (Account.Administrator > 0) { 
-            target.sendMessage('[ ! ! ! ] : ' + message, frp.Globals.Colors.admin);
+            target.SendMessage('[ ! ! ! ] : ' + message, frp.Globals.Colors.admin);
          }
       })
    }

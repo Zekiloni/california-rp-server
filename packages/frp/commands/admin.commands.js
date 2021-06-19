@@ -88,6 +88,19 @@ module.exports = {
       },
 
       {
+         name: 'nearest', 
+         admin: 2,
+         call: async (player, args) => {
+            const result = await player.Nearest();
+            if (result)
+               player.outputChatBox('Ima blizu ' + result.id);
+            else
+               player.outputChatBox('Nema nista');
+
+         }
+      },
+
+      {
          name: 'rtc', 
          admin: 2,
          call: async (player, args) => {
@@ -121,7 +134,7 @@ module.exports = {
                      core.terminal(1, `Saving Position Error: ${err.message}`);
                   }
                   else {
-                     player.sendMessage(`Trenutna pozicija: ${name} { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`, mp.colors.info);
+                     player.SendMessage(`Trenutna pozicija: ${name} { X: ${player.position.x}, Y: ${player.position.y}, Z: ${player.position.z} }.`, mp.colors.info);
                   }
                });
          }
@@ -132,7 +145,7 @@ module.exports = {
          call: (player, args) => {
                console.log('1');
                if (mp.characters[player.character].casinoSlot == -1) {
-                  player.sendMessage("nisi");
+                  player.SendMessage("nisi");
                }
                else {
                   console.log('2');
@@ -198,7 +211,7 @@ module.exports = {
          call: async (player, args) => {
             frp.Settings.HappyHours = !frp.Settings.HappyHours;
             let Status = frp.Settings.HappyHours ? 'aktivirani' : 'deaktivirani';
-            player.sendMessage('Srećni sati ' + Status, frp.Globals.Colors.info);
+            player.SendMessage('Srećni sati ' + Status, frp.Globals.Colors.info);
          }
       },
       {
@@ -245,8 +258,8 @@ module.exports = {
                   player.position = target.position;
                   player.dimension = target.dimension;
                }
-               target.sendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
-               player.sendMessage('Teleportovali ste se do ' + target.name + ' !', frp.Globals.Colors.tomato);
+               target.SendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
+               player.SendMessage('Teleportovali ste se do ' + target.name + ' !', frp.Globals.Colors.tomato);
             }
          }
       },
@@ -266,8 +279,8 @@ module.exports = {
                   target.position = player.position;
                   target.dimension = player.dimension;
                }
-               target.sendMessage('Admin ' + player.name + ' vas je teleportovao do sebe !', frp.Globals.Colors.tomato);
-               player.sendMessage('Teleportovali ste ' + target.name + ' do sebe !',frp.Globals.Colors.tomato);
+               target.SendMessage('Admin ' + player.name + ' vas je teleportovao do sebe !', frp.Globals.Colors.tomato);
+               player.SendMessage('Teleportovali ste ' + target.name + ' do sebe !',frp.Globals.Colors.tomato);
 
             }
          }
@@ -332,8 +345,8 @@ module.exports = {
                target.frozen = !target.frozen;
                target.call('client:player.freeze', [target.frozen]);
                target.frozen ? message = [' admin vas je zaledio.', 'Zaledili ste '] : message = [' admin vas je odledio.', 'Odledil ste '];
-               target.sendMessage(player.name + message[0], frp.Globals.Colors.tomato);
-               player.sendMessage(message[1] + target.name, frp.Globals.Colors.tomato);
+               target.SendMessage(player.name + message[0], frp.Globals.Colors.tomato);
+               player.SendMessage(message[1] + target.name, frp.Globals.Colors.tomato);
             }
          }
       },
@@ -350,8 +363,8 @@ module.exports = {
             let target = mp.players.find(args[0]);
             if (target) {
                target.removeAllWeapons();
-               target.sendMessage(player.name + ' vam je oduzeo sva oružija.', mp.colors.tomato);
-               player.sendMessage('Oduzeli ste sva oružija ' + target.name, mp.colors.tomato);
+               target.SendMessage(player.name + ' vam je oduzeo sva oružija.', mp.colors.tomato);
+               player.SendMessage('Oduzeli ste sva oružija ' + target.name, mp.colors.tomato);
             }
          }
       },
@@ -362,7 +375,7 @@ module.exports = {
          call: (player, args) => {
             frp.Admin.Reports.forEach((Report) => { 
                let Index = frp.Admin.Reports.indexOf(Report);
-               player.sendMessage(Report, frp.Globals.Colors.grey);
+               player.SendMessage(Report, frp.Globals.Colors.grey);
             })
          }
       },
@@ -374,7 +387,7 @@ module.exports = {
             const Vehicle = player.vehicle;
             if (Vehicle) {
                Vehicle.repair();
-               player.sendMessage('Popravili ste vozilo !', frp.Globals.Colors.tomato);
+               player.SendMessage('Popravili ste vozilo !', frp.Globals.Colors.tomato);
             }
          }
       },

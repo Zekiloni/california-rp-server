@@ -92,7 +92,6 @@ async function Give (target, item, quantity) {
 
 async function Use (item) { 
    const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:use', item);
-   mp.gui.chat.push(JSON.stringify(Inventory))
    if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
 

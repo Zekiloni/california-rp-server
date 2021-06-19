@@ -85,6 +85,7 @@ frp.Characters.prototype.Spawn = async function (player) {
    // setting money & health
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
+   
 
    player.data.Wounded = this.Wounded;
    if (this.Wounded) { 
@@ -119,7 +120,6 @@ frp.Characters.prototype.Spawn = async function (player) {
          break;
       }
    }
-
 };
 
 
@@ -129,10 +129,12 @@ frp.Characters.prototype.SetHealth = async function (player, value) {
    await this.save();
 };
 
+
 frp.Characters.prototype.SetSpawn = async function (point) {
    this.Spawn_Point = point;
    await this.save();
 };
+
 
 frp.Characters.prototype.Wound = async function (player, info = null) { 
    if (this.Wounded) { 
@@ -141,6 +143,7 @@ frp.Characters.prototype.Wound = async function (player, info = null) {
       // put info and wound him
    }
 };
+
 
 frp.Characters.prototype.SetArmour = async function (player, value) {
    this.Armour = value;
@@ -173,6 +176,12 @@ frp.Characters.prototype.SetWalkingStyle = function (player, style) {
    player.setVariable('Walking_Style', style);
 };
 
+
+frp.Characters.prototype.Cuff = function (player) { 
+   this.Cuffed = !this.Cuffed;
+   player.setVariable('Cuffed', this.Cuffed);
+   return this.Cuffed;
+};
 
 frp.Characters.prototype.Enter = async function (player, type, id) { 
 

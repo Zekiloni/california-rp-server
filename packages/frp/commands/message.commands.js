@@ -82,8 +82,8 @@ module.exports = {
                   if (!player.IsNear(target))
                      return false;
                   let message = args.slice(1).join(' ');
-                  target.sendMessage(`${player.name} vam sapuće: ${message}`, mp.colors.white[2]);
-                  player.sendMessage(`${player.name} šapnuli ste ${target.name}: ${message}`, mp.colors.white[2]);
+                  target.SendMessage(`${player.name} vam sapuće: ${message}`, mp.colors.white[2]);
+                  player.SendMessage(`${player.name} šapnuli ste ${target.name}: ${message}`, mp.colors.white[2]);
                }
                else
                   return false;
@@ -100,8 +100,8 @@ module.exports = {
                if (player.id == target.id) return;
                let message = args.splice(1).join(' ');
                if (!message.trim()) return;
-               target.sendMessage('(( PM od ' + player.name + ' [' + player.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.from);
-               player.sendMessage('(( PM za ' + target.name + ' [' + target.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.to);
+               target.SendMessage('(( PM od ' + player.name + ' [' + player.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.from);
+               player.SendMessage('(( PM za ' + target.name + ' [' + target.id + ']: ' + message + ' ))', frp.Globals.Colors.pm.to);
             }
          }
       },

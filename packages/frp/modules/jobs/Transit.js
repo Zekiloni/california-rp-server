@@ -21,7 +21,7 @@ class Bus {
                 if (finished) {
                     let character = player.getCharacter(), money = 0;
                     money += distance * 0.002, money += stations * 0.05;
-                    player.sendMessage('Novac za rutu ' + Math.ceil(money), mp.colors.info);
+                    player.SendMessage('Novac za rutu ' + Math.ceil(money), mp.colors.info);
                     character.working.salary += Math.ceil(money);
                     if (player.vehicle)
                         player.vehicle.destroy();

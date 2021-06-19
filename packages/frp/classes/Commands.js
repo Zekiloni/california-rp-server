@@ -34,8 +34,8 @@ mp.events.add('playerCommand', async (player, command) => {
    let cmd = frp.Commands[commandName];
 
    if (cmd) {
-      const Account = await frp.Accounts.findOne({ where: { id: player.account } });
-      const Character = await frp.Characters.findOne({ where: { id: player.character } });
+      const Account = await player.Account();
+      const Character = await player.Character();
       
       if (cmd.admin && Account.Administrator < cmd.admin) return player.Notification('Nije vam dozvoljeno !', frp.Globals.Notification.Error, 4);
       
@@ -46,7 +46,7 @@ mp.events.add('playerCommand', async (player, command) => {
          if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       }
       
-      if (cmd.params && cmd.params.length > args.length) return player.sendMessage('Komanda: /' + commandName + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
+      if (cmd.params && cmd.params.length > args.length) return player.SendMessage('Komanda: /' + commandName + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
 
       cmd.call(player, args);
    } else {
