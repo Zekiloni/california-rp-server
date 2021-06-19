@@ -13,16 +13,16 @@ let AnticheatSafe = false,
     Positions = [],
     Waypoint = null;
 
+
 // Main timer
-// setInterval(() => {
-//    //if (Player.admin) return;
-//    //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
+ setInterval(() => {
+   if (Player.admin) return;
+   if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
 
-//    SpeedHack ();
-//    FlyHack ();
-//    UnAllowedWeapons ();
-// }, 1000);
-
+   SpeedHack ();
+   FlyHack ();
+   UnAllowedWeapons ();
+ }, 1000);
 
 /*
 // Teleport hack timer
@@ -111,7 +111,44 @@ function SpeedHack () {
    }
 }
 
-/*
+function PlayerHealthArmour () {
+   if (AnticheatSafe) return;
+   if (Player.getHealth() != Player.realHealth) {
+
+   } 
+   if (Player.getArmour() != Player.realArmour) {
+
+   } 
+}
+
+
+// Dodati Player.frozen sharovanu varijablu zbog anti unfreeze cheate
+function Misc () {
+   if (AnticheatSafe) return;
+
+   switch (Player.action)
+   {
+      case 'moving':
+         // Anti unfreeze hack
+         if (Player.action === 'moving') {
+            if (Player.frozen) {
+               if (Player.vehicle) {
+                  Player.vehicle.freezePosition(true);
+               }
+               else { Player.freezePosition(true); }
+            }
+         }
+         break;
+      case 'jumping':
+         // Anti BH
+         break;
+   }
+   
+
+   
+}
+
+
 mp.events.addDataHandler({
    'ac_safe': (entity, newValue, oldValue) => {
       if (entity.type === 'player') {
@@ -124,10 +161,13 @@ mp.events.addDataHandler({
                }, 1000);
             }
          }
+         else if (newValue === 'admin') {
+            AnticheatSafe = true;
+         }
       }
    }
 });
-*/
+
 // Chat filter
 mp.events.add({
    'playerChat': (text) => {
