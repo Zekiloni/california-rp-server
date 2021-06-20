@@ -92,12 +92,12 @@
             data: {
                player: {
                   money: null, 
-                  maximum: 25,
+                  maximum: 20,
                   items: [
-                     { id: 3, name: 'Assault Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     { id: 4, name: 'awdawd Rifle', quantity: 4, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     { id: 5, name: 'awdawd Rifle', quantity: 4, entity: 3, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     { id: 6, name: 'awdaww Rifle', quantity: 3, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' }
+                     // { id: 3, name: 'Assault Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     // { id: 4, name: 'awdawd Rifle', quantity: 4, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     // { id: 5, name: 'awdawd Rifle', quantity: 4, entity: 3, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
+                     // { id: 6, name: 'awdaww Rifle', quantity: 3, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' }
                   ], 
 
                   backpack: [
@@ -157,7 +157,9 @@
 
                Weight: function () { 
                   let weight = 0;
-                  this.player.items.forEach(item => { weight += (item.weight * item.quantity); });
+                  this.player.items.forEach(item => { 
+                     if (item.entity == this.entity.Player) weight += (item.weight * item.quantity); 
+                   });
                   return weight.toFixed(2);
                },
 
