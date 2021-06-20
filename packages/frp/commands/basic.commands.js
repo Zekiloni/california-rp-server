@@ -115,21 +115,35 @@ module.exports = {
          name: 'accept',
          desc: 'Lista Komand',
          call: (player, args) => {
-               let character = player.getCharacter();
-               if (!args[0])
-                  return;
-               switch (args[0]) {
-                  case 'invite': {
-                     if (character.invite_request == 0)
-                           return false;
-                     let faction = character.invite_request;
-                     character.faction = faction;
-                     character.invite_request = 0;
-                     character.rank = 'Newbie';
-                     player.SendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[faction].name + '.', mp.colors.success);
-                  }
+            let character = player.getCharacter();
+            if (!args[0])
+               return;
+            switch (args[0]) {
+               case 'invite': {
+                  if (character.invite_request == 0)
+                        return false;
+                  let faction = character.invite_request;
+                  character.faction = faction;
+                  character.invite_request = 0;
+                  character.rank = 'Newbie';
+                  player.SendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[faction].name + '.', mp.colors.success);
                }
+            }
          }
-      }
+      },
+
+      {
+         name: 'buy',
+         desc: 'Kupovina',
+         call: async (player, args) => {
+            const Nearest = await player.Nearest(), Character = await player.Character();
+            // if (Nearest) {
+               const [action] = args;
+               Character.Buy(player, Nearest, action);
+            // } else { 
+            //    // PORUKA: Nema nicega u blizini
+            // }
+         }
+     }
    ]
 };

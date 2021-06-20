@@ -89,6 +89,11 @@ function Update () {
       browser.execute('hud.players = ' + mp.players.length + ', hud.money = ' + Player.Money + ', hud.id = ' + Player.remoteId + ';');
       LocationUpdate();
    }
+
+   // PROVERITI
+   // mp.game.stats.statSetInt(mp.game.joaat("MP0_WALLET_BALANCE"), 20, true);
+   // mp.game.stats.statSetInt(mp.game.joaat("BANK_BALANCE"), 150, true);
+   // mp.game.stats.statSetInt(mp.game.joaat("SP0_TOTAL_CASH"), 50, true);
 }
 
 
@@ -165,6 +170,7 @@ function LocationUpdate () {
 }
 
 
+mp.game.gxt.set('PM_PAUSE_HDR', 'Focus Roleplay'); 
 
 
 function HideDefault () {

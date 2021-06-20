@@ -46,6 +46,7 @@ let FingerPointing = require('./player/Interactions/FingerPointing');
 let Police = require('./factions/police/Police');
 
 // BUSINESS
+let Markets = require('./business/Market');
 let Clothing = require('./business/Clothing');
 let Dealeships = require('./vehicles/Dealerships');
 

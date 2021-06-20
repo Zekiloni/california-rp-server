@@ -24,39 +24,65 @@ class Item {
          this.weapon = data.weapon || null;
          this.ammo = data.ammo || null;
       }
-      if (data.quantity) {
+      if (data.quantity && data.inside) {
          this.quantity = data.quantity;
+         this.inside = data.inside;
       }
       ItemRegistry[this.name] = this;
    }
 }
 
-// HRANA 
-new Item('Cheeseburger', ItemType.Weapon, 'prop_cs_burger_01', 0, false, function (player) {
-   player.call('client:player.scenario', []);
-});
 
-new Item('Medkit', ItemType.Misc, 'prop_ld_health_pack', 0, false, function (player) {
-   player.health += 25;
-});
 
-// MASKA
-new Item('iFruit Smartphone', ItemType.Misc, 'prop_player_phone_01', 0.3, function (player) {
-   let character = player.getCharacter(), phone = mp.phones[character.phone_number];
-   if (!phone.turned)
-      return; // telefon ti je ugasen
-   player.call('client:player.phone', phone);
-});
 
-// AMMOS / MUNICIJA 
-new Item('9mm Catridge', ItemType.Ammo, 'w_pi_combatpistol_mag1', 0, { quantity: 32 }, function () { });
-new Item('10mm Catridge', ItemType.Ammo, 'w_pi_pistol50_mag2', 0, { quantity: 27 }, function () { });
-new Item('.357 Catridge', ItemType.Ammo, 'w_mg_mg_mag2', 0, { quantity: 15 }, function () { });
-new Item('7.62 Catridge', ItemType.Ammo, 'w_ar_specialcarbine_mag2', 0, { quantity: 70 }, function () { });
-new Item('5.56 Catridge', ItemType.Ammo, 'w_ar_carbinerifle_mag2', 0, { quantity: 70 }, function () { });
-new Item('.338 Catridge', ItemType.Ammo, 'w_sr_sniperrifle_mag1', 0, { quantity: 15 }, function () { });
-new Item('Buckshot Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag1', 0, { quantity: 25 }, function () { });
-new Item('Slug Catridge', ItemType.Ammo, 'w_sg_heavyshotgun_mag2', 0, { quantity: 25 }, function () { });
+// FOOD
+new Item('Cheeseburger', ItemType.Food, 'prop_cs_burger_01', 0.2, false, function (player) { });
+new Item('Hamburger', ItemType.Food, 'prop_cs_burger_01', 0.2, false, function (player) { });
+new Item('Fries', ItemType.Food, 'prop_food_chips', 0.15, false, function (player) { });
+new Item('Pizza', ItemType.Food, 'prop_pizza_box_02', 0.3, false, function (player) { });
+new Item('Chicken Burger', ItemType.Food, 'prop_cs_burger_01', 0.2, false, function (player) { });
+new Item('Chips', ItemType.Food, 'v_ret_ml_chips4', 0.1, false, function (player) { });
+new Item('Donut', ItemType.Food, 'prop_donut_02', 0.1, false, function (player) { });
+new Item('Sandwich', ItemType.Food, 'prop_sandwich_01', 0.15, false, function (player) { });
+new Item('Taco', ItemType.Food, 'prop_taco_01', 0.2, false, function (player) { });
+
+
+// DRINKS
+new Item('Coffe', ItemType.Drink, 'prop_fib_coffee', 0.1, false, function (player) { });
+new Item('Soda Can', ItemType.Drink, 'ng_proc_sodacan_01b', 0.3, false, function (player) { });
+new Item('Cola Can', ItemType.Drink, 'ng_proc_sodacan_01a', 0.3, false, function (player) { });
+new Item('Flow Water', ItemType.Drink, 'prop_ld_flow_bottle', 0.25, false, function (player) { });
+new Item('Energy Drink', ItemType.Drink, 'prop_energy_drink', 0.2, false, function (player) { });
+new Item('Juice Glass', ItemType.Drink, 'ng_proc_sodacup_01c', 0.15, false, function (player) { });
+new Item('Beer Bottle', ItemType.Drink, 'prop_cs_beer_bot_02', 0.3, false, function (player) { });
+new Item('Whiskey Bottle', ItemType.Drink, 'prop_whiskey_bottle', 0.6, false, function (player) { });
+new Item('Vodka Bottle', ItemType.Drink, 'prop_vodka_bottle', 0.5, false, function (player) { });
+new Item('Tequila Bottle', ItemType.Drink, 'prop_tequila_bottle', 0.45, false, function (player) { });
+new Item('Gin Bottle', ItemType.Drink, 'prop_bottle_macbeth', 0.4, false, function (player) { });
+new Item('Brandy Bottle', ItemType.Drink, 'prop_bottle_brandy', 0.5, false, function (player) { });
+new Item('Rum Bottle', ItemType.Drink, 'prop_rum_bottle', 0.4, false, function (player) { });
+new Item('Cognac Bottle', ItemType.Drink, 'prop_bottle_cognac', 0.6, false, function (player) { });
+new Item('Wine Bottle', ItemType.Drink, 'prop_bottle_richard', 0.7, false, function (player) { });
+
+
+// MISCELLANEOUS
+new Item('Handheld Radio', ItemType.Misc, 'prop_cs_hand_radio', 0.2, false, function (player) { });
+new Item('Smartphone', ItemType.Misc, 'prop_amb_phone', 0.2, false, function (player) { });
+new Item('Phone', ItemType.Misc, 'prop_v_m_phone_01', 0.2, false, function (player) { });
+new Item('Boombox', ItemType.Misc, 'prop_boombox_01', 0.5, false, function (player) { });
+new Item('Lighter', ItemType.Misc, 'p_cs_lighter_01', 0.05, false, function (player) { });
+new Item('Cigarettes', ItemType.Misc, 'prop_cigar_pack_01', 0.01, false, function (player) { });
+new Item('Rope', ItemType.Misc, 'prop_stag_do_rope', 0.05, false, function (player) { });
+new Item('Jerrycan', ItemType.Misc, 'w_am_jerrycan', 0.4, false, function (player) { });
+new Item('Papers', ItemType.Misc, 'p_cs_papers_01', 0.01, false, function (player) { });
+new Item('Medkit', ItemType.Misc, 'prop_ld_health_pack', 0.6, false, function (player) { });
+new Item('Handcuffs', ItemType.Misc, 'prop_cs_cuffs_01', 0.2, false, function (player) { });
+new Item('Toolbox', ItemType.Misc, 'v_ind_cs_toolbox2', 0.8, false, function (player) { });
+new Item('Fishing Rod', ItemType.Misc, 'prop_fishing_rod_01', 0.01, false, function (player) { });
+
+// OPENABLE
+new Item('Pack of Beers', ItemType.Openable, 'v_ret_ml_beerpis1', 1.2, { quantity: 6, inside: 'Beer Bottle' }, function (player) { });
+
 
 // WEAPONS / ORUZIJE
 

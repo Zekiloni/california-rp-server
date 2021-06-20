@@ -57,7 +57,7 @@ frp.Bank.prototype.Tax = async function (player, earnings) {
    });
 
    Businesses.forEach(Business => {
-      Tax += (Business.Cash / 100) * frp.Settings.Taxes.Business;
+      Tax += (Business.Budget / 100) * frp.Settings.Taxes.Business;
    });
 
    if (earnings > 20) Tax += (earnings / 100) * frp.Settings.Taxes.Salary;

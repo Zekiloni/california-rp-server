@@ -9,11 +9,9 @@ mp.events.add({
       if (opened) { 
          browser = mp.browsers.new('package://business/clothing-interface/clothing.html');
          Player.BrowserControls(true, true);
-         mp.events.call('client:player.camera:inFront', true);
       } else { 
          browser.destroy();
          Player.BrowserControls(false, false);
-         mp.events.call('client:player.camera:inFront', false);
       }
    },
 

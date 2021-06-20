@@ -158,8 +158,8 @@ function getAmmoInClip (weaponHash){
 
 // Modifying default GTA escape menu
 
-mp.game.gxt.set("PM_PAUSE_HDR", "Focus Roleplay"); // Ime servera
-//mp.game.gxt.set("PM_CASH", "$~500000~"); // Pare
+mp.game.gxt.set('PM_PAUSE_HDR', 'Focus Roleplay'); 
+mp.game.gxt.set('PM_CASH', '$~500000~'); // Pare
 
 
 

@@ -200,15 +200,16 @@ frp.Items.Near = async function (player) {
 
 
 frp.Items.prototype.Use = async function (player) {
-   const Type = ItemRegistry[this.Item].type;
-   if (Type == ItemType.Weapon) {
+   const Item = ItemRegistry[this.Item];
+   if (Item.type == ItemType.Weapon) {
       this.Entity = ItemEntities.Wheel;
-      ItemRegistry[this.Item].use(player, this.Ammo);
+      Item.use(player, this.Ammo);
       await this.save();
    } else {
+      if (Item.use == false) return;
       const Used = await this.increment('Quantity', { by: -1 });
       console.log(Used)
-      ItemRegistry[this.Item].use(player);
+      Item.use(player);
       // if quantity == 0 destroy item
    }
    
@@ -217,9 +218,7 @@ frp.Items.prototype.Use = async function (player) {
 
 
 frp.Items.Clear = async function (player) {
-   let Character = await player.Character();
-   const Items = await frp.Items.findAll({ where: { Owner: Character.id } });
-
+   const Items = await frp.Items.findAll({ where: { Owner: player.character } });
    Items.forEach(async (Item) => {
       await Item.destroy();
    });

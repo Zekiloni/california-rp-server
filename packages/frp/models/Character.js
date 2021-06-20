@@ -114,6 +114,7 @@ frp.Characters.prototype.Spawn = async function (player) {
          const Position = this.Last_Position;
          if (this.Last_Position) 
             player.position = new mp.Vector3(Position.x, Position.y, Position.z);
+            player.dimension = frp.Settings.default.dimension; // promeniti posle na last dimension
          break;
       }
       case 2: {
@@ -265,6 +266,40 @@ frp.Characters.prototype.Exit = async function (player) {
 frp.Characters.prototype.SetAdmin = async function (level) { 
    this.Admin = level;
    await this.save();
+};
+
+
+frp.Characters.prototype.Buy = async function (player, Nearest, action) { 
+
+   console.log('buy', 1)
+   if (action) { 
+      console.log('akcija ' + action);
+      console.log('buy action', 1)
+
+
+   } else { 
+      console.log('buy', 2)
+
+      switch (true) { 
+         case Nearest instanceof frp.Business: {
+            console.log('buy', 3)
+            Nearest.Menu(player);
+            break;
+         }
+   
+         case Nearest instanceof frp.Houses: { 
+            console.log('buy', 4)
+
+            break;
+         }
+   
+         default: console.log('nidje');
+      }
+      console.log('buy', 5)
+
+   }
+   console.log('buy', 6)
+
 };
 
 

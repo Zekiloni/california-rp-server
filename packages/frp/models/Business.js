@@ -60,15 +60,12 @@ frp.Business.New = async function (player, type, walkin, price) {
 
    if (!BusinessTypes[type]) return;
 
-   console.log('uso u new 1');
    const Position = player.position;
    const Dimension = player.dimension;
    const Walk_in = walkin == 1 ? true : false;
    const Default = BusinessTypes[type];
-   console.log('uso u new 2');
 
    const Business = await frp.Business.create({ Name: Default.name, Type: type, Price: price, Walk_in: Walk_in, Products: Default.products, Position: Position, Dimension: Dimension });
-   console.log(Business);
 };
 
 
@@ -84,14 +81,23 @@ frp.Business.prototype.Refresh = function () {
    if (this.GameObject == null) { 
       const GameObjects = { 
          colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 3, 2, 0),
-         blip: mp.blips.new(Info.blip, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 })
+         blip: mp.blips.new(Info.blip, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
       };
+
+
+      mp.events.add('playerEnterColshape', (player, shape) => { 
+         if (shape.id == GameObjects.colshape.id) { 
+            player.SendMessage('Biznis ' + this.Name + ', id ' + this.id + ', cena ' + this.Price, frp.Globals.Colors.info);
+            console.log(this);
+            console.log(shape);  
+         }
+      });
+
 
       if (Info.color) GameObjects.blip.color = Info.color;
 
       this.GameObject = GameObjects;
    } 
-
 };
 
 
@@ -107,6 +113,45 @@ frp.Business.prototype.Buy = async function (player) {
    await this.save();
 };
 
+
+frp.Business.prototype.Menu = async function (player) { 
+   console.log('menu', 1)
+   switch (this.Type) { 
+      case frp.Globals.Business.Types.VehicleDealership: { 
+         player.call('client:business:menu', ['dealership', this]);
+         break;
+      }
+
+      case frp.Globals.Business.Types.Rent: { 
+         player.call('client:business:menu', ['rent', this]);
+         break;
+      }
+
+      case frp.Globals.Business.Types.Restaurant: { 
+         player.call('client:business:menu', ['restaurant', this]);
+         break;
+      }
+
+      case frp.Globals.Business.Types.Cafe: { 
+         player.call('client:business:menu', ['drinks', this]);
+         break;
+      }
+
+      case frp.Globals.Business.Types.NightClub: { 
+         player.call('client:business:menu', ['drinks', this]);
+         break;
+      }
+
+      case frp.Globals.Business.Types.Clothing: { 
+         player.call('client:business:menu', ['clothing']);
+         break;
+      }
+      
+      default:
+         player.call('client:business.market:menu', [this]); console.log('menu market', 1)
+
+   }
+};
 
 frp.Business.prototype.Sell = async function (player, target = 0, price = 0) {
    let Character = await player.Character();

@@ -84,12 +84,12 @@ function cuff (entity, toggle) {
 
 function waitEntity (entity) {
    return new Promise(resolve => {
-         let wait = setInterval(() => {
-            if (mp.game.entity.isAnEntity(entity.handle)) {
-               clearInterval(wait);
-               resolve();
-            }
-         }, 1);
+      let wait = setInterval(() => {
+         if (mp.game.entity.isAnEntity(entity.handle)) {
+            clearInterval(wait);
+            resolve();
+         }
+      }, 1);
    });
 }
 

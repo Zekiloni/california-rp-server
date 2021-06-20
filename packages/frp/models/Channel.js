@@ -18,9 +18,9 @@ frp.Channels = frp.Database.define('channel', {
 
 
 frp.Channels.New = async function (player, frequency, name = null, password = null) {
-   let exist = await frp.Channels.count({ where: { Frequency: frequency } });
-   if (exist != 0) return; // PORUKA: Vec Postoji frekvencija
-   let Character = await player.Character();
+   const exist = await frp.Channels.count({ where: { Frequency: frequency } });
+   if (exist) return; // PORUKA: Vec Postoji frekvencija
+   const Character = await player.Character();
    frp.Channels.create({ Frequency: frequency, Name: name, Password: password, Owner: Character.id });
    Character.Frequency = Frequency;
    // PORUKA: Uspesno ste kreirali frekvenciju
