@@ -25,6 +25,9 @@ let Houses = require('./models/House');
 
 const AntiCheat = require('./classes/Anticheat');
 
+// MODULES
+let Shapes = require('./modules/Shapes');
+
 // CLASSES
 
 let Player = require('./classes/Player');

@@ -10,10 +10,7 @@ const MiningSpots = [
 ];
 class Miner {
     constructor() {
-        mp.events.add({
-            '': () => {
-            }
-        });
+
     }
     start(player) {
         console.log('START 2');

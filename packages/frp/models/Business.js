@@ -74,6 +74,7 @@ frp.Business.afterCreate(async (Business, Options) => {
 });
 
 
+
 frp.Business.prototype.Refresh = function () {
 
    const Info = BusinessTypes[this.Type];
@@ -85,13 +86,9 @@ frp.Business.prototype.Refresh = function () {
       };
 
 
-      mp.events.add('playerEnterColshape', (player, shape) => { 
-         if (shape.id == GameObjects.colshape.id) { 
-            player.SendMessage('Biznis ' + this.Name + ', id ' + this.id + ', cena ' + this.Price, frp.Globals.Colors.info);
-            console.log(this);
-            console.log(shape);  
-         }
-      });
+      GameObjects.colshape.OnPlayerEnter = (player) => { 
+         player.SendMessage('Biznis ' + this.Name + ', id ' + this.id + ', cena ' + this.Price, frp.Globals.Colors.info);
+      };
 
 
       if (Info.color) GameObjects.blip.color = Info.color;
