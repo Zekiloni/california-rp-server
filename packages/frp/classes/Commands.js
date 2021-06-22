@@ -44,6 +44,8 @@ mp.events.add('playerCommand', async (player, command) => {
          if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
          if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       }
+
+      if (cmd.item && frp.Items.HasItem(player.character, cmd.item) == false) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + cmd.item + '.', frp.Globals.Notification.Error, 4);
       
       if (cmd.params && cmd.params.length > args.length) return player.SendMessage('Komanda: /' + commandName + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
 

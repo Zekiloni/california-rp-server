@@ -1,45 +1,39 @@
-let Channels = require('../classes/Channels');
+
+
 module.exports = {
    commands: [
       {
          name: 'r',
-         desc: 'Radio komunikacija',
+         desc: 'Radio Komunikacija',
+         params: ['tekst'],
+         item: 'Handheld Radio',
          call: async (player, args) => {
             const Character = await player.Character();
             if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.Globals.Notification.Error, 4);
-            if (!frp.Items.HasItem(player.character, 'Handheld Radio')) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + ' Handheld Radio.', frp.Globals.Notification.Error, 4);
+
+            const Message = args.splice(0).join(' ');
+            if (!Message.trim()) return;
+
+            const Frequency = await frp.Channels.findOne({ where: { Frequency: Character.Frequency } }) ;
+            Frequency.Send('[CH: ' + Character.Frequency + '] ' + player.name + ': ' + Message);
          }
       },
+
       {
-         name: 'freq',
+         name: 'channel',
          desc: 'Podešavanje frekvencije',
-         call: (player, args) => {
-               if (!mp.item.hasItem(player.character, 'Radio Prijemnik'))
-                  return player.SendMessage('Ne posedujete radio prijemnik !', mp.colors.tomato);
-               if (!args[0])
-                  return player.SendMessage('Komanda /freq set - create - leave - delete - password !', mp.colors.help);
-               switch (args[0]) {
-                  case 'set': {
-                     mp.channels.join(player, args[1], args[2]);
-                     break;
-                  }
-                  case 'create': {
-                     mp.channels.create(player, args[1], args[2] ? (args[2]) : (0));
-                     break;
-                  }
-                  case 'leave': {
-                     mp.channels.leave(player);
-                     break;
-                  }
-                  case 'delete': {
-                     console.log('delete');
-                     break;
-                  }
-                  case 'password': {
-                     console.log('password');
-                     break;
-                  }
-               }
+         params: ['action'],
+         item: 'Handheld Radio',
+         actions: 'join, leave, create, password',
+         call: async (player, args) => {
+            const [action, data, value] = args;
+            const Character = await player.Character();
+
+            switch (action) { 
+               case 'join': frp.Channels.Join(player, data, value); break;
+               case 'leave': frp.Channels.Leave(player); break;
+               case 'create':  frp.Channels.create(player, data, value); break;
+            }
          }
       }
    ]

@@ -3,6 +3,8 @@
 let { ItemRegistry, ItemEntities } = require('./Items.Registry');
 
 require('../models/Item');
+require('../models/Channel');
+
 
 class Inventory {
    constructor() {

@@ -19,7 +19,6 @@ let Globals = require('./configs/Globals');
 
 // MODELS 
 let Logs = require('./models/Logs');
-let Channels = require('./models/Channel');
 let Houses = require('./models/House');
 
 

@@ -91,6 +91,7 @@ const GLOBALS = {
       CHANNEL_SUCCESFULLY_CREATED: 'Uspešno ste kreirali frekvenciju.',
       CHANNEL_SUCCESFULLY_DELETED: 'Uspešno ste izbrisali frekvenciju.',
       CHANNEL_SUCCESFULLY_EDITED: 'Uredili ste frekvenciju.',
+      CHANNEL_SUCCESFULLY_LEAVED: 'Napustili ste frekvenciju',
       NOT_IN_CHANNEL: 'Niste ni u jednoj frekvenciji.',
       SUCCESSFULY_JOINED_CHANNEL: 'Uspešno ste se pridružilii frekvenciji.',
       YOU_DONT_HAVE: 'Ne posedujete ',
