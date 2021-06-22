@@ -122,11 +122,23 @@ frp.Vehicles.prototype.Park = async function (position = null) {
 };
 
  
-frp.Vehicles.Create = async function (model, owner, position) { 
-   
-
+frp.Vehicles.Create = async function (model, owner, position) {
+   const VehicleModel = await frp.Vehicles.create({ Model: model, Owner: owner, Position: position });
+   const Vehicle = mp.vehicles.new(mp.game.joaat(model), position,
+   {
+      heading: 180,
+      numberPlate: 'AAAA', // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
+      alpha: 255,
+      color: 0,
+      locked: false,
+      engine: false,
+      dimension: 0
+   });
 };
 
+frp.Vehicles.afterCreate(async (Vehicle, Options) => {
+   Vehicles.Refresh();
+});
 
 (async () => { 
    frp.Vehicles.sync();
