@@ -27,6 +27,10 @@ mp.events.addCommand("dzok", (player, fullText) => {
     player.playAnimation(dict, anim, 5, 0);
 });
 
+mp.events.addCommand("alpr", (player, fullText) => {
+    player.call('client:vehicle.alpr');
+});
+
 const Vozila = require('./data/Vehicles.json');
 let Dealer = [];
 const MAX = 25;
