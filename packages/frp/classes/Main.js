@@ -90,6 +90,10 @@ module.exports = class Main {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
    }
 
+   static Sleep (s) {
+      return new Promise(resolve => setTimeout(resolve, s * 1000));
+   }
+
    static Range (start, end, step) {
       return (
          Array.from(
