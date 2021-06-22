@@ -18,14 +18,15 @@
          <div class="shop">
             <div class="header">
                <small> Prodavnica </small>
-               <h2> {{ business.name }} </h2>
+               <h2> {{ business.Name }} </h2>
                <i v-on:click="Close()" class="close fa fa-times"></i>
             </div>
 
             <div class="content">
                <ul class="products">
-                  <li class="product" v-for="(product, i) in business.products" v-on:click="Add(i, product.multiplier)"> 
-
+                  <li class="product" v-for="(product, i) in business.Products" v-on:click="Add(i, product.multiplier)"> 
+                     <img :src="'package://player/inventory/inventory-interface/src/images/items/' + product.hash + '.png'" />
+                     <h4 class="price"> {{ Dollars(product.multiplier * business.Multiplier) }} </h4>
                   </li>
                </ul>
 
@@ -68,24 +69,35 @@
                   cart: []
                },
 
-               business: { 
-                  name: 'Davis 24 / 7 Market', id: 1, multiplier: 0.3,
-                  products: {
-                     'Kanister': { icon: 'kanister', multiplier: 19 },
-                     'awdawg Paaaaaaaaiva': { icon: 'pivo', multiplier: 3 },
-                     'awdawdwa': { icon: 'kanister', multiplier: 19 },
-                     'Flasa Piva': { icon: 'pivo', multiplier: 3 },
-                     'Aaaa': { icon: 'kanister', multiplier: 19 },
-                     'bbb Piva': { icon: 'pivo', multiplier: 3 },
-                     'awda': { icon: 'kanister', multiplier: 19 },
-                     'wadawd Piva': { icon: 'pivo', multiplier: 3 },
-                     'awdawd': { icon: 'kanister', multiplier: 19 },
-                     'awdawdfawg Piva': { icon: 'pivo', multiplier: 3 },
-                     'awda': { icon: 'kanister', multiplier: 19 },
-                     'f Piva': { icon: 'pivo', multiplier: 3 },
-                     'fawdawd': { icon: 'kanister', multiplier: 19 }
-                  },
-               },
+
+            business: {
+               Name: '24 / 7 Prodavnica',
+               Multiplier: 3.75,
+               Products: {
+                  'Medkit': { hash: 'prop_ld_health_pack', multiplier: 10.25 },
+                  'Toolbox': { hash: 'v_ind_cs_toolbox2', multiplier: 12.75 },
+                  'Jerrycan': { hash: 'w_am_jerrycan', multiplier: 17.8 },
+                  'Rope': { hash: 'prop_stag_do_rope', multiplier: 5.25 },
+                  'Cigarettes': { hash: 'prop_cigar_pack_01', multiplier: 6.8 },
+                  'Pack of Beers': { hash: 'v_ret_ml_beerpis1', multiplier: 14.2 },
+                  'Fishing Rod': { hash: 'prop_fishing_rod_01', multiplier: 15.1 },
+                  'Hamburger': { hash: 'prop_cs_burger_01', multiplier: 6.05 },
+                  'Chips': { hash: 'v_ret_ml_chips4', multiplier: 2.69 },
+                  'Donut': { hash: 'prop_donut_02', multiplier: 2.18 },
+                  'Sandwich': { hash: 'prop_sandwich_01', multiplier: 4.23 },
+                  'Coffe': { hash: 'prop_fib_coffee', multiplier: 1.52 },
+                  'Water Bottle': { hash: 'prop_ld_flow_bottle', multiplier: 1.32 },
+                  'Cola Can': { hash: 'ng_proc_sodacan_01a', multiplier: 2 },
+                  'Soda Can': { hash: 'ng_proc_sodacan_01b', multiplier: 1.88 },
+                  'Energy Drink': { hash: 'prop_energy_drink', multiplier: 2.7 },
+                  'Beer Bottle': { hash: 'prop_cs_beer_bot_02', multiplier: 3.6 },
+                  'Juice Cup': { hash: 'ng_proc_sodacup_01c', multiplier: 3 },
+                  'Whiskey Bottle': { hash: 'prop_whiskey_bottle', multiplier: 20 },
+                  'Tequila Bottle': { hash: 'prop_tequila_bottle', multiplier: 18.9 },
+                  'Vodka Bottle': { hash: 'prop_vodka_bottle', multiplier: 17.2 }
+                  }
+               }
+
             },
 
             methods: { 
@@ -109,7 +121,8 @@
                Total: function () { 
                   let price = 0;
                   for (const item of this.player.cart) { 
-                     price += (item.multiplier * this.business.multiplier) * item.quantity;
+                     console.log(item)
+                     price += (item.multiplier * this.business.Multiplier) * item.quantity;
                   }
                   return price;
                },
@@ -129,11 +142,8 @@
                Buy: function () { 
                   if (this.player.cart.length < 1) return;
                   const Price = this.Total(), Items = this.player.cart;
-                  console.log(Price);
-                  console.log(Items)
-                  // mp.trigger('');
+                  mp.trigger('client:business.market:buy', parseInt(Price), JSON.stringify(Items), this.business.id);
                }
-               
             }
          })
       </script>

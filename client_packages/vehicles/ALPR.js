@@ -23,18 +23,18 @@ function ALPR () {
    const ForwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, 10, 0.0),
          BackwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, -10, 0.0);
 
-   const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition, null, 2),
-         BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition, null, 2);
+   const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition, [Player.vehicle]),
+         BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition, [Player.vehicle]);
 
-   if (ForwardVehicle) { // speed*3.6
-      Vehicles.Front = ForwardVehicle;
-      const Speed = ForwardVehicle.getSpeed() * 3.6;
+   if (ForwardVehicle && ForwardVehicle.entity.type == 'vehicle') { // speed*3.6
+      Vehicles.Front = ForwardVehicle.entity;
+      const Speed = Vehicles.Front.getSpeed() * 3.6;
       mp.gui.chat.push(JSON.stringify(Speed));
 
    } 
-   if (BackwardVehicle) {
-      Vehicles.Back = BackwardVehicle;
-      const Speed = BackwardVehicle.getSpeed() * 3.6;
+   if (BackwardVehicle && ForwardVehicle.entity.type == 'vehicle') {
+      Vehicles.Back = BackwardVehicle.entity;
+      const Speed = Vehicles.Back.getSpeed() * 3.6;
       mp.gui.chat.push(JSON.stringify(Speed));
    }
 }

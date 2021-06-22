@@ -2,6 +2,8 @@
 
 const { DataTypes } = require('sequelize');
 
+
+const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
 
 
@@ -157,7 +159,7 @@ frp.Business.prototype.Buy = async function (player) {
 frp.Business.prototype.Menu = async function (player) { 
    console.log('menu', 1)
    switch (this.Type) { 
-      case frp.Globals.Business.Types.VehicleDealership: { 
+      case frp.Globals.Business.Types.VehicleDealership: {
          player.call('client:business:menu', ['dealership', this]);
          break;
       }
@@ -187,9 +189,21 @@ frp.Business.prototype.Menu = async function (player) {
          break;
       }
       
-      default:
-         player.call('client:business.market:menu', [this]); console.log('menu market', 1)
+      default: {
+         const Info = { 
+            Name: this.Name,
+            Multiplier: frp.Settings.Business.Multipliers.Market,
+            id: this.id,
+            Products: {}
+         }
 
+         for (const i in this.Products) {
+            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier };
+         }
+
+         console.log(Info)
+         player.call('client:business.market:menu', [Info]);
+      }
    }
 };
 
