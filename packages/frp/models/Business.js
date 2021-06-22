@@ -4,6 +4,14 @@ const { DataTypes } = require('sequelize');
 
 const BusinessTypes = require('../data/Businesses.json');
 
+
+const { products } = BusinessTypes[9];
+for (const i in products) { 
+   const multiplier = products[i];
+   let price = multiplier * frp.Settings.Business.Multipliers.Ammunation;
+   console.log(i + ' cena ' + price.toFixed(2))
+}
+
 frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Name: { type: DataTypes.STRING },
@@ -32,7 +40,7 @@ frp.Business = frp.Database.define('business', {
          set: function (value) { this.setDataValue('Workers', JSON.stringify(value)); }
       },
       Products: { 
-         type: DataTypes.TEXT, defaultValue: '{}',
+         type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Products')); },
          set: function (value) { this.setDataValue('Products', JSON.stringify(value)); }
       },
@@ -64,8 +72,28 @@ frp.Business.New = async function (player, type, walkin, price) {
    const Dimension = player.dimension;
    const Walk_in = walkin == 1 ? true : false;
    const Default = BusinessTypes[type];
+   let Products = {};
 
-   const Business = await frp.Business.create({ Name: Default.name, Type: type, Price: price, Walk_in: Walk_in, Products: Default.products, Position: Position, Dimension: Dimension });
+   if (Default.products) {
+      for (const i in Default.products) {
+         let multiplier = Default.products[i];
+         Products[i] = { multiplier: multiplier, supplies: frp.Settings.Business.Default.Supplies }; // '\"' + i + '\"'
+      }   
+   }
+
+   console.log(Products)
+   
+   const Business = await frp.Business.create({ Name: Default.name, Type: type, Price: price, Walk_in: Walk_in, Products: Products, Position: Position, Dimension: Dimension });
+   console.log(Business);
+};
+
+
+frp.Business.Nearest = async function (player) { 
+   const Businesses = await frp.Business.findAll();
+   for (const Business of Businesses) { 
+      const Position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
+      if (player.dist(Position) < 2.5) return Business;
+   }
 };
 
 
@@ -73,6 +101,13 @@ frp.Business.afterCreate(async (Business, Options) => {
    Business.Refresh();
 });
 
+
+frp.Business.afterDestroy(async (Business, Options) => {
+   if (Business.GameObject) {
+      Business.GameObject.colshape.destroy();
+      Business.GameObject.blip.destroy();
+   }
+});
 
 
 frp.Business.prototype.Refresh = function () {
@@ -87,7 +122,15 @@ frp.Business.prototype.Refresh = function () {
 
 
       GameObjects.colshape.OnPlayerEnter = (player) => { 
-         player.SendMessage('Biznis ' + this.Name + ', id ' + this.id + ', cena ' + this.Price, frp.Globals.Colors.info);
+         const Price = frp.Main.Dollars(this.Price);
+         const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Biznis u vlasništvu';
+         const Locked = this.Locked ? 'Zaključan' : 'Otključan';
+
+         const white = frp.Globals.Colors.whitesmoke;
+
+         player.SendMessage('[Biznis] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + '.', frp.Globals.Colors.property);
+         player.SendMessage('[Biznis] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
+         player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), frp.Globals.Colors.whitesmoke);
       };
 
 
@@ -223,5 +266,4 @@ frp.Business.prototype.WorkersRemove = async function (player) {
 
    frp.Main.Terminal(3, Businesses.length + ' Businesses Loaded !');
 })();
-
 

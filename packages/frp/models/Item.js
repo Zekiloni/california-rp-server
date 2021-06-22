@@ -207,8 +207,11 @@ frp.Items.prototype.Use = async function (player) {
       await this.save();
    } else {
       if (Item.use == false) return;
-      const Used = await this.increment('Quantity', { by: -1 });
-      console.log(Used)
+      if (this.Quantity > 1) { 
+         await this.increment('Quantity', { by: -1 });
+      } else { 
+         await this.destroy();
+      }
       Item.use(player);
       // if quantity == 0 destroy item
    }

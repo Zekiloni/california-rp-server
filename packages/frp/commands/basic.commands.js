@@ -51,7 +51,8 @@ module.exports = {
             const Action = args[0];
             
             switch (Action) { 
-               case 'hud':  player.call('client:player.interface:toggle'); break;
+               case 'hud': player.call('client:player.interface:toggle'); break;
+               case 'minimap': player.call('client:player.interface.radar:toggle'); break;
             }
          }
       },

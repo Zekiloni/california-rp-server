@@ -46,13 +46,13 @@ mp.Player.prototype.Nearest = async function () {
    const Businesses = await frp.Business.findAll();
    for (const Business of Businesses) { 
       const Position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
-      if (this.dist(Position) < 3.5) return Business;
+      if (this.dist(Position) < 3.0) return Business;
    }
 
    const Houses = await frp.Houses.findAll();
    for (const House of Houses) { 
       const Position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
-      if (this.dist(Position) < 3.5) return House;
+      if (this.dist(Position) < 3.0) return House;
    }
 
    // const Vehicles = await frp.Vehicles.findAll();

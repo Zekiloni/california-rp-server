@@ -3,6 +3,7 @@
 const Player = mp.players.local;
 let browser = mp.browsers.new('package://player/game-interface/main.html');
 let active = false, Timer = null;
+let Radar = true;
 
 global.GameInterface = browser;
 
@@ -17,6 +18,8 @@ mp.events.add({
    },
 
    'client:player.interface:notification': Notify,
+
+   'client:player.interface.radar:toggle': DisplayRadar,
 
    'client:player.interface:black': () => { browser.execute('hud.black = !hud.black;'); },
 
@@ -89,11 +92,6 @@ function Update () {
       browser.execute('hud.players = ' + mp.players.length + ', hud.money = ' + Player.Money + ', hud.id = ' + Player.remoteId + ';');
       LocationUpdate();
    }
-
-   // PROVERITI
-   // mp.game.stats.statSetInt(mp.game.joaat("MP0_WALLET_BALANCE"), 20, true);
-   // mp.game.stats.statSetInt(mp.game.joaat("BANK_BALANCE"), 150, true);
-   // mp.game.stats.statSetInt(mp.game.joaat("SP0_TOTAL_CASH"), 50, true);
 }
 
 
@@ -128,9 +126,16 @@ function Notify (message, type, time = 3) {
 }
 
 
+function DisplayRadar () { 
+   Radar = !Radar;
+   mp.game.ui.displayRadar(Radar);
+}
+
+
 function hasWeapon (weaponHash){
 	return mp.game.invoke("0x8DECB02F88F428BC", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
 }
+
 
 function getAmmoCount (weaponHash){
 	if (hasWeapon(weaponHash)){
@@ -140,6 +145,7 @@ function getAmmoCount (weaponHash){
 	}
 	return 0
 }
+
 
 function getHeading () { 
    let H = Player.getHeading(), Heading;
@@ -159,10 +165,10 @@ function getHeading () {
 
 
 function LocationUpdate () { 
-   let path = mp.game.pathfind.getStreetNameAtCoord(Player.position.x, Player.position.y, Player.position.z, 0, 0);
-   let Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(Player.position.x, Player.position.y, Player.position.z));
-   let Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
-   let Heading = getHeading();
+   const path = mp.game.pathfind.getStreetNameAtCoord(Player.position.x, Player.position.y, Player.position.z, 0, 0),
+      Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(Player.position.x, Player.position.y, Player.position.z)),
+      Street = mp.game.ui.getStreetNameFromHashKey(path.streetName),
+      Heading = getHeading();
 
    browser.execute('hud.location.street = \"' + Street + '\";');
    browser.execute('hud.location.zone = \"' + Zone + '\";');

@@ -26,7 +26,7 @@ let Houses = require('./models/House');
 const AntiCheat = require('./classes/Anticheat');
 
 // MODULES
-let Shapes = require('./modules/Shapes');
+const Helpers = require('./modules/Helpers');
 
 // CLASSES
 
@@ -50,6 +50,7 @@ let Jobs = require('./classes/Jobs');
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
 // let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta
+// Player.Nearest(); - vraca instancu najblizeg objekta
 
 
 

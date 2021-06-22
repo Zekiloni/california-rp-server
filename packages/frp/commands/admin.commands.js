@@ -198,10 +198,13 @@ module.exports = {
       },
       {
          name: 'dimension',
-         admin: 3,
+         admin: 2,
+         params: ['igrac', 'dimenzija'],
          call: (player, args) => {
-            let target = mp.players.find(args[0]), dimension = parseInt(args[1]);
-            if (target) player.dimension = dimension;
+            const [toSet, dimension] = args;
+            
+            const Target = mp.players.find(toSet);
+            if (Target) Target.dimension = parseInt(dimension);
          }
       },
       {

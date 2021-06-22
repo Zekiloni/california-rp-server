@@ -19,7 +19,7 @@ module.exports = class Main {
       }
    }
 
-   static Logger(type, message, account = 0, character = 0, participant = 0) {
+   static Logger (type, message, account = 0, character = 0, participant = 0) {
       frp.Logs.create({ Type: Types[type], Account: account, Character: character, Participant: participant, Message: message });
    }
    
@@ -31,20 +31,20 @@ module.exports = class Main {
       return size;
     };
 
-   static HexToDecimal(hex) {
+   static HexToDecimal (hex) {
       return parseInt(hex.replace('#', ''), 16);
    }
 
-   static RandomRGB() {
+   static RandomRGB () {
       return { r: Math.floor(Math.random() * 255), g: Math.floor(Math.random() * 255), b: Math.floor(Math.random() * 255) };
    }
 
-   static DateTime() {
+   static DateTime () {
       let now = new Date(), time = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(), date = [now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate()].join('-');
       return date + ' ' + time;
    }
    
-   static Between(min, max) {
+   static Between (min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
    }
 
@@ -56,7 +56,7 @@ module.exports = class Main {
       }  
    }  
 
-   static GenerateNumber(n) {
+   static GenerateNumber (n) {
       let add = 1, max = 12 - add;
       if (n > max) {
          return GenerateNumber(max) + GenerateNumber(n - max);
@@ -67,7 +67,7 @@ module.exports = class Main {
       return ("" + number).substring(add);
    }
    
-   static CountDigits(n) {
+   static CountDigits (n) {
       let count = 0;
       if (n >= 1) ++ count;
       while (n / 10 >= 1) {
@@ -84,6 +84,10 @@ module.exports = class Main {
          result += characters.charAt(Math.floor(Math.random() * characters.length));
       }
       return result;
+   }
+
+   static Dollars (i) { 
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
    }
 
    static Range (start, end, step) {

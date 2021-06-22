@@ -14,5 +14,20 @@ module.exports = {
 
    Taxes: {
       Salary: 5, House: 0.25, Vehicle: 0.1, Business: 2
+   },
+
+   Frequency: { 
+      Price: 350
+   },
+
+   Business: {
+      Default: { 
+         Supplies: 125
+      },
+
+      Multipliers: { 
+         Market: 3.75, Ammunation: 51.75, Vehicle: 10
+      }
    }
+
 };

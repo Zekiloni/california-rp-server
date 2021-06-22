@@ -22,15 +22,11 @@ module.exports = {
          }
       },
       {
-         name: 'deletehouse',
+         name: 'deletebiz',
          admin: 3,
-         call: (player, args) => {
-            if (player.near != null && player.near.type == 'house') {
-               let house = mp.houses[player.near.id];
-               if (house) {
-                  mp.house.delete(house);
-               }
-            }
+         call: async (player, args) => {
+            const Nearest = await frp.Business.Nearest(player);
+            if (Nearest) await Nearest.destroy();
          }
       },
       {

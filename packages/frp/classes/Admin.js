@@ -27,7 +27,7 @@ class Admin {
                target.SendMessage('(( ' + Ranks[Rank] + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.admin);
             }
          }
-      })
+      });
    }
 
    async Broadcast (player, message) {

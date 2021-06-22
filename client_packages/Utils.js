@@ -35,5 +35,12 @@ function OnlinePlayers () {
 }
 
 
+function GetAdress (position) { 
+   const path = mp.game.pathfind.getStreetNameAtCoord(position.x, position.y, position.z, 0, 0),
+      Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(position.x, position.y, position.z)),
+      Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
+   return { zone: Zone, street: Street };
+}
 
-global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers };
+
+global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress };
