@@ -18,24 +18,64 @@ mp.events.add({
 })
 
 
+/* function GetVehicleInfrontOfEntity(entity)
+	local coords = GetOffsetFromEntityInWorldCoords(entity,0.0,1.0,0.3)
+	local coords2 = GetOffsetFromEntityInWorldCoords(entity, 0.0, ScanningDistance,0.0)
+	local rayhandle = CastRayPointToPoint(coords, coords2, 10, entity, 0)
+	local _, _, _, _, entityHit = GetRaycastResult(rayhandle)
+	if entityHit>0 and IsEntityAVehicle(entityHit) then
+		return entityHit
+	else
+		return nil
+	end
+end*/
+
+
 function ALPR () {
+   let counter = 0,
+       FMarker = null,
+       BMarker = null;
    const Vehicle = Player.vehicle;
    const ForwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, 10, 0.0),
          BackwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, -10, 0.0);
+   /*
+   const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition), 
+         BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition);*/
 
-   const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition, null, 2),
-         BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition, null, 2);
+   const ForwardVehicle = mp.raycasting.testCapsule(Vehicle.position, ForwardPosition, 10, Player, 2), 
+         BackwardVehicle = mp.raycasting.testCapsule(Vehicle.position, BackwardPosition, 10, Player, 2);
 
-   if (ForwardVehicle) { // speed*3.6
-      Vehicles.Front = ForwardVehicle;
-      const Speed = ForwardVehicle.getSpeed() * 3.6;
+   // Returna: object: position (Entity Coordinates) , surfaceNormal, material (Entity Model) , entity (Handle)
+
+   if (ForwardVehicle && ForwardVehicle.entity.type == 'vehicle' ) { 
+      Vehicles.Front = ForwardVehicle.entity;
+      const Speed = Math.round(Vehicles.Front.getSpeed() * 3.6);
       mp.gui.chat.push(JSON.stringify(Speed));
-
    } 
-   if (BackwardVehicle) {
-      Vehicles.Back = BackwardVehicle;
-      const Speed = BackwardVehicle.getSpeed() * 3.6;
+   if (BackwardVehicle && BackwardVehicle.entity.type == 'vehicle' ) { 
+      Vehicles.Back = BackwardVehicle.entity; 
+      const Speed = Math.round(Vehicles.Back.getSpeed() * 3.6);
       mp.gui.chat.push(JSON.stringify(Speed));
+   }
+
+   if (counter == 0) {
+      counter++;
+      FMarker = mp.markers.new(1, ForwardVehicle.position, 10,
+      {
+            direction: ForwardVehicle.position,
+            rotation: ForwardVehicle.position,
+            color: 0,
+            visible: true,
+            dimension: Player.dimension
+      });
+      BMarker = mp.markers.new(1, BackwardVehicle, 10,
+      {
+            direction: BackwardVehicle.position,
+            rotation: BackwardVehicle.position,
+            color: 0,
+            visible: true,
+            dimension: Player.dimension
+      });
    }
 }
 
