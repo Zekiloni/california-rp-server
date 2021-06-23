@@ -17,7 +17,7 @@ mp.events.add('render',  function() {
     lastArmour = player.getArmour();
   }
 
-  if (healthLoss > 0) {
+  if (healthLoss > 0 || armourLoss > 0) {
     mp.events.callRemote('server:player.damage', player, healthLoss, armourLoss);
   }
 });
@@ -34,11 +34,5 @@ mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapo
         mp.events.callRemote("server:anticheat", 1, player.name);
       }
   }*/
-
-  if (targetEntity.type === 'vehicle') {
-    mp.events.callRemote('server:onVehicleDamage', targetEntity, boneIndex, damage);
-  }
-  if (sourceEntity === targetEntity) {
-    mp.events.callRemote('server:onPlayerDamageHimself', damage);
-  }
+  mp.gui.chat.push(`sourceEntity: ${sourceEntity} | targetEntity: ${targetEntity} | sourcePlayer: ${sourcePlayer} | weapon: ${weapon}, boneIndex: ${boneIndex}, damage: ${damage}`)
 });
