@@ -190,11 +190,24 @@ frp.Characters.prototype.Cuff = function (player) {
 
 frp.Characters.prototype.RentVehicle = function (player, model, business) {
 
-   const vehicle = mp.vehicles.new();
-   // kreiraj vozilo
-   // ovde radis rent
-   this.Rented_Vehicle = vehicle;
+   if (IsVehPointFree(business.Vehicle_Point)) {
+      const Vehicle = mp.vehicles.new(model, business.Vehicle_Point,
+      {
+            heading: 180,
+            numberPlate: 'RENT',
+            alpha: 255,
+            color: 0,
+            locked: true,
+            engine: false,
+            dimension: player.dimension
+      });
+      this.Rented_Vehicle = Vehicle;
+   } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
 };
+
+function IsVehPointFree(point) {
+   return mp.vehicles.forEachInRange(point, 2.5, (vehicle) => { }).length > 0;
+}
 
 frp.Characters.prototype.Enter = async function (player, type, id) { 
 
