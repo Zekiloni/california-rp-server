@@ -46,6 +46,7 @@ let Jobs = require('./classes/Jobs');
 
 
 
+
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
 // let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta

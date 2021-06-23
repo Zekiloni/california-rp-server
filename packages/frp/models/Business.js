@@ -7,6 +7,7 @@ const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
 
 
+
 frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Name: { type: DataTypes.STRING },

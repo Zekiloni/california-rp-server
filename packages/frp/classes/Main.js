@@ -94,6 +94,12 @@ module.exports = class Main {
       return new Promise(resolve => setTimeout(resolve, s * 1000));
    }
 
+   static IsAnyVehicleAtPoint (position) {
+      mp.vehicles.forEachInRange(position, 3.0, (vehicle) => { 
+         if (vehicle) { return vehicle; } else { false };
+      })
+   }
+
    static Range (start, end, step) {
       return (
          Array.from(
