@@ -2,6 +2,8 @@
 
 const { DataTypes } = require('sequelize');
 
+
+const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
 
 
@@ -26,6 +28,11 @@ frp.Business = frp.Database.define('business', {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Position')); },
          set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
+      },
+      Vehicle_Point: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Vehicle_Point')); },
+         set: function (value) { this.setDataValue('Vehicle_Point', JSON.stringify(value)); }
       },
       Interior: {
          type: DataTypes.TEXT, defaultValue: null,
@@ -106,6 +113,7 @@ frp.Business.afterDestroy(async (Business, Options) => {
    if (Business.GameObject) {
       Business.GameObject.colshape.destroy();
       Business.GameObject.blip.destroy();
+      Business.GameObject.marker.destroy();
    }
 });
 
@@ -116,8 +124,14 @@ frp.Business.prototype.Refresh = function () {
 
    if (this.GameObject == null) { 
       const GameObjects = { 
-         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 3, 2, 0),
+         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, 0),
          blip: mp.blips.new(Info.blip, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
+         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z -0.99), 2.5, {
+            color: [253, 201, 41, 185], 
+            rotation: new mp.Vector3(0, 0, 90), 
+            visible: true, 
+            dimension: this.Dimension
+         })
       };
 
 
@@ -132,7 +146,6 @@ frp.Business.prototype.Refresh = function () {
          player.SendMessage('[Biznis] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
          player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), frp.Globals.Colors.whitesmoke);
       };
-
 
       if (Info.color) GameObjects.blip.color = Info.color;
 
@@ -155,9 +168,11 @@ frp.Business.prototype.Buy = async function (player) {
 
 
 frp.Business.prototype.Menu = async function (player) { 
-   console.log('menu', 1)
+
+   const Character = await frp.Characters.findOne({ where: { id: player.character } });
+
    switch (this.Type) { 
-      case frp.Globals.Business.Types.VehicleDealership: { 
+      case frp.Globals.Business.Types.VehicleDealership: {
          player.call('client:business:menu', ['dealership', this]);
          break;
       }
@@ -183,13 +198,37 @@ frp.Business.prototype.Menu = async function (player) {
       }
 
       case frp.Globals.Business.Types.Clothing: { 
-         player.call('client:business:menu', ['clothing']);
+         const Info = { 
+            Name: this.Name,
+            Multiplier: BusinessTypes[this.Type].multiplier,
+            Supplies: this.Products,
+            Player: {
+               Appearance: Character.Appearance(),
+               Money: Character.Money
+            }
+         };
+         
+         player.call('client:business.clothing:menu', [Info]);
          break;
       }
       
-      default:
-         player.call('client:business.market:menu', [this]); console.log('menu market', 1)
+      default: {
+         const Info = { 
+            Name: this.Name,
+            Multiplier: BusinessTypes[this.Type].multiplier,
+            id: this.id,
+            Products: {},
+            Player: {
+               Money: Character.Money
+            }
+         }
 
+         for (const i in this.Products) {
+            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
+         }
+
+         player.call('client:business.market:menu', [Info]);
+      }
    }
 };
 

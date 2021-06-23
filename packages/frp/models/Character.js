@@ -334,6 +334,11 @@ frp.Characters.prototype.Properties = async function () {
    return { Vehicles: Vehicles, Houses: Houses, Businesses: Businesses };
 };
 
+frp.Characters.prototype.Appearance = async function () { 
+   const appearance = await frp.Appearances.findOne({ where: { Character: this.id }});
+   return appearance ? appearance : null;
+};
+
 
 frp.Characters.New = async function (player, Character) { 
    // const Bank = await frp.Bank.New(player);

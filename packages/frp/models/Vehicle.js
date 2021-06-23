@@ -2,10 +2,14 @@
 
 const { DataTypes } = require('sequelize');
 
+const VehicleEntities = { 
+   Player: 0, Business: 1, Faction: 2
+};
 
 frp.Vehicles = frp.Database.define('vehicle', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Model: { type: DataTypes.STRING },
+      Entity: { type: DataTypes.INTEGER, defaultValue: 0 },
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Numberplate: { type: DataTypes.STRING, defaultValue: null },
@@ -13,6 +17,12 @@ frp.Vehicles = frp.Database.define('vehicle', {
       Dirt: { type: DataTypes.INTEGER, defaultValue: 0 },
       Heading: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mileage: { type: DataTypes.FLOAT, defaultValue: 0.0 },
+      Parked: { type: DataTypes.BOOLEAN, defaultValue: false },
+      Parking: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Parking')); },
+         set: function (value) { this.setDataValue('Parking', JSON.stringify(value)); }
+      },
       Color: { 
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Color')); },
@@ -33,99 +43,44 @@ frp.Vehicles = frp.Database.define('vehicle', {
          get: function () { return JSON.parse(this.getDataValue('Rotation')); },
          set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
       },
-
-      Parking: {
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Parking')); },
-         set: function (value) { this.setDataValue('Parking', JSON.stringify(value)); }
-      },
+      GameObject: { 
+         type: DataTypes.VIRTUAL, defaultValue: null,
+         get () { return frp.GameObjects.Vehicles[this.getDataValue('id')]; },
+         set (x) { frp.GameObjects.Vehicles[this.getDataValue('id')] = x; }
+      }
    }, {
       timestamps: true,
       underscrored: true,
-      createdAt: "Created_Date",
-      updatedAt: "Update_Date",
+      createdAt: 'Created_Date',
+      updatedAt: 'Update_Date',
    }
 );
 
 
-frp.Vehicles.prototype.Window = function (vehicle, index) { 
-   this.windows[index] != this.windows[index];
-   vehicle.setVariable('Windows', this.windows)
+frp.Vehicles.Create = async function (model, entity, owner, position) {
+   const Vehicle = await frp.Vehicles.create({ Model: model, Owner: owner, Position: position });
+
 };
+
+
+frp.Vehicles.afterCreate(async (Vehicle, Options) => {
+   Vehicle.Spawn();
+});
 
 
 frp.Vehicles.prototype.Respawn = function () { 
-   if (this.vehicle) { 
-      this.vehicle.position = new mp.Vector3(this.Parking.x, this.Parking.y, this.Parking.z);;
-      this.vehicle.setHeading(this.Heading);
-   }
-}
-
-
-frp.Vehicles.prototype.Paint = async function (primary, secondary) { 
-   this.Color = [primary, secondary];
-   this.vehicle.setColorRGB(primary[0], primary[1], primary[2], secondary[0], secondary[1], secondary[2]);
-   await this.save();
-};
-
-
-frp.Vehicles.prototype.Lock = async function () {
-   this.Locked = !this.Locked;
-   this.vehicle.locked = this.Locked;
-   await this.save();
-};
-
-
-frp.Vehicles.prototype.SetNumberplate = async function () { 
-   const Plate = frp.Main.GenerateString(6);
-   this.Numberplate = Plate;
-   this.vehicle.numberPlate = Plate;
-   await this.save();
-};
-
-frp.Vehicles.prototype.SetFuel = async function (value) { 
-   this.Fuel = value;
-   this.vehicle.setVariable('Fuel', this.Fuel);
-   await this.save();
-};
-
-frp.Vehicles.prototype.SetDirt = async function (value) { 
-   this.Dirt = value;
-   this.vehicle.setVariable('Dirt', this.Dirt);
-   await this.save();
-};
-
-frp.Vehicles.prototype.SetMileage = async function (value) { 
-   this.Mileage = value;
-   this.vehicle.setVariable('Mileage', this.Mileage);
-   await this.save();
-};
-
-frp.Vehicles.prototype.Window = function (i) { 
-   this.Windows[i] = !this.Windows[i];
-   this.vehicle.setVariable('Windows', this.Windows);
-};
-
-frp.Vehicles.prototype.Tune = function () { 
-   const Components = this.Components;
-   Components.forEach(component => {
-      this.vehicle.setMod(component.index, component.value);
-   });
-};
-
-frp.Vehicles.prototype.Park = async function (position = null) { 
-   if (this.vehicle) { 
-      if (position) this.Parking = position;
-      this.vehicle.destroy();
-      await this.save();
+   if (this.GameObject) { 
+      this.GameObject.position = new mp.Vector3(this.Parking.x, this.Parking.y, this.Parking.z);;
+      this.GameObject.setHeading(this.Heading);
    }
 };
 
- 
-frp.Vehicles.Create = async function (model, owner, position) {
-   const VehicleModel = await frp.Vehicles.create({ Model: model, Owner: owner, Position: position });
-   const Vehicle = mp.vehicles.new(mp.game.joaat(model), position,
-   {
+
+frp.Vehicles.prototype.Spawn = function () { 
+   if (this.GameObject) return;
+
+
+   const Vehicle = mp.vehicles.new(mp.game.joaat(model), position, {
       heading: 180,
       numberPlate: 'AAAA', // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
       alpha: 255,
@@ -134,11 +89,76 @@ frp.Vehicles.Create = async function (model, owner, position) {
       engine: false,
       dimension: 0
    });
+
+   this.GameObject = Vehicle;
 };
 
-frp.Vehicles.afterCreate(async (Vehicle, Options) => {
-   Vehicles.Refresh();
-});
+
+frp.Vehicles.prototype.Park = async function (position = null) { 
+   if (this.GameObject) { 
+      if (position) this.Parking = position;
+      this.GameObject.destroy();
+      await this.save();
+   }
+};
+
+
+frp.Vehicles.prototype.Paint = async function (primary, secondary) { 
+   this.Color = [primary, secondary];
+   this.GameObject.setColorRGB(primary[0], primary[1], primary[2], secondary[0], secondary[1], secondary[2]);
+   await this.save();
+};
+
+
+frp.Vehicles.prototype.Lock = async function () {
+   this.Locked = !this.Locked;
+   this.GameObject.locked = this.Locked;
+   await this.save();
+};
+
+
+frp.Vehicles.prototype.SetNumberplate = async function () { 
+   const Plate = frp.Main.GenerateString(6);
+   this.Numberplate = Plate;
+   this.GameObject.numberPlate = Plate;
+   await this.save();
+};
+
+
+frp.Vehicles.prototype.SetFuel = async function (value) { 
+   this.Fuel = value;
+   this.GameObject.setVariable('Fuel', this.Fuel);
+   await this.save();
+};
+
+
+frp.Vehicles.prototype.SetDirt = async function (value) { 
+   this.Dirt = value;
+   this.vehicle.setVariable('Dirt', this.Dirt);
+   await this.save();
+};
+
+
+frp.Vehicles.prototype.SetMileage = async function (value) { 
+   this.Mileage = value;
+   this.GameObject.setVariable('Mileage', this.Mileage);
+   await this.save();
+};
+
+
+frp.Vehicles.prototype.Window = function (i) { 
+   this.Windows[i] = !this.Windows[i];
+   this.GameObject.setVariable('Windows', this.Windows);
+};
+
+
+frp.Vehicles.prototype.Tune = function () { 
+   const Components = this.Components;
+   Components.forEach(component => {
+      this.vehicle.setMod(component.index, component.value);
+   });
+};
+
 
 (async () => { 
    frp.Vehicles.sync();

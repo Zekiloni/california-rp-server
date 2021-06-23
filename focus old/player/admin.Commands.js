@@ -124,14 +124,6 @@ mp.events.addCommand({
       plants.create(player, { type: plant })
    },
 
-   'destroybiz': (player, fullText) => {
-      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let bussines = business.nearby(player);
-      if (bussines) {
-          player.outputChatBox(`Nearest biz ${bussines.id} !`);
-          business.delete(player, bussines);
-      }
-   },
 
    'editbiz': (player, fullText) => { 
       if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);

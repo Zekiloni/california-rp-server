@@ -62,6 +62,7 @@ const GLOBALS = {
       NOT_ALLOWED: 'Niste ovlašteni za korišćenje ove komande.',
       USER_NOT_FOUND: 'Korisnik nije pronadjen.',
       ITEM_DOESNT_EXIST: 'Taj predmet ne postoji.',
+      COMMAND_USAGE: 'Komanda: ',
       NOT_IN_VEHICLE: 'Ne nalazite se u vozilu.',
       NOT_IN_SPEC_FACTION: 'Niste član odredjene fakcije.',
       ALREADY_EMPLOYED: 'Već ste zaposleni.',

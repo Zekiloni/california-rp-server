@@ -38,14 +38,14 @@
                   </div>
                </div>
 
-               <ul class="notifications">
-                  <li class="notification" v-for="(notification, i) in notifications">
+               <transition-group name="notification" tag="ul" class="notifications">
+                  <li class="notification" v-for="(notification, i) in notifications" v-bind:key="notification">
                      <div class="type"> 
                         <i class="" v-bind:class="NotifyType(notification.Type)" aria-hidden="true"></i>
                      </div>
                      <h4> {{ notification.Message }} </h4>
                   </li>
-               </ul>
+               </transition-group>
 
                <div class="bottom-left">
                   <ul class="location">

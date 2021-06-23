@@ -250,7 +250,7 @@
             Face: function (i, x) { mp.trigger('client:player.character.creator:face', i, x); },
             Blend: function () { mp.trigger('client:player.character.creator:blend', JSON.stringify(this.character.Blend)); },
 
-            Zoom: function (event) { mp.trigger('client:player.character.creator:zoom', event.deltaY); },
+            Zoom: function (event) { mp.trigger('client:player.camera:zoom', event.deltaY); },
 
             Create: function (event) { 
                if (this.character.First_Name != null && this.character.Last_Name != null && this.character.Birth != null && this.character.Origin != null && this.character.Gender != null) { 

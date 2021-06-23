@@ -65,8 +65,8 @@ new Item('Milk', ItemType.Drink, 'prop_cs_milk_01', 0.6, false, function (player
 
 
 // MISCELLANEOUS
-new Item('Handheld Radio', ItemType.Misc, 'prop_cs_hand_radio', 0.2, false, function (player) { });
-new Item('Smartphone', ItemType.Misc, 'prop_amb_phone', 0.2, false, function (player) { });
+new Item('Handheld Radio', ItemType.Misc, 'prop_cs_hand_radio', 0.2, false, false);
+new Item('Smartphone', ItemType.Misc, 'prop_amb_phone', 0.2, false, false);
 new Item('Phone', ItemType.Misc, 'prop_v_m_phone_01', 0.2, false, function (player) { });
 new Item('Boombox', ItemType.Misc, 'prop_boombox_01', 0.5, false, function (player) { });
 new Item('Lighter', ItemType.Misc, 'p_cs_lighter_01', 0.05, false, function (player) { });
