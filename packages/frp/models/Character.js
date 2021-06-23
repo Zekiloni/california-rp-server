@@ -205,7 +205,7 @@ frp.Characters.prototype.ExtendRent = function (player, minutes) {
 }
 
 frp.Characters.prototype.RentVehicle = function (player, model, business, minutes = 30) {
-   if (Utils.IsAnyVehAtPos(business.Vehicle_Point)) {
+   if (frp.Main.IsAnyVehAtPos(business.Vehicle_Point)) {
       const Vehicle = mp.vehicles.new(model, business.Vehicle_Point,
       {
             heading: 180,
@@ -223,16 +223,7 @@ frp.Characters.prototype.RentVehicle = function (player, model, business, minute
    } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
 };
 
-class Utils {
-   static IsAnyVehAtPos (position) {
-      mp.vehicles.forEachInRange(position, 2.5, (vehicle) => { 
-         if (vehicle) { return vehicle; } else { false };
-      })
-   }
-}
-
 frp.Characters.prototype.Enter = async function (player, type, id) { 
-
    switch (type) { 
       case 'house': { 
          const House = await frp.Houses.findOne({ where: { id: id }});
