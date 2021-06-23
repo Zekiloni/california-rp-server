@@ -22,7 +22,7 @@ module.exports = {
          }
       },
       {
-         name: 'deletebiz',
+         name: 'destroybiz',
          admin: 3,
          call: async (player, args) => {
             const Nearest = await frp.Business.Nearest(player);

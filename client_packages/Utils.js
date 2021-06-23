@@ -1,8 +1,16 @@
+
 const Player = mp.players.local;
+
+const Server = {
+   Color: {
+      R: 104, G: 69, B: 234, A: 255
+   }
+}
 
 function CompareVectors (i, x) { 
    return i.x == x.x && i.y == x.y && i.z == x.z;
 };
+
 
 function LoadAnimDict (i) { 
    if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve();
@@ -15,6 +23,7 @@ function LoadAnimDict (i) {
    })
 };
 
+
 function weaponString (weapon) {
 	if (typeof weapon !== 'undefined')
 		return '0x' + weapon.toString(16).toUpperCase()
@@ -22,14 +31,18 @@ function weaponString (weapon) {
 		return '0xA2719263'
 }
 
+
 function Distance (first, next) {
    return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();
 }
 
+
 function OnlinePlayers () {
    let list = [];
    mp.players.forEach(p => { 
-      list.push({ id: p.remoteId, name: p.name }); 
+      if (p.logged) { 
+         list.push({ id: p.remoteId, name: p.name }); 
+      }
    }); 
    return list;
 }
@@ -41,6 +54,15 @@ function GetAdress (position) {
       Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
    return { zone: Zone, street: Street };
 }
+
+
+function BrowserControls (freezeControls, mouse) {
+   mouse ? mp.gui.chat.activate(false) : mp.gui.chat.activate(true);
+   // mp.game.invoke('setTypingInChatState', mouse);
+   setTimeout(() => { mp.gui.cursor.show(freezeControls, mouse); }, 250);
+}
+
+Player.BrowserControls = BrowserControls;
 
 
 let MovableCamera = null;
@@ -64,7 +86,6 @@ function PlayerPreviewCamera (toggle) {
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
    }
 }
-
 
 function ZoomCamera (delta) {
    let { x, y, z } = MovableCamera.getCoord();
@@ -113,4 +134,4 @@ function MoveCamera () {
 }
 
 
-global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera };
+global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, Server };

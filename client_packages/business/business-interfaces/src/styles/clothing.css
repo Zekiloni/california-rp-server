@@ -73,7 +73,7 @@ ul.navigation li.active {background: #6845ea;color: white;box-shadow: #6d51ef 0p
    text-transform: uppercase;
 }
 
-.info .business-name {color: #fab80a;text-shadow: 0 0 1px rgb(250 184 10);margin: 0;text-transform: uppercase;font-size: 25px;font-weight: 1000;letter-spacing: 1.25px;}
+.info .business-name {color: #fab80a;margin: 0;text-shadow: 0 1px 3.5px rgb(250 184 10 / 80%);text-transform: uppercase;font-size: 25px;font-weight: 1000;letter-spacing: 1.25px;}
 
 button.buy {
    width: 100%;
@@ -106,12 +106,12 @@ button.buy:disabled { filter: grayscale(1); opacity: 0.9; }
 }
 
 h2.price {
-   color: whitesmoke;
-   text-shadow: 0 0 2px rgb(0 0 0 / 77%);
    letter-spacing: 3.25px;
    font-size: 30px;
    margin-top: -5px;
    margin-bottom: 0;
+   color: #50e079;
+   text-shadow: 0 2px 7px rgb(48 185 52 / 58%), 0 1px 3px rgb(0 0 0 / 60%);
 }
 
 .drawable, .texture {

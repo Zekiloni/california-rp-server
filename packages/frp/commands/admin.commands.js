@@ -346,7 +346,7 @@ module.exports = {
             let target = mp.players.find(args[0]), message = null;
             if (target) {
                target.frozen = !target.frozen;
-               target.call('client:player.freeze', [target.frozen]);
+               target.call('client:player:freeze', [target.frozen]);
                target.frozen ? message = [' admin vas je zaledio.', 'Zaledili ste '] : message = [' admin vas je odledio.', 'Odledil ste '];
                target.SendMessage(player.name + message[0], frp.Globals.Colors.tomato);
                player.SendMessage(message[1] + target.name, frp.Globals.Colors.tomato);

@@ -113,6 +113,7 @@ frp.Business.afterDestroy(async (Business, Options) => {
    if (Business.GameObject) {
       Business.GameObject.colshape.destroy();
       Business.GameObject.blip.destroy();
+      Business.GameObject.marker.destroy();
    }
 });
 
@@ -123,8 +124,14 @@ frp.Business.prototype.Refresh = function () {
 
    if (this.GameObject == null) { 
       const GameObjects = { 
-         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 3, 2, 0),
+         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, 0),
          blip: mp.blips.new(Info.blip, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
+         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z -0.99), 2.5, {
+            color: [253, 201, 41, 185], 
+            rotation: new mp.Vector3(0, 0, 90), 
+            visible: true, 
+            dimension: this.Dimension
+         })
       };
 
 
@@ -139,7 +146,6 @@ frp.Business.prototype.Refresh = function () {
          player.SendMessage('[Biznis] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
          player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), frp.Globals.Colors.whitesmoke);
       };
-
 
       if (Info.color) GameObjects.blip.color = Info.color;
 

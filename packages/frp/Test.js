@@ -4,6 +4,7 @@
 mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 = "0,0,0") => {
     let c1 = color.split(','), c2 = color2.split(',');
     var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
+    veh.setMod(38, 3);
     veh.setColorRGB(parseInt(c1[0]), parseInt(c1[1]), parseInt(c1[2]), parseInt(c2[0]), parseInt(c2[1]), parseInt(c2[2]));
     veh.alpha = 255;
     veh.dimension = player.dimension;

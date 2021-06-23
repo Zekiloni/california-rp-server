@@ -50,7 +50,7 @@ h4.changes.minus { color: #e2351e; text-shadow: 0 2px 5px rgb(197 42 20 / 55%); 
 .black { width: 100%; height: 100%; background: black; position: absolute; top: 0; left: 0; z-index: 10; }
 
 ul.notifications { position: absolute; left: 25px; bottom: 170px; width: 325px; min-height: 100px; list-style: none; padding: 0 ;height: 275px; overflow: hidden; }
-ul.notifications li {animation: notification-in 0.4s ease;background: rgb(0 0 0 / 40%);padding: 5px 10px;margin: 7px 0;border: 1px solid rgb(121 121 121 / 13%);box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;display: flex;border-radius: 5px;}
+ul.notifications li {background: rgb(0 0 0 / 40%);padding: 5px 10px;margin: 7px 0;border: 1px solid rgb(121 121 121 / 13%);box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;display: flex;border-radius: 5px;}
 ul.notifications li .type { display: flex; justify-content: center; align-items: center; width: 35px; height: 35px;}
 ul.notifications li .type i { font-size: 20px; }
 ul.notifications li h4 {margin: 0;display: flex;align-items: center;font-size: 15px;margin-left: 10px;font-weight: 400;width: 100%;color: whitesmoke;}
@@ -108,6 +108,10 @@ ul.notifications li h4 {margin: 0;display: flex;align-items: center;font-size: 1
    50% { transform: translateX(-10px); }
    100% { transform: translateX(0px); }
 }
+
+
+.notification-enter-active { animation: notification-in 0.35s; }
+.notification-leave-active { animation: notification-in 0.55s reverse; }
 
 @keyframes notification-in {
    0% { transform: translateX(-200px); }
