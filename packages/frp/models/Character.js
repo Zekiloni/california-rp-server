@@ -188,16 +188,42 @@ frp.Characters.prototype.Cuff = function (player) {
 };
 
 
-frp.Characters.prototype.RentVehicle = function (player, model, business) {
+frp.Characters.prototype.UnRentVehicle = function (player) {
+   if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
+      clearTimeout(this.Rented_Vehicle.Timer);
+      this.Rented_Vehicle.destroy();
+   }
+}
 
-   const vehicle = mp.vehicles.new();
-   // kreiraj vozilo
-   // ovde radis rent
-   this.Rented_Vehicle = vehicle;
+frp.Characters.prototype.ExtendRent = function (player, minutes) {
+   if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
+      clearTimeout(this.Rented_Vehicle.Timer);
+      this.Rented_Vehicle.Timer = setTimeout(() => {
+         frp.Characters.prototype.UnRentVehicle(player);
+      }, 60000 * minutes);
+   }
+}
+
+frp.Characters.prototype.RentVehicle = function (player, model, business, minutes = 30) {
+   if (frp.Main.IsAnyVehAtPos(business.Vehicle_Point)) {
+      const Vehicle = mp.vehicles.new(model, business.Vehicle_Point,
+      {
+            heading: 180,
+            numberPlate: 'RENT',
+            alpha: 255,
+            color: 0,
+            locked: true,
+            engine: false,
+            dimension: player.dimension
+      });
+      this.Rented_Vehicle = Vehicle;
+      this.Rented_Vehicle.Timer = setTimeout(() => {
+         frp.Characters.prototype.UnRentVehicle(player);
+      }, 60000 * minutes);
+   } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
 };
 
 frp.Characters.prototype.Enter = async function (player, type, id) { 
-
    switch (type) { 
       case 'house': { 
          const House = await frp.Houses.findOne({ where: { id: id }});

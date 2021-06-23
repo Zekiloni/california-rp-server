@@ -77,6 +77,12 @@ module.exports = class Main {
       return count;
    }
 
+   static IsAnyVehAtPos (position) {
+      mp.vehicles.forEachInRange(position, 2.5, (vehicle) => { 
+         if (vehicle) { return vehicle; } else { false };
+      })
+   }
+
    static GenerateString (length) { 
       const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       let result = ' ';
