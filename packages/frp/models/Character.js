@@ -46,20 +46,23 @@ frp.Characters = frp.Database.define('character', {
       Minutes: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mood: { type: DataTypes.STRING, defaultValue: 'normal' },
       Walking_Style: { type: DataTypes.STRING, defaultValue: 'normal' },
-      
+
       Phone: { type: DataTypes.INTEGER, defaultValue: 0 },
       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
-
       Licenses: {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Licenses')); },
          set: function (value) { this.setDataValue('Licenses', JSON.stringify(value)); }
       },
-      
       Cuffed: { type: DataTypes.BOOLEAN, defaultValue: false },
       Freezed: { type: DataTypes.BOOLEAN, defaultValue: false },
       Mask: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Masked: { type: DataTypes.BOOLEAN, defaultValue: false }
+      Masked: { type: DataTypes.BOOLEAN, defaultValue: false },
+      Rented_Vehicle: { 
+         type: DataTypes.VIRTUAL, defaultValue: null,
+         get () { return frp.GameObjects.TemporaryVehicles.find(vehicle => vehicle.character === this.getDataValue('id')); },
+         set (x) { frp.GameObjects.TemporaryVehicles.push(x); }
+      } 
    }, {
       // Options
       timestamps: true,

@@ -7,13 +7,6 @@ const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
 
 
-const { products } = BusinessTypes[9];
-for (const i in products) { 
-   const multiplier = products[i];
-   let price = multiplier * frp.Settings.Business.Multipliers.Ammunation;
-   console.log(i + ' cena ' + price.toFixed(2))
-}
-
 frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Name: { type: DataTypes.STRING },
@@ -199,9 +192,12 @@ frp.Business.prototype.Menu = async function (player) {
 
       case frp.Globals.Business.Types.Clothing: { 
          const Info = { 
-            Name: this.Name,
-            Multiplier: BusinessTypes[this.Type].multiplier,
-            Supplies: this.Products,
+            Business: {
+               Name: this.Name,
+               id: this.id,
+               Multiplier: BusinessTypes[this.Type].multiplier,
+               Supplies: this.Products,
+            },
             Player: {
                Appearance: Character.Appearance(),
                Money: Character.Money

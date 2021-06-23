@@ -46,7 +46,8 @@
       "id": 3,
       "name": "Rent a Car",
       "blip": 724,
-      "color": 60
+      "color": 60,
+      "multiplier": 5
    },
 
    {

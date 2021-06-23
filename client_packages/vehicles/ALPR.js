@@ -22,35 +22,23 @@ function ALPR () {
    const Vehicle = Player.vehicle;
    const ForwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, 10, 0.0),
          BackwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, -10, 0.0);
+   /*
+   const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition), 
+         BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition);*/
 
-   const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition, [Player.vehicle]),
-         BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition, [Player.vehicle]);
+   const ForwardVehicle = mp.raycasting.testCapsule(Vehicle.position, ForwardPosition, 10, Player, 2), 
+         BackwardVehicle = mp.raycasting.testCapsule(Vehicle.position, BackwardPosition, 10, Player, 2);
 
-   if (ForwardVehicle && ForwardVehicle.entity.type == 'vehicle') { // speed*3.6
+   // Returna: object: position (Entity Coordinates) , surfaceNormal, material (Entity Model) , entity (Handle)
+
+   if (ForwardVehicle && ForwardVehicle.entity.type == 'vehicle' ) { 
       Vehicles.Front = ForwardVehicle.entity;
-      const Speed = Vehicles.Front.getSpeed() * 3.6;
+      const Speed = Math.round(Vehicles.Front.getSpeed() * 3.6);
       mp.gui.chat.push(JSON.stringify(Speed));
-
    } 
-   if (BackwardVehicle && ForwardVehicle.entity.type == 'vehicle') {
-      Vehicles.Back = BackwardVehicle.entity;
-      const Speed = Vehicles.Back.getSpeed() * 3.6;
+   if (BackwardVehicle && BackwardVehicle.entity.type == 'vehicle' ) { 
+      Vehicles.Back = BackwardVehicle.entity; 
+      const Speed = Math.round(Vehicles.Back.getSpeed() * 3.6);
       mp.gui.chat.push(JSON.stringify(Speed));
    }
 }
-
-/*  let 
-
-         mp.vehicles.forEachInRange(ForwardPosition, 5,
-            (vehicle) => {
-               DetectedVehicles.push(vehicle);
-               break;
-            }
-         );
-         mp.vehicles.forEachInRange(BackwardPosition, 5,
-            (vehicle) => {
-               DetectedVehicles.push(vehicle);
-               break;
-            }
-         );
-*/

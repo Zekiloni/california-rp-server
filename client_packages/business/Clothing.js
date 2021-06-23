@@ -24,7 +24,7 @@ mp.events.add({
    },
 
    'client:business.clothing:texture:preview': (x, component, texture) => { 
-      mp.gui.chat.push(JSON.stringify(x) + ' ' + JSON.stringify(component) + ' ' + JSON.stringify(texture));
+      // mp.gui.chat.push(JSON.stringify(x) + ' ' + JSON.stringify(component) + ' ' + JSON.stringify(texture));
       const Variation = Player.getDrawableVariation(component);
       Player.setComponentVariation(component, Variation, texture, 2);
    }

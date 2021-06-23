@@ -21,19 +21,41 @@ module.exports = {
             frp.Business.New(player, type, walkin, price);
          }
       },
+
       {
          name: 'destroybiz',
          admin: 3,
+         desc: 'Brisanje biznisa',
          call: async (player, args) => {
             const Nearest = await frp.Business.Nearest(player);
             if (Nearest) await Nearest.destroy();
          }
       },
       {
-         name: 'house',
-         desc: 'Kuća',
-         call: (player, args) => {
-               player.call('client:house.management');
+         name: 'editbiz',
+         desc: 'Podešavanje biznisa',
+         admin: 3,
+         params: ['opcija', 'vrednost'],
+         call: async (player, args) => {
+            const [option, value] = args;
+            const Nearest = await frp.Business.Nearest(player);
+            if (Nearest) {
+               switch (option) { 
+                  case 'price': { Nearest.Price = value; break; }
+                  case 'name': { 
+                     const Name = args.splice(value).join(' ');
+                     if (!Name.trim()) return;
+                     Nearest.Name = Name;
+                     break;
+                  }
+
+                  case 'vehicle-point': { Nearest.Vehicle_Point = player.position; break; }
+                  default: 
+                     return;
+               }
+
+               await Nearest.save();
+            }
          }
       },
    ]
