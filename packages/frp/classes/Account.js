@@ -3,7 +3,9 @@
 const Account = require('../models/Account');
 
 mp.events.add({
-   'playerJoin': (player) => {
+   'playerJoin': async (player) => {
+      const Banned = await frp.Bans.Check(player);
+      if (Banned) player.kick('Bannedovan');
       player.call('client:player.login:show');
    },
 

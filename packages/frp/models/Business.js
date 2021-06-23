@@ -7,6 +7,13 @@ const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
 
 
+const Rent = BusinessTypes[3];
+
+for (const i in Rent.products) {
+   const Multiplier = Rent.products[i]; 
+   const PricePerMinute = Multiplier * Rent.multiplier;
+   console.log(i, 60 * PricePerMinute.toFixed(2));
+}
 
 frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },

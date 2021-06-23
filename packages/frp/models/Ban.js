@@ -22,7 +22,12 @@ frp.Bans = frp.Database.define('ban', {
 );
 
 
-frp.Bans.prototype.New = async function (player, target, reason, date, expiring) { 
+frp.Bans.Check = async function (player) { 
+   const Result = await frp.Bans.findOne({ where: { IP: player.ip, Social: player.socialClub } });
+   return Result ? Result : false;
+};
+
+frp.Bans.New = async function (player, target, reason, date, expiring) { 
    let IP = frp.Main.ValidateIP(target);
 
    if (IP) { 
@@ -51,9 +56,12 @@ frp.Bans.prototype.New = async function (player, target, reason, date, expiring)
          } else if (Account) { 
 
          }
-
       }
    }
+};
+
+frp.Bans.prototype.Delete = async function () { 
+
 };
 
 
