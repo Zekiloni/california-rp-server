@@ -47,7 +47,10 @@
       "name": "Rent a Car",
       "blip": 724,
       "color": 60,
-      "multiplier": 5
+      "multiplier": 2.35,
+      "products": {
+         "blista": 0.7, "dilettante": 0.65, "faggio": 0.5, "faggio2": 0.45, "faggio3": 0.42
+      }
    },
 
    {
