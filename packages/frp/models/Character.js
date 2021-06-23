@@ -187,6 +187,15 @@ frp.Characters.prototype.Cuff = function (player) {
    return this.Cuffed;
 };
 
+
+frp.Characters.prototype.RentVehicle = function (player, model, business) {
+
+   const vehicle = mp.vehicles.new();
+   // kreiraj vozilo
+   // ovde radis rent
+   this.Rented_Vehicle = vehicle;
+};
+
 frp.Characters.prototype.Enter = async function (player, type, id) { 
 
    switch (type) { 

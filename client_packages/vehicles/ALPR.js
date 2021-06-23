@@ -18,7 +18,23 @@ mp.events.add({
 })
 
 
+/* function GetVehicleInfrontOfEntity(entity)
+	local coords = GetOffsetFromEntityInWorldCoords(entity,0.0,1.0,0.3)
+	local coords2 = GetOffsetFromEntityInWorldCoords(entity, 0.0, ScanningDistance,0.0)
+	local rayhandle = CastRayPointToPoint(coords, coords2, 10, entity, 0)
+	local _, _, _, _, entityHit = GetRaycastResult(rayhandle)
+	if entityHit>0 and IsEntityAVehicle(entityHit) then
+		return entityHit
+	else
+		return nil
+	end
+end*/
+
+
 function ALPR () {
+   let counter = 0,
+       FMarker = null,
+       BMarker = null;
    const Vehicle = Player.vehicle;
    const ForwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, 10, 0.0),
          BackwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, -10, 0.0);
@@ -41,4 +57,40 @@ function ALPR () {
       const Speed = Math.round(Vehicles.Back.getSpeed() * 3.6);
       mp.gui.chat.push(JSON.stringify(Speed));
    }
+
+   if (counter == 0) {
+      counter++;
+      FMarker = mp.markers.new(1, ForwardVehicle.position, 10,
+      {
+            direction: ForwardVehicle.position,
+            rotation: ForwardVehicle.position,
+            color: 0,
+            visible: true,
+            dimension: Player.dimension
+      });
+      BMarker = mp.markers.new(1, BackwardVehicle, 10,
+      {
+            direction: BackwardVehicle.position,
+            rotation: BackwardVehicle.position,
+            color: 0,
+            visible: true,
+            dimension: Player.dimension
+      });
+   }
 }
+
+/*  let 
+
+         mp.vehicles.forEachInRange(ForwardPosition, 5,
+            (vehicle) => {
+               DetectedVehicles.push(vehicle);
+               break;
+            }
+         );
+         mp.vehicles.forEachInRange(BackwardPosition, 5,
+            (vehicle) => {
+               DetectedVehicles.push(vehicle);
+               break;
+            }
+         );
+*/
