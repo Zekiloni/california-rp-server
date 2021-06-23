@@ -188,7 +188,23 @@ frp.Characters.prototype.Cuff = function (player) {
 };
 
 
-frp.Characters.prototype.RentVehicle = function (player, model, business) {
+frp.Characters.prototype.UnRentVehicle = function (player) {
+   if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
+      clearTimeout(this.Rented_Vehicle.Timer);
+      this.Rented_Vehicle.destroy();
+   }
+}
+
+frp.Characters.prototype.ExtendRent = function (player, minutes) {
+   if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
+      clearTimeout(this.Rented_Vehicle.Timer);
+      this.Rented_Vehicle.Timer = setTimeout(() => {
+         frp.Characters.prototype.UnRentVehicle(player);
+      }, 60000 * minutes);
+   }
+}
+
+frp.Characters.prototype.RentVehicle = function (player, model, business, minutes = 30) {
    if (Utils.IsAnyVehAtPos(business.Vehicle_Point)) {
       const Vehicle = mp.vehicles.new(model, business.Vehicle_Point,
       {
@@ -201,6 +217,9 @@ frp.Characters.prototype.RentVehicle = function (player, model, business) {
             dimension: player.dimension
       });
       this.Rented_Vehicle = Vehicle;
+      this.Rented_Vehicle.Timer = setTimeout(() => {
+         frp.Characters.prototype.UnRentVehicle(player);
+      }, 60000 * minutes);
    } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
 };
 
