@@ -190,7 +190,7 @@ frp.Characters.prototype.Cuff = function (player) {
 
 frp.Characters.prototype.RentVehicle = function (player, model, business) {
 
-   if (IsVehPointFree(business.Vehicle_Point)) {
+   if (IsAnyVehAtPos(business.Vehicle_Point)) {
       const Vehicle = mp.vehicles.new(model, business.Vehicle_Point,
       {
             heading: 180,
@@ -205,8 +205,12 @@ frp.Characters.prototype.RentVehicle = function (player, model, business) {
    } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
 };
 
-function IsVehPointFree(point) {
-   return mp.vehicles.forEachInRange(point, 2.5, (vehicle) => { }).length > 0;
+class Rent {
+   static IsAnyVehAtPos (position) {
+      mp.vehicles.forEachInRange(position, 2.5, (vehicle) => { 
+         if (vehicle) { return vehicle; } else { false };
+      })
+   }
 }
 
 frp.Characters.prototype.Enter = async function (player, type, id) { 
