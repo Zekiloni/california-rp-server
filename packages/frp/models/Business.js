@@ -29,6 +29,11 @@ frp.Business = frp.Database.define('business', {
          get: function () { return JSON.parse(this.getDataValue('Position')); },
          set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
       },
+      Vehicle_Point: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Vehicle_Point')); },
+         set: function (value) { this.setDataValue('Vehicle_Point', JSON.stringify(value)); }
+      },
       Interior: {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Interior')); },
@@ -157,7 +162,9 @@ frp.Business.prototype.Buy = async function (player) {
 
 
 frp.Business.prototype.Menu = async function (player) { 
-   console.log('menu', 1)
+
+   const Character = await frp.Characters.findOne({ where: { id: player.character } });
+
    switch (this.Type) { 
       case frp.Globals.Business.Types.VehicleDealership: {
          player.call('client:business:menu', ['dealership', this]);
@@ -185,23 +192,35 @@ frp.Business.prototype.Menu = async function (player) {
       }
 
       case frp.Globals.Business.Types.Clothing: { 
-         player.call('client:business:menu', ['clothing']);
+         const Info = { 
+            Name: this.Name,
+            Multiplier: BusinessTypes[this.Type].multiplier,
+            Supplies: this.Products,
+            Player: {
+               Appearance: Character.Appearance(),
+               Money: Character.Money
+            }
+         };
+         
+         player.call('client:business.clothing:menu', [Info]);
          break;
       }
       
       default: {
          const Info = { 
             Name: this.Name,
-            Multiplier: frp.Settings.Business.Multipliers.Market,
+            Multiplier: BusinessTypes[this.Type].multiplier,
             id: this.id,
-            Products: {}
+            Products: {},
+            Player: {
+               Money: Character.Money
+            }
          }
 
          for (const i in this.Products) {
-            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier };
+            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
          }
 
-         console.log(Info)
          player.call('client:business.market:menu', [Info]);
       }
    }

@@ -11,12 +11,6 @@ mp.Player.prototype.Character = async function () {
 };
 
 
-mp.Player.prototype.Appearance = async function () { 
-   const appearance = await frp.Appearances.findOne({ where: { id: this.character }});
-   return appearance ? appearance : null;
-};
-
-
 mp.Player.prototype.Account = async function () {
    const account = await frp.Accounts.findOne({ where: { id: this.account } });
    return account ? account : null;

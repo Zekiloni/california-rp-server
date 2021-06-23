@@ -23,10 +23,6 @@ module.exports = {
    Business: {
       Default: { 
          Supplies: 125
-      },
-
-      Multipliers: { 
-         Market: 3.75, Ammunation: 51.75, Vehicle: 10
       }
    }
 

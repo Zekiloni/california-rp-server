@@ -127,6 +127,10 @@
             }
          },
 
+         created () {
+            window.addEventListener('wheel', this.Zoom);
+         },
+
          methods: { 
 
             Page: function (i) { this.page = i; this.anim = true; },
@@ -138,22 +142,24 @@
                for (let i in this.clothings) { 
                   for (let c = 0; c < 12; c ++) { 
                      let item = this.clothings[i], value = this.player.clothing[c][0]; 
-                     if (item.value != value) bill += 0.7;
+                     if (item.value != value) bill += 2.5;
                   }
                }
                return bill;
             },
 
+            Zoom: function (event) { mp.trigger('client:player.camera:zoom', event.deltaY); },
+
             Drawable: function (x, i) { 
                if (i == 0) { this.clothings[x].value --; if (this.clothings[x].value < 0) this.clothings[x].value = 0; }
                else if (i == 1) { this.clothings[x].value ++; if (this.clothings[x].value >= this.clothings[x].max.value) this.clothings[x].value = this.clothings[x].max.value; }
-               mp.trigger('client:player.clothing:drawable', x, this.clothings[x].index, this.clothings[x].value);
+               mp.trigger('client:business.clothing:model:preview', x, parseInt(this.clothings[x].index), parseInt(this.clothings[x].value));
             },
 
             Texture: function (x, i) { 
                if (i == 0) { this.clothings[x].texture --; if (this.clothings[x].texture < 0) this.clothings[x].texture = 0; }
                else if (i == 1) { this.clothings[x].texture ++; if (this.clothings[x].texture >= this.clothings[x].max.texture) this.clothings[x].texture = this.clothings[x].max.texture; }
-               mp.trigger('client:player.clothing:texture', x, this.clothings[x].index, this.clothings[x].texture, this.clothings[x].value);
+               mp.trigger('client:player.clothing:texture', x, parseInt(this.clothings[x].index), parseInt(this.clothings[x].texture));
             },
 
             moneyFormat: function (i) {  let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }); return formatter.format(i); }

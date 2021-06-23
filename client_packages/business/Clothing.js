@@ -4,42 +4,29 @@ const Player = mp.players.local;
 let browser = null, opened = false;
 
 mp.events.add({
-   'client:player.clothing:show': () => {
+   'client:business.clothing:menu': (info) => {
       opened = !opened;
+      mp.gui.chat.push(JSON.stringify(info));
       if (opened) { 
-         browser = mp.browsers.new('package://business/clothing-interface/clothing.html');
+         browser = mp.browsers.new('package://business/business-interfaces/clothing.html');
          Player.BrowserControls(true, true);
+         utils.PlayerPreviewCamera(true);
       } else { 
-         browser.destroy();
+         if (browser) browser.destroy();
          Player.BrowserControls(false, false);
+         utils.PlayerPreviewCamera(false);
       }
    },
-
-   'render': () => { 
-      if (browser && opened) { 
-         let heading;
-         if (mp.keys.isDown(65) === true) {
-            heading = Player.getHeading();
-            Player.setHeading(heading - 2)
-         } else if (mp.keys.isDown(68) === true) {
-            heading = Player.getHeading();
-            Player.setHeading(heading + 1.5)
-         }
-      }
+      
+   'client:business.clothing:model:preview': (x, component, variation) => { 
+      mp.gui.chat.push(JSON.stringify(x) + ' ' + JSON.stringify(component) + ' ' + JSON.stringify(variation));
+      Player.setComponentVariation(component, variation, 0, 2);
    },
 
-   'client:player.clothing:drawable': (x, y, i) => { 
-      let max = Player.getNumberOfDrawableVariations(y);
-      Player.setComponentVariation(y, i, 0, 2);
-      browser.execute('clothing.clothings[\"' + x + '\"].max.value = ' + max);
-   },
-
-   'client:player.clothing:texture': (x, y, z, i) => { 
-      Player.setComponentVariation(y, i, z, 2);
-      let max = mp.game.invoke('0x8F7156A3142A6BAD', Player.handle, y, i);
-      mp.gui.chat.push('max is ' + max)
-      browser.execute('clothing.clothings[\"' + x + '\"].max.texture = ' + max);
-      // let max = mp.game.invoke('0xA6E7F1CEB523E171', Player, x, z); // FOR PROPS
+   'client:business.clothing:texture:preview': (x, component, texture) => { 
+      mp.gui.chat.push(JSON.stringify(x) + ' ' + JSON.stringify(component) + ' ' + JSON.stringify(texture));
+      const Variation = Player.getDrawableVariation(component);
+      Player.setComponentVariation(component, Variation, texture, 2);
    }
 })
 
