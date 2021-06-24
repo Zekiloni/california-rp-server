@@ -40,9 +40,7 @@ function Distance (first, next) {
 function OnlinePlayers () {
    let list = [];
    mp.players.forEach(p => { 
-      if (p.logged) { 
-         list.push({ id: p.remoteId, name: p.name }); 
-      }
+      list.push({ id: p.remoteId, name: p.name }); 
    }); 
    return list;
 }

@@ -15,6 +15,7 @@ let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
 let Banking = require('./player/Banking');
 
+require('./Slikanje');
 
 // ADMIN
 let AdminStuffs = require('./player/Admin');

@@ -32,6 +32,12 @@ mp.events.addCommand("alpr", (player, fullText) => {
     player.call('client:vehicle.alpr');
 });
 
+
+
+mp.events.addCommand("vozilaa", (player, fullText) => {
+   player.call('CLIENT::VEHICLES:SCREENSHOT');
+});
+
 const Vozila = require('./data/Vehicles.json');
 let Dealer = [];
 const MAX = 25;

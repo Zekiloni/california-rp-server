@@ -7,11 +7,8 @@ let camdir = false,
    noclip = false,
    charpos = false,
    Spectating = false,
-   SpecTarget = null;
-
-mp.events.add("spmode", (target, toggle) => {
-	
-});
+   SpecTarget = null,
+   Waypoint = null;
 
 
 mp.events.add({
@@ -23,6 +20,14 @@ mp.events.add({
       Player.setCollision(!noclip, !noclip);
       Player.setHasGravity(!noclip);
       noclip ? Player.setMaxSpeed(0.0001) : Player.setMaxSpeed(10)
+   },
+
+   'playerCreateWaypoint': (position) => {
+      Waypoint = { x: position.x, y: position.y, z: position.z };
+   },
+
+   'playerRemoveWaypoint': () => { 
+      Waypoint = null;
    },
 
    'client:spectate': (target, toggle) => {
@@ -74,6 +79,14 @@ mp.events.add({
          });
       }
    }
+});
+
+
+mp.events.addProc('client:player.administrator:marker', () => { 
+   if (Waypoint)
+      return Waypoint;
+   else
+      return false;
 })
 
 function getCameraDirection () {
