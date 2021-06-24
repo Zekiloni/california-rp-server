@@ -74,7 +74,10 @@
       "id": 6,
       "name": "Restaurant",
       "blip": 739,
-      "color": 56
+      "color": 56,
+      "products": { 
+
+      }
    },
 
    {
@@ -86,7 +89,14 @@
    {
       "id": 8,
       "name": "Night Club",
-      "blip": 766
+      "blip": 766,
+      "multiplier": 4.25,
+      "products": { 
+         "Soda Can": 3.1, "Cola Can": 3.35, "Water Bottle": 2.85,
+         "Energy Drink": 4.2, "Juice Cup": 4.7, "Beer Bottle" : 6.8, "Whiskey Bottle": 24.2,
+         "Vodka Bottle": 17.1, "Tequila Bottle" : 18.05, "Gin Bottle" : 16, "Brandy Bottle": 13.18,
+         "Rum Bottle": 11.23, "Cognac Bottle": 10.72, "Wine Bottle": 27
+      }
    },
 
    {

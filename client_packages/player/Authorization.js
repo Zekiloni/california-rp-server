@@ -38,8 +38,14 @@ mp.events.add({
    },
 
    'client:player.character:select': (character) => { 
-      mp.events.call('client:player.login:show');
-      mp.events.callRemote('server:player.character:select', character);
+      mp.game.cam.doScreenFadeOut(3000);
+      setTimeout(() => {
+         mp.events.call('client:player.login:show');
+         mp.events.callRemote('server:player.character:select', character);
+         setTimeout(() => {
+            mp.game.cam.doScreenFadeIn(3000);
+         }, 1000);
+      }, 3000);
    },
 
    'client:player.character:creator': () => { 

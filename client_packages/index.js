@@ -50,6 +50,9 @@ let Police = require('./factions/police/Police');
 let Business = require('./business/Business');
 let Markets = require('./business/Market');
 let Clothing = require('./business/Clothing');
+let Gastations = require('./business/Fuel');
+let Drinks = require('./business/Drinks');
+let Rent = require('./business/Rent');
 let Dealeships = require('./vehicles/Dealerships');
 
 // JOBS

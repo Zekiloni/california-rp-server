@@ -3,7 +3,7 @@
 const Player = mp.players.local;
 
 const Vehicles = [
-   "blista", "dilettante", "faggio", "faggio2", "seminole", 
+   "blista", "dilettante", "faggio", "faggio2", "seminole",
    "asea", "ingot", "bison", "burrito", "speedo4"
 ];
 
@@ -35,15 +35,15 @@ mp.events.add({
          if (Vehicle) { 
             Vehicle.model = mp.game.joaat(Vehicles[Current]);
             Vehicle.freezePosition(true);
+            Vehicle.setColours(123, 123);
          } else { 
             Vehicle = mp.vehicles.new(mp.game.joaat(Vehicles[Current]), Positions.Vehicle, {
-               numberPlate: ' ', color: [[242, 173, 46], [242, 173, 46]]
+               numberPlate: ' ',
             });
-            Vehicle.setCustomPrimaryColour(242, 173, 46);
-            Vehicle.setCustomSecondaryColour(242, 173, 46);
-            Vehicle.setColours(126, 126);
-            Vehicle.freezePosition(true);
             Vehicle.setHeading(80);
+            Vehicle.freezePosition(true);
+            mp.game.wait(5);
+            Vehicle.setColours(123, 123);
          }
          mp.game.wait(100);
          mp.gui.takeScreenshot(Vehicles[Current] + '.png', 1, 10, 0);

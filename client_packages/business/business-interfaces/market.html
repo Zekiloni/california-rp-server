@@ -137,7 +137,7 @@
 
                truncate: function (str, n) { return (str.length > n) ? str.substr(0, n-1) + '...' : str; },
 
-               Dollars: (i) => {  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); },
+               Dollars: (i) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); },
 
                Buy: function () { 
                   if (this.player.cart.length < 1) return;

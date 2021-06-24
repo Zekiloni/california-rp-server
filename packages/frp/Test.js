@@ -24,9 +24,6 @@ mp.events.addCommand("prop", (player, full, comp, draw, text) => {
     player.setProp(parseInt(comp), parseInt(draw), parseInt(text));
 });
 
-mp.events.addCommand("dzok", (player, fullText) => {
-    player.playAnimation(dict, anim, 5, 0);
-});
 
 mp.events.addCommand("alpr", (player, fullText) => {
     player.call('client:vehicle.alpr');

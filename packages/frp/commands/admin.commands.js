@@ -349,8 +349,8 @@ module.exports = {
          call: async (player, args) => {
             const Target = mp.players.find(args[0]), Level = parseInt(args[1]);
             if (Target) {
-               const Account = await frp.Accounts.findOne({ where: { id: player.account } });
-               Account.SetAdmin(Level);
+               const Account = await frp.Accounts.findOne({ where: { id: Target.account } });
+               Account.SetAdmin(Target, Level);
             }
          }
       },
