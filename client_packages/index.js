@@ -28,7 +28,7 @@ let CayoPerico = require('./cayo-perico/heistisland');
 
 // SYNCHRONIZATION & STREAMER
 let Streamer = require('./player/Streamer');
-let DamageSync = require('./player/DamageSync');
+let Damage = require('./player/Damage');
 
 // VEHICLES
 let Vehicles = require('./vehicles/Vehicles')
