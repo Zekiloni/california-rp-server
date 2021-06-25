@@ -23,7 +23,6 @@ let Globals = require('./configs/Globals');
 // MODELS 
 let Logs = require('./models/Logs');
 
-const AntiCheat = require('./classes/Anticheat');
 
 // MODULES
 const Helpers = require('./modules/Helpers');
@@ -44,7 +43,7 @@ let Minute = require('./classes/Minute');
 let Business = require('./classes/Business');
 let Weather = require('./classes/Weather');
 let Jobs = require('./classes/Jobs');
-
+const AntiCheat = require('./classes/Anticheat');
 
 
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
