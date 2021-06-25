@@ -15,7 +15,7 @@ frp.Bans = frp.Database.define('ban', {
       Expiring: { type: DataTypes.STRING, defaultValue: Date.now() }
    }, {
       timestamps: false,
-      underscrored: true,
+      underscrored: true,  
       createdAt: false,
       updatedAt: false
    }
