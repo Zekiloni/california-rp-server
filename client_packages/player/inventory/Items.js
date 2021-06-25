@@ -59,6 +59,10 @@ mp.keys.bind(0x49, false, function() {
    if (Player.logged && Player.spawned) { 
       if (mp.players.local.isTypingInTextChat) return;
       mp.events.call('client:inventory.toggle');
+      ClonePedToScreen();
+      mp.game.waitAsync(50);
+      mp.events.call('client:inventory.toggle');
+      mp.events.call('client:inventory.toggle');
    }
 });
 
@@ -158,7 +162,7 @@ function ClonePedToScreen () {
 
       const IsFrontendReady = mp.game.invoke('0x3BAB9A4E4F2FF5C7'); // IS_FRONTEND_READY_FOR_CONTROL
 
-      while (!IsFrontendReady) {  // Freezes game
+      while (!IsFrontendReady) {  
           mp.game.wait(1); 
        } 
 
