@@ -70,8 +70,8 @@
        "max_braking": 0.25
      }
    },
-   "faggio": {
-     "model": "faggio",
+   "faggio2": {
+     "model": "faggio2",
      "category": "motorcycles",
      "price": 4000,
      "stats": {
@@ -136,8 +136,8 @@
        "max_braking": 1
      }
    },
-   "trophy": {
-     "model": "trophy",
+   "trophytruck": {
+     "model": "trophytruck",
      "category": "off-road",
      "price": 90000,
      "stats": {
@@ -158,8 +158,8 @@
        "max_braking": 0.8
      }
    },
-   "roosevelt": {
-     "model": "roosevelt",
+   "btype": {
+     "model": "btype",
      "category": "sports classics",
      "price": 100000,
      "stats": {
@@ -388,8 +388,8 @@
        "max_braking": 0.3
      }
    },
-   "cogcabri": {
-     "model": "cogcabri",
+   "cogcabrio": {
+     "model": "cogcabrio",
      "category": "coupes",
      "price": 45000,
      "stats": {
@@ -464,8 +464,8 @@
        "max_braking": 0.7
      }
    },
-   "cargopl": {
-     "model": "cargopl",
+   "cargoplane": {
+     "model": "cargoplane",
      "category": "planes",
      "price": 700000,
      "stats": {
@@ -519,8 +519,8 @@
        "max_braking": 1.1
      }
    },
-   "trailer": {
-     "model": "trailer",
+   "trailers": {
+     "model": "trailers",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -705,8 +705,8 @@
        "max_braking": 0.995
      }
    },
-   "utiltruc": {
-     "model": "utiltruc",
+   "utillitruck": {
+     "model": "utillitruck",
      "category": "utility",
      "price": 35000,
      "stats": {
@@ -748,8 +748,8 @@
        "max_braking": 0.4
      }
    },
-   "khamel": {
-     "model": "khamel",
+   "khamelion": {
+     "model": "khamelion",
      "category": "sports",
      "price": 95000,
      "stats": {
@@ -977,8 +977,8 @@
        "max_braking": 0.55
      }
    },
-   "svolito": {
-     "model": "svolito",
+   "supervolito": {
+     "model": "supervolito",
      "category": "helicopters",
      "price": 1500000,
      "stats": {
@@ -1141,8 +1141,8 @@
        "max_braking": 1
      }
    },
-   "submers": {
-     "model": "submers",
+   "submersible": {
+     "model": "submersible",
      "category": "boats",
      "price": 5000000,
      "stats": {
@@ -1184,8 +1184,8 @@
        "max_braking": 0.6
      }
    },
-   "sanchez01": {
-     "model": "sanchez01",
+   "sanchez": {
+     "model": "sanchez",
      "category": "motorcycles",
      "price": 17000,
      "stats": {
@@ -1239,8 +1239,8 @@
        "max_braking": 0.7
      }
    },
-   "annihl": {
-     "model": "annihl",
+   "annihilator": {
+     "model": "annihilator",
      "category": "helicopters",
      "price": 4000000,
      "stats": {
@@ -1568,8 +1568,8 @@
        "max_braking": 1
      }
    },
-   "sandkin2": {
-     "model": "sandkin2",
+   "sandking2": {
+     "model": "sandking2",
      "category": "off-road",
      "price": 180000,
      "stats": {
@@ -1601,8 +1601,8 @@
        "max_braking": 0.5
      }
    },
-   "graintraile": {
-     "model": "graintraile",
+   "graintrailer": {
+     "model": "graintrailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -1818,8 +1818,8 @@
        "max_braking": 1.1
      }
    },
-   "verlier": {
-     "model": "verlier",
+   "verlierer2": {
+     "model": "verlierer2",
      "category": "sports",
      "price": 2250000,
      "stats": {
@@ -1873,8 +1873,8 @@
        "max_braking": 0.6
      }
    },
-   "bfinject": {
-     "model": "bfinject",
+   "bfinjection": {
+     "model": "bfinjection",
      "category": "off-road",
      "price": 45000,
      "stats": {
@@ -1938,8 +1938,8 @@
        "max_braking": 0.4
      }
    },
-   "ambulan": {
-     "model": "ambulan",
+   "ambulance": {
+     "model": "ambulance",
      "category": "emergency",
      "stats": {
        "max_speed": 143,
@@ -2054,8 +2054,8 @@
        "max_braking": 1.4
      }
    },
-   "landstal": {
-     "model": "landstal",
+   "landstalker": {
+     "model": "landstalker",
      "category": "suvs",
      "stats": {
        "max_speed": 132,
@@ -2304,8 +2304,8 @@
        "max_braking": 1
      }
    },
-   "fork": {
-     "model": "fork",
+   "forklift": {
+     "model": "forklift",
      "category": "utility",
      "stats": {
        "max_speed": 36,
@@ -2314,8 +2314,8 @@
        "max_braking": 0.3
      }
    },
-   "trlarge": {
-     "model": "trlarge",
+   "trailerlarge": {
+     "model": "trailerlarge",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -2384,8 +2384,8 @@
        "max_braking": 0.7
      }
    },
-   "valkyri2": {
-     "model": "valkyri2",
+   "valkyrie2": {
+     "model": "valkyrie2",
      "category": "helicopters",
      "stats": {
        "max_speed": 197,
@@ -2494,8 +2494,8 @@
        "max_braking": 0.3
      }
    },
-   "rancherx": {
-     "model": "rancherx",
+   "rancherxl": {
+     "model": "rancherxl",
      "category": "off-road",
      "stats": {
        "max_speed": 126,
@@ -2534,8 +2534,8 @@
        "max_braking": 1.2
      }
    },
-   "dilettan": {
-     "model": "dilettan",
+   "dilettante": {
+     "model": "dilettante",
      "category": "compacts",
      "stats": {
        "max_speed": 86,
@@ -2654,8 +2654,8 @@
        "max_braking": 0.6
      }
    },
-   "washingt": {
-     "model": "washingt",
+   "washington": {
+     "model": "washington",
      "category": "sedans",
      "stats": {
        "max_speed": 153,
@@ -2794,8 +2794,8 @@
        "max_braking": 1
      }
    },
-   "bulldoze": {
-     "model": "bulldoze",
+   "bulldozer": {
+     "model": "bulldozer",
      "category": "industrial",
      "stats": {
        "max_speed": 18,
@@ -3025,8 +3025,8 @@
        "max_braking": 0.7
      }
    },
-   "cavcade": {
-     "model": "cavcade",
+   "cavalcade": {
+     "model": "cavalcade",
      "category": "suvs",
      "stats": {
        "max_speed": 138,
@@ -3135,8 +3135,8 @@
        "max_braking": 0.6
      }
    },
-   "carboniz": {
-     "model": "carboniz",
+   "carbonizzare": {
+     "model": "carbonizzare",
      "category": "sports",
      "stats": {
        "max_speed": 174,
@@ -3315,8 +3315,8 @@
        "max_braking": 0.4
      }
    },
-   "stingerg": {
-     "model": "stingerg",
+   "stingergt": {
+     "model": "stingergt",
      "category": "sports classics",
      "stats": {
        "max_speed": 162,
@@ -3405,8 +3405,8 @@
        "max_braking": 1.1
      }
    },
-   "rebel02": {
-     "model": "rebel02",
+   "rebel2": {
+     "model": "rebel2",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -3445,8 +3445,8 @@
        "max_braking": 0.8
      }
    },
-   "cognosc": {
-     "model": "cognosc",
+   "cognoscenti": {
+     "model": "cognoscenti",
      "category": "sedans",
      "stats": {
        "max_speed": 164,
@@ -3475,8 +3475,8 @@
        "max_braking": 0.25
      }
    },
-   "feltzer": {
-     "model": "feltzer",
+   "feltzer2": {
+     "model": "feltzer2",
      "category": "sports",
      "stats": {
        "max_speed": 178,
@@ -3525,8 +3525,8 @@
        "max_braking": 0.8
      }
    },
-   "niteshad": {
-     "model": "niteshad",
+   "nightshade": {
+     "model": "nightshade",
      "category": "muscle",
      "stats": {
        "max_speed": 145,
@@ -3565,8 +3565,8 @@
        "max_braking": 0.6
      }
    },
-   "wastlndr": {
-     "model": "wastlndr",
+   "wastelander": {
+     "model": "wastelander",
      "category": "service",
      "stats": {
        "max_speed": 146,
@@ -3575,8 +3575,8 @@
        "max_braking": 0.6
      }
    },
-   "astrope": {
-     "model": "astrope",
+   "asterope": {
+     "model": "asterope",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -3625,8 +3625,8 @@
        "max_braking": 0.6
      }
    },
-   "trsmall2": {
-     "model": "trsmall2",
+   "trailersmall2": {
+     "model": "trailersmall2",
      "category": "military",
      "stats": {
        "max_speed": -1,
@@ -3665,8 +3665,8 @@
        "max_braking": 3.19305849
      }
    },
-   "faggion": {
-     "model": "faggion",
+   "faggio": {
+     "model": "faggio",
      "category": "motorcycles",
      "stats": {
        "max_speed": 101,
@@ -3755,8 +3755,8 @@
        "max_braking": 0.8
      }
    },
-   "policeo2": {
-     "model": "policeo2",
+   "policeold2": {
+     "model": "policeold2",
      "category": "emergency",
      "stats": {
        "max_speed": 153,
@@ -3925,8 +3925,8 @@
        "max_braking": 4.16918039
      }
    },
-   "svolito2": {
-     "model": "svolito2",
+   "supervolito2": {
+     "model": "supervolito2",
      "category": "helicopters",
      "stats": {
        "max_speed": 223,
@@ -4115,8 +4115,8 @@
        "max_braking": 0.6
      }
    },
-   "policeo1": {
-     "model": "policeo1",
+   "policeold1": {
+     "model": "policeold1",
      "category": "emergency",
      "stats": {
        "max_speed": 126,
@@ -4215,8 +4215,8 @@
        "max_braking": 1
      }
    },
-   "sanchez02": {
-     "model": "sanchez02",
+   "sanchez2": {
+     "model": "sanchez2",
      "category": "motorcycles",
      "stats": {
        "max_speed": 141,
@@ -4455,8 +4455,8 @@
        "max_braking": 17.892271
      }
    },
-   "blazer03": {
-     "model": "blazer03",
+   "blazer3": {
+     "model": "blazer3",
      "category": "off-road",
      "stats": {
        "max_speed": 122,
@@ -4485,8 +4485,8 @@
        "max_braking": 1
      }
    },
-   "schafter": {
-     "model": "schafter",
+   "schafter2": {
+     "model": "schafter2",
      "category": "sedans",
      "stats": {
        "max_speed": 141,
@@ -4575,8 +4575,8 @@
        "max_braking": 0.5
      }
    },
-   "rebel01": {
-     "model": "rebel01",
+   "rebel": {
+     "model": "rebel",
      "category": "off-road",
      "stats": {
        "max_speed": 138,
@@ -4725,8 +4725,8 @@
        "max_braking": 0.8
      }
    },
-   "rentbus": {
-     "model": "rentbus",
+   "rentalbus": {
+     "model": "rentalbus",
      "category": "service",
      "stats": {
        "max_speed": 92,
@@ -4735,8 +4735,8 @@
        "max_braking": 0.25
      }
    },
-   "furore": {
-     "model": "furore",
+   "furoregt": {
+     "model": "furoregt",
      "category": "sports",
      "stats": {
        "max_speed": 182,
@@ -4755,8 +4755,8 @@
        "max_braking": 0.5
      }
    },
-   "submers2": {
-     "model": "submers2",
+   "submersible2": {
+     "model": "submersible2",
      "category": "boats",
      "stats": {
        "max_speed": 90,
@@ -4805,8 +4805,8 @@
        "max_braking": 0.4
      }
    },
-   "buccanee2": {
-     "model": "buccanee2",
+   "buccaneer2": {
+     "model": "buccaneer2",
      "category": "muscle",
      "stats": {
        "max_speed": 166,
@@ -4825,8 +4825,8 @@
        "max_braking": 0.8
      }
    },
-   "tailgate": {
-     "model": "tailgate",
+   "tailgater": {
+     "model": "tailgater",
      "category": "sedans",
      "stats": {
        "max_speed": 138,
@@ -4945,8 +4945,8 @@
        "max_braking": 1
      }
    },
-   "dominato2": {
-     "model": "dominato2",
+   "dominator2": {
+     "model": "dominator2",
      "category": "muscle",
      "stats": {
        "max_speed": 176,
@@ -5146,8 +5146,8 @@
        "max_braking": 0.3
      }
    },
-   "freighttrai": {
-     "model": "freighttrai",
+   "freighttrailer": {
+     "model": "freighttrailer",
      "category": "utility",
      "stats": {
        "max_speed": -1,
@@ -5206,8 +5206,8 @@
        "max_braking": 4.515588
      }
    },
-   "schwarze": {
-     "model": "schwarze",
+   "schwarzer": {
+     "model": "schwarzer",
      "category": "sports",
      "stats": {
        "max_speed": 173,
@@ -5216,8 +5216,8 @@
        "max_braking": 0.9
      }
    },
-   "sparrow": {
-     "model": "sparrow",
+   "seasparrow": {
+     "model": "seasparrow",
      "category": "helicopters",
      "stats": {
        "max_speed": 203,
@@ -5266,8 +5266,8 @@
        "max_braking": 0.8
      }
    },
-   "buccanee": {
-     "model": "buccanee",
+   "buccaneer": {
+     "model": "buccaneer",
      "category": "muscle",
      "stats": {
        "max_speed": 166,
@@ -5296,8 +5296,8 @@
        "max_braking": 1.2
      }
    },
-   "rloader": {
-     "model": "rloader",
+   "ratloader": {
+     "model": "ratloader",
      "category": "muscle",
      "stats": {
        "max_speed": 134,
@@ -5316,8 +5316,8 @@
        "max_braking": 1.12
      }
    },
-   "trophy2": {
-     "model": "trophy2",
+   "trophytruck2": {
+     "model": "trophytruck2",
      "category": "off-road",
      "stats": {
        "max_speed": 156,
@@ -5406,8 +5406,8 @@
        "max_braking": 1.2
      }
    },
-   "cognosc2": {
-     "model": "cognosc2",
+   "cognoscenti2": {
+     "model": "cognoscenti2",
      "category": "sedans",
      "stats": {
        "max_speed": 162,
@@ -5416,8 +5416,8 @@
        "max_braking": 0.52
      }
    },
-   "roosevelt2": {
-     "model": "roosevelt2",
+   "btype3": {
+     "model": "btype3",
      "category": "sports classics",
      "stats": {
        "max_speed": 150,
@@ -5446,8 +5446,8 @@
        "max_braking": 0.9
      }
    },
-   "rloader2": {
-     "model": "rloader2",
+   "ratloader2": {
+     "model": "ratloader2",
      "category": "muscle",
      "stats": {
        "max_speed": 141,

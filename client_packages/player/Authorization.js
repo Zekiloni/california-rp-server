@@ -42,9 +42,7 @@ mp.events.add({
       setTimeout(() => {
          mp.events.call('client:player.login:show');
          mp.events.callRemote('server:player.character:select', character);
-         setTimeout(() => {
-            mp.game.cam.doScreenFadeIn(3000);
-         }, 1000);
+         mp.game.cam.doScreenFadeIn(3000);
       }, 3000);
    },
 
