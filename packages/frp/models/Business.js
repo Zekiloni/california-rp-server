@@ -144,7 +144,7 @@ frp.Business.prototype.Refresh = function () {
       GameObjects.colshape.OnPlayerEnter = (player) => { 
          const Price = frp.Main.Dollars(this.Price);
          const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Biznis u vlasništvu';
-         const Locked = this.Locked ? 'Zaključan' : 'Otključan';
+         const Locked = this.Locked ? 'Zatvoren' : 'Otvoren';
 
          const white = frp.Globals.Colors.whitesmoke;
 

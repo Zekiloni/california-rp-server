@@ -342,6 +342,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'makeadmin',
          admin: 6,
@@ -354,6 +355,19 @@ module.exports = {
             }
          }
       },
+
+      {
+         name: 'skin',
+         admin: 4,
+         params: ['igrac', 'model'],
+         call: async (player, args) => {
+            const Target = mp.players.find(args[0]), Model = args[1];
+            if (Target) {
+               Target.model = mp.joaat(Model);
+            }
+         }
+      },
+
       {
          name: 'makeleader',
          admin: 5,

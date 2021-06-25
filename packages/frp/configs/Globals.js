@@ -57,6 +57,13 @@ const GLOBALS = {
    Factions: {
       Police: 0
    },
+
+   FAQ: { 
+      List: [
+         'Gde se mogu zaposliti ? Poslovi su označeni na mapi.', 
+         'Gde mogu podići / ostaviti pare u banku ? Svi bankomati na mapi i banke su funkcionalne.'
+      ]
+   },
    
    messages: {
       NOT_ALLOWED: 'Niste ovlašteni za korišćenje ove komande.',
