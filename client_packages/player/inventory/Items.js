@@ -14,6 +14,7 @@ mp.events.add({
    'client:inventory.toggle': async () => { 
       opened = !opened;
       if (opened) { 
+         // ClonePedToScreen();
          browser = mp.browsers.new('package://player/inventory/inventory-interface/Inventory.html');
          const Inventory = await mp.events.callRemoteProc('server:player.inventory:get');
          browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
@@ -22,6 +23,7 @@ mp.events.add({
       } else { 
          if (browser) browser.destroy();
          Player.BrowserControls(false, false);
+         // ClonePedToScreen();
       }
    },
 
@@ -143,40 +145,31 @@ async function Drop (item, hash, quantity = 1) {
 }
 
 
-mp.keys.bind(0x63, true, function() {
-   ClonePedToScreen();
-});
+let ClonePed = null;
 
-let Ped = null;
-function ClonePedToScreen () {
-   if (Ped == null) {
-      mp.game.ui.setFrontendActive(true);
-      mp.game.ui.activateFrontendMenu(mp.game.joaat("FE_MENU_VERSION_EMPTY"), false, -1);
-      mp.game.invoke('_0x98215325A695E78A', false); // 
-      mp.game.wait(50);
+async function ClonePedToScreen () {
+    if (ClonePed == null) {
+        const menuHash = mp.game.joaat('FE_MENU_VERSION_EMPTY') >> 0;
+        mp.game.ui.setFrontendActive(true);
+        mp.game.ui.activateFrontendMenu(menuHash, true, -1);
+    
+        while (mp.game.invoke('0xB0034A223497FFCB') === 0) {
+            await mp.game.waitAsync(100);
+        }
+    
+        ClonePed = mp.players.local.clone(0, false, true);
+    
+        mp.game.invoke('0xAC0BFBDC3BE00E14', ClonePed, 3);
+        mp.game.invoke('0x3CA6050692BC61B0', true);
+        mp.game.invoke('0xECF128344E9FF9F1', false);
 
-      const IsLoaded = mp.game.invoke('0x3BAB9A4E4F2FF5C7'); // IS_FRONTEND_READY_FOR_CONTROL
-
-      // while (!IsLoaded) { 
-      //    mp.game.waitAsync(0); 
-      // } 
-
-      let PayerPed = mp.game.player.getPed();
-
-      Ped = mp.game.invoke('0xEF29A16337FACADB', PayerPed, 0, false, true); // CLONE_PED
-      mp.game.wait(100);
-
-      mp.game.invoke('0xAC0BFBDC3BE00E14', Ped, 2); // GIVE_PED_TO_PAUSE_MENU
-      mp.game.invoke('0xECF128344E9FF9F1', false); // SET_PAUSE_MENU_PED_SLEEP_STATE
-      mp.game.invoke('0x3CA6050692BC61B0', true); // SET_PAUSE_MENU_PED_LIGHTING
-
-      setTimeout(() => {
-         mp.game.invoke('0xECF128344E9FF9F1', true); // SET_PAUSE_MENU_PED_SLEEP_STATE
-      }, 1000);
-   } else { 
-      mp.game.ui.setFrontendActive(false);
-      mp.game.invoke('0x5E62BE5DC58E9E06'); // CLEAR_PED_IN_PAUSE_MENU
-   }
+        setTimeout(() => {
+            mp.game.invoke('0xECF128344E9FF9F1', true); // SET_PAUSE_MENU_PED_SLEEP_STATE
+        }, 1300);
+        
+    } else {
+        mp.game.invoke('0x5E62BE5DC58E9E06'); // CLEAR_PED_IN_PAUSE_MENU
+        ClonePed = null;
+        mp.game.ui.setFrontendActive(false);
+    }  
 }
-
-

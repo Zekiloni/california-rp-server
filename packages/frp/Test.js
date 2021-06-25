@@ -35,6 +35,8 @@ mp.events.addCommand("vozilaa", (player, fullText) => {
    player.call('CLIENT::VEHICLES:SCREENSHOT');
 });
 
+
+
 const Vozila = require('./data/Vehicles.json');
 let Dealer = [];
 const MAX = 25;
@@ -56,8 +58,8 @@ mp.events.addCommand("scenario", (player, fullText, scenario) => {
 });
 
 
-mp.events.addCommand("clothing", (player, fullText) => {
-   player.call('client:player.clothing:show');
+mp.events.addCommand("pedshot", (player, fullText) => {
+   player.call('CLIENT:PLAYER.PEDSHOT');
 });
 
 

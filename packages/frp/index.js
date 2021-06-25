@@ -19,16 +19,14 @@ let Globals = require('./configs/Globals');
 
 // MODELS 
 let Logs = require('./models/Logs');
-let Houses = require('./models/House');
-
 
 const AntiCheat = require('./classes/Anticheat');
 
 // MODULES
 const Helpers = require('./modules/Helpers');
 
-// CLASSES
 
+// CLASSES
 let Player = require('./classes/Player');
 let Accounts = require('./classes/Account');
 let Admin = require('./classes/Admin');

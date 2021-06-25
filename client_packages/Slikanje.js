@@ -17,6 +17,27 @@ const Positions = {
 }
 
 mp.events.add({
+
+   'CLIENT:PLAYER.PEDSHOT': () => { 
+      let pedHeadShot;
+      if (pedHeadShot == null) {
+          pedHeadShot = mp.players.local.registerheadshot();
+          mp.gui.chat.push(`pedHeadShot: ${pedHeadShot}`);
+      }
+      
+      mp.events.add('render', () => {
+          if (pedHeadShot == null) {
+              pedHeadShot = mp.players.local.registerheadshot();
+              mp.gui.chat.push(`pedHeadShot: ${pedHeadShot}`);
+          }
+          if (mp.game.ped.isPedheadshotValid(pedHeadShot) && mp.game.ped.isPedheadshotReady(pedHeadShot)) {
+              const headshotTexture = mp.game.ped.getPedheadshotTxdString(pedHeadShot);
+         
+              mp.game.graphics.drawSprite(headshotTexture, headshotTexture, 0.5, 0.5, 0.1, 0.1, 0, 255, 255, 255, 100);
+          }
+      });
+   },
+   
    'CLIENT::VEHICLES:SCREENSHOT': async () => { 
       Player.position = new mp.Vector3(Positions.Vehicle.x + 8, Positions.Vehicle.y + 4, Positions.Vehicle.z -1.4);
       mp.game.ui.displayRadar(false);

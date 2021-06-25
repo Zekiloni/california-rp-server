@@ -93,8 +93,8 @@
                         </li>
                      </ul>
                      <div class="actions">
-                        <button class="play" v-on:click="Play(characters[k].id)"> <i class="fa fa-play-circle" aria-hidden="true"></i>  </button>
-                        <button class="delete" v-on:click="TryDelete(characters[k].id)"> <i class="fa fa-minus" aria-hidden="true"></i>  </button>
+                        <button class="play" v-on:click="Play(characters[k].id)" :disabled="selected == true"> <i class="fa fa-play-circle" aria-hidden="true"></i>  </button>
+                        <button class="delete" v-on:click="TryDelete(characters[k].id)" :disabled="selected == true"> <i class="fa fa-minus" aria-hidden="true"></i>  </button>
                      </div>
                   </div>
                   <div v-else class="create" v-on:click="TryCreate()">
@@ -131,6 +131,8 @@
                Warns: 0,
                Donator: 0,
             },
+
+            selected: false,
 
             modal: {
                forgoten: false
@@ -193,6 +195,7 @@
             },
 
             Play: function (i) { 
+               this.selected = true;
                mp.trigger('client:player.character:select', i);
             },
 
