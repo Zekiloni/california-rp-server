@@ -7,13 +7,18 @@ const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
 
 
-const Rent = BusinessTypes[3];
 
-for (const i in Rent.products) {
-   const Multiplier = Rent.products[i]; 
-   const PricePerMinute = Multiplier * Rent.multiplier;
-   console.log(i, 60 * PricePerMinute.toFixed(2));
+
+const NightClub = BusinessTypes[8];
+
+let produkti = {};
+
+for (const i in NightClub.products) { 
+   const item = NightClub.products[i];
+   produkti[i] = { hash: ItemRegistry[i].hash, multiplier: item };
 }
+
+console.log(JSON.stringify(produkti))
 
 frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -143,8 +148,8 @@ frp.Business.prototype.Refresh = function () {
 
          const white = frp.Globals.Colors.whitesmoke;
 
-         player.SendMessage('[Biznis] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + '.', frp.Globals.Colors.property);
-         player.SendMessage('[Biznis] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
+         player.SendMessage('[Business] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + '.', frp.Globals.Colors.property);
+         player.SendMessage('[Business] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
          player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), frp.Globals.Colors.whitesmoke);
       };
 
@@ -184,7 +189,7 @@ frp.Business.prototype.Menu = async function (player) {
       }
 
       case frp.Globals.Business.Types.Restaurant: { 
-         player.call('client:business:menu', ['restaurant', this]);
+
          break;
       }
 
@@ -194,7 +199,15 @@ frp.Business.prototype.Menu = async function (player) {
       }
 
       case frp.Globals.Business.Types.NightClub: { 
-         player.call('client:business:menu', ['drinks', this]);
+         const Info = {
+            Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} 
+         }
+         
+         for (const i in this.Products) {
+            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
+         }
+
+         player.call('client:business.drinks:menu', [Info]);
          break;
       }
 
@@ -221,10 +234,7 @@ frp.Business.prototype.Menu = async function (player) {
             Name: this.Name,
             Multiplier: BusinessTypes[this.Type].multiplier,
             id: this.id,
-            Products: {},
-            Player: {
-               Money: Character.Money
-            }
+            Products: {}
          }
 
          for (const i in this.Products) {

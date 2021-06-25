@@ -15,6 +15,7 @@ let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
 let Banking = require('./player/Banking');
 
+require('./Slikanje');
 
 // ADMIN
 let AdminStuffs = require('./player/Admin');
@@ -27,7 +28,7 @@ let CayoPerico = require('./cayo-perico/heistisland');
 
 // SYNCHRONIZATION & STREAMER
 let Streamer = require('./player/Streamer');
-let DamageSync = require('./player/DamageSync');
+let Damage = require('./player/Damage');
 
 // VEHICLES
 let Vehicles = require('./vehicles/Vehicles')
@@ -49,6 +50,9 @@ let Police = require('./factions/police/Police');
 let Business = require('./business/Business');
 let Markets = require('./business/Market');
 let Clothing = require('./business/Clothing');
+let Gastations = require('./business/Fuel');
+let Drinks = require('./business/Drinks');
+let Rent = require('./business/Rent');
 let Dealeships = require('./vehicles/Dealerships');
 
 // JOBS

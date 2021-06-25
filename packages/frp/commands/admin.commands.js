@@ -48,6 +48,19 @@ module.exports = {
       },  
 
       {
+         name: 'tpm',
+         admin: 2,
+         desc: 'Teleprot do markera',
+         call: async (player) => {
+            player.callProc('client:player.administrator:marker').then(Waypoint => { 
+               player.position = new mp.Vector3(Waypoint.x, Waypoint.y, Waypoint.z);
+            }).catch(() => { 
+               player.Notification('Nema markera', frp.Globals.Notification.Error, 4);
+            });
+         }
+      },  
+
+      {
          name: 'notify',
          admin: 2,
          params: ['igrac', 'tip', 'tekst'],
@@ -123,6 +136,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'position',
          admin: 4,
@@ -139,6 +153,7 @@ module.exports = {
                });
          }
       },
+
       {
          name: 'slot',
          admin: 4,
@@ -156,6 +171,7 @@ module.exports = {
                }
          }
       },
+
       {
          name: 'kick',
          admin: 3,
@@ -164,6 +180,7 @@ module.exports = {
             if (Target) Target.kick(Reason);
          }
       },
+
       {
          name: 'time',
          admin: 2,
@@ -171,6 +188,7 @@ module.exports = {
                mp.world.time.set(args[0], args[1], args[2]);
          }
       },
+
       {
          name: 'weather',
          admin: 2,
@@ -184,6 +202,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'health',
          admin: 3,
@@ -196,6 +215,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'dimension',
          admin: 2,
@@ -207,6 +227,7 @@ module.exports = {
             if (Target) Target.dimension = parseInt(dimension);
          }
       },
+
       {
          name: 'happyhours', 
          desc: 'Aktiviranje / deaktiviranje duplog XP-a',
@@ -217,6 +238,7 @@ module.exports = {
             player.SendMessage('Srećni sati ' + Status, frp.Globals.Colors.info);
          }
       },
+
       {
          name: 'armour',
          admin: 3,
@@ -229,6 +251,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'ban',
          description: 'Ban a player',
@@ -236,6 +259,7 @@ module.exports = {
          call: (player, ...args) => {
          }
       },
+
       {
          name: 'fly',
          description: 'Letiš',
@@ -244,6 +268,7 @@ module.exports = {
             player.call('client:player.administrator:fly');
          }
       },
+
       {
          name: 'goto',
          description: 'Teleport do igraca.',
@@ -266,6 +291,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'gethere',
          description: 'Teleport igraca do sebe.',
@@ -288,6 +314,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'revive',
          admin: 2,
@@ -301,6 +328,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'givegun',
          admin: 5,
@@ -321,8 +349,8 @@ module.exports = {
          call: async (player, args) => {
             const Target = mp.players.find(args[0]), Level = parseInt(args[1]);
             if (Target) {
-               const Account = await frp.Accounts.findOne({ where: { id: player.account } });
-               Account.SetAdmin(Level);
+               const Account = await frp.Accounts.findOne({ where: { id: Target.account } });
+               Account.SetAdmin(Target, Level);
             }
          }
       },

@@ -46,12 +46,10 @@ let Jobs = require('./classes/Jobs');
 
 
 
-
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
 // let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta
 // Player.Nearest(); - vraca instancu najblizeg objekta
-
 
 
 (async () => {
@@ -60,6 +58,9 @@ let Jobs = require('./classes/Jobs');
    frp.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
 })();
+
+
+console.log(mp.joaat('prop_gas_pump_1d'));
 
 
 
