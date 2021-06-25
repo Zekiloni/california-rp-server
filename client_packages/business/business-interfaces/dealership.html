@@ -9,7 +9,7 @@
    <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
    <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
 
-   <link rel="stylesheet" type="text/css" href="src/style.css" />
+   <link rel="stylesheet" type="text/css" href="src/styles/dealership.css" />
 
 </head>
 <body>
@@ -27,7 +27,7 @@
 
       <div class="right">
          <h2 class="business-name">
-            {{ business.name }}
+            {{ Business.Name }}
          </h2>
    
          <i v-on:click="Close()" class="close fa fa-times"> </i>
@@ -43,20 +43,20 @@
                <h2 class="title"> Opis vozila </h2>
    
                <div class="info">
-                  <h4> Ime Modela <b class="name" v-if="vehicles[current].model"> {{ vehicles[current].model }} </b> </h4>
+                  <h4> Ime Modela <b class="name" v-if="Business.Products[current].Model"> {{ Business.Products[current].Model }} </b> </h4>
                </div>
    
                <div class="info">
-                  <h4> Broj Sedišta <b> {{ vehicles[current].stats.max_occupants }} </b> </h4>
+                  <h4> Broj Sedišta <b> {{ Business.Products[current].Stats.MaxOccupants }} </b> </h4>
                   <ul class="bars"> 
-                     <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_occupants) }"></li>
+                     <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, Business.Products[current].Stats.MaxOccupants) }"></li>
                   </ul>
                </div>
    
                <div class="info">
-                  <h4> Ubrzanje <b> {{ vehicles[current].stats.max_acceleration }} </b> </h4>
+                  <h4> Ubrzanje <b> {{ Business.Products[current].Stats.MaxAcceleration }} </b> </h4>
                   <ul class="bars"> 
-                     <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, vehicles[current].stats.max_acceleration * 10) }"></li>
+                     <li id="max_occupants" v-for="(bar, i) in bars" v-bind:class="{ juppy: Bar(i, Business.Products[current].Stats.MaxAcceleration * 10) }"></li>
                   </ul>
                </div>
    
@@ -64,7 +64,7 @@
    
             <div class="vehicle-buy">
                <h4> cena </h4>
-               <h2 class="price"> {{ moneyFormat(vehicles[current].price) }} </h2>
+               <h2 class="price"> {{ Dollars(Business.Products[current].Multiplier * Business.Multiplier) }} </h2>
                <button class="buy" v-on:click="Buy()"> Kupi </button>
             </div>
    
@@ -87,9 +87,24 @@
                   name: ''
                },
 
-               business: { 
+               Business: { 
                   id: null,
-                  name: 'Pepsijev Dilersip vozila'
+                  Name: 'Pepsijev Dilersip vozila',
+                  Multiplier: 85,
+                  Products: [
+                     {
+                        Model: 'burrito',
+                        Name: 'Ime vozila',
+                        Multiplier: 69,
+                        Category: 'vans',
+                        Stats: {
+                           MaxSpeed: 133,
+                           MaxOccupants: 4,
+                           MaxBraking: 0.6,
+                           MaxAcceleration: 0.16
+                        }
+                     }
+                  ]
                },
 
                current: 0,
@@ -124,22 +139,6 @@
                },
 
                bars: 10,
-
-               // test
-               vehicles: [
-                  { model: 'elegy', name: 'Elegy Fast', price: 35000, 
-                        stats: { max_speed: 170, max_occupants: 2, max_braking: 3, max_acceleration: 0.3 }
-                  },
-
-                  // { model: 'stainer', name: 'Staner Slow', price: 22500, 
-                  //       stats: { max_speed: 145, max_occupants: 4, max_braking: 1, max_acceleration: 0.1 }
-                  // },
-
-                  // { model: 'infernus', name: 'Infernus Fast', price: 122500, 
-                  //       stats: { max_speed: 215, max_occupants: 4, max_braking: 2, max_acceleration: 0.2 }
-                  // }
-               ]
-
             },
 
             created () {
@@ -148,18 +147,17 @@
             
             methods: { 
 
-               Close: function () { mp.trigger('client:vehicle.dealership'); },
+               Close: function () { mp.trigger('client:business.dealership:menu'); },
 
                Preview: function (i) { 
                   this.current = i;
-                  if (this.current >= this.vehicles.length) { this.current = 0; }
-                  if (this.current < 0) { this.current = this.vehicles.length - 1; }
+                  if (this.current >= this.Business.Products.length) { this.current = 0; }
+                  if (this.current < 0) { this.current = this.Business.Products.length - 1; }
                   
-                  mp.trigger('client:vehicle.dealership:preview', this.vehicles[i].model);
+                  mp.trigger('client:business.dealership:preview', this.Business.Products[i].Model);
                },
 
                Zoom: function (event) { mp.trigger('client:vehicle.dealership:zoom', event.deltaY); },
-
 
                isColor: function (i, x) { 
                   return parseInt(this.vehicle.color[i]) == parseInt(x) ? true : false;
@@ -167,16 +165,15 @@
 
                Color: function (i, x) { 
                   this.colors[i] = x;
-                  mp.trigger('client:vehicle.dealership:customization', this.colors.primary, this.colors.secondary);
+                  mp.trigger('client:business.dealership:customization', this.colors.primary, this.colors.secondary);
                },
 
                Buy: function () { 
-                  let vehicle = this.vehicles[this.current];
+                  let vehicle = this.Business.Products[this.current];
                },
 
-               moneyFormat: function (i) { 
-                  let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-                  return formatter.format(i);
+               Dollars: (i) => { 
+                  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
                },
 
                Bar: function (i, x) { 

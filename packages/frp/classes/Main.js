@@ -96,6 +96,13 @@ module.exports = class Main {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
    }
 
+   static Help () { 
+      let Admin = [], Basic = [], Faction = [], Property = [];
+      for (const cmd of frp.Commands) { 
+
+      }
+   }
+
    static Sleep (s) {
       return new Promise(resolve => setTimeout(resolve, s * 1000));
    }

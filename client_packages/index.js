@@ -54,7 +54,7 @@ let Clothing = require('./business/Clothing');
 let Gastations = require('./business/Fuel');
 let Drinks = require('./business/Drinks');
 let Rent = require('./business/Rent');
-let Dealeships = require('./vehicles/Dealerships');
+let Dealeship = require('./business/Dealership');
 
 // JOBS
 let Jobs = require('./jobs/Jobs');

@@ -11,8 +11,11 @@ frp.GameObjects = {
    Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: []
 };
 
+
+
 // !!! TEST //
 require('./Test');
+
 
 // DATA
 let Globals = require('./configs/Globals');

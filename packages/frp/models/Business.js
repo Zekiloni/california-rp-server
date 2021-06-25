@@ -5,20 +5,9 @@ const { DataTypes } = require('sequelize');
 
 const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
+const Vehicles = require('../data/Vehicles.json');
 
 
-
-
-const NightClub = BusinessTypes[8];
-
-let produkti = {};
-
-for (const i in NightClub.products) { 
-   const item = NightClub.products[i];
-   produkti[i] = { hash: ItemRegistry[i].hash, multiplier: item };
-}
-
-console.log(JSON.stringify(produkti))
 
 frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -148,7 +137,7 @@ frp.Business.prototype.Refresh = function () {
 
          const white = frp.Globals.Colors.whitesmoke;
 
-         player.SendMessage('[Business] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + '.', frp.Globals.Colors.property);
+         player.SendMessage('[Business] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + ', No ' + this.id + '.', frp.Globals.Colors.property);
          player.SendMessage('[Business] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
          player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), frp.Globals.Colors.whitesmoke);
       };
@@ -177,10 +166,14 @@ frp.Business.prototype.Menu = async function (player) {
 
    const Character = await frp.Characters.findOne({ where: { id: player.character } });
 
+   console.log('Tip je ' + this.Type);
    switch (this.Type) { 
-      case frp.Globals.Business.Types.VehicleDealership: {
-         player.call('client:business:menu', ['dealership', this]);
-         break;
+      case frp.Globals.Business.Types.Dealership: {
+         if (this.Vehicle_Point) { 
+            const Info = { Name: this.Name, id: this.id, Point: this.Vehicle_Point, Multiplier: BusinessTypes[this.Type].multiplier, Products: DealershipMenu(this.Products) }
+            player.call('client:business.dealership:menu', [Info]);
+            break;
+         }
       }
 
       case frp.Globals.Business.Types.Rent: { 
@@ -307,6 +300,23 @@ frp.Business.prototype.WorkersRemove = async function (player) {
    await this.save();
 };
 
+
+
+function DealershipMenu (products) { 
+   let Menu = [];
+   for (const i in products) { 
+      Menu.push({ 
+         Model: i, Name: 'Ime vozila', Multiplier: products[i].multiplier, Category: Vehicles[i].category,
+            Stats: { 
+               MaxSpeed: Vehicles[i].stats.max_speed ,
+               MaxOccupants: Vehicles[i].stats.max_occupants,
+               MaxBraking: Vehicles[i].stats.max_braking,
+               MaxAcceleration: Vehicles[i].stats.max_acceleration
+            }
+      })
+   }
+   return Menu;
+};
 
 (async () => {
    await frp.Business.sync();

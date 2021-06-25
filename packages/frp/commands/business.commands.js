@@ -49,12 +49,20 @@ module.exports = {
                      break;
                   }
 
-                  case 'vehicle-point': { Nearest.Vehicle_Point = player.position; break; }
                   default: 
                      return;
                }
 
                await Nearest.save();
+            } else { 
+               if (option == 'vehicle-point') {
+                  const Business = await frp.Business.findOne({ where: { id: value }});
+                  if (Business) { 
+                     Business.Vehicle_Point = player.position;
+                     player.Notification('Uredili ste mesto za vozila biznisu [' + Business.id + '] ' + Business.Name + '.', frp.Globals.Notification.Succes, 5);
+                     await Business.save();
+                  }
+               }
             }
          }
       },
