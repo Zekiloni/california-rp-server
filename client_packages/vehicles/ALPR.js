@@ -7,6 +7,22 @@ mp.events.add({
 
    'client:vehicle.alpr': () => {      
       opened = true;
+      FMarker = mp.markers.new(1, ForwardVehicle.position, 10,
+      {
+            direction: ForwardVehicle.position,
+            rotation: ForwardVehicle.position,
+            color: 0,
+            visible: true,
+            dimension: Player.dimension
+      });
+      BMarker = mp.markers.new(1, BackwardVehicle, 10,
+      {
+            direction: BackwardVehicle.position,
+            rotation: BackwardVehicle.position,
+            color: 0,
+            visible: true,
+            dimension: Player.dimension
+      });
    },
 
    'render': () => {
@@ -32,8 +48,7 @@ end*/
 
 
 function ALPR () {
-   let counter = 0,
-       FMarker = null,
+   let FMarker = null,
        BMarker = null;
    const Vehicle = Player.vehicle;
    const ForwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, 10, 0.0),
@@ -42,8 +57,8 @@ function ALPR () {
    const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition), 
          BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition);*/
 
-   const ForwardVehicle = mp.raycasting.testCapsule(Vehicle.position, ForwardPosition, 10, Player, 2), 
-         BackwardVehicle = mp.raycasting.testCapsule(Vehicle.position, BackwardPosition, 10, Player, 2);
+   const ForwardVehicle = mp.raycasting.testCapsule(Vehicle.position, ForwardPosition, 2, Player, 2), 
+         BackwardVehicle = mp.raycasting.testCapsule(Vehicle.position, BackwardPosition, 2, Player, 2);
 
    // Returna: object: position (Entity Coordinates) , surfaceNormal, material (Entity Model) , entity (Handle)
 
@@ -58,25 +73,16 @@ function ALPR () {
       mp.gui.chat.push(JSON.stringify(Speed));
    }
 
-   if (counter == 0) {
-      counter++;
-      FMarker = mp.markers.new(1, ForwardVehicle.position, 10,
-      {
-            direction: ForwardVehicle.position,
-            rotation: ForwardVehicle.position,
-            color: 0,
-            visible: true,
-            dimension: Player.dimension
-      });
-      BMarker = mp.markers.new(1, BackwardVehicle, 10,
-      {
-            direction: BackwardVehicle.position,
-            rotation: BackwardVehicle.position,
-            color: 0,
-            visible: true,
-            dimension: Player.dimension
-      });
+   if (FMarker != null) {
+      FMarker.position = ForwardVehicle.entity.position;
    }
+
+   if (BMarker != null) {
+      BMarker.position = BackwardVehicle.entity.position
+   }
+   
+   
+
 }
 
 /*  let 
