@@ -34,5 +34,5 @@ mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapo
         mp.events.callRemote("server:anticheat", 1, player.name);
       }
   }*/
-  mp.gui.chat.push(`sourceEntity: ${sourceEntity} | targetEntity: ${targetEntity} | sourcePlayer: ${sourcePlayer} | weapon: ${weapon}, boneIndex: ${boneIndex}, damage: ${damage}`)
+  mp.gui.chat.push(`sourceEntity: ${JSON.stringify(sourceEntity)} | targetEntity: ${JSON.stringify(targetEntity)} | sourcePlayer: ${JSON.stringify(sourcePlayer)} | weapon: ${weapon}, boneIndex: ${boneIndex}, damage: ${damage}`)
 });
