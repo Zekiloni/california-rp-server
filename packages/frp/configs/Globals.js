@@ -95,6 +95,7 @@ const GLOBALS = {
       WELCOME_ON_REGISTER: 'Dobrodošli na Focus Roleplay, uživajte u igri.',
       MAX_BUSSINES_TYPE: 'Maksimalni tip biznisa je',
       NO_FURNITURE_OWNED: `Nemate ništa od nameštaja`,
+      NOT_NEAR_GAS_PUMP: 'Ne nalazite se u blizini aparata za točenje goriva.',
       LIVE_PHOTO_FROM_SERVER: 'Uzivo slika sa servera',
       ALREADY_IN_CHANNEL: 'Već ste u nekoj frekvenciji !',
       CHANNEL_SUCCESFULLY_CREATED: 'Uspešno ste kreirali frekvenciju.',

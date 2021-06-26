@@ -27,6 +27,9 @@
                <small> Benzinska Pumpa </small> <h2> {{ Business.Name }} </h2> <i class="close fa fa-times"></i>
             </div>
 
+            <div class="bill">
+               <h3> Cena po litru: {{ Dollars() }}
+            </div>
          </div>
       </div>
 
@@ -53,7 +56,8 @@
 
             Business: { 
                id: null,
-               Name: 'Valele`s Gas Stazion '
+               Name: 'Valele`s Gas Stazion',
+               Multiplier: 2.7
             }
          },
 
@@ -63,6 +67,8 @@
 
          methods: { 
             Close: () => { mp.trigger('client:business.gas:menu'); },
+
+            Dollars: (i) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); },
 
             Handler: function (e) { 
                if (this.Filling) { 

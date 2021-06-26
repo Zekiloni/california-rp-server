@@ -16,7 +16,7 @@ body {
 
 #fuel { width: 100%; height: 100%; display: grid; background: linear-gradient(179deg, rgb(0 0 0 / 75%), rgb(35 35 35 / 25%)); }
 
-.station {width: 700px;height: 365px;margin: auto;display: flex;justify-content: space-between;align-items: center;box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;background: linear-gradient(179deg, rgb(10 10 10 / 55%), rgb(0 0 0 / 15%));}
+.station {width: 500px;height: 365px;margin: auto;display: flex;justify-content: space-between;align-items: center;box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;background: linear-gradient(179deg, rgb(10 10 10 / 55%), rgb(0 0 0 / 15%));}
 .station .status {width: 200px;height: 100%;border-right: 1px solid rgb(121 121 121 / 45%);display: flex;justify-content: center;flex-direction: column;align-items: center;}
 .status .bar {width: 50px;height: 250px;border: 1px solid rgb(121 121 121 / 45%);position: relative;box-shadow: 0 3px 7px rgb(12 12 12 / 10%);display: flex;justify-content: flex-end;align-items: flex-end;flex-direction: column;background: rgb(21 21 21 / 45%); transition: all 0.3s ease; }
 .bar .changes {width: 100%;background: rgb(251 198 12 / 6%);height: 0%;transition: all 0.35s ease;border-top: 1px solid rgb(251 198 12);}
@@ -35,7 +35,7 @@ body {
 .close:hover { opacity: 0.5; }
 
 
-.help {height: 80px;top: 225px;left: 540px;position: absolute;flex-direction: column;justify-content: center;align-items: center;display: flex;}
+.help {height: 80px;top: 225px;left: 640px;position: absolute;flex-direction: column;justify-content: center;align-items: center;display: flex;}
 .help img {width: 40px;margin: 10px 0;}
 
 *:focus { outline: none; }

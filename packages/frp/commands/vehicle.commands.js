@@ -35,8 +35,18 @@ module.exports = {
       {
          name: 'fill',
          desc: 'Sipanje goriva',
-         call: (player, args) => {
-
+         call: async (Player, args) => {
+            const NearestStation = await frp.Business.NearestGasStation(player);
+            if (NearestStation) { 
+               Player.callProc('client:business.gas:nearpump').then(Pump => { 
+                  const Info = { 
+                     Business: { id: NearestStation.id, Name: NearestStation.Name, Multiplier: NearestStation.Products.Fuel }
+                  };
+                  player.call('client:business.gas:menu', [Info]);
+               }).catch(() => { 
+                  Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_PUMP, frp.Globals.Notification.Error, 5);
+               });
+            }
          }
       },
 

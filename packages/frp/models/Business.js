@@ -97,6 +97,15 @@ frp.Business.Nearest = async function (player) {
 };
 
 
+frp.Business.NearestGasStation = async function (player) {
+   const GasStations = await frp.Business.findAll({ where: { Type: frp.Globals.Business.Types.GasStation } });
+   for (const Station of GasStations) { 
+      const Position = new mp.Vector3(Station.Position.x, Station.Position.y, Station.Position.z);
+      if (player.dist(Position) < 30) return Station;
+   }
+};
+
+
 frp.Business.afterCreate(async (Business, Options) => {
    Business.Refresh();
 });
