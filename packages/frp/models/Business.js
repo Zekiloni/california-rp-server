@@ -101,7 +101,7 @@ frp.Business.NearestGasStation = async function (player) {
    const GasStations = await frp.Business.findAll({ where: { Type: frp.Globals.Business.Types.GasStation } });
    for (const Station of GasStations) { 
       const Position = new mp.Vector3(Station.Position.x, Station.Position.y, Station.Position.z);
-      if (player.dist(Position) < 30) return Station;
+      if (player.dist(Position) < 50) return Station;
    }
 };
 
@@ -162,8 +162,8 @@ frp.Business.prototype.Refresh = function () {
       this.GameObject = GameObjects;
    } else { 
       if (this.GameObject.blip) { 
-         this.GameObject.blip.sprite = this.Sprite;
-         this.GameObject.blip.color = this.Color;
+         this.GameObject.blip.sprite = this.Sprite ? this.Sprite : Info.blip;
+         this.GameObject.blip.color = this.Color ? this.Color : Info.color;
       }
    }
 };
@@ -207,18 +207,16 @@ frp.Business.prototype.Menu = async function (player) {
       }
 
       case frp.Globals.Business.Types.Cafe: { 
-         player.call('client:business:menu', ['drinks', this]);
+         const Info = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
+         for (const i in this.Products) { Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies }; }
+
+         player.call('client:business.drinks:menu', [Info]);
          break;
       }
 
       case frp.Globals.Business.Types.NightClub: { 
-         const Info = {
-            Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} 
-         }
-         
-         for (const i in this.Products) {
-            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
-         }
+         const Info = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
+         for (const i in this.Products) { Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies }; }
 
          player.call('client:business.drinks:menu', [Info]);
          break;
@@ -339,7 +337,7 @@ function DealershipMenu (products) {
 };
 
 (async () => {
-   await frp.Business.sync();
+   await frp.Business.sync({ force: true });
 
    const Businesses = await frp.Business.findAll();
    Businesses.forEach((Bussines) => {

@@ -36,6 +36,7 @@ let Characters = require('./classes/Character');
 let Savings = require('./classes/Savings');
 let Discord = require('./classes/Discord');
 let Commands = require('./classes/Commands');
+let Animals = require('./classes/Animals');
 let Doors = require('./classes/Doors');
 let Inventory = require('./classes/Inventory');
 let Vehicles = require('./classes/Vehicles');

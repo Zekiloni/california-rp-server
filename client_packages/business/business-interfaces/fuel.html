@@ -30,7 +30,9 @@
             <div class="bill">
                <h3> Cena po litru: {{ Dollars(Business.Multiplier) }} </h3>
                <h2> Ukupno litara: {{ Fill }} </h2>
-               <h1> Cena: {{ Dollars(Fill * Business.Multiplier) }} </h1>
+               <h1 class="total"> Cena: <b class="price">{{ Dollars(Fill * Business.Multiplier) }}</b> </h1>
+
+               <button class="buy" v-on:click="Buy()" :disabled="Fill < 1"> Plati </button>
             </div>
          </div>
       </div>
@@ -53,6 +55,7 @@
             Filling: false,
 
             Vehicle: { 
+               id: null,
                Fuel: 34,
             },
 
@@ -81,8 +84,18 @@
                   } else {
                      this.Fill ++;
                      console.log(this.Fill)
-                     if (this.Fill >= 100 - this.Vehicle.Fuel) this.Fill = 100 -this.Vehicle.Fuel; }
+                     if (this.Fill >= 100 - this.Vehicle.Fuel) this.Fill = 100 -this.Vehicle.Fuel; 
+                  }
                }
+            },
+
+            Buy: function () { 
+               const Fuel = this.Fill;
+               const Total = Fuel * this.Business.Multiplier;
+               this.Filling = false;
+               this.Fill = 0;
+               this.Vehicle.Fuel += Fuel;
+               // mp.trigger('client:business.gas:fill', Fuel, this.Vehicle.id, Total, this.Business.id);
             }
          }
       })
