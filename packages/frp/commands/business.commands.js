@@ -49,10 +49,14 @@ module.exports = {
                      break;
                   }
 
+                  case 'sprite': { Nearest.Sprite = value; break; }
+                  case 'color': { Nearest.Color = value; break; }
+
                   default: 
                      return;
                }
 
+               Nearest.Refresh();
                await Nearest.save();
             } else { 
                if (option == 'vehicle-point') {

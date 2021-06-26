@@ -1,0 +1,4178 @@
+{
+  "SpoonerPlacements": {
+    "Note": {
+      "-self-closing": "true"
+    },
+    "AudioFile": {
+      "-volume": "400",
+      "-self-closing": "true"
+    },
+    "ClearDatabase": "false",
+    "ClearWorld": "0",
+    "ClearMarkers": "false",
+    "IPLsToLoad": {
+      "-load_mp_maps": "false",
+      "-load_sp_maps": "false",
+      "-self-closing": "true"
+    },
+    "IPLsToRemove": {
+      "-self-closing": "true"
+    },
+    "InteriorsToEnable": {
+      "-self-closing": "true"
+    },
+    "InteriorsToCap": {
+      "-self-closing": "true"
+    },
+    "WeatherToSet": {
+      "-self-closing": "true"
+    },
+    "TimecycleModifier": {
+      "-strength": "1"
+    },
+    "StartTaskSequencesOnLoad": "true",
+    "Placement": [
+      {
+        "ModelHash": "0x9b22dbaf",
+        "Type": "1",
+        "Dynamic": "true",
+        "FrozenPos": "false",
+        "HashName": "Franklin",
+        "InitialHandle": "2",
+        "PedProperties": {
+          "IsStill": "false",
+          "CanRagdoll": "true",
+          "HasShortHeight": "false",
+          "Armour": "0",
+          "CurrentWeapon": "0xa2719263",
+          "PedProps": {
+            "_0": "-1,-1",
+            "_1": "-1,-1",
+            "_2": "-1,-1",
+            "_3": "-1,-1",
+            "_4": "-1,-1",
+            "_5": "-1,-1",
+            "_6": "-1,-1",
+            "_7": "-1,-1",
+            "_8": "-1,-1",
+            "_9": "-1,-1"
+          },
+          "PedComps": {
+            "_0": "0,0",
+            "_1": "0,0",
+            "_2": "0,0",
+            "_3": "0,0",
+            "_4": "0,0",
+            "_5": "0,0",
+            "_6": "11,0",
+            "_7": "0,0",
+            "_8": "14,0",
+            "_9": "0,0",
+            "_10": "0,0",
+            "_11": "0,0"
+          },
+          "RelationshipGroupAltered": "false",
+          "RelationshipGroup": "0x6f0783f5",
+          "ScenarioActive": "false",
+          "AnimActive": "false"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "240",
+        "IsVisible": "true",
+        "MaxHealth": "200",
+        "Health": "200",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "true",
+        "IsBulletProof": "true",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "true",
+        "IsFireProof": "false",
+        "IsMeleeProof": "true",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.293762",
+          "Y": "-1306.69629",
+          "Z": "6.99836826",
+          "Pitch": "0",
+          "Roll": "-0",
+          "Yaw": "-143.659851"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "437542",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-803.886719",
+          "Y": "-1307.05176",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "-80.6495209",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "271655",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.186646",
+          "Y": "-1308.53149",
+          "Z": "11.4691753",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "448058",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.286133",
+          "Y": "-1308.03235",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "234242",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-800.266113",
+          "Y": "-1303.07336",
+          "Z": "10.0859404",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "234498",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-801.156006",
+          "Y": "-1308.07336",
+          "Z": "10.0859404",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "234754",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.055786",
+          "Y": "-1313.37329",
+          "Z": "10.0859404",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "235010",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-800.266113",
+          "Y": "-1303.07336",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "235266",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-801.156006",
+          "Y": "-1308.07336",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "235522",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-803.986694",
+          "Y": "-1308.53149",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd5616827",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floorblue",
+        "InitialHandle": "235778",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.594238",
+          "Y": "-1303.495",
+          "Z": "5.97949743",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-8.78425407"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd5616827",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floorblue",
+        "InitialHandle": "236034",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-805.047363",
+          "Y": "-1304.35242",
+          "Z": "5.97949743",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-8.78425407"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd5616827",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floorblue",
+        "InitialHandle": "236290",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-811.531372",
+          "Y": "-1309.09558",
+          "Z": "5.9694972",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "80.6379089"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd5616827",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floorblue",
+        "InitialHandle": "236546",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-805.929443",
+          "Y": "-1309.98621",
+          "Z": "5.97949743",
+          "Pitch": "0",
+          "Roll": "-0",
+          "Yaw": "171.450928"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd3cd9ef",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "floor_metal_s",
+        "InitialHandle": "236802",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "120",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.009888",
+          "Y": "-1304.9342",
+          "Z": "5.00038004",
+          "Pitch": "3.49860996e-14",
+          "Roll": "3.20532962e-07",
+          "Yaw": "-9.2256918"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "true",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "237314",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "30",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.145508",
+          "Y": "-1298.68286",
+          "Z": "7.3859334",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "237570",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.285278",
+          "Y": "-1305.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "-31.3549557",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "237826",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "238082",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.985352",
+          "Y": "-1304.9939",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "158.644699",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "238594",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0x4b4290d8",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floorred",
+        "InitialHandle": "240642",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.993591",
+          "Y": "-1303.95593",
+          "Z": "5.97949743",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.12494564"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd3cd9ef",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "floor_metal_s",
+        "InitialHandle": "242434",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.043091",
+          "Y": "-1305.25452",
+          "Z": "4.99838018",
+          "Pitch": "3.49860996e-14",
+          "Roll": "3.20532962e-07",
+          "Yaw": "-9.2256918"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd3cd9ef",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "floor_metal_s",
+        "InitialHandle": "242690",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.489746",
+          "Y": "-1307.89343",
+          "Z": "5.00038004",
+          "Pitch": "3.49860996e-14",
+          "Roll": "3.20532962e-07",
+          "Yaw": "-9.2256918"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd3cd9ef",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "floor_metal_s",
+        "InitialHandle": "242946",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.522095",
+          "Y": "-1308.21313",
+          "Z": "5.00038004",
+          "Pitch": "3.49860996e-14",
+          "Roll": "3.20532962e-07",
+          "Yaw": "-9.2256918"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd3cd9ef",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "floor_metal_s",
+        "InitialHandle": "243202",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-806.075562",
+          "Y": "-1305.57227",
+          "Z": "5.00038004",
+          "Pitch": "3.49860996e-14",
+          "Roll": "3.20532962e-07",
+          "Yaw": "-9.2256918"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd3cd9ef",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "floor_metal_s",
+        "InitialHandle": "243458",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-806.55542",
+          "Y": "-1308.53149",
+          "Z": "5.00038004",
+          "Pitch": "3.49860996e-14",
+          "Roll": "3.20532962e-07",
+          "Yaw": "-9.2256918"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "243714",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.885742",
+          "Y": "-1302.36304",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "243970",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.587036",
+          "Y": "-1303.23279",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "244226",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.275879",
+          "Y": "-1311.02307",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "244482",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.376099",
+          "Y": "-1311.82312",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "244738",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.435913",
+          "Y": "-1299.61377",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "244994",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.135986",
+          "Y": "-1300.49377",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "245250",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.725708",
+          "Y": "-1313.77246",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "245506",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.826904",
+          "Y": "-1314.57227",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "245762",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-803.886719",
+          "Y": "-1307.05176",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "-80.6495285",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "246018",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.186646",
+          "Y": "-1308.53149",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "-80.6495209",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "246274",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-812.586792",
+          "Y": "-1306.33203",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "-80.6495209",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "246530",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-815.286865",
+          "Y": "-1305.89209",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "247042",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.99585",
+          "Y": "-1312.90259",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "247298",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-801.286377",
+          "Y": "-1308.2323",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "-80.6495209",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "247554",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-801.086426",
+          "Y": "-1306.83264",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "247810",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-813.285645",
+          "Y": "-1302.16309",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "248066",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-812.785767",
+          "Y": "-1299.46301",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "248322",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.305664",
+          "Y": "-1299.53369",
+          "Z": "7.3859334",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd30f19d0",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_b",
+        "InitialHandle": "248578",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.230225",
+          "Y": "-1310.32471",
+          "Z": "7.10158396",
+          "Pitch": "-7",
+          "Roll": "5.37615676e-08",
+          "Yaw": "1.98378646"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd30f19d0",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_b",
+        "InitialHandle": "248834",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.230225",
+          "Y": "-1302.32471",
+          "Z": "7.10158396",
+          "Pitch": "-8",
+          "Roll": "3.44865703e-06",
+          "Yaw": "-168.016174"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd30f19d0",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_b",
+        "InitialHandle": "249090",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.230225",
+          "Y": "-1302.32471",
+          "Z": "7.10158396",
+          "Pitch": "-8",
+          "Roll": "3.44865703e-06",
+          "Yaw": "-168.016174"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0x4b4290d8",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floorred",
+        "InitialHandle": "249346",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.897339",
+          "Y": "-1309.50891",
+          "Z": "5.97949743",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.28900242"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd30f19d0",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_b",
+        "InitialHandle": "249602",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.230225",
+          "Y": "-1310.32471",
+          "Z": "7.10158396",
+          "Pitch": "-7",
+          "Roll": "5.37615819e-08",
+          "Yaw": "1.98378611"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "249858",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.145508",
+          "Y": "-1298.68286",
+          "Z": "10.0859365",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "250114",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.305664",
+          "Y": "-1299.53369",
+          "Z": "10.0859404",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "250370",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-799.156494",
+          "Y": "-1300.37354",
+          "Z": "7.3859334",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "250626",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-799.156494",
+          "Y": "-1300.42358",
+          "Z": "10.0859404",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "250882",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.145508",
+          "Y": "-1297.88281",
+          "Z": "7.3859334",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "251138",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.145508",
+          "Y": "-1297.88281",
+          "Z": "10.0859404",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "251394",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.556396",
+          "Y": "-1315.67322",
+          "Z": "7.3859334",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "251650",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.556396",
+          "Y": "-1315.67322",
+          "Z": "10.0859404",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "251906",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.556396",
+          "Y": "-1314.67322",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062211e-07",
+          "Roll": "-1.00135785e-05",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "252162",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.556396",
+          "Y": "-1313.67322",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062325e-07",
+          "Roll": "-1.00135776e-05",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "252418",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.556396",
+          "Y": "-1314.67322",
+          "Z": "10.0459375",
+          "Pitch": "-1.20062325e-07",
+          "Roll": "-1.00135776e-05",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "252674",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.556396",
+          "Y": "-1313.67322",
+          "Z": "10.0159407",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.00135767e-05",
+          "Yaw": "-9.98682499"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "252930",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-816.156006",
+          "Y": "-1310.57397",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "253186",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-815.255981",
+          "Y": "-1305.28406",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "253442",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.336182",
+          "Y": "-1300.41516",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "253698",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-816.156006",
+          "Y": "-1310.57397",
+          "Z": "10.0859404",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "253954",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-815.255981",
+          "Y": "-1305.28406",
+          "Z": "10.0859404",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "254210",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.336182",
+          "Y": "-1300.41516",
+          "Z": "10.0859404",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "254466",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.055786",
+          "Y": "-1313.37329",
+          "Z": "7.3859334",
+          "Pitch": "-1.20062523e-07",
+          "Roll": "-1.0013574e-05",
+          "Yaw": "-99.9867477"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "44292",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.385254",
+          "Y": "-1308.79321",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "48.6450119",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "400952",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.725708",
+          "Y": "-1313.77246",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "232761",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.275879",
+          "Y": "-1311.02307",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "544565",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-813.375854",
+          "Y": "-1310.34302",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "590903",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-814.99585",
+          "Y": "-1312.90259",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "69941",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-813.375854",
+          "Y": "-1310.34302",
+          "Z": "5.96917677",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "450853",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.376099",
+          "Y": "-1311.82312",
+          "Z": "11.3691788",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "427049",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-801.086426",
+          "Y": "-1306.83264",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "401963",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.587036",
+          "Y": "-1303.23279",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "717863",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.286133",
+          "Y": "-1308.03235",
+          "Z": "11.3691874",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "619554",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-802.135986",
+          "Y": "-1300.49377",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "20013",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.885742",
+          "Y": "-1302.36304",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "441385",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.435913",
+          "Y": "-1299.61377",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "101680",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-813.285645",
+          "Y": "-1302.16309",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "635440",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-812.785767",
+          "Y": "-1299.46301",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "613928",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-812.586792",
+          "Y": "-1306.33203",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "207662",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.376099",
+          "Y": "-1311.82312",
+          "Z": "11.4691792",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "99121",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-815.286865",
+          "Y": "-1305.89209",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "-80.6495132",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xf323253f",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "black_wallblend",
+        "InitialHandle": "608049",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.826904",
+          "Y": "-1314.57227",
+          "Z": "11.4691877",
+          "Pitch": "-90",
+          "Roll": "9.35046005",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "623879",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.285278",
+          "Y": "-1305.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "-31.3549557",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "624135",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "624391",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.985352",
+          "Y": "-1304.9939",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "158.644684",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "624647",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "624903",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.285278",
+          "Y": "-1305.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "-31.3549557",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "625159",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "625415",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.985352",
+          "Y": "-1304.9939",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "158.644684",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "625671",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "685832",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.385254",
+          "Y": "-1308.79321",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "48.6450119",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "701192",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.385254",
+          "Y": "-1308.79321",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "48.6450119",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "761609",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.535034",
+          "Y": "-1307.23364",
+          "Z": "6.31179142",
+          "Pitch": "-28.000042",
+          "Roll": "67.9997787",
+          "Yaw": "-80.2441864"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "730890",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-804.354858",
+          "Y": "-1308.07397",
+          "Z": "6.60179806",
+          "Pitch": "-28.0000114",
+          "Roll": "-4.99999714",
+          "Yaw": "-24.2447071"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "519691",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-806.87793",
+          "Y": "-1303.59509",
+          "Z": "7.0017972",
+          "Pitch": "-59.0001259",
+          "Roll": "-10.999876",
+          "Yaw": "65.470314"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "527883",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.477539",
+          "Y": "-1303.29517",
+          "Z": "6.70179749",
+          "Pitch": "-63.0002556",
+          "Roll": "-103.469994",
+          "Yaw": "-1.8806146e-06"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "402956",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-808.477539",
+          "Y": "-1310.47534",
+          "Z": "6.40179777",
+          "Pitch": "-19.000227",
+          "Roll": "-129.46965",
+          "Yaw": "-26.9999561"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "267533",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.277588",
+          "Y": "-1310.49512",
+          "Z": "6.80179739",
+          "Pitch": "-16.000227",
+          "Roll": "-138.469345",
+          "Yaw": "-166.999817"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "569102",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-811.757568",
+          "Y": "-1306.70508",
+          "Z": "6.68179464",
+          "Pitch": "-75.0006485",
+          "Roll": "-157.46904",
+          "Yaw": "-158.999664"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xcd8ee5f4",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "xm_prop_lab_tube_lampa",
+        "InitialHandle": "259089",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "true",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-811.857544",
+          "Y": "-1306.2052",
+          "Z": "6.68179464",
+          "Pitch": "-25.001009",
+          "Roll": "-159.469025",
+          "Yaw": "-162.999512"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "439059",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-807.285278",
+          "Y": "-1305.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "-31.3549557",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "439315",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "439571",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-809.985352",
+          "Y": "-1304.9939",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "158.644684",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xe3edbb8d",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_tube_l_a",
+        "InitialHandle": "439827",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "49",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.285278",
+          "Y": "-1307.99316",
+          "Z": "8.32949734",
+          "Pitch": "-90",
+          "Roll": "58.6447945",
+          "Yaw": "0"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd04517ab",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floor_l_a",
+        "InitialHandle": "585492",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-805.730225",
+          "Y": "-1307.1842",
+          "Z": "5.9757762",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.33462048"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      },
+      {
+        "ModelHash": "0xd04517ab",
+        "Type": "3",
+        "Dynamic": "false",
+        "FrozenPos": "true",
+        "HashName": "ba_prop_battle_lights_floor_l_a",
+        "InitialHandle": "670484",
+        "ObjectProperties": {
+          "TextureVariation": "0"
+        },
+        "OpacityLevel": "255",
+        "LodDistance": "16960",
+        "IsVisible": "true",
+        "MaxHealth": "1000",
+        "Health": "1000",
+        "HasGravity": "true",
+        "IsOnFire": "false",
+        "IsInvincible": "false",
+        "IsBulletProof": "false",
+        "IsCollisionProof": "false",
+        "IsExplosionProof": "false",
+        "IsFireProof": "false",
+        "IsMeleeProof": "false",
+        "IsOnlyDamagedByPlayer": "false",
+        "PositionRotation": {
+          "X": "-810.930603",
+          "Y": "-1306.30347",
+          "Z": "5.96901655",
+          "Pitch": "0",
+          "Roll": "0",
+          "Yaw": "-9.33462048"
+        },
+        "Attachment": {
+          "-isAttached": "false",
+          "-self-closing": "true"
+        }
+      }
+    ]
+  }
+}

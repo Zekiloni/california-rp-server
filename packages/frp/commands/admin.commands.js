@@ -28,6 +28,16 @@ module.exports = {
       },
 
       {
+         name: 'coord',
+         admin: 2,
+         params: ['x', 'y', 'z'],
+         call:  (Player, args) => {
+            const [x, y, z] = args;
+            Player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z));
+         }
+      },
+
+      {
          name: 'a',
          admin: 1,
          params: ['tekst'],

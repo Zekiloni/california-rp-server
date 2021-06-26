@@ -36,6 +36,8 @@ frp.Business = frp.Database.define('business', {
       },
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },
       IPL: { type: DataTypes.STRING, defaultValue: null },
+      Sprite: { type: DataTypes.INTEGER, defaultValue: null },
+      Color: { type: DataTypes.INTEGER, defaultValue: null },
       Workers: {
          type: DataTypes.TEXT, defaultValue: '[]',
          get: function () { return JSON.parse(this.getDataValue('Workers')); },
@@ -48,12 +50,8 @@ frp.Business = frp.Database.define('business', {
       },
       GameObject: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
-         get () { 
-            return frp.GameObjects.Businesses[this.getDataValue('id')];
-         },
-         set (x) { 
-            frp.GameObjects.Businesses[this.getDataValue('id')] = x;
-         }
+         get () { return frp.GameObjects.Businesses[this.getDataValue('id')]; },
+         set (x) { frp.GameObjects.Businesses[this.getDataValue('id')] = x; }
       }
    },
    {
@@ -117,10 +115,12 @@ frp.Business.prototype.Refresh = function () {
 
    const Info = BusinessTypes[this.Type];
 
+   const Sprite = this.Sprite ? this.Sprite : Info.blip;
+
    if (this.GameObject == null) { 
       const GameObjects = { 
          colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, 0),
-         blip: mp.blips.new(Info.blip, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
+         blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
          marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z -0.99), 2.5, {
             color: [253, 201, 41, 185], 
             rotation: new mp.Vector3(0, 0, 90), 
@@ -142,10 +142,21 @@ frp.Business.prototype.Refresh = function () {
          player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), frp.Globals.Colors.whitesmoke);
       };
 
-      if (Info.color) GameObjects.blip.color = Info.color;
+      if (this.Color) { 
+         GameObjects.blip.color = this.Color;
+      } else { 
+         if (Info.color) { 
+            GameObjects.blip.color = Info.color;
+         }
+      }
 
       this.GameObject = GameObjects;
-   } 
+   } else { 
+      if (this.GameObject.blip) { 
+         this.GameObject.blip.sprite = this.Sprite;
+         this.GameObject.blip.color = this.Color;
+      }
+   }
 };
 
 

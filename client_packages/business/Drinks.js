@@ -16,5 +16,9 @@ mp.events.add({
          if (browser) browser.destroy();
          Player.BrowserControls(false, false);
       }
+   },
+
+   'client:business.drinks:buy': (price, item, business) => { 
+      mp.events.callRemote('server:business.drinks:buy', price, item, business);
    }
 })

@@ -2,24 +2,24 @@
 frp.Commands = {};
 
 const commandFiles = [
-    'basic.commands',
-    'admin.commands',
-    'house.commands',
-    'business.commands',
-    'item.commands',
-    'vehicle.commands',
-    'interior.commands',
-    'job.commands',
-    'message.commands',
-    'radio.commands',
-    'faction.commands',
-    'law.commands',
-    'lock.command'
+   'basic.commands',
+   'admin.commands',
+   'house.commands',
+   'business.commands',
+   'item.commands',
+   'vehicle.commands',
+   'interior.commands',
+   'job.commands',
+   'message.commands',
+   'radio.commands',
+   'faction.commands',
+   'law.commands',
+   'lock.command'
 ];
 
 
 for (const file of commandFiles) {
-   let cmdFile = require('../commands/' + file);
+   const cmdFile = require('../commands/' + file);
    cmdFile.commands.forEach(cmd => {
       frp.Commands[cmd.name] = cmd;
    });
@@ -45,12 +45,14 @@ mp.events.add('playerCommand', async (player, command) => {
          if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       }
 
+      if (cmd.vehicle && player.vehicle == null) return player.Notification(frp.Globals.messages.NOT_IN_VEHICLE, frp.Globals.Notification.Error, 5);
+
       if (cmd.item && frp.Items.HasItem(player.character, cmd.item) == false) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + cmd.item + '.', frp.Globals.Notification.Error, 4);
       
       if (cmd.params && cmd.params.length > args.length) return player.SendMessage('Komanda: /' + commandName + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
 
       cmd.call(player, args);
    } else {
-      player.Notification('Komanda ne postoji !', frp.Globals.Notification.Error, 4);
+      player.Notification(frp.Globals.messages.CMD_DOESNT_EXIST, frp.Globals.Notification.Error, 4);
    }
 });

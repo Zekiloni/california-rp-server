@@ -22,7 +22,7 @@
          <i v-on:click="Close()" class="close fa fa-times"></i>
       </div>
       <ul class="drinks">
-         <li v-for="(drink, i) in Business.Products">
+         <li v-for="(drink, i) in Business.Products" v-on:click="Buy(i, drink.multiplier * Business.Multiplier)">
             <img class="icon" :src="'package://player/inventory/inventory-interface/src/images/items/' + drink.hash + '.png'" />
             <h3> {{ i }} </h3>
             <h4> {{ Dollars(drink.multiplier * Business.Multiplier) }} </h4>
@@ -110,6 +110,10 @@
            
             Dollars: (i) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); },
             Truncate: (str, n) => { return (str.length > n) ? str.substr(0, n-1) + '...' : str; },
+            
+            Buy: function (item, price) { 
+               mp.trigger('client:business.drinks:buy', price, item, this.Business.id); 
+            }
 
          }
       })

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/fuel.css" />
+
+</head>
+<body>
+   <div id="fuel">
+      <div class="station">
+         <div class="status">
+            <div class="bar" data-text="Gorivo Vozila" ref="bar" v-bind:class="{ 'filling': Filling }" v-on:click="Filling = !Filling"> 
+               <div class="changes" v-bind:style="{ height: Fill + '%' }"> </div>
+               <div class="level" v-bind:style="{ height: Vehicle.Fuel + '%' }"> <h3> {{ Vehicle.Fuel }} % </h3> </div>
+            </div>
+            <p class="hint"> {{ Filling ? 'kliknite na rezervoar kako bi stopirali punjenje' : 'kliknite na rezervoar kako bi zapoćeli punjenje' }} </p>
+         </div>
+         <div class="menu">
+            <div class="header">
+               <small> Benzinska Pumpa </small> <h2> {{ Business.Name }} </h2> <i class="close fa fa-times"></i>
+            </div>
+
+         </div>
+      </div>
+
+      <transition name="bounce">
+         <div class="help" v-if="Filling">
+            <img src="../../player/game-interface/src/images/commands/scroll.png" />
+         </div>
+      </transition>
+   </div>
+      
+   <!-- scripts -->
+   <script src="src/vendor/js/vue.js"></script>
+   <script>
+
+      let station = new Vue({
+         el: '#fuel',
+         data: {      
+            Fill: 0,
+            Filling: false,
+
+            Vehicle: { 
+               Fuel: 34,
+            },
+
+            Business: { 
+               id: null,
+               Name: 'Valele`s Gas Stazion '
+            }
+         },
+
+         mounted () { 
+            window.addEventListener('wheel', this.Handler);
+         },
+
+         methods: { 
+            Close: () => { mp.trigger('client:business.gas:menu'); },
+
+            Handler: function (e) { 
+               if (this.Filling) { 
+                  if (0 < e.deltaY) { 
+                     this.Fill --;
+                     if (this.Fill < 1) this.Fill = 0;
+                     console.log(this.Fill)
+                  } else {
+                     this.Fill ++;
+                     console.log(this.Fill)
+                     if (this.Fill >= 100 - this.Vehicle.Fuel) this.Fill = 100 -this.Vehicle.Fuel; }
+               }
+            }
+         }
+      })
+   </script>
+</body>     
+</html>

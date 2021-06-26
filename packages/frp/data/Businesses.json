@@ -30,7 +30,7 @@
          "Fishing Rod" : 15.1, "Hamburger" : 6.05, "Chips" : 2.69, "Donut" : 2.18,
          "Sandwich" : 4.23, "Coffe" : 1.52, "Water Bottle" : 1.32, "Cola Can" : 2,
          "Soda Can" : 1.88, "Energy Drink" : 2.70, "Beer Bottle" : 3.6, "Juice Cup" : 3,
-         "Whiskey Bottle" : 20, "Tequila Bottle" : 18.9, "Vodka Bottle" : 17.2
+         "Whiskey Bottle" : 20, "Tequila Bottle" : 18.9, "Vodka Bottle" : 17.2, "Fuel": 1
       },
       "multiplier": 3.9
    },
