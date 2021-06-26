@@ -19,12 +19,13 @@ body {
 .station {width: 500px;height: 365px;margin: auto;display: flex;justify-content: space-between;align-items: center;box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;background: linear-gradient(179deg, rgb(10 10 10 / 55%), rgb(0 0 0 / 15%));}
 .station .status {width: 200px;height: 100%;border-right: 1px solid rgb(121 121 121 / 45%);display: flex;justify-content: center;flex-direction: column;align-items: center;}
 .status .bar {width: 50px;height: 250px;border: 1px solid rgb(121 121 121 / 45%);position: relative;box-shadow: 0 3px 7px rgb(12 12 12 / 10%);display: flex;justify-content: flex-end;align-items: flex-end;flex-direction: column;background: rgb(21 21 21 / 45%); transition: all 0.3s ease; }
-.bar .changes {width: 100%;background: rgb(251 198 12 / 6%);height: 0%;transition: all 0.35s ease;border-top: 1px solid rgb(251 198 12);}
+.bar .changes {width: 100%;background: rgb(251 198 12 / 6%);height: 0%;transition: all 0.35s ease;display: flex;justify-content: center;border-top: 1px solid rgb(251 198 12);}
+.changes b {color: white; margin-top: 2px; }
 .bar .level {height: 0%;width: 100%;background: #fbc60c;box-shadow: 0 1px 5px rgb(250 184 10 / 80%);overflow: hidden;transition: all 0.4s ease;}
 .bar .level h3 { font-weight: 900; color: black; width: 100%; margin: 0; margin-top: 5px; font-size: 20px; text-align: center; }
 .bar::before {position: absolute;content: attr(data-text);left: -39px;height: 100%;font-size: 20px;text-align: center;letter-spacing: 5px;text-transform: uppercase;writing-mode: vertical-rl;color: #a5a5a5;text-orientation: mixed;transform: rotate(180deg);}
 .bar.filling {border-color: rgb(251 198 12 / 50%);}
-.hint {color:#e6e6e6;font-size: 10px;width: 80px;letter-spacing:1px;text-align: center;font-weight: 400;margin: 0;margin-top: 5px;text-transform: uppercase;}
+.hint {color:#e6e6e6;font-size: 10px;width: 80px;letter-spacing:1px;text-align: center;font-weight: 400;margin: 0;margin-top: 20px;text-transform: uppercase;}
 
 .menu { width: 100%; height: 100%; }
 .header {display: flex;flex-direction: column;position: relative;padding: 15px 20px;}
@@ -35,7 +36,7 @@ body {
 .close:hover { opacity: 0.5; }
 
 
-.help {height: 80px;top: 225px;left: 640px;position: absolute;flex-direction: column;justify-content: center;align-items: center;display: flex;}
+.help {height: 80px;top: 425px;left: 640px;position: absolute;flex-direction: column;justify-content: center;align-items: center;display: flex;}
 .help img {width: 40px;margin: 10px 0;}
 
 *:focus { outline: none; }

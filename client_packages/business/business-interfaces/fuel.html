@@ -17,25 +17,27 @@
       <div class="station">
          <div class="status">
             <div class="bar" data-text="Gorivo Vozila" ref="bar" v-bind:class="{ 'filling': Filling }" v-on:click="Filling = !Filling"> 
-               <div class="changes" v-bind:style="{ height: Fill + '%' }"> </div>
-               <div class="level" v-bind:style="{ height: Vehicle.Fuel + '%' }"> <h3> {{ Vehicle.Fuel }} % </h3> </div>
+               <div class="changes" v-bind:style="{ height: Fill + '%' }"><b>+ {{ Fill }} %</b></div>
+               <div class="level" v-bind:style="{ height: Vehicle.Fuel + '%' }"> <h3> {{ Vehicle.Fuel }} %  </h3> </div>
             </div>
             <p class="hint"> {{ Filling ? 'kliknite na rezervoar kako bi stopirali punjenje' : 'kliknite na rezervoar kako bi zapoćeli punjenje' }} </p>
          </div>
          <div class="menu">
             <div class="header">
-               <small> Benzinska Pumpa </small> <h2> {{ Business.Name }} </h2> <i class="close fa fa-times"></i>
+               <small> Benzinska Pumpa </small> <h2> {{ Business.Name }} </h2> <i v-on:click="Close()" class="close fa fa-times"></i>
             </div>
 
             <div class="bill">
-               <h3> Cena po litru: {{ Dollars() }}
+               <h3> Cena po litru: {{ Dollars(Business.Multiplier) }} </h3>
+               <h2> Ukupno litara: {{ Fill }} </h2>
+               <h1> Cena: {{ Dollars(Fill * Business.Multiplier) }} </h1>
             </div>
          </div>
       </div>
 
       <transition name="bounce">
          <div class="help" v-if="Filling">
-            <img src="../../player/game-interface/src/images/commands/scroll.png" />
+            <img src="package://player/game-interface/src/images/commands/scroll.png" />
          </div>
       </transition>
    </div>

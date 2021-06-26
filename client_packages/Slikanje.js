@@ -3,7 +3,7 @@
 const Player = mp.players.local;
 
 const Vehicles = [
-   "blista", "dilettante", "faggio", "faggio2", "seminole",
+   "packer", "phantom", "hauler", "faggio2", "seminole",
    "asea", "ingot", "bison", "burrito", "speedo4"
 ];
 
@@ -11,9 +11,9 @@ let Current = 0;
 let Vehicle = null;
 
 const Positions = {
-   Vehicle: new mp.Vector3(-1738.0914, 163.9754, 66.897),
-   Camera: new mp.Vector3(-1742.8474, 169.0432, 65.25045),
-   CameraLook: new mp.Vector3(-1738.0914, 163.9754, 63.697)
+   Vehicle: new mp.Vector3(-1735.195, 161.823, 64.4375),
+   Camera: new mp.Vector3(-1740.1019, 173.7072, 65.1874),
+   CameraLook: new mp.Vector3(-1735.195, 161.823, 64.4375)
 }
 
 mp.events.add({
@@ -56,7 +56,7 @@ mp.events.add({
          if (Vehicle) { 
             Vehicle.model = mp.game.joaat(Vehicles[Current]);
             Vehicle.freezePosition(true);
-            Vehicle.setColours(123, 123);
+            Vehicle.setColours(71, 71);
          } else { 
             Vehicle = mp.vehicles.new(mp.game.joaat(Vehicles[Current]), Positions.Vehicle, {
                numberPlate: ' ',
@@ -64,7 +64,7 @@ mp.events.add({
             Vehicle.setHeading(80);
             Vehicle.freezePosition(true);
             mp.game.wait(5);
-            Vehicle.setColours(123, 123);
+            Vehicle.setColours(71, 71);
          }
          mp.game.wait(100);
          mp.gui.takeScreenshot(Vehicles[Current] + '.png', 1, 10, 0);

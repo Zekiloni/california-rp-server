@@ -12,7 +12,7 @@ mp.events.add({
       opened = !opened;
       if (opened) { 
          browser = mp.browsers.new('package://business/business-interfaces/fuel.html');
-         browser.execute('station.Business = ' + JSON.stringify(info));
+         browser.execute('station.Business = ' + JSON.stringify(info.Business));
          Player.BrowserControls(true, true);
       } else { 
          if (browser) browser.destroy();
@@ -24,9 +24,10 @@ mp.events.add({
 
 mp.events.addProc({
    'client:business.gas:nearpump': async () => { 
+      const Position = Player.position;
       return new Promise((resolve) => { 
          for (const Pump of Pumps) { 
-            let object = mp.game.object.getClosestObjectOfType(position.x, position.y, position.z, 3.0, Pump, false, true, true);
+            let object = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 3.0, Pump, false, true, true);
             if (object) {
                resolve(true)
                break;
