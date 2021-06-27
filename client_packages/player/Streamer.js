@@ -3,22 +3,65 @@
 const Player = mp.players.local;
 
 
+mp.events.addDataHandler({
+   'Cuffed': (entity, newValue, oldValue) => {
+      if (entity.type === 'player') {
+         if (newValue !== oldValue) { 
+            Cuff(entity, newValue);
+         }
+      }
+   }
+});
 
 
 mp.events.add({
    'entityStreamIn': (entity) => {
+      if (entity.type === 'player') Cuff(entity, entity.getVariable('cuffed'));
 
    },
 
-   'client:doors.sync': (model, position, state) => { 
-      mp.game.object.doorControl(parseInt(model), position[0], position[1], position[2], state, 0.0, 50.0, 0)
+   'render': () => { 
+      if (Player.Cuffed) { 
+         // DISABLE SPRINT, ATTACK, AIM, JUMP
+         mp.game.controls.disableControlAction(0, 24, true);
+         mp.game.controls.disableControlAction(0, 25, true);
+         mp.game.controls.disableControlAction(0, 21, true);
+         mp.game.controls.disableControlAction(0, 55, true);
+      }
    },
 
-   'client:interior:request.ipl': (ipl) => { 
-      mp.game.streaming.requestIpl(ipl);
-      // mp.game.invoke("0x41B4893843BBDB74", ipl);
-      player.freezePosition(true)
-      setTimeout(() => { player.freezePosition(false) }, 1500);
+   'client:player:cuff': (entity, toggle) => { 
+      Cuff(entity, toggle);
    }
 
 });
+
+
+function Cuff (entity, toggle) { 
+   if (toggle) { 
+      entity.setEnableHandcuffs(true);
+      entity.Cuffed = true;
+
+      entity.cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), entity.position, {
+         rotation: new mp.Vector3(0, 0, 0),
+         alpha: 255,
+         dimension: entity.dimension
+      });
+
+      entity.cuffs.notifyStreaming = true;
+      utils.WaitEntity(entity.cuffs).then(() => {
+         let bone = mp.players.local.getBoneIndex(6286);
+         entity.cuffs.attachTo(entity.handle, bone, -0.02, 0.06, 0.0, 75.0, 0.0, 76.0, true, true, false, false, 0, true);
+      })
+
+   }
+   else {
+      entity.setEnableHandcuffs(false);
+      entity.Cuffed = false;
+      if (entity.cuffs) { 
+         if (entity.cuffs.doesExist()) { 
+            entity.cuffs.destroy();
+         }
+      }
+   }
+}

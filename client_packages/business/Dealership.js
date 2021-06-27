@@ -3,30 +3,26 @@
 const Player = mp.players.local;
 let browser = null, opened = false, Vehicle = null, camera = null;
 
-const Positions = {
-   Vehicle: new mp.Vector3(-52.9625, -1112.5777, 25.7610),
-   Player: new mp.Vector3(-52.33451, -1116.6510, 26.4344),
-   Camera: new mp.Vector3(-60.6731, -1113.67553, 26.4358)
-
-}
+let Point = null;
 
 mp.events.add({
-   'client:vehicle.dealership': (vehicles) => { 
+   'client:business.dealership:menu': (info) => { 
       opened = !opened;
       if (opened) { 
-         browser = mp.browsers.new('package://vehicles/dealership-interface/dealership.html');
-         browser.execute('dealership.vehicles = ' + JSON.stringify(vehicles));
+         browser = mp.browsers.new('package://business/business-interfaces/dealership.html');
+         browser.execute('dealership.Business = ' + JSON.stringify(info));
          Player.BrowserControls(true, true);
-         Player.position = Positions.Player;
+
+         Point = new mp.Vector3(info.Point.x, info.Point.y, info.Point.z);
 
          camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
          camera.setActive(true);
-         camera.setCoord(Positions.Camera.x, Positions.Camera.y, Positions.Camera.z);
-         camera.pointAtCoord(Positions.Vehicle.x, Positions.Vehicle.y, Positions.Vehicle.z);
+         camera.setCoord(Point.x + 6, Point.y, Point.z);
+         camera.pointAtCoord(Point.x, Point.y, Point.z);
          mp.game.cam.renderScriptCams(true, false, 0, true, false);
          mp.events.add('render', MoveCamera);
 
-         Preview(vehicles[0].model);
+         Preview(info.Products[0].Model);
 
       } else { 
          if (browser) browser.destroy();
@@ -53,14 +49,14 @@ mp.events.add({
       }
 
       const dist = mp.game.gameplay.getDistanceBetweenCoords(Vehicle.position.x, Vehicle.position.y, Vehicle.position.z, x, y, z, false);
-      if (dist > 10.5 || dist < 0.5) return;
+      if (dist > 12.5 || dist < 0.8) return;
 
       camera.setPosition(x, y, z);
    },
 
-   'client:vehicle.dealership:preview': Preview,
+   'client:business.dealership:preview': Preview,
 
-   'client:vehicle.dealership:customization': (primary, secondary) => { 
+   'client:business.dealership:customization': (primary, secondary) => { 
       Vehicle.setColours(parseInt(primary), parseInt(secondary));
    },
 
@@ -71,10 +67,10 @@ async function Preview (model) {
       if (Vehicle.handle === 0) await mp.game.waitAsync(0);
       Vehicle.model = mp.game.joaat(model);
    } else { 
-      Vehicle = mp.vehicles.new(mp.game.joaat(model), Positions.Vehicle, { numberPlate: 'Dealership', alpha: 255, engine: false, heading: 90, dimension: Player.dimension });
+      Vehicle = mp.vehicles.new(mp.game.joaat(model), Point, { numberPlate: 'Dealership', alpha: 255, engine: false, heading: 90, dimension: Player.dimension });
       mp.gui.chat.push('handle' + JSON.stringify(Vehicle.handle))
    }
-}
+};
 
 
 let [PrevX, PrevY] = mp.gui.cursor.position;

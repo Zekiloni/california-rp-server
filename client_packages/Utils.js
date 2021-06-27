@@ -24,6 +24,17 @@ function LoadAnimDict (i) {
 };
 
 
+function WaitEntity (entity) {
+   return new Promise(resolve => {
+      let wait = setInterval(() => {
+         if (mp.game.entity.isAnEntity(entity.handle)) {
+            clearInterval(wait);
+            resolve();
+         }
+      }, 1);
+   });
+}
+
 function weaponString (weapon) {
 	if (typeof weapon !== 'undefined')
 		return '0x' + weapon.toString(16).toUpperCase()
@@ -131,12 +142,4 @@ function MoveCamera () {
    }
 }
 
-
-// Idle camera
-setInterval(() => {
-   mp.game.invoke('0x9E4CFFF989258472');
-   mp.game.invoke('0xF4F2C0D4EE209E20');
-}, 25000);
-
-
-global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, Server };
+global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server };

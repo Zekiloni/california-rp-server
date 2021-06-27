@@ -5,20 +5,9 @@ const { DataTypes } = require('sequelize');
 
 const { ItemRegistry } = require('../classes/Items.Registry');
 const BusinessTypes = require('../data/Businesses.json');
+const Vehicles = require('../data/Vehicles.json');
 
 
-
-
-const NightClub = BusinessTypes[8];
-
-let produkti = {};
-
-for (const i in NightClub.products) { 
-   const item = NightClub.products[i];
-   produkti[i] = { hash: ItemRegistry[i].hash, multiplier: item };
-}
-
-console.log(JSON.stringify(produkti))
 
 frp.Business = frp.Database.define('business', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -47,6 +36,8 @@ frp.Business = frp.Database.define('business', {
       },
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },
       IPL: { type: DataTypes.STRING, defaultValue: null },
+      Sprite: { type: DataTypes.INTEGER, defaultValue: null },
+      Color: { type: DataTypes.INTEGER, defaultValue: null },
       Workers: {
          type: DataTypes.TEXT, defaultValue: '[]',
          get: function () { return JSON.parse(this.getDataValue('Workers')); },
@@ -59,12 +50,8 @@ frp.Business = frp.Database.define('business', {
       },
       GameObject: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
-         get () { 
-            return frp.GameObjects.Businesses[this.getDataValue('id')];
-         },
-         set (x) { 
-            frp.GameObjects.Businesses[this.getDataValue('id')] = x;
-         }
+         get () { return frp.GameObjects.Businesses[this.getDataValue('id')]; },
+         set (x) { frp.GameObjects.Businesses[this.getDataValue('id')] = x; }
       }
    },
    {
@@ -110,6 +97,15 @@ frp.Business.Nearest = async function (player) {
 };
 
 
+frp.Business.NearestGasStation = async function (player) {
+   const GasStations = await frp.Business.findAll({ where: { Type: frp.Globals.Business.Types.GasStation } });
+   for (const Station of GasStations) { 
+      const Position = new mp.Vector3(Station.Position.x, Station.Position.y, Station.Position.z);
+      if (player.dist(Position) < 50) return Station;
+   }
+};
+
+
 frp.Business.afterCreate(async (Business, Options) => {
    Business.Refresh();
 });
@@ -128,12 +124,14 @@ frp.Business.prototype.Refresh = function () {
 
    const Info = BusinessTypes[this.Type];
 
+   const Sprite = this.Sprite ? this.Sprite : Info.blip;
+
    if (this.GameObject == null) { 
       const GameObjects = { 
          colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, 0),
-         blip: mp.blips.new(Info.blip, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
+         blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
          marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z -0.99), 2.5, {
-            color: [253, 201, 41, 185], 
+            color: frp.Globals.MarkerColors.Business, 
             rotation: new mp.Vector3(0, 0, 90), 
             visible: true, 
             dimension: this.Dimension
@@ -144,19 +142,30 @@ frp.Business.prototype.Refresh = function () {
       GameObjects.colshape.OnPlayerEnter = (player) => { 
          const Price = frp.Main.Dollars(this.Price);
          const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Biznis u vlasništvu';
-         const Locked = this.Locked ? 'Zaključan' : 'Otključan';
+         const Locked = this.Locked ? 'Zatvoren' : 'Otvoren';
 
          const white = frp.Globals.Colors.whitesmoke;
 
-         player.SendMessage('[Business] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + '.', frp.Globals.Colors.property);
+         player.SendMessage('[Business] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + ', No ' + this.id + '.', frp.Globals.Colors.property);
          player.SendMessage('[Business] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
          player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), frp.Globals.Colors.whitesmoke);
       };
 
-      if (Info.color) GameObjects.blip.color = Info.color;
+      if (this.Color) { 
+         GameObjects.blip.color = this.Color;
+      } else { 
+         if (Info.color) { 
+            GameObjects.blip.color = Info.color;
+         }
+      }
 
       this.GameObject = GameObjects;
-   } 
+   } else { 
+      if (this.GameObject.blip) { 
+         this.GameObject.blip.sprite = this.Sprite ? this.Sprite : Info.blip;
+         this.GameObject.blip.color = this.Color ? this.Color : Info.color;
+      }
+   }
 };
 
 
@@ -177,10 +186,14 @@ frp.Business.prototype.Menu = async function (player) {
 
    const Character = await frp.Characters.findOne({ where: { id: player.character } });
 
+   console.log('Tip je ' + this.Type);
    switch (this.Type) { 
-      case frp.Globals.Business.Types.VehicleDealership: {
-         player.call('client:business:menu', ['dealership', this]);
-         break;
+      case frp.Globals.Business.Types.Dealership: {
+         if (this.Vehicle_Point) { 
+            const Info = { Name: this.Name, id: this.id, Point: this.Vehicle_Point, Multiplier: BusinessTypes[this.Type].multiplier, Products: DealershipMenu(this.Products) }
+            player.call('client:business.dealership:menu', [Info]);
+            break;
+         }
       }
 
       case frp.Globals.Business.Types.Rent: { 
@@ -194,18 +207,16 @@ frp.Business.prototype.Menu = async function (player) {
       }
 
       case frp.Globals.Business.Types.Cafe: { 
-         player.call('client:business:menu', ['drinks', this]);
+         const Info = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
+         for (const i in this.Products) { Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies }; }
+
+         player.call('client:business.drinks:menu', [Info]);
          break;
       }
 
       case frp.Globals.Business.Types.NightClub: { 
-         const Info = {
-            Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} 
-         }
-         
-         for (const i in this.Products) {
-            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
-         }
+         const Info = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
+         for (const i in this.Products) { Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies }; }
 
          player.call('client:business.drinks:menu', [Info]);
          break;
@@ -308,8 +319,25 @@ frp.Business.prototype.WorkersRemove = async function (player) {
 };
 
 
+
+function DealershipMenu (products) { 
+   let Menu = [];
+   for (const i in products) { 
+      Menu.push({ 
+         Model: i, Name: 'Ime vozila', Multiplier: products[i].multiplier, Category: Vehicles[i].category,
+            Stats: { 
+               MaxSpeed: Vehicles[i].stats.max_speed ,
+               MaxOccupants: Vehicles[i].stats.max_occupants,
+               MaxBraking: Vehicles[i].stats.max_braking,
+               MaxAcceleration: Vehicles[i].stats.max_acceleration
+            }
+      })
+   }
+   return Menu;
+};
+
 (async () => {
-   await frp.Business.sync();
+   await frp.Business.sync({ force: true });
 
    const Businesses = await frp.Business.findAll();
    Businesses.forEach((Bussines) => {

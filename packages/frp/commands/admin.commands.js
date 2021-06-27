@@ -28,6 +28,16 @@ module.exports = {
       },
 
       {
+         name: 'coord',
+         admin: 2,
+         params: ['x', 'y', 'z'],
+         call:  (Player, args) => {
+            const [x, y, z] = args;
+            Player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z));
+         }
+      },
+
+      {
          name: 'a',
          admin: 1,
          params: ['tekst'],
@@ -342,6 +352,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'makeadmin',
          admin: 6,
@@ -354,6 +365,19 @@ module.exports = {
             }
          }
       },
+
+      {
+         name: 'skin',
+         admin: 4,
+         params: ['igrac', 'model'],
+         call: async (player, args) => {
+            const Target = mp.players.find(args[0]), Model = args[1];
+            if (Target) {
+               Target.model = mp.joaat(Model);
+            }
+         }
+      },
+
       {
          name: 'makeleader',
          admin: 5,

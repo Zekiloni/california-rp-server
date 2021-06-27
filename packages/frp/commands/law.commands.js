@@ -44,7 +44,7 @@ module.exports = {
       {
          name: 'cuff',
          desc: 'ZIP Lisice',
-         faction: { type: FactionTypes.Law },
+         faction: { type: frp.Factions.Types.Law },
          call: (player, args) => {
                let target = mp.players.find(args[0]);
                if (target) {
@@ -82,7 +82,7 @@ module.exports = {
       },
       {
          name: 'rb',
-         faction: { type: FactionTypes.Law },
+         faction: { type: frp.Factions.Types.Law },
          call: (player, args) => {
                let character = player.getCharacter(), i = args[0], roadblocks = [];
                // prop_tyre_spike_01

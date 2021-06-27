@@ -1,12 +1,12 @@
 const GLOBALS = {
-   Color: [3, 105, 163, 150],
+   Color: [253, 201, 41, 185],
 
    Colors: {
       white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'],
       low: ['BDBDBD', 'DEDEDE', 'A3A2A2', '909090', '909090'],
       purple: ['cf9ae1', 'b380c4', '9565a5', '7f508f', '673e74'],
       ooc: ['b0c4c3', '9cb2b1', '8da1a0', '819493', '778a89'],
-      faction: '5DD7B8',
+      faction: '59DC90',
       radio: 'FFFF99',
       pm: { from: 'FCBD00', to: 'FFD500' },
       grey: 'E8E8E8',
@@ -41,12 +41,11 @@ const GLOBALS = {
    Business: { 
       Types: { 
          Market: 0, GasStation: 1, Electronic: 2, 
-         Rent: 3, VehicleDealership: 4, Clothing: 5,
+         Rent: 3, Dealership: 4, Clothing: 5,
          Restaurant: 6, Cafe: 7, NightClub: 8, GunShop: 9,
          Furniture: 10, Pawn: 11, Tatto: 12
       }
    },
-
 
    Buy: {
       Options: { 
@@ -54,8 +53,16 @@ const GLOBALS = {
       }
    },
 
-   Factions: {
-      Police: 0
+   FAQ: { 
+      List: [
+         'Gde se mogu zaposliti ? Poslovi su označeni na mapi.', 
+         'Gde mogu podići / ostaviti pare u banku ? Svi bankomati na mapi i banke su funkcionalne.'
+      ]
+   },
+
+   MarkerColors: { 
+      Business: [253, 201, 41, 185],
+      Faction: [46, 204, 41, 113]
    },
    
    messages: {
@@ -63,12 +70,13 @@ const GLOBALS = {
       USER_NOT_FOUND: 'Korisnik nije pronadjen.',
       ITEM_DOESNT_EXIST: 'Taj predmet ne postoji.',
       COMMAND_USAGE: 'Komanda: ',
-      NOT_IN_VEHICLE: 'Ne nalazite se u vozilu.',
+      NOT_IN_VEHICLE: 'Niste se u vozilu.',
       NOT_IN_SPEC_FACTION: 'Niste član odredjene fakcije.',
       ALREADY_EMPLOYED: 'Već ste zaposleni.',
       UNEMPLOYED: 'Niste zaposleni.',
       QUITJOB: 'Dali ste otkaz.',
       NOT_ENOUGH_MONEY: 'Nemate dovoljno novca.',
+      NOT_ENOUGH_PRODUCTS: 'Nema dovoljno produkata.',
       NOT_ENOUGH_FOR_TRANSACTION: 'Nedovoljno novca za uspešnu transakciju.',
       ALREADY_OWNED: 'Neko već poseduje ovaj objekat.',
       ERROR: 'Došlo je do greške.',
@@ -83,10 +91,12 @@ const GLOBALS = {
       HOUSE_SOLD_SUCCSESSFULY: 'Uspešno ste prodali kuću',
       HOUSE_ITEM_LEFT: 'Uspešno ste ostavili predmet u svoju kuću',
       HOUSE_ITEM_TAKEN: 'Uzeli ste predmet iz svoje kuće',
-      CMD_DOESNT_EXIST: 'Komanda ne poostoji.',
+      CMD_DOESNT_EXIST: 'Komanda ne postoji.',
       WELCOME_ON_REGISTER: 'Dobrodošli na Focus Roleplay, uživajte u igri.',
       MAX_BUSSINES_TYPE: 'Maksimalni tip biznisa je',
       NO_FURNITURE_OWNED: `Nemate ništa od nameštaja`,
+      NOT_NEAR_GAS_PUMP: 'Ne nalazite se u blizini aparata za točenje goriva.',
+      NOT_NEAR_GAS_STATION: 'Ne nalazite se na benziskoj pumpi',
       LIVE_PHOTO_FROM_SERVER: 'Uzivo slika sa servera',
       ALREADY_IN_CHANNEL: 'Već ste u nekoj frekvenciji !',
       CHANNEL_SUCCESFULLY_CREATED: 'Uspešno ste kreirali frekvenciju.',

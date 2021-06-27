@@ -9,7 +9,8 @@ let CharacterCreator = require('./player/Creator');
 let Interface = require('./player/Interface');
 let PlayerCore = require('./player/Core');
 let PlayersOnline = require('./player/Onlines');
-let NameTags = require('./player/Nametags');
+let PlayerHelp = require('./player/Help');
+let Nametags = require('./player/Nametags');
 let Attachments = require('./player/Attachments');
 let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
@@ -21,14 +22,14 @@ require('./Slikanje');
 let AdminStuffs = require('./player/Admin');
 let AntiCheat = require('./Anticheat');
 
+// SYNCHRONIZATION & STREAMER
+let Streamer = require('./player/Streamer');
+let Damage = require('./player/Damage');
+
 // GAME CORE 
 let Chat = require('./chat/Chat');
 let CayoPerico = require('./cayo-perico/heistisland');
 //let ChatBubble = require('./player/ChatBubble');
-
-// SYNCHRONIZATION & STREAMER
-let Streamer = require('./player/Streamer');
-let Damage = require('./player/Damage');
 
 // VEHICLES
 let Vehicles = require('./vehicles/Vehicles')
@@ -53,7 +54,7 @@ let Clothing = require('./business/Clothing');
 let Gastations = require('./business/Fuel');
 let Drinks = require('./business/Drinks');
 let Rent = require('./business/Rent');
-let Dealeships = require('./vehicles/Dealerships');
+let Dealeship = require('./business/Dealership');
 
 // JOBS
 let Jobs = require('./jobs/Jobs');

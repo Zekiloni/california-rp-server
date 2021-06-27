@@ -125,17 +125,14 @@ frp.Appearances.prototype.Apply = function (player, gender) {
 
    player.eyeColor = parseInt(this.Eyes);
    
-   
-   player.setClothes(1, parseInt(this.Mask[0]), parseInt(this.Mask[1]), 2);
-   player.setClothes(2, parseInt(this.Beard[0]), parseInt(this.Beard[1]), 2);
-   player.setClothes(3, parseInt(this.Hair[0]), parseInt(this.Hair[1]), 2);
-   player.setClothes(4, parseInt(this.Legs[0]), parseInt(this.Legs[1]), 2);
-   player.setClothes(5, parseInt(this.Gloves[0]), parseInt(this.Gloves[1]), 2);
-   player.setClothes(7, parseInt(this.Shoes[0]), parseInt(this.Shoes[1]), 2);
-   player.setClothes(8, parseInt(this.Accessories[0]), parseInt(this.Accessories[1]), 2); // VIDETI OVO
-   player.setClothes(9, parseInt(this.Accessories[0]), parseInt(this.Accessories[1]), 2); // VIDETI OVO
-   player.setClothes(10, parseInt(this.Mask[0]), parseInt(this.Mask[1]), 2);
-   player.setClothes(11, parseInt(this.Auxiliary[0]), parseInt(this.Auxiliary[1]), 2);
+   if (this.Mask) player.setClothes(1, parseInt(this.Mask[0]), parseInt(this.Mask[1]), 2);
+   if (this.Beard) player.setClothes(2, parseInt(this.Beard[0]), parseInt(this.Beard[1]), 2);
+   if (this.Legs) player.setClothes(4, parseInt(this.Legs[0]), parseInt(this.Legs[1]), 2);
+   // if (this.Beard) player.setClothes(5, parseInt(this.Gloves[0]), parseInt(this.Gloves[1]), 2);
+   if (this.Shoes) player.setClothes(7, parseInt(this.Shoes[0]), parseInt(this.Shoes[1]), 2);
+   if (this.Undershirt) player.setClothes(8, parseInt(this.Undershirt[0]), parseInt(this.Undershirt[1]), 2); // VIDETI OVO
+   if (this.Accessories) player.setClothes(9, parseInt(this.Accessories[0]), parseInt(this.Accessories[1]), 2); // VIDETI OVO
+   if (this.Shirt) player.setClothes(11, parseInt(this.Shirt[0]), parseInt(this.Shirt[1]), 2);
 
 
    player.setHairColor(
