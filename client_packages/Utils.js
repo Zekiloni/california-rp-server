@@ -132,4 +132,11 @@ function MoveCamera () {
 }
 
 
+// Idle camera
+setInterval(() => {
+   mp.game.invoke('0x9E4CFFF989258472');
+   mp.game.invoke('0xF4F2C0D4EE209E20');
+}, 25000);
+
+
 global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, Server };
