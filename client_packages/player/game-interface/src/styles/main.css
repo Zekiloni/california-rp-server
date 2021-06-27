@@ -1,6 +1,6 @@
 
 body {
-   font-family: 'Roboto', sans-serif;
+   font-family: 'Akrobat', sans-serif;
    font-size: 13px;
    font-style: normal;
    line-height: 1.5;
@@ -28,7 +28,7 @@ body {
 .server h3 b {display: block;color: whitesmoke;}
 
 .player { display: flex; flex-direction: column; }
-.player h2.money { text-align: right; color: #69ba6c; font-size: 28px; font-weight: 900; margin: 5px 0; text-shadow: 0 2px 5px rgb(48 185 52 / 55%), 0 1px 2px rgb(0 0 0 / 60%); }
+.player h2.money {text-align: right;color: #69ba6c;font-size: 28px;font-weight: 900;margin: 5px 0;text-shadow: 0 2px 5px rgb(48 185 52 / 40%), 0 0px 2px rgb(0 0 0 / 20%);}
 
 .weapon { width: 125px; display: flex; }
 .weapon img { width: 150px; }
@@ -93,7 +93,7 @@ ul.notifications li h4 {margin: 0;display: flex;align-items: center;font-size: 1
 
 .seatbelt { width: 35px; animation: breathing 0.75s infinite; }
 
-* {text-shadow: 0px 1px 1px rgb(0 0 0 / 45%);}
+* {text-shadow: 0px 0px 1px rgb(0 0 0 / 30%);}
 * { user-select: none; }
 
 

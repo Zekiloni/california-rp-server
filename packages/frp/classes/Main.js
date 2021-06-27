@@ -113,6 +113,13 @@ module.exports = class Main {
       })
    }
 
+   static InfoColshape (position, name, info, radius, color, dimension = frp.Settings.default.dimension) { 
+      const Colshape = mp.colshapes.newRectangle(position.x, position.y, radius, 2.0, 0);
+      if (info) Colshape.OnPlayerEnter = (player) => { player.Notification(info, frp.Globals.Notification.Info, 5); };
+      const Marker = mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.985), radius, { color: color, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: dimension });
+      const Label = mp.labels.new(name, position, { los: true, font: 0, drawDistance: radius, dimension: dimension })
+   }
+
    static Range (start, end, step) {
       return (
          Array.from(

@@ -1,4 +1,5 @@
 
+
 global.frp = {};
 
 frp.Settings = require('./configs/Settings');
@@ -42,6 +43,7 @@ let Inventory = require('./classes/Inventory');
 let Vehicles = require('./classes/Vehicles');
 let Minute = require('./classes/Minute');
 let Business = require('./classes/Business');
+let Factions = require('./classes/Factions');
 let Weather = require('./classes/Weather');
 let Jobs = require('./classes/Jobs');
 const AntiCheat = require('./classes/Anticheat');
@@ -51,6 +53,11 @@ const AntiCheat = require('./classes/Anticheat');
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
 // let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta
 // Player.Nearest(); - vraca instancu najblizeg objekta
+
+// PERFORMANCE TEST
+// let Start = new Date();
+// let End = new Date();
+// console.log('Finished in ' + ((End - Start) / 1000));
 
 
 (async () => {
@@ -81,4 +88,5 @@ process.on('SIGHUP', Exit);
 process.on('SIGQUIT', Exit);
 process.on('SIGTERM', Exit);
 process.on('SIGINT', Exit);
+
 

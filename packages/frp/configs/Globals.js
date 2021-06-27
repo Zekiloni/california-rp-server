@@ -1,12 +1,12 @@
 const GLOBALS = {
-   Color: [3, 105, 163, 150],
+   Color: [253, 201, 41, 185],
 
    Colors: {
       white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'],
       low: ['BDBDBD', 'DEDEDE', 'A3A2A2', '909090', '909090'],
       purple: ['cf9ae1', 'b380c4', '9565a5', '7f508f', '673e74'],
       ooc: ['b0c4c3', '9cb2b1', '8da1a0', '819493', '778a89'],
-      faction: '5DD7B8',
+      faction: '59DC90',
       radio: 'FFFF99',
       pm: { from: 'FCBD00', to: 'FFD500' },
       grey: 'E8E8E8',
@@ -47,15 +47,10 @@ const GLOBALS = {
       }
    },
 
-
    Buy: {
       Options: { 
          Business: 'business', House: 'house'
       }
-   },
-
-   Factions: {
-      Police: 0
    },
 
    FAQ: { 
@@ -63,6 +58,11 @@ const GLOBALS = {
          'Gde se mogu zaposliti ? Poslovi su označeni na mapi.', 
          'Gde mogu podići / ostaviti pare u banku ? Svi bankomati na mapi i banke su funkcionalne.'
       ]
+   },
+
+   MarkerColors: { 
+      Business: [253, 201, 41, 185],
+      Faction: [46, 204, 41, 113]
    },
    
    messages: {

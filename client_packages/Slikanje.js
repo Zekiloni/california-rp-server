@@ -3,18 +3,19 @@
 const Player = mp.players.local;
 
 const Vehicles = [
-   "packer", "phantom", "hauler", "faggio2", "seminole",
-   "asea", "ingot", "bison", "burrito", "speedo4"
+"chimera","carbonrs","faggio2","youga","glendale","bf400","kalahari","trophytruck","coquette","boxville","elegy","speedo4","gburrito2","hexer","stafford","surano","cliffhanger","lynx","fusilade","khamelion","romero","fcr","lectro","comet5","bruiser","boxville5","drafter","surfer","cog552","ruston","speedo2","buffalo2","gargoyle","sovereign","alpha","sanchez","defiler","monster4","pariah","oppressor","intruder","burrito","cog55","rrocket","pony","sultan","sandking2","youga2","ninef","blista2","bobcatxl","specter2","verlierer2","sentinel3","hotring","superd","bfinjection","rumpo","technical2","marshall","caracara","hakuchou","bestiagts","technical3","warrener","paragon2","rumpo3","paradise","schafter4","sanctus","comet4","rancherxl","akuma","monster3","stratum","rapidgt","bison","streiter","enduro","dloader","washington","diablous2","thrust","issi7","ratbike","camper","specter","tropos","dune3","fugitive","gb200","schafter6","taco","daemon","futo","esskey","brutus3","menacer","oppressor2","insurgent2","carbonizzare","brutus","bagger","blazer","avarus","technical","rebel2","bruiser3","primo2","cognoscenti","comet3","feltzer2","stretch","insurgent3","asterope","surge","brutus2","premier","emperor","insurgent","neon","faggio","deathbike2","asea","seven70","gburrito","bruiser2","double","dune","neo","nightblade","blazer5","riata","raiden","manchez","schafter3","brawler","zr3803","stanier","ninef2","sanchez2","bodhi2","daemon2","deathbike3","kuruma","vindicator","caracara2","surfer2","jester","ingot","faggio3","blazer3","flashgt","schafter2","dubsta3","rebel","sandking","primo","minivan2","jester2","zr3802","furoregt","tampa2","comet2","banshee","zombiea","tailgater","locust","pcj","ruffian","bati2","schafter5","monster","dune4","speedo","omnis","fcr2","schwarzer","monster5","raptor","trophytruck2","nemesis","massacro2","wolfsbane","vortex","cognoscenti2","blista3","zombieb","elegy2","schlagen","paragon","blazer4","revolter","shotaro","penumbra","hellion","bifta","italigto","dune5","minivan","buffalo","rcbandito","hakuchou2","diablous","jester3","jugular","innovation","massacro","vader","kamacho","journey","limo2","bati","freecrawler","blazer2","deathbike","regina"
 ];
 
 let Current = 0;
 let Vehicle = null;
 
 const Positions = {
-   Vehicle: new mp.Vector3(-1735.195, 161.823, 64.4375),
-   Camera: new mp.Vector3(-1740.1019, 173.7072, 65.1874),
-   CameraLook: new mp.Vector3(-1735.195, 161.823, 64.4375)
+   Vehicle: new mp.Vector3(-1573.966796875, -365.6707763671875, 202.30532836914062),
+   Camera: new mp.Vector3(-1574.472412109375, -375.8471984863281, 203.66571044921875),
+   CameraLook: new mp.Vector3(-1573.966796875, -365.6707763671875, 202.30532836914062)
 }
+
+
 
 mp.events.add({
 
@@ -39,8 +40,10 @@ mp.events.add({
    },
    
    'CLIENT::VEHICLES:SCREENSHOT': async () => { 
-      Player.position = new mp.Vector3(Positions.Vehicle.x + 8, Positions.Vehicle.y + 4, Positions.Vehicle.z -1.4);
+      Player.position = new mp.Vector3(-1570.5236, -384.4845, 202.98943);
       mp.game.ui.displayRadar(false);
+      Player.freezePosition(true);
+
       mp.game.wait(100);
 
       mp.gui.chat.push('slikanje pokrenuto');
@@ -55,20 +58,20 @@ mp.events.add({
       do {
          if (Vehicle) { 
             Vehicle.model = mp.game.joaat(Vehicles[Current]);
+            Vehicle.setColours(132, 132);
             Vehicle.freezePosition(true);
-            Vehicle.setColours(71, 71);
+            Vehicle.numberPlateType = 1;
          } else { 
             Vehicle = mp.vehicles.new(mp.game.joaat(Vehicles[Current]), Positions.Vehicle, {
-               numberPlate: ' ',
+               numberPlate: 'focus', heading: 138,
             });
-            Vehicle.setHeading(80);
             Vehicle.freezePosition(true);
-            mp.game.wait(5);
-            Vehicle.setColours(71, 71);
+            mp.game.wait(30);
+            Vehicle.setColours(132, 132);
          }
-         mp.game.wait(100);
-         mp.gui.takeScreenshot(Vehicles[Current] + '.png', 1, 10, 0);
-         mp.game.wait(100);
+         mp.game.wait(50);
+         mp.gui.takeScreenshot(Vehicles[Current] + '.png', 1, 100, 0);
+         mp.game.wait(40);
          Current ++;
       } while (Current != Vehicles.length -1);
 
@@ -79,6 +82,7 @@ mp.events.add({
       Camera = null;
       Vehicle = null;
       Current = 0;
+      Player.freezePosition(false);
       mp.game.ui.displayRadar(true);
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
 

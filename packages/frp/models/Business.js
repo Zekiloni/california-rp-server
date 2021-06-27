@@ -131,7 +131,7 @@ frp.Business.prototype.Refresh = function () {
          colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, 0),
          blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
          marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z -0.99), 2.5, {
-            color: [253, 201, 41, 185], 
+            color: frp.Globals.MarkerColors.Business, 
             rotation: new mp.Vector3(0, 0, 90), 
             visible: true, 
             dimension: this.Dimension

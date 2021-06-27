@@ -29,7 +29,9 @@ mp.events.addCommand("alpr", (player, fullText) => {
     player.call('client:vehicle.alpr');
 });
 
-
+mp.objects.new('prop_hanger_door_1', new mp.Vector3(-1570.9510498, -379.50936, 200.633560), {
+   alpha: 255, dimension: 0
+});
 
 mp.events.addCommand("vozilaa", (player, fullText) => {
    player.call('CLIENT::VEHICLES:SCREENSHOT');
@@ -41,6 +43,17 @@ const Vozila = require('./data/Vehicles.json');
 let Dealer = [];
 const MAX = 25;
 let counter = 0;
+
+let stringo = []
+
+for (const i in Vozila) { 
+   const vozilo = Vozila[i];
+   if (vozilo.category == 'sports' || vozilo.category == 'off-road' || vozilo.category == 'motorcycles' || vozilo.category == 'vans' || vozilo.category == 'sedans') { 
+      stringo.push(i);
+   }
+}
+
+console.log(JSON.stringify(stringo))
 
 for (let i in Vozila) { 
    if (counter > MAX) break;
@@ -82,10 +95,12 @@ let auto = mp.vehicles.new(mp.joaat("turismor"), new mp.Vector3(-421.88, 1136.86
 mp.events.addCommand("cobject", (player, fullText, model) => {
     let position = new mp.Vector3(player.position.x, player.position.z + 10, player.position.y);
     try {
-        mp.objects.new(model, player.position, {
+        let object = mp.objects.new(model, player.position, {
             alpha: 255,
             dimension: player.dimension
         });
+
+        console.log(object.position)
     }
     catch (e) {
         console.log(e);

@@ -22,14 +22,14 @@ require('./Slikanje');
 let AdminStuffs = require('./player/Admin');
 let AntiCheat = require('./Anticheat');
 
+// SYNCHRONIZATION & STREAMER
+let Streamer = require('./player/Streamer');
+let Damage = require('./player/Damage');
+
 // GAME CORE 
 let Chat = require('./chat/Chat');
 let CayoPerico = require('./cayo-perico/heistisland');
 //let ChatBubble = require('./player/ChatBubble');
-
-// SYNCHRONIZATION & STREAMER
-let Streamer = require('./player/Streamer');
-let Damage = require('./player/Damage');
 
 // VEHICLES
 let Vehicles = require('./vehicles/Vehicles')

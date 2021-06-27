@@ -3,29 +3,75 @@ const FactionTypes = {
 };
 
 
-frp.Factions = { 
-   1: { 
-      id: 1, name: 'Los Santos Police Department', motd: 'To protect & Serve', type: FactionTypes.Law, sprite: 60,
-      label: new mp.Vector3(434.080, -981.913, 30.709), blip: new mp.Vector3(433.91, -981.98, 0),
-      garage: new mp.Vector3(455.410, -1017.446, 27.615), equip: new mp.Vector3(452.970, -992.095, 30.689),
-      armory: new mp.Vector3(452.093, -980.220, 30.689), vehicle: new mp.Vector3(439.023, -1019.7479, 28.729),   
+frp.Factions = class Factions {
+
+   static Types = {
+      Law: 0, Ems: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Cartel: 7, Party: 8
+   };
+   
+   static List = { 
+      1: { 
+         Name: 'Los Santos Police Department', Description: 'To protect & Serve', Type: this.Types.Law, Sprite: 60, Color: 3,
+         Position: new mp.Vector3(-1099.8215, -841.9021, 19.0015), Equipment: new mp.Vector3(-1094.0113, -825.75311, 26.8274),
+         Govrepair: new mp.Vector3(-1077.8933, -846.7360, 4.8840), Garage: new mp.Vector3(-1117.0683593, -846.19830, 13.3847),
+         Armory: new mp.Vector3(-1095.3900, -832.8939, 14.28303)
+      }
    }
-};
-
-// frp.Factions.prototype.invite = function (player, target) { 
-//    console.log(player, target)
-// };
-
-
-
-class Factions {
 
    static Init () { 
-      
-   }
-}
+      for (const i in this.List) { 
+         const Faction = this.List[i];
 
-module.exports = { Factions, FactionTypes };
+         if (Faction.Sprite && Faction.Color) { 
+            mp.blips.new(Faction.Sprite, Faction.Position, { dimension: frp.Settings.default.dimension, shortRange: true, color: Faction.Color });
+         }
+
+         if (Faction.Type == this.Types.Law) { 
+            frp.Main.InfoColshape(Faction.Position, Faction.Name, null, 1.85, frp.Globals.MarkerColors.Faction);
+            frp.Main.InfoColshape(Faction.Equipment, Faction.Name + ' Cloakroom', 'Korišćenje: /cloakroom', 1.8, frp.Globals.MarkerColors.Faction);
+            frp.Main.InfoColshape(Faction.Armory, Faction.Name + ' Armory', 'Korišćenje: /equipment', 1.8, frp.Globals.MarkerColors.Faction);
+            frp.Main.InfoColshape(Faction.Govrepair, Faction.Name + ' Mehanical', 'Korišćenje: /govrepair', 3, frp.Globals.MarkerColors.Faction);
+            frp.Main.InfoColshape(Faction.Garage, Faction.Name + ' Garage', 'Korišćenje: /garage', 2, frp.Globals.MarkerColors.Faction);
+         }
+      }
+   };
+
+
+   async static Chat (player, message) { 
+      if (!message.trim()) return;
+      const Character = await player.Character();
+      
+      mp.players.forEach(async (target) => { 
+         if (target.data.logged && target.data.spawned) { 
+            const TargetCharacter = await target.Character();
+            if (TargetCharacter.Faction == Character.Faction) { 
+               target.SendMessage('(( ' + Character.Faction_Rank + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.faction);
+            }
+         }
+      });
+   }
+   
+};
+
+
+(async () => { 
+
+   frp.Factions.Init();
+
+})();
+
+
+
+
+
+
+
+
+
+
+
+frp.Factions.prototype.Classing = function () { };
+
 
 // class Factions { 
 //    constructor () { 

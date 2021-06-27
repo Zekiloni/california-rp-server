@@ -56,8 +56,10 @@ mp.events.addDataHandler({
    }
 });
 
+
+
+
 mp.events.add({
-   
    'client:player:freeze': (toggle) => {
       Player.freezePosition(toggle);
    },

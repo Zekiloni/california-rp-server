@@ -24,6 +24,17 @@ function LoadAnimDict (i) {
 };
 
 
+function WaitEntity (entity) {
+   return new Promise(resolve => {
+      let wait = setInterval(() => {
+         if (mp.game.entity.isAnEntity(entity.handle)) {
+            clearInterval(wait);
+            resolve();
+         }
+      }, 1);
+   });
+}
+
 function weaponString (weapon) {
 	if (typeof weapon !== 'undefined')
 		return '0x' + weapon.toString(16).toUpperCase()
@@ -132,4 +143,4 @@ function MoveCamera () {
 }
 
 
-global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, Server };
+global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server };
