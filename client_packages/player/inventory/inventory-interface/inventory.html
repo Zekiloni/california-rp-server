@@ -19,6 +19,18 @@
 
          <div class="main" v-bind:style="{ opacity: give.modal ? '0.2' : '1.0' }">
 
+            <div class="clothing">
+               <div class="header">
+                  <h2> <i class="fas fa-tshirt" aria-hidden="true"> </i> Odeća </h2>
+               </div>
+
+               <ul class="clothes">
+                  <li class="cloth" v-for="(item, i) in ClothingParts" v-on:click=""> 
+                     <img :src="'src/images/items/' + ClothingIcons[i] + '.png'"/>
+                  </li>
+               </ul>
+            </div>
+
             <div class="inventory">
                <div class="header">
                   <h2> <i class="fa fa-list-alt" aria-hidden="true"> </i> Inventar </h2>
@@ -48,10 +60,6 @@
                      </div>
                   </div>
                </div>
-            </div>
-
-            <div class="clothing">
-
             </div>
          </div>
 
@@ -105,10 +113,12 @@
                      // TODO
                   ],
             
-                  clothing: [1, 11, 8, 4, 6],
                },
 
-               entity: { Player: 0, Wheel: 3 },
+               ClothingParts: ['Hat', 'Glasses', 'Mask', 'Tops', 'Undershirt', 'Armour', 'Pants', 'Shoes'],
+               ClothingIcons: ['prop_ld_hat_01', 'xm_prop_x17_b_glasses_01', 'prop_michael_balaclava', 'prop_ld_shirt_01', 'prop_cs_tshirt_ball_01', 'prop_bodyarmour_03', 'prop_ld_jeans_01', 'v_ret_ps_shoe_01'],
+
+               entity: { Player: 0, Wheel: 3, Equiped: 5 },
 
                give: { 
                   modal: false,
@@ -131,8 +141,7 @@
                   hover: new Audio('src/sounds/hover.mp3')
                },
 
-               wheelMaximum: [0, 1, 2, 3],
-               clothingNames: ['hat', 'shirt', 'undershirt', 'bottoms', 'shoes']
+               wheelMaximum: [0, 1, 2, 3]
             },
 
             methods: { 
@@ -152,6 +161,18 @@
                   let list = [];
                   for (let item of this.player.items) { 
                      if (item.entity == this.entity.Wheel) list.push(item) 
+                  }
+                  return list;
+               },
+
+               Unequip: function () {
+
+               },
+
+               Clothings: function () { 
+                  let list = [];
+                  for (let item of this.player.items) { 
+                     if (item.entity == this.entity.Equiped) list.push(item) 
                   }
                   return list;
                },

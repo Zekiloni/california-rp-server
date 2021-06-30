@@ -1,6 +1,6 @@
 
 body {
-   font-family: 'Roboto', sans-serif;
+   font-family: 'Akrobat', sans-serif;
    font-size: 13px;
    font-style: normal;
    line-height: 1.5;
@@ -13,7 +13,7 @@ body {
    overflow: hidden;
    box-sizing: border-box;
    display: grid;
-   background: linear-gradient(179deg, rgb(0 0 0 / 85%), rgb(35 35 35 / 35%));
+   background: linear-gradient(179deg, rgb(12 12 12 / 49%), rgb(35 35 35 / 35%));
 }
 
 #inventory {
@@ -32,7 +32,7 @@ body {
    min-width: 750px;
    width: auto;
    padding: 15px 10px;
-   background: linear-gradient(179deg, rgb(25 25 25 / 75%), rgb(0 0 0 / 0%));
+   background: radial-gradient(#19171f63, transparent);
    box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
    display: flex;
    justify-content: space-around;
@@ -59,16 +59,12 @@ i.fa, i.fas {
 .close:hover { opacity: 0.2; }
 
 
-.clothing {
-   width: 275px;
-   height: 475px;
-   background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
-   padding: 10px 0;
-   margin: 0 5px;
-   border: 1px solid rgb(60 60 60 / 10%);
-   box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
-}
+.clothing { width: 275px; height: 475px; background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%)); padding: 10px 0; margin: 0 5px; border: 1px solid rgb(60 60 60 / 10%); box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px; }
+ul.clothes { padding: 0; list-style: none; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; width: 70%; height: 80%; margin: 0 auto; }
+ul.clothes li.cloth { display: flex; justify-content: center; align-items:center; width: 60px; height: 60px; border: 1px solid rgb(121 121 121 / 13%); transition: all 0.25s ease; box-shadow: 0 3px 7px rgb(12 12 12 / 10%); background: rgb(21 21 21 / 45%); margin: 15px; }
+ul.clothes li.cloth:hover { border-color: #fbc60c; }
 
+li.cloth img { width: 45px; height: 45px; }
 
 .inventory {
    width: 425px;
@@ -126,7 +122,7 @@ ul.options h4 { text-align: center; font-style: italic; color: #e2e2e2; letter-s
 .header h4 { font-size: 1.4em; color: #a2a2a2; }
 .header h4 b { font-size: 12px; color: rgb(83, 83, 83); }
 .header img.icon { margin-right: 10px; position: relative; width: 27.5px; -webkit-filter: drop-shadow(0 1px 20px rgb(250 184 10 / 45%)); filter: drop-shadow(0 1px 20px rgb(250 184 10 / 45%)); }
-.header h2 i.fa { margin-right: 10px; }
+.header h2 i.fa, .header h2 i.fas { margin-right: 10px; }
 
 * { user-select: none; }
 
@@ -159,9 +155,10 @@ input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
    100% { transform: translateX(0); }
 }
 
+
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: rgb(0 0 0 / 26%); }
-::-webkit-scrollbar-thumb { background: #fbc60c; border-radius: 50px; box-shadow: 0 3px 25px rgb(250 184 10 / 45%); }
+::-webkit-scrollbar-track { background: rgb(0 0 0 / 30%); }
+::-webkit-scrollbar-thumb { background: #6845ea; box-shadow: 0 3px 25px rgb(104 69 234 / 40%); }
 
 .bounce-enter-active { animation: bounce-in .15s; }
 .bounce-leave-active { animation: bounce-in .15s reverse; }

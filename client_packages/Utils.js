@@ -142,4 +142,14 @@ function MoveCamera () {
    }
 }
 
+
+function CreateInteractionSport (name, position) { 
+   const checkpoint = mp.checkpoints.new(47, position, 3.5, { color: [196, 12, 28, 175], visible: true, dimension: Player.dimension });
+   const blip = mp.blips.new(1, new mp.Vector3(position.x, position.y, 0), { name: name, color: 1, shortRange: false });
+   return { checkpoint: checkpoint, blip: blip };
+};
+
+Player.CreateInteractionSport = CreateInteractionSport;
+
+
 global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server };
