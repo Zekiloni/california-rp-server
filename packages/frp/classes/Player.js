@@ -92,6 +92,11 @@ mp.events.add({
       if (player.data.logged && player.data.spawned) {
          player.ProximityMessage(7, player.name + ' kaze: ' + text, frp.Globals.Colors.white);
       }
+   },
+   'server:player.attachment': (player, data) => {
+      if (player.data.logged && player.data.spawned) {
+         player.setVariable('Attachment', data);
+      }
    }
 });
 

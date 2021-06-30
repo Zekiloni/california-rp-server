@@ -2,9 +2,8 @@
 
 const Player = mp.players.local;
 
-const Max = 25;
-let Picked = false;
-let Visited = [];
+const Max = 25, TrashAttachment = { Model: 628215202, Bone: 6286, Offset: { X: 0, Y: 0, Z: 0, rX: 0, rY: 0, rZ: 0} };
+let Picked = false, Truck = undefined, Visited = [];
 
 const InteractionObjects = [
    mp.game.joaat("prop_rub_binbag_sd_01"),
@@ -66,22 +65,45 @@ mp.keys.bind(0x59, false, function() {
    if (player.logged && player.spawned) { 
       if (player.vehicle || player.cuffed || mp.players.local.isTypingInTextChat) return;
       
-      let position = player.position;
-      for (let i in InteractionObjects) {
-         let model = InteractionObjects[i];
-         let object = mp.game.object.getClosestObjectOfType(position.x, position.y, position.z, 1, model, false, true, true);
-         if (object && model) {
-            mp.gui.chat.push('Trash Found');
-            Pickup(model)
-            break;
+      if (!Picked) {
+         if (Visited.length < Max) {
+            let position = player.position;
+            for (let i in InteractionObjects) {
+               let model = InteractionObjects[i];
+               let object = mp.game.object.getClosestObjectOfType(position.x, position.y, position.z, 1, model, false, true, true);
+               if (object && model) {
+                  // Uzima smece sa poda animacija
+                  // dict: pickup_object , pickup_low, 
+                  mp.gui.chat.push('Trash Found. Total: ' + Visited.length);
+                  Interact ();
+                  Visited.push(object);
+                  break;
+               }
+               else return;
+            }
          }
-         else return;
+         else {
+            // Deponija
+         }
+      } else {
+         const Truck = player.getVariable('Job_Veh');
+         if (Truck) {
+            const PosBehind = Truck.getOffsetFromInWorldCoords(0.0, -3.8, 0.0);
+            if (Utils.Distance(player.position, PosBehind) <= 0.5) {
+               player.heading = Truck.heading;
+               // Baca smece u kamion animacija
+               // anim@heists@narcotics@trash throw_ranged_a_bin_bag
+            }
+         }
       }
    }
 });
 
-function Pickup (model) { 
-   mp.gui.chat.push('Picked up ' + JSON.stringify(model));
+function Interact () {
+   Picked = !Picked;
+   Picked ? mp.events.callRemote('server:player.attachment', TrashAttachment) : mp.events.callRemote('server:player.attachment', false);
 }
+
+
 
 

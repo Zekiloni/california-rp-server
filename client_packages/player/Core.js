@@ -53,6 +53,12 @@ mp.events.addDataHandler({
          Player.Bubble = newValue;
          mp.gui.chat.push(JSON.stringify(Player.Bubble));
       }
+   },
+
+   'Attachment': (entity, newValue, oldValue) => {
+      if (entity && entity.type == 'player') {
+         entity.Attachment(entity, newValue);
+      }
    }
 });
 

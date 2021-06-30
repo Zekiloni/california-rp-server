@@ -92,6 +92,11 @@ frp.Characters.prototype.Spawn = async function (player) {
 
    player.setVariable('Job', this.Job);
 
+   // Temp
+   player.setVariable('Job_Vehicle', null);
+   player.setVariable('Attachment', null);
+
+
 
    player.data.Wounded = this.Wounded;
    if (this.Wounded) { 
