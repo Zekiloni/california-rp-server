@@ -142,5 +142,4 @@ function MoveCamera () {
    }
 }
 
-
 global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server };

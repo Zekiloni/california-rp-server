@@ -223,6 +223,7 @@ mp.events.add('playerDeath', (player) =>
 		if(rouletteCamera != null) destroyRouletteCamera();
 		if(canDoBets) canDoBets = false;
 	}
+	
 });
 
 mp.events.add("initRoulette", () => 

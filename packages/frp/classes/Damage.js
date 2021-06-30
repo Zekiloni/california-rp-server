@@ -21,7 +21,7 @@ mp.characters[player.character].corpse = mp.peds.new(mp.game.joaat('mp_m_freemod
 class Deathmode { 
    static async CreateCorpse (player) {
       const Character = await frp.Characters.findOne({ where: { id: player.character } });
-      
+      // player.call
    }
 
    constructor () { 

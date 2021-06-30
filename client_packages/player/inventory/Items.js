@@ -60,7 +60,6 @@ mp.keys.bind(0x49, false, function() {
       if (mp.players.local.isTypingInTextChat) return;
       mp.events.call('client:inventory.toggle');
       ClonePedToScreen();
-      mp.game.waitAsync(50);
       mp.events.call('client:inventory.toggle');
       mp.events.call('client:inventory.toggle');
    }
