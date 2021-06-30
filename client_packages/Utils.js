@@ -24,6 +24,35 @@ function LoadAnimDict (i) {
 };
 
 
+
+function Attachment (entity, value) { 
+   if (value) { 
+      const Position = new mp.Vector3(entity.position.x, entity.position.y, entity.position.z);
+      const Rotation = new mp.Vector3(entity.rotation.x, entity.rotation.y, entity.rotation.z);
+
+      entity.Attachment = mp.objects.new(mp.game.joaat(value.name), Position, {
+         rotation: Rotation,
+         alpha: 255,
+         dimension: entity.dimension
+      });
+
+      entity.Attachment.notifyStreaming = true;
+      utils.WaitEntity(entity.Attachment).then(() => {
+         const Bone = entity.getBoneIndex(entity.Bone);
+         entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, true);
+      })
+
+   }
+   else {
+      if (entity.Attachment) { 
+         if (entity.Attachment.doesExist()) { 
+            entity.Attachment.destroy();
+         }
+      }
+   }
+}
+
+
 function WaitEntity (entity) {
    return new Promise(resolve => {
       let wait = setInterval(() => {
@@ -43,8 +72,8 @@ function weaponString (weapon) {
 }
 
 
-function Distance (first, next) {
-   return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();
+function Distance (first, second) {
+   return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(second.x, second.y, second.z)).length();
 }
 
 
@@ -142,4 +171,46 @@ function MoveCamera () {
    }
 }
 
-global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server };
+const Interactions = [];
+function CreateInteractionSpot (position, checkpointData, blipData) {
+   const Interaction = null;
+   Interaction.Checkpoint = mp.checkpoints.new(checkpointData.Type, position, checkpointData.Radius,
+   {
+       color: [ 255, 255, 255, 255 ], // Boja
+       visible: true,
+       dimension: player.dimension
+   });
+   Interaction.Blip = mp.blips.new(blipData.Type, new mp.Vector3(position.x, position.y, 0), { name: blipData.Name, color: blipData.Color, shortRange: false });
+   Interactions.push(Interaction);
+}
+
+
+/*'client:createjobWaypoint': (x, y) => { 
+        mp.game.ui.setNewWaypoint(x, y);
+   },
+
+   'client:createJobMarker': (type = 1, position, radius = 10, color, dimension = 0) => { 
+       let pos = position;
+        mp.checkpoints.new(type, new mp.Vector3(pos.x, pos.y, pos.z - 1.5), radius,
+        {
+            color: [ color.r, color.g, color.b, color.a ],
+            visible: true,
+            dimension: dimension
+        });
+   },
+
+    'client:destroyJobMarker': (marker) => { marker.destroy(); },
+
+    'client:createJobBlip': (sprite = 1, position, name = 'A321', color = 36, alpha = 255, shortRange, rotation = 0, dimension = 0) => { 
+        let jobBlip = mp.blips.new(sprite, new mp.Vector3(position.x, position.y, 0),
+        {
+            name: name,
+            color: color,
+            alpha, alpha,
+            shortRange: shortRange,
+            rotation: rotation,
+            dimension: dimension,
+        });
+    }, */
+
+global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server, Attachment };
