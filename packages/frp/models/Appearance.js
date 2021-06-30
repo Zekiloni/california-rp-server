@@ -4,71 +4,7 @@ const { DataTypes } = require('sequelize');
 
 frp.Appearances = frp.Database.define('appearance', {
       Character: { type: DataTypes.INTEGER, unique: true },
-      Torso: { type: DataTypes.INTEGER, defaultValue: 0 },
       Eyes: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Mask: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Mask')); },
-         set: function (value) { this.setDataValue('Mask', JSON.stringify(value)); } 
-      },
-      Shirt: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Shirt')); },
-         set: function (value) { this.setDataValue('Shirt', JSON.stringify(value)); } 
-      },
-      Undershirt: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Undershirt')); },
-         set: function (value) { this.setDataValue('Undershirt', JSON.stringify(value)); } 
-      },
-      Legs: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Legs')); },
-         set: function (value) { this.setDataValue('Legs', JSON.stringify(value)); } 
-      },
-      Shoes: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Shoes')); },
-         set: function (value) { this.setDataValue('Shoes', JSON.stringify(value)); } 
-      },
-      Bag: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Bag')); },
-         set: function (value) { this.setDataValue('Bag', JSON.stringify(value)); } 
-      },
-      Armour: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Armour')); },
-         set: function (value) { this.setDataValue('Armour', JSON.stringify(value)); } 
-      },
-      Accessories: {
-          type: DataTypes.TEXT, defaultValue: null,
-          get: function () { return JSON.parse(this.getDataValue('Accessories')); },
-          set: function (value) { this.setDataValue('Accessories', JSON.stringify(value)); }
-      },
-      Hat: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Hat')); },
-         set: function (value) { this.setDataValue('Hat', JSON.stringify(value)); }
-      },
-      Glasses: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Glasses')); },
-         set: function (value) { this.setDataValue('Glasses', JSON.stringify(value)); }
-      },
-      Ears: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Ears')); },
-         set: function (value) { this.setDataValue('Ears', JSON.stringify(value)); }
-      },
-      Watch: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Watch')); },
-         set: function (value) { this.setDataValue('Watch', JSON.stringify(value)); }
-      },
-      Bracelet: { 
-         type: DataTypes.TEXT, defaultValue: null 
-      },
       Face_Features: { 
          type: DataTypes.TEXT, defaultValue: null, 
          get: function () { return JSON.parse(this.getDataValue('Face_Features')); },
@@ -124,15 +60,6 @@ frp.Appearances.prototype.Apply = function (player, gender) {
    );
 
    player.eyeColor = parseInt(this.Eyes);
-   
-   if (this.Mask) player.setClothes(1, parseInt(this.Mask[0]), parseInt(this.Mask[1]), 2);
-   if (this.Beard) player.setClothes(2, parseInt(this.Beard[0]), parseInt(this.Beard[1]), 2);
-   if (this.Legs) player.setClothes(4, parseInt(this.Legs[0]), parseInt(this.Legs[1]), 2);
-   // if (this.Beard) player.setClothes(5, parseInt(this.Gloves[0]), parseInt(this.Gloves[1]), 2);
-   if (this.Shoes) player.setClothes(7, parseInt(this.Shoes[0]), parseInt(this.Shoes[1]), 2);
-   if (this.Undershirt) player.setClothes(8, parseInt(this.Undershirt[0]), parseInt(this.Undershirt[1]), 2); // VIDETI OVO
-   if (this.Accessories) player.setClothes(9, parseInt(this.Accessories[0]), parseInt(this.Accessories[1]), 2); // VIDETI OVO
-   if (this.Shirt) player.setClothes(11, parseInt(this.Shirt[0]), parseInt(this.Shirt[1]), 2);
 
 
    player.setHairColor(
@@ -143,13 +70,12 @@ frp.Appearances.prototype.Apply = function (player, gender) {
       player.setFaceFeature(i, parseFloat(this.Face_Features[i]));
    }
    
+   // uraditi apply odece
 
 };
 
 (async () => {
-   frp.Appearances.sync();
+   frp.Appearances.sync({ force: true });
 })();
-
-
 
 

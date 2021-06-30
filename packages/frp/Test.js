@@ -2,18 +2,19 @@
 
 
 mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 = "0,0,0") => {
-    let c1 = color.split(','), c2 = color2.split(',');
-    var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
-    veh.setMod(38, 3);
-    veh.setColorRGB(parseInt(c1[0]), parseInt(c1[1]), parseInt(c1[2]), parseInt(c2[0]), parseInt(c2[1]), parseInt(c2[2]));
-    veh.alpha = 255;
-    veh.dimension = player.dimension;
-    veh.numberPlateType = 1;
-    veh.numberPlate = 'focus rp beta';
-    veh.engine = false;
-    player.putIntoVehicle(veh, 0);
-    veh.data.Mileage = 0.0;
-    veh.data.Fuel = 100;
+   if (player.vehicle) return;
+   let c1 = color.split(','), c2 = color2.split(',');
+   var veh = mp.vehicles.new(mp.joaat(hash), player.position, {});
+   veh.setMod(38, 3);
+   veh.setColorRGB(parseInt(c1[0]), parseInt(c1[1]), parseInt(c1[2]), parseInt(c2[0]), parseInt(c2[1]), parseInt(c2[2]));
+   veh.alpha = 255;
+   veh.dimension = player.dimension;
+   veh.numberPlateType = 1;
+   veh.numberPlate = 'focus rp beta';
+   veh.engine = false;
+   player.putIntoVehicle(veh, 0);
+   veh.data.Mileage = 0.0;
+   veh.data.Fuel = 100;
 });
 
 mp.events.addCommand("clot", (player, full, comp, draw, text, pal) => {

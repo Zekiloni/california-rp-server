@@ -17,7 +17,7 @@ mp.events.add({
    'client:player.character.creator:show': async () => { 
       opened = !opened;
       if (opened) { 
-         browser = mp.browsers.new('package://player/start-interfaces/creator.html');
+         browser = mp.browsers.new('package://player/game-interface/creator.html');
          Player.position = Creator.Position;
          Player.setHeading(Creator.Heading);
          Player.BrowserControls(true, true);
@@ -93,6 +93,10 @@ mp.events.add({
    'client:player.character.creator:blend': (x) => { 
       x = JSON.parse(x);
       Player.setHeadBlendData(parseInt(x[0]), parseInt(x[1]), 0, parseInt(x[2]), parseInt(x[3]), 0, parseFloat(x[4]), parseFloat(x[5]), 0, true);
+   },
+
+   'client:player.character.creator:clothing': (i, d) => { 
+      Player.setComponentVariation(i, d, 0, 2);
    }
 })
 

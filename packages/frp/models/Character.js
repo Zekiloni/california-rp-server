@@ -1,4 +1,5 @@
 const { DataTypes, BOOLEAN } = require('sequelize');
+const { ItemEntities } = require('../classes/Items.Registry');
 
 let Appearance = require('./Appearance');
 
@@ -88,7 +89,9 @@ frp.Characters.prototype.Spawn = async function (player) {
    // setting money & health
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
-   
+
+   player.setVariable('Job', this.Job);
+
 
    player.data.Wounded = this.Wounded;
    if (this.Wounded) { 
@@ -343,7 +346,8 @@ frp.Characters.prototype.Buy = async function (player, Nearest, action) {
 
 frp.Characters.prototype.SetJob = function (player, value) {
    this.Job = value;
-   player.setVariable('Job', this.Job);
+   player.setVariable('Job', value);
+   await this.save();
 };
 
 
@@ -377,6 +381,12 @@ frp.Characters.prototype.Appearance = async function () {
    return appearance ? appearance : null;
 };
 
+frp.Characters.afterCreate(async (Character, Options) => {
+   const Appearance = await frp.Appearances.findOne({ where: { Character: Character.id }});
+   if (Appearance) { 
+      Appearance.destroy();
+   }
+});
 
 frp.Characters.New = async function (player, Character) { 
    // const Bank = await frp.Bank.New(player);
@@ -390,12 +400,16 @@ frp.Characters.New = async function (player, Character) {
    });
 
    const Appearance = await frp.Appearances.create({
-      Character: Created.id, Shirt: Character.Clothing[0], Undershirt: Character.Clothing[1], Legs: Character.Clothing[2], Shoes: Character.Clothing[3],
-      Torso: Character.Torso, Blend_Data: Character.Blend, Overlays: Character.Overlays, Overlays_Colors: Character.Overlays_Colors, Hair: Character.Hair, 
-      Beard: Character.Beard, Eyes: Character.Eyes, Face_Features: Character.Face
+      Character: Created.id, Blend_Data: Character.Blend, Overlays: Character.Overlays, 
+      Overlays_Colors: Character.Overlays_Colors, Hair: Character.Hair, Beard: Character.Beard, 
+      Eyes: Character.Eyes, Face_Features: Character.Face
    });
 
-   console.log(Appearance)
+   Character.Clothing.forEach(async (Clothing) => { 
+      const [item, value] = Clothing;
+      const Cloth = await frp.Items.New(item, 1, ItemEntities.Equiped, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
+      Cloth.Equip(player);
+   })
 
    if (Created) return Created;
 

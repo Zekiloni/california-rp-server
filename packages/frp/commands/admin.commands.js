@@ -384,10 +384,7 @@ module.exports = {
          call: (player, args) => {
             let target = mp.players.find(args[0]);
             if (target) {
-               if (mp.factions[args[1]]) {
-                  mp.faction.leader(target, args[1]);
-                  player.notification('Uspešno ste postavili lidera fakcije igraču ' + target.name, NOTIFY_SUCCESS, 4);
-               }
+               
             }
          }
       },

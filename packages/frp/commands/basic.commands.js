@@ -1,3 +1,6 @@
+
+const Animations = require('../data/Animations');
+
 module.exports = {
    commands: [
       {
@@ -34,12 +37,36 @@ module.exports = {
       },
 
       {
+         name: 'animacjia',
+         desc: 'Povez preko ociju',
+         call: (player, args) => {
+            const [name, flag] = args;
+            if (Animations[name]) { 
+               const Animation = Animations[name];
+               player.playAnimation(Animation[0], Animation[1], 1, flag)
+            } else { 
+               player.Notification(frp.Globals.messages.ANIM_DOESNT_EXIST, frp.Globals.Notification.Error, 5);
+            }
+         }
+      },
+
+      {
          name: 'report',
          desc: 'Slanje pitanja administraciji',
          params: ['sadrzaj'],
          call: (player, args) => {
             const Message = args.splice(0).join(' ');
             frp.Admin.Report.Add(player, Message);
+         }
+      },
+
+      {
+         name: 'fontsize',
+         desc: 'Veličina',
+         params: ['velicina'],
+         call: (player, args) => {
+            const [size] = args;
+            player.call('chat:size', [size]);
          }
       },
 

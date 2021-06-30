@@ -227,12 +227,7 @@ frp.Business.prototype.Menu = async function (player) {
             Business: {
                Name: this.Name,
                id: this.id,
-               Multiplier: BusinessTypes[this.Type].multiplier,
-               Supplies: this.Products,
-            },
-            Player: {
-               Appearance: Character.Appearance(),
-               Money: Character.Money
+               Multiplier: BusinessTypes[this.Type].multiplier
             }
          };
          
@@ -249,7 +244,9 @@ frp.Business.prototype.Menu = async function (player) {
          }
 
          for (const i in this.Products) {
-            Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
+            if (i != 'Fuel') {
+               Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
+            }
          }
 
          player.call('client:business.market:menu', [Info]);
@@ -337,7 +334,7 @@ function DealershipMenu (products) {
 };
 
 (async () => {
-   await frp.Business.sync({ force: true });
+   await frp.Business.sync();
 
    const Businesses = await frp.Business.findAll();
    Businesses.forEach((Bussines) => {

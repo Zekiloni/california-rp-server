@@ -1,12 +1,13 @@
-const FactionTypes = {
-    Law: 0, Fmd: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Party: 6, Cartel: 7
-};
 
 
 frp.Factions = class Factions {
 
    static Types = {
       Law: 0, Ems: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Cartel: 7, Party: 8
+   };
+
+   static Permissions = {
+      Member: 0, Moderator: 35, Leader: 100
    };
    
    static List = { 
@@ -17,6 +18,7 @@ frp.Factions = class Factions {
          Armory: new mp.Vector3(-1095.3900, -832.8939, 14.28303)
       }
    }
+
 
    static Init () { 
       for (const i in this.List) { 
@@ -37,7 +39,24 @@ frp.Factions = class Factions {
    };
 
 
-   async static Chat (player, message) { 
+   static async MakeLeader (player, faction) { 
+      if (this.List[faction]) {
+         const Character = await player.Character();
+         Character.Faction = faction;
+         Character.Faction_Rank = 'Leader';
+         Character.Faction_Perms = this.Permissions.Leader;
+         await Character.save();
+      }
+
+   }
+   
+
+   static async Invite (player, target) { 
+
+   }
+
+
+   static async Chat (player, message) { 
       if (!message.trim()) return;
       const Character = await player.Character();
       

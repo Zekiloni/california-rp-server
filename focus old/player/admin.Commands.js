@@ -122,16 +122,7 @@ mp.events.addCommand({
 
    'createplant': (player, fullText, plant) => { 
       plants.create(player, { type: plant })
-   },
-
-
-   'editbiz': (player, fullText) => { 
-      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      let bussines = business.nearby(player);
-      if(bussines) {
-
-      }
-   },
+   }
 
 });
 

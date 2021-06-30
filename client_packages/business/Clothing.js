@@ -27,6 +27,11 @@ mp.events.add({
       // mp.gui.chat.push(JSON.stringify(x) + ' ' + JSON.stringify(component) + ' ' + JSON.stringify(texture));
       const Variation = Player.getDrawableVariation(component);
       Player.setComponentVariation(component, Variation, texture, 2);
+   },
+   
+   'client:business.clothing:buy': (total, items, biz) => { 
+      mp.events.call('client:business.clothing:menu');
+      mp.events.callRemote('server:business.clothing:buy', total, items, biz);
    }
 })
 

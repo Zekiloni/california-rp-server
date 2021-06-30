@@ -3,6 +3,9 @@
 const { DataTypes } = require('sequelize');
 const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');
 
+const Torsos = require('../data/Torsos.json');
+const Clothing = require('../data/Clothing');
+
 
 frp.Items = frp.Database.define('item', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -23,6 +26,11 @@ frp.Items = frp.Database.define('item', {
          set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
       },
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Extra: { 
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { return JSON.parse(this.getDataValue('Rotation')); },
+         set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
+      },
       GameObject: { 
          type: DataTypes.VIRTUAL,
          get () { 
@@ -42,9 +50,16 @@ frp.Items = frp.Database.define('item', {
 );
 
 
-frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0, ammo = 0) {
-   const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation, Dimension: dimension, Ammo: ammo });
-   await Item.Refresh();
+frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0, ammo = 0, extra = {}) {
+   const HasItem = await frp.Items.HasItem(owner, item);
+   const Info = ItemRegistry[item];
+
+   if (HasItem && Info.type != ItemType.Equipable || Info.type != ItemType.Weapon) { 
+      HasItem.increment('Quantity', { by: quantity } );
+   } else { 
+      const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation, Dimension: dimension, Ammo: ammo, Extra: extra });
+      await Item.Refresh();
+   }
 };
 
 
@@ -113,6 +128,7 @@ frp.Items.prototype.Refresh = function () {
       }
    }
 };
+
 
 
 frp.Items.prototype.Delete = async function () {
@@ -217,6 +233,69 @@ frp.Items.prototype.Use = async function (player) {
    }
    
    return frp.Items.Inventory(player);
+};
+
+
+frp.Items.prototype.Equip = async function (player) { 
+
+   const Character = await player.Character();
+
+   const AlreadyEquiped = await frp.Items.AlreadyEquiped(player, this.Item);
+   if (AlreadyEquiped) { 
+      AlreadyEquiped.Entity = ItemEntities.Player;
+      await AlreadyEquiped.save();
+   }
+
+   const Item = ItemRegistry[this.Item];
+   this.Entity = ItemEntities.Equiped;
+
+   if (Item.clothing) { 
+      player.setClothes(Item.component, parseInt(this.Extra.Drawable), parseInt(this.Extra.Texture), 2);
+
+      if (Item.component == Clothing.Components.Top) { 
+         const BestOne = Torsos[Character.Gender][this.Extra.Drawable];
+         player.setClothes(Clothing.Components.Top, BestOne, 0, 2);
+      }
+
+   } else { 
+      player.setProp(Item.component, parseInt(this.Extra.Drawable), parseInt(this.Extra.Texture));
+   }
+
+   await this.save();
+};
+
+
+
+frp.Items.prototype.Unequip = async function (player) {
+   const Character = await player.Character();
+   const Item = ItemRegistry[this.Item];
+
+   switch (Item.component) { 
+      case Clothing.Components.Top: { 
+         player.setClothes(Clothing.Components.Top, Clothing.Naked[Character.Gender].Top, 0, 2);
+         break;
+      }
+
+      case Clothing.Components.Legs: { 
+         player.setClothes(Clothing.Components.Legs, Clothing.Naked[Character.Gender].Legs, 0, 2);
+         break;
+      }
+
+      case Clothing.Components.Shoes: { 
+         player.setClothes(Clothing.Components.Shoes, Clothing.Naked[Character.Gender].Shoes, 0, 2);
+         break;
+      }
+
+      default:
+         player.setClothes(Item.component, 0, 0, 2);
+   }
+
+};
+
+
+frp.Items.AlreadyEquiped = async function (player, item) { 
+   const Equipped = await frp.Items.findOne({ where: { Entity: ItemEntities.Equiped, Owner: player.character, Item: item } });
+   return Equipped == null ? false : Equipped;
 };
 
 

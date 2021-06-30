@@ -1,4 +1,4 @@
-let { FactionTypes } = require('../classes/Factions');
+
 
 module.exports = {
    commands: [
@@ -44,7 +44,7 @@ module.exports = {
       {
          name: 'cuff',
          desc: 'ZIP Lisice',
-         faction: { type: frp.Factions.Types.Law },
+         // faction: { type: frp.Factions.Types.Law },
          call: (player, args) => {
                let target = mp.players.find(args[0]);
                if (target) {
@@ -62,7 +62,7 @@ module.exports = {
       {
          name: 'm',
          desc: 'Megafon',
-         //faction: { type: FactionTypes.Law },
+         // faction: { type: frp.Factions.Types.Law },
          call: (player, args) => {
                let message = args.splice(0).join(" ");
                player.ProximityMessage(30.0, `[ ${player.name} :o< ${message} ]`, mp.colors.megaphone);
@@ -82,7 +82,7 @@ module.exports = {
       },
       {
          name: 'rb',
-         faction: { type: frp.Factions.Types.Law },
+         // faction: { type: frp.Factions.Types.Law },
          call: (player, args) => {
                let character = player.getCharacter(), i = args[0], roadblocks = [];
                // prop_tyre_spike_01

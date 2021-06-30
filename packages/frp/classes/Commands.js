@@ -18,12 +18,15 @@ const commandFiles = [
 ];
 
 
-for (const file of commandFiles) {
-   const cmdFile = require('../commands/' + file);
-   cmdFile.commands.forEach(cmd => {
-      frp.Commands[cmd.name] = cmd;
-   });
-}
+(async () => { 
+   for (const file of commandFiles) {
+      const cmdFile = require('../commands/' + file);
+      cmdFile.commands.forEach(cmd => {
+         frp.Commands[cmd.name] = cmd;
+      });
+   }
+})();
+
 
 mp.events.add('playerCommand', async (player, command) => {
    if (!player.data.logged) return false;
@@ -41,7 +44,7 @@ mp.events.add('playerCommand', async (player, command) => {
       if (cmd.job && Character.Job != cmd.job) return;
 
       if (cmd.faction) { 
-         if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
+         //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
          if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       }
 

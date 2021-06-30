@@ -3,7 +3,7 @@ const Weapons = require('../data/Weapons.json');
 
 const ItemEntities = {
    Ground: -1, Player: 0, Vehicle: 1, House: 2,
-   Wheel: 3, LeftHand: 4, RightHand: 5
+   Wheel: 3, LeftHand: 4, RightHand: 5, Equiped: 5
 };
 
 const ItemType = {
@@ -20,17 +20,47 @@ class Item {
       this.hash = object;
       this.weight = weight || 0.25;
       this.use = use;
+
       if (data.weapon) {
          this.weapon = data.weapon || null;
          this.ammo = data.ammo || null;
       }
+
       if (data.quantity && data.inside) {
          this.quantity = data.quantity;
          this.inside = data.inside;
       }
+
+      if (data.clothing) {
+         this.clothing = data.clothing;
+         this.component = data.component;
+      }
+
+      if (data.prop) { 
+         this.prop = data.prop;
+         this.component = data.component;
+      }
+      
       ItemRegistry[this.name] = this;
    }
 }
+
+
+// CLOTHING 
+new Item('Mask', ItemType.Equipable, 'prop_michael_balaclava', 0.3, { clothing: true, component: 1 }, false);
+new Item('Pants', ItemType.Equipable, 'prop_ld_jeans_01', 0.2, { clothing: true, component: 4 }, false);
+new Item('Bag', ItemType.Equipable, 'prop_michael_backpack', 0.45, { clothing: true, component: 5 }, false);
+new Item('Shoes', ItemType.Equipable, 'v_ret_ps_shoe_01', 0.15, { clothing: true, component: 6 }, false);
+new Item('Accesories', ItemType.Equipable, 'prop_cs_box_clothes', 0.3, { clothing: true, component: 7 }, false);
+new Item('Undershirt', ItemType.Equipable, 'prop_cs_tshirt_ball_01', 0.1, { clothing: true, component: 8 }, false);
+new Item('Armour', ItemType.Equipable, 'prop_bodyarmour_03', 1.25, { clothing: true, component: 9 }, false);
+new Item('Tops', ItemType.Equipable, 'prop_ld_shirt_01', 0.2, { clothing: true, component: 9 }, false); 
+
+new Item('Hat', ItemType.Equipable, 'prop_ld_hat_01', 0.05, { prop: true, component: 0 }, false);
+new Item('Glasses', ItemType.Equipable, 'xm_prop_x17_b_glasses_01', 0.05, { prop: true, component: 1 }, false);
+new Item('Ears', ItemType.Equipable, 'v_ret_gc_ear01', 0.05, { prop: true, component: 2 }, false);
+new Item('Watch', ItemType.Equipable, 'p_watch_01', 0.1, { prop: true, component: 6 }, false);
+new Item('Bracelet', ItemType.Equipable, 'h4_prop_h4_bracelet_01a', 0.2, { prop: true, component: 7 }, false);
 
 
 // FOOD

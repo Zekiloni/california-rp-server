@@ -82,6 +82,7 @@ const GLOBALS = {
       ERROR: 'Došlo je do greške.',
       ENGINE_ON: 'Upalili ste motor vozila.',
       ENGINE_OFF: 'Ugasili ste motor vozila.',
+      ANIM_DOESNT_EXIST: 'Animacija nije pronadjena',
       CMD_SYNTAX: '<b>[KOMANDA]</b> ',
       DOORS_LOCKED: 'Zaključali ste vrata',
       DOORS_UNLOCKED: 'Otključali ste vrata',

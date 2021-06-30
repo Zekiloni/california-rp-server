@@ -14,7 +14,7 @@ mp.events.add({
    'client:player.login:show': () => { 
       opened = !opened;
       if (opened) { 
-         browser = mp.browsers.new('package://player/start-interfaces/auth.html');
+         browser = mp.browsers.new('package://player/game-interface/auth.html');
          Player.BrowserControls(true, true);
          Player.freezePosition(true);
          Player.LoginCamera(true);

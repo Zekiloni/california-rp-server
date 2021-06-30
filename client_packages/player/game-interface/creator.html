@@ -145,7 +145,25 @@
          </div>
 
          <div class="page" v-if="page == 5">
-            page
+            <div class="header">
+               <h3> Odeća & Aseksoar </h3>
+               <small> odeća, obuća i aseksoar </small>
+            </div>
+
+            <ul class="clothings">
+               <li v-for="(cloth, i) in Data.clothings" class="clothing">
+                  <h3> {{ cloth }} </h3>
+
+                  <div class="drawable">
+                     <label> Model </label>
+                     <button class="plus-minus" v-on:click="changeClothing(i, 0)"> - </button>
+                     <h2> {{ clothingValues[i].value }} </h2>
+                     <button class="plus-minus" v-on:click="changeClothing(i, 1)"> + </button>
+                  </div>
+
+               </li>
+            </ul>
+
          </div>
       </div>
 
@@ -185,8 +203,10 @@
                Eyes: 0,
                Torso: 0,
                Face: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-               Clothing: [ [0, 0], [0, 0], [0, 0], [0, 0] ]
+               Clothing: [ ['Tops', 0], ['Undershirt', 0], ['Pants', 0], ['Shoes', 0] ]
             },
+
+            clothingValues: {0: { value: 0 }, 1: { value: 0 }, 2: { value: 0 },  3: { value: 0 }},
 
             Selected: { 
                HairColor: 0,
@@ -214,13 +234,9 @@
                OverlaysMaximums: [23, 33, 14, 11, 10, 9, 17, 16],
                OverlaysIndexes: [0, 2, 3, 6, 7, 8, 9, 10],
 
-               validTorsos: [
-                  [0, 0, 2, 14, 14, 5, 14, 14, 8, 0, 14, 15, 12],
-                  [0, 5, 2, 3, 4, 4, 5, 5, 5, 0]
-               ],
-
-               clothings: ['Majca', 'Podmajca', 'Pantalone', 'Patike'], 
-               clothingMax: [361, 132, 97],
+               clothings: ['Gornji Deo', 'Podmajca', 'Pantalone', 'Patike'], 
+               ClothingMax: [350, 174, 131, 94],
+               ClothingSyntax: [11, 8, 4, 6],
 
                Blends: [ 
                   ['Oblik lica majke', 0, 45, 1], ['Oblik lica oca', 0, 45, 1], ['Boja kože majke', 0, 45, 1],
@@ -259,6 +275,19 @@
                   this.Warning('Niste ispunili sva potrebna polja za identitet karaktera.')
                }
             },
+
+            changeClothing: function (i, d) { 
+               if (d == 0) {
+                  this.character.Clothing[i][1] --;
+                  if (this.character.Clothing[i][1] < 0) this.character.Clothing[i][1] = this.Data.ClothingMax[i];
+               } else { 
+                  this.character.Clothing[i][1] ++;
+                  if (this.character.Clothing[i][1] >= this.Data.ClothingMax[i]) this.character.Clothing[i][1] = 0;
+               }
+               this.clothingValues[i].value = this.character.Clothing[i][1];
+               mp.trigger('client:player.character.creator:clothing', this.Data.ClothingSyntax[i], parseInt(this.character.Clothing[i][1]));
+            },
+
 
             Warning: function (msg) { 
                this.warning = msg;

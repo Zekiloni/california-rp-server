@@ -1,7 +1,10 @@
 
-const player = mp.players.local;
 
-let picked = false;
+const Player = mp.players.local;
+
+const Max = 25;
+let Picked = false;
+let Visited = [];
 
 const InteractionObjects = [
    mp.game.joaat("prop_rub_binbag_sd_01"),

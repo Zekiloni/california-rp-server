@@ -1,6 +1,6 @@
 
 body {
-   font-family: 'Roboto', sans-serif;
+   font-family: 'Akrobat', sans-serif;
    font-size: 13px;
    font-style: normal;
    line-height: 1.5;
@@ -23,12 +23,12 @@ ul.navigation {min-height: 425px;padding: 0;list-style: none;position: absolute;
 ul.navigation li {margin: 15px 0;position: relative;background: rgb(21 21 21 / 75%);color: rgb(173, 173, 173);box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;font-size: 23px;font-weight: 500;display: flex;justify-content: center;align-items: center;width: 55px;height: 55px;opacity: 0.75;transition: all 0.35s ease;/* border-radius: 100%; */}
 ul.navigation li.active { transform: scale(1.45); opacity: 1; background: #fbc60c; box-shadow: 0 1px 25px rgb(250 184 10 / 50%); color: #292929; }
 
-.content {position: absolute;width: 400px;height: 505px;right: 40px;}
+.content {position: absolute;width: 400px;height: 515px;right: 40px;}
 .content .page { width: 100%; height: 100%; background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;}
 
 .page .header {  width: 100%; position: relative; height: 75px; }
-.page .header h3 {margin: 0;padding-top: 10px;padding-left: 10px;color: #d8d8d8;text-transform: uppercase;font-size: 20px;font-style: italic;}
-.page .header small {padding: 10px;font-size: 11px;letter-spacing: 1.15px;font-weight: 300;text-transform: uppercase;color: #cdcdcd;}
+.page .header h3 {margin: 0;padding-top: 10px;padding-left: 10px;color: #d8d8d8;text-transform: uppercase;font-size: 20px;/* font-style: italic; */}
+.page .header small {padding: 10px;font-size: 11px;letter-spacing: 1.15px;font-weight: 300;text-transform: uppercase;color: #cdcdcd;font-style: italic;}
 .page .header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 175px; height: 2px; background: #fbc60c; box-shadow: 0 1px 7.5px rgb(250 184 10 / 50%); }
 
 
@@ -121,6 +121,29 @@ input[type=range]:focus::-webkit-slider-runnable-track { background: #ccc; }
 .create button {  background: #fbc60c; border: none; border-radius: 5px; padding: 10px 25px; font-weight: 800; text-transform: uppercase; color: #292929; font-size: 22px; transition: all 0.35s ease; box-shadow: 0 1px 25px rgb(250 184 10 / 50%); }
 .create button:hover { transform: scale(1.07); box-shadow: 0 1px 25px rgb(250 184 10 / 65%); color: white; }
 
+ul.clothings {padding: 0;list-style: none;width: 300px;margin: 0 auto;margin-top: 50px;}
+ul.clothings li {display: flex;justify-content: center;align-items: center;flex-wrap: wrap;margin: 20px 0;}
+ul.clothings li h3 {width: 100%;margin: 0;font-weight: 200;font-size: 20px;color: white;}
+li .drawable, li .texture {width: 100%;display: flex;justify-content: center;align-items: center;height: 40px;}
+li .drawable label, li .texture label  {text-align: center;}
+
+li .drawable h2 , li .texture h2 {margin: 0 20px;color: #d4d4d4;}
+button.plus-minus {
+   font-size: 20px;
+   border: none;
+   background: #fab80a;
+   text-transform: uppercase;
+   border-radius: 5px;
+   color: #292929;
+   font-weight: 900;
+   box-shadow: 0 1px 25px rgb(250 184 10 / 50%);
+   padding: 0px 15px;
+   transition: all 0.35s ease;
+}
+
+button.plus-minus { filter: brightness(1.1); box-shadow: 0 1px 5px rgb(250 184 10 / 70%); }
+
+
 .bounce-out-top {
    animation: bounce-out-top 1.0s forwards;
 }
@@ -172,7 +195,7 @@ input[type=range]:focus::-webkit-slider-runnable-track { background: #ccc; }
       opacity: 1;
    }
    100% {
-               transform: translateY(-800px);
+      transform: translateY(-800px);
       opacity: 0;
    }
 }

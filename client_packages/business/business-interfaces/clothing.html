@@ -18,7 +18,6 @@
 
          <ul class="navigation">
             <li v-on:click="Page('home')" :class="{ 'active' : isActive('home') }"> <i class="fa fa-cart-plus"> </i> </li>
-            <li v-on:click="Page('torso')" :class="{ 'active' : isActive('torso') }"> <i class="fas fa-user-tie"></i> </li>
             <li v-on:click="Page('shirt')" :class="{ 'active' : isActive('shirt') }"> <i class="fas fa-tshirt"></i> </li>
             <li v-on:click="Page('undershirt')" :class="{ 'active' : isActive('undershirt') }"> <i class="fas fa-tshirt"></i> </li>
             <li v-on:click="Page('legs')" :class="{ 'active' : isActive('legs') }"> <i class="fas fa-walking"></i> </li>
@@ -35,10 +34,10 @@
             <transition name="scale" mode="out-in">
                <div v-if="page == 'home'" class="info" :key="page">
                   <h4> Prodavnica odeće </h4>
-                  <h2 class="business-name"> {{ business.name }} </h2>
+                  <h2 class="business-name"> {{ Business.Name }} </h2>
                   <div class="buy">
                      <h3> cena </h3>
-                     <h2 class="price"> {{ moneyFormat(Cart()) }} </h2>
+                     <h2 class="price"> {{ Dollars(Cart()) }} </h2>
                      <button class="buy" :disabled="Cart() < 1"> Potvrdi Kupovinu </button>
                   </div>
                </div>
@@ -48,13 +47,13 @@
                   <div class="drawable">
                      <h5> Model </h5>
                      <button v-on:click="Drawable(page, 0)"> - </button>
-                     <h2> {{ clothings[page].value }} </h2>
+                     <h2> {{ Clothings[page].value }} </h2>
                      <button v-on:click="Drawable(page, 1)"> + </button>
                   </div>
                   <div class="texture">
                      <h5> Tekstura </h5>
                      <button v-on:click="Texture(page, 0)"> - </button>
-                     <h2> {{ clothings[page].texture }} </h2>
+                     <h2> {{ Clothings[page].texture }} </h2>
                      <button v-on:click="Texture(page, 1)"> + </button>
                   </div>
                </div>
@@ -71,9 +70,14 @@
          el: '#clothing',
          data: {      
 
+            Business: {
+               Name: 'ime',
+               id: null,
+               Multiplier: 2.5,
+            },
+
             page: 'home',
             pages: { 
-               'torso':'Torzo',
                'shirt': 'Gornji Delovi',
                'undershirt': 'Podmajice / Potkošulje',
                'legs': 'Donji Delovi', 
@@ -90,7 +94,6 @@
             player: { 
                money: 0,
                clothing: [
-                  torso = [0, 0],
                   shirt = [0, 0],
                   undershirt = [0, 0],
                   legs = [0, 0],
@@ -106,8 +109,7 @@
 
             },
 
-            clothings: {
-               'torso': { index: 3, value: 0, texture: 0, max: { value: 195, texture: 100 } },
+            Clothings: {
                'shirt': { index: 11, value: 0, texture: 0, max: { value: 362, texture: 100 } },
                'undershirt': { index: 8, value: 0, texture: 0, max: { value: 178, texture: 100 } },
                'legs': { index: 4, value: 0, texture: 0, max: { value: 133, texture: 100 } }, 
@@ -119,11 +121,6 @@
                'ears': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
                'watch': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
                'bracelet': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
-            },
-           
-            business: {
-               id: 0,
-               name: 'Suburban Clothing Shop',
             }
          },
 
@@ -139,30 +136,43 @@
 
             Cart: function () { 
                let bill = 0;
-               for (let i in this.clothings) { 
-                  for (let c = 0; c < 12; c ++) { 
-                     let item = this.clothings[i], value = this.player.clothing[c][0]; 
-                     if (item.value != value) bill += 2.5;
-                  }
+               for (let i in this.Clothings) { 
+                  const Item = this.Clothings[i];
+                  if (Item.value != 0) bill += this.Business.Multiplier;
                }
                return bill;
+            },
+
+            Items: function () { 
+               let buyed = [];
+               for (const i in this.Clothings) {
+                  const Item = this.Clothings[i];
+                  if (Item.value != 0) { 
+                     buyed.push({ component: i, drawable: Item.value, texture: Item.texture });
+                  }
+               }
+               return buyed;
             },
 
             Zoom: function (event) { mp.trigger('client:player.camera:zoom', event.deltaY); },
 
             Drawable: function (x, i) { 
-               if (i == 0) { this.clothings[x].value --; if (this.clothings[x].value < 0) this.clothings[x].value = 0; }
-               else if (i == 1) { this.clothings[x].value ++; if (this.clothings[x].value >= this.clothings[x].max.value) this.clothings[x].value = this.clothings[x].max.value; }
-               mp.trigger('client:business.clothing:model:preview', x, parseInt(this.clothings[x].index), parseInt(this.clothings[x].value));
+               if (i == 0) { this.Clothings[x].value --; if (this.Clothings[x].value < 0) this.Clothings[x].value = 0; }
+               else if (i == 1) { this.Clothings[x].value ++; if (this.Clothings[x].value >= this.Clothings[x].max.value) this.Clothings[x].value = this.Clothings[x].max.value; }
+               mp.trigger('client:business.clothing:model:preview', x, parseInt(this.Clothings[x].index), parseInt(this.Clothings[x].value));
             },
 
             Texture: function (x, i) { 
-               if (i == 0) { this.clothings[x].texture --; if (this.clothings[x].texture < 0) this.clothings[x].texture = 0; }
-               else if (i == 1) { this.clothings[x].texture ++; if (this.clothings[x].texture >= this.clothings[x].max.texture) this.clothings[x].texture = this.clothings[x].max.texture; }
-               mp.trigger('client:business.clothing:texture:preview', x, parseInt(this.clothings[x].index), parseInt(this.clothings[x].texture));
+               if (i == 0) { this.Clothings[x].texture --; if (this.Clothings[x].texture < 0) this.Clothings[x].texture = 0; }
+               else if (i == 1) { this.Clothings[x].texture ++; if (this.Clothings[x].texture >= this.Clothings[x].max.texture) this.Clothings[x].texture = this.Clothings[x].max.texture; }
+               mp.trigger('client:business.clothing:texture:preview', x, parseInt(this.Clothings[x].index), parseInt(this.Clothings[x].texture));
             },
 
-            moneyFormat: function (i) {  let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }); return formatter.format(i); }
+            Buy: function () { 
+               mp.trigger('client:business.clothing:buy', this.Cart(), this.Items(), this.Business.id);
+            },
+
+            Dollars: (i) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); }
          }
       })
    </script>
