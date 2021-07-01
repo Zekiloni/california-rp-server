@@ -2,19 +2,30 @@
 
 module.exports = { 
    Components: { 
-      Top: 11, Undershirt: 8, Legs: 4, Shoes: 6
+      Tops: 11, Undershirt: 8, Pants: 4, Shoes: 6, Torso: 3
    },
+
 
    Naked: { 
       0: {
-         Top: 0,
-         Legs: 18,
-         Shoes: 34
+         Tops: 15,
+         Pants: 18,
+         Shoes: 34,
+         Undershirt: 15,
+         Armour: 0,
+         Accesories: 0,
+         Bag: 0,
+         Mask: 0
       },
       1: { 
-         Top: 15,
-         Legs: 15,
-         Shoes: 35
+         Tops: 15,
+         Pants: 15,
+         Shoes: 35,
+         Undershirt: 15,
+         Armour: 0,
+         Accesories: 0,
+         Bag: 0,
+         Mask: 0
       }
    }
 }

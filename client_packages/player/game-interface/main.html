@@ -43,7 +43,7 @@
                      <div class="type"> 
                         <i class="" v-bind:class="NotifyType(notification.Type)" aria-hidden="true"></i>
                      </div>
-                     <h4> {{ notification.Message }} </h4>
+                     <h4 v-html="notification.Message"> </h4>
                   </li>
                </transition-group>
 

@@ -57,7 +57,7 @@ let Rent = require('./business/Rent');
 let Dealeship = require('./business/Dealership');
 
 // JOBS
-let Jobs = require('./jobs/Jobs');
+let Jobs = require('./jobs/Job');
 let Jetsam = require('./jobs/Jetsam');
 let Transit = require('./jobs/Transit');
 let Sanitation = require('./jobs/Sanitation');

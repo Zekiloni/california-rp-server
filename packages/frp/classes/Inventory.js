@@ -24,7 +24,7 @@ class Inventory {
                const Weapons = await frp.Items.Weapons(player);
                if (Weapons.length > 0 && Weapons[key]) { 
                   const Item = Weapons[key];
-                  ItemRegistry[Item.name].use(player, Item.ammo);
+                  ItemRegistry[Item.name].use(player, Item.Number);
                }
             }
          }
@@ -66,11 +66,20 @@ class Inventory {
             });
          },
 
-         'server:player.inventory.item:use': async (player, itemID) => {
-            const Item = await frp.Items.findOne({ where: { id: itemID }})
+         'server:player.inventory.item:use': async (player, itemid) => {
+            const Item = await frp.Items.findOne({ where: { id: itemid }})
             return Item.Use(player).then((inventory) => { 
                return inventory;
             });
+         },
+
+         'server:player.inventory.item:unequip': async (player, itemid) => { 
+            try  { 
+               const Item = await frp.Items.findOne({ where: { id: itemid } });
+               return Item.Unequip(player);
+            } catch (e) { 
+               console.log(e)
+            }
          }
       });
    }

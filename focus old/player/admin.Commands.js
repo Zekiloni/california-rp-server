@@ -81,10 +81,6 @@ mp.events.addCommand({
    },
 
 
-   'createbiz': (player, fullText, type, price) => {
-      if(player.admin < 4) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);
-      business.create(player, type, price);
-   },
 
    'createitem': (player, full, name, quant) => {
       if (player.admin < 2) return player.notification(MSG_NOT_ALLOWED, NOTIFY_ERROR, 4);

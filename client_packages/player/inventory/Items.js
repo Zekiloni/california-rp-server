@@ -35,6 +35,8 @@ mp.events.add({
 
    'client:inventory.item:give': Give,
 
+   'client:inventory.item:unequip': Unequip,
+
    'client:inventory.process.clothing': (index) => { 
       mp.events.callRemote('server:item.clothing', index);
    },
@@ -104,6 +106,12 @@ async function Put (weapon) {
    const Inventory = await mp.events.callRemoteProc('server:player.inventory.weapon:put', weapon);
    if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 }
+
+
+async function Unequip (item) {
+   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:unequip', item);
+   if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+};
 
 async function Drop (item, hash, quantity = 1) { 
 

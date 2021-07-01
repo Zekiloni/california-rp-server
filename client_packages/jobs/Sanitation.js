@@ -3,7 +3,9 @@
 const Player = mp.players.local;
 
 const Max = 25, TrashAttachment = { Model: 628215202, Bone: 6286, Offset: { X: 0, Y: 0, Z: 0, rX: 0, rY: 0, rZ: 0} };
+
 let Picked = false, Truck = undefined, Visited = [];
+
 
 const InteractionObjects = [
    mp.game.joaat("prop_rub_binbag_sd_01"),
@@ -83,7 +85,18 @@ mp.keys.bind(0x59, false, function() {
             }
          }
          else {
-            // Deponija
+            const {checkpoint, blip} = Player.CreateInteractionSport('Depony', new mp.Vector3(0, 0, 0));
+
+            mp.events.add('playerEnterCheckpoint', OnPlayerEnterDepony);
+
+            function OnPlayerEnterDepony (point) { 
+               if (point == checkpoint) { 
+                  checkpoint.destroy();
+                  blip.destroy();
+                  mp.events.remove('playerEnterCheckpoint', OnPlayerEnterDepony);
+               }
+            }
+
          }
       } else {
          const Truck = player.getVariable('Job_Veh');

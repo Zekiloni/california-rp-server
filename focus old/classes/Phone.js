@@ -35,7 +35,6 @@ class Phone {
 
    ring (player, incoming) { 
       this.ringing = true;
-      player.setVariable('phone_ringing', this.ringing);
       // poruka nadolazeci poziv
    }
 

@@ -42,6 +42,7 @@ let Doors = require('./classes/Doors');
 let Inventory = require('./classes/Inventory');
 let Vehicles = require('./classes/Vehicles');
 let Minute = require('./classes/Minute');
+let Houses = require('./classes/Houses');
 let Business = require('./classes/Business');
 let Factions = require('./classes/Factions');
 let Weather = require('./classes/Weather');

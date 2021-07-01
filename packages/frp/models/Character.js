@@ -28,7 +28,6 @@ frp.Characters = frp.Database.define('character', {
          get: function () { return JSON.parse(this.getDataValue('Wounded')); },
          set: function (value) { this.setDataValue('Wounded', JSON.stringify(value)); }
       },
-      
 
       Last_Position: {
          type: DataTypes.TEXT, defaultValue: null,
@@ -48,7 +47,6 @@ frp.Characters = frp.Database.define('character', {
       Mood: { type: DataTypes.STRING, defaultValue: 'normal' },
       Walking_Style: { type: DataTypes.STRING, defaultValue: 'normal' },
 
-      Phone: { type: DataTypes.INTEGER, defaultValue: 0 },
       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
       Licenses: {
          type: DataTypes.TEXT, defaultValue: null,
@@ -95,23 +93,29 @@ frp.Characters.prototype.Spawn = async function (player) {
    // Temp
    player.setVariable('Job_Vehicle', null);
    player.setVariable('Attachment', null);
+   player.setVariable('Phone_Ringing', false);
+
+   this.SetWalkingStyle(player, this.Walking_Style);
+   this.SetMood(player, this.Mood);
+   this.Cuff(player, this.Cuffed);
 
 
-
-   player.data.Wounded = this.Wounded;
+   player.setVariable('Wounded', this.Wounded);
    if (this.Wounded) { 
-
+      // ciba na pod...
    }
    
    player.data.Bubble = null;
    player.data.Seatbelt = false;
 
    await player.call('client:player.interface:toggle');
-   await player.Notification('Dobrodošli na Focus Roleplay ! Uživajte u igri.', frp.Globals.Notification.Info, 4);
+   await player.Notification(frp.Globals.messages.WELCOME, frp.Globals.Notification.Info, 4);
 
    // Applying appearance & clothing
    const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
    if (Appearance) Appearance.Apply(player, this.Gender);
+
+   frp.Items.Equipment(player, this.Gender);
    
    // spawning player on desired point
    switch (this.Spawn_Point) {
@@ -189,8 +193,12 @@ frp.Characters.prototype.SetWalkingStyle = function (player, style) {
 };
 
 
-frp.Characters.prototype.Cuff = function (player) { 
-   this.Cuffed = !this.Cuffed;
+frp.Characters.prototype.Cuff = function (player, toggle) { 
+   if (toggle) {
+      this.Cuffed = toggle;
+   } else { 
+      this.Cuffed = !this.Cuffed;
+   }
    player.setVariable('Cuffed', this.Cuffed);
    return this.Cuffed;
 };
@@ -349,7 +357,7 @@ frp.Characters.prototype.Buy = async function (player, Nearest, action) {
 };
 
 
-frp.Characters.prototype.SetJob = function (player, value) {
+frp.Characters.prototype.SetJob = async function (player, value) {
    this.Job = value;
    player.setVariable('Job', value);
    await this.save();
@@ -410,10 +418,16 @@ frp.Characters.New = async function (player, Character) {
       Eyes: Character.Eyes, Face_Features: Character.Face
    });
 
+   player.character = Created.id;
+
    Character.Clothing.forEach(async (Clothing) => { 
       const [item, value] = Clothing;
-      const Cloth = await frp.Items.New(item, 1, ItemEntities.Equiped, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
-      Cloth.Equip(player);
+      try { 
+         const Cloth = await frp.Items.New(item, 1, ItemEntities.Equiped, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
+         Cloth.Equip(player);
+      } catch (e) { 
+         console.log(e);
+      }
    })
 
    if (Created) return Created;

@@ -50,20 +50,29 @@ mp.events.add({
    },
 
    'server:business.clothing:buy': async (player, Total, Items, Biz) => { 
-      const Character = await Player.Character();
+      const Character = await player.Character();
 
-      if (Character.Money < Total) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 5);
+      if (Character.Money < Total) return player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 5);
       const Business = await frp.Business.findOne({ where: { id: Biz } });
+
+      console.log(Business)
       let Products = Business.Products;
 
-      if (Products[Item].supplies < 1) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 5);
+      if (Products['Clothing'].supplies < 1) return player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 5);
 
-      Itemms.forEach((Item) => { 
-         
-         Products.supplies --;
+
+      Items = JSON.parse(Items);
+
+      Items.forEach(async (Item) => { 
+         const clothing = await frp.Items.New(Item.component, 1, ItemEntities.Player, player.character);
+         clothing.Extra = { Drawable: Item.drawable, Texture: Item.texture };
+         await clothing.save();
+         Products['Clothing'].supplies --;
       });
 
-      Character.GiveMoney(Player, -Total);
+      frp.Items.Equipment(player, Character.Gender);
+
+      Character.GiveMoney(player, -Total);
       
       Business.Products = Products;
       Business.increment('Budget', { by: Total });

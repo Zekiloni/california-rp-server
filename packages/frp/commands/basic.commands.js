@@ -37,7 +37,7 @@ module.exports = {
       },
 
       {
-         name: 'animacjia',
+         name: 'anim',
          desc: 'Povez preko ociju',
          call: (player, args) => {
             const [name, flag] = args;

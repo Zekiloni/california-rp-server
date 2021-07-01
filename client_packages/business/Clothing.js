@@ -6,9 +6,9 @@ let browser = null, opened = false;
 mp.events.add({
    'client:business.clothing:menu': (info) => {
       opened = !opened;
-      // mp.gui.chat.push(JSON.stringify(info));
       if (opened) { 
          browser = mp.browsers.new('package://business/business-interfaces/clothing.html');
+         browser.execute('clothing.Business = ' + JSON.stringify(info));
          Player.BrowserControls(true, true);
          utils.PlayerPreviewCamera(true);
       } else { 

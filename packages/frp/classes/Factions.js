@@ -25,7 +25,7 @@ frp.Factions = class Factions {
          const Faction = this.List[i];
 
          if (Faction.Sprite && Faction.Color) { 
-            mp.blips.new(Faction.Sprite, Faction.Position, { dimension: frp.Settings.default.dimension, shortRange: true, color: Faction.Color });
+            mp.blips.new(Faction.Sprite, Faction.Position, { name: Faction.Name, dimension: frp.Settings.default.dimension, shortRange: true, color: Faction.Color });
          }
 
          if (Faction.Type == this.Types.Law) { 
