@@ -1,42 +1,19 @@
 module.exports = {
-    commands: [
-        {
-            name: 'job',
-            desc: 'Stvari vezane za posao karaktera',
-            call: (player, args) => {
-                let action = args[0], character = player.getCharacter();
-                switch (action) {
-                    case 'take': {
-                        if (character.job != 0)
-                            return; // prvo /job quit
-                        if (player.near) {
-                            if (player.near.type == 'job') {
-                                let job = mp.jobs[player.near.id];
-                                player.call('client:player.job.offer', [job]);
-                            }
-                        }
-                        else {
-                            // niste u blizini posla
-                        }
-                        break;
-                    }
-                    case 'quit': {
-                        if (character.job == 0)
-                            return; // vi niste zaposleni
-                        character.job = 0;
-                        player.SendMessage('Dali ste otkaz !', mp.colors.info);
-                        break;
-                    }
-                    case 'start': {
-                        if (character.job == 0)
-                            return; // niste zaposleni
-                        if (character.working.duty)
-                            return; // vec radite
-                        mp.jobs[character.job].job(player, args[1]);
-                        break;
-                    }
-                }
+   commands: [
+      {
+         name: 'takejob',
+         desc: 'Zapošljavanje.',
+         call: async (player, args) => {
+            const Character = await player.Character();
+            if (Character.Job != frp.Globals.Jobs.Unemployed) return player.Notification(frp.Globals.messages.ALREADY_EMPLOYED, frp.Globals.Notification.Error, 5);
+
+            const Nearest = frp.Jobs.Nearest(player);
+            if (Nearest) {
+               player.call('client:job:offer', [Nearest]);
+            } else {
+               player.Notification(frp.Globals.messages.NOT_NEAR_JOB, frp.Globals.Notification.Error, 5);
             }
-        }
-    ]
+         }
+      }
+   ]
 };

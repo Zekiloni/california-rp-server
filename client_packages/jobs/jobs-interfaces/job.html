@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/styles/offer.css" />
+
+</head>
+<body>
+   <div id="offer">
+
+      <div class="header">
+         <img :src="'src/images/jobs/' + Job.id + '.png'" />
+         <h2> {{ Job.description }} </h2>
+         <h4> {{ Job.name }} </h4>
+         <i v-on:click="Close()" class="close fa fa-times"> </i>
+      </div>
+
+      <div class="options">
+         <h3> Da li prihvatate ponudu za posao ? </h3>
+         <button v-on:click="Accept()"> 
+            <i class="icon fa fa-check"> </i>
+            Prihvatam
+         </button>
+
+         <button class="decline" v-on:click="Close()">
+            <i class="icon fa fa-times"> </i>
+            Odbijam
+         </button>
+      </div>
+
+   </div>
+      
+   <!-- scripts -->
+   <script src="src/vendor/js/vue.js"></script>
+   <script>
+   let offer = new Vue({
+      el: '#offer',
+      data: {
+
+         Job: { 
+            id: 1,
+            name: 'Los Santos Transit',
+            description: 'Bus Driver'
+         }
+
+      },
+
+      methods: { 
+         Close: () => { mp.trigger('client:job:offer'); },
+
+         Accept: function () { mp.trigger('client:job:accept', this.Job.id); }
+      }
+   })
+   </script>
+</body>     
+</html>

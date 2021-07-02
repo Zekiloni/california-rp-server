@@ -54,7 +54,7 @@ new Item('Shoes', ItemType.Equipable, 'v_ret_ps_shoe_01', 0.15, { clothing: true
 new Item('Accesories', ItemType.Equipable, 'prop_cs_box_clothes', 0.3, { clothing: true, component: 7 }, false);
 new Item('Undershirt', ItemType.Equipable, 'prop_cs_tshirt_ball_01', 0.1, { clothing: true, component: 8 }, false);
 new Item('Armour', ItemType.Equipable, 'prop_bodyarmour_03', 1.25, { clothing: true, component: 9 }, false);
-new Item('Tops', ItemType.Equipable, 'prop_ld_shirt_01', 0.2, { clothing: true, component: 9 }, false); 
+new Item('Tops', ItemType.Equipable, 'prop_ld_shirt_01', 0.2, { clothing: true, component: 11 }, false); 
 
 new Item('Hat', ItemType.Equipable, 'prop_ld_hat_01', 0.05, { prop: true, component: 0 }, false);
 new Item('Glasses', ItemType.Equipable, 'xm_prop_x17_b_glasses_01', 0.05, { prop: true, component: 1 }, false);

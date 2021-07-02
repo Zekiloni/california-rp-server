@@ -130,6 +130,8 @@
                this.ToggleInput(false);
 
                if (content && content.length > 0) {
+                  this.History.unshift(content);
+
                   if (content[0] == '/') {
                      content = content.substr(1);
                      mp.invoke('command', content);
@@ -139,7 +141,6 @@
                      mp.invoke('chatMessage', content);
                   }
 
-                  this.History.unshift(content);
                   this.Current = -1
                }
             },

@@ -62,16 +62,23 @@ const GLOBALS = {
 
    MarkerColors: { 
       Business: [253, 201, 41, 185],
-      Faction: [46, 204, 41, 113]
+      Faction: [46, 204, 41, 113],
+      Job: [254, 213, 46, 70]
+   },
+
+   Jobs: { 
+      Unemployed: 0
    },
    
    messages: {
+      WELCOME: 'Dobrodošli na Focus Roleplay ! Uživajte u igri.',
       NOT_ALLOWED: 'Niste ovlašteni za korišćenje ove komande.',
       USER_NOT_FOUND: 'Korisnik nije pronadjen.',
       ITEM_DOESNT_EXIST: 'Taj predmet ne postoji.',
       COMMAND_USAGE: 'Komanda: ',
       NOT_IN_VEHICLE: 'Niste se u vozilu.',
       NOT_IN_SPEC_FACTION: 'Niste član odredjene fakcije.',
+      SUCCESFULLY_JOB: 'Uspešno ste se zaposlili kao ',
       ALREADY_EMPLOYED: 'Već ste zaposleni.',
       UNEMPLOYED: 'Niste zaposleni.',
       QUITJOB: 'Dali ste otkaz.',
@@ -87,6 +94,7 @@ const GLOBALS = {
       DOORS_LOCKED: 'Zaključali ste vrata',
       DOORS_UNLOCKED: 'Otključali ste vrata',
       NOT_ON_DUTY: 'Niste na dužnosti.',
+      NOT_NEAR_JOB: 'Ne nalazite se u blizini posla',
       ALREADY_WORKING: 'Već radite.',
       INVALID_BUSSINES_TYPE: 'Nepoznat tip biznisa',
       HOUSE_SOLD_SUCCSESSFULY: 'Uspešno ste prodali kuću',

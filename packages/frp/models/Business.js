@@ -130,7 +130,7 @@ frp.Business.prototype.Refresh = function () {
       const GameObjects = { 
          colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, 0),
          blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
-         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z -0.99), 2.5, {
+         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 2.5, {
             color: frp.Globals.MarkerColors.Business, 
             rotation: new mp.Vector3(0, 0, 90), 
             visible: true, 
@@ -224,11 +224,9 @@ frp.Business.prototype.Menu = async function (player) {
 
       case frp.Globals.Business.Types.Clothing: { 
          const Info = { 
-            Business: {
-               Name: this.Name,
-               id: this.id,
-               Multiplier: BusinessTypes[this.Type].multiplier
-            }
+            Name: this.Name,
+            id: this.id,
+            Multiplier: BusinessTypes[this.Type].multiplier
          };
          
          player.call('client:business.clothing:menu', [Info]);

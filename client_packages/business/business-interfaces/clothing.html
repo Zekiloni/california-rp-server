@@ -18,16 +18,16 @@
 
          <ul class="navigation">
             <li v-on:click="Page('home')" :class="{ 'active' : isActive('home') }"> <i class="fa fa-cart-plus"> </i> </li>
-            <li v-on:click="Page('shirt')" :class="{ 'active' : isActive('shirt') }"> <i class="fas fa-tshirt"></i> </li>
-            <li v-on:click="Page('undershirt')" :class="{ 'active' : isActive('undershirt') }"> <i class="fas fa-tshirt"></i> </li>
-            <li v-on:click="Page('legs')" :class="{ 'active' : isActive('legs') }"> <i class="fas fa-walking"></i> </li>
-            <li v-on:click="Page('shoes')" :class="{ 'active' : isActive('shoes') }"> <i class="fas fa-shoe-prints"></i> </li>
+            <li v-on:click="Page('Tops')" :class="{ 'active' : isActive('Tops') }"> <i class="fas fa-tshirt"></i> </li>
+            <li v-on:click="Page('Undershirt')" :class="{ 'active' : isActive('Undershirt') }"> <i class="fas fa-tshirt"></i> </li>
+            <li v-on:click="Page('Pants')" :class="{ 'active' : isActive('Pants') }"> <i class="fas fa-walking"></i> </li>
+            <li v-on:click="Page('Shoes')" :class="{ 'active' : isActive('Shoes') }"> <i class="fas fa-shoe-prints"></i> </li>
 
-            <li v-on:click="Page('watch')" :class="{ 'active' : isActive('watch') }"> <i class="fas fa-clock"></i> </li>
-            <li v-on:click="Page('glasses')" :class="{ 'active' : isActive('glasses') }"> <i class="fas fa-glasses"></i> </li>
-            <li v-on:click="Page('ears')" :class="{ 'active' : isActive('ears') }"> <i class="fa fa-deaf"></i> </li>
-            <li v-on:click="Page('bracelet')" :class="{ 'active' : isActive('bracelet') }"> <i class="fas fa-ring"></i> </li>
-            <li v-on:click="Page('hat')" :class="{ 'active' : isActive('hat') }"> <i class="fab fa-redhat"></i> </li>
+            <li v-on:click="Page('Watch')" :class="{ 'active' : isActive('Watch') }"> <i class="fas fa-clock"></i> </li>
+            <li v-on:click="Page('Glasses')" :class="{ 'active' : isActive('Glasses') }"> <i class="fas fa-glasses"></i> </li>
+            <li v-on:click="Page('Ears')" :class="{ 'active' : isActive('Ears') }"> <i class="fa fa-deaf"></i> </li>
+            <li v-on:click="Page('Bracelet')" :class="{ 'active' : isActive('Bracelet') }"> <i class="fas fa-ring"></i> </li>
+            <li v-on:click="Page('Hat')" :class="{ 'active' : isActive('Hat') }"> <i class="fab fa-redhat"></i> </li>
          </ul>
 
          <div class="page">
@@ -38,7 +38,7 @@
                   <div class="buy">
                      <h3> cena </h3>
                      <h2 class="price"> {{ Dollars(Cart()) }} </h2>
-                     <button class="buy" :disabled="Cart() < 1"> Potvrdi Kupovinu </button>
+                     <button class="buy" v-on:click="Buy()" :disabled="Cart() < 1"> Potvrdi Kupovinu </button>
                   </div>
                </div>
 
@@ -78,49 +78,31 @@
 
             page: 'home',
             pages: { 
-               'shirt': 'Gornji Delovi',
-               'undershirt': 'Podmajice / Potkošulje',
-               'legs': 'Donji Delovi', 
-               'shoes': 'Obuća',
-               'bags': 'Torbe',
-               'armour': 'Pancir',
-               'hat': 'Šešir',
-               'glasses': 'Naoćare',
-               'ears': 'Uši',
-               'watch': 'Satovi',
-               'bracelet': 'Narukvice'
-            },
-
-            player: { 
-               money: 0,
-               clothing: [
-                  shirt = [0, 0],
-                  undershirt = [0, 0],
-                  legs = [0, 0],
-                  shoes = [0, 0],
-                  bags = [0, 0],
-                  armour = [0, 0],
-                  hat = [0, 0],
-                  glasses = [0, 0],
-                  ears = [0, 0],
-                  watch = [0, 0],
-                  bracelet = [0, 0]
-               ],
-
+               'Tops': 'Gornji Delovi',
+               'Undershirt': 'Podmajice / Potkošulje',
+               'Pants': 'Donji Delovi', 
+               'Shoes': 'Obuća',
+               'Bag': 'Torbe',
+               // 'armour': 'Pancir',
+               'Hat': 'Šešir',
+               'Glasses': 'Naoćare',
+               'Ears': 'Uši',
+               'Watch': 'Satovi',
+               'Bracelet': 'Narukvice'
             },
 
             Clothings: {
-               'shirt': { index: 11, value: 0, texture: 0, max: { value: 362, texture: 100 } },
-               'undershirt': { index: 8, value: 0, texture: 0, max: { value: 178, texture: 100 } },
-               'legs': { index: 4, value: 0, texture: 0, max: { value: 133, texture: 100 } }, 
-               'shoes': { index: 6, value: 0, texture: 0, max: { value: 98, texture: 100 } },
-               'bags': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
-               'armour': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
-               'hat': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
-               'glasses': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
-               'ears': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
-               'watch': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
-               'bracelet': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'Tops': { index: 11, value: 0, texture: 0, max: { value: 362, texture: 100 } },
+               'Undershirt': { index: 8, value: 0, texture: 0, max: { value: 178, texture: 100 } },
+               'Pants': { index: 4, value: 0, texture: 0, max: { value: 133, texture: 100 } }, 
+               'Shoes': { index: 6, value: 0, texture: 0, max: { value: 98, texture: 100 } },
+               'Bag': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               // 'armour': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'Hat': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'Glasses': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'Ears': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'Watch': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
+               'Bracelet': { index: 0, value: 0, texture: 0, max: { value: 100, texture: 100 } },
             }
          },
 
@@ -169,7 +151,7 @@
             },
 
             Buy: function () { 
-               mp.trigger('client:business.clothing:buy', this.Cart(), this.Items(), this.Business.id);
+               mp.trigger('client:business.clothing:buy', this.Cart(), JSON.stringify(this.Items()), this.Business.id);
             },
 
             Dollars: (i) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); }
