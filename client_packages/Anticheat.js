@@ -6,18 +6,21 @@ const FlaggedWords = ['Cit', 'Čit', 'Admin'],
                               mp.game.joaat("weapon_compactlauncher"), mp.game.joaat("weapon_railgun"), mp.game.joaat("weapon_minigun"),
                               mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_grenadelauncher"), mp.game.joaat("weapon_rpg"),
                               mp.game.joaat("weapon_raycarbine"), mp.game.joaat("weapon_raypistol")],
-      Player = mp.players.local;
+      Player = mp.players.local,
+      LastDamage = 0;
 
 let AnticheatSafe = false,
     AnticheatSafeTimer = null,
     Positions = [],
     Waypoint = null;
+    
 
 
 // Main timer
  setInterval(() => {
    if (Player.admin) return;
-   if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
+   Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
+   //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
 
    SpeedHack ();
    FlyHack ();
@@ -88,30 +91,30 @@ function FlyHack () {
 }
 
 function IsOnFoot() {
-   if(mp.players.local.isFalling() || mp.players.local.isRagdoll()) return false
-   else if(!mp.players.local.vehicle) return true
+   if(Player.isFalling() || Player.isRagdoll()) return false
+   else if(!Player.vehicle) return true
 }
 
 function SpeedHack () {
    if (AnticheatSafe) return;
    if (Player.vehicle) {
-      let Vehicle = Player.vehicle;
-      let VehSpeed = Vehicle.getSpeed();
-      let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
+      const Vehicle = Player.vehicle;
+      const VehSpeed = Vehicle.getSpeed();
+      const MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (VehSpeed > MaxSpeed + 10) {
         // mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
       }
    } 
    else {
-      let PedSpeed = Player.getSpeed();
+      const PedSpeed = Player.getSpeed();
       if (PedSpeed > 6.2) {
         // mp.events.callRemote('server:ac.detected', 11, 'warn');
       }
    }
 }
 
-function PlayerHealthArmour () {
+/*function PlayerHealthArmour () {
    if (AnticheatSafe) return;
    if (Player.getHealth() != Player.realHealth) {
 
@@ -119,7 +122,7 @@ function PlayerHealthArmour () {
    if (Player.getArmour() != Player.realArmour) {
 
    } 
-}
+}*/
 
 
 // Dodati Player.frozen sharovanu varijablu zbog anti unfreeze cheate
@@ -192,7 +195,15 @@ mp.events.add({
       
    },
 
-   'playerWeaponShot': (targetPosition, targetEntity) => {
-      
+   'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
+      if (targetEntity.entity == 'player' && targetEntity.entity.remoteId == Player.remoteId) {
+         LastHealth = targetEntity.getHealth();;
+         setTimeout(() => {
+            const NewHealth = targetEntity.getHealth();
+            if (NewHealth != (LastHealth - damage)) {
+               mp.events.callRemote('server:ac:detected', 7, 'Warn');
+            }
+         }, 250);
+      }
    }
 });

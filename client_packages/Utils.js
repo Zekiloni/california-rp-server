@@ -17,7 +17,7 @@ function LoadAnimDict (i) {
    return new Promise(async resolve => { 
       mp.game.streaming.requestAnimDict(i);
       while (!mp.game.streaming.hasAnimDictLoaded(i)) { 
-         await mp.game.waitAsync(25);
+         await mp.game.waitAsync(10);
       }
       resolve();
    })
