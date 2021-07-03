@@ -280,24 +280,40 @@ module.exports = {
       },
 
       {
+         name: 'vdoors',
+         description: 'vehicle vrata',
+         admin: 2,
+         call: (player, args) => {
+            const [id, action] = args;
+            const Vehicle = mp.vehicles.at(id);
+            switch (action) {
+               case 'hood': Vehicle.data.Hood = !Vehicle.data.Hood; break;
+               case 'trunk': Vehicle.data.Trunk = !Vehicle.data.Trunk; break;
+               case 'back': Vehicle.data.Back = !Vehicle.data.Back; break;
+               case 'back2': Vehicle.data.Back2 = !Vehicle.data.Back2; break;
+            }
+         }
+      },
+
+      {
          name: 'goto',
          description: 'Teleport do igraca.',
          admin: 3,
          params: ['igrac'],
          call: (player, args) => {
-            let target = mp.players.find(args[0]);
-            if (target) {
+            const Target = mp.players.find(args[0]);
+            if (Target && Target.id != player.id) {
                if (player.vehicle) { 
                   const Seat = player.seat, Vehicle = player.vehicle;
-                  Vehicle.position = new mp.Vector3(target.position.x + 2, target.position.y, target.position.z);
-                  Vehicle.dimension = target.dimension;
+                  Vehicle.position = new mp.Vector3(Target.position.x + 2, Target.position.y, Target.position.z);
+                  Vehicle.dimension = Target.dimension;
                   player.putIntoVehicle(Vehicle, Seat);
                } else { 
-                  player.position = target.position;
-                  player.dimension = target.dimension;
+                  player.position = Target.position;
+                  player.dimension = Target.dimension;
                }
-               target.SendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
-               player.SendMessage('Teleportovali ste se do ' + target.name + ' !', frp.Globals.Colors.tomato);
+               Target.SendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
+               player.SendMessage('Teleportovali ste se do ' + Target.name + ' !', frp.Globals.Colors.tomato);
             }
          }
       },

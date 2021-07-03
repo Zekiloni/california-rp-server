@@ -43,7 +43,7 @@ module.exports = {
             const [name, flag] = args;
             if (Animations[name]) { 
                const Animation = Animations[name];
-               player.playAnimation(Animation[0], Animation[1], 1, flag)
+               player.playAnimation(Animation[0], Animation[1], -1, parseInt(flag) || 0)
             } else { 
                player.Notification(frp.Globals.messages.ANIM_DOESNT_EXIST, frp.Globals.Notification.Error, 5);
             }
@@ -76,7 +76,6 @@ module.exports = {
          params: ['akcija'],
          call: (player, args) => {
             const Action = args[0];
-            
             switch (Action) { 
                case 'hud': player.call('client:player.interface:toggle'); break;
                case 'minimap': player.call('client:player.interface.radar:toggle'); break;

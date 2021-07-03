@@ -62,8 +62,9 @@ const GLOBALS = {
 
    MarkerColors: { 
       Business: [253, 201, 41, 185],
-      Faction: [46, 204, 41, 113],
-      Job: [254, 213, 46, 70]
+      Faction: [69, 222, 105, 113],
+      Job: [254, 213, 46, 70],
+      Houses: [199, 0, 0, 70]
    },
 
    Jobs: { 

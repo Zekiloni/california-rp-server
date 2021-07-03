@@ -25,33 +25,6 @@ function LoadAnimDict (i) {
 
 
 
-function Attachment (entity, value) { 
-   if (value) { 
-      const Position = new mp.Vector3(entity.position.x, entity.position.y, entity.position.z);
-      const Rotation = new mp.Vector3(entity.rotation.x, entity.rotation.y, entity.rotation.z);
-
-      entity.Attachment = mp.objects.new(mp.game.joaat(value.name), Position, {
-         rotation: Rotation,
-         alpha: 255,
-         dimension: entity.dimension
-      });
-
-      entity.Attachment.notifyStreaming = true;
-      utils.WaitEntity(entity.Attachment).then(() => {
-         const Bone = entity.getBoneIndex(entity.Bone);
-         entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, true);
-      })
-
-   }
-   else {
-      if (entity.Attachment) { 
-         if (entity.Attachment.doesExist()) { 
-            entity.Attachment.destroy();
-         }
-      }
-   }
-}
-
 
 function WaitEntity (entity) {
    return new Promise(resolve => {

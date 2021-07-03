@@ -24,6 +24,10 @@ module.exports = {
       Default: { 
          Supplies: 125
       }
+   },
+
+   Houses: { 
+      Multiplier: 255
    }
 
 };

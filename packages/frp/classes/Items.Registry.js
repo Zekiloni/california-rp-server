@@ -11,6 +11,7 @@ const ItemType = {
    Ammo: 4, Misc: 5, Food: 6, Drink: 7
 };
 
+
 let ItemRegistry = {};
 
 class Item {
@@ -41,6 +42,15 @@ class Item {
          this.component = data.component;
       }
       
+      if (this.type == ItemType.Drink) { 
+         this.thirst = data.thirst || 10;
+         this.alcohol = data.alcohol || 0;
+      }
+
+      if (this.type == ItemType.Food) { 
+         this.hunger = data.hunger;
+      }
+
       ItemRegistry[this.name] = this;
    }
 }
@@ -64,34 +74,34 @@ new Item('Bracelet', ItemType.Equipable, 'h4_prop_h4_bracelet_01a', 0.2, { prop:
 
 
 // FOOD
-new Item('Cheeseburger', ItemType.Food, 'prop_cs_burger_01', 0.2, false, function (player) { });
-new Item('Hamburger', ItemType.Food, 'prop_cs_burger_01', 0.2, false, function (player) { });
-new Item('Fries', ItemType.Food, 'prop_food_chips', 0.15, false, function (player) { });
-new Item('Pizza', ItemType.Food, 'prop_pizza_box_02', 0.3, false, function (player) { });
-new Item('Chicken Burger', ItemType.Food, 'prop_cs_burger_01', 0.2, false, function (player) { });
-new Item('Chips', ItemType.Food, 'v_ret_ml_chips4', 0.1, false, function (player) { });
-new Item('Donut', ItemType.Food, 'prop_donut_02', 0.1, false, function (player) { });
-new Item('Sandwich', ItemType.Food, 'prop_sandwich_01', 0.15, false, function (player) { });
-new Item('Taco', ItemType.Food, 'prop_taco_01', 0.2, false, function (player) { });
+new Item('Cheeseburger', ItemType.Food, 'prop_cs_burger_01', 0.2, { hunger: 45 }, false);
+new Item('Hamburger', ItemType.Food, 'prop_cs_burger_01', 0.2, { hunger: 30 }, false);
+new Item('Fries', ItemType.Food, 'prop_food_chips', 0.15, { hunger: 15 }, false);
+new Item('Pizza', ItemType.Food, 'prop_pizza_box_02', 0.3, { hunger: 20 }, false);
+new Item('Chicken Burger', ItemType.Food, 'prop_cs_burger_01', 0.2, { hunger: 25 }, false);
+new Item('Chips', ItemType.Food, 'v_ret_ml_chips4', 0.1, { hunger: 10 }, false);
+new Item('Donut', ItemType.Food, 'prop_donut_02', 0.1, { hunger: 15 }, false);
+new Item('Sandwich', ItemType.Food, 'prop_sandwich_01', 0.15, { hunger: 17 }, false);
+new Item('Taco', ItemType.Food, 'prop_taco_01', 0.2, { hunger: 20 }, false);
 
 
 // DRINKS
-new Item('Coffe', ItemType.Drink, 'prop_fib_coffee', 0.1, false, function (player) { });
-new Item('Soda Can', ItemType.Drink, 'ng_proc_sodacan_01b', 0.3, false, function (player) { });
-new Item('Cola Can', ItemType.Drink, 'ng_proc_sodacan_01a', 0.3, false, function (player) { });
-new Item('Water Bottle', ItemType.Drink, 'prop_ld_flow_bottle', 0.25, false, function (player) { });
-new Item('Energy Drink', ItemType.Drink, 'prop_energy_drink', 0.2, false, function (player) { });
-new Item('Juice Cup', ItemType.Drink, 'ng_proc_sodacup_01c', 0.15, false, function (player) { });
-new Item('Beer Bottle', ItemType.Drink, 'prop_cs_beer_bot_02', 0.3, false, function (player) { });
-new Item('Whiskey Bottle', ItemType.Drink, 'prop_whiskey_bottle', 0.6, false, function (player) { });
-new Item('Vodka Bottle', ItemType.Drink, 'prop_vodka_bottle', 0.5, false, function (player) { });
-new Item('Tequila Bottle', ItemType.Drink, 'prop_tequila_bottle', 0.45, false, function (player) { });
-new Item('Gin Bottle', ItemType.Drink, 'prop_bottle_macbeth', 0.4, false, function (player) { });
-new Item('Brandy Bottle', ItemType.Drink, 'prop_bottle_brandy', 0.5, false, function (player) { });
-new Item('Rum Bottle', ItemType.Drink, 'prop_rum_bottle', 0.4, false, function (player) { });
-new Item('Cognac Bottle', ItemType.Drink, 'prop_bottle_cognac', 0.6, false, function (player) { });
-new Item('Wine Bottle', ItemType.Drink, 'prop_bottle_richard', 0.7, false, function (player) { });
-new Item('Milk', ItemType.Drink, 'prop_cs_milk_01', 0.6, false, function (player) { });
+new Item('Coffe', ItemType.Drink, 'prop_fib_coffee', 0.1, { thirst: 10 }, function (player) { });
+new Item('Soda Can', ItemType.Drink, 'ng_proc_sodacan_01b', 0.3, { thirst: 10 }, function (player) { });
+new Item('Cola Can', ItemType.Drink, 'ng_proc_sodacan_01a', 0.3, { thirst: 10 }, function (player) { });
+new Item('Water Bottle', ItemType.Drink, 'prop_ld_flow_bottle', 0.25, { thirst: 10 }, function (player) { });
+new Item('Energy Drink', ItemType.Drink, 'prop_energy_drink', 0.2, { thirst: 10 }, function (player) { });
+new Item('Juice Cup', ItemType.Drink, 'ng_proc_sodacup_01c', 0.15, { thirst: 10 }, function (player) { });
+new Item('Beer Bottle', ItemType.Drink, 'prop_cs_beer_bot_02', 0.3, { thirst: 10, alcohol: 3 }, function (player) { });
+new Item('Whiskey Bottle', ItemType.Drink, 'prop_whiskey_bottle', 0.6, { thirst: 10, alcohol: 10 }, function (player) { });
+new Item('Vodka Bottle', ItemType.Drink, 'prop_vodka_bottle', 0.5, { thirst: 10, alcohol: 10 }, function (player) { });
+new Item('Tequila Bottle', ItemType.Drink, 'prop_tequila_bottle', 0.45, { thirst: 10, alcohol: 15 }, function (player) { });
+new Item('Gin Bottle', ItemType.Drink, 'prop_bottle_macbeth', 0.4, { thirst: 10, alcohol: 8 }, function (player) { });
+new Item('Brandy Bottle', ItemType.Drink, 'prop_bottle_brandy', 0.5, { thirst: 45, alcohol: 8 }, function (player) { });
+new Item('Rum Bottle', ItemType.Drink, 'prop_rum_bottle', 0.4, { thirst: 45, alcohol: 15 }, function (player) { });
+new Item('Cognac Bottle', ItemType.Drink, 'prop_bottle_cognac', 0.6, { thirst: 45, alcohol: 12 }, function (player) { });
+new Item('Wine Bottle', ItemType.Drink, 'prop_bottle_richard', 0.7, { thirst: 45, alcohol: 20 }, function (player) { });
+new Item('Milk', ItemType.Drink, 'prop_cs_milk_01', 0.6, { thirst: 25 }, function (player) { } );
 
 
 // MISCELLANEOUS

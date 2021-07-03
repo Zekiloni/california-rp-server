@@ -2,6 +2,8 @@
 
 const Player = mp.players.local;
 
+Player.Attachment = null;
+
 
 mp.events.addDataHandler({
    'Cuffed': (entity, newValue, oldValue) => {
@@ -16,8 +18,7 @@ mp.events.addDataHandler({
 
 mp.events.add({
    'entityStreamIn': (entity) => {
-      if (entity.type === 'player') Cuff(entity, entity.getVariable('cuffed'));
-
+      if (entity.type === 'player') Cuff(entity, entity.getVariable('Cuffed'));
    },
 
    'render': () => { 
@@ -53,7 +54,6 @@ function Cuff (entity, toggle) {
          let bone = mp.players.local.getBoneIndex(6286);
          entity.cuffs.attachTo(entity.handle, bone, -0.02, 0.06, 0.0, 75.0, 0.0, 76.0, true, true, false, false, 0, true);
       })
-
    }
    else {
       entity.setEnableHandcuffs(false);
@@ -65,3 +65,5 @@ function Cuff (entity, toggle) {
       }
    }
 }
+
+

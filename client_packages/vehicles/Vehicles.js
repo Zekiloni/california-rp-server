@@ -24,6 +24,11 @@ mp.events.add({
          if (entity.hasVariable('Windows')) Windows(entity, entity.getVariable('Windows'));
          if (entity.hasVariable('Fuel')) entity.Fuel = entity.getVariable('IndicatorLeft');
          if (entity.hasVariable('Mileage')) entity.Mileage = entity.getVariable('Mileage');
+         if (entity.hasVariable('Hood')) Doors(entity, 'hood', entity.getVariable('Hood'));
+         if (entity.hasVariable('Trunk')) Doors(entity, 'trunk', entity.getVariable('Trunk'));
+         if (entity.hasVariable('Back')) Doors(entity, 'back', entity.getVariable('Back'));
+         if (entity.hasVariable('Back2')) Doors(entity, 'back2', entity.getVariable('Back2'));
+
       }
    },
 
@@ -57,6 +62,22 @@ mp.events.addDataHandler({
 
    'Windows': (entity, value) => { 
       if (entity.type === 'vehicle') Windows(entity, value);
+   },
+
+   'Trunk': (entity, value) => { 
+      if (entity.type === 'vehicle') Doors(entity, 'trunk', value);
+   },
+
+   'Hood': (entity, value) => { 
+      if (entity.type === 'vehicle') Doors(entity, 'hood', value);
+   },
+
+   'Back': (entity, value) => { 
+      if (entity.type === 'vehicle') Doors(entity, 'back', value);
+   },
+
+   'Back2': (entity, value) => { 
+      if (entity.type === 'vehicle') Doors(entity, 'back2', value);
    },
 
    'Fuel': (entity, value) => { 
@@ -118,12 +139,16 @@ function Windows (vehicle, value) {
    }
 }
 
-function Trunk (vehicle, value) { 
-   value ? vehicle.setDoorOpen(5, false, false) : vehicle.setDoorShut(5, false);
-}
 
-function Hood (vehicle, value) { 
-   value ? vehicle.setDoorOpen(4, false, false) : vehicle.setDoorShut(4, false);
-}
+function Doors (vehicle, index, value) { 
+   let Number = 4;
+   switch (index) {
+      case 'hood': Number = 4; break;
+      case 'trunk': Number = 5; break;
+      case 'back': Number = 6; break;
+      case 'back2': Number = 7; break;
+   }
+   value ? vehicle.setDoorOpen(Number, false, false) : vehicle.setDoorShut(Number, false);
+};
 
 
