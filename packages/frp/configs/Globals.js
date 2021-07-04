@@ -89,6 +89,8 @@ const GLOBALS = {
       ALREADY_OWNED: 'Neko već poseduje ovaj objekat.',
       ERROR: 'Došlo je do greške.',
       ENGINE_ON: 'Upalili ste motor vozila.',
+      DMV_USAGE: 'Department of Motor Vehicles <br>Korišćenje: /dmv',
+      DMV_NOT_WORKING: 'Department of Motor Vehicles, radno vreme od 6 - 20h',
       ENGINE_OFF: 'Ugasili ste motor vozila.',
       ANIM_DOESNT_EXIST: 'Animacija nije pronadjena',
       CMD_SYNTAX: '<b>[KOMANDA]</b> ',

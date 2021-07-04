@@ -37,6 +37,14 @@ module.exports = {
       },
 
       {
+         name: 'dmv',
+         desc: 'aa',
+         call: (player, args) => {
+            player.call('zapocniSkoluAuto');
+         }
+      },
+
+      {
          name: 'anim',
          desc: 'Povez preko ociju',
          call: (player, args) => {

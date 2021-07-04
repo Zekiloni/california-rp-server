@@ -2,8 +2,6 @@
 
 const Player = mp.players.local;
 
-Player.Attachment = null;
-
 
 mp.events.addDataHandler({
    'Cuffed': (entity, newValue, oldValue) => {

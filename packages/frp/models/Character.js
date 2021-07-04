@@ -146,6 +146,12 @@ frp.Characters.prototype.Interaction = async function (player, model, bone, x = 
    } else { 
       player.setVariable('Interaction', null);
    }
+
+   mp.events.addProc('server:player.interaction:stop', (player) => {
+      player.setVariable('Interaction', null);
+      player.stopAnimation();
+      return null;
+   });
 };
 
 

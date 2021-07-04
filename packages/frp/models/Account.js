@@ -75,15 +75,14 @@ frp.Accounts.prototype.SetAdmin = async function (player, value) {
 (async () => {
    await frp.Accounts.sync();
 
-   // await frp.Accounts.create({ Username: 'Zekiloni', Password: 'test', Administrator: 6 });
-   // await frp.Accounts.create({ Username: 'Kopra', Password: 'test', Administrator: 6 });
-   // await frp.Accounts.create({ Username: 'Petron', Password: 'test', Administrator: 5 });
-   // await frp.Accounts.create({ Username: 'Bolic', Password: 'test', Administrator: 4 });
-   // await frp.Accounts.create({ Username: 'GranTH', Password: 'test', Administrator: 4 });
-   // await frp.Accounts.create({ Username: 'Knife', Password: 'test', Administrator: 6 });
-   // await frp.Accounts.create({ Username: 'Hawkins', Password: 'test', Administrator: 4 });
-   // await frp.Accounts.create({ Username: 'bluakt', Password: 'test', Administrator: 4 });
-   // await frp.Accounts.create({ Username: 'Valele', Password: 'test', Administrator: 3 });
+   await frp.Accounts.create({ Username: 'Zekiloni', Password: 'test', Administrator: 6 });
+   await frp.Accounts.create({ Username: 'Kopra', Password: 'test', Administrator: 6 });
+   await frp.Accounts.create({ Username: 'Petron', Password: 'test', Administrator: 5 });
+   await frp.Accounts.create({ Username: 'Bolic', Password: 'test', Administrator: 4 });
+   await frp.Accounts.create({ Username: 'GranTH', Password: 'test', Administrator: 4 });
+   await frp.Accounts.create({ Username: 'Deker', Password: 'test', Administrator: 6 });
+   await frp.Accounts.create({ Username: 'Mile', Password: 'test', Administrator: 6 });
+   await frp.Accounts.create({ Username: 'Tihi', Password: 'test', Administrator: 6 });
 
 })();
 

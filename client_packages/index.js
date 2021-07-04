@@ -32,8 +32,7 @@ let CayoPerico = require('./cayo-perico/heistisland');
 //let ChatBubble = require('./player/ChatBubble');
 
 // VEHICLES
-let Vehicles = require('./vehicles/Vehicles')
-let DepartmentOfVehicles = require('./vehicles-department/DMV'); 
+let Vehicles = require('./vehicles/Vehicles');
 
 // HOUSES
 let Houses = require('./houses/Houses');

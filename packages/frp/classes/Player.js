@@ -1,8 +1,15 @@
 
 
+
+
 mp.Player.prototype.Notification = function (message, type, time = 4) {
    this.call('client:player.interface:notification', [message, type, time]);
 };
+
+
+// mp.Player.prototype.Instructions = function (info) {
+
+// };
 
 
 mp.Player.prototype.Character = async function () {
@@ -18,13 +25,14 @@ mp.Player.prototype.Account = async function () {
 
 
 mp.Player.prototype.SendMessage = function (message, color) {
-   this.outputChatBox(`!{${color}}${message}`);
+   this.outputChatBox('!{' + color + '}' + message);
 };
 
 
 mp.Player.prototype.IsNear = function (target) {
-   return this.dist(target.position) < 3.5 ? true : false;
+   return this.dist(target.position) < 3.0 ? true : false;
 };
+
 
 mp.Player.prototype.NearbyPlayers = function (radius) {
    let near = [];
@@ -91,11 +99,6 @@ mp.events.add({
    'playerChat': (player, text) => {
       if (player.data.logged && player.data.spawned) {
          player.ProximityMessage(7, player.name + ' kaze: ' + text, frp.Globals.Colors.white);
-      }
-   },
-   'server:player.attachment': (player, data) => {
-      if (player.data.logged && player.data.spawned) {
-         player.setVariable('Attachment', data);
       }
    }
 });

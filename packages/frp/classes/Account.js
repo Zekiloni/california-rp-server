@@ -1,6 +1,6 @@
 'use strict';
 
-const Account = require('../models/Account');
+require('../models/Account');
 
 mp.events.add({
    'playerJoin': async (player) => {
@@ -27,14 +27,13 @@ mp.events.addProc({
          if (success) {
             let characters = await frp.Characters.findAll({ where: { Account: account.id } });
             player.account = account.id;
-            return await { Account: account, Characters: characters };
+            return { Account: account, Characters: characters };
          } else {
             return false;
          }
       } else {
          return false;
       }
-
    },
 
    'server:player.character:delete': async (player, character) => {

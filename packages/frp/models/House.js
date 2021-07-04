@@ -106,7 +106,7 @@ frp.Houses.New = async function (player, type, price) {
 
 (async () => {
 
-   frp.Houses.sync();
+   await frp.Houses.sync();
 
    const Houses = await frp.Houses.findAll();
    Houses.forEach((House) => {

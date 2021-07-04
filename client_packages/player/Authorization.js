@@ -29,12 +29,18 @@ mp.events.add({
    },
 
    'client:player.login:credentials': async (username, password) => { 
-      let response = await mp.events.callRemoteProc('server:player.login:credentials', username, password);
+      const response = await mp.events.callRemoteProc('server:player.login:credentials', username, password);
+      mp.gui.chat.push(JSON.stringify(response));
       if (response) { 
          browser.execute('start.Init(' + JSON.stringify(response) + ')');
       } else { 
          browser.execute('start.Notify(`Password nije tacan ili ne postojis`);');
       }
+      // mp.events.callRemoteProc('server:player.login:credentials', username, password).then((response) => { 
+      //    browser.execute('start.Init(' + JSON.stringify(response) + ')');
+      // }).catch(() => { 
+      //    browser.execute('start.Notify(`Password nije tacan ili ne postojis`);');
+      // });
    },
 
    'client:player.character:select': (character) => { 

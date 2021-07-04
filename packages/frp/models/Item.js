@@ -425,7 +425,7 @@ frp.Items.prototype.Eat = async function (player) {
    const Item = ItemRegistry[this.Item];
 
    const animation = Animations['eat'];
-   player.playAnimation(animation[0], animation[1], 1, 0);
+   player.playAnimation(animation[0], animation[1], 1, 49);
    Character.Interaction(player, Item.hash, 6286);
 
 
@@ -436,8 +436,8 @@ frp.Items.prototype.Drink = async function (player) {
    const Character = await player.Character();
    const Item = ItemRegistry[this.Item];
 
-   const animation = Animations['drink'];
-   player.playAnimation(animation[0], animation[1], 1, 49);
+   const animation = Animations['drink2'];
+   player.playAnimation(animation[0], animation[1], 1, 39);
 
    Character.increment('Hunger', { by: Item.Hunger });
 };
