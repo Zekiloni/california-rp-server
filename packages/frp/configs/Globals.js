@@ -79,6 +79,8 @@ const GLOBALS = {
       COMMAND_USAGE: 'Komanda: ',
       NOT_IN_VEHICLE: 'Niste se u vozilu.',
       NOT_IN_SPEC_FACTION: 'Niste član odredjene fakcije.',
+      USER_DOESNT_EXIST: 'Korisničko ime nije pronadjeno.',
+      INCCORRECT_PASSWORD: 'Korisnička šifra nije tačna.',
       SUCCESFULLY_JOB: 'Uspešno ste se zaposlili kao ',
       ALREADY_EMPLOYED: 'Već ste zaposleni.',
       UNEMPLOYED: 'Niste zaposleni.',

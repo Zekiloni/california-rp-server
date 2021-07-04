@@ -5,7 +5,8 @@ module.exports = {
    default: {
       spawn: new mp.Vector3(-1355.6395, -519.5300, 23.4648),
       heading: 120,
-      dimension: 0
+      dimension: 0,
+      Health: 99
    },
 
    database: {

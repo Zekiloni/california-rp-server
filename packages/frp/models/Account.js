@@ -34,12 +34,12 @@ frp.Accounts = frp.Database.define('account', {
 
 
 frp.Accounts.beforeCreate(async (account, options) => {
-   const hashed = await bcrypt.hash(account.Password, salt);
-   account.Password = hashed;
+   const Hashed = await bcrypt.hash(account.Password, salt);
+   account.Password = Hashed;
 });
 
 
-frp.Accounts.prototype.login = function (password) {
+frp.Accounts.prototype.Login = function (password) {
    return bcrypt.compareSync(password, this.Password);
 };
 
@@ -75,14 +75,14 @@ frp.Accounts.prototype.SetAdmin = async function (player, value) {
 (async () => {
    await frp.Accounts.sync();
 
-   await frp.Accounts.create({ Username: 'Zekiloni', Password: 'test', Administrator: 6 });
-   await frp.Accounts.create({ Username: 'Kopra', Password: 'test', Administrator: 6 });
-   await frp.Accounts.create({ Username: 'Petron', Password: 'test', Administrator: 5 });
-   await frp.Accounts.create({ Username: 'Bolic', Password: 'test', Administrator: 4 });
-   await frp.Accounts.create({ Username: 'GranTH', Password: 'test', Administrator: 4 });
-   await frp.Accounts.create({ Username: 'Deker', Password: 'test', Administrator: 6 });
-   await frp.Accounts.create({ Username: 'Mile', Password: 'test', Administrator: 6 });
-   await frp.Accounts.create({ Username: 'Tihi', Password: 'test', Administrator: 6 });
+   // await frp.Accounts.create({ Username: 'Zekiloni', Password: 'test', Administrator: 6 });
+   // await frp.Accounts.create({ Username: 'Kopra', Password: 'test', Administrator: 6 });
+   // await frp.Accounts.create({ Username: 'Petron', Password: 'test', Administrator: 5 });
+   // await frp.Accounts.create({ Username: 'Bolic', Password: 'test', Administrator: 4 });
+   // await frp.Accounts.create({ Username: 'GranTH', Password: 'test', Administrator: 4 });
+   // await frp.Accounts.create({ Username: 'Deker', Password: 'test', Administrator: 6 });
+   // await frp.Accounts.create({ Username: 'Mile', Password: 'test', Administrator: 6 });
+   // await frp.Accounts.create({ Username: 'Tihi', Password: 'test', Administrator: 6 });
 
 })();
 

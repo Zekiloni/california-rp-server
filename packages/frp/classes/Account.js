@@ -21,19 +21,28 @@ mp.events.add({
 
 mp.events.addProc({
    'server:player.login:credentials': async (player, username, password) => {
-      let account = await frp.Accounts.findOne({ where: { Username: username } });
-      if (account) {
-         let success = await account.login(password);
-         if (success) {
-            let characters = await frp.Characters.findAll({ where: { Account: account.id } });
-            player.account = account.id;
-            return { Account: account, Characters: characters };
+      return new Promise(async (resolve, reject) => { 
+         const Account = await frp.Accounts.findOne({ where: { Username: username } });
+         if (Account) {
+            console.log('Akaunt pronadjen');
+            const Logged = Account.Login(password);
+            console.log('Logged status ' + Logged);
+            if (Logged) {
+               console.log('Uso');
+               frp.Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
+                  console.log(Account);
+                  player.account = Account.id;
+                  resolve({ Account: Account, Characters: Characters });
+               });
+            } else {
+               console.log(frp.Globals.messages.INCCORRECT_PASSWORD);
+               reject(frp.Globals.messages.INCCORRECT_PASSWORD);
+            }
          } else {
-            return false;
+            console.log(frp.Globals.messages.USER_DOESNT_EXIST);
+            reject(frp.Globals.messages.USER_DOESNT_EXIST);
          }
-      } else {
-         return false;
-      }
+      });
    },
 
    'server:player.character:delete': async (player, character) => {

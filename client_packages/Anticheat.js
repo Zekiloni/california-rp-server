@@ -17,15 +17,15 @@ let AnticheatSafe = false,
 
 
 // Main timer
- setInterval(() => {
-   if (Player.admin) return;
-   Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
-   //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
+//  setInterval(() => {
+//    if (Player.admin) return;
+//    Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
+//    //if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
 
-   SpeedHack ();
-   FlyHack ();
-   UnAllowedWeapons ();
- }, 1000);
+//    SpeedHack ();
+//    FlyHack ();
+//    UnAllowedWeapons ();
+//  }, 1000);
 
 /*
 // Teleport hack timer

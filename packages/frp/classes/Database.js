@@ -5,7 +5,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(frp.Config.database.name, frp.Config.database.user, frp.Config.database.password, {
    host: frp.Config.database.host,
    dialect: 'mysql',
-   logging: true,
+   logging: false,
    pool: {
       max: 5,
       min: 0,
