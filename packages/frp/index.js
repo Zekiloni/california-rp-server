@@ -9,7 +9,7 @@ frp.Database = require('./classes/Database');
 
 
 frp.GameObjects = {
-   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: []
+   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: {}
 };
 
 
@@ -89,5 +89,6 @@ process.on('SIGHUP', Exit);
 process.on('SIGQUIT', Exit);
 process.on('SIGTERM', Exit);
 process.on('SIGINT', Exit);
+
 
 

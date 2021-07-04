@@ -3,7 +3,7 @@
 const { DataTypes } = require('sequelize');
 
 const VehicleEntities = { 
-   Player: 0, Business: 1, Faction: 2
+   Player: 0, Business: 1, Faction: 2, Job: 3
 };
 
 frp.Vehicles = frp.Database.define('vehicle', {
@@ -59,7 +59,18 @@ frp.Vehicles = frp.Database.define('vehicle', {
 
 frp.Vehicles.Create = async function (model, entity, owner, position) {
    const Vehicle = await frp.Vehicles.create({ Model: model, Owner: owner, Position: position });
+};
 
+frp.Vehicles.CreateTemporary = async function (model, position, headnig, color, plate, entity = VehicleEntities.Player, player = null, dimension = frp.Settinigs.default.dimension) {
+   const [primary, secondary] = color;
+   const Vehicle = mp.vehicles.new(mp.joaat(model), position, { alpha: 255, color: [[0, 0, 0], [0, 0, 0]], numberPlate: plate, dimension: dimension });
+   Vehicle.setColor(primary, secondary);
+   Vehicle.Entity = entity;
+   Vehicle.Captain = player;
+   Vehicle.heading = headnig;
+
+   frp.GameObjects.TemporaryVehicles[Vehicle.id] = Vehicle;
+   return Vehicle;
 };
 
 

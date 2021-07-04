@@ -1,6 +1,8 @@
 
 const Player = mp.players.local;
 
+Player.Attachment = null;
+
 
 // BLACK SCREEN AFTER DEATH
 mp.game.gameplay.setFadeOutAfterDeath(false); 
@@ -55,9 +57,11 @@ mp.events.addDataHandler({
       }
    },
 
-   'Attachment': (entity, newValue, oldValue) => {
+   'Interaction': (entity, newValue, oldValue) => {
       if (entity && entity.type == 'player') {
-         entity.Attachment(entity, newValue);
+         if (newValue !== oldValue) { 
+            Interaction(entity, newValue);
+         }
       }
    }
 });
@@ -66,6 +70,12 @@ mp.events.addDataHandler({
 
 
 mp.events.add({
+
+   'entityStreamIn': (entity) => { 
+      if (entity.type === 'player') Interaction(entity, entity.getVariable('Interaction'));
+
+   },
+
    'client:player:freeze': (toggle) => {
       Player.freezePosition(toggle);
    },
@@ -77,6 +87,49 @@ mp.events.add({
 
 
 
+mp.keys.bind(0x58, false, async function () {
+   if (Player.logged && Player.spawned) { 
+      if (mp.players.local.isTypingInTextChat) return;
+      if (Player.getVariable('Interaction') != null) {
+         const response = await mp.events.callRemoteProc('server:player.interaction:stop');
+         Player.Attachment = response;
+      }
+   }
+});
+
+
+
+function Interaction (entity, value) { 
+      
+   if (value) { 
+      try { 
+         mp.gui.chat.push(JSON.stringify(value.Model));
+         mp.gui.chat.push(JSON.stringify(value.Offset));
+         mp.gui.chat.push(JSON.stringify(value.Bone));
+   
+         entity.Attachment = mp.objects.new(mp.game.joaat(value.Model), entity.position, {
+            rotation: entity.rotation,
+            alpha: 255,
+            dimension: entity.dimension
+         });
+   
+         entity.Attachment.notifyStreaming = true;
+         utils.WaitEntity(entity.Attachment).then(() => {
+            const Bone = entity.getBoneIndex(value.Bone);
+            entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, value.Rotation || false);
+         })
+      } catch (e) { 
+         JSON.stringify(e);
+      }
+   }
+   else {
+      if (entity.Attachment) { 
+         if (entity.Attachment.doesExist()) { 
+            entity.Attachment.destroy();
+         }
+      }
+   }
+}
 
 
 

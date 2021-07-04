@@ -35,7 +35,12 @@ const Animations = {
    'walkeat1':['amb@code_human_wander_eating_donut@male@idle_a','idle_c','food'],
    'walkeat2':['amb@code_human_wander_eating_donut@male@idle_a','idle_b','food'],
    'walkeat3':['amb@code_human_wander_eating_donut@male@idle_a','idle_a','food'],
+   'eat': ['amb@medic@standing@timeofdeath@idle_a', 'idle_a', 'food'],
+   'eat2': ['mp_player_inteat@burger', 'mp_player_int_eat_burger', 'food'],
    'coffee1':['amb@world_human_aa_coffee@idle_a','idle_a','food'],
+   'drink':['amb@world_human_drinking@beer@male@idle_a', 'idle_a', 'food'],
+   'drink2':['amb@code_human_wander_drinking@beer@male@idle_a', 'idle_a', 'food'],
+   
 
 
    // Expressions

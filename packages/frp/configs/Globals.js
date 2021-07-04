@@ -62,8 +62,9 @@ const GLOBALS = {
 
    MarkerColors: { 
       Business: [253, 201, 41, 185],
-      Faction: [46, 204, 41, 113],
-      Job: [254, 213, 46, 70]
+      Faction: [69, 222, 105, 113],
+      Job: [254, 213, 46, 70],
+      Houses: [199, 0, 0, 70]
    },
 
    Jobs: { 
@@ -88,6 +89,8 @@ const GLOBALS = {
       ALREADY_OWNED: 'Neko već poseduje ovaj objekat.',
       ERROR: 'Došlo je do greške.',
       ENGINE_ON: 'Upalili ste motor vozila.',
+      DMV_USAGE: 'Department of Motor Vehicles <br>Korišćenje: /dmv',
+      DMV_NOT_WORKING: 'Department of Motor Vehicles, radno vreme od 6 - 20h',
       ENGINE_OFF: 'Ugasili ste motor vozila.',
       ANIM_DOESNT_EXIST: 'Animacija nije pronadjena',
       CMD_SYNTAX: '<b>[KOMANDA]</b> ',

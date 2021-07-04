@@ -92,12 +92,12 @@ frp.Characters.prototype.Spawn = async function (player) {
 
    // Temp
    player.setVariable('Job_Vehicle', null);
-   player.setVariable('Attachment', null);
+   player.setVariable('Interaction', null);
    player.setVariable('Phone_Ringing', false);
 
-   this.SetWalkingStyle(player, this.Walking_Style);
-   this.SetMood(player, this.Mood);
-   this.Cuff(player, this.Cuffed);
+   // this.SetWalkingStyle(player, this.Walking_Style);
+   // this.SetMood(player, this.Mood);
+   // this.Cuff(player, this.Cuffed);
 
 
    player.setVariable('Wounded', this.Wounded);
@@ -136,6 +136,22 @@ frp.Characters.prototype.Spawn = async function (player) {
          break;
       }
    }
+};
+
+
+frp.Characters.prototype.Interaction = async function (player, model, bone, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) {
+   if (model) { 
+      const Offset = { X: x, Y: y, Z: z, rX: rx, rY: ry, rZ: rz };
+      player.setVariable('Interaction', { Model: model, Bone: bone, Offset: Offset });
+   } else { 
+      player.setVariable('Interaction', null);
+   }
+
+   mp.events.addProc('server:player.interaction:stop', (player) => {
+      player.setVariable('Interaction', null);
+      player.stopAnimation();
+      return null;
+   });
 };
 
 

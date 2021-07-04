@@ -5,6 +5,7 @@ const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Regis
 
 const Torsos = require('../data/Torsos.json');
 const Clothing = require('../data/Clothing');
+const Animations = require('../data/Animations');
 
 
 frp.Items = frp.Database.define('item', {
@@ -245,20 +246,52 @@ frp.Items.Near = async function (player) {
 frp.Items.prototype.Use = async function (player) {
    return new Promise(async (resolve) => { 
       const Item = ItemRegistry[this.Item];
-      if (Item.type == ItemType.Weapon) {
-         this.Entity = ItemEntities.Wheel;
-         Item.use(player, this.Number);
-         await this.save();
-      } else if (Item.type == ItemType.Equipable) { 
-         await this.Equip(player);
-      } else {
-         if (Item.use == false) return;
+      
+      let Decrement = false;
+
+      switch (Item.type) { 
+         case ItemType.Weapon: { 
+            this.Entity = ItemEntities.Wheel;
+            Item.use(player, this.Number);
+            await this.save();
+            Decrement = false;
+            break;
+         }
+
+         case ItemType.Equipable: {
+            await this.Equip(player);
+            Decrement = false;
+            break;
+         }
+
+         case ItemType.Food: { 
+            await this.Eat(player);
+            Decrement = true;
+            break;
+         }
+
+         case ItemType.Drink: { 
+            await this.Drink(player);
+            Decrement = true;
+            break;
+         }
+
+         default: {
+
+            if (Item.use == false) { 
+               return;
+            } else { 
+               Item.use(player);
+            }
+         }
+      }
+
+      if (Decrement) { 
          if (this.Quantity > 1) { 
             await this.increment('Quantity', { by: -1 });
          } else { 
             await this.destroy();
          }
-         Item.use(player);
       }
 
       resolve(frp.Items.Inventory(player));
@@ -387,6 +420,27 @@ frp.Items.Weight = async function (player) {
 };
 
 
+frp.Items.prototype.Eat = async function (player) { 
+   const Character = await player.Character();
+   const Item = ItemRegistry[this.Item];
+
+   const animation = Animations['eat'];
+   player.playAnimation(animation[0], animation[1], 1, 49);
+   Character.Interaction(player, Item.hash, 6286);
+
+
+   Character.increment('Hunger', { by: Item.Hunger });
+};
+
+frp.Items.prototype.Drink = async function (player) { 
+   const Character = await player.Character();
+   const Item = ItemRegistry[this.Item];
+
+   const animation = Animations['drink2'];
+   player.playAnimation(animation[0], animation[1], 1, 39);
+
+   Character.increment('Hunger', { by: Item.Hunger });
+};
 
 (async () => { 
 

@@ -35,7 +35,7 @@ class Doors {
             }
         });
     }
-    init() {
+    async init() {
         let counter = 0;
         for (let door of DOORS) {
             let d = new Door(door.id, door.name, door.position, door.model, door.locked);
@@ -44,7 +44,7 @@ class Doors {
             }
             counter++;
         }
-        frp.Main.Terminal(3, counter + ' Doors Loaded !');
+        await frp.Main.Terminal(3, counter + ' Doors Loaded !');
     }
     lock() {
     }

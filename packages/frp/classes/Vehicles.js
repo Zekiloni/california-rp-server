@@ -1,6 +1,7 @@
 
-let Vehicle = require('../models/Vehicle');
-
+require('../models/Vehicle');
+require('../modules/Department');
+ 
 class Vehicles { 
    constructor () { 
       mp.events.add({
