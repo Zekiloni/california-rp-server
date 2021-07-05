@@ -38,9 +38,10 @@ module.exports = {
 
       {
          name: 'dmv',
-         desc: 'aa',
+         desc: 'Departman Motornih Vozila',
          call: (player, args) => {
-            player.call('zapocniSkoluAuto');
+            if (mp.world.time.hour < 6 || mp.world.time.hour > 20) return;
+            player.call('client:vehicle.department:menu');
          }
       },
 

@@ -18,8 +18,16 @@ const Department = {
 const DrivingRoute = require('../data/Driving.Route');
 
 
+mp.events.add({
+   'server:vehicle.department.license:give': async (player, category, vehid) => { 
+      frp.Main.Sleep(4).then(() => { 
+         frp.GameObjects.TemporaryVehicles[vehid].destroy();
+      });
+   }
+})
+
 mp.events.addProc({
-   'client:vehicle.department.driving:start': (player) => { 
+   'server:vehicle.department.driving:start': (player) => { 
       let Model = Department.Vehicle.Models[Math.floor(Math.random() * Department.Vehicle.Models.length)];
       const Vehicle = frp.Vehicles.CreateTemporary(Model, Department.Vehicle.Position, Department.Vehicle.Rotation, [Department.Vehicle.Color, Department.Vehicle.Color], 'DMV' + frp.Main.GenerateNumber(3));
       player.SendMessage(frp.Globals.messages.DMV_INSTRUCTOR_GO_VEHICLE, frp.Globals.Colors.white[0]);
