@@ -6,7 +6,7 @@ mp.events.add({
    'playerJoin': async (player) => {
       const Banned = await frp.Bans.Check(player);
       if (Banned) player.kick('Bannedovan');
-      player.call('client:player.login:show');
+      if (player) player.call('client:player.login:show');
    },
 
    'playerReady': (player) => {
@@ -21,27 +21,22 @@ mp.events.add({
 
 mp.events.addProc({
    'server:player.login:credentials': async (player, username, password) => {
-      return new Promise(async (resolve, reject) => { 
-         const Account = await frp.Accounts.findOne({ where: { Username: username } });
-         if (Account) {
-            console.log('Akaunt pronadjen');
-            const Logged = Account.Login(password);
-            console.log('Logged status ' + Logged);
-            if (Logged) {
-               console.log('Uso');
-               frp.Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
-                  console.log(Account);
-                  player.account = Account.id;
-                  resolve({ Account: Account, Characters: Characters });
-               });
-            } else {
-               console.log(frp.Globals.messages.INCCORRECT_PASSWORD);
-               reject(frp.Globals.messages.INCCORRECT_PASSWORD);
+      return new Promise((resolve, reject) => {
+         frp.Accounts.findOne({ where: { Username: username } }).then((Account) => { 
+            if (Account) { 
+               const Logged = Account.Login(password);
+               if (Logged) { 
+                  frp.Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
+                     player.account = Account.id;
+                     resolve({ Account: Account, Characters: Characters });
+                  });
+               } else { 
+                  reject(frp.Globals.messages.INCCORRECT_PASSWORD);
+               }
+            } else { 
+               reject(frp.Globals.messages.USER_DOESNT_EXIST);
             }
-         } else {
-            console.log(frp.Globals.messages.USER_DOESNT_EXIST);
-            reject(frp.Globals.messages.USER_DOESNT_EXIST);
-         }
+         });
       });
    },
 

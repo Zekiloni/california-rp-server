@@ -10,6 +10,7 @@ mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapo
 
    // 2. Da li je boneIndex stomak? => Da/Ne => Da(Napraviti wounded state gde igrac krvari)
 
+   mp.gui.chat.push(JSON.stringify(targetEntity.type));
    if (targetEntity.type === 'player') { 
       mp.events.callRemote('server:player:damage', sourceEntity, targetEntity, sourcePlayer, weapon, boneIndex, damage);
    }

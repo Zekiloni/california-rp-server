@@ -59,8 +59,8 @@ frp.Characters = frp.Database.define('character', {
       Masked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Rented_Vehicle: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
-         get () { return frp.GameObjects.TemporaryVehicles.find(vehicle => vehicle.character === this.getDataValue('id')); },
-         set (x) { frp.GameObjects.TemporaryVehicles.push(x); }
+         get () { return frp.GameObjects.TemporaryVehicles; },
+         set (x) { return frp.GameObjects.TemporaryVehicles; }
       } 
    }, {
       // Options

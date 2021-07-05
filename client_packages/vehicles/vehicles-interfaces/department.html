@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- meta tags-->
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+      <!-- source -->
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+      <link rel="stylesheet" type="text/css" href="src/styles/department.css" />
+
+   </head>
+   <body>
+      <div id="department">
+         <div class="home" v-if="page == 'home'">
+            <h3> 
+               {{ Name }}
+               <small> {{ Location }} </small>
+            </h3>
+            <img v-on:click="page = 'registration'" src="src/images/vehicle-registration.png" />
+            <img v-on:click="page = 'licenses'" src="src/images/licenses.png"/>
+            <button class="close" v-on:click="Close"> Odustani </button>
+         </div>
+
+         <div class="vehicle-registration" v-if="page == 'registration'">
+
+         </div>
+      </div>
+         
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"></script>
+      <script>
+      let department = new Vue({
+         el: '#department',
+         data: {
+            page: 'home',
+            Name: 'Department of Motor Vehicles',
+            Location: 'Los Santos'
+       
+         },
+
+         created: function () {
+         },
+
+         methods: { 
+            Close: () => { mp.trigger('client:vehicle.department:show'); },
+         }
+      })
+   </script>
+   </body>     
+</html>

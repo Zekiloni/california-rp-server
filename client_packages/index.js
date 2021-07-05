@@ -33,6 +33,7 @@ let CayoPerico = require('./cayo-perico/heistisland');
 
 // VEHICLES
 let Vehicles = require('./vehicles/Vehicles');
+let DepartmentMV = require('./vehicles/Department');
 
 // HOUSES
 let Houses = require('./houses/Houses');

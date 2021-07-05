@@ -28,25 +28,12 @@ mp.events.add({
       }
    },
 
-   'client:player.login:credentials': async (username, password) => { 
-      try {
-         const response = await mp.events.callRemoteProc('server:player.login:credentials', username, password);
-         mp.gui.chat.push(JSON.stringify(response));
-         browser.execute('start.Init(' + JSON.stringify(response) + ')');
-      } catch (e) {
-         mp.gui.chat.push(e);
-         browser.execute('start.Notify(\"' + e +'\");');
-      }
-
-      // mp.events.callRemoteProc('server:player.login:credentials', username, password).then((Info) => { 
-      //    mp.gui.chat.push(JSON.stringify(Info));
-      //    browser.execute('start.Init(' + JSON.stringify(Info) + ')');
-      // }).catch((Error) => {
-      //    mp.gui.chat.push('greska');
-      //    browser.execute('start.Notify(\"' + Error +'\");');
-      //    mp.gui.chat.push(JSON.stringify(Error));
-      // });
-      // mp.gui.chat.push('Zavrseno');
+   'client:player.login:credentials': (username, password) => { 
+      mp.events.callRemoteProc('server:player.login:credentials', username, password).then((Info) => { 
+         browser.execute('start.Init(' + JSON.stringify(Info) + ')');
+      }).catch((error) => { 
+         browser.execute('start.Notify(\"' + error +'\");');
+      });
    },
 
    'client:player.character:select': (character) => { 
