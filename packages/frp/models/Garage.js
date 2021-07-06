@@ -5,7 +5,8 @@ const GarageTypes = require('../data/Garages.json')
 frp.Garages = frp.Database.define('garage', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Owner: { type: DataTypes.STRING, defaultValue: 0 },
-      Type: { type: DataTypes.STRING },
+      Type: { type: DataTypes.ENUM,
+      values: ['Mala', 'Srednja', 'Velika'] }, // Mala max 1 vozilo, Srednja max 2 vozila, Velika max 4 vozila
       Price: { type: DataTypes.STRING },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: true },
       Entrance: { 
@@ -20,11 +21,10 @@ frp.Garages = frp.Database.define('garage', {
          //set: function (value) { this.setDataValue('Veh_Spawn_Positions', JSON.stringify(value)); }
       },
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },
-      MaxVehicles: { type: DataTypes.INTEGER, defaultValue: 1 },
       GameObject: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
-         get () { return frp.GameObjects.Houses[this.getDataValue('id')]; },
-         set (x) { frp.GameObjects.Houses[this.getDataValue('id')] = x; }
+         get () { return frp.GameObjects.Garages[this.getDataValue('id')]; },
+         set (x) { frp.GameObjects.Garages[this.getDataValue('id')] = x; }
       }
    }, {
       // Options
@@ -42,10 +42,10 @@ frp.Garages.afterCreate(async (Garage, Options) => {
 
 
 frp.Garages.afterDestroy(async (Garage, Options) => {
-   if (House.GameObject) {
-      House.GameObject.colshape.destroy();
+   if (Garages.GameObject) {
+      /* House.GameObject.colshape.destroy();
       House.GameObject.blip.destroy();
-      House.GameObject.marker.destroy();
+      House.GameObject.marker.destroy(); */
    }
 });
 
