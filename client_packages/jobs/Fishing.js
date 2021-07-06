@@ -21,11 +21,11 @@ function isPlayerInOrLookingAtWater() {
       return false;
    }
 }
-
+/*
 setInterval(async () => {
    if (!player) return;
    isPlayerInOrLookingAtWater();
-}, 1000);
+}, 1000);*/
 
 function getCameraHitCoord () {
 	let position = player.getCoord();
