@@ -21,8 +21,8 @@ frp.Characters = frp.Database.define('character', {
 
       Health: { type: DataTypes.INTEGER, defaultValue: 100 },
       Armour: { type: DataTypes.INTEGER, defaultValue: 100 },
-      Hunger: { type: DataTypes.INTEGER, defaultValue: 100 },
-      Thirst: { type: DataTypes.INTEGER, defaultValue: 100 },
+      Hunger: { type: DataTypes.FLOAT, defaultValue: 100 },
+      Thirst: { type: DataTypes.FLOAT, defaultValue: 100 },
       Wounded: { 
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Wounded')); },
@@ -59,8 +59,8 @@ frp.Characters = frp.Database.define('character', {
       Masked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Rented_Vehicle: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
-         get () { return frp.GameObjects.TemporaryVehicles.find(vehicle => vehicle.character === this.getDataValue('id')); },
-         set (x) { frp.GameObjects.TemporaryVehicles.push(x); }
+         get () { return frp.GameObjects.TemporaryVehicles; },
+         set (x) { return frp.GameObjects.TemporaryVehicles; }
       } 
    }, {
       // Options
@@ -99,6 +99,7 @@ frp.Characters.prototype.Spawn = async function (player) {
    // this.SetMood(player, this.Mood);
    // this.Cuff(player, this.Cuffed);
 
+   player.RespawnTimer = null;
 
    player.setVariable('Wounded', this.Wounded);
    if (this.Wounded) { 
@@ -172,8 +173,14 @@ frp.Characters.prototype.Wound = async function (player, info = null) {
    if (this.Wounded) { 
       // play animation / freeze
    } else { 
-      // put info and wound him
+      if (info) { 
+
+      } else { 
+         this.Wounded = null;
+      }
    }
+
+   await this.save();
 };
 
 

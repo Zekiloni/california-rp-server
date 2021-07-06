@@ -8,25 +8,34 @@ const Department = {
    Position: new mp.Vector3(-761.8135, -1308.1590, 5.150),
    Vehicle: { 
       Position: new mp.Vector3(-759.0048, -1318.384, 4.3801),
-      Heading: -36,
+      Rotation: new mp.Vector3(-0.031622, 0.0304401, -43.57),
       Models: ['asea', 'intruder'],
       Color: 69
    }
 };
 
 
+const DrivingRoute = require('../data/Driving.Route');
 
-// PROBLEM
-// const DrivingRoute = require('../data/Driving.Route');
 
-// mp.events.addProc('client:vehicle.department.driving:start', (player) => {
-//    let Model = Department.Vehicle.Models[Math.floor(Math.random() * Department.Vehicle.Models.length)];
-//    const Plate = 'DMV' + frp.Main.GenerateNumber(3);
-//    const Vehicle = frp.Vehicles.CreateTemporary(Model, Department.Vehicle.Position, Department.Vehicle.Heading, [Department.Vehicle.Color, Department.Vehicle.Color], Plate);
-//    return [Vehicle, DrivingRoute];
-// });
+mp.events.add({
+   'server:vehicle.department.license:give': async (player, category, vehid) => { 
+      frp.Main.Sleep(4).then(() => { 
+         frp.GameObjects.TemporaryVehicles[vehid].destroy();
+      });
+   }
+})
 
-/////////////////////////////////////////////////////
+mp.events.addProc({
+   'server:vehicle.department.driving:start': (player) => { 
+      let Model = Department.Vehicle.Models[Math.floor(Math.random() * Department.Vehicle.Models.length)];
+      const Vehicle = frp.Vehicles.CreateTemporary(Model, Department.Vehicle.Position, Department.Vehicle.Rotation, [Department.Vehicle.Color, Department.Vehicle.Color], 'DMV' + frp.Main.GenerateNumber(3));
+      player.SendMessage(frp.Globals.messages.DMV_INSTRUCTOR_GO_VEHICLE, frp.Globals.Colors.white[0]);
+   
+      return [Vehicle.id, DrivingRoute];
+   }
+})
+
 
 class DMV { 
 

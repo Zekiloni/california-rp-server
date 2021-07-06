@@ -45,7 +45,6 @@ body {
    width: 275px;
    height: 110px;
    padding: 10px 0;
-   box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
    background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
    border: 1px solid rgb(60 60 60 / 15%);
 }
@@ -60,7 +59,7 @@ i.fa, i.fas {
 .close:hover { opacity: 0.2; }
 
 
-.clothing { width: 275px; height: 475px; background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%)); padding: 10px 0; margin: 0 5px; border: 1px solid rgb(60 60 60 / 10%); box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px; }
+.clothing {width: 275px;height: 475px;background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));padding: 10px 0;margin: 0 5px;border: 1px solid rgb(60 60 60 / 10%);}
 ul.clothes { padding: 0; list-style: none; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; width: 70%; height: 80%; margin: 0 auto; }
 ul.clothes li.cloth { display: flex; justify-content: center; align-items:center; width: 60px; height: 60px; border: 1px solid rgb(121 121 121 / 13%); transition: all 0.25s ease; box-shadow: 0 3px 7px rgb(12 12 12 / 10%); background: rgb(21 21 21 / 45%); margin: 15px; }
 ul.clothes li.cloth:hover { border-color: #fbc60c; }
@@ -70,7 +69,6 @@ li.cloth img { width: 45px; height: 45px; }
 .inventory {
    width: 425px;
    height: 475px;
-   box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 18%) 0px 2px 4px -1px;
    background: linear-gradient(179deg, rgb(10 10 10 / 45%), rgb(0 0 0 / 10%));
    overflow-y: scroll;
    overflow-x: hidden;
@@ -88,11 +86,17 @@ li.cloth img { width: 45px; height: 45px; }
    position: relative;
 }
 
-.inventory .items .item { 
-   width: 65px; height: 65px; display: flex; justify-content: center; align-items: center;
-   border: 1px solid rgb(121 121 121 / 13%); box-shadow: 0 3px 7px rgb(12 12 12 / 10%);
+.inventory .items .item {
+   width: 65px;
+   height: 65px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: 1px solid rgb(121 121 121 / 13%);
+   border-radius: 5px;
    background: rgb(21 21 21 / 45%);
-   transition: all 0.25s ease; position: relative;
+   transition: all 0.25s ease;
+   position: relative;
 }
 
 .items .item img { width: 50px; transition: all 0.15s ease; opacity: 0.65; }
@@ -102,7 +106,7 @@ li.cloth img { width: 45px; height: 45px; }
 .items .item:hover h3.quantity { opacity: 1; }
 
 .weapons {display: flex;justify-content: center;align-items: center;width: 100%;margin: 0 auto;flex-wrap: wrap;}
-.weapons .weapon {width: 50px;height: 50px;margin: 5px;border: 1px solid rgb(121 121 121 / 13%);box-shadow: 0 3px 7px rgb(12 12 12 / 10%);background: rgb(21 21 21 / 45%);transition: all 0.15s ease;}
+.weapons .weapon {width: 50px;height: 50px;margin: 5px;border: 1px solid rgb(121 121 121 / 13%);background: rgb(21 21 21 / 45%);transition: all 0.15s ease;border-radius: 5px;}
 .weapon .inner { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; position: relative; }
 .weapon .inner i.george-floyd {font-size: 40px;color: grey;text-shadow: none;opacity: 0.3;}
 .weapon:hover { border-color: #fbc60c; box-shadow: 0 1px 20px rgb(250 184 10 / 15%); }

@@ -11,7 +11,7 @@ mp.events.add({
    'client:player.miner.next': Next,
 
    'playerEnterCheckpoint': (checkpoint) => {
-      if (player.Job == 2 && Spots.length > 0 && current != null) { 
+      if (Player.Job == 2 && Spots.length > 0 && current != null) { 
          mp.gui.chat.push('Going to next')
          Mine();
       } 

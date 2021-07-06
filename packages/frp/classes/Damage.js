@@ -18,39 +18,34 @@ mp.characters[player.character].corpse = mp.peds.new(mp.game.joaat('mp_m_freemod
 
 
 
-class Deathmode { 
-   static async CreateCorpse (player) {
-      const Character = await frp.Characters.findOne({ where: { id: player.character } });
-      // player.call
+class Damage { 
+
+   static Configuration = { 
+      RespawnTime: 3 * 60 * 1000
    }
 
    constructor () { 
       mp.events.add({
-         'playerDeath': function (player, reason, killer) {
-            player.alpha = 0;
-            player.isDead = true;
-            Deathmode.CreateCorpse(player);
-            player.respawnTimer = setTimeout(() => {
-               if (player && mp.players.exists(player.id)) { 
-                  player.spawn(new mp.Vector3(-425.517, 1123.620, 325.8544));
-                  player.isDead = false;
+         'playerDeath': async function (Player, Reason, Killer) {
+
+            const Character = await Player.Character();
+            Player.RespawnTimer = setTimeout(() => {
+               
+               if (Player && Player.RespawnTimer != null) { 
+                  Character.SetHealth(Player, frp.Settings.default.health);
+                  Character.Wound(Player, false);
                }
-            }, 10 * 1000);
+
+            }, Damage.Configuration.RespawnTime);
+
+            
          },
 
-         'server:player.damage': (player, healthLoss, armorLoss) => {
+         'server:player:damage': (player, sourceEntity, targetEntity, sourcePlayer, weapon, boneIndex, damage) => {
             
          }
-      })
-
-      
+      });
    }
 }
 
-let deathmode = new Deathmode();
-
-class Damage { 
-
-}
-
-let damage = new Damage();
+Damage();
