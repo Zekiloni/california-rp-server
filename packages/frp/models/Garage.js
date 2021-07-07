@@ -64,20 +64,21 @@ frp.Garages.prototype.Refresh = function () {
 
 
       GameObjects.colshape.OnPlayerEnter = (player) => { 
-         const Price = frp.Main.Dollars(this.Price);
+         const Price = frp.Main.Dollars(this.Price); // Formatting
          const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Garaža je u privatnom vlasništvu';
-         const Locked = this.Locked ? 'Zatvorena' : 'Otvorena';
+         const Locked = this.Locked ? 'Zaključana' : 'Otključana';
 
          if (player.vehicle) {
             if (this.Owner == player.character) {
                // Park vehicle function
+               // ParkVehicle(player.vehicle)
             } else {
                player.SendMessage('Garaža nije u tvom vlasništvu.'); 
             }
          }
          else {
             if (!this.Locked) {
-               // PlayerEnterGarage(plazer)
+               // PlayerEnterGarage(player)
             } else {
                player.Notification(frp.Globals.messages.IS_LOCKED, frp.Globals.Notification.Error, 4);
             }
@@ -103,10 +104,12 @@ frp.Garages.New = async function (player, type, price) {
    Garage.Init();
 };
 
-frp.Garages.prototype.ParkVehicle = async function(vehicle) { // OVDE NASTAVITI
-   let ParkedVehicles = [];
+frp.Garages.prototype.ParkVehicle = async function(player, vehicle) { // OVDE NASTAVITI
+   const Vehicle = await frp.Vehicles.findOne({ where: { Owner: player.character, id: vehicle.id } });
+   if (Vehicle) {
+      Vehicle.Respawn();
+   }
    // Pushati vozilo (vehicle) u this.Vehicle
-   this.Vehicles = 0;
 };
 
 (async () => {
