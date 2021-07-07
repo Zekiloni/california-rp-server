@@ -227,7 +227,7 @@ frp.Items.prototype.Give = async function (player, target, quantity) {
 frp.Items.Near = async function (player) {
    return new Promise((resolve, reject) => { 
       const Position = player.position;
-      mp.objects.forEachInRange(Position, 3.0, async (object) => {
+      mp.objects.forEachInRange(Position, 1.7, async (object) => {
          if (object.dimension == player.dimension) {
             if (object.Item) {
                let Nearby = await frp.Items.findOne({ where: { id: object.Item }});
@@ -240,6 +240,19 @@ frp.Items.Near = async function (player) {
          }
       });
    })   
+};
+ 
+
+
+frp.Items.GetRandomByType = function (type) { 
+   let Items = [];
+   for (const i in ItemRegistry) { 
+      const Item = ItemRegistry[i];
+      if (Item.type == type) { 
+         Items.push(Item);
+      }
+   }
+   return Items[Math.floor(Math.random() * Items.length)];
 };
 
 

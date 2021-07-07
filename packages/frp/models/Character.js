@@ -387,7 +387,7 @@ frp.Characters.prototype.SetJob = async function (player, value) {
 };
 
 
-frp.Characters.prototype.LicenseAdd = async function (license) {
+frp.Characters.prototype.GiveLicense = async function (license) {
    let Licenses = this.Licenses;
    Licenses.push(license);
    this.Licenses = Licenses;
@@ -402,6 +402,13 @@ frp.Characters.prototype.RemoveLicense = async function (license) {
    Licenses.splice(i, 1);
    this.Licenses = Licenses;
    await this.save();
+};
+
+
+frp.Characters.prototype.HasLicense = function (i) { 
+   const Licenses = this.Licenses;
+   const License = Licenses.find(name => name === i);
+   return License ? true : false;
 };
 
 
@@ -445,12 +452,8 @@ frp.Characters.New = async function (player, Character) {
 
    Character.Clothing.forEach(async (Clothing) => { 
       const [item, value] = Clothing;
-      try { 
-         const Cloth = await frp.Items.New(item, 1, ItemEntities.Equiped, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
-         Cloth.Equip(player);
-      } catch (e) { 
-         console.log(e);
-      }
+      const Cloth = await frp.Items.New(item, 1, ItemEntities.Player, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
+      Cloth.Equip(player);
    })
 
    if (Created) return Created;
