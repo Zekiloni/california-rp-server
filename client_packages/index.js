@@ -27,7 +27,6 @@ let Streamer = require('./player/Streamer');
 let Damage = require('./player/Damage');
 
 // GAME CORE 
-let Chat = require('./player/Chat');
 let CayoPerico = require('./cayo-perico/heistisland');
 //let ChatBubble = require('./player/ChatBubble');
 

@@ -1,0 +1,28 @@
+
+body {
+   font-family: 'Roboto', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   line-height: 1.5;
+   color: #8e8e8e;
+   margin: 0;
+   width: 100%;
+   height: 100vh;
+   background: linear-gradient(179deg, rgb(12 12 12 / 85%), rgb(49 49 49 / 48%));
+   padding: 0;
+   display: grid;
+   position: relative;
+   overflow: hidden;
+}
+
+#food { 
+   margin: auto;
+   width: 350px;
+   height: 325px;
+   display: flex;
+   justify-self: center;
+   padding: 10px;
+}
+
+
+* { user-select: none; }

@@ -79,6 +79,11 @@ frp.Vehicles.afterCreate(async (Vehicle, Options) => {
 });
 
 
+frp.Vehicles.prototype.Dimension = function (i) { 
+   this.GameObject.dimension = i;
+};
+
+
 frp.Vehicles.prototype.Respawn = function () { 
    if (this.GameObject) { 
       this.GameObject.position = new mp.Vector3(this.Parking.x, this.Parking.y, this.Parking.z);;
@@ -154,6 +159,11 @@ frp.Vehicles.prototype.SetMileage = async function (value) {
    this.Mileage = value;
    this.GameObject.setVariable('Mileage', this.Mileage);
    await this.save();
+};
+
+
+frp.Vehicles.Dimension = function (i) { 
+   this.GameObject.dimension = i
 };
 
 

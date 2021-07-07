@@ -91,7 +91,7 @@ async function StartRoute () {
 }
 
 function NextPoint (point) { 
-   if (Test.Point.checkpoint == point) { 
+   if (Player.vehicle && Player.vehicle == Test.Vehicle && Test.Point.checkpoint == point) { 
 
       Test.Point.checkpoint.destroy();
       Test.Point.blip.destroy();

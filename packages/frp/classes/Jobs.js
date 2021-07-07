@@ -24,7 +24,7 @@ const List = {
 
    4: {
       id: 4, name: 'Deptartment of Sanitation', description: 'Garbage man.',
-      point: new mp.Vector3(-321.5518, -1545.599, 31.020), blip: 467, sprite: 11,
+      point: new mp.Vector3(-321.5518, -1545.599, 31.020), blip: 318, sprite: 11,
    },
 
    5: { 

@@ -115,12 +115,10 @@
             Push: function (content, type = null) {
 
                if (content.includes('color')) { 
-                  console.log('COLORRR ISs')
                   let span = content.split('"');
                   let color = span[1].split(' ');
-                  content.replace(color[1], '#' + color[1]);
+                  content = content.replace(color[1], '#' + color[1]);
                }
-               console.log(content)
 
                const message = { timestamp: Date.now(), content: content, type: type }
                this.Messages.push(message);

@@ -1,11 +1,45 @@
 
 
+mp.gui.chat.show(false);
+
 const Player = mp.players.local;
+
 let browser = mp.browsers.new('package://player/game-interface/main.html');
+let Chat = mp.browsers.new('package://player/game-interface/chat.html');
+Chat.markAsChat();
+
 let active = false, Timer = null;
 let Radar = true;
 
+let InterfaceStatus = 0;
+
 global.GameInterface = browser;
+
+mp.keys.bind(0x76, true, function() {
+   if (Player.logged && Player.spawned) { 
+      InterfaceStatus ++;
+      if (InterfaceStatus > 2) InterfaceStatus = 0;
+      switch (InterfaceStatus) { 
+         case 0: {
+            active = true;
+            browser.execute('hud.toggle = true;');
+            Chat.execute('chat.Toggle = true;');
+            mp.game.ui.displayRadar(true);
+            break;
+         } 
+         case 1: { 
+            Chat.execute('chat.Toggle = false;'); 
+            break;
+         }
+         case 2: { 
+            active = false;
+            browser.execute('hud.toggle = false;');
+            mp.game.ui.displayRadar(false);
+            break; 
+         }
+      }
+   }
+});
 
 mp.events.add({
    'client:player.interface:toggle': () => { 
@@ -18,8 +52,6 @@ mp.events.add({
    },
 
    'client:player.interface:notification': Notify,
-
-   'client:player.interface.radar:toggle': DisplayRadar,
 
    'client:player.interface:black': () => { browser.execute('hud.black = !hud.black;'); },
 
@@ -123,12 +155,6 @@ function Vehicle () {
 
 function Notify (message, type, time = 3) { 
    if (browser) browser.execute('hud.Notification(\"' + message + '\", \"' + type + '\");')
-}
-
-
-function DisplayRadar () { 
-   Radar = !Radar;
-   mp.game.ui.displayRadar(Radar);
 }
 
 
