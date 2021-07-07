@@ -74,9 +74,11 @@ frp.Garages.prototype.Refresh = function () {
          const Locked = this.Locked ? 'Zaključana' : 'Otključana';
 
          if (player.vehicle) {
-            if (this.Owner == player.character) {
+            if (this.Owner == player.character && !this.Locked) {
                // Park vehicle function
-               // ParkVehicle(player.vehicle)
+               const Garage = await frp.Garages.findOne({ where: { Owner: player.character, id: this.id } });
+               Garage.ParkVehicle()
+               
             } else {
                player.SendMessage('Garaža nije u tvom vlasništvu.'); 
             }
@@ -84,6 +86,7 @@ frp.Garages.prototype.Refresh = function () {
          else {
             if (!this.Locked) {
                // PlayerEnterGarage(player)
+               
             } else {
                player.Notification(frp.Globals.messages.IS_LOCKED, frp.Globals.Notification.Error, 4);
             }
@@ -109,13 +112,12 @@ frp.Garages.New = async function (player, type, price) {
    Garage.Init();
 };
 
-frp.Garages.prototype.ParkVehicle = async function(player, vehicle) { 
-   const Vehicle = await frp.Vehicles.findOne({ where: { Owner: player.character, id: vehicle.id } });
+frp.Garages.prototype.ParkVehicle = async function(player) { 
+   const Vehicle = await frp.Vehicles.GetVehicleInstance(player.vehicle);
    if (Vehicle) {
       if (this.Type == 0) {
          Vehicle.Park(Garages[0].Position);
          Vehicle.Respawn();
-         player.vehicle.dimension = this.id;
       } else if (this.Type == 1) {
          if (frp.Main.IsAnyVehicleAtPoint(Garages[0].Position)) {
             Vehicle.Park(Garages[1].Position);
@@ -123,12 +125,10 @@ frp.Garages.prototype.ParkVehicle = async function(player, vehicle) {
          } else {
             Vehicle.Park(Garages[0].Position);
             Vehicle.Respawn();
-         }   
+         } 
       }
    }
 };
-
-
 
 (async () => {
 
