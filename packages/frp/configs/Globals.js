@@ -64,7 +64,8 @@ const GLOBALS = {
       Business: [253, 201, 41, 185],
       Faction: [69, 222, 105, 113],
       Job: [254, 213, 46, 70],
-      Houses: [199, 0, 0, 70]
+      Houses: [199, 0, 0, 70],
+      Garages : [255, 255, 255, 70] // IZABRATI BOJU
    },
 
    Jobs: { 
@@ -99,6 +100,7 @@ const GLOBALS = {
       CMD_SYNTAX: '<b>[KOMANDA]</b> ',
       DOORS_LOCKED: 'Zaključali ste vrata',
       DOORS_UNLOCKED: 'Otključali ste vrata',
+      IS_LOCKED: 'Zaključano je',
       NOT_ON_DUTY: 'Niste na dužnosti.',
       NOT_NEAR_JOB: 'Ne nalazite se u blizini posla',
       ALREADY_WORKING: 'Već radite.',

@@ -92,8 +92,6 @@ function TeleportHack() {
 function NoReload () {
    if (AnticheatSafe) return;
    if (!Player.weapon) return;
-
-
 }
 
 function UnAllowedWeapons () {

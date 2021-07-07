@@ -9,7 +9,7 @@ frp.Database = require('./classes/Database');
 
 
 frp.GameObjects = {
-   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: {}
+   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: {}, Garages = {}
 };
 
 
