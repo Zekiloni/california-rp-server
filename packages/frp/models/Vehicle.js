@@ -19,11 +19,6 @@ frp.Vehicles = frp.Database.define('vehicle', {
       Mileage: { type: DataTypes.FLOAT, defaultValue: 0.0 },
       Parked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Garage: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Parking: {
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Parking')); },
-         set: function (value) { this.setDataValue('Parking', JSON.stringify(value)); }
-      },
       Color: { 
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Color')); },
