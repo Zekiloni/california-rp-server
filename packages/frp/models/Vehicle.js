@@ -111,10 +111,10 @@ frp.Vehicles.prototype.Spawn = function () {
 };
 
 
-frp.Vehicles.prototype.Park = async function (position = null) { 
+frp.Vehicles.prototype.Park = async function (position = null, heading, garage = 0) { 
    if (this.GameObject) { 
-      if (position) this.Parking = position;
-      this.GameObject.destroy();
+      this.Parking = position;
+      this.Garage = garage;
       await this.save();
    }
 };
