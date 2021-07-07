@@ -1,11 +1,16 @@
 const { DataTypes } = require('sequelize');
 
-const GarageTypes = require('../data/Garages.json')
+//const GarageTypes = require('../data/Garages.json')
+
+const Garages = [
+   { Position: new mp.Vector3()}, // Garage type 0
+   { Position: new mp.Vector3()} // Garage type 1
+]
 
 frp.Garages = frp.Database.define('garage', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Owner: { type: DataTypes.STRING, defaultValue: 0 },
-      Type: { type: DataTypes.INTEGER, defaultValue: 0 }, // 0 - Mala | 1 - Srednja | 2 - Velika | Mala max 1 vozilo, Srednja max 2 vozila, Velika max 4 vozila
+      Type: { type: DataTypes.INTEGER, defaultValue: 0 }, // 0 - Mala | 1 - Velika | Mala max 1 vozilo, Velika max 2 vozila
       Price: { type: DataTypes.STRING },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: true },
       Entrance: { 
@@ -109,13 +114,26 @@ frp.Garages.New = async function (player, type, price) {
    Garage.Init();
 };
 
-frp.Garages.prototype.ParkVehicle = async function(player, vehicle) { // OVDE NASTAVITI
+frp.Garages.prototype.ParkVehicle = async function(player, vehicle) { 
    const Vehicle = await frp.Vehicles.findOne({ where: { Owner: player.character, id: vehicle.id } });
    if (Vehicle) {
-      Vehicle.Respawn();
+      if (this.Type == 0) {
+         Vehicle.Park(Garages[0].Position);
+         Vehicle.Respawn();
+         player.vehicle.dimension = this.id;
+      } else if (this.Type == 1) {
+         if (frp.Main.IsAnyVehicleAtPoint(Garages[0].Position)) {
+            Vehicle.Park(Garages[1].Position);
+            Vehicle.Respawn();
+         } else {
+            Vehicle.Park(Garages[0].Position);
+            Vehicle.Respawn();
+         }   
+      }
    }
-   // Pushati vozilo (vehicle) u this.Vehicle
 };
+
+
 
 (async () => {
 
@@ -128,3 +146,4 @@ frp.Garages.prototype.ParkVehicle = async function(player, vehicle) { // OVDE NA
 
    frp.Main.Terminal(3, Garage.length + ' Garages Loaded !');
 })();
+

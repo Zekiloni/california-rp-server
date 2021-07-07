@@ -90,7 +90,6 @@ frp.Vehicles.prototype.Respawn = function () {
 frp.Vehicles.prototype.Spawn = function () { 
    if (this.GameObject) return;
 
-
    const Vehicle = mp.vehicles.new(mp.game.joaat(model), position, {
       heading: 180,
       numberPlate: 'AAAA', // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
@@ -110,6 +109,12 @@ frp.Vehicles.prototype.Park = async function (position = null) {
       if (position) this.Parking = position;
       this.GameObject.destroy();
       await this.save();
+   }
+};
+
+frp.Vehicles.prototype.Dimension = function (i) { 
+   if (this.GameObject) {
+      this.GameObject.dimension = i;
    }
 };
 
