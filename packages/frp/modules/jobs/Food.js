@@ -9,39 +9,39 @@
 // model dostave se sastoji od lokacije, sta je poruceno, kontakta (N/A ukoliko je server, broj telefona ukoliko je igrac)
 
 
-const Status = { 
+const OrderStatus = { 
    Ordered: 0,
    InProgress: 1,
    Delivered: 2
 };
 
+
 frp.Food = class Food { 
 
-   static Deliveries = [];
+   static Orders = [];
 
    constructor (position, items, contact) { 
-      this.position = position;
-      this.items = items;
-      this.contact = contact || 'N / A';
-      this.status = Status.Ordered;
+      this.Position = position;
+      this.Items = items;
+      this.Contact = contact || 'N / A';
+      this.Status = OrderStatus.Ordered;
 
-      Food.Deliveries.push(this);
+      Food.Orders.push(this);
    }
 
-   static NewDelivery (position, items, contact) {
+   static NewOrder (position, items, contact) {
       new Food(position, items, contact); 
    }
 
-   static GetDeliveries () { 
-      return Food.Deliveries;
+   static GetOrders () { 
+      return Food.Orders;
    }
 
    static async Check () { 
-      if (Food.Deliveries.length == 5) return;
+      if (Food.Orders.length == 5) return;
 
-      const Missing = 5 - frp.Food.Deliveries.length;
-      
-      console.info('Nedostaje ' + Missing + ' porudzbina.');
+      const Missing = 5 - frp.Food.Orders.length;
+
       for (let i = 0; i < Missing; i ++) { 
          const House = await frp.Houses.findOne({ order: frp.Database.random() });
          if (House) { 
@@ -53,24 +53,38 @@ frp.Food = class Food {
                Order.push(frp.Items.GetRandomByType(6).name);
             }
          
-            Food.NewDelivery(Position, Order, 'N / A');
+            Food.NewOrder(Position, Order, 'N / A');
          }
       }
-
-      console.log(frp.Food.Deliveries);
    }
 };
 
 
 frp.Food.prototype.Deliver = function (player) { 
-
+   // give some money bitch
+   this.Remove();
 };
 
 
 frp.Food.prototype.Remove = function () {
-   const Index = frp.Food.Deliveries.indexOf(this);
-   frp.Food.Deliveries.splice(Index, 1);
+   const Index = frp.Food.Orders.indexOf(this);
+   frp.Food.Orders.splice(Index, 1);
 };
+
+
+mp.events.addProc({
+   'server:job.food.order:accept': (player, orderid) => { 
+      const Order = frp.Food.Orders[orderid];
+      if (Order.Status != OrderStatus.Ordered) {
+         // PORUKA: Porudzbina
+         return false;
+      } else { 
+         Order.Status = OrderStatus.InProgress;
+         // PORUKA: Uzima sa stola pourdzbinu...
+         return true;
+      }
+   }
+});
 
 
 (async () => { 

@@ -20,11 +20,6 @@ frp.Garages = frp.Database.define('garage', {
       },
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },
-      Vehicles: { 
-         type: DataTypes.TEXT, defaultValue: null, 
-         get: function () { return JSON.parse(this.getDataValue('Vehicles')); },
-         set: function (value) { this.setDataValue('Vehicles', JSON.stringify(value)); } // SQL IDEVI VOZILA
-      },
       GameObject: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
          get () { return frp.GameObjects.Garages[this.getDataValue('id')]; },

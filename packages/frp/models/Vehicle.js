@@ -18,6 +18,7 @@ frp.Vehicles = frp.Database.define('vehicle', {
       Heading: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mileage: { type: DataTypes.FLOAT, defaultValue: 0.0 },
       Parked: { type: DataTypes.BOOLEAN, defaultValue: false },
+      Garage: { type: DataTypes.INTEGER, defaultValue: 0 },
       Parking: {
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Parking')); },
@@ -77,6 +78,11 @@ frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate
 frp.Vehicles.afterCreate(async (Vehicle, Options) => {
    Vehicle.Spawn();
 });
+
+
+frp.Vehicles.prototype.Dimension = function (i) { 
+   this.GameObject.dimension = i;
+};
 
 
 frp.Vehicles.prototype.Respawn = function () { 
@@ -159,6 +165,11 @@ frp.Vehicles.prototype.SetMileage = async function (value) {
    this.Mileage = value;
    this.GameObject.setVariable('Mileage', this.Mileage);
    await this.save();
+};
+
+
+frp.Vehicles.Dimension = function (i) { 
+   this.GameObject.dimension = i
 };
 
 

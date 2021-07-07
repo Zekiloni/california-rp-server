@@ -9,7 +9,7 @@ frp.Database = require('./classes/Database');
 
 
 frp.GameObjects = {
-   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: {}, Garages = {}
+   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: {}, Garages: {}
 };
 
 
@@ -46,7 +46,7 @@ let Houses = require('./classes/Houses');
 let Business = require('./classes/Business');
 let Factions = require('./classes/Factions');
 let Weather = require('./classes/Weather');
-let Jobs = require('./classes/Jobs');
+const Jobs = require('./classes/Jobs');
 const AntiCheat = require('./classes/Anticheat');
 
 
@@ -78,7 +78,7 @@ const Exit = async () => {
       player.kick('Server se gasi !')
    });
 
-   frp.Main.Sleep(3).then(() => { 
+   frp.Main.Sleep(2).then(() => { 
       process.exit();
    })
 };

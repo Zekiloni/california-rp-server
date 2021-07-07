@@ -85,7 +85,7 @@ mp.keys.bind(0x59, false, function() {
             }
          }
          else {
-            const {checkpoint, blip} = Player.CreateInteractionSport('Depony', new mp.Vector3(0, 0, 0));
+            const {checkpoint, blip} = Player.CreateInteractionSpot('Depony', new mp.Vector3(0, 0, 0));
 
             mp.events.add('playerEnterCheckpoint', OnPlayerEnterDepony);
             
