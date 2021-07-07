@@ -69,9 +69,6 @@ const AntiCheat = require('./classes/Anticheat');
 })();
 
 
-console.log(mp.joaat('prop_gas_pump_1d'));
-
-
 
 const Exit = async () => {
    frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');
@@ -81,7 +78,9 @@ const Exit = async () => {
       player.kick('Server se gasi !')
    });
 
-   frp.Main.Sleep(5).then(process.exit());
+   frp.Main.Sleep(3).then(() => { 
+      process.exit();
+   })
 };
 
 

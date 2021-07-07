@@ -41,7 +41,7 @@ module.exports = {
          desc: 'Departman Motornih Vozila',
          call: (player, args) => {
             if (mp.world.time.hour < 6 || mp.world.time.hour > 20) return;
-            player.call('client:vehicle.department:menu');
+            mp.events.call('server:vehicle.department:menu', player);
          }
       },
 

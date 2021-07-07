@@ -2,14 +2,17 @@ module.exports = {
    commands: [
       {
          name: 'createhouse',
-         admin: 3,
+         admin: 4,
          call: (player, args) => {
-            frp.Houses.create
+            const [type, price] = args;
+            console.log(type, price);
+            frp.Houses.Create(player, type, price);
          }
       },
       {
          name: 'deletehouse',
          admin: 3,
+         params: ['tip kuce', 'cena'],
          call: (player, args) => {
                if (player.near != null && player.near.type == 'house') {
                   let house = mp.houses[player.near.id];

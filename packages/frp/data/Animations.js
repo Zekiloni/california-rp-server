@@ -19,6 +19,7 @@ const Animations = {
    'laydead':['misssolomon_5@end','dead_black_ops','laying'],
    'laycouch':['amb@prop_human_seat_sunlounger@female@base','base','laying'],
    'sunbatheback':['amb@world_human_sunbathe@female@back@base','base','laying'],
+   'wakeup':['safe@trevor@ig_8','ig_8_wake_up_front_player', 'laying'],
 
 
    /// Standing

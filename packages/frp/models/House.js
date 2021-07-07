@@ -64,8 +64,8 @@ frp.Houses.prototype.Refresh = function () {
 
    if (this.GameObject == null) { 
       const GameObjects = { 
-         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, this.Dimension),
-         blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
+         colshape: mp.colshapes.newSphere(this.Position.x, this.Position.y, this.Position.z, 2.0, this.Dimension),
+         blip: mp.blips.new(40, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: 'House', color: 59, shortRange: true, scale: 0.75, drawDistance: 25 }),
          marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 2.5, {
             color: frp.Globals.MarkerColors.Houses, 
             rotation: new mp.Vector3(0, 0, 90), 
@@ -76,32 +76,28 @@ frp.Houses.prototype.Refresh = function () {
 
 
       GameObjects.colshape.OnPlayerEnter = (player) => { 
-         const Price = frp.Main.Dollars(this.Price);
-         const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Biznis u vlasništvu';
-         const Locked = this.Locked ? 'Zatvoren' : 'Otvoren';
 
          const white = frp.Globals.Colors.whitesmoke;
 
-         player.SendMessage('[House] !{' + white + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + ', No ' + this.id + '.', frp.Globals.Colors.property);
-         player.SendMessage('[House] !{' + white + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', frp.Globals.Colors.property);
-         player.SendMessage((this.Walk_in ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy house' : ''), frp.Globals.Colors.whitesmoke);
+         player.SendMessage('[House] !{' + white + '} Kucaraaa ', frp.Globals.Colors.property);
       };
 
       this.GameObject = GameObjects;
+   } else { 
+      const BlipColor = this.Owner == 0 ? 49 : 52;   
+      this.GameObject.blip.color = BlipColor;
    }
 };
 
 
-frp.Houses.prototype.Refresh = function () {
-   this.Owner == 0 ? (this.blip.color = 1) : (this.blip.color = 2);
-   this.Owner == 0 ? (this.blip.name = 'Kuca na prodaju !') : (this.blip.name = 'Kuca');
-};
-
-frp.Houses.New = async function (player, type, price) { 
-   const Position = player.position;
-   const House = await frp.Houses.create({ Type: type, Price: price, Position: Position });
-   House.Init();
+frp.Houses.Create = async function (player, type, price) { 
+   if (HouseTypes[type]) { 
+      type = HouseTypes[type];
+      const Position = player.position;
+      const House = await frp.Houses.create({ Type: type.id, Price: price, Position: Position });
+   }
 ;};
+
 
 
 (async () => {

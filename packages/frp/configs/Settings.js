@@ -17,6 +17,8 @@ module.exports = {
       Salary: 5, House: 0.25, Vehicle: 0.1, Business: 2
    },
 
+   Licenses: { 'Driving': 1000, 'Trucking': 2000, 'Boating': 3800, 'Flying': 15000, 'Taxi': 2200 },
+
    Frequency: { 
       Price: 350
    },

@@ -27,11 +27,14 @@ let Test = {
 
 
 mp.events.add({
-   'client:vehicle.department:menu' () { 
+   'client:vehicle.department:menu' (player, department) { 
       if (Test.Route != null) return;
       opened = !opened;
       if (opened) { 
          browser = mp.browsers.new('package://vehicles/vehicles-interfaces/department.html');
+         browser.execute('department.Player = ' + JSON.stringify(player));
+         browser.execute('department.Quiz.Questions = ' + JSON.stringify(department.Quiz));
+         browser.execute('department.Licenses = ' + JSON.stringify(department.Licenses));
          Player.BrowserControls(true, true);
       } else { 
          if (browser) browser.destroy();

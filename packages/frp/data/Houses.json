@@ -3,7 +3,20 @@
       "id": 0,
       "name": "Small House",
       "position": { "x": 1, "y": 2, "z": 3 },
-      "ipl": "ipll",
-      "multiplier": 123.4
+      "ipl": "ipll"
+   },
+
+   { 
+      "id": 1,
+      "name": "Medium House",
+      "position": { "x": 1, "y": 2, "z": 3 },
+      "ipl": "ipll"
+   },
+
+   { 
+      "id": 2,
+      "name": "Big House",
+      "position": { "x": 1, "y": 2, "z": 3 },
+      "ipl": "ipll"
    }
 ]

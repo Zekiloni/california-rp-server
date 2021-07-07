@@ -3,7 +3,6 @@
 
 
 
-
 const Department = { 
    Position: new mp.Vector3(-761.8135, -1308.1590, 5.150),
    Vehicle: { 
@@ -15,7 +14,8 @@ const Department = {
 };
 
 
-const DrivingRoute = require('../data/Driving.Route');
+const Route = require('../data/Driving.Route');
+const Quiz = require('../data/Driving.Quiz');
 
 
 mp.events.add({
@@ -23,6 +23,13 @@ mp.events.add({
       frp.Main.Sleep(4).then(() => { 
          frp.GameObjects.TemporaryVehicles[vehid].destroy();
       });
+   },
+
+   'server:vehicle.department:menu': async (player) => { 
+      const Character = await player.Character();
+      const Player = { Money: Character.Money, Licenses: Character.Licenses };
+      const Department = { Quiz: Quiz, Licenses: frp.Settings.Licenses };
+      player.call('client:vehicle.department:menu', [Player, Department]);
    }
 })
 
@@ -32,7 +39,7 @@ mp.events.addProc({
       const Vehicle = frp.Vehicles.CreateTemporary(Model, Department.Vehicle.Position, Department.Vehicle.Rotation, [Department.Vehicle.Color, Department.Vehicle.Color], 'DMV' + frp.Main.GenerateNumber(3));
       player.SendMessage(frp.Globals.messages.DMV_INSTRUCTOR_GO_VEHICLE, frp.Globals.Colors.white[0]);
    
-      return [Vehicle.id, DrivingRoute];
+      return [Vehicle.id, Route];
    }
 })
 
