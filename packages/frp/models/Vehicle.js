@@ -91,14 +91,14 @@ frp.Vehicles.prototype.Respawn = function () {
 frp.Vehicles.prototype.Spawn = function () { 
    if (this.GameObject) return;
 
-   const Vehicle = mp.vehicles.new(mp.game.joaat(model), position, {
-      heading: 180,
-      numberPlate: 'AAAA', // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
+   const Vehicle = mp.vehicles.new(mp.game.joaat(this.Model), this.Position, {
+      heading: this.Heading,
+      numberPlate: this.Numberplate, // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
       alpha: 255,
       color: 0,
       locked: false,
       engine: false,
-      dimension: 0
+      dimension: this.Garage
    });
 
    this.GameObject = Vehicle;
