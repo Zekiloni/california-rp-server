@@ -14,6 +14,17 @@ module.exports = {
                player.Notification(frp.Globals.messages.NOT_NEAR_JOB, frp.Globals.Notification.Error, 5);
             }
          }
+      },
+
+      {
+         name: 'orders',
+         desc: 'Narudžbine hrane.',
+         job: frp.Globals.Jobs.Food_Delivery,
+         position: frp.Jobs.Job[frp.Globals.Jobs.Food_Delivery].point,
+         call: (player, args) => {
+            console.log(frp.Food.Orders);
+            player.call('client:job.food:orders', [frp.Food.Orders]);
+         }
       }
    ]
 };

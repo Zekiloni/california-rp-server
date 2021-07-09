@@ -105,6 +105,14 @@ frp.Vehicles.prototype.Spawn = function () {
 };
 
 
+frp.Vehicles.GetVehicleInstance = async function (veh) { 
+   const Vehicles = await frp.Vehicles.findAll();
+   Vehicles.forEach((Vehicle) => { 
+      if (Vehicle.GameObject == veh) return Vehicle;
+   })
+};
+
+
 frp.Vehicles.prototype.Park = async function (position = null, heading, garage = 0) { 
    if (this.GameObject) { 
       this.Parking = position;

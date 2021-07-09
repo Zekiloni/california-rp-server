@@ -16,6 +16,7 @@ frp.Characters = frp.Database.define('character', {
       Faction_Rank: { type: DataTypes.STRING, defaultValue: 'none' },
       Faction_Perms: { type: DataTypes.INTEGER, defaultValue: 0 },
       Job: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Working_Hours: { type: DataTypes.INTEGER, defaultValue: 0 },
       Money: { type: DataTypes.INTEGER, defaultValue: 3000 },
       Salary: { type: DataTypes.INTEGER, defaultValue: 0 },
 
@@ -84,14 +85,14 @@ frp.Characters.prototype.Spawn = async function (player) {
    player.name = this.Name;
    player.setVariable('spawned', true);
 
-   // setting money & health
+   // Loading money & health
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
 
    player.setVariable('Job', this.Job);
 
-   // Temp
-   player.setVariable('Job_Vehicle', null);
+   // Temporary Variables
+   player.setVariable('Duty', false);
    player.setVariable('Interaction', null);
    player.setVariable('Phone_Ringing', false);
 
@@ -166,6 +167,11 @@ frp.Characters.prototype.SetHealth = async function (player, value) {
 frp.Characters.prototype.SetSpawn = async function (point) {
    this.Spawn_Point = point;
    await this.save();
+};
+
+
+frp.Characters.prototype.QuitGame = async function () { 
+
 };
 
 

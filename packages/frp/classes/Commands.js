@@ -41,7 +41,9 @@ mp.events.add('playerCommand', async (player, command) => {
       
       if (cmd.admin && Account.Administrator < cmd.admin) return player.Notification('Nije vam dozvoljeno !', frp.Globals.Notification.Error, 4);
       
-      if (cmd.job && Character.Job != cmd.job) return;
+      if (cmd.job && Character.Job != cmd.job) return player.Notification(frp.Globals.messages.NOT_SPECIFIC_JOB, frp.Globals.Notification.Error, 4);
+
+      if (cmd.position && player.dist(cmd.position) > 1.85) return player.Notification(frp.Globals.messages.NOT_ON_POSITION, frp.Globals.Notification.Error, 4);
 
       if (cmd.faction) { 
          //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;

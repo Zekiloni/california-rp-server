@@ -30,6 +30,11 @@ const List = {
    5: { 
       id: 5, name: 'Department of Power & Water', description: 'Electrician / Plumber',
       point: new mp.Vector3(678.4655, 73.924, 83.1535), blip: 398, sprite: 3
+   },
+
+   6: { 
+      id: 6, name: 'The 69th Street Diner', description: 'Food Delivery',
+      point: new mp.Vector3(146.37088, -1522.3398, 29.1416), blip: 103, sprite: 60
    }
 }
 
@@ -103,3 +108,4 @@ frp.Jobs.prototype.Quit = async function (player) {
 
 
 frp.Jobs.Init();
+

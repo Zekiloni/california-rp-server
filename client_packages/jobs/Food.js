@@ -10,7 +10,7 @@ mp.events.add({
    'client:job.food:orders': (orders) => { 
       opened = !opened;
       if (opened) { 
-         browser = mp.browsers.new('package://jobs/jobs-interfaces/FoodDeliveries.html');
+         browser = mp.browsers.new('package://jobs/jobs-interfaces/food.html');
          browser.execute('food.Orders = ' + JSON.stringify(orders));
          Player.BrowserControls(true, true);
       } else { 
@@ -20,8 +20,12 @@ mp.events.add({
    },
 
    'client:job.food.order:accept': async (delivery) => { 
-      const response = await mp.events.callRemoteProc('');
+      const response = await mp.events.callRemoteProc('server:job.food.order:accept');
       if (response) { 
+
+         const [vehicleid, Position] = response;
+         if (vehID) Vehicle = mp.vehicles.atRemoteId(vehicleid);
+
          const {checkpoint, blip} = Player.CreateInteractionSpot('Food Order', new mp.Vector3(delivery.position.x, delivery.position.y, delivery.position.z));
 
          mp.events.add('playerEnterCheckpoint', ReachOrderPoint);

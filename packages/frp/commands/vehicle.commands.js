@@ -14,8 +14,13 @@ module.exports = {
          name: 'engine',
          desc: 'Kontrola motora vozila',
          vehicle: true,
-         call: (player, args) => {
-            let vehicle = player.vehicle, character = player.Character();
+         call: async (player, args) => {
+            let vehicle = player.vehicle, character = await player.Character();
+
+            if (vehicle.engineHealth < 300) {
+               
+            }
+
             vehicle.engine = !vehicle.engine;
          }
       },

@@ -69,7 +69,8 @@ const GLOBALS = {
    },
 
    Jobs: { 
-      Unemployed: 0
+      Unemployed: 0,
+      Food_Delivery: 6,
    },
    
    messages: {
@@ -87,6 +88,7 @@ const GLOBALS = {
       ALREADY_EMPLOYED: 'Već ste zaposleni.',
       UNEMPLOYED: 'Niste zaposleni.',
       QUITJOB: 'Dali ste otkaz.',
+      NOT_SPECIFIC_JOB: 'Nemate odredjeni posao.',
       NOT_ENOUGH_MONEY: 'Nemate dovoljno novca.',
       NOT_ENOUGH_PRODUCTS: 'Nema dovoljno produkata.',
       NOT_ENOUGH_FOR_TRANSACTION: 'Nedovoljno novca za uspešnu transakciju.',
@@ -98,6 +100,7 @@ const GLOBALS = {
       ENGINE_OFF: 'Ugasili ste motor vozila.',
       ANIM_DOESNT_EXIST: 'Animacija nije pronadjena',
       CMD_SYNTAX: '<b>[KOMANDA]</b> ',
+      NOT_ON_POSITION: 'Ne nalazite se na odredjenoj lokaciji.',
       DOORS_LOCKED: 'Zaključali ste vrata',
       DOORS_UNLOCKED: 'Otključali ste vrata',
       IS_LOCKED: 'Zaključano je',

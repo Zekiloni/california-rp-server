@@ -15,6 +15,20 @@ const OrderStatus = {
    Delivered: 2
 };
 
+const Configuration = { 
+   Vehicle: { 
+      Model: 'faggio',
+      Colors: { Primary: 44, Secondary: 42 },
+      Rotation: new mp.Vector3(1.4121, -11.5783, 140.718),
+      Positions: [
+         new mp.Vector3(151.3404, -1520.4874, 28.618),
+         new mp.Vector3(148.7998, -1517.9329, 28.623),
+         new mp.Vector3(146.1401, -1516.2443, 28.622),
+         new mp.Vector3(143.5799, -1513.7885, 28.621)
+      ]
+   }
+}
+
 
 frp.Food = class Food { 
 
@@ -73,15 +87,36 @@ frp.Food.prototype.Remove = function () {
 
 
 mp.events.addProc({
-   'server:job.food.order:accept': (player, orderid) => { 
+   'server:job.food.order:accept': (player, orderid, haveVehicle = false) => { 
       const Order = frp.Food.Orders[orderid];
       if (Order.Status != OrderStatus.Ordered) {
-         // PORUKA: Porudzbina
+         // PORUKA: Porudzbina je zavrsena ili je u toku isporuka...
          return false;
       } else { 
          Order.Status = OrderStatus.InProgress;
+         let Vehicle = null;
+
+         if (haveVehicle == false) { 
+            let AvailablePosition = null;
+
+            for (const Position of Configuration.Vehicle.Positions) { 
+               if (frp.Main.IsAnyVehAtPos(Position, 1.5) == false) {
+                  AvailablePosition = Position;
+                  break;
+               }
+            }
+
+            Vehicle = frp.Vehicles.CreateTemporary(
+               mp.joaat(Configuration.Vehicle.Model), 
+               AvailablePosition, Configuration.Vehicle.Rotation, 
+               color, 'FO0' + frp.Main.GenerateNumber(3)
+            );
+         }
+
+         // DAJ PREDMETE PORUDZBINE
          // PORUKA: Uzima sa stola pourdzbinu...
-         return true;
+
+         return [Vehicle.id, Order.Position];
       }
    }
 });

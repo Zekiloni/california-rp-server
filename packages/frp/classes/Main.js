@@ -77,8 +77,8 @@ module.exports = class Main {
       return count;
    }
 
-   static IsAnyVehAtPos (position) {
-      mp.vehicles.forEachInRange(position, 2.5, (vehicle) => { 
+   static IsAnyVehAtPos (position, radius = 2) {
+      mp.vehicles.forEachInRange(position, radius, (vehicle) => { 
          if (vehicle) { return vehicle; } else { false };
       })
    }

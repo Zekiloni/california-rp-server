@@ -36,6 +36,7 @@ let Admin = require('./classes/Admin');
 let Characters = require('./classes/Character');
 let Savings = require('./classes/Savings');
 let Discord = require('./classes/Discord');
+let Jobs = require('./classes/Jobs');
 let Commands = require('./classes/Commands');
 let Animals = require('./classes/Animals');
 let Doors = require('./classes/Doors');
@@ -46,7 +47,6 @@ let Houses = require('./classes/Houses');
 let Business = require('./classes/Business');
 let Factions = require('./classes/Factions');
 let Weather = require('./classes/Weather');
-const Jobs = require('./classes/Jobs');
 const AntiCheat = require('./classes/Anticheat');
 
 

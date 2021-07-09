@@ -1,6 +1,6 @@
 
 body {
-   font-family: 'Roboto', sans-serif;
+   font-family: 'Akrobat', sans-serif;
    font-size: 13px;
    font-style: normal;
    line-height: 1.5;
@@ -15,14 +15,23 @@ body {
    overflow: hidden;
 }
 
-#food { 
-   margin: auto;
-   width: 350px;
-   height: 325px;
-   display: flex;
-   justify-self: center;
-   padding: 10px;
-}
+#food {width: 900px;height: auto;margin: auto;display: flex;justify-content: space-between;align-items: center;/* overflow: hidden; */flex-wrap: wrap;}
 
+.header { width: 100%; }
+.header h2 { color: #fbc60c; text-shadow: 0 1px 5px rgb(250 184 10 / 75%); text-transform: uppercase; font-size: 30px; letter-spacing: 2px; margin: 0; }
+.header h4 { color: #cdcdcd; letter-spacing: 2px; text-shadow: 0 0 2px rgb(0 0 0 / 77%); font-size: 16px; margin: 0; font-weight: 400; text-transform: uppercase; margin-bottom: 10px; }
+
+#map { width: 650px; height: 450px; border-radius: 10px; }
+.leaflet-control { display: none; }
+.leaflet-container {background: rgb(0 0 0 / 73%);}
+.leaflet-tile { filter: grayscale(1); opacity: 0.7 !important; }
+
+ul.orders { padding: 0 2px; width: 240px; height: 450px; list-style: none; margin: 0; overflow-y: auto; text-shadow: 0 0 2px rgb(0 0 0 / 25%); }
+ul.orders li.order {color: #acacac;border: 1px solid transparent;overflow: hidden;transition: all .3s ease;text-transform: uppercase;font-weight: 300;border-radius: 5px;text-align: center;width: 100%;display: flex;justify-content: space-around;align-items: center;transition: all 0.35s ease;text-shadow: 0 0 1px rgb(0 0 0 / 15%);color: #e4e4e4;background: rgb(205 205 205 / 15%);}
+ul.orders li.order:hover { background: rgb(255 255 255 / 3%); color: white; }
+ul.orders li.order:nth-child(even) { margin: 5px 0; }
+ul.orders li.order h2.title { font-size: 17px; margin: 0; text-shadow: 0 0 2px rgb(0 0 0 / 15%); }
+li.order h2.title small { display: block; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; }
+li.order h2.title small.contact { font-size: 11px; }
 
 * { user-select: none; }
