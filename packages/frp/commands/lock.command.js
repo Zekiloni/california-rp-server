@@ -1,28 +1,26 @@
 module.exports = {
-    commands: [
-        {
-            name: 'lock',
-            desc: 'Zakljucati / otkljucati',
-            params: '[tekst]',
-            call: (player, args) => {
-                if (player.data.logged && player.data.spawned) {
-                    let character = player.getCharacter();
-                    if (player.near) {
-                        switch (player.near.type) {
-                            case 'house': {
-                                break;
-                            }
-                            case 'door': {
-                                let door = mp.doors[player.near.id];
-                                if (door.faction != character.faction)
-                                    return false;
-                                door.status = !door.status;
-                                break;
-                            }
-                        }
-                    }
-                }
+   commands: [
+      {
+         name: 'lock',
+         desc: 'Zakljucati / otkljucati',
+         call: async (player, args) => {
+            const Character = await player.Character(), Nearest = await player.Nearest();
+            
+            switch (true) { 
+               case Nearest instanceof frp.Business: { 
+
+                  break;
+               }
+
+               case Nearest instanceof frp.Houses: { 
+
+                  break;
+               }
+
+               
             }
-        },
-    ]
+
+         }
+      },
+   ]
 };

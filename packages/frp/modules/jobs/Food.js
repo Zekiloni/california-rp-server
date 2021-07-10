@@ -2,14 +2,13 @@
 
 
 
-// uzme posao
-// prikaze mu dostave, pushati dostave igraca, ukoliko ima manje od pet dstava ukupno,
-// server automatski proverava i pusha toliko dostava koliko fali do pet
 // igrac odabere dostavu, status dostave je in progress,,
 // model dostave se sastoji od lokacije, sta je poruceno, kontakta (N/A ukoliko je server, broj telefona ukoliko je igrac)
 
+const { ItemEntities } = require("../../classes/Items.Registry");
 
-const OrderStatus = { 
+
+const Status = { 
    Ordered: 0,
    InProgress: 1,
    Delivered: 2
@@ -18,7 +17,7 @@ const OrderStatus = {
 const Configuration = { 
    Vehicle: { 
       Model: 'faggio',
-      Colors: { Primary: 44, Secondary: 42 },
+      Color: [44, 42],
       Rotation: new mp.Vector3(1.4121, -11.5783, 140.718),
       Positions: [
          new mp.Vector3(151.3404, -1520.4874, 28.618),
@@ -26,7 +25,9 @@ const Configuration = {
          new mp.Vector3(146.1401, -1516.2443, 28.622),
          new mp.Vector3(143.5799, -1513.7885, 28.621)
       ]
-   }
+   },
+   CheckInterval: 30000,
+   DeleteInterval: 45000
 }
 
 
@@ -38,7 +39,7 @@ frp.Food = class Food {
       this.Position = position;
       this.Items = items;
       this.Contact = contact || 'N / A';
-      this.Status = OrderStatus.Ordered;
+      this.Status = Status.Ordered;
 
       Food.Orders.push(this);
    }
@@ -61,7 +62,7 @@ frp.Food = class Food {
          if (House) { 
             const Position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
         
-            const ItemsNumber = frp.Main.Between(1, 3);
+            const ItemsNumber = frp.Main.Between(1, 4);
             let Order = [];
             for (let item = 0; item < ItemsNumber; item ++) {
                Order.push(frp.Items.GetRandomByType(6).name);
@@ -74,54 +75,86 @@ frp.Food = class Food {
 };
 
 
-frp.Food.prototype.Deliver = function (player) { 
-   // give some money bitch
-   this.Remove();
-};
+frp.Food.prototype.Deliver = async function (player) { 
+   const Character = await player.Character();
+   let Counter = false;
 
+   for (const OrderedItem of this.Items) { 
+      const Item = await frp.Items.HasItem(player.character, OrderedItem);
+      if (Item) { 
+         Item.destroy();
+         Counter ++;
+      }
+   }
 
-frp.Food.prototype.Remove = function () {
-   const Index = frp.Food.Orders.indexOf(this);
-   frp.Food.Orders.splice(Index, 1);
+   this.Status = Status.Delivered;
+   this.Deleting = setTimeout(() => {
+      const Index = frp.Food.Orders.indexOf(this);
+      frp.Food.Orders.splice(Index, 1);
+   }, Configuration.DeleteInterval);
+
+   if (Counter == this.Items.length) { 
+      const Earned = frp.Globals.Jobs.Multiplier * frp.Main.Between(4, 8);
+      Character.Payment(Earned);
+      player.Notification(frp.Globals.messages.ORDER_SUCCESS + frp.Main.Dollars(Earned) + '.', frp.Globals.Notification.Succes, 5);
+      
+   } else { 
+      player.Notification(frp.Globals.messages.ORDER_NOT_COMPLETED, frp.Globals.Notification.Error, 5);
+   }
 };
 
 
 mp.events.addProc({
-   'server:job.food.order:accept': (player, orderid, haveVehicle = false) => { 
-      const Order = frp.Food.Orders[orderid];
-      if (Order.Status != OrderStatus.Ordered) {
-         // PORUKA: Porudzbina je zavrsena ili je u toku isporuka...
-         return false;
-      } else { 
-         Order.Status = OrderStatus.InProgress;
-         let Vehicle = null;
+   'server:job.food.order:accept': async (player, index) => { 
+      let Order = frp.Food.Orders[index];
+      const Character = await player.Character();
 
-         if (haveVehicle == false) { 
+      if (Order && Order.Status == Status.Ordered) { 
+
+         Order.Status = Status.InProgress;
+            
+         if (player.getVariable('Job_Vehicle') == null) { 
             let AvailablePosition = null;
 
             for (const Position of Configuration.Vehicle.Positions) { 
-               if (frp.Main.IsAnyVehAtPos(Position, 1.5) == false) {
+               if (frp.Main.IsAnyVehAtPos(Position, 1.5) == undefined) {
                   AvailablePosition = Position;
                   break;
                }
             }
 
-            Vehicle = frp.Vehicles.CreateTemporary(
-               mp.joaat(Configuration.Vehicle.Model), 
+            let Vehicle = frp.Vehicles.CreateTemporary(
+               Configuration.Vehicle.Model, 
                AvailablePosition, Configuration.Vehicle.Rotation, 
-               color, 'FO0' + frp.Main.GenerateNumber(3)
+               Configuration.Vehicle.Color, 'FO0' + frp.Main.GenerateNumber(3)
             );
+  
+            player.setVariable('Job_Vehicle', Vehicle.id);
          }
 
-         // DAJ PREDMETE PORUDZBINE
-         // PORUKA: Uzima sa stola pourdzbinu...
+         for (const Item of Order.Items) { 
+            frp.Items.New(Item, 1, ItemEntities.Player, player.character);
+         }
 
-         return [Vehicle.id, Order.Position];
+         Character.GiveMoney(player, -(Order.Items.length * 4));
+
+         return Order;
+      } else { 
+         player.Notification(frp.Globals.messages.ORDER_ALREADY_PROCESSING, frp.Globals.Notification.Error, 5);
+         return false;
       }
    }
 });
 
 
+mp.events.add({
+   'server:job.food.order:deliver': (player, index) => { 
+      const Order = frp.Food.Orders[index];
+      Order.Deliver(player);
+   }
+});
+
+
 (async () => { 
-   setInterval(() => { frp.Food.Check(); }, 30000);
+   setInterval(() => { frp.Food.Check(); }, Configuration.CheckInterval);
 })();

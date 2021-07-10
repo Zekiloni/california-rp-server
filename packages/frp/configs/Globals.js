@@ -69,6 +69,7 @@ const GLOBALS = {
    },
 
    Jobs: { 
+      Multiplier: 5.75,
       Unemployed: 0,
       Food_Delivery: 6,
    },
@@ -89,6 +90,9 @@ const GLOBALS = {
       UNEMPLOYED: 'Niste zaposleni.',
       QUITJOB: 'Dali ste otkaz.',
       NOT_SPECIFIC_JOB: 'Nemate odredjeni posao.',
+      ORDER_NOT_COMPLETED: 'Niste dostavili kompletnu porudžbinu',
+      ORDER_ALREADY_PROCESSING: 'Dostava je već završena ili je u toku.',
+      ORDER_SUCCESS: 'Uspešno ste završili dostavu, zaradili ste ',
       NOT_ENOUGH_MONEY: 'Nemate dovoljno novca.',
       NOT_ENOUGH_PRODUCTS: 'Nema dovoljno produkata.',
       NOT_ENOUGH_FOR_TRANSACTION: 'Nedovoljno novca za uspešnu transakciju.',

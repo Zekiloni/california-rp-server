@@ -27,7 +27,6 @@
                Narudžbina <b> {{ i + 1 }}</b>
                <small v-bind:style="{ color: Status(order.Status).color }"> {{ Status(order.Status).name }} </small> 
                <small class="contact"> Kontakt <b> {{ order.Contact }} </b></small>
-
             </h2>
 
             <div class="order-info">
@@ -36,6 +35,7 @@
                </ul>
             </div>
             
+            <button class="accept" v-on:click="Accept(order)"> <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
          </li>
       </ul>
    </div>
@@ -43,7 +43,6 @@
    <!-- scripts -->
    <script src="src/vendor/js/vue.js"> </script>
    <script src="src/vendor/js/leaflet.js"> </script>
-   <script src="src/vendor/js/leaflet-hash.js"> </script>
 
    <script>      
       let food = new Vue({
@@ -51,13 +50,14 @@
          data: {
 
             Map: null,
+            Layer: null,
 
             Orders: [
-               { Position: {x: -1196.48, y: -1844.86, z: 20.03 }, Items: ['Pizza', 'Donut'], Contact: '321 199', Status: 0 },
-               { Position: { y: -1269.81, x: -1915.66, z: 6.22 }, Items: ['Burger', 'Fries'], Contact: 'N / A', Status: 1 },
-               { Position: { x: 791.39, y: -1193.9, z: 51.59 }, Items: ['Chips'], Contact: 'N / A', Status: 2 },
-               { Position: { x: -1374.98, y: -524.72, z: 32.53 }, Items: ['Chips'], Contact: 'N / A', Status: 2 },
-               { Position: { x: -2069.2, y: -1022.98, z: 11.49 }, Items: ['Chips'], Contact: 'N / A', Status: 2 }
+               // { Position: { x: 151.09954, y: -1509.0583496, z: 29.14162 }, Items: ['Pizza', 'Donut'], Contact: '321 199', Status: 0 },
+               // { Position: { x: 421.21234, y: -979.00042728, z: 30.30240 }, Items: ['Burger', 'Fries'], Contact: 'N / A', Status: 1 },
+               // { Position: { x: 791.39, y: -1193.9, z: 51.59 }, Items: ['Chips'], Contact: 'N / A', Status: 2 },
+               // { Position: { x: -1374.98, y: -524.72, z: 32.53 }, Items: ['Chips'], Contact: 'N / A', Status: 2 },
+               // { Position: { x: -2069.2, y: -1022.98, z: 11.49 }, Items: ['Chips'], Contact: 'N / A', Status: 2 }
                 
             ]
          },
@@ -72,60 +72,52 @@
 
             Initialize: function () { 
     
-
-               let center_of_map_offset_x = 234.75;
-               let center_of_map_offset_y = 332.75;
-               let scale_x_axis = 0.03990;
-		         let scale_y_axis = 0.05050;
-
-               L.CRS.FocusCRS = L.extend({}, L.CRS.Simple, {
-                  projection: L.Projection.LonLat, // LongLat Projection
-                  transformation: new L.Transformation(scale_x_axis, center_of_map_offset_x, -scale_y_axis, center_of_map_offset_y), // Apply Transform to compensate for GTAV differences
-
-                  distance: function (pos1, pos2) {
-                     var x_difference = pos2.lng - pos1.lng;
-                     var y_difference = pos2.lat - pos1.lat;
-                     return Math.sqrt(x_difference * x_difference + y_difference * y_difference);
-                  },
-                  scale: function (zoom) {
-                     return Math.pow(2, zoom);
-                  },
-                  zoom: function (sc) {
-                     return Math.log(sc) / 0.6931471805599453;
-                  },
-                  infinite: true
-               });
-
-               this.Map = new L.Map("map", {
-                  crs: L.CRS.FocusCRS
-               });
-
-               layer = L.tileLayer('src/images/tiles/normal/minimap_sea_{y}_{x}.png', {
-                  minZoom: -2,
-                  maxZoom: 2,
+               this.Layer = L.tileLayer('src/images/tiles/postal/minimap_sea_{y}_{x}.png', {
+                  attribution: 'Map by &copy; <a href="https://fb.com/almir.kvakic.10">kvaX</a>',
+                  minZoom: 0,
+                  maxZoom: 0,
                   tileSize: 1024,
                   maxNativeZoom: 0,
-                  bounds: [[0, 0], [-8192, 8192]],
-                  tms: true,
-                  noWrap: false, 
-               }).addTo(this.Map);
-
-               this.Map.setView([-1192.7,-135.1], 3);
-
-               this.Map.on('click', function(e) {
-                  alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-               });
-            
-               const Icon = L.icon({
-                  iconUrl: 'order.png',
-                  iconSize: [15, 15],
+                  minNativeZoom: 0,
+                  tileDirectory: 'tiles'
                });
                
-               this.Orders.forEach(Order => {
-                  const Coords = this.convertToMap(Order.Position.x, Order.Position.y);
-                  console.log(Coords)
-                  Order.Marker = L.marker(new L.LatLng(Coords.lat, Coords.lng), { icon: Icon }).addTo(this.Map);
+               this.Map = L.map('map', { 
+                  crs: L.CRS.Simple, 
+                  layers: [this.Layer] 
+               }).setView([0, 0], 0);
+
+
+               getMapBounds = (t) => {
+                  let e = 3 * t.options.tileSize,
+                     n = 2 * t.options.tileSize,
+                     i = this.Map.unproject([0, e], 0),
+                     o = this.Map.unproject([n, 0], 0);
+                  return new L.LatLngBounds(i, o);
+               }
+
+               var r = getMapBounds(this.Layer);
+               this.Map.setMaxBounds(r.pad(1));
+               this.Map.fitBounds(r);
+               
+               this.Map.on('click', function(e){
+                  const coord = e.latlng;
+                  let lat = coord.lat;
+                  let lng = coord.lng;
+                  // console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
                });
+
+               setTimeout(() => {
+                  const Icon = L.icon({
+                     iconUrl: 'order.png',
+                     iconSize: [15, 15],
+                  });
+
+                  this.Orders.forEach(Order => {
+                     const Coords = this.convertToMap(this.Layer, Order.Position.x, Order.Position.y);
+                     Order.Marker = L.marker(new L.LatLng(Coords.lat, Coords.lng), { icon: Icon }).addTo(this.Map);
+                  });
+               }, 500);
                
             },
 
@@ -138,35 +130,26 @@
                return Config[i];
             },
 
-            convertToMap: function (x, y) {
-               var game_1_x = -4000.00 - 270;
-               var game_1_y = 8000.00 + 420;
-               var game_2_x = 400.00 - 30;
-               var game_2_y = -300.0 - 340.00;
-               
-               var h = 1024 * 3,
-                  w = 1024 * 2;
-
-               let latLng1 = this.Map.unproject([0, 0], 0);
-               let latLng2 = this.Map.unproject([w / 2, (h - 1024)], 0);
-
-               var rLng = latLng1.lng + (x - game_1_x) * (latLng1.lng - latLng2.lng) / (game_1_x - game_2_x);
-               var rLat = latLng1.lat + (y - game_1_y) * (latLng1.lat - latLng2.lat) / (game_1_y - game_2_y);
-               return result = {
-                  lat: rLat,
-                  lng: rLng
-               };
+            convertToMap: function (e, n, i) {
+               var o = 3 * e.options.tileSize,
+                  r = 2 * e.options.tileSize,
+                  s = this.Map.unproject([0, 0], 0),
+                  a = this.Map.unproject([r / 2, o - e.options.tileSize], 0),
+                  l = s.lng + ((n - -4230) * (s.lng - a.lng)) / (-4230 - 370);
+               return { lat: s.lat + ((i - 8420) * (s.lat - a.lat)) / (8420 - (-640)), lng: l };
             },
 
             Fly: function (order) { 
-               this.Map.flyTo([order.Position.y, order.Position.x], 4)
+               const Coords = this.convertToMap(this.Layer, order.Position.x, order.Position.y);
+               this.Map.flyTo([Coords.lat, Coords.lng], 0);
             },
-            
    
-            Accept: function (i) { 
-
-            },
-
+            Accept: function (order) { 
+               if (order.Status == 0) { 
+                  const Index = this.Orders.indexOf(order);
+                  mp.trigger('client:job.food.order:accept', Index);
+               }
+            }
          }
       })
 

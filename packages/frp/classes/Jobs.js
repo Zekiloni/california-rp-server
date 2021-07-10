@@ -66,7 +66,9 @@ frp.Jobs = class Jobs {
          dimension: frp.Settings.default.dimension
       });
 
-      this.colshape.OnPlayerEnter = (player) => { 
+      this.colshape.OnPlayerEnter = async (player) => { 
+         const Character = await player.Character();
+         if (Character.Job != frp.Globals.Jobs.Unemployed) return;
          player.Notification(this.name + ', ' + this.description + '.<br>' + '/takejob', frp.Globals.Notification.Info, 5);
       }
       

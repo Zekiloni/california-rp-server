@@ -95,6 +95,7 @@ frp.Characters.prototype.Spawn = async function (player) {
    player.setVariable('Duty', false);
    player.setVariable('Interaction', null);
    player.setVariable('Phone_Ringing', false);
+   player.setVariable('Job_Vehicle', null);
 
    // this.SetWalkingStyle(player, this.Walking_Style);
    // this.SetMood(player, this.Mood);
@@ -170,7 +171,7 @@ frp.Characters.prototype.SetSpawn = async function (point) {
 };
 
 
-frp.Characters.prototype.QuitGame = async function () { 
+frp.Characters.prototype.QuitGame = function (player) { 
 
 };
 
@@ -356,32 +357,24 @@ frp.Characters.prototype.Buy = async function (player, Nearest, action) {
 
    console.log('buy', 1)
    if (action) { 
-      console.log('akcija ' + action);
-      console.log('buy action', 1)
 
 
    } else { 
-      console.log('buy', 2)
 
       switch (true) { 
          case Nearest instanceof frp.Business: {
-            console.log('buy', 3)
             Nearest.Menu(player);
             break;
          }
    
          case Nearest instanceof frp.Houses: { 
-            console.log('buy', 4)
 
             break;
          }
    
          default: console.log('nidje');
       }
-      console.log('buy', 5)
-
    }
-   console.log('buy', 6)
 
 };
 
@@ -418,6 +411,11 @@ frp.Characters.prototype.HasLicense = function (i) {
 };
 
 
+frp.Characters.prototype.Payment = async function (Amount) { 
+   this.increment('Salary', { by: Amount });
+};
+
+
 frp.Characters.prototype.Properties = async function () {
    const Houses = await frp.Houses.findAll({ where: { Owner: this.id } });
    const Businesses = await frp.Business.findAll({ where: { Owner: this.id } });
@@ -425,10 +423,12 @@ frp.Characters.prototype.Properties = async function () {
    return { Vehicles: Vehicles, Houses: Houses, Businesses: Businesses };
 };
 
+
 frp.Characters.prototype.Appearance = async function () { 
    const appearance = await frp.Appearances.findOne({ where: { Character: this.id }});
    return appearance ? appearance : null;
 };
+
 
 frp.Characters.afterCreate(async (Character, Options) => {
    const Appearance = await frp.Appearances.findOne({ where: { Character: Character.id }});
@@ -436,6 +436,7 @@ frp.Characters.afterCreate(async (Character, Options) => {
       Appearance.destroy();
    }
 });
+
 
 frp.Characters.New = async function (player, Character) { 
    // const Bank = await frp.Bank.New(player);

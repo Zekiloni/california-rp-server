@@ -59,11 +59,20 @@ frp.Vehicles.Create = async function (model, entity, owner, position) {
 
 frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate, entity = VehicleEntities.Player, player = null, dimension = frp.Settings.default.dimension) {
    const [primary, secondary] = color;
-   const Vehicle = mp.vehicles.new(mp.joaat(model), position, { alpha: 255, color: [[0, 0, 0], [0, 0, 0]], numberPlate: plate, dimension: dimension });
+   let Vehicle = mp.vehicles.new(mp.joaat(model), position, { 
+      rotation: rotation,
+      alpha: 255, 
+      color: [[0, 0, 0], [0, 0, 0]], 
+      numberPlate: plate, 
+      dimension: dimension 
+   });
    Vehicle.setColor(primary, secondary);
+   Vehicle.engine = false;
+   Vehicle.setVariable('Mileage', 0.0);
+   Vehicle.setVariable('Fuel', 100);
    Vehicle.Entity = entity;
    Vehicle.Captain = player;
-   Vehicle.rotation = rotation;
+
    frp.GameObjects.TemporaryVehicles[Vehicle.id] = Vehicle;
    
    return Vehicle;
