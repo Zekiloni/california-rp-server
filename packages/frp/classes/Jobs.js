@@ -3,7 +3,9 @@
 // let Terminal = require('../modules/jobs/Jetsam');
 // let Transit = require('../modules/jobs/Transit');
 // let Miner = require('../modules/jobs/Miner');
-let Food = require('../modules/jobs/Food');
+
+require('../modules/jobs/Sanitation');
+require('../modules/jobs/Food');
 
 
 const List = {
@@ -24,7 +26,7 @@ const List = {
 
    4: {
       id: 4, name: 'Deptartment of Sanitation', description: 'Garbage man.',
-      point: new mp.Vector3(-321.5518, -1545.599, 31.020), blip: 318, sprite: 11,
+      point: new mp.Vector3(-321.5518, -1545.599, 31.020), blip: 318, sprite: 52,
    },
 
    5: { 
@@ -93,12 +95,9 @@ frp.Jobs = class Jobs {
 
 frp.Jobs.prototype.Take = async function (player) { 
    const Character = await player.Character();
-   if (Character.Job != frp.Globals.Jobs.Unemployed) return; player.Notification(frp.Globals.messages.ALREADY_EMPLOYED, frp.Globals.Notification.Error, 5);
 
-   Character.Job = this.id;
    player.Notification(frp.Globals.messages.SUCCESFULLY_JOB + this.description, frp.Globals.Notification.Succes, 5);
-
-   await Character.save();
+   Character.SetJob(player, this.id);
 };
 
 

@@ -78,7 +78,11 @@ module.exports = class Main {
    }
 
    static IsAnyVehAtPos (position, radius = 2) {
-      return mp.vehicles.forEachInRange(position, radius, (vehicle) => { });
+      let Vehicles = [];
+      mp.vehicles.forEachInRange(position, radius, (Vehicle) => { 
+         if (Vehicle) Vehicles.push(Vehicle);
+      });
+      return Vehicles;
    }
 
    static GenerateString (length) { 

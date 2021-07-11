@@ -93,9 +93,12 @@ frp.Characters.prototype.Spawn = async function (player) {
 
    // Temporary Variables
    player.setVariable('Duty', false);
+   player.setVariable('Job_Duty', false);
+   player.setVariable('Job_Vehicle', null);
+   player.setVariable('Working_Uniform', false);
+   player.setVariable('Admin_Duty', false);
    player.setVariable('Interaction', null);
    player.setVariable('Phone_Ringing', false);
-   player.setVariable('Job_Vehicle', null);
 
    // this.SetWalkingStyle(player, this.Walking_Style);
    // this.SetMood(player, this.Mood);
@@ -140,6 +143,12 @@ frp.Characters.prototype.Spawn = async function (player) {
       }
    }
 };
+
+
+mp.events.add('server:character.attachment', async (player, model, bone) => { 
+   const Character = await player.Character();
+   Character.Interaction(player, model, bone);
+});
 
 
 frp.Characters.prototype.Interaction = async function (player, model, bone, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) {
@@ -241,6 +250,7 @@ frp.Characters.prototype.UnRentVehicle = function (player) {
    }
 }
 
+
 frp.Characters.prototype.ExtendRent = function (player, minutes) {
    if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
       clearTimeout(this.Rented_Vehicle.Timer);
@@ -249,6 +259,7 @@ frp.Characters.prototype.ExtendRent = function (player, minutes) {
       }, 60000 * minutes);
    }
 }
+
 
 frp.Characters.prototype.RentVehicle = function (player, model, business, minutes = 30) {
    if (frp.Main.IsAnyVehAtPos(business.Vehicle_Point)) {
@@ -268,6 +279,7 @@ frp.Characters.prototype.RentVehicle = function (player, model, business, minute
       }, 60000 * minutes);
    } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
 };
+
 
 frp.Characters.prototype.Enter = async function (player, type, id) { 
    switch (type) { 
@@ -430,6 +442,19 @@ frp.Characters.prototype.Appearance = async function () {
 };
 
 
+frp.Characters.prototype.Uniform = function (Player, Uniform) { 
+   if (Uniform) { 
+      for (const Component of Uniform) { 
+         Player.setClothes(Component.Index, Component.Drawable, 0, 2);
+         Player.setVariable('Working_Uniform', true);
+      }
+   } else { 
+      frp.Items.Equipment(Player, this.Gender);
+      Player.setVariable('Working_Uniform', false);
+   }
+};
+
+
 frp.Characters.afterCreate(async (Character, Options) => {
    const Appearance = await frp.Appearances.findOne({ where: { Character: Character.id }});
    if (Appearance) { 
@@ -440,8 +465,6 @@ frp.Characters.afterCreate(async (Character, Options) => {
 
 frp.Characters.New = async function (player, Character) { 
    // const Bank = await frp.Bank.New(player);
-
-   console.log(Character);
 
    const Created = await frp.Characters.create({
       Account: player.account, Name: Character.First_Name + ' ' + Character.Last_Name,

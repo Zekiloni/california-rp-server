@@ -17,10 +17,35 @@ module.exports = {
       },
 
       {
+         name: 'quitjob',
+         desc: 'Otkaz sa posla.',
+         call: async (Player, args) => {
+            const Characcter = await Player.Character();
+            Characcter.SetJob(Player, frp.Globals.Jobs.Unemployed);
+            Player.Notification(frp.Globals.messages.QUITJOB, frp.Globals.Notification.Succes, 5);
+         }
+      },
+
+      {
+         name: 'garbage',
+         desc: 'Početak posla djubretara.',
+         job: frp.Globals.Jobs.Sanitation,
+         position: frp.Jobs.Job[frp.Globals.Jobs.Sanitation].position,
+         params: ['start / stop'],
+         call: (Player, args) => {
+            const [action] = args;
+            switch (action) {
+               case frp.Globals.Words.Stop: frp.Sanitation.Stop(Player); break;
+               case frp.Globals.Words.Start: frp.Sanitation.Start(Player); break;
+            }
+         }
+      },
+
+      {
          name: 'orders',
          desc: 'Narudžbine hrane.',
          job: frp.Globals.Jobs.Food_Delivery,
-         position: frp.Jobs.Job[frp.Globals.Jobs.Food_Delivery].point,
+         position: frp.Jobs.Job[frp.Globals.Jobs.Food_Delivery].position,
          call: (player, args) => {
             player.call('client:job.food:orders', [frp.Food.Orders]);
          }

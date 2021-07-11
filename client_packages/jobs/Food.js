@@ -28,7 +28,8 @@ mp.events.add({
 
          Delivering = true;
 
-         const {checkpoint, blip} = Player.CreateInteractionSpot('Food Order', response.Position);
+         const Position = new mp.Vector3(response.Position.x, response.Position.y, response.Position.z - 0.9)
+         const {checkpoint, blip} = Player.CreateInteractionSpot('Food Order', Position);
 
          mp.events.add('playerEnterCheckpoint', ReachOrderPoint);
          

@@ -124,7 +124,7 @@ function Interaction (entity, value) {
    }
    else {
       if (entity.Attachment) { 
-         if (entity.Attachment.doesExist()) { 
+         if (mp.objects.at(entity.Attachment.id)) { 
             entity.Attachment.destroy();
          }
       }

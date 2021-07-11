@@ -60,6 +60,11 @@ const GLOBALS = {
       ]
    },
 
+   Words: {
+      Start: 'start',
+      Stop: 'stop'
+   },
+
    MarkerColors: { 
       Business: [253, 201, 41, 185],
       Faction: [69, 222, 105, 113],
@@ -71,6 +76,7 @@ const GLOBALS = {
    Jobs: { 
       Multiplier: 5.75,
       Unemployed: 0,
+      Sanitation: 4,
       Food_Delivery: 6,
    },
    
@@ -86,9 +92,13 @@ const GLOBALS = {
       USER_DOESNT_EXIST: 'Korisničko ime nije pronadjeno.',
       INCCORRECT_PASSWORD: 'Korisnička šifra nije tačna.',
       SUCCESFULLY_JOB: 'Uspešno ste se zaposlili kao ',
+      JOB_ALREADY_STARTED: 'Već ste započeli posao.',
+      THERE_IS_NO_PLACE_FOR_VEHICLE: 'Trenutno nema slobodnog mesta za vozilo.',
+      GARBAGE_JOB_STARTED: 'Započeli ste posao Smećara, vaš zadatak je da idete od kontenjera do kontenjera i interaktirate sa njima na slovo Y.',
+      GARBAGE_HOW_TO_STOP: 'Završili ste rutu. Vratite vaše zaduženo vozilo na parkingu gde ste ga i uzeli, zatim /garbage stop na mestu gde ste i započeli kako bi ste bili isplaćeni.',
       ALREADY_EMPLOYED: 'Već ste zaposleni.',
       UNEMPLOYED: 'Niste zaposleni.',
-      QUITJOB: 'Dali ste otkaz.',
+      QUITJOB: 'Uspešno ste dali otkaz na poslu.',
       NOT_SPECIFIC_JOB: 'Nemate odredjeni posao.',
       ORDER_NOT_COMPLETED: 'Niste dostavili kompletnu porudžbinu',
       ORDER_ALREADY_PROCESSING: 'Dostava je već završena ili je u toku.',
@@ -103,6 +113,7 @@ const GLOBALS = {
       DMV_NOT_WORKING: 'Department of Motor Vehicles, radno vreme od 6 - 20h',
       ENGINE_OFF: 'Ugasili ste motor vozila.',
       ANIM_DOESNT_EXIST: 'Animacija nije pronadjena',
+      JOB_VEHICLE_RETURN_BACK: 'Molimo vratite vaše zaduženo vozilo na parking gde ste ga i uzeli.',
       CMD_SYNTAX: '<b>[KOMANDA]</b> ',
       NOT_ON_POSITION: 'Ne nalazite se na odredjenoj lokaciji.',
       DOORS_LOCKED: 'Zaključali ste vrata',

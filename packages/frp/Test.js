@@ -22,8 +22,8 @@ mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 =
    player.outputChatBox(`Vehicle id ${JSON.stringify(veh.id)}!`);
 });
 
-mp.events.addCommand("clot", (player, full, comp, draw, text, pal) => {
-    player.setClothes(parseInt(comp), parseInt(draw), parseInt(text), parseInt(pal));
+mp.events.addCommand("testpos", (player, full, comp, draw, text, pal) => {
+   console.log(frp.Main.IsAnyVehAtPos(player.position, 2));
 });
 
 mp.events.addCommand("prop", (player, full, comp, draw, text) => {
