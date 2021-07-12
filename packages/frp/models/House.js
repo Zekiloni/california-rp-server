@@ -64,9 +64,9 @@ frp.Houses.prototype.Refresh = function () {
 
    if (this.GameObject == null) { 
       const GameObjects = { 
-         colshape: mp.colshapes.newSphere(this.Position.x, this.Position.y, this.Position.z, 2.0, this.Dimension),
+         colshape: mp.colshapes.newSphere(this.Position.x, this.Position.y, this.Position.z, 1.8, this.Dimension),
          blip: mp.blips.new(40, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: 'House', color: 59, shortRange: true, scale: 0.75, drawDistance: 25 }),
-         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 2.5, {
+         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 1.8, {
             color: frp.Globals.MarkerColors.Houses, 
             rotation: new mp.Vector3(0, 0, 90), 
             visible: true, 

@@ -67,9 +67,8 @@ for (let i in Vozila) {
    Dealer.push(Vozila[i]);
 }
 
-mp.events.addCommand("kupiauto", (player, fullText, dict, anim) => {
-   console.log('Pozvao komandu')
-   player.call('client:vehicle.dealership', [Dealer]);
+mp.events.addCommand("animacija", (player, fullText, dict, anim, flag) => {
+   player.playAnimation(dict, anim, 8, flag);
 });
 
 mp.events.addCommand("scenario", (player, fullText, scenario) => {

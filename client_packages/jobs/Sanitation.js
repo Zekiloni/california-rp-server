@@ -84,7 +84,6 @@ mp.keys.bind(0x59, false, async function () {
                let Truck = mp.vehicles.atRemoteId(Player.getVariable('Job_Vehicle'));
                if (Player.vehicle == Truck) { 
 
-
                   Truck.setDoorOpen(5, false, false);
                   Player.freezePosition(true);
                   Truck.freezePosition(true);
@@ -107,7 +106,7 @@ mp.keys.bind(0x59, false, async function () {
       const Garbage = await ClosestGarbage();
       if (Garbage) { 
          const aPicked = AlreadyPicked();
-         if (aPicked) return mp.gui.chat.push('to je vec pokupljeno');
+         if (aPicked) return;
 
          Picked = true;
          mp.events.callRemote('server:character.attachment', 'prop_cs_street_binbag_01', 6286)
@@ -128,11 +127,17 @@ mp.keys.bind(0x59, false, async function () {
 
                   Player.heading = Truck.heading;
                   Picked = false;
-   
-                  mp.events.callRemote('server:character.attachment', false);
-   
+
                   colshape.destroy();
                   marker.destroy();
+
+                  Truck.setDoorOpen(5, false, false);
+                  mp.game.wait(250);
+                  mp.events.callRemote('server:player.animation', 'anim@heists@narcotics@trash', 'throw_ranged_a_bin_bag', 49);
+                  mp.game.wait(750);
+                  mp.events.callRemote('server:character.attachment', false);
+                  mp.game.wait(850);
+                  Truck.setDoorShut(5, false);
       
                   mp.events.remove('playerEnterColshape', BehindGarbageTruck);
                }

@@ -6,6 +6,8 @@ const VehicleEntities = {
    Player: 0, Business: 1, Faction: 2, Job: 3
 };
 
+module.exports = { VehicleEntities };
+
 frp.Vehicles = frp.Database.define('vehicle', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Model: { type: DataTypes.STRING },
@@ -13,9 +15,8 @@ frp.Vehicles = frp.Database.define('vehicle', {
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Numberplate: { type: DataTypes.STRING, defaultValue: null },
-      Fuel: { type: DataTypes.FLOAT(3, 1), defaultValue: 99 },
+      Fuel: { type: DataTypes.INTEGER, defaultValue: 100 },
       Dirt: { type: DataTypes.INTEGER, defaultValue: 0 },
-      Heading: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mileage: { type: DataTypes.FLOAT, defaultValue: 0.0 },
       Parked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Garage: { type: DataTypes.INTEGER, defaultValue: 0 },
@@ -29,14 +30,28 @@ frp.Vehicles = frp.Database.define('vehicle', {
          get: function () { return JSON.parse(this.getDataValue('Components')); },
          set: function (value) { this.setDataValue('Components', JSON.stringify(value)); } 
       },
+      Parking: {
+         type: DataTypes.TEXT, defaultValue: null,
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Parking'));
+            return new mp.Vector3(Position.x, Position.y, Position.z);
+         },
+         set: function (value) { this.setDataValue('Parking', JSON.stringify(value)); }
+      },
       Position: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Position')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Position'));
+            return new mp.Vector3(Position.x, Position.y, Position.z);
+         },
          set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
       },
       Rotation: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Rotation')); },
+         get: function () { 
+            const Rotation = JSON.parse(this.getDataValue('Rotation'));
+            return new mp.Vector3(Rotation.x, Rotation.y, Rotation.z);
+         },
          set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
       },
       GameObject: { 
@@ -53,16 +68,53 @@ frp.Vehicles = frp.Database.define('vehicle', {
 );
 
 
-frp.Vehicles.Create = async function (model, entity, owner, position) {
-   const Vehicle = await frp.Vehicles.create({ Model: model, Owner: owner, Position: position });
+frp.Vehicles.Create = async function (model, entity = VehicleEntities.Player, owner, position, rotation, color) {
+
+   const [primary, secondary] = color;
+
+   const Vehicle = await frp.Vehicles.create({ 
+      Model: model, 
+      Entity: entity,
+      Owner: owner, 
+      Position: position,
+      Rotation: rotation,
+      Color: [primary, secondary]
+   });
+
 };
+
+frp.Vehicles.afterCreate(async (Vehicle, Options) => {
+   Vehicle.Spawn();
+});
+
+frp.Vehicles.prototype.Spawn = function () { 
+   if (this.GameObject) return;
+
+   const Vehicle = mp.vehicles.new(mp.joaat(this.Model), this.Position, {
+      heading: this.Heading,
+      numberPlate: this.Numberplate, // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
+      alpha: 255,
+      color: 0,
+      locked: this.Locked,
+      engine: false,
+      dimension: this.Garage
+   });
+
+   Vehicle.setVariable('Mileage', this.Mileage);
+   Vehicle.setVariable('Fuel', this.Fuel);
+
+   this.GameObject = Vehicle;
+};
+
 
 frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate, entity = VehicleEntities.Player, player = null, dimension = frp.Settings.default.dimension) {
    const [primary, secondary] = color;
+
    let Vehicle = mp.vehicles.new(mp.joaat(model), position, { 
       rotation: rotation, alpha: 255,  color: [[0, 0, 0], [0, 0, 0]], 
       numberPlate: plate, dimension: dimension 
    });
+
    Vehicle.setColor(primary, secondary);
    Vehicle.engine = false;
    Vehicle.setVariable('Mileage', 0.00);
@@ -76,11 +128,6 @@ frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate
 };
 
 
-frp.Vehicles.afterCreate(async (Vehicle, Options) => {
-   Vehicle.Spawn();
-});
-
-
 frp.Vehicles.prototype.Dimension = function (i) { 
    this.GameObject.dimension = i;
 };
@@ -88,26 +135,9 @@ frp.Vehicles.prototype.Dimension = function (i) {
 
 frp.Vehicles.prototype.Respawn = function () { 
    if (this.GameObject) { 
-      this.GameObject.position = new mp.Vector3(this.Parking.x, this.Parking.y, this.Parking.z);;
-      this.GameObject.setHeading(this.Heading);
+      this.GameObject.position = this.Parking;
+      this.GameObject.rotation = this.Rotation;
    }
-};
-
-
-frp.Vehicles.prototype.Spawn = function () { 
-   if (this.GameObject) return;
-
-   const Vehicle = mp.vehicles.new(mp.game.joaat(this.Model), this.Position, {
-      heading: this.Heading,
-      numberPlate: this.Numberplate, // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
-      alpha: 255,
-      color: 0,
-      locked: false,
-      engine: false,
-      dimension: this.Garage
-   });
-
-   this.GameObject = Vehicle;
 };
 
 
@@ -119,10 +149,18 @@ frp.Vehicles.GetVehicleInstance = async function (veh) {
 };
 
 
-frp.Vehicles.prototype.Park = async function (position = null, heading, garage = 0) { 
+frp.Vehicles.prototype.Park = async function (position, rotation, garage = null) { 
    if (this.GameObject) { 
       this.Parking = position;
-      this.Garage = garage;
+      this.Rotation = rotation;
+
+      if (garage != null) { 
+         this.Garage = garage;
+      }
+
+      this.GameObject.position = position;
+      this.GameObject.rotation = rotation;
+
       await this.save();
    }
 };
@@ -135,8 +173,8 @@ frp.Vehicles.prototype.Dimension = function (i) {
 
 
 frp.Vehicles.prototype.Paint = async function (primary, secondary) { 
-   this.Color = [primary, secondary];
-   this.GameObject.setColorRGB(primary[0], primary[1], primary[2], secondary[0], secondary[1], secondary[2]);
+   this.Color = [priamry, secondary];
+   if (this.GameObject) this.GameObject.setColor(primary, secondary);
    await this.save();
 };
 

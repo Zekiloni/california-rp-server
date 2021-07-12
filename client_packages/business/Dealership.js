@@ -60,6 +60,10 @@ mp.events.add({
       Vehicle.setColours(parseInt(primary), parseInt(secondary));
    },
 
+   'client:business.dealership:buy': async (info) => { 
+      
+   }
+
 })
 
 async function Preview (model) { 

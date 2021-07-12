@@ -63,6 +63,7 @@ mp.Player.prototype.Nearest = async function () {
    // }
 };
 
+
 mp.Player.prototype.defaultVariables = function () {
    this.data.cuffed = false;
    this.frozen = false;
@@ -71,6 +72,7 @@ mp.Player.prototype.defaultVariables = function () {
    this.data.spawned = false;
    this.data.job = 0;
 };
+
 
 mp.Player.prototype.ProximityMessage = function (radius, message, colors) {
    mp.players.forEachInRange(this.position, radius, (target) => {
@@ -95,6 +97,7 @@ mp.Player.prototype.message = function (color, message) {
    this.outputChatBox(`!{${color}}${message}`);
 };
 
+
 mp.events.add({
    'playerChat': (player, text) => {
       if (player.data.logged && player.data.spawned) {
@@ -102,6 +105,7 @@ mp.events.add({
       }
    }
 });
+
 
 mp.players.find = (playerName) => {
    let foundPlayer = null;
@@ -121,6 +125,16 @@ mp.players.find = (playerName) => {
    return foundPlayer;
 };
 
-mp.events.add("server:onPlayerDamageHimself", (player, healthLoss) => {
-   // 
+
+
+
+
+mp.events.add({
+
+   'server:player.animation': (player, dict, name, flag) => { 
+      player.playAnimation(dict, name, 8, flag);
+   },
+
+   "server:onPlayerDamageHimself": (player, healthLoss) => {
+   }
 });

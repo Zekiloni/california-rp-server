@@ -100,12 +100,8 @@ mp.keys.bind(0x58, false, async function () {
 
 
 function Interaction (entity, value) { 
-      
    if (value) { 
       try { 
-         mp.gui.chat.push(JSON.stringify(value.Model));
-         mp.gui.chat.push(JSON.stringify(value.Offset));
-         mp.gui.chat.push(JSON.stringify(value.Bone));
    
          entity.Attachment = mp.objects.new(mp.game.joaat(value.Model), entity.position, {
             rotation: entity.rotation,
