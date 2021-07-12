@@ -264,7 +264,7 @@ module.exports = {
 
       {
          name: 'ban',
-         description: 'Ban a player',
+         desc: 'Ban a player',
          admin: 3,
          call: (player, ...args) => {
          }
@@ -272,7 +272,7 @@ module.exports = {
 
       {
          name: 'fly',
-         description: 'Letiš',
+         desc: 'Letiš',
          admin: 2,
          call: (player, ...args) => {
             player.call('client:player.administrator:fly');
@@ -280,24 +280,8 @@ module.exports = {
       },
 
       {
-         name: 'vdoors',
-         description: 'vehicle vrata',
-         admin: 2,
-         call: (player, args) => {
-            const [id, action] = args;
-            const Vehicle = mp.vehicles.at(id);
-            switch (action) {
-               case 'hood': Vehicle.data.Hood = !Vehicle.data.Hood; break;
-               case 'trunk': Vehicle.data.Trunk = !Vehicle.data.Trunk; break;
-               case 'back': Vehicle.data.Back = !Vehicle.data.Back; break;
-               case 'back2': Vehicle.data.Back2 = !Vehicle.data.Back2; break;
-            }
-         }
-      },
-
-      {
          name: 'goto',
-         description: 'Teleport do igraca.',
+         desc: 'Teleport do igraca.',
          admin: 3,
          params: ['igrac'],
          call: (player, args) => {
@@ -320,7 +304,7 @@ module.exports = {
 
       {
          name: 'gethere',
-         description: 'Teleport igraca do sebe.',
+         desc: 'Teleport igraca do sebe.',
          admin: 2,
          call: (player, args) => {
             let target = mp.players.find(args[0]);

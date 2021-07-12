@@ -21,6 +21,8 @@ module.exports = {
          desc: 'Otkaz sa posla.',
          call: async (Player, args) => {
             const Characcter = await Player.Character();
+            if (Characcter.Job == frp.Globals.Jobs.Unemployed) return Player.Notification(frp.Globals.messages.UNEMPLOYED, frp.Globals.Notification.Error, 5);
+
             Characcter.SetJob(Player, frp.Globals.Jobs.Unemployed);
             Player.Notification(frp.Globals.messages.QUITJOB, frp.Globals.Notification.Succes, 5);
          }

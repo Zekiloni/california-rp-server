@@ -7,14 +7,7 @@ let DistanceTemporary;
 
 mp.game.controls.useDefaultVehicleEntering = true;
 
-const natives = { 
-   MAX_PASSENGERS: '0x2AD93716F184EDA4',
-   MAX_SPEED: '0xF417C2502FFFED43',
-   MAX_BRAKING: '0xDC53FD41B4ED944C',
-   MAX_TRACTION: '0x539DE94D44FDFD0D',
-   MAX_ACCELERATION: '0x8C044C5C84505B6A',
-   MANUFACTEUR: '0xF7AF4F159FF99F97',
-}
+
 
 mp.events.add({
    'entityStreamIn': (entity) => {
@@ -43,13 +36,14 @@ mp.events.add({
       }
    },
 
-   'playerLeaveVehicle': (vehicle, seat) => { 
+   'playerLeaveVehicle': (Vehicle, seat) => { 
       if (seat == -1) { 
          mp.events.remove('render', Driving);
-         if (vehicle) mp.events.callRemote('server:vehicle:mileage', vehicle, vehicle.Mileage)
+         if (Vehicle) mp.events.callRemote('server:vehicle:update', Vehicle, Vehicle.Mileage, Vehicle.Fuel);
       }
    }
 });
+
 
 mp.events.addDataHandler({
    'IndicatorRight': (entity, value) => {
@@ -152,3 +146,12 @@ function Doors (vehicle, index, value) {
 };
 
 
+
+const natives = { 
+   MAX_PASSENGERS: '0x2AD93716F184EDA4',
+   MAX_SPEED: '0xF417C2502FFFED43',
+   MAX_BRAKING: '0xDC53FD41B4ED944C',
+   MAX_TRACTION: '0x539DE94D44FDFD0D',
+   MAX_ACCELERATION: '0x8C044C5C84505B6A',
+   MANUFACTEUR: '0xF7AF4F159FF99F97',
+};

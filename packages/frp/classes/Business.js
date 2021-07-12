@@ -79,33 +79,43 @@ mp.events.add({
       await Business.save();
    },
 
-   'server:business.clothing:buy': async (Player, Total, Vehicle, Biz) => { 
+   'server:business.dealership.vehicle:buy': async (Player, Total, Model, Color, Biz) => { 
+
+      Total = parseInt(Total);
+      Color = JSON.parse(Color);
+
+      console.log(Color);
 
       const Character = await Player.Character();
 
-      if (Character.Money < Total) return player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 5);
+      if (Character.Money < Total) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 5);
       const Business = await frp.Business.findOne({ where: { id: Biz } });
 
       let Products = Business.Products;
 
-      if (Products[Vehicle.Model].supplies < 1) return player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 5);
+      console.log(Products[Model]);
 
+      if (Products[Model].supplies < 1) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 5);
 
-      Products[Vehicle.Model].supplies --;
+      Products[Model].supplies --;
 
-      Character.GiveMoney(player, -Total);
+      Character.GiveMoney(Player, -Total);
+
+      Player.Notification(frp.Globals.messages.SUCCESSFULLY_BUYED_VEHICLE, frp.Globals.Notification.Succes, 6);
 
       Player.call('client:business.dealership:menu');
+
+      Player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 5);
    
       const VehiclePoint = Business.Vehicle_Point;
 
       frp.Vehicles.Create(
-         Vehicle.Model, 
+         Model, 
          VehicleEntities.Player,
          Character.id, 
          new mp.Vector3(VehiclePoint.x, VehiclePoint.y, VehiclePoint.z),
          new mp.Vector3(0, 0, 0),
-         Vehicle.Color
+         Color
       );
       
       Business.Products = Products;

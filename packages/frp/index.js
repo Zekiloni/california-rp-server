@@ -13,7 +13,6 @@ frp.GameObjects = {
 };
 
 
-
 // !!! TEST //
 require('./Test');
 
@@ -28,9 +27,7 @@ let Logs = require('./models/Logs');
 // MODULES
 const Helpers = require('./modules/Helpers');
 
-
 // CLASSES
-let Player = require('./classes/Player');
 let Accounts = require('./classes/Account');
 let Admin = require('./classes/Admin');
 let Characters = require('./classes/Character');
@@ -46,7 +43,7 @@ let Minute = require('./classes/Minute');
 let Houses = require('./classes/Houses');
 let Business = require('./classes/Business');
 let Factions = require('./classes/Factions');
-let Weather = require('./classes/Weather');
+let Ambient = require('./classes/Ambient');
 const AntiCheat = require('./classes/Anticheat');
 
 

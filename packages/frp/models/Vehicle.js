@@ -14,7 +14,7 @@ frp.Vehicles = frp.Database.define('vehicle', {
       Entity: { type: DataTypes.INTEGER, defaultValue: 0 },
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
-      Numberplate: { type: DataTypes.STRING, defaultValue: null },
+      Numberplate: { type: DataTypes.STRING, defaultValue: '' },
       Fuel: { type: DataTypes.INTEGER, defaultValue: 100 },
       Dirt: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mileage: { type: DataTypes.FLOAT, defaultValue: 0.0 },
@@ -70,15 +70,13 @@ frp.Vehicles = frp.Database.define('vehicle', {
 
 frp.Vehicles.Create = async function (model, entity = VehicleEntities.Player, owner, position, rotation, color) {
 
-   const [primary, secondary] = color;
-
    const Vehicle = await frp.Vehicles.create({ 
       Model: model, 
       Entity: entity,
       Owner: owner, 
       Position: position,
       Rotation: rotation,
-      Color: [primary, secondary]
+      Color: color
    });
 
 };
@@ -92,13 +90,15 @@ frp.Vehicles.prototype.Spawn = function () {
 
    const Vehicle = mp.vehicles.new(mp.joaat(this.Model), this.Position, {
       heading: this.Heading,
-      numberPlate: this.Numberplate, // NAPRAVITI FUNKCIJU ZA LICENSE PLATE
+      numberPlate: this.Numberplate,
       alpha: 255,
       color: 0,
       locked: this.Locked,
       engine: false,
       dimension: this.Garage
    });
+
+   Vehicle.Database = this.id;
 
    Vehicle.setVariable('Mileage', this.Mileage);
    Vehicle.setVariable('Fuel', this.Fuel);
@@ -141,10 +141,10 @@ frp.Vehicles.prototype.Respawn = function () {
 };
 
 
-frp.Vehicles.GetVehicleInstance = async function (veh) { 
+frp.Vehicles.GetVehicleInstance = async function (Vehicle) { 
    const Vehicles = await frp.Vehicles.findAll();
-   Vehicles.forEach((Vehicle) => { 
-      if (Vehicle.GameObject == veh) return Vehicle;
+   Vehicles.forEach((Instance) => { 
+      if (Vehicle.GameObject == Vehicle) return Instance;
    })
 };
 
@@ -194,6 +194,13 @@ frp.Vehicles.prototype.SetNumberplate = async function () {
 };
 
 
+frp.Vehicles.Nearest = function (position, radius) { 
+   mp.vehicles.forEachInRange(position, radius, (Vehicle) => { 
+      if (Vehicle) return Vehicle;
+   });
+};
+
+
 frp.Vehicles.prototype.SetFuel = async function (value) { 
    this.Fuel = value;
    this.GameObject.setVariable('Fuel', this.Fuel);
@@ -235,6 +242,11 @@ frp.Vehicles.prototype.Tune = function () {
 
 
 (async () => { 
-   frp.Vehicles.sync();
+   await frp.Vehicles.sync();
+
+   const Vehicles = await frp.Vehicles.findAll();
+   Vehicles.forEach((Vehicle) => { 
+      Vehicle.Spawn();
+   });
 })();
 

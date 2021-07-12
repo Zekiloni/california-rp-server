@@ -3,23 +3,29 @@ module.exports = {
       {
          name: 'lock',
          desc: 'Zakljucati / otkljucati',
-         call: async (player, args) => {
-            const Character = await player.Character(), Nearest = await player.Nearest();
+         call: async (Player) => {
+            const Character = await Player.Character(), Nearest = await Player.Nearest();
             
-            switch (true) { 
-               case Nearest instanceof frp.Business: { 
-
-                  break;
+            if (Nearest) { 
+               switch (true) { 
+                  case Nearest instanceof frp.Business: { 
+                     console.log(Nearest);
+                     break;
+                  }
+   
+                  case Nearest instanceof frp.Houses: { 
+   
+                     console.log(Nearest);
+                     break;
+                  }
+   
+                  case Nearest.type == 'vehicle': { 
+   
+                     break;
+                  }
+   
                }
-
-               case Nearest instanceof frp.Houses: { 
-
-                  break;
-               }
-
-               
             }
-
          }
       },
    ]

@@ -15,13 +15,9 @@ class Vehicles {
             if (seat == 0) { player.call('client:player.vehicle', [true, vehicle.engine]); }
          },
          
-         'playerStartExitVehicle': (player) => {
-            if (player.vehicle.engine) player.vehicle.engine = true;
-            if (player.data.Seatbelt) player.setVariable('Seatbelt', false);
-         },
-      
-         'playerExitVehicle': (player, vehicle) => { 
-            
+         'playerStartExitVehicle': (Player) => {
+            if (Player.vehicle.engine) Player.vehicle.engine = true;
+            if (Player.data.Seatbelt) Player.setVariable('Seatbelt', false);
          },
       
          'server:vehicle:indicators': (player, indicator) => {
@@ -34,9 +30,20 @@ class Vehicles {
             }
          },
       
-         'server:vehicle:mileage': (player, vehicle, mileage) => {
-            console.log('Mileage is ' + mileage);
-            vehicle.setVariable('Mileage', mileage);
+         'server:vehicle:update': async (player, Vehicle, Mileage, Fuel) => {
+
+            if (Vehicle.Database) { 
+               const iVehicle = await frp.Vehicles.findOne({ where: { id: Vehicle.Database }});
+
+               if (iVehicle) { 
+                  iVehicle.Mileage = Mileage;
+                  iVehicle.Fuel = Fuel;
+                  await iVehicle.save();
+               }
+            }
+
+            Vehicle.setVariable('Mileage', Mileage);
+            Vehicle.setVariable('Fuel', Fuel);
          }
       })
    }

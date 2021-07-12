@@ -60,8 +60,8 @@ mp.events.add({
       Vehicle.setColours(parseInt(primary), parseInt(secondary));
    },
 
-   'client:business.dealership:buy': async (info) => { 
-      
+   'client:business.dealership.vehicle:buy': (total, model, color, biz) => { 
+      mp.events.callRemote('server:business.dealership.vehicle:buy', total, model, color, biz);
    }
 
 })
@@ -72,7 +72,6 @@ async function Preview (model) {
       Vehicle.model = mp.game.joaat(model);
    } else { 
       Vehicle = mp.vehicles.new(mp.game.joaat(model), Point, { numberPlate: 'Dealership', alpha: 255, engine: false, heading: 90, dimension: Player.dimension });
-      mp.gui.chat.push('handle' + JSON.stringify(Vehicle.handle))
    }
 };
 

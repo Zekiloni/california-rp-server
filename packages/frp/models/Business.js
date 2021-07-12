@@ -186,7 +186,6 @@ frp.Business.prototype.Menu = async function (player) {
 
    const Character = await frp.Characters.findOne({ where: { id: player.character } });
 
-   console.log('Tip je ' + this.Type);
    switch (this.Type) { 
       case frp.Globals.Business.Types.Dealership: {
          if (this.Vehicle_Point) { 

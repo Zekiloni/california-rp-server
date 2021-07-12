@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- meta tags-->
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+      <!-- source -->
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+      <link rel="stylesheet" type="text/css" href="src/styles/department.css" />
+
+   </head>
+   <body>
+      <div id="vehicle">
+
+         <div class="options" v-if="Options.Toggle">
+
+         </div>
+        
+      </div>
+         
+      <!-- scripts -->
+      <script src="src/vendor/js/vue.js"></script>
+      <script>
+      let vehicle = new Vue({
+         el: '#vehicle',
+         data: {
+
+            Options: { 
+               Toggle: false,
+               
+            },
+
+            Trunk: {
+               Toggle: false
+            }
+          
+         },
+
+         created: function () {
+         },
+
+         methods: { 
+         
+         }
+      })
+   </script>
+   </body>     
+</html>
