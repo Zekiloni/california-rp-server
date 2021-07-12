@@ -107,10 +107,10 @@ frp.Vehicles.prototype.Spawn = function () {
 };
 
 
-frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate, entity = VehicleEntities.Player, player = null, dimension = frp.Settings.default.dimension) {
+frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate, dimension = frp.Settings.default.dimension) {
    const [primary, secondary] = color;
 
-   let Vehicle = mp.vehicles.new(mp.joaat(model), position, { 
+   const Vehicle = mp.vehicles.new(mp.joaat(model), position, { 
       rotation: rotation, alpha: 255,  color: [[0, 0, 0], [0, 0, 0]], 
       numberPlate: plate, dimension: dimension 
    });
@@ -119,8 +119,6 @@ frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate
    Vehicle.engine = false;
    Vehicle.setVariable('Mileage', 0.00);
    Vehicle.setVariable('Fuel', 100);
-   // Vehicle.Entity = entity;
-   // Vehicle.Captain = player;
 
    frp.GameObjects.TemporaryVehicles[Vehicle.id] = Vehicle;
    
@@ -179,10 +177,43 @@ frp.Vehicles.prototype.Paint = async function (primary, secondary) {
 };
 
 
-frp.Vehicles.prototype.Lock = async function () {
-   this.Locked = !this.Locked;
-   this.GameObject.locked = this.Locked;
-   await this.save();
+frp.Vehicles.prototype.Lock = async function (Player) {
+
+   const Character = await Player.Character();
+
+   switch (true) { 
+      case this.Entity == VehicleEntities.Player: { 
+         if (this.Owner != Character.id) return Player.Notification(frp.Globals.messages.YOU_DONT_HAVE_VEHICLE_KEYS, frp.Globals.Notification.Error, 6);
+
+         this.GameObject.locked = !this.GameObject.locked;
+         this.Locked = this.GameObject.locked;
+         await this.save();
+
+         break;
+      }
+
+      case this.Entity == VehicleEntities.Business: { 
+         const Business = await frp.Business.findOne(({ where: { Owner: this.Owner }}));
+
+         if (Business.Workers.includes(Character.id) == false) return Player.Notification(frp.Globals.messages.YOU_DONT_HAVE_VEHICLE_KEYS, frp.Globals.Notification.Error, 6);
+        
+         this.GameObject.locked = !this.GameObject.locked;
+         this.Locked = this.GameObject.locked;
+         await this.save();
+         
+         break;
+      }
+
+      case this.Entity == VehicleEntities.Faction: { 
+         if (this.Owner != Character.Faction) return Player.Notification(frp.Globals.messages.YOU_DONT_HAVE_VEHICLE_KEYS, frp.Globals.Notification.Error, 6);
+
+         this.GameObject.locked = !this.GameObject.locked;
+         this.Locked = this.GameObject.locked;
+         await this.save();
+
+         break;
+      }
+   }
 };
 
 
@@ -195,9 +226,14 @@ frp.Vehicles.prototype.SetNumberplate = async function () {
 
 
 frp.Vehicles.Nearest = function (position, radius) { 
+   let Result = null;
    mp.vehicles.forEachInRange(position, radius, (Vehicle) => { 
-      if (Vehicle) return Vehicle;
+      if (Vehicle) {
+         Result = Vehicle;
+         return;
+      }
    });
+   return Result;
 };
 
 

@@ -36,7 +36,8 @@ module.exports = {
          desc: 'Opcije gepeka vozila.',
          call: (Player) => {
             const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
-            if (Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
+            console.log(Vehicle);
+            if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
             if (Vehicle) Vehicle.data.Trunk = !Vehicle.data.Trunk;
          }
       },
@@ -46,7 +47,7 @@ module.exports = {
          desc: 'Opcije haube vozila.',
          call: (Player) => {
             const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
-            if (Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
+            if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
             if (Vehicle) Vehicle.data.Hood = !Vehicle.data.Hood;
          }
       },

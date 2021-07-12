@@ -3,6 +3,13 @@ const Player = mp.players.local;
 
 Player.Attachment = null;
 
+let AntiKeySpam = false;
+
+const Controls = { 
+   keyX: 0x58,
+   keyL: 0x4C
+};
+
 
 // BLACK SCREEN AFTER DEATH
 mp.game.gameplay.setFadeOutAfterDeath(false); 
@@ -68,7 +75,6 @@ mp.events.addDataHandler({
 
 
 
-
 mp.events.add({
 
    'entityStreamIn': (entity) => { 
@@ -86,8 +92,8 @@ mp.events.add({
 });
 
 
-
-mp.keys.bind(0x58, false, async function () {
+// INTERACTIONS :: REMOVE ATTACHMENT
+mp.keys.bind(Controls.keyX, false, async function () {
    if (Player.logged && Player.spawned) { 
       if (mp.players.local.isTypingInTextChat) return;
       if (Player.getVariable('Interaction') != null) {
@@ -97,6 +103,18 @@ mp.keys.bind(0x58, false, async function () {
    }
 });
 
+
+// INTERACTIONS :: LOCK
+mp.keys.bind(Controls.keyL, false, async function () {
+   if (Player.logged && Player.spawned && Player.isTypingInTextChat == false) { 
+     if (AntiKeySpam) return;
+
+      mp.events.callRemote('server:interactions:lock');
+
+      AntiKeySpam = true;
+      setTimeout(() => { AntiKeySpam = false; }, 4000);
+   }
+});
 
 
 function Interaction (entity, value) { 

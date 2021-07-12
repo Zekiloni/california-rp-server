@@ -13,6 +13,9 @@ frp.GameObjects = {
 };
 
 
+const Pederi = [ 'Mare', 'Zeki', 'Mile' ];
+
+
 // !!! TEST //
 require('./Test');
 

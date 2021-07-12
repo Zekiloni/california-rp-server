@@ -8,6 +8,11 @@ let DistanceTemporary;
 mp.game.controls.useDefaultVehicleEntering = true;
 
 
+const Controls = {
+   arrowLeft: 3,
+   arrowRight: 3
+};
+
 
 mp.events.add({
    'entityStreamIn': (entity) => {
@@ -21,7 +26,6 @@ mp.events.add({
          if (entity.hasVariable('Trunk')) Doors(entity, 'trunk', entity.getVariable('Trunk'));
          if (entity.hasVariable('Back')) Doors(entity, 'back', entity.getVariable('Back'));
          if (entity.hasVariable('Back2')) Doors(entity, 'back2', entity.getVariable('Back2'));
-
       }
    },
 
@@ -84,23 +88,75 @@ mp.events.addDataHandler({
 });
 
 
-
-// left
-mp.keys.bind(0x25, false, () => {
-   if (!Player.logged) return false;
-   if (mp.players.local.isTypingInTextChat) return false;
+// Left Indicator
+mp.keys.bind(Controls.arrowLeft, false, () => {
+   if (!Player.logged) return;
+   if (mp.players.local.isTypingInTextChat) return;
    let vehicle = mp.players.local.vehicle;
    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 1);
 });
 
-// right
-mp.keys.bind(0x27, false, () => {
-   if (!Player.logged) return false;
-   if (mp.players.local.isTypingInTextChat) return false;
+
+// Right Indicator
+mp.keys.bind(Controls.arrowRight, false, () => {
+   if (!Player.logged) return;
+   if (mp.players.local.isTypingInTextChat) return;
    let vehicle = mp.players.local.vehicle;
    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 0);
 });
 
+
+let vOptions = false;
+
+mp.keys.bind(0x59, false, () => {
+   if (!Player.logged || mp.players.local.isTypingInTextChat) return false;
+   vOptions = !vOptions;
+   if (vOptions) { 
+      mp.gui.chat.push('uso 1');
+      mp.events.add('render', VehicleOptions);
+   } else { 
+      mp.gui.chat.push('uso 2');
+      mp.events.remove('render', VehicleOptions);
+   }
+});
+
+
+const Bones = [
+   'windscreen', 'bonnet', 'boot'
+];
+
+const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
+
+function VehicleOptions () { 
+   if (Player.vehicle) { 
+
+      const Vehicle = Player.vehicle;
+
+      for (const Bone of Bones) { 
+
+         const BonePosition = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
+         const Position = mp.game.graphics.world3dToScreen2d(new mp.Vector3(BonePosition.x, BonePosition.y, BonePosition.z + 0.05));
+
+         if (Position) {
+            let x = Position.x;
+            let y = Position.y;
+      
+            let scale = 0.6;
+            
+            y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
+            
+            mp.game.graphics.drawText(Bone, [x, y],
+            {
+               font: 4,
+               color: [255, 255, 255, 255],
+               scale: [0.325, 0.325],
+               outline: true
+            });
+         }
+      }
+
+   }
+};
 
 
 function Driving () { 

@@ -79,6 +79,10 @@ const GLOBALS = {
       Sanitation: 4,
       Food_Delivery: 6,
    },
+
+   Commands: { 
+      Lock: 'lock'
+   },
    
    messages: {
       WELCOME: 'Dobrodošli na Focus Roleplay ! Uživajte u igri.',
@@ -104,6 +108,9 @@ const GLOBALS = {
       ORDER_ALREADY_PROCESSING: 'Dostava je već završena ili je u toku.',
       ORDER_SUCCESS: 'Uspešno ste završili dostavu, zaradili ste ',
       SUCCESSFULLY_BUYED_VEHICLE: 'Uspešno ste kupili vozilo !',
+      SUCCESSFULLY_LOCKED: 'Uspešno ste zaključali ',
+      SUCCESSFULLY_UNLOCKED: 'Uspešno ste otključali ',
+      VEHICLE: 'Vozilo',
       NOT_ENOUGH_MONEY: 'Nemate dovoljno novca.',
       NOT_ENOUGH_PRODUCTS: 'Nema dovoljno produkata.',
       NOT_ENOUGH_FOR_TRANSACTION: 'Nedovoljno novca za uspešnu transakciju.',
@@ -120,6 +127,7 @@ const GLOBALS = {
       DOORS_LOCKED: 'Zaključali ste vrata',
       DOORS_UNLOCKED: 'Otključali ste vrata',
       IS_LOCKED: 'Zaključano je',
+      YOU_DONT_HAVE_VEHICLE_KEYS: 'Nemate ključeve ovog vozila.',
       VEHICLE_IS_LOCKED: 'Ovo vozilo je zaključano.',
       NOT_ON_DUTY: 'Niste na dužnosti.',
       NOT_NEAR_JOB: 'Ne nalazite se u blizini posla',
