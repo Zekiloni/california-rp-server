@@ -5,6 +5,12 @@ const Player = mp.players.local;
 let browsers = { licenses: null, identity: null };
 let opened = { licenses: false, identity: false };
 
+
+const Controls = { 
+   Enter: 0x0D
+};
+
+
 mp.events.add({
    'client:player.documents:show': (Document, Info) => { 
       switch (Document) { 
@@ -34,9 +40,9 @@ mp.events.add({
 })
 
 
-mp.keys.bind(0x0D, false, function(e) {
+mp.keys.bind(Controls.Enter, false, function(e) {
    if (Player.logged && Player.spawned) { 
-      if ( mp.players.local.isTypingInTextChat) return;
+      if (Player.isTypingInTextChat) return;
       if (opened.identity) mp.events.call('client:player.documents:show', 'identity');
       if (opened.licenses) mp.events.call('client:player.documents:show', 'licenses');
    }

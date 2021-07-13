@@ -34,10 +34,11 @@
             <div class="inventory">
                <div class="header">
                   <h2> <i class="fa fa-list-alt" aria-hidden="true"> </i> Inventar </h2>
+                  <input type="text" class="search" v-model="Search" placeholder="Pretraga..."> 
                   <h4> {{ Weight() }} <b>/ {{ player.maximum }} kg</b> </h4>
                </div>
                <div class="items">
-                  <div class="item" v-for="(item, i) in player.items" v-if="item.entity == entity.Player" v-on:click="Use(item.id)" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
+                  <div class="item" v-for="(item, i) in PlayerItems" v-if="item.entity == entity.Player" v-on:click="Use(item.id)" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
                      <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
                      <h3 class="quantity"> {{ item.quantity }} </h3>
                   </div>
@@ -132,6 +133,8 @@
                   left: 0
                },
 
+               Search: null,
+
                modal: null,
                selected: null,
 
@@ -142,6 +145,19 @@
                },
 
                wheelMaximum: [0, 1, 2, 3]
+            },
+
+            computed: { 
+               PlayerItems: function () { 
+
+                  if (this.Search == null) 
+                     return this.player.items;
+                  
+                  else 
+                     return this.player.items.sort().filter(item => {
+                        return item.name.toLowerCase().includes(this.Search.toLowerCase())
+                     });
+               },
             },
 
             methods: { 

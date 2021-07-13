@@ -21,7 +21,6 @@ mp.events.addProc({
 
 mp.events.add({
    'server:interactions:lock': (Player) => { 
-      console.log('Lock Called');
       frp.Commands[frp.Globals.Commands.Lock].call(Player);
    }
 })

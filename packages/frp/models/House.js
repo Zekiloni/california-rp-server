@@ -12,7 +12,10 @@ frp.Houses = frp.Database.define('house', {
       Locked: { type: DataTypes.BOOLEAN, defaultValue: true },
       Position: { 
          type: DataTypes.TEXT, defaultValue: null, 
-         get: function () { return JSON.parse(this.getDataValue('Position')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Position'))
+            return new mp.Vector3(Position.x, Position.y, Position.z); 
+         },
          set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
       },
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
@@ -21,6 +24,7 @@ frp.Houses = frp.Database.define('house', {
          get: function () { return JSON.parse(this.getDataValue('Interior_Position')); },
          set: function (value) { this.setDataValue('Interior_Position', JSON.stringify(value)); }
       },
+
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },
       IPL: { type: DataTypes.STRING },
       Rent: { type: DataTypes.INTEGER, defaultValue: 0 },
@@ -87,6 +91,36 @@ frp.Houses.prototype.Refresh = function () {
       const BlipColor = this.Owner == 0 ? 49 : 52;   
       this.GameObject.blip.color = BlipColor;
    }
+};
+
+
+frp.Houses.prototype.Buy = async function (Player) { 
+
+   if (this.Owner != 0) return Player.Notification(frp.Globals.messages.HOUSE_ALREADY_OWNER, frp.Globals.Notification.Error, 5);
+
+   const Character = await Player.Character();
+   const Houses = await Player.Properties().Houses;
+
+   console.log(Houses);
+
+   if (Houses.length == Character.Max_Houses) return; // PORUKA: Imate maksimalno kuca;
+   if (this.Price > Character.Money) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 5);
+
+   Character.GiveMoney(Player, -this.Price);
+   Player.Notification(frp.Globals.messages.SUCCCESSFULLY_BUYED_HOUSE, frp.Globals.Notification.Succes, 7);
+
+   this.Owner = Character.id;
+
+   await this.save();
+};
+
+
+frp.Houses.prototype.Lock = async function (Player) { 
+
+   if (this.Owner != Player.character) return Player.Notificationn(frp.Globals.messages.YOU_DONT_HAVE_HOUSE_KEYS, frp.Globals.Notification.Error, 5);
+   
+   this.Locked = !this.Locked;
+   await this.save();
 };
 
 

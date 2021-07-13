@@ -29,8 +29,7 @@ module.exports = {
       },
 
       {
-         name: 'garbage',
-         desc: 'Početak posla djubretara.',
+         name: 'Smena Djubretara.',
          job: frp.Globals.Jobs.Sanitation,
          position: frp.Jobs.Job[frp.Globals.Jobs.Sanitation].position,
          params: ['start / stop'],
@@ -39,6 +38,26 @@ module.exports = {
             switch (action) {
                case frp.Globals.Words.Stop: frp.Sanitation.Stop(Player); break;
                case frp.Globals.Words.Start: frp.Sanitation.Start(Player); break;
+            }
+         }
+      },
+
+      {
+         name: 'taxi',
+         desc: 'Smena Taksiste.',
+         job: frp.Globals.Jobs.Taxi,
+         params: ['start / stop'],
+         call: (Player, args) => {
+            const [action] = args;
+            switch (action) {
+               case frp.Globals.Words.Stop: {
+                  frp.Taxi.Stop(Player);
+                  break;
+               } 
+               case frp.Globals.Words.Start:{
+                  if (Player.dist(frp.Jobs.Job[frp.Globals.Jobs.Taxi].position) > 3) return Player.Notification(frp.Globals.messages.NOT_ON_POSITION, frp.Globals.Notification.Error, 5);
+                  break;
+               }
             }
          }
       },

@@ -5,7 +5,6 @@ module.exports = {
          desc: 'Zakljucati / otkljucati',
          call: async (Player) => {
             const Character = await Player.Character(), Nearest = await Player.Nearest();
-            console.log('pozvo');
             if (Nearest) { 
                switch (true) { 
                   case Nearest instanceof frp.Business: { 
@@ -14,8 +13,7 @@ module.exports = {
                   }
    
                   case Nearest instanceof frp.Houses: { 
-   
-                     console.log(Nearest);
+                     Nearest.Lock(Player);
                      break;
                   }
    

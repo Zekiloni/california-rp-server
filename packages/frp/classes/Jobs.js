@@ -37,6 +37,11 @@ const List = {
    6: { 
       id: 6, name: 'The 69th Street Diner', description: 'Food Delivery',
       point: new mp.Vector3(146.37088, -1522.3398, 29.1416), blip: 103, sprite: 60
+   },
+
+   7: { 
+      id: 7, name: 'Downtown Cab Co.', description: 'Taxi Driver',
+      point: new mp.Vector3(895.3234, -179.3222, 74.700), blip: 198, sprite: 81
    }
 }
 

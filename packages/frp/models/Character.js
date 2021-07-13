@@ -1,6 +1,8 @@
 const { DataTypes, BOOLEAN } = require('sequelize');
-const { ItemEntities } = require('../classes/Items.Registry');
 
+
+const { ItemEntities } = require('../classes/Items.Registry');
+const { VehicleEntities } = require('./Vehicle');
 let Appearance = require('./Appearance');
 
 
@@ -47,6 +49,10 @@ frp.Characters = frp.Database.define('character', {
       Minutes: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mood: { type: DataTypes.STRING, defaultValue: 'normal' },
       Walking_Style: { type: DataTypes.STRING, defaultValue: 'normal' },
+
+      Max_Houses: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Houses },
+      Max_Business: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Business },
+      Max_Vehicles: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Vehicles },
 
       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
       Licenses: {
@@ -365,7 +371,7 @@ frp.Characters.prototype.SetAdmin = async function (level) {
 };
 
 
-frp.Characters.prototype.Buy = async function (player, Nearest, action) { 
+frp.Characters.prototype.Buy = async function (Player, Nearest, action) { 
 
    if (action) { 
 
@@ -379,7 +385,7 @@ frp.Characters.prototype.Buy = async function (player, Nearest, action) {
          }
    
          case Nearest instanceof frp.Houses: { 
-
+            Nearest.Buy(Player);
             break;
          }
    
@@ -416,9 +422,7 @@ frp.Characters.prototype.RemoveLicense = async function (license) {
 
 
 frp.Characters.prototype.HasLicense = function (i) { 
-   const Licenses = this.Licenses;
-   const License = Licenses.find(name => name === i);
-   return License ? true : false;
+   return this.Licenses.includes(name => name === i);
 };
 
 
@@ -430,7 +434,7 @@ frp.Characters.prototype.Payment = async function (Amount) {
 frp.Characters.prototype.Properties = async function () {
    const Houses = await frp.Houses.findAll({ where: { Owner: this.id } });
    const Businesses = await frp.Business.findAll({ where: { Owner: this.id } });
-   const Vehicles = await frp.Business.findAll({ where: { Owner: this.id } });
+   const Vehicles = await frp.Business.findAll({ where: { Entity: VehicleEntities.Player, Owner: this.id } });
    return { Vehicles: Vehicles, Houses: Houses, Businesses: Businesses };
 };
 

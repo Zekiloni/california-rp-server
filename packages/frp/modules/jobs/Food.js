@@ -117,7 +117,7 @@ mp.events.addProc({
             let AvailablePosition = null;
 
             for (const Position of Configuration.Vehicle.Positions) { 
-               if (frp.Main.IsAnyVehAtPos(Position, 1.5) == undefined) {
+               if (frp.Main.IsAnyVehAtPos(Position, 1.5).length == 0) {
                   AvailablePosition = Position;
                   break;
                }

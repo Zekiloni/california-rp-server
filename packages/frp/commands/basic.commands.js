@@ -170,14 +170,12 @@ module.exports = {
       {
          name: 'buy',
          desc: 'Kupovina',
-         call: async (player, args) => {
-            const Nearest = await player.Nearest(), Character = await player.Character();
-            // if (Nearest) {
+         call: async (Player) => {
+            const Nearest = await Player.Nearest(), Character = await player.Character();
+            if (Nearest) {
                const [action] = args;
                Character.Buy(player, Nearest, action);
-            // } else { 
-            //    // PORUKA: Nema nicega u blizini
-            // }
+            }
          }
      }
    ]

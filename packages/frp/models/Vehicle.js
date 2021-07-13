@@ -81,9 +81,11 @@ frp.Vehicles.Create = async function (model, entity = VehicleEntities.Player, ow
 
 };
 
+
 frp.Vehicles.afterCreate(async (Vehicle, Options) => {
    Vehicle.Spawn();
 });
+
 
 frp.Vehicles.prototype.Spawn = function () { 
    if (this.GameObject) return;
@@ -97,6 +99,10 @@ frp.Vehicles.prototype.Spawn = function () {
       engine: false,
       dimension: this.Garage
    });
+
+   // const [primary, secondary] = this.Color;
+   // Vehicle.setColor(primary, secondary);
+
 
    Vehicle.Database = this.id;
 
