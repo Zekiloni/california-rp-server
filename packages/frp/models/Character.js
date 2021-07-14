@@ -499,9 +499,9 @@ mp.Player.prototype.Notification = function (message, type, time = 4) {
 };
 
 
-// mp.Player.prototype.Instructions = function (info) {
-
-// };
+mp.Player.prototype.Instructions = function (content, time) {
+   this.call('client:player.interface:instructions', [content, time]);
+};
 
 
 mp.Player.prototype.Character = async function () {

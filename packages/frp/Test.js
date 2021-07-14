@@ -16,6 +16,7 @@ mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 =
    player.putIntoVehicle(veh, 0);
    veh.data.Mileage = 0.0;
    veh.data.Fuel = 100;
+   veh.data.Windows = [false, false, false, false];
    //veh.data.Back = false;
    //veh.data.Trunk = false;
    //veh.data.Hood = false;
@@ -52,14 +53,14 @@ let counter = 0;
 
 let stringo = []
 
-for (const i in Vozila) { 
-   const vozilo = Vozila[i];
-   if (vozilo.category == 'sports' || vozilo.category == 'off-road' || vozilo.category == 'motorcycles' || vozilo.category == 'vans' || vozilo.category == 'sedans') { 
-      stringo.push(i);
-   }
-}
+// for (const i in Vozila) { 
+//    const vozilo = Vozila[i];
+//    if (vozilo.category == 'sports' || vozilo.category == 'off-road' || vozilo.category == 'motorcycles' || vozilo.category == 'vans' || vozilo.category == 'sedans') { 
+//       stringo.push(i);
+//    }
+// }
 
-console.log(JSON.stringify(stringo))
+// console.log(JSON.stringify(stringo))
 
 for (let i in Vozila) { 
    if (counter > MAX) break;

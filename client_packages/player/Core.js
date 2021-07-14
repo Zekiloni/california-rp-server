@@ -7,7 +7,8 @@ let AntiKeySpam = false;
 
 const Controls = { 
    keyX: 0x58,
-   keyL: 0x4C
+   keyL: 0x4C,
+   keyY: 0x59
 };
 
 
@@ -115,6 +116,54 @@ mp.keys.bind(Controls.keyL, false, async function () {
       setTimeout(() => { AntiKeySpam = false; }, 4000);
    }
 });
+
+
+
+mp.keys.bind(Controls.keyY, false, () => {
+   if (!Player.logged || !Player.spawned || Player.isTypingInTextChat || Player.Cuffed) return;
+   if (AntiKeySpam) return;
+
+   if (Player.vehicle) { 
+
+      mp.events.callRemote('server:vehicle:windows', Player.vehicle);
+
+      AntiKeySpam = true;
+      setTimeout(() => { AntiKeySpam = false; }, 2000);
+
+   } else { 
+      let Vehicle = null;
+
+      mp.vehicles.forEachInRange(Player.position, 4.5, (NearbyVehicle) => { 
+         Vehicle = NearbyVehicle;
+      });
+   
+      if (Vehicle) { 
+   
+         const Bones = { 'boot': -1.35, 'bonnet': 2.0 };
+   
+         const Position = Player.position;
+         
+         for (const Bone in Bones) { 
+            const Offset = Bones[Bone];
+   
+            const {x, y, z} = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
+      
+            const Distance = mp.game.gameplay.getDistanceBetweenCoords(Position.x, Position.y, Position.z, x, y + Offset, z, true);
+   
+            // TEST MARKER
+            // mp.markers.new(0, new mp.Vector3(x, y + Offset, z - 0.35), 0.4, { rotation: new mp.Vector3(0, 0, 0), color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
+            
+            if (Distance < 1.35) { 
+               mp.events.callRemote('server:vehicle:interaction', Vehicle, Bone);
+         
+               AntiKeySpam = true;
+               setTimeout(() => { AntiKeySpam = false; }, 2000);
+            } 
+         }
+      }
+   }
+});
+
 
 
 function Interaction (entity, value) { 

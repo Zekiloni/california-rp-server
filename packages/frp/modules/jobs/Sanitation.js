@@ -32,7 +32,7 @@ frp.Sanitation = class Sanitation {
 
    static async Stop (Player) { 
 
-      if (Player.getVariable('Job_Duty') == false) return;
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(frp.Globals.messages.JOB_NOT_STARTED, frp.Globals.Notification.Error, 5);
 
       if (Player.getVariable('Job_Vehicle')) { 
          const Vehicle = mp.vehicles.at(Player.getVariable('Job_Vehicle'));

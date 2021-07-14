@@ -24,14 +24,13 @@ frp.Taxi = class Taxi {
    static Drivers = {};
 
    constructor (player, vehicle) { 
-      this.Player = player;
+      this.Driver = player;
       this.Vehicle = vehicle;
       this.Taximeter = Configuration.DefaultFare;
       this.Customers = [];
 
       Taxi.Drivers[player.character] = this;
    }
-
 
    static async Start (Player, haveVehicle) { 
 
@@ -41,7 +40,7 @@ frp.Taxi = class Taxi {
 
       let Vehicle = null;
 
-      if (haveVehicle = null) { 
+      if (haveVehicle == null) { 
          let AvailablePosition = null;
 
          for (const Position of Configuration.Vehicle.Positions) { 
@@ -55,32 +54,50 @@ frp.Taxi = class Taxi {
 
          Vehicle = frp.Vehicles.CreateTemporary(
             Configuration.Vehicle.Model, 
-            AvailablePosition, Configuration.Vehicle.Rotation, 
+            AvailablePosition.Position, AvailablePosition.Rotation, 
             Configuration.Vehicle.Color, 'TX' + frp.Main.GenerateNumber(4)
          );
+
+         Vehicle.Job = frp.Globals.Jobs.Taxi;
 
          Player.setVariable('Job_Vehicle', Vehicle.id);
       } else { 
 
-         if (Vehicle.numberPlate.includes('TX')) { 
+         Vehicle = Player.vehicle;
 
-         } else { 
-            /// PORUKA: Nemate dozvolu za taksi
-         }
+         if (!Vehicle.numberPlate.includes('TX')) return Player.Notification(frp.Globals.messages.NO_TX_IN_NUMBERPLATE, frp.Globals.Notification.Error, 5);
 
+         
       }
 
       Player.setVariable('Job_Duty', true);
 
       const Shift = new Taxi(Player, Vehicle);
+
+      Shift.EnterVehicle = (Player, Vehicle, Seat) => { 
+         if (Shift.Vehicle == Vehicle && Shift.Driver != Player && Seat != 0) { 
+            Player.SendMessage(
+               frp.Globals.messages.YOU_ENTERED_TAXI_VEHICLE + Vehicle.numberPlate + frp.Globals.messages.PRICE_PER_MINUTE + frp.Main.Dollars(Shift.Taximeter) + '.', frp.Globals.Colors.white[2]);
+            Shift.Customers.push(Player);
+         }
+      };
+      
+      
+      Shift.ExitVehicle = (Player, Vehicle) => { 
+         if (Shift.Vehicle == Vehicle && Shift.Driver != Player) { 
+            const Customer = Shift.Customers.find((Target => Target === Player));
+            Shift.Customers.splice(Shift.Customers.indexOf(Customer));
+         }
+      };
+
       mp.events.add('playerEnterVehicle', Shift.EnterVehicle);
       mp.events.add('playerExitVehicle', Shift.ExitVehicle);
-
+    
    }
 
    static async Stop (Player) { 
 
-      if (Player.getVariable('Job_Duty')) return Player.Notification(frp.Globals.messages.JOB_NOT_STARTED, frp.Globals.Notification.Error, 5);
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(frp.Globals.messages.JOB_NOT_STARTED, frp.Globals.Notification.Error, 5);
 
       const Character = await Player.Character();
 
@@ -97,19 +114,29 @@ frp.Taxi = class Taxi {
       mp.events.remove('playerExitVehicle', Shift.ExitVehicle);
 
    };
+
+
+   static Fare (Player, Price) { 
+
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(frp.Globals.messages.JOB_NOT_STARTED, frp.Globals.Notification.Error, 5);
+
+      const Shift = Taxi.Drivers[Player.character];
+
+      if (Shift) { 
+
+         const Max = frp.Settings.default.Taximeter + 5, Min = frp.Settings.default.Taximeter;
+
+         if (Price > Max || Price < Min) return Player.Notification(frp.Globals.messages.TAXIMETRE_PRICE_RANGE + Min + ' - ' + Max + '.', frp.Globals.Notification.Error, 6);
+
+         Shift.Taximeter = Price;
+
+         Player.Notification(frp.Globals.messages.TAXIMETRE_SETTED_ON + frp.Main.Dollars(Price) + '.', frp.Globals.Notification.Error, 6);
+
+      }
+
+   };
 };
 
 
-frp.Taxi.prototype.EnterVehicle = function (Player, Vehicle, Seat) { 
-   if (this.Vehicle == Vehicle && this.Player != Player) { 
-      this.Customers.push(Player);
-   }
-};
 
-
-frp.Taxi.prototype.ExitVehicle = function (Player, Vehicle) { 
-   if (this.Vehicle == Vehicle && this.Player != Player) { 
-      const Customer = this.Customers.find((Target => Target === Player));
-      this.Customers.splice(this.Customers.indexOf(Customer));
-   }
-};
+frp.Taxi.prototype.prototipuj = function () { };

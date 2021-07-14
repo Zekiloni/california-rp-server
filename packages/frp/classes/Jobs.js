@@ -6,6 +6,7 @@
 
 require('../modules/jobs/Sanitation');
 require('../modules/jobs/Food');
+require('../modules/jobs/Taxi');
 
 
 const List = {

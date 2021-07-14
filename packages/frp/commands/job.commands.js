@@ -43,6 +43,17 @@ module.exports = {
       },
 
       {
+         name: 'fare',
+         desc: 'Cena voznje po minutu.',
+         job: frp.Globals.Jobs.Taxi,
+         params: ['cena po minutu'],
+         call: (Player, args) => {
+            const [price] = args;
+            frp.Taxi.Fare(Player, price);
+         }
+      },
+
+      {
          name: 'taxi',
          desc: 'Smena Taksiste.',
          job: frp.Globals.Jobs.Taxi,
@@ -54,8 +65,9 @@ module.exports = {
                   frp.Taxi.Stop(Player);
                   break;
                } 
-               case frp.Globals.Words.Start:{
+               case frp.Globals.Words.Start: {
                   if (Player.dist(frp.Jobs.Job[frp.Globals.Jobs.Taxi].position) > 3) return Player.Notification(frp.Globals.messages.NOT_ON_POSITION, frp.Globals.Notification.Error, 5);
+                  frp.Taxi.Start(Player, null);
                   break;
                }
             }

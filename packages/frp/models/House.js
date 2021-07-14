@@ -21,7 +21,10 @@ frp.Houses = frp.Database.define('house', {
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
       Interior_Position: { 
          type: DataTypes.TEXT, defaultValue: null, 
-         get: function () { return JSON.parse(this.getDataValue('Interior_Position')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Interior_Position'))
+            return new mp.Vector3(Position.x, Position.y, Position.z); 
+         },
          set: function (value) { this.setDataValue('Interior_Position', JSON.stringify(value)); }
       },
 

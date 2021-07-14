@@ -100,9 +100,10 @@ frp.Vehicles.prototype.Spawn = function () {
       dimension: this.Garage
    });
 
-   // const [primary, secondary] = this.Color;
-   // Vehicle.setColor(primary, secondary);
-
+   if (this.Color) {
+      const [primary, secondary] = this.Color;
+      Vehicle.setColor(primary, secondary);
+   }
 
    Vehicle.Database = this.id;
 
@@ -117,12 +118,12 @@ frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate
    const [primary, secondary] = color;
 
    const Vehicle = mp.vehicles.new(mp.joaat(model), position, { 
-      rotation: rotation, alpha: 255,  color: [[0, 0, 0], [0, 0, 0]], 
-      numberPlate: plate, dimension: dimension 
+      rotation: rotation, alpha: 255, color: 0, locked: false,
+      numberPlate: plate, dimension: dimension, engine: false
    });
 
    Vehicle.setColor(primary, secondary);
-   Vehicle.engine = false;
+
    Vehicle.setVariable('Mileage', 0.00);
    Vehicle.setVariable('Fuel', 100);
 

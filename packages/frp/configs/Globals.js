@@ -81,8 +81,11 @@ const GLOBALS = {
       Food_Delivery: 6,
    },
 
+   
    Commands: { 
-      Lock: 'lock'
+      Lock: 'lock',
+      Trunk: 'trunk',
+      Hood: 'hood'
    },
    
    messages: {
@@ -102,7 +105,10 @@ const GLOBALS = {
       GARBAGE_JOB_STARTED: 'Započeli ste posao Smećara, vaš zadatak je da idete od kontenjera do kontenjera i interaktirate sa njima na slovo Y.',
       GARBAGE_HOW_TO_STOP: 'Završili ste rutu. Vratite vaše zaduženo vozilo na parkingu gde ste ga i uzeli, zatim /garbage stop na mestu gde ste i započeli kako bi ste bili isplaćeni.',
       ALREADY_EMPLOYED: 'Već ste zaposleni.',
+      NO_TX_IN_NUMBERPLATE: 'Vaše vozilo nema prefiks TX u registarskim tablicama.',
       JOB_NOT_STARTED: 'Niste započeli posao.',
+      TAXIMETRE_PRICE_RANGE: 'Cena je u rangu ',
+      TAXIMETRE_SETTED_ON: 'Uspešno ste promenili cenu vožnje po minuti na ',
       UNEMPLOYED: 'Niste zaposleni.',
       QUITJOB: 'Uspešno ste dali otkaz na poslu.',
       NOT_SPECIFIC_JOB: 'Nemate odredjeni posao.',
@@ -113,6 +119,8 @@ const GLOBALS = {
       SUCCCESSFULLY_BUYED_HOUSE: 'Uspešno ste kupili kuću / stan ',
       SUCCESSFULLY_LOCKED: 'Uspešno ste zaključali ',
       SUCCESSFULLY_UNLOCKED: 'Uspešno ste otključali ',
+      YOU_ENTERED_TAXI_VEHICLE: 'Ušli ste u Taksi vozilo oznake ',
+      PRICE_PER_MINUTE: ', sa cenom po minutu ',
       VEHICLE: 'Vozilo',
       NOT_ENOUGH_MONEY: 'Nemate dovoljno novca.',
       NOT_ENOUGH_PRODUCTS: 'Nema dovoljno produkata.',
