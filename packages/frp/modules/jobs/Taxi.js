@@ -15,7 +15,8 @@ const Configuration =  {
          { Position: new mp.Vector3(916.711303, -170.3766021, 74.06708), Rotation: new mp.Vector3(-3.8634297, 0.08858079, 102.3866882) },
          { Position: new mp.Vector3(911.359313, -163.7295837, 73.95264), Rotation: new mp.Vector3(-1.9030433, 5.18613767, -163.941101) }
       ]
-   }
+   },
+   FareInterval: 30 * 1000
 };
 
 
@@ -26,7 +27,8 @@ frp.Taxi = class Taxi {
    constructor (player, vehicle) { 
       this.Driver = player;
       this.Vehicle = vehicle;
-      this.Taximeter = Configuration.DefaultFare;
+      this.Fare = Configuration.DefaultFare;
+      this.Taximeter = null;
       this.Customers = [];
 
       Taxi.Drivers[player.character] = this;
@@ -58,7 +60,10 @@ frp.Taxi = class Taxi {
             Configuration.Vehicle.Color, 'TX' + frp.Main.GenerateNumber(4)
          );
 
-         Vehicle.Job = frp.Globals.Jobs.Taxi;
+         Vehicle.setVariable('Job', frp.Globals.Jobs.Taxi);
+         Vehicle.setVariable('Taximeter', null);
+
+         Player.Instructions('Vaše vozilo se sa oznakom '+ Vehicle.numberPlate + ' se nalazi na parkingu iza.', 5);
 
          Player.setVariable('Job_Vehicle', Vehicle.id);
       } else { 
@@ -77,7 +82,7 @@ frp.Taxi = class Taxi {
       Shift.EnterVehicle = (Player, Vehicle, Seat) => { 
          if (Shift.Vehicle == Vehicle && Shift.Driver != Player && Seat != 0) { 
             Player.SendMessage(
-               frp.Globals.messages.YOU_ENTERED_TAXI_VEHICLE + Vehicle.numberPlate + frp.Globals.messages.PRICE_PER_MINUTE + frp.Main.Dollars(Shift.Taximeter) + '.', frp.Globals.Colors.white[2]);
+               frp.Globals.messages.YOU_ENTERED_TAXI_VEHICLE + Vehicle.numberPlate + frp.Globals.messages.PRICE_PER_MINUTE + frp.Main.Dollars(Shift.Fare) + '.', frp.Globals.Colors.white[2]);
             Shift.Customers.push(Player);
          }
       };
@@ -128,7 +133,7 @@ frp.Taxi = class Taxi {
 
          if (Price > Max || Price < Min) return Player.Notification(frp.Globals.messages.TAXIMETRE_PRICE_RANGE + Min + ' - ' + Max + '.', frp.Globals.Notification.Error, 6);
 
-         Shift.Taximeter = Price;
+         Shift.Fare = Price;
 
          Player.Notification(frp.Globals.messages.TAXIMETRE_SETTED_ON + frp.Main.Dollars(Price) + '.', frp.Globals.Notification.Error, 6);
 
@@ -138,5 +143,31 @@ frp.Taxi = class Taxi {
 };
 
 
+frp.Taxi.prototype.StartFare = function () {
 
-frp.Taxi.prototype.prototipuj = function () { };
+   this.Vehicle.setVariable('Taximeter', 0);
+
+   this.Taximeter = setInterval(() => {
+      
+      let Current = this.Vehicle.getVariable('Taximeter');
+      Current ++;
+      this.Vehicle.setVariable('Taximeter', Current * this.Fare);
+
+   }, Configuration.FareInterval);
+
+};
+
+frp.Taxi.prototype.StopFare = function () { 
+   clearInterval(this.Taximeter);
+   this.Taximeter = null;
+};
+
+frp.Taxi.prototype.ResetFare = function () { 
+
+   this.Taximeter = null;
+   this.Vehicle.setVariable('Taximeter', null);
+
+};
+
+
+

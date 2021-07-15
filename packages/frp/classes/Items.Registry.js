@@ -2,8 +2,8 @@
 const Weapons = require('../data/Weapons.json');
 
 const ItemEntities = {
-   Ground: -1, Player: 0, Vehicle: 1, House: 2,
-   Wheel: 3, LeftHand: 4, RightHand: 5, Equiped: 5
+   Ground: -1, Player: 0, Vehicle: 1, House: 2, Wheel: 3, 
+   LeftHand: 4, RightHand: 5, Equiped: 5, TemporaryVehicle: 6
 };
 
 const ItemType = {

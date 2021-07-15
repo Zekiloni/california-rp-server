@@ -32,6 +32,14 @@ mp.events.addCommand("prop", (player, full, comp, draw, text) => {
 });
 
 
+mp.events.addCommand('interior', (player, full, x, y, z, ipl) => {
+
+   player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z));
+   if (ipl) player.call('client:request:ipl')
+
+});
+
+
 mp.events.addCommand("alpr", (player, fullText) => {
     player.call('client:vehicle.alpr');
 });

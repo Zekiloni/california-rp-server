@@ -90,6 +90,10 @@ mp.events.add({
    'client:player:rotate': (value) => {
       Player.setHeading(value);
    },
+
+   'client:request:ipl': (ipl) => { 
+      mp.game.streaming.requestIpl(ipl);
+   }
 });
 
 

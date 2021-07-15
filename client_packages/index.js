@@ -62,6 +62,7 @@ let Transit = require('./jobs/Transit');
 let Sanitation = require('./jobs/Sanitation');
 let Mining = require('./jobs/Miner');
 let Food = require('./jobs/Food');
+let Taxi = require('./jobs/Taxi');
 
 // DIAMOND CASINO
 // let Roulette = require('./casino/Roulette');

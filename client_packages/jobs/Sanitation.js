@@ -117,6 +117,8 @@ mp.keys.bind(0x59, false, async function () {
          if (Truck) { 
             const BehindOffset = Truck.getOffsetFromInWorldCoords(0.0, -5.15, 0.0);
             const [colshape, marker] = LittleMarker(BehindOffset);
+
+            Truck.freezePosition(true);
    
             mp.events.add('playerEnterColshape', BehindGarbageTruck);
    
@@ -130,6 +132,8 @@ mp.keys.bind(0x59, false, async function () {
 
                   colshape.destroy();
                   marker.destroy();
+
+                  Truck.freezePosition(false);
 
                   Truck.setDoorOpen(5, false, false);
                   mp.game.wait(250);

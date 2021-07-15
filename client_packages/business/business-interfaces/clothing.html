@@ -14,9 +14,12 @@
 </head>
 <body>
    <div id="clothing">
+      
       <div class="right">
-
          <ul class="navigation">
+
+            <i v-on:click="Close()" class="close fa fa-times"></i>
+
             <li v-on:click="Page('home')" :class="{ 'active' : isActive('home') }"> <i class="fa fa-cart-plus"> </i> </li>
             <li v-on:click="Page('Tops')" :class="{ 'active' : isActive('Tops') }"> <i class="fas fa-tshirt"></i> </li>
             <li v-on:click="Page('Undershirt')" :class="{ 'active' : isActive('Undershirt') }"> <i class="fas fa-tshirt"></i> </li>
@@ -111,6 +114,8 @@
          },
 
          methods: { 
+
+            Close: () => { mp.trigger('client:business.clothing:menu'); }, 
 
             Page: function (i) { this.page = i; this.anim = true; },
 

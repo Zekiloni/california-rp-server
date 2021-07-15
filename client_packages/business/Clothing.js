@@ -15,6 +15,7 @@ mp.events.add({
          if (browser) browser.destroy();
          Player.BrowserControls(false, false);
          utils.PlayerPreviewCamera(false);
+         mp.events.callRemote('server:character.clothing:restart');
       }
    },
       

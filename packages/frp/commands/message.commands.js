@@ -74,19 +74,20 @@ module.exports = {
          name: 'w',
          desc: 'Sapnuti nekome nesto',
          params: ['igrac', 'tekst'],
-         call: (player, args) => {
-               if (args.length < 2 || !args[0].length || !args[1].length)
-                  return false;
-               let target = mp.players.find(args[0]);
-               if (target) {
-                  if (!player.IsNear(target))
-                     return false;
-                  let message = args.slice(1).join(' ');
-                  target.SendMessage(`${player.name} vam sapuće: ${message}`, mp.colors.white[2]);
-                  player.SendMessage(`${player.name} šapnuli ste ${target.name}: ${message}`, mp.colors.white[2]);
-               }
-               else
-                  return false;
+         call: (Player, args) => {
+              
+            const Target = mp.players.find(args[0]);
+
+            if (Target) { 
+               if (Player.id == Target.id) return;
+               const Message = args.splice(1).join(' ');
+               if (!Message.trim()) return;
+               if (Player.dist(Target.position) > frp.Globals.distances.whisper) return Player.Notification(frp.Globals.messages.PLAYER_NOT_NEAR, frp.Globals.Notification.Error, 5);
+
+               Target.SendMessage(player.name + ' vam šapuće: ' + message + '.', frp.Globals.Colors.white[3]);
+               Player.SendMessage('Šapnuli ste ' + target.name + ': ' + message + '.', frp.Globals.Colors.white[3]);
+            }
+
          }
       },
 

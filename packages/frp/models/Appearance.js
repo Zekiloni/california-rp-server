@@ -75,7 +75,7 @@ frp.Appearances.prototype.Apply = function (player, gender) {
 };
 
 (async () => {
-   frp.Appearances.sync({ force: true });
+   frp.Appearances.sync();
 })();
 
 

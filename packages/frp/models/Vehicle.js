@@ -128,6 +128,22 @@ frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate
    Vehicle.setVariable('Fuel', 100);
 
    frp.GameObjects.TemporaryVehicles[Vehicle.id] = Vehicle;
+
+   console.log('kreirano ' + Vehicle.id);
+
+   // Vehicle.OnDestroyed = (entity) => {
+   //    console.log(Vehicle);
+   //    console.log('izbrisano ' + Vehicle.id)
+   //    if (entity.type == 'vehicle' && entity == Vehicle) { 
+
+   //       mp.events.remove('entityDestroyed', Vehicle.OnDestroyed);
+   //    }
+   // }
+
+   mp.events.add('entityDestroyed', (entity) => { 
+      console.log(entity.id);
+   });
+
    
    return Vehicle;
 };

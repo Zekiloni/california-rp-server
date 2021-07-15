@@ -29,7 +29,7 @@ module.exports = {
       },
 
       {
-         name: 'Smena Djubretara.',
+         name: 'garbage',
          job: frp.Globals.Jobs.Sanitation,
          position: frp.Jobs.Job[frp.Globals.Jobs.Sanitation].position,
          params: ['start / stop'],
@@ -79,8 +79,9 @@ module.exports = {
          desc: 'Narudžbine hrane.',
          job: frp.Globals.Jobs.Food_Delivery,
          position: frp.Jobs.Job[frp.Globals.Jobs.Food_Delivery].position,
-         call: (player, args) => {
-            player.call('client:job.food:orders', [frp.Food.Orders]);
+         call: (Player) => {
+            if (frp.Food.Orders.length < 1) return Player.Notification(frp.Globals.messages.THERE_ARE_NO_ORDERS_RIGHT_NOW, frp.Globals.Notification.Error, 5);
+            Player.call('client:job.food:orders', [frp.Food.GetOrders()]);
          }
       }
    ]

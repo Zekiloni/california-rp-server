@@ -49,7 +49,10 @@ frp.Food = class Food {
    }
 
    static GetOrders () { 
-      return Food.Orders;
+      let List = [];
+      for (const Order of Food.Orders) { 
+         List.push({ Position: Order.Position, Items: Order.Items, Contact: Order.Contact, Status: Order.Status });
+      }
    }
 
    static async Check () { 
