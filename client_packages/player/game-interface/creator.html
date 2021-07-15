@@ -269,11 +269,19 @@
             Zoom: function (event) { mp.trigger('client:player.camera:zoom', event.deltaY); },
 
             Create: function (event) { 
-               if (this.character.First_Name != null && this.character.Last_Name != null && this.character.Birth != null && this.character.Origin != null && this.character.Gender != null) { 
-                  mp.trigger('client:player.character.creator:finish', JSON.stringify(this.character));
-               } else { 
-                  this.Warning('Niste ispunili sva potrebna polja za identitet karaktera.')
+
+               let BirthYear = 0;
+               if (this.character.Birth != null) { 
+                  BirthYear = this.character.Birth.split('-')[0];
                }
+               
+               if (
+                  this.character.First_Name == null || this.character.Last_Name == null || this.character.Birth == null || this.character.Origin == null || this.character.Gender == null ||
+                  this.isUpper(this.character.First_Name[0]) == false || this.isUpper(this.character.Last_Name[0]) == false || this.isUpper(this.character.Origin[0]) == false || BirthYear < 1950 || BirthYear > 2001
+               ) return this.Warning('Tekstualna polja vam moraju počinjati sa velikim početnim slovom i godina rodjenja ne sme biti manja od 1940 ili veća od 2001.')
+
+               mp.trigger('client:player.character.creator:finish', JSON.stringify(this.character));
+               
             },
 
             changeClothing: function (i, d) { 
@@ -292,6 +300,10 @@
             Warning: function (msg) { 
                this.warning = msg;
                setTimeout(() => { this.warning = false; }, 3500);
+            },
+
+            isUpper: (str) => {
+               return !/[a-z]/.test(str) && /[A-Z]/.test(str);
             },
 
             AnimateButton: function () { 
