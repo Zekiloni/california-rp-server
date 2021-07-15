@@ -131,6 +131,8 @@ mp.events.addProc({
                AvailablePosition, Configuration.Vehicle.Rotation, 
                Configuration.Vehicle.Color, 'FO0' + frp.Main.GenerateNumber(3)
             );
+
+            Vehicle.setVariable('Job', frp.Globals.Jobs.Food_Delivery);
   
             player.setVariable('Job_Vehicle', Vehicle.id);
          }

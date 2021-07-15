@@ -63,7 +63,7 @@ frp.Taxi = class Taxi {
          Vehicle.setVariable('Job', frp.Globals.Jobs.Taxi);
          Vehicle.setVariable('Taximeter', null);
 
-         Player.Instructions('Vaše vozilo se sa oznakom '+ Vehicle.numberPlate + ' se nalazi na parkingu iza.', 5);
+         Player.Instructions('Vaše vozilo sa oznakom '+ Vehicle.numberPlate + ' se nalazi na parkingu iza.', 5);
 
          Player.setVariable('Job_Vehicle', Vehicle.id);
       } else { 

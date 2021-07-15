@@ -74,7 +74,7 @@ frp.Sanitation = class Sanitation {
          Configuration.Vehicle.Color, 'FO0' + frp.Main.GenerateNumber(3)
       );
 
-      Vehicle.Job = frp.Globals.Jobs.Sanitation;
+      Vehicle.setVariable('Job', frp.Globals.Jobs.Sanitation);
 
       Player.setVariable('Job_Vehicle', Vehicle.id);
       Player.setVariable('Job_Duty', true);
