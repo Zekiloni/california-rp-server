@@ -65,10 +65,12 @@ mp.events.addDataHandler({
       }
    },
 
-   'Interaction': (entity, newValue, oldValue) => {
-      if (entity && entity.type == 'player') {
-         if (newValue !== oldValue) { 
-            Interaction(entity, newValue);
+   'Attachment': (entity, valueNew, valueOld) => {
+      if (valueNew !== valueOld) { 
+         if (valueNew) { 
+            Attachments.Add(entity, valueNew);
+         } else { 
+            Attachments.Remove(entity);
          }
       }
    }
@@ -79,8 +81,15 @@ mp.events.addDataHandler({
 mp.events.add({
 
    'entityStreamIn': (entity) => { 
-      if (entity.type === 'player') Interaction(entity, entity.getVariable('Interaction'));
+      if (entity.Attachment) { 
+         Attachments.StreamIn(entity, entity.getVariable('Attachment'));
+      }
+   },
 
+   'entityStreamOut': (entity) => { 
+      if (entity.Attachment) { 
+         Attachments.StreamOut(entity);
+      }
    },
 
    'client:player:freeze': (toggle) => {
@@ -100,9 +109,9 @@ mp.events.add({
 // INTERACTIONS :: REMOVE ATTACHMENT
 mp.keys.bind(Controls.keyX, false, async function () {
    if (Player.logged && Player.spawned) { 
-      if (mp.players.local.isTypingInTextChat) return;
-      if (Player.getVariable('Interaction') != null) {
-         const response = await mp.events.callRemoteProc('server:player.interaction:stop');
+      if (Player.isTypingInTextChat) return;
+      if (Player.getVariable('Attachment') != null) {
+         const response = await mp.events.callRemoteProc('server:character.attachment:remove');
          Player.Attachment = response;
       }
    }
@@ -169,34 +178,41 @@ mp.keys.bind(Controls.keyY, false, () => {
 });
 
 
+const Attachments = { 
 
-function Interaction (entity, value) { 
-   if (value) { 
-      try { 
-   
-         entity.Attachment = mp.objects.new(mp.game.joaat(value.Model), entity.position, {
-            rotation: entity.rotation,
-            alpha: 255,
-            dimension: entity.dimension
-         });
-   
-         entity.Attachment.notifyStreaming = true;
-         utils.WaitEntity(entity.Attachment).then(() => {
-            const Bone = entity.getBoneIndex(value.Bone);
-            entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, value.Rotation || false);
-         })
-      } catch (e) { 
-         JSON.stringify(e);
+   StreamIn: function (entity, attachment) { 
+      if (attachment) { 
+         Attachments.Add(entity, attachment);
+      }
+   },
+
+   StreamOut: function (entity) { 
+      Attachments.Remove(entity);
+   },
+
+   Add: function (entity, value) { 
+
+      entity.Attachment = mp.objects.new(mp.game.joaat(value.Model), entity.position, {
+         rotation: entity.rotation,
+         alpha: 255,
+         dimension: entity.dimension
+      });
+
+      utils.WaitEntity(entity.Attachment).then(() => {
+         const Bone = entity.getBoneIndex(value.Bone);
+         entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, value.Rotation || false);
+      })
+
+   },
+
+   Remove: function (entity) { 
+      let Object = entity.Attachment;
+      if (Object && mp.objects.exists(Object)) { 
+         Object.destroy();
       }
    }
-   else {
-      if (entity.Attachment) { 
-         if (mp.objects.at(entity.Attachment.id)) { 
-            entity.Attachment.destroy();
-         }
-      }
-   }
-}
+   
+};
 
 
 

@@ -23,7 +23,7 @@ module.exports = {
 
                      if (Nearest.Database) { 
                         const Vehicle = await frp.Vehicles.findOne({ where: { id: Nearest.Database }});
-                        Vehicle.Lock(player);
+                        Vehicle.Lock(Player);
                      } else { 
                         if (Nearest.getVariable('Job') && Nearest.getVariable('Job') == Character.Job) { 
                            Nearest.locked = !Nearest.locked;

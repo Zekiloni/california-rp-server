@@ -103,7 +103,7 @@ frp.Characters.prototype.Spawn = async function (player) {
    player.setVariable('Job_Vehicle', null);
    player.setVariable('Working_Uniform', false);
    player.setVariable('Admin_Duty', false);
-   player.setVariable('Interaction', null);
+   player.setVariable('Attachment', null);
    player.setVariable('Phone_Ringing', false);
 
    // this.SetWalkingStyle(player, this.Walking_Style);
@@ -151,25 +151,33 @@ frp.Characters.prototype.Spawn = async function (player) {
 };
 
 
-mp.events.add('server:character.attachment', async (player, model, bone) => { 
-   const Character = await player.Character();
-   Character.Interaction(player, model, bone);
+mp.events.add({
+
+   'server:character.animation': (player, dict, name, flag) => { 
+      player.playAnimation(dict, name, 8, flag);
+   },
+
+   'server:character.attachment': async (player, model, bone) => { 
+      const Character = await player.Character();
+      Character.Attachment(player, model, bone);
+   }
 });
 
 
-frp.Characters.prototype.Interaction = async function (player, model, bone, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) {
+mp.events.addProc('server:character.attachment:remove', (Player) => {
+   Player.setVariable('Attachment', null);
+   Player.stopAnimation();
+   return null;
+});
+
+
+frp.Characters.prototype.Attachment = async function (player, model, bone, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) {
    if (model) { 
       const Offset = { X: x, Y: y, Z: z, rX: rx, rY: ry, rZ: rz };
-      player.setVariable('Interaction', { Model: model, Bone: bone, Offset: Offset });
+      player.setVariable('Attachment', { Model: model, Bone: bone, Offset: Offset });
    } else { 
-      player.setVariable('Interaction', null);
+      player.setVariable('Attachment', null);
    }
-
-   mp.events.addProc('server:player.interaction:stop', (player) => {
-      player.setVariable('Interaction', null);
-      player.stopAnimation();
-      return null;
-   });
 };
 
 
@@ -533,14 +541,7 @@ mp.players.find = (playerName) => {
 };
 
 
-
-
-
 mp.events.add({
-
-   'server:player.animation': (player, dict, name, flag) => { 
-      player.playAnimation(dict, name, 8, flag);
-   },
 
    "server:onPlayerDamageHimself": (player, healthLoss) => {
    }

@@ -127,7 +127,7 @@ mp.keys.bind(0x59, false, async function () {
                   
                   if (Player.vehicle) return;
 
-                  Player.heading = Truck.heading;
+                  Player.setHeading(Truck.heading);
                   Picked = false;
 
                   colshape.destroy();
@@ -137,7 +137,7 @@ mp.keys.bind(0x59, false, async function () {
 
                   Truck.setDoorOpen(5, false, false);
                   mp.game.wait(500);
-                  mp.events.callRemote('server:player.animation', 'anim@heists@narcotics@trash', 'throw_ranged_a_bin_bag', 49);
+                  mp.events.callRemote('server:character.animation', 'anim@heists@narcotics@trash', 'throw_ranged_a_bin_bag', 49);
                   mp.game.wait(750);
                   mp.events.callRemote('server:character.attachment', false);
                   mp.game.wait(850);

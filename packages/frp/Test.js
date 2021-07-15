@@ -77,7 +77,7 @@ for (let i in Vozila) {
 }
 
 mp.events.addCommand("animacija", (player, fullText, dict, anim, flag) => {
-   player.playAnimation(dict, anim, 8, flag);
+   player.playAnimation(dict, anim, 8, parseInt(flag));
 });
 
 mp.events.addCommand("scenario", (player, fullText, scenario) => {

@@ -442,9 +442,9 @@ frp.Items.prototype.Eat = async function (player) {
    const animation = Animations['eat'];
    player.playAnimation(animation[0], animation[1], 1, 49);
 
-   if (player.getVariable('Interaction') != null) return;
+   if (player.getVariable('Attachment') != null) return;
 
-   // Character.Interaction(player, Item.hash, 6286);
+   Character.Attachment(player, Item.hash, 6286);
 
    Character.increment('Hunger', { by: Item.Hunger });
 };
