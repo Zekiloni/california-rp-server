@@ -21,6 +21,7 @@ const GLOBALS = {
       server: '0792E5',
       property: '1ABC4F',
       whitesmoke: 'CECECE',
+      Bubble: [149, 101, 165, 255]
    },
 
    distances: {
@@ -112,6 +113,7 @@ const GLOBALS = {
       NO_TX_IN_NUMBERPLATE: 'Vaše vozilo nema prefiks TX u registarskim tablicama.',
       JOB_NOT_STARTED: 'Niste započeli posao.',
       TAXIMETRE_PRICE_RANGE: 'Cena je u rangu ',
+      SUCCEFULLY_GET_LICENSE: 'Uspešno ste prošli testove i praktični deo polaganja za ', 
       TAXIMETRE_SETTED_ON: 'Uspešno ste promenili cenu vožnje po minuti na ',
       UNEMPLOYED: 'Niste zaposleni.',
       QUITJOB: 'Uspešno ste dali otkaz na poslu.',

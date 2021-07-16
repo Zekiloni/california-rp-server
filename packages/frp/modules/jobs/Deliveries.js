@@ -5,26 +5,44 @@ const DeliveryType = {
    Box: 0, Cargo: 1, Container: 2
 };
 
-const DeliveryEntity =  {
-   Player: 0, Vehicle: 1
-}
 
+const DeliveryStatus = { 
+   Ordered: 0,
+   Accepted: 1,
+   Delivered: 2
+};
 
-let Start = 0;
 
 frp.Deliveries = class Deliveries { 
 
-   static Delivery = {};
+   static Delivery = [];
 
-   static Warehouses = [
+   static Warehouses = {
 
-   ]
+   };
 
-   constructor (name, type, ) { 
-      this.id = Start ++;
+   constructor (business, PersonName, Contat, Items) { 
+      this.Business = { 
+         id: business.id,
+         Name: business.name
+      };
 
-      Deliveries.Delivery[this.id] = this;
+      this.Items = Items;
+      this.Character = PersonName;
+      this.Contact = Contact;
+      this.Status = DeliveryStatus.Ordered;
+
+      Deliveries.Delivery.push(this);
    }
+
+
+   static Init () { 
+      for (const i in Deliveries.Warehouses) { 
+         const Warehouse = Deliveries.Warehouses[i];
+
+         console.log(Warehouse);
+      }
+   };
 
 
    static New () { 
@@ -44,4 +62,10 @@ frp.Deliveries.prototype.Deliver = function (player, place) {
       
    }
 }
+
+
+
+(async () => {
+   frp.Deliveries.Init();
+})();
  

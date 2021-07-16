@@ -111,9 +111,13 @@ module.exports = {
       {
          name: 'ame',
          desc: 'Radnja / Akcija',
-         params: ['akcija'],
+         params: ['sadržaj'],
          call: (Player, args) => {
-          
+            const Content = args.splice(0).join(' ');
+            Player.setVariable('Bubble', { Content: Content, Color: frp.Globals.Colors.Bubble });
+            Player.BubbleExpire = setTimeout(() => {
+               if (Player) Player.setVariable('Bubble', null);
+            }, 4000);
          }
       }
    ]

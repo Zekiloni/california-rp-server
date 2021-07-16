@@ -22,12 +22,14 @@ const Quiz = require('../data/Driving.Quiz');
 
 mp.events.add({
    'server:vehicle.department.license:give': async (Player, Category, vehicle) => { 
-      frp.Main.Sleep(4).then(() => { 
+      frp.Main.Sleep(4).then(async () => { 
          frp.GameObjects.TemporaryVehicles[vehicle].destroy();
 
          const Character = await Player.Character();
+         Character.GiveLicense(Category);
 
-         console.log(Category);
+         Player.Notification(frp.Globals.messages.SUCCEFULLY_GET_LICENSE + Category + '.', frp.Globals.Notification.Succes, 6);
+
       });
    },
 

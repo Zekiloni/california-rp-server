@@ -56,7 +56,7 @@ frp.Characters = frp.Database.define('character', {
 
       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
       Licenses: {
-         type: DataTypes.TEXT, defaultValue: null,
+         type: DataTypes.TEXT, defaultValue: '[]',
          get: function () { return JSON.parse(this.getDataValue('Licenses')); },
          set: function (value) { this.setDataValue('Licenses', JSON.stringify(value)); }
       },
@@ -117,7 +117,7 @@ frp.Characters.prototype.Spawn = async function (player) {
       // ciba na pod...
    }
    
-   player.data.Bubble = null;
+   player.setVariable('Bubble', null);
    player.data.Seatbelt = false;
 
    await player.call('client:player.interface:toggle');
