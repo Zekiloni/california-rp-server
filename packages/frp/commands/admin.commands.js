@@ -105,8 +105,8 @@ module.exports = {
          admin: 2,
          params: ['igrac'],
          call: async (player, args) => {
-            let Target = mp.players.find(args[0]);
-            if (Target) { player.call('client:spectate', target, true); } else { player.Notificatioon(frp.Globals.messages.USER_NOT_FOUND, frp.Globals.Notification.Error, 4); }
+            const Target = mp.players.find(args[0]);
+            if (Target) { player.call('client:spectate', Target, true); } else { player.Notificatioon(frp.Globals.messages.USER_NOT_FOUND, frp.Globals.Notification.Error, 4); }
          }
       },
 

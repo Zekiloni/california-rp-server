@@ -67,7 +67,7 @@ module.exports = {
          call: (Player, args) => {
             const Message = args.splice(0).join(' ');
             if (!Message.trim()) return;
-            Message.ProximityMessage(frp.Globals.distances.ooc, '(( ' + Player.name + '[' + Player.id + ']: ' + Message + ' ))', frp.Globals.Colors.ooc);
+            Player.ProximityMessage(frp.Globals.distances.ooc, '(( ' + Player.name + '[' + Player.id + ']: ' + Message + ' ))', frp.Globals.Colors.ooc);
          }
       },
 

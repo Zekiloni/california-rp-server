@@ -2,7 +2,13 @@ const req = require('request-promise');
 const laWeather = 'http://api.weatherapi.com/v1/current.json?key=c5aab2441e9248e49ee81903201910&q=los_angeles';
 
 
-frp.Ambient = class Ambient {
+frp.World = class World {
+
+   static Object = mp.objects.new('po1_sh2_po1_sh1_antenna1', new mp.Vector3(291.2749, -1019.739, 92.42607), {
+      rotation: new mp.Vector3(0, 0, 0),
+      alpha: 255,
+      dimension: frp.Settings.default.dimension
+   });
 
    static Current = { 
       Weather: 0,
@@ -36,7 +42,7 @@ frp.Ambient = class Ambient {
          frp.Main.Terminal(3, `Server Weather, there was a problem fetching weather, ${err}.`);
       });
 
-      setTimeout(() => { Ambient.Weather(); }, 1800000);
+      setTimeout(() => { World.Weather(); }, 1800000);
    }
 
    static Time () { 
@@ -46,11 +52,16 @@ frp.Ambient = class Ambient {
 
       mp.world.time.set(Hours, Minutes, 0);
 
-      setTimeout(() => { Ambient.Time(); }, 60000);
+      setTimeout(() => { World.Time(); }, 60000);
+
+   }
+
+
+   static Electricity (index, toggle) {  
 
    }
 }
 
 
-frp.Ambient.Time();
-frp.Ambient.Weather();
+frp.World.Time();
+frp.World.Weather();

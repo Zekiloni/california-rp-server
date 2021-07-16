@@ -35,7 +35,7 @@ mp.events.addCommand("prop", (player, full, comp, draw, text) => {
 mp.events.addCommand('interior', (player, full, x, y, z, ipl) => {
 
    player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z));
-   if (ipl) player.call('client:request:ipl')
+   if (ipl) player.call('client:request:ipl', [ipl]);
 
 });
 
