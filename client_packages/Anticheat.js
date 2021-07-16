@@ -73,15 +73,15 @@ function TeleportHack() {
       const Distance = utils.Distance(Vector1, Vector2);
       if (Player.vehicle) {
          if (Distance > 55) {
-            Waypoint === null ? mp.events.callRemote('server:ac.detected', 16, 'warn') : mp.events.callRemote('server:ac.detected', 17, 'warn', 'WP');
+            Waypoint === null ? mp.events.callRemote('server:ac.dc', 16, 'warn') : mp.events.callRemote('server:ac.dc', 17, 'warn', 'WP');
          }
       } else if (!Player.vehicle) { 
          if (Distance > 7 && !Player.isFalling()) {
-            Waypoint === null ? mp.events.callRemote('server:ac.detected', 15, 'warn') : mp.events.callRemote('server:ac.detected', 15, 'warn', 'WP');
+            Waypoint === null ? mp.events.callRemote('server:ac.dc', 15, 'warn') : mp.events.callRemote('server:ac.dc', 15, 'warn', 'WP');
          }
       } else if (Player.isInWater()) {
          if (Distance > 5) {
-            Waypoint === null ? mp.events.callRemote('server:ac:.etected', 17, 'warn') : mp.events.callRemote('server:ac.detected', 15, 'warn', 'WP');
+            Waypoint === null ? mp.events.callRemote('server:ac:.etected', 17, 'warn') : mp.events.callRemote('server:ac.dc', 15, 'warn', 'WP');
          }
       }
       Positions = [];
@@ -98,7 +98,7 @@ function UnAllowedWeapons () {
    if (AnticheatSafe) return;
    for (const WeaponHash in BlacklistedWeapons) {
       if (Player.Weapon === WeaponHash) {
-         mp.events.callRemote('server:ac.detected', 6, 'ban'); // Blacklisted weapons
+         mp.events.callRemote('server:ac.dc', 6, 'ban'); // Blacklisted weapons
       }
    }
 }
@@ -113,12 +113,12 @@ function FlyHack () {
    const GroundZ = mp.game.gameplay.getGroundZFor3dCoord(Player.position.x, Player.position.y, Player.position.z, parseFloat(0), false);
    if (Player.position.z > GroundZ + 5) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
-         mp.events.callRemote('server:ac.detected', 4, 'warn'); // Flyhack
+         mp.events.callRemote('server:ac.dc', 4, 'warn'); // Flyhack
       }
    }
 }
 
-function IsOnFoot() {
+function IsOnFoot() { // Is Player Walking?
    if(Player.isFalling() || Player.isRagdoll()) return false
    else if(!Player.vehicle) return true
 }
@@ -131,16 +131,18 @@ function SpeedHack () {
       const MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (VehSpeed > MaxSpeed + 10) {
-         mp.events.callRemote('server:ac.detected', 12, 'warn'); // Vehicle speed hack
+         mp.events.callRemote('server:ac.dc', 12, 'warn'); // Vehicle speed hack
       }
    } 
    else {
       const PedSpeed = Player.getSpeed();
       if (PedSpeed > 6.2) {
-        mp.events.callRemote('server:ac.detected', 11, 'warn'); // On Foot Speedhack
+        mp.events.callRemote('server:ac.dc', 11, 'warn'); // On Foot Speedhack
       }
    }
 }
+
+
 
 
 // Dodati Player.frozen sharovanu varijablu zbog anti unfreeze cheate
@@ -156,7 +158,10 @@ function Misc () {
                if (Player.vehicle) {
                   Player.vehicle.freezePosition(true);
                }
-               else { Player.freezePosition(true); }
+               else { 
+                  Player.freezePosition(true);
+                  mp.events.callRemote('server:ac.dc', 19, 'warn');
+               }
             }
          }
          break;
@@ -185,6 +190,7 @@ mp.events.addDataHandler({
       }
    }
 });
+
 
 // Chat filter
 mp.events.add({
