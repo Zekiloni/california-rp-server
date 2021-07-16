@@ -13,6 +13,8 @@ const Department = {
    }
 };
 
+module.exports = { Department };
+
 
 const Route = require('../data/Driving.Route');
 const Quiz = require('../data/Driving.Quiz');
