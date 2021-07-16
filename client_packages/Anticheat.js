@@ -1,25 +1,25 @@
 
 
 
-const FlaggedWords = ['Cit', 'Čit', 'Admin'],
-      BlacklistedWeapons =   [mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_rayminigun"), mp.game.joaat("weapon_hominglauncher"),
-                              mp.game.joaat("weapon_compactlauncher"), mp.game.joaat("weapon_railgun"), mp.game.joaat("weapon_minigun"),
-                              mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_grenadelauncher"), mp.game.joaat("weapon_rpg"),
-                              mp.game.joaat("weapon_raycarbine"), mp.game.joaat("weapon_raypistol")],
-      Player = mp.players.local,
-      LastDamage = 0;
+const FlaggedWords       =   ['Cit', 'Čit', 'Admin'],
+      BlacklistedWeapons = [mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_rayminigun"), mp.game.joaat("weapon_hominglauncher"),
+                           mp.game.joaat("weapon_compactlauncher"), mp.game.joaat("weapon_railgun"), mp.game.joaat("weapon_minigun"),
+                           mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_grenadelauncher"), mp.game.joaat("weapon_rpg"),
+                           mp.game.joaat("weapon_raycarbine"), mp.game.joaat("weapon_raypistol")],
+      Player             = mp.players.local,
+      LastDamage         = 0;
 
-let AnticheatSafe = false,
-    AnticheatSafeTimer = null,
-    Positions = [],
-    Waypoint = null,
-    CurrentWeapon = null,
-    CurrentAmmo = 0,
-    CurrentClipSize = 0;
+let AnticheatSafe        = false,
+    AnticheatSafeTimer   = null,
+    Positions            = [],
+    Waypoint             = null,
+    CurrentWeapon        = null,
+    CurrentAmmo          = 0,
+    CurrentClipSize      = 0;
     
 
 
-/* Main timer
+// Main timer
  setInterval(() => {
    
    Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
@@ -30,9 +30,9 @@ let AnticheatSafe = false,
    UnAllowedWeapons ();
    
    // Disable checks for admins
-   if (Player.admin) return;
+   //if (Player.admin) return;
 
- }, 1000);*/
+ }, 1000);
 
 
 /* Teleport hack timer
