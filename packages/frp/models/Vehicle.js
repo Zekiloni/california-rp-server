@@ -15,7 +15,7 @@ frp.Vehicles = frp.Database.define('vehicle', {
       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Numberplate: { type: DataTypes.STRING, defaultValue: '' },
-      Fuel: { type: DataTypes.INTEGER, defaultValue: 100 },
+      Fuel: { type: DataTypes.INTEGER, defaultValue: 100.0 },
       Dirt: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mileage: { type: DataTypes.FLOAT, defaultValue: 0.0 },
       Parked: { type: DataTypes.BOOLEAN, defaultValue: false },
@@ -76,7 +76,8 @@ frp.Vehicles.Create = async function (model, entity = VehicleEntities.Player, ow
       Owner: owner, 
       Position: position,
       Rotation: rotation,
-      Color: color
+      Color: color,
+      Fuel: 100
    });
 
 };
@@ -110,6 +111,10 @@ frp.Vehicles.prototype.Spawn = function () {
    Vehicle.setVariable('Mileage', this.Mileage);
    Vehicle.setVariable('Fuel', this.Fuel);
 
+   Vehicle.setVariable('Hood', false);
+   Vehicle.setVariable('Trunk', false);
+   Vehicle.setVariable('Windows', [false, false, false, false]);
+
    this.GameObject = Vehicle;
 };
 
@@ -124,26 +129,10 @@ frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate
 
    Vehicle.setColor(primary, secondary);
 
-   Vehicle.setVariable('Mileage', 0.00);
-   Vehicle.setVariable('Fuel', 100);
+   Vehicle.setVariable('Mileage', 0.0);
+   Vehicle.setVariable('Fuel', 100.0);
 
    frp.GameObjects.TemporaryVehicles[Vehicle.id] = Vehicle;
-
-   console.log('kreirano ' + Vehicle.id);
-
-   // Vehicle.OnDestroyed = (entity) => {
-   //    console.log(Vehicle);
-   //    console.log('izbrisano ' + Vehicle.id)
-   //    if (entity.type == 'vehicle' && entity == Vehicle) { 
-
-   //       mp.events.remove('entityDestroyed', Vehicle.OnDestroyed);
-   //    }
-   // }
-
-   mp.events.add('entityDestroyed', (entity) => { 
-      console.log(entity.id);
-   });
-
    
    return Vehicle;
 };

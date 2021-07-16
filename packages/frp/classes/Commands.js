@@ -52,7 +52,7 @@ mp.events.add('playerCommand', async (player, command) => {
 
       if (cmd.vehicle && player.vehicle == null) return player.Notification(frp.Globals.messages.NOT_IN_VEHICLE, frp.Globals.Notification.Error, 5);
 
-      if (cmd.item && frp.Items.HasItem(player.character, cmd.item) == false) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + cmd.item + '.', frp.Globals.Notification.Error, 4);
+      if (cmd.item && await frp.Items.HasItem(player.character, cmd.item) == false) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + cmd.item + '.', frp.Globals.Notification.Error, 4);
       
       if (cmd.params && cmd.params.length > args.length) return player.SendMessage('Komanda: /' + commandName + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
 

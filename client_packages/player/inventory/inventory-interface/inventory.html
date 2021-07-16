@@ -26,7 +26,7 @@
 
                <ul class="clothes">
                   <li class="cloth" v-for="(name, i) in ClothingParts" v-on:click="Unequip(Clothings(name))"> 
-                     <img  :src="'src/images/items/' + ClothingIcons[i] + '.png'" :style="{ opacity: Clothings(name) ? 1 : 0.2 }"/>
+                     <img :src="'src/images/items/' + ClothingIcons[i] + '.png'" :style="{ opacity: Clothings(name) ? 1 : 0.2 }"/>
                   </li>
                </ul>
             </div>
@@ -45,7 +45,7 @@
                </div>
             </div>
 
-            <div class="wheel">
+            <div class="wheel" v-if="vehicle.id == null">
                <div class="header">
                   <h2> <img src="src/icons/weapon.png" class="icon"> </i> Oružije </h2>
                   <h4> {{ Weapons().length }} <b>/ {{ wheelMaximum.length }} </b> </h4>
@@ -59,6 +59,18 @@
                      <div class="inner" v-else>
                         <i class="george-floyd fa fa-times" aria-hidden="true"></i>
                      </div>
+                  </div>
+               </div>
+            </div>
+
+            <div v-else class="trunk">
+               <div class="header">
+                  <h2> <i class="fa fa-car" aria-hidden="true"> </i> Gepek Vozila </h2>
+               </div>
+               <div class="items">
+                  <div class="item" v-for="(item, i) in vehicle.items" v-on:mouseenter="audio.hover.play()" v-on:click="Get(item)">
+                     <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
+                     <h3 class="quantity"> {{ item.quantity }} </h3>
                   </div>
                </div>
             </div>
@@ -90,6 +102,7 @@
                <h4> {{ player.items.find(element => element.id === menu.item).name }} </h4>
                <li v-on:click="Drop(menu.item)"> Baci Predmet </li>
                <li v-on:click="GiveTry(menu.item)"> Daj Predmet </li>
+               <li v-if="vehicle.id" v-on:click="Trunk(menu.item)"> Prebaci u gepek </li>
             </ul>
          </transition>
       </div>
@@ -108,12 +121,13 @@
                      // { id: 4, name: 'Tops', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'prop_ld_shirt_01' },
                      // { id: 5, name: 'Pants', quantity: 1, entity: 5, ammo: 0, weight: 0.25, hash: 'prop_ld_jeans_01' },
                      // { id: 6, name: 'Shoes', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'v_ret_ps_shoe_01' }
-                  ], 
+                  ]
+               },
 
-                  backpack: [
-                     // TODO
-                  ],
-            
+
+               vehicle: {
+                  id: null,
+                  items: []
                },
 
                ClothingParts: ['Hat', 'Glasses', 'Mask', 'Tops', 'Undershirt', 'Armour', 'Pants', 'Shoes'],
@@ -204,7 +218,6 @@
                   mp.trigger('client:inventory.item.weapon:put', weapon.id)
                },
 
-
                Use: function (id) {
                   mp.trigger('client:inventory.item:use', id)
                },
@@ -219,6 +232,16 @@
                   this.menu.item = null;
                   item = this.player.items.find(element => element.id === item);
                   mp.trigger('client:inventory.item:drop', item.id, item.hash)
+               },
+
+               Trunk: function (item) {
+                  this.menu.item = null;
+                  item = this.player.items.find(element => element.id === item);
+                  mp.trigger('client:inventory.item:trunk', this.vehicle.id, item.id)
+               },
+
+               Get: function (item) { 
+                  mp.trigger('client:inventory.item.trunk:get', this.vehicle.id, item.id)
                },
 
                Give: function (player, item, quantity) {

@@ -91,14 +91,32 @@ frp.Items.New = async function (item, quantity, entity, owner, position = null, 
 };
 
 
-frp.Items.Inventory = async function (player) {
-   let PlayerInventory = [];
-   const Items = await frp.Items.findAll({ where: { Owner: player.character } });
+frp.Items.Inventory = async function (Player) {
+   let Inventory = [];
+   const Items = await frp.Items.findAll({ where: { Owner: Player.character } });
    Items.forEach((Item) => {
-      PlayerInventory.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, entity: Item.Entity, ammo: Item.Number, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
+      Inventory.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, entity: Item.Entity, ammo: Item.Number, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
    });
-   return PlayerInventory;
+   return Inventory;
 };
+
+
+frp.Items.Trunk = async function (Vehicle) { 
+   let Trunk = [];
+   if (Vehicle.Database) { 
+      const Items = await frp.Items.findAll({ where: { Owner: Vehicle.Database, Entity: ItemEntities.Vehicle } });
+      Items.forEach((Item) => { 
+         Trunk.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
+      });
+   } else { 
+      const Items = await frp.Items.findAll({ where: { Owner: Vehicle.id, Entity: ItemEntities.TemporaryVehicle } });
+      Items.forEach((Item) => { 
+         Trunk.push({ id: Item.id, name: Item.Item, quantity: Item.Quantity, weight: ItemRegistry[Item.Item].weight, hash: ItemRegistry[Item.Item].hash });
+      });
+   }
+   return Trunk;
+};
+
 
 frp.Items.Weapons = async function (player) { 
    let PlayerWeapons = [];

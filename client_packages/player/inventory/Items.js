@@ -12,8 +12,9 @@ const Keys = {
 const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
 
 const Controls = { 
-   keyY: 0x59
-}
+   keyY: 0x59,
+   keyI: 0x49
+};
 
 mp.events.add({
 
@@ -24,7 +25,6 @@ mp.events.add({
          const Inventory = await mp.events.callRemoteProc('server:player.inventory:get');
          browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
          Player.BrowserControls(true, true);
-
       } else { 
          if (browser) browser.destroy();
          Player.BrowserControls(false, false);
@@ -47,6 +47,31 @@ mp.events.add({
 
    'client:inventory.weapon.select': (key, id) => { 
       mp.events.callRemote('server:weapon.select', key, id);
+   },
+
+   'client:inventory.vehicle:trunk': (id, Items) => { 
+      if (browser) { 
+         browser.execute('inventory.vehicle.id = ' + id);
+         browser.execute('inventory.vehicle.items = ' + JSON.stringify(Items));
+      }
+   },
+
+   'client:inventory.item.trunk:get': async (vehicle, item) => { 
+      const [Inventory, Trunk] = await mp.events.callRemoteProc('server:inventory.item.trunk:get', vehicle, item);
+      if (Inventory && Trunk) { 
+         browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+         browser.execute('inventory.vehicle.items = ' + JSON.stringify(Trunk));
+      }
+   },
+
+   'client:inventory.item:trunk': async (vehicle, item) => { 
+      const [Inventory, Trunk] = await mp.events.callRemoteProc('server:inventory.item:trunk', vehicle, item);
+      if (Inventory && Trunk) { 
+         if (browser) { 
+            browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+            browser.execute('inventory.vehicle.items = ' + JSON.stringify(Trunk));
+         }
+      }
    },
 
    'client:inventory.player:nearby': () => { 
@@ -100,12 +125,9 @@ mp.events.add({
 });
 
 
-mp.keys.bind(0x49, false, function() {
-   if (Player.logged && Player.spawned) { 
-      if (mp.players.local.isTypingInTextChat) return;
-      mp.events.call('client:inventory.toggle');
-      ClonePedToScreen();
-      mp.events.call('client:inventory.toggle');
+mp.keys.bind(Controls.keyI, false, function() {
+   if ( Player.logged && Player.spawned ) { 
+      if ( Player.isTypingInTextChat || Player.Cuffed ) return;
       mp.events.call('client:inventory.toggle');
    }
 });

@@ -213,10 +213,15 @@
                let scrollTop = Element.scrollTop;
                let percent = Math.floor(scrollTop / scrollHeight * 100);
 
-               Element.scroll({
-                  top: Element.scrollHeight,
-                  behavior: 'smooth'
-               });
+               Vue.nextTick(function() { 
+                  Element.scroll({
+                     top: Element.scrollHeight,
+                     behavior: 'smooth'
+                  });               
+               }.bind(this));
+
+
+    
                //Element.scrollTop = Element.scrollHeight - Element.clientHeight;
                // return Element;
             },
