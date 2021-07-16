@@ -18,14 +18,16 @@ const Flags = {
    14 : 'Fly/Teleport Hack (OnFoot)',
    15 : 'Fly/Teleport Hack (Vehicle)',
    16 : 'Fly/Teleport Hack (Water)',
-   17 : 'Fly/Teleport Hack (Waypoint)'
+   17 : 'Fly/Teleport Hack (Waypoint)',
+   18 : 'Fake Vehicle',
+   19 : 'Unfreeze hack'
 }
 
 
 class Anticheat {
    constructor () {
       mp.events.add({
-         'server:anti_cheat:detected': async (player, flag, action, comment = undefined) => {
+         'server:ac.dc': async (player, flag, action, comment = undefined) => {
             const Character = await frp.Characters.findOne({ where: { id: player.character } })
             const Account = await frp.Accounts.findOne({ where: { id: player.account } })
        
@@ -60,6 +62,17 @@ class Anticheat {
    }
 }
 
-
+/*
+function CheckForFakeVehicles () {
+   mp.vehicles.forEach((vehicle) => { 
+      if (vehicle != null) {
+         if (!vehicle.hasData("SERVER_VEH")) {
+            mp.events.call('server:ac.detected', 17, '');
+         }
+      }
+      
+   });
+}
+*/
 frp.Anticheat = new Anticheat();
 

@@ -68,16 +68,12 @@ frp.Garages.prototype.Refresh = function () {
       };
 
 
-      GameObjects.colshape.OnPlayerEnter = (player) => { 
-         const Price = frp.Main.Dollars(this.Price); // Formatting
-         const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Garaža je u privatnom vlasništvu';
-         const Locked = this.Locked ? 'Zaključana' : 'Otključana';
-
+      GameObjects.colshape.OnPlayerEnter = (player) => {
          if (player.vehicle) {
             if (this.Owner == player.character && !this.Locked) {
                // Park vehicle function
                const Garage = await frp.Garages.findOne({ where: { Owner: player.character, id: this.id } });
-               Garage.ParkVehicle()
+               Garage.ParkVehicle(player);
                
             } else {
                player.SendMessage('Garaža nije u tvom vlasništvu.'); 
