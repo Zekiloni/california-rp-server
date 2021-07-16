@@ -19,9 +19,13 @@ const Quiz = require('../data/Driving.Quiz');
 
 
 mp.events.add({
-   'server:vehicle.department.license:give': async (player, category, vehid) => { 
+   'server:vehicle.department.license:give': async (Player, Category, vehicle) => { 
       frp.Main.Sleep(4).then(() => { 
-         frp.GameObjects.TemporaryVehicles[vehid].destroy();
+         frp.GameObjects.TemporaryVehicles[vehicle].destroy();
+
+         const Character = await Player.Character();
+
+         console.log(Category);
       });
    },
 
