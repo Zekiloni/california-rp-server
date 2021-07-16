@@ -32,7 +32,7 @@ frp.Sanitation = class Sanitation {
 
    static async Stop (Player) { 
 
-      if (Player.getVariable('Job_Duty') == false) return;
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(frp.Globals.messages.JOB_NOT_STARTED, frp.Globals.Notification.Error, 5);
 
       if (Player.getVariable('Job_Vehicle')) { 
          const Vehicle = mp.vehicles.at(Player.getVariable('Job_Vehicle'));
@@ -74,7 +74,7 @@ frp.Sanitation = class Sanitation {
          Configuration.Vehicle.Color, 'FO0' + frp.Main.GenerateNumber(3)
       );
 
-      Vehicle.Job = frp.Globals.Jobs.Sanitation;
+      Vehicle.setVariable('Job', frp.Globals.Jobs.Sanitation);
 
       Player.setVariable('Job_Vehicle', Vehicle.id);
       Player.setVariable('Job_Duty', true);

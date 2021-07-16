@@ -70,6 +70,7 @@ const AntiCheat = require('./classes/Anticheat');
 
 
 
+
 const Exit = async () => {
    frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');
    mp.players.broadcast('Server se gasi. Rekonektujte se na F1.');
@@ -78,7 +79,7 @@ const Exit = async () => {
       player.kick('Server se gasi !')
    });
 
-   frp.Main.Sleep(2).then(() => { 
+   frp.Main.Sleep(2.5).then(() => { 
       process.exit();
    })
 };

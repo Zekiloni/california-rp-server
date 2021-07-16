@@ -100,9 +100,10 @@ frp.Vehicles.prototype.Spawn = function () {
       dimension: this.Garage
    });
 
-   // const [primary, secondary] = this.Color;
-   // Vehicle.setColor(primary, secondary);
-
+   if (this.Color) {
+      const [primary, secondary] = this.Color;
+      Vehicle.setColor(primary, secondary);
+   }
 
    Vehicle.Database = this.id;
 
@@ -117,16 +118,32 @@ frp.Vehicles.CreateTemporary = function (model, position, rotation, color, plate
    const [primary, secondary] = color;
 
    const Vehicle = mp.vehicles.new(mp.joaat(model), position, { 
-      rotation: rotation, alpha: 255,  color: [[0, 0, 0], [0, 0, 0]], 
-      numberPlate: plate, dimension: dimension 
+      rotation: rotation, alpha: 255, color: 0, locked: false,
+      numberPlate: plate, dimension: dimension, engine: false
    });
 
    Vehicle.setColor(primary, secondary);
-   Vehicle.engine = false;
+
    Vehicle.setVariable('Mileage', 0.00);
    Vehicle.setVariable('Fuel', 100);
 
    frp.GameObjects.TemporaryVehicles[Vehicle.id] = Vehicle;
+
+   console.log('kreirano ' + Vehicle.id);
+
+   // Vehicle.OnDestroyed = (entity) => {
+   //    console.log(Vehicle);
+   //    console.log('izbrisano ' + Vehicle.id)
+   //    if (entity.type == 'vehicle' && entity == Vehicle) { 
+
+   //       mp.events.remove('entityDestroyed', Vehicle.OnDestroyed);
+   //    }
+   // }
+
+   mp.events.add('entityDestroyed', (entity) => { 
+      console.log(entity.id);
+   });
+
    
    return Vehicle;
 };

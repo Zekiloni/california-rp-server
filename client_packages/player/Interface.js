@@ -53,6 +53,8 @@ mp.events.add({
 
    'client:player.interface:notification': Notify,
 
+   'client:player.interface:instructions': Instructions,
+
    'client:player.interface:black': () => { browser.execute('hud.black = !hud.black;'); },
 
    'render': () => { 
@@ -153,10 +155,13 @@ function Vehicle () {
    browser.execute('hud.seatbelt = ' + Player.getVariable('Seatbelt'));
 }
 
-function Notify (message, type, time = 3) { 
-   if (browser) browser.execute('hud.Notification(\"' + message + '\", \"' + type + '\");')
+function Notify (message, type, time = 4) { 
+   if (browser) browser.execute('hud.Notification(\"' + message + '\", \"' + type + '\", ' + time + ');')
 }
 
+function Instructions (content, time = 4) { 
+   if (browser) browser.execute('hud.Instructions(\"' + content + '\", ' + time + ');')
+}
 
 function hasWeapon (weaponHash){
 	return mp.game.invoke("0x8DECB02F88F428BC", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)

@@ -21,7 +21,10 @@ frp.Business = frp.Database.define('business', {
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
       Position: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Position')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Position'))
+            return new mp.Vector3(Position.x, Position.y, Position.z); 
+          },
          set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
       },
       Vehicle_Point: {
@@ -29,9 +32,12 @@ frp.Business = frp.Database.define('business', {
          get: function () { return JSON.parse(this.getDataValue('Vehicle_Point')); },
          set: function (value) { this.setDataValue('Vehicle_Point', JSON.stringify(value)); }
       },
-      Interior: {
+      Interior_Position: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Interior')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Interior_Position'))
+            return new mp.Vector3(Position.x, Position.y, Position.z); 
+         },         
          set: function (value) { this.setDataValue('Interior', JSON.stringify(value)); }
       },
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },

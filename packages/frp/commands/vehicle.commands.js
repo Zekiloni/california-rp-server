@@ -1,14 +1,5 @@
 module.exports = {
    commands: [
-      {
-         name: 'createvehicle',
-         desc: 'Kontrola motora vozila',
-         admin: 2,
-         call: (player, args) => {
-            if (player.vehicle) return;
-            const [model, owner, color, color2] = args;
-         }
-      },    
 
       {
          name: 'engine',

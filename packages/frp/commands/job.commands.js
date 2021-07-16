@@ -29,7 +29,7 @@ module.exports = {
       },
 
       {
-         name: 'Smena Djubretara.',
+         name: 'garbage',
          job: frp.Globals.Jobs.Sanitation,
          position: frp.Jobs.Job[frp.Globals.Jobs.Sanitation].position,
          params: ['start / stop'],
@@ -39,6 +39,17 @@ module.exports = {
                case frp.Globals.Words.Stop: frp.Sanitation.Stop(Player); break;
                case frp.Globals.Words.Start: frp.Sanitation.Start(Player); break;
             }
+         }
+      },
+
+      {
+         name: 'fare',
+         desc: 'Cena voznje po minutu.',
+         job: frp.Globals.Jobs.Taxi,
+         params: ['cena po minutu'],
+         call: (Player, args) => {
+            const [price] = args;
+            frp.Taxi.Fare(Player, price);
          }
       },
 
@@ -54,8 +65,9 @@ module.exports = {
                   frp.Taxi.Stop(Player);
                   break;
                } 
-               case frp.Globals.Words.Start:{
+               case frp.Globals.Words.Start: {
                   if (Player.dist(frp.Jobs.Job[frp.Globals.Jobs.Taxi].position) > 3) return Player.Notification(frp.Globals.messages.NOT_ON_POSITION, frp.Globals.Notification.Error, 5);
+                  frp.Taxi.Start(Player, null);
                   break;
                }
             }
@@ -67,8 +79,9 @@ module.exports = {
          desc: 'Narudžbine hrane.',
          job: frp.Globals.Jobs.Food_Delivery,
          position: frp.Jobs.Job[frp.Globals.Jobs.Food_Delivery].position,
-         call: (player, args) => {
-            player.call('client:job.food:orders', [frp.Food.Orders]);
+         call: (Player) => {
+            if (frp.Food.Orders.length < 1) return Player.Notification(frp.Globals.messages.THERE_ARE_NO_ORDERS_RIGHT_NOW, frp.Globals.Notification.Error, 5);
+            Player.call('client:job.food:orders', [frp.Food.GetOrders()]);
          }
       }
    ]

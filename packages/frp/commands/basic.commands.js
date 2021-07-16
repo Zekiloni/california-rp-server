@@ -125,7 +125,7 @@ module.exports = {
          params: ['igrac', 'kolicina'],
          call: async (player, args) => {
             const Character = await frp.Characters.findOne({ where: { id: player.character } });
-            if (Character.Hours < 2) return; // PORUKA: Potrebno vam je minimalno dva sata igre.
+            if (Character.Hours < 2) return player.Notification(frp.Globals.messages.YOU_NEED_MINIMUM_2_HOURS_OF_PLAYING, frp.Globals.Notification.Error, 5);
             
             const Target = mp.players.find(args[0]);
             if (Target) {
@@ -170,11 +170,11 @@ module.exports = {
       {
          name: 'buy',
          desc: 'Kupovina',
-         call: async (Player) => {
-            const Nearest = await Player.Nearest(), Character = await player.Character();
+         call: async (Player, args) => {
+            const Nearest = await Player.Nearest(), Character = await Player.Character();
             if (Nearest) {
                const [action] = args;
-               Character.Buy(player, Nearest, action);
+               Character.Buy(Player, Nearest, action || null);
             }
          }
      }

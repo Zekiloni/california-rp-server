@@ -84,18 +84,20 @@ mp.events.add({
       Total = parseInt(Total);
       Color = JSON.parse(Color);
 
-      console.log(Color);
-
       const Character = await Player.Character();
 
-      if (Character.Money < Total) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 5);
+      if (Character.Money < Total) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 4);
       const Business = await frp.Business.findOne({ where: { id: Biz } });
+
+      const VehiclePoint = Business.Vehicle_Point;
+
+      if (frp.Main.IsAnyVehAtPos(new mp.Vector3(VehiclePoint.x, VehiclePoint.y, VehiclePoint.z), 1.5).length > 0) return; Player.Notification(frp.Globals.messages.VEHICLE_POINT_IS_NOT_FREE, frp.Globals.Notification.Error, 4);
 
       let Products = Business.Products;
 
       console.log(Products[Model]);
 
-      if (Products[Model].supplies < 1) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 5);
+      if (Products[Model].supplies < 1) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 4);
 
       Products[Model].supplies --;
 
@@ -107,7 +109,6 @@ mp.events.add({
 
       Player.Notification(frp.Globals.messages.NOT_ENOUGH_PRODUCTS, frp.Globals.Notification.Error, 5);
    
-      const VehiclePoint = Business.Vehicle_Point;
 
       frp.Vehicles.Create(
          Model, 

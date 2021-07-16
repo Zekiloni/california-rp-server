@@ -15,14 +15,14 @@
 <body>
    <div id="chat" v-if="Toggle">
 
-      <transition-group name="message" tag="ul" class="messages" ref="Entries" id="messages">
-         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="message">
-            
-            <b class="timestamp" v-if="Settings.Timestamp" v-html="DateTime(message.timestamp)"> </b>
-            <span v-html="message.content"> </span>
-             
-         </li>
-      </transition-group>
+      <!-- <transition-group name="message" tag="ul" class="messages" ref="Entries" id="messages"> -->
+         <ul class="messages" ref="Entries" id="messages">
+            <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="message">
+               <b class="timestamp" v-if="Settings.Timestamp" v-html="DateTime(message.timestamp)"> </b>
+               <span v-html="message.content"> </span>
+            </li>
+         </ul>
+      <!-- </transition-group> -->
 
       <transition name="slide-fade">
          <div class="input-form" v-if="Typing">

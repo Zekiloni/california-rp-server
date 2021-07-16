@@ -16,6 +16,7 @@ mp.events.addCommand("veh", (player, full, hash, color = "255,255,255", color2 =
    player.putIntoVehicle(veh, 0);
    veh.data.Mileage = 0.0;
    veh.data.Fuel = 100;
+   veh.data.Windows = [false, false, false, false];
    //veh.data.Back = false;
    //veh.data.Trunk = false;
    //veh.data.Hood = false;
@@ -28,6 +29,14 @@ mp.events.addCommand("testpos", (player, full, comp, draw, text, pal) => {
 
 mp.events.addCommand("prop", (player, full, comp, draw, text) => {
     player.setProp(parseInt(comp), parseInt(draw), parseInt(text));
+});
+
+
+mp.events.addCommand('interior', (player, full, x, y, z, ipl) => {
+
+   player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z));
+   if (ipl) player.call('client:request:ipl')
+
 });
 
 
@@ -52,14 +61,14 @@ let counter = 0;
 
 let stringo = []
 
-for (const i in Vozila) { 
-   const vozilo = Vozila[i];
-   if (vozilo.category == 'sports' || vozilo.category == 'off-road' || vozilo.category == 'motorcycles' || vozilo.category == 'vans' || vozilo.category == 'sedans') { 
-      stringo.push(i);
-   }
-}
+// for (const i in Vozila) { 
+//    const vozilo = Vozila[i];
+//    if (vozilo.category == 'sports' || vozilo.category == 'off-road' || vozilo.category == 'motorcycles' || vozilo.category == 'vans' || vozilo.category == 'sedans') { 
+//       stringo.push(i);
+//    }
+// }
 
-console.log(JSON.stringify(stringo))
+// console.log(JSON.stringify(stringo))
 
 for (let i in Vozila) { 
    if (counter > MAX) break;
@@ -68,7 +77,7 @@ for (let i in Vozila) {
 }
 
 mp.events.addCommand("animacija", (player, fullText, dict, anim, flag) => {
-   player.playAnimation(dict, anim, 8, flag);
+   player.playAnimation(dict, anim, 8, parseInt(flag));
 });
 
 mp.events.addCommand("scenario", (player, fullText, scenario) => {

@@ -9,6 +9,12 @@ const Keys = {
    0: 0x31, 1: 0x32, 2: 0x33, 3:0x34, 666: 0x09
 };
 
+const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
+
+const Controls = { 
+   keyY: 0x59
+}
+
 mp.events.add({
 
    'client:inventory.toggle': async () => { 
@@ -51,6 +57,45 @@ mp.events.add({
          }
       })
       browser.execute('inventory.nearbyPlayers = ' + JSON.stringify(Nearby));
+   },
+
+   'render': () => { 
+      if (Player.logged && Player.spawned) { 
+         mp.objects.forEach((Object) => { 
+            if (Player.hasClearLosTo(Object.handle, 17)) {
+               const PlayerPosition = Player.position;
+               const ObjectPosition = Object.position;
+   
+               if (Object.getVariable('Item')) { 
+                  const Distance = new mp.Vector3(PlayerPosition.x, PlayerPosition.y, PlayerPosition.z).subtract(new mp.Vector3(ObjectPosition.x, ObjectPosition.y, ObjectPosition.z)).length();
+     
+                  const position = mp.game.graphics.world3dToScreen2d(new mp.Vector3(ObjectPosition.x, ObjectPosition.y, ObjectPosition.z + 0.15));
+
+                  if (position) {
+                     let x = position.x;
+                     let y = position.y;
+               
+                     if (Distance <= 2.5) {       
+                        let scale = (Distance / 25);
+                        if (scale < 0.6) scale = 0.6;
+                        
+                        y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
+                        
+                        const Item = Object.getVariable('Item');
+   
+                        mp.game.graphics.drawText(Item, [x, y],
+                        {
+                           font: 4,
+                           color: [255, 255, 255, 255],
+                           scale: [0.325, 0.325],
+                           outline: false
+                        });
+                     }
+                  }
+               }
+            }
+         });
+      }
    }
 });
 
@@ -80,12 +125,13 @@ function WeaponSelector () {
 
 WeaponSelector();
 
-mp.keys.bind(0x59, false, function() {
+mp.keys.bind(Controls.keyY, false, function() {
    if (Player.logged && Player.spawned) { 
       if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:player.inventory.item:pickup');
    }
 });
+
 
 
 async function Give (target, item, quantity) {

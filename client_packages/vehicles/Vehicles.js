@@ -10,7 +10,8 @@ mp.game.controls.useDefaultVehicleEntering = true;
 
 const Controls = {
    arrowLeft: 3,
-   arrowRight: 3
+   arrowRight: 3,
+   keyY: 0x59
 };
 
 
@@ -106,58 +107,6 @@ mp.keys.bind(Controls.arrowRight, false, () => {
 });
 
 
-let vOptions = false;
-
-mp.keys.bind(0x59, false, () => {
-   if (!Player.logged || mp.players.local.isTypingInTextChat) return false;
-   vOptions = !vOptions;
-   if (vOptions) { 
-      mp.gui.chat.push('uso 1');
-      mp.events.add('render', VehicleOptions);
-   } else { 
-      mp.gui.chat.push('uso 2');
-      mp.events.remove('render', VehicleOptions);
-   }
-});
-
-
-const Bones = [
-   'windscreen', 'bonnet', 'boot'
-];
-
-const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
-
-function VehicleOptions () { 
-   if (Player.vehicle) { 
-
-      const Vehicle = Player.vehicle;
-
-      for (const Bone of Bones) { 
-
-         const BonePosition = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
-         const Position = mp.game.graphics.world3dToScreen2d(new mp.Vector3(BonePosition.x, BonePosition.y, BonePosition.z + 0.05));
-
-         if (Position) {
-            let x = Position.x;
-            let y = Position.y;
-      
-            let scale = 0.6;
-            
-            y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
-            
-            mp.game.graphics.drawText(Bone, [x, y],
-            {
-               font: 4,
-               color: [255, 255, 255, 255],
-               scale: [0.325, 0.325],
-               outline: true
-            });
-         }
-      }
-
-   }
-};
-
 
 function Driving () { 
    if (Player.vehicle && Player.vehicle.getPedInSeat(-1) === Player.handle) { 
@@ -182,10 +131,12 @@ function Driving () {
 }
 
 
+// SYNCING WINDOWS // PROBABLY TROUBE
 function Windows (vehicle, value) { 
-   for (let i in value) { 
-      let window = value[i];
-      window ? vehicle.rollDownWindow(i) : vehicle.rollUpWindow(i);
+   const Doors = mp.game.invoke('0x92922A607497B14D', vehicle.handle);
+   for (let i = 0; i < Doors - 2; i ++) { 
+      let Window = value[i];
+      Window ? vehicle.rollDownWindow(i) : vehicle.rollUpWindow(i);
    }
 }
 

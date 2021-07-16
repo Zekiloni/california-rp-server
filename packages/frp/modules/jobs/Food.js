@@ -49,7 +49,10 @@ frp.Food = class Food {
    }
 
    static GetOrders () { 
-      return Food.Orders;
+      let List = [];
+      for (const Order of Food.Orders) { 
+         List.push({ Position: Order.Position, Items: Order.Items, Contact: Order.Contact, Status: Order.Status });
+      }
    }
 
    static async Check () { 
@@ -128,6 +131,8 @@ mp.events.addProc({
                AvailablePosition, Configuration.Vehicle.Rotation, 
                Configuration.Vehicle.Color, 'FO0' + frp.Main.GenerateNumber(3)
             );
+
+            Vehicle.setVariable('Job', frp.Globals.Jobs.Food_Delivery);
   
             player.setVariable('Job_Vehicle', Vehicle.id);
          }

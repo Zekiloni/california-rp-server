@@ -2,13 +2,15 @@
 
 const { DataTypes } = require('sequelize');
 
-const HouseTypes = require('../data/Houses.json')
+const HouseTypes = require('../data/Houses.json');
+
+module.exports = { HouseTypes };
 
 frp.Houses = frp.Database.define('house', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Owner: { type: DataTypes.STRING, defaultValue: 0 },
-      Type: { type: DataTypes.STRING },
-      Price: { type: DataTypes.STRING },
+      Type: { type: DataTypes.STRING, defaultValue: 0 },
+      Price: { type: DataTypes.INTEGER },
       Locked: { type: DataTypes.BOOLEAN, defaultValue: true },
       Position: { 
          type: DataTypes.TEXT, defaultValue: null, 
@@ -21,10 +23,12 @@ frp.Houses = frp.Database.define('house', {
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
       Interior_Position: { 
          type: DataTypes.TEXT, defaultValue: null, 
-         get: function () { return JSON.parse(this.getDataValue('Interior_Position')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Interior_Position'))
+            return new mp.Vector3(Position.x, Position.y, Position.z); 
+         },
          set: function (value) { this.setDataValue('Interior_Position', JSON.stringify(value)); }
       },
-
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },
       IPL: { type: DataTypes.STRING },
       Rent: { type: DataTypes.INTEGER, defaultValue: 0 },
@@ -34,7 +38,6 @@ frp.Houses = frp.Database.define('house', {
          set: function (value) { this.setDataValue('Tenants', JSON.stringify(value)); }
       },
       Money: { type: DataTypes.INTEGER, defaultValue: 0 },
-      On_Sale: { type: DataTypes.INTEGER, defaultValue: 0 },
       GameObject: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
          get () { return frp.GameObjects.Houses[this.getDataValue('id')]; },
@@ -45,7 +48,7 @@ frp.Houses = frp.Database.define('house', {
       timestamps: true,
       underscrored: true,
       createdAt: 'Created_Date',
-      updatedAt: 'Update_Date',
+      updatedAt: 'Update_Date'
    }
 );
 
@@ -101,7 +104,6 @@ frp.Houses.prototype.Buy = async function (Player) {
    const Character = await Player.Character();
    const Houses = await Player.Properties().Houses;
 
-   console.log(Houses);
 
    if (Houses.length == Character.Max_Houses) return; // PORUKA: Imate maksimalno kuca;
    if (this.Price > Character.Money) return Player.Notification(frp.Globals.messages.NOT_ENOUGH_MONEY, frp.Globals.Notification.Error, 5);
@@ -118,18 +120,31 @@ frp.Houses.prototype.Buy = async function (Player) {
 frp.Houses.prototype.Lock = async function (Player) { 
 
    if (this.Owner != Player.character) return Player.Notificationn(frp.Globals.messages.YOU_DONT_HAVE_HOUSE_KEYS, frp.Globals.Notification.Error, 5);
+   if (!this.Tenants.includes(Player.character)) return Player.Notificationn(frp.Globals.messages.YOU_DONT_HAVE_HOUSE_KEYS, frp.Globals.Notification.Error, 5);
    
    this.Locked = !this.Locked;
    await this.save();
 };
 
 
-frp.Houses.Create = async function (player, type, price) { 
-   if (HouseTypes[type]) { 
-      type = HouseTypes[type];
-      const Position = player.position;
-      const House = await frp.Houses.create({ Type: type.id, Price: price, Position: Position });
-   }
+frp.Houses.Create = async function (Player, Type, Price) { 
+
+   if (HouseTypes[Type] == undefined) return Player.Notification(frp.Globals.messages.TYPES_ARE_IN_RANGE + '0 - ' + HouseTypes.length + '.', frp.Globals.Notification.Error, 5);
+
+   Type = HouseTypes[Type];
+
+   const Position = Player.position;
+
+   frp.Houses.create({ 
+      Type: Type.id, 
+      Price: Price,
+      Position: Position,
+      Dimension: Player.dimension,
+      Interior_Position: Type.Position,
+      IPL: Type.IPL ? Type.IPL : null,
+   });
+
+
 ;};
 
 

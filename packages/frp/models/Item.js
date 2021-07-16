@@ -148,6 +148,8 @@ frp.Items.prototype.Refresh = function () {
          dimension: this.Dimension
       });
 
+      this.GameObject.setVariable('Item', this.Item);
+
       this.GameObject.Item = this.id;
 
    } else {
@@ -160,7 +162,7 @@ frp.Items.prototype.Refresh = function () {
 
 
 frp.Items.prototype.Delete = async function () {
-   this.object.destroy();
+   this.GameObject.destroy();
    await this.destroy();
 };
 
@@ -180,7 +182,7 @@ frp.Items.prototype.Drop = async function (player, place, quantity = 1) {
       frp.Items.New(this.Item, quantity, ItemEntities.Ground, 0, Position.position, Position.rotation, player.dimension);
    }
 
-   player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} baca ${this.Item} na zemlju. (( Drop ))`, frp.Globals.Colors.purple);
+   player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} baca ${this.Item} na zemlju.`, frp.Globals.Colors.purple);
 
    return frp.Items.Inventory(player);
 };
@@ -196,7 +198,7 @@ frp.Items.prototype.Pickup = async function (player) {
 
 
 frp.Items.prototype.Give = async function (player, target, quantity) {
-   if (player.dist(target.position) > 3.5) return; // PORUKA: Taj igrac se ne nalazi u vasoj blizini
+   if (player.dist(target.position) > 2.5) return; // PORUKA: Taj igrac se ne nalazi u vasoj blizini
 
    const Has = await frp.Items.HasItem(target.character, this.Item);
 
@@ -439,8 +441,10 @@ frp.Items.prototype.Eat = async function (player) {
 
    const animation = Animations['eat'];
    player.playAnimation(animation[0], animation[1], 1, 49);
-   Character.Interaction(player, Item.hash, 6286);
 
+   if (player.getVariable('Attachment') != null) return;
+
+   Character.Attachment(player, Item.hash, 6286);
 
    Character.increment('Hunger', { by: Item.Hunger });
 };

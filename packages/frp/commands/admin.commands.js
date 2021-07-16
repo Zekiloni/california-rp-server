@@ -432,6 +432,26 @@ module.exports = {
          }
       },
 
+      
+      {
+         name: 'destroyveh',
+         admin: 4,
+         call: (Player) => {
+            let Vehicle = null;
+
+            if (Player.vehicle) Vehicle = Player.vehicle;
+            else Vehicle = frp.Vehicles.Nearest(Player.position, 3.2);
+
+            if (Vehicle) { 
+               if (Vehicle.Database) { 
+
+               } else { 
+                  Vehicle.destroy();
+               }
+            }
+         }
+      },
+
       {
          name: 'fixveh',
          admin: 3,
@@ -443,6 +463,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'setmoney',
          admin: 4,
@@ -456,6 +477,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'givemoney',
          admin: 4,

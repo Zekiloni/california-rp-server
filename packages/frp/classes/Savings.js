@@ -20,7 +20,9 @@ class Saving {
 
                if (player.getVariable('Job_Vehicle')) { 
                   const vehicle = player.getVariable('Job_Vehicle');
-                  frp.GameObjects.TemporaryVehicles[vehicle].destroy();
+                  if (mp.vehicles.at(frp.GameObjects.TemporaryVehicles[vehicle].id)) {
+                     frp.GameObjects.TemporaryVehicles[vehicle].destroy();
+                  }
                }
 
                const Position = player.position;
