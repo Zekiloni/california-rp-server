@@ -218,7 +218,7 @@ mp.events.add({
 
    'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
       if (targetEntity.entity == 'player' && targetEntity.entity.remoteId == Player.remoteId) {
-         LastHealth = targetEntity.getHealth();;
+         LastHealth = targetEntity.getHealth();
          setTimeout(() => {
             const NewHealth = targetEntity.getHealth();
             if (NewHealth != (LastHealth - damage)) {
