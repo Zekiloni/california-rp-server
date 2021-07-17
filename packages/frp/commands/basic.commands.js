@@ -1,5 +1,9 @@
 
+
+
 const Animations = require('../data/Animations');
+
+const { Department } = require('../modules/Department');
 
 module.exports = {
    commands: [
@@ -39,6 +43,7 @@ module.exports = {
       {
          name: 'dmv',
          desc: 'Departman Motornih Vozila',
+         position: Department.Position,
          call: (player, args) => {
             if (mp.world.time.hour < 6 || mp.world.time.hour > 20) return;
             mp.events.call('server:vehicle.department:menu', player);

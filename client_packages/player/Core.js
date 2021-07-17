@@ -3,6 +3,12 @@ const Player = mp.players.local;
 
 Player.Attachment = null;
 
+mp.nametags.enabled = false;
+
+
+const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
+
+
 let AntiKeySpam = false;
 
 const Controls = { 
@@ -83,6 +89,63 @@ mp.events.add({
    'entityStreamIn': (entity) => { 
       if (entity.Attachment) { 
          Attachments.StreamIn(entity, entity.getVariable('Attachment'));
+      }
+   },
+
+   'render': () => { 
+      if (Player.logged && Player.spawned) { 
+         mp.players.forEach((Target) => { 
+
+            const TargetPosition = Target.position;
+            const PlayerPosition = Player.position;
+
+            const Distance = new mp.Vector3(PlayerPosition.x, PlayerPosition.y, PlayerPosition.z).subtract(new mp.Vector3(TargetPosition.x, TargetPosition.y, TargetPosition.z)).length();
+            
+            if (Distance < 8 && Player.id != Target.id && Player.hasClearLosTo(Target.handle, 17)) {
+               if (Target.getAlpha() != 0) { 
+                  
+                  const Index = Target.getBoneIndex(12844)
+                  const NameTag = Target.getWorldPositionOfBone(Index);
+
+                  const Position = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.4));
+
+                  if (Position) { 
+                     let x = Position.x;
+                     let y = Position.y;
+
+                     let scale = (Distance / 25);
+                     if (scale < 0.6) scale = 0.6;
+                     
+                     y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
+
+                     if (Target.hasVariable('Bubble') && Target.getVariable('Bubble')) { 
+                        const BubblePosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.65));
+                        if (BubblePosition) { 
+                           const Bubble = Target.getVariable('Bubble');
+                           mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
+                              font: 4,
+                              color: Bubble.Color,
+                              scale: [0.325, 0.325],
+                              outline: false
+                           });
+                        }
+                     }
+
+                     const Content = Target.name + ' [' + Target.remoteId + ']';
+   
+                     mp.game.graphics.drawText(Content, [x, y], {
+                        font: 4,
+                        color: [255, 255, 255, 255],
+                        scale: [0.325, 0.325],
+                        outline: false
+                     });
+                  }
+
+               }
+            }
+
+         });
+
       }
    },
 
@@ -178,6 +241,17 @@ mp.keys.bind(Controls.keyY, false, () => {
 });
 
 
+mp.events.addProc({
+   'client:player.vehicle:class': () => { 
+      if (Player.vehicle) { 
+         return Player.vehicle.getClass()
+      } else { 
+         return null;
+      }
+   }
+});
+
+
 const Attachments = { 
 
    StreamIn: function (entity, attachment) { 
@@ -213,6 +287,5 @@ const Attachments = {
    }
    
 };
-
 
 

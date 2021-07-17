@@ -56,7 +56,7 @@ frp.Characters = frp.Database.define('character', {
 
       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
       Licenses: {
-         type: DataTypes.TEXT, defaultValue: null,
+         type: DataTypes.TEXT, defaultValue: '[]',
          get: function () { return JSON.parse(this.getDataValue('Licenses')); },
          set: function (value) { this.setDataValue('Licenses', JSON.stringify(value)); }
       },
@@ -117,7 +117,7 @@ frp.Characters.prototype.Spawn = async function (player) {
       // ciba na pod...
    }
    
-   player.data.Bubble = null;
+   player.setVariable('Bubble', null);
    player.data.Seatbelt = false;
 
    await player.call('client:player.interface:toggle');
@@ -508,15 +508,65 @@ mp.Player.prototype.ProximityMessage = function (radius, message, colors) {
 };
 
 
+mp.Player.prototype.VehicleMessage = function (message, colors) {
+   const Radius = 8;
+   mp.players.forEachInRange(this.position, Radius, (target) => {
+      if (this.vehicle == target.vehicle) { 
+         const distanceGap = Radius / 5;
+         const distance = target.dist(this.position)
+         let color = null;
+   
+         switch (true) {
+            case (distance < distanceGap): color = colors[0]; break;
+            case (distance < distanceGap * 2): color = colors[1]; break;
+            case (distance < distanceGap * 3): color = colors[2]; break;
+            case (distance < distanceGap * 4): color = colors[3]; break;
+            default: color = colors[0]; break;
+         }
+         
+         target.outputChatBox('!{' + color + '}' + message);
+      }
+   });
+};
+
+
 mp.Player.prototype.message = function (color, message) {
    this.outputChatBox(`!{${color}}${message}`);
 };
 
 
 mp.events.add({
-   'playerChat': (player, text) => {
-      if (player.data.logged && player.data.spawned) {
-         player.ProximityMessage(7, player.name + ' kaze: ' + text, frp.Globals.Colors.white);
+   'playerChat': async (Player, Content) => {
+      if (Player.data.logged && Player.data.spawned) {
+
+         if (Player.getVariable('Muted')) return;
+
+         const Character = await Player.Character();
+
+         const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
+
+         if (Player.vehicle) { 
+
+            const vClass = await Player.callProc('client:player.vehicle:class');
+            if (vClass == 14 || vClass == 13 || vClass == 8) { 
+               Player.ProximityMessage(frp.Globals.distances.ic, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+            } else { 
+
+               const Seat = Player.seat;
+               let Windows = Player.vehicle.getVariable('Windows');
+
+               if (Windows[Seat]) { 
+                  Player.ProximityMessage(frp.Globals.distances.vehicle, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+
+               } else { 
+                  Player.VehicleMessage(Name + frp.Globals.messages.PERSON_SAYS_IN_VEHICLE + Content, frp.Globals.Colors.vehicle);
+               }
+            }
+
+         } else { 
+            Player.ProximityMessage(frp.Globals.distances.ic, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+         }
+
       }
    }
 });

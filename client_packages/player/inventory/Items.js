@@ -108,8 +108,7 @@ mp.events.add({
                         
                         const Item = Object.getVariable('Item');
    
-                        mp.game.graphics.drawText(Item, [x, y],
-                        {
+                        mp.game.graphics.drawText(Item, [x, y], {
                            font: 4,
                            color: [255, 255, 255, 255],
                            scale: [0.325, 0.325],
