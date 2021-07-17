@@ -4,6 +4,7 @@ const GLOBALS = {
    Colors: {
       white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'],
       low: ['BDBDBD', 'DEDEDE', 'A3A2A2', '909090', '909090'],
+      vehicle: ['DEDEDE', 'BDBDBD', 'A3A2A2', '909090', '909090'],
       purple: ['cf9ae1', 'b380c4', '9565a5', '7f508f', '673e74'],
       ooc: ['b0c4c3', '9cb2b1', '8da1a0', '819493', '778a89'],
       faction: '59DC90',
@@ -21,16 +22,17 @@ const GLOBALS = {
       server: '0792E5',
       property: '1ABC4F',
       whitesmoke: 'CECECE',
-      Bubble: [149, 101, 165, 255]
+      Bubble: [179, 128, 196, 255]
    },
 
    distances: {
       ooc: 8.0,
-      ic: 10.5,
+      ic: 7.5,
       low: 4.5,
       whisper: 2,
       shout: 18.5,
       do: 8.5,
+      vehicle: 5.5,
       me: 8.5,
    },
 
@@ -116,6 +118,8 @@ const GLOBALS = {
       SUCCEFULLY_GET_LICENSE: 'Uspešno ste prošli testove i praktični deo polaganja za ', 
       TAXIMETRE_SETTED_ON: 'Uspešno ste promenili cenu vožnje po minuti na ',
       UNEMPLOYED: 'Niste zaposleni.',
+      PERSON_SAYS: ' kaže: ',
+      PERSON_SAYS_IN_VEHICLE: ' [vozilo] kaže: ',
       QUITJOB: 'Uspešno ste dali otkaz na poslu.',
       NOT_SPECIFIC_JOB: 'Nemate odredjeni posao.',
       ORDER_NOT_COMPLETED: 'Niste dostavili kompletnu porudžbinu',

@@ -10,7 +10,6 @@ let Interface = require('./player/Interface');
 let PlayerCore = require('./player/Core');
 let PlayersOnline = require('./player/Onlines');
 let PlayerHelp = require('./player/Help');
-let Nametags = require('./player/Nametags');
 let Attachments = require('./player/Attachments');
 let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
