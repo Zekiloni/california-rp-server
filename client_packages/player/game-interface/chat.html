@@ -15,14 +15,14 @@
 <body>
    <div id="chat" v-if="Toggle">
 
-      <transition-group name="message" tag="ul" class="messages" ref="Entries" id="messages">
-         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="message">
-            
-            <b class="timestamp" v-if="Settings.Timestamp" v-html="DateTime(message.timestamp)"> </b>
-            <span v-html="message.content"> </span>
-             
-         </li>
-      </transition-group>
+      <!-- <transition-group name="message" tag="ul" class="messages" ref="Entries" id="messages"> -->
+         <ul class="messages" ref="Entries" id="messages">
+            <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="message">
+               <b class="timestamp" v-if="Settings.Timestamp" v-html="DateTime(message.timestamp)"> </b>
+               <span v-html="message.content"> </span>
+            </li>
+         </ul>
+      <!-- </transition-group> -->
 
       <transition name="slide-fade">
          <div class="input-form" v-if="Typing">
@@ -35,6 +35,7 @@
               class="form-control rounded-0"
               maxlength="200"
               @keyup.esc="Close"
+              @blur="Close"
               @keyup.up="GoHistory(1)"
               @keyup.down="GoHistory(0)"
             >
@@ -114,12 +115,10 @@
             Push: function (content, type = null) {
 
                if (content.includes('color')) { 
-                  console.log('COLORRR ISs')
                   let span = content.split('"');
                   let color = span[1].split(' ');
-                  content.replace(color[1], '#' + color[1]);
+                  content = content.replace(color[1], '#' + color[1]);
                }
-               console.log(content)
 
                const message = { timestamp: Date.now(), content: content, type: type }
                this.Messages.push(message);
@@ -130,6 +129,8 @@
                this.ToggleInput(false);
 
                if (content && content.length > 0) {
+                  this.History.unshift(content);
+
                   if (content[0] == '/') {
                      content = content.substr(1);
                      mp.invoke('command', content);
@@ -139,7 +140,6 @@
                      mp.invoke('chatMessage', content);
                   }
 
-                  this.History.unshift(content);
                   this.Current = -1
                }
             },
@@ -213,10 +213,15 @@
                let scrollTop = Element.scrollTop;
                let percent = Math.floor(scrollTop / scrollHeight * 100);
 
-               Element.scroll({
-                  top: Element.scrollHeight,
-                  behavior: 'smooth'
-               });
+               Vue.nextTick(function() { 
+                  Element.scroll({
+                     top: Element.scrollHeight,
+                     behavior: 'smooth'
+                  });               
+               }.bind(this));
+
+
+    
                //Element.scrollTop = Element.scrollHeight - Element.clientHeight;
                // return Element;
             },

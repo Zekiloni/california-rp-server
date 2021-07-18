@@ -1,5 +1,9 @@
 
+
+
 const Animations = require('../data/Animations');
+
+const { Department } = require('../modules/Department');
 
 module.exports = {
    commands: [
@@ -37,13 +41,23 @@ module.exports = {
       },
 
       {
-         name: 'animacjia',
+         name: 'dmv',
+         desc: 'Departman Motornih Vozila',
+         position: Department.Position,
+         call: (player, args) => {
+            if (mp.world.time.hour < 6 || mp.world.time.hour > 20) return;
+            mp.events.call('server:vehicle.department:menu', player);
+         }
+      },
+
+      {
+         name: 'anim',
          desc: 'Povez preko ociju',
          call: (player, args) => {
             const [name, flag] = args;
             if (Animations[name]) { 
                const Animation = Animations[name];
-               player.playAnimation(Animation[0], Animation[1], 1, flag)
+               player.playAnimation(Animation[0], Animation[1], -1, parseInt(flag) || 0)
             } else { 
                player.Notification(frp.Globals.messages.ANIM_DOESNT_EXIST, frp.Globals.Notification.Error, 5);
             }
@@ -76,10 +90,8 @@ module.exports = {
          params: ['akcija'],
          call: (player, args) => {
             const Action = args[0];
-            
             switch (Action) { 
-               case 'hud': player.call('client:player.interface:toggle'); break;
-               case 'minimap': player.call('client:player.interface.radar:toggle'); break;
+
             }
          }
       },
@@ -118,7 +130,7 @@ module.exports = {
          params: ['igrac', 'kolicina'],
          call: async (player, args) => {
             const Character = await frp.Characters.findOne({ where: { id: player.character } });
-            if (Character.Hours < 2) return; // PORUKA: Potrebno vam je minimalno dva sata igre.
+            if (Character.Hours < 2) return player.Notification(frp.Globals.messages.YOU_NEED_MINIMUM_2_HOURS_OF_PLAYING, frp.Globals.Notification.Error, 5);
             
             const Target = mp.players.find(args[0]);
             if (Target) {
@@ -163,14 +175,12 @@ module.exports = {
       {
          name: 'buy',
          desc: 'Kupovina',
-         call: async (player, args) => {
-            const Nearest = await player.Nearest(), Character = await player.Character();
-            // if (Nearest) {
+         call: async (Player, args) => {
+            const Nearest = await Player.Nearest(), Character = await Player.Character();
+            if (Nearest) {
                const [action] = args;
-               Character.Buy(player, Nearest, action);
-            // } else { 
-            //    // PORUKA: Nema nicega u blizini
-            // }
+               Character.Buy(Player, Nearest, action || null);
+            }
          }
      }
    ]

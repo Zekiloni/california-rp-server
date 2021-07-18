@@ -25,8 +25,8 @@
                </div>
 
                <ul class="clothes">
-                  <li class="cloth" v-for="(item, i) in ClothingParts" v-on:click=""> 
-                     <img :src="'src/images/items/' + ClothingIcons[i] + '.png'"/>
+                  <li class="cloth" v-for="(name, i) in ClothingParts" v-on:click="Unequip(Clothings(name))"> 
+                     <img :src="'src/images/items/' + ClothingIcons[i] + '.png'" :style="{ opacity: Clothings(name) ? 1 : 0.2 }"/>
                   </li>
                </ul>
             </div>
@@ -34,17 +34,18 @@
             <div class="inventory">
                <div class="header">
                   <h2> <i class="fa fa-list-alt" aria-hidden="true"> </i> Inventar </h2>
+                  <input type="text" class="search" v-model="Search" placeholder="Pretraga..."> 
                   <h4> {{ Weight() }} <b>/ {{ player.maximum }} kg</b> </h4>
                </div>
                <div class="items">
-                  <div class="item" v-for="(item, i) in player.items" v-if="item.entity == entity.Player" v-on:click="Use(item.id)" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
+                  <div class="item" v-for="(item, i) in PlayerItems" v-if="item.entity == entity.Player" v-on:click="Use(item.id)" v-on:contextmenu="Menu($event, item.id)" v-on:mouseenter="audio.hover.play()">
                      <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
                      <h3 class="quantity"> {{ item.quantity }} </h3>
                   </div>
                </div>
             </div>
 
-            <div class="wheel">
+            <div class="wheel" v-if="vehicle.id == null">
                <div class="header">
                   <h2> <img src="src/icons/weapon.png" class="icon"> </i> Oružije </h2>
                   <h4> {{ Weapons().length }} <b>/ {{ wheelMaximum.length }} </b> </h4>
@@ -58,6 +59,18 @@
                      <div class="inner" v-else>
                         <i class="george-floyd fa fa-times" aria-hidden="true"></i>
                      </div>
+                  </div>
+               </div>
+            </div>
+
+            <div v-else class="trunk">
+               <div class="header">
+                  <h2> <i class="fa fa-car" aria-hidden="true"> </i> Gepek Vozila </h2>
+               </div>
+               <div class="items">
+                  <div class="item" v-for="(item, i) in vehicle.items" v-on:mouseenter="audio.hover.play()" v-on:click="Get(item)">
+                     <img :src="'src/images/items/' + item.hash + '.png'" :alt="item.id" /> 
+                     <h3 class="quantity"> {{ item.quantity }} </h3>
                   </div>
                </div>
             </div>
@@ -89,6 +102,7 @@
                <h4> {{ player.items.find(element => element.id === menu.item).name }} </h4>
                <li v-on:click="Drop(menu.item)"> Baci Predmet </li>
                <li v-on:click="GiveTry(menu.item)"> Daj Predmet </li>
+               <li v-if="vehicle.id" v-on:click="Trunk(menu.item)"> Prebaci u gepek </li>
             </ul>
          </transition>
       </div>
@@ -103,16 +117,17 @@
                   money: null, 
                   maximum: 20,
                   items: [
-                     // { id: 3, name: 'Assault Rifle', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     // { id: 4, name: 'awdawd Rifle', quantity: 4, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     // { id: 5, name: 'awdawd Rifle', quantity: 4, entity: 3, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' },
-                     // { id: 6, name: 'awdaww Rifle', quantity: 3, entity: 0, ammo: 0, weight: 0.25, hash: 'w_ar_assaultrifle' }
-                  ], 
+                     // { id: 3, name: 'Hat', quantity: 1, entity: 0, ammo: 5, weight: 0.25, hash: 'prop_ld_hat_01' },
+                     // { id: 4, name: 'Tops', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'prop_ld_shirt_01' },
+                     // { id: 5, name: 'Pants', quantity: 1, entity: 5, ammo: 0, weight: 0.25, hash: 'prop_ld_jeans_01' },
+                     // { id: 6, name: 'Shoes', quantity: 1, entity: 0, ammo: 0, weight: 0.25, hash: 'v_ret_ps_shoe_01' }
+                  ]
+               },
 
-                  backpack: [
-                     // TODO
-                  ],
-            
+
+               vehicle: {
+                  id: null,
+                  items: []
                },
 
                ClothingParts: ['Hat', 'Glasses', 'Mask', 'Tops', 'Undershirt', 'Armour', 'Pants', 'Shoes'],
@@ -132,6 +147,8 @@
                   left: 0
                },
 
+               Search: null,
+
                modal: null,
                selected: null,
 
@@ -142,6 +159,19 @@
                },
 
                wheelMaximum: [0, 1, 2, 3]
+            },
+
+            computed: { 
+               PlayerItems: function () { 
+
+                  if (this.Search == null) 
+                     return this.player.items;
+                  
+                  else 
+                     return this.player.items.sort().filter(item => {
+                        return item.name.toLowerCase().includes(this.Search.toLowerCase())
+                     });
+               },
             },
 
             methods: { 
@@ -165,16 +195,15 @@
                   return list;
                },
 
-               Unequip: function () {
-
+               Unequip: function (item) {
+                  if (item) { 
+                     mp.trigger('client:inventory.item:unequip', item.id)
+                  }
                },
 
-               Clothings: function () { 
-                  let list = [];
-                  for (let item of this.player.items) { 
-                     if (item.entity == this.entity.Equiped) list.push(item) 
-                  }
-                  return list;
+               Clothings: function (name) { 
+                  const clothing = this.player.items.find(item => item.name == name && item.entity == this.entity.Equiped);
+                  return clothing ? clothing : null;
                },
 
                Weight: function () { 
@@ -188,7 +217,6 @@
                Put: function (weapon) { 
                   mp.trigger('client:inventory.item.weapon:put', weapon.id)
                },
-
 
                Use: function (id) {
                   mp.trigger('client:inventory.item:use', id)
@@ -204,6 +232,16 @@
                   this.menu.item = null;
                   item = this.player.items.find(element => element.id === item);
                   mp.trigger('client:inventory.item:drop', item.id, item.hash)
+               },
+
+               Trunk: function (item) {
+                  this.menu.item = null;
+                  item = this.player.items.find(element => element.id === item);
+                  mp.trigger('client:inventory.item:trunk', this.vehicle.id, item.id)
+               },
+
+               Get: function (item) { 
+                  mp.trigger('client:inventory.item.trunk:get', this.vehicle.id, item.id)
                },
 
                Give: function (player, item, quantity) {

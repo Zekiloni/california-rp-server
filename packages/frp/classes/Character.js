@@ -16,3 +16,16 @@ mp.events.addProc({
       }
    }
 });
+
+
+
+mp.events.add({
+   'server:interactions:lock': (Player) => { 
+      frp.Commands[frp.Globals.Commands.Lock].call(Player);
+   },
+   
+   'server:character.clothing:restart': async (Player) => { 
+      const Character = await Player.Character();
+      frp.Items.Equipment(Player, Character.Gender);
+   },
+})

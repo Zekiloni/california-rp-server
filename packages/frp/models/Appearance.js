@@ -62,6 +62,8 @@ frp.Appearances.prototype.Apply = function (player, gender) {
    player.eyeColor = parseInt(this.Eyes);
 
 
+   player.setClothes(2, parseInt(this.Hair[0]), 0, 2);
+
    player.setHairColor(
       parseInt(this.Hair[1]), parseInt(this.Hair[2])
    );
@@ -75,7 +77,7 @@ frp.Appearances.prototype.Apply = function (player, gender) {
 };
 
 (async () => {
-   frp.Appearances.sync({ force: true });
+   frp.Appearances.sync();
 })();
 
 

@@ -1,15 +1,30 @@
 class Saving {
-   
    constructor() {
       mp.events.add({
          'playerQuit': async (player, exit) => {
+            
             switch (exit) {
-               case 'disconnect': { frp.Main.Terminal(2, player.name + ' left the server.'); break; }
-               case 'timeout': { frp.Main.Terminal(2, player.name + ' lost the connection to the server.'); break; }
-               case 'kicked': { frp.Main.Terminal(2, player.name + ' has been kicked / banned from the server.'); break; }
+               case 'disconnect': { 
+                  frp.Main.Terminal(2, player.name + ' left the server.'); break; 
+               }
+               case 'timeout': { 
+                  frp.Main.Terminal(2, player.name + ' lost the connection to the server.'); break; 
+               }
+               case 'kicked': { 
+                  frp.Main.Terminal(2, player.name + ' has been kicked / banned from the server.'); break; 
+               }
             }
 
             if (player.getVariable('logged')) {
+
+
+               if (player.getVariable('Job_Vehicle')) { 
+                  const vehicle = player.getVariable('Job_Vehicle');
+                  if (mp.vehicles.at(frp.GameObjects.TemporaryVehicles[vehicle].id)) {
+                     frp.GameObjects.TemporaryVehicles[vehicle].destroy();
+                  }
+               }
+
                const Position = player.position;
                const Account = await frp.Accounts.findOne({ where: { id: player.account } });
                const Character = await frp.Characters.findOne({ where: { id: player.character }});
@@ -32,4 +47,5 @@ class Saving {
       });
    }
 }
+
 frp.Saving = new Saving();

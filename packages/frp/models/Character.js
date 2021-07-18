@@ -1,6 +1,8 @@
 const { DataTypes, BOOLEAN } = require('sequelize');
-const { ItemEntities } = require('../classes/Items.Registry');
 
+
+const { ItemEntities } = require('../classes/Items.Registry');
+const { VehicleEntities } = require('./Vehicle');
 let Appearance = require('./Appearance');
 
 
@@ -16,19 +18,19 @@ frp.Characters = frp.Database.define('character', {
       Faction_Rank: { type: DataTypes.STRING, defaultValue: 'none' },
       Faction_Perms: { type: DataTypes.INTEGER, defaultValue: 0 },
       Job: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Working_Hours: { type: DataTypes.INTEGER, defaultValue: 0 },
       Money: { type: DataTypes.INTEGER, defaultValue: 3000 },
       Salary: { type: DataTypes.INTEGER, defaultValue: 0 },
 
       Health: { type: DataTypes.INTEGER, defaultValue: 100 },
       Armour: { type: DataTypes.INTEGER, defaultValue: 100 },
-      Hunger: { type: DataTypes.INTEGER, defaultValue: 100 },
-      Thirst: { type: DataTypes.INTEGER, defaultValue: 100 },
+      Hunger: { type: DataTypes.FLOAT, defaultValue: 100 },
+      Thirst: { type: DataTypes.FLOAT, defaultValue: 100 },
       Wounded: { 
          type: DataTypes.TEXT, defaultValue: null,
          get: function () { return JSON.parse(this.getDataValue('Wounded')); },
          set: function (value) { this.setDataValue('Wounded', JSON.stringify(value)); }
       },
-      
 
       Last_Position: {
          type: DataTypes.TEXT, defaultValue: null,
@@ -48,10 +50,13 @@ frp.Characters = frp.Database.define('character', {
       Mood: { type: DataTypes.STRING, defaultValue: 'normal' },
       Walking_Style: { type: DataTypes.STRING, defaultValue: 'normal' },
 
-      Phone: { type: DataTypes.INTEGER, defaultValue: 0 },
+      Max_Houses: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Houses },
+      Max_Business: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Business },
+      Max_Vehicles: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Vehicles },
+
       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
       Licenses: {
-         type: DataTypes.TEXT, defaultValue: null,
+         type: DataTypes.TEXT, defaultValue: '[]',
          get: function () { return JSON.parse(this.getDataValue('Licenses')); },
          set: function (value) { this.setDataValue('Licenses', JSON.stringify(value)); }
       },
@@ -61,8 +66,8 @@ frp.Characters = frp.Database.define('character', {
       Masked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Rented_Vehicle: { 
          type: DataTypes.VIRTUAL, defaultValue: null,
-         get () { return frp.GameObjects.TemporaryVehicles.find(vehicle => vehicle.character === this.getDataValue('id')); },
-         set (x) { frp.GameObjects.TemporaryVehicles.push(x); }
+         get () { return frp.GameObjects.TemporaryVehicles; },
+         set (x) { return frp.GameObjects.TemporaryVehicles; }
       } 
    }, {
       // Options
@@ -86,32 +91,43 @@ frp.Characters.prototype.Spawn = async function (player) {
    player.name = this.Name;
    player.setVariable('spawned', true);
 
-   // setting money & health
+   // Loading money & health
    this.SetHealth(player, this.Health);
    this.SetMoney(player, this.Money);
 
    player.setVariable('Job', this.Job);
 
-   // Temp
+   // Temporary Variables
+   player.setVariable('Duty', false);
+   player.setVariable('Job_Duty', false);
    player.setVariable('Job_Vehicle', null);
+   player.setVariable('Working_Uniform', false);
+   player.setVariable('Admin_Duty', false);
    player.setVariable('Attachment', null);
+   player.setVariable('Phone_Ringing', false);
 
+   // this.SetWalkingStyle(player, this.Walking_Style);
+   // this.SetMood(player, this.Mood);
+   // this.Cuff(player, this.Cuffed);
 
+   player.RespawnTimer = null;
 
-   player.data.Wounded = this.Wounded;
+   player.setVariable('Wounded', this.Wounded);
    if (this.Wounded) { 
-
+      // ciba na pod...
    }
    
-   player.data.Bubble = null;
+   player.setVariable('Bubble', null);
    player.data.Seatbelt = false;
 
    await player.call('client:player.interface:toggle');
-   await player.Notification('Dobrodošli na Focus Roleplay ! Uživajte u igri.', frp.Globals.Notification.Info, 4);
+   await player.Notification(frp.Globals.messages.WELCOME, frp.Globals.Notification.Info, 4);
 
    // Applying appearance & clothing
    const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
    if (Appearance) Appearance.Apply(player, this.Gender);
+
+   frp.Items.Equipment(player, this.Gender);
    
    // spawning player on desired point
    switch (this.Spawn_Point) {
@@ -135,6 +151,36 @@ frp.Characters.prototype.Spawn = async function (player) {
 };
 
 
+mp.events.add({
+
+   'server:character.animation': (player, dict, name, flag) => { 
+      player.playAnimation(dict, name, 8, flag);
+   },
+
+   'server:character.attachment': async (player, model, bone) => { 
+      const Character = await player.Character();
+      Character.Attachment(player, model, bone);
+   }
+});
+
+
+mp.events.addProc('server:character.attachment:remove', (Player) => {
+   Player.setVariable('Attachment', null);
+   Player.stopAnimation();
+   return null;
+});
+
+
+frp.Characters.prototype.Attachment = async function (player, model, bone, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) {
+   if (model) { 
+      const Offset = { X: x, Y: y, Z: z, rX: rx, rY: ry, rZ: rz };
+      player.setVariable('Attachment', { Model: model, Bone: bone, Offset: Offset });
+   } else { 
+      player.setVariable('Attachment', null);
+   }
+};
+
+
 frp.Characters.prototype.SetHealth = async function (player, value) {
    this.Health = value;
    player.health = this.Health;
@@ -148,12 +194,23 @@ frp.Characters.prototype.SetSpawn = async function (point) {
 };
 
 
+frp.Characters.prototype.QuitGame = function (player) { 
+
+};
+
+
 frp.Characters.prototype.Wound = async function (player, info = null) { 
    if (this.Wounded) { 
       // play animation / freeze
    } else { 
-      // put info and wound him
+      if (info) { 
+
+      } else { 
+         this.Wounded = null;
+      }
    }
+
+   await this.save();
 };
 
 
@@ -189,8 +246,12 @@ frp.Characters.prototype.SetWalkingStyle = function (player, style) {
 };
 
 
-frp.Characters.prototype.Cuff = function (player) { 
-   this.Cuffed = !this.Cuffed;
+frp.Characters.prototype.Cuff = function (player, toggle) { 
+   if (toggle) {
+      this.Cuffed = toggle;
+   } else { 
+      this.Cuffed = !this.Cuffed;
+   }
    player.setVariable('Cuffed', this.Cuffed);
    return this.Cuffed;
 };
@@ -203,6 +264,7 @@ frp.Characters.prototype.UnRentVehicle = function (player) {
    }
 }
 
+
 frp.Characters.prototype.ExtendRent = function (player, minutes) {
    if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
       clearTimeout(this.Rented_Vehicle.Timer);
@@ -211,6 +273,7 @@ frp.Characters.prototype.ExtendRent = function (player, minutes) {
       }, 60000 * minutes);
    }
 }
+
 
 frp.Characters.prototype.RentVehicle = function (player, model, business, minutes = 30) {
    if (frp.Main.IsAnyVehAtPos(business.Vehicle_Point)) {
@@ -231,82 +294,6 @@ frp.Characters.prototype.RentVehicle = function (player, model, business, minute
    } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
 };
 
-frp.Characters.prototype.Enter = async function (player, type, id) { 
-   switch (type) { 
-      case 'house': { 
-         const House = await frp.Houses.findOne({ where: { id: id }});
-         player.position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
-         player.dimension = House.Interior_Dimension;
-         if (House.IPL != null) player.call('client:interior:request.ipl', House.IPL);
-         break;
-      }
-
-      case 'business': { 
-         const Business = await frp.Business.findOne({ where: { id: id }});
-         player.position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
-         player.dimension = Business.Interior_Dimension;
-         if (Business.IPL != null) player.call('client:interior:request.ipl', Business.IPL);
-         break;
-      }
-
-      case 'entrance': { 
-         const Entrance = frp.Entrances[id];
-         player.position = new mp.Vector3(Entrance.Position.x, Entrance.Position.y, Entrance.Position.z);
-         player.dimension = Entrance.Interior_Dimension;
-
-         break;
-      }
-
-      default:
-         return;
-   }
-
-   let Inside = { type: type, id: id };
-   this.Inside = Inside
-   player.Inside = Inside;
-   await this.save();
-};
-
-
-frp.Characters.prototype.Exit = async function (player) { 
-   if (player.Inside)  {
-      const Inside = player.Inside;
-      player.Inside = null;
-      this.Inside = null;
-
-      switch (Inside.type) { 
-         case 'house': { 
-            const House = await frp.Houses.findOne({ where: { id: Inside.id }});
-            player.position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
-            player.dimension = House.Dimension;
-            if (House.IPL != null) player.call('client:interior:request.ipl', House.IPL);
-            break;
-         }
-   
-         case 'business': { 
-            const Business = await frp.Business.findOne({ where: { id: Inside.id }});
-            player.position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
-            player.dimension = Business.Dimension;
-            if (Business.IPL != null) player.call('client:interior:request.ipl', Business.IPL);
-            break;
-         }
-   
-         case 'entrance': { 
-            const Entrance = frp.Entrances[Inside.id];
-            player.position = new mp.Vector3(Entrance.Position.x, Entrance.Position.y, Entrance.Position.z);
-            player.dimension = Entrance.Dimension;
-   
-            break;
-         }
-   
-         default:
-            return;
-      }
-      
-   }
-
-   await this.save();
-};
 
 
 frp.Characters.prototype.SetAdmin = async function (level) { 
@@ -315,48 +302,39 @@ frp.Characters.prototype.SetAdmin = async function (level) {
 };
 
 
-frp.Characters.prototype.Buy = async function (player, Nearest, action) { 
+frp.Characters.prototype.Buy = async function (Player, Nearest, action) { 
 
-   console.log('buy', 1)
    if (action) { 
-      console.log('akcija ' + action);
-      console.log('buy action', 1)
 
 
    } else { 
-      console.log('buy', 2)
 
       switch (true) { 
          case Nearest instanceof frp.Business: {
-            console.log('buy', 3)
-            Nearest.Menu(player);
+            Nearest.Menu(Player);
             break;
          }
    
          case Nearest instanceof frp.Houses: { 
-            console.log('buy', 4)
-
+            Nearest.Buy(Player);
             break;
          }
    
          default: console.log('nidje');
       }
-      console.log('buy', 5)
-
    }
-   console.log('buy', 6)
 
 };
 
 
-frp.Characters.prototype.SetJob = function (player, value) {
+frp.Characters.prototype.SetJob = async function (player, value) {
    this.Job = value;
    player.setVariable('Job', value);
    await this.save();
 };
 
 
-frp.Characters.prototype.LicenseAdd = async function (license) {
+frp.Characters.prototype.GiveLicense = async function (license) {
    let Licenses = this.Licenses;
    Licenses.push(license);
    this.Licenses = Licenses;
@@ -374,17 +352,42 @@ frp.Characters.prototype.RemoveLicense = async function (license) {
 };
 
 
+frp.Characters.prototype.HasLicense = function (i) { 
+   return this.Licenses.includes(name => name === i);
+};
+
+
+frp.Characters.prototype.Payment = async function (Amount) { 
+   this.increment('Salary', { by: Amount });
+};
+
+
 frp.Characters.prototype.Properties = async function () {
    const Houses = await frp.Houses.findAll({ where: { Owner: this.id } });
    const Businesses = await frp.Business.findAll({ where: { Owner: this.id } });
-   const Vehicles = await frp.Business.findAll({ where: { Owner: this.id } });
+   const Vehicles = await frp.Business.findAll({ where: { Entity: VehicleEntities.Player, Owner: this.id } });
    return { Vehicles: Vehicles, Houses: Houses, Businesses: Businesses };
 };
+
 
 frp.Characters.prototype.Appearance = async function () { 
    const appearance = await frp.Appearances.findOne({ where: { Character: this.id }});
    return appearance ? appearance : null;
 };
+
+
+frp.Characters.prototype.Uniform = function (Player, Uniform) { 
+   if (Uniform) { 
+      for (const Component of Uniform) { 
+         Player.setClothes(Component.Index, Component.Drawable, 0, 2);
+         Player.setVariable('Working_Uniform', true);
+      }
+   } else { 
+      frp.Items.Equipment(Player, this.Gender);
+      Player.setVariable('Working_Uniform', false);
+   }
+};
+
 
 frp.Characters.afterCreate(async (Character, Options) => {
    const Appearance = await frp.Appearances.findOne({ where: { Character: Character.id }});
@@ -393,10 +396,9 @@ frp.Characters.afterCreate(async (Character, Options) => {
    }
 });
 
+
 frp.Characters.New = async function (player, Character) { 
    // const Bank = await frp.Bank.New(player);
-
-   console.log(Character);
 
    const Created = await frp.Characters.create({
       Account: player.account, Name: Character.First_Name + ' ' + Character.Last_Name,
@@ -410,15 +412,191 @@ frp.Characters.New = async function (player, Character) {
       Eyes: Character.Eyes, Face_Features: Character.Face
    });
 
+   player.character = Created.id;
+
    Character.Clothing.forEach(async (Clothing) => { 
       const [item, value] = Clothing;
-      const Cloth = await frp.Items.New(item, 1, ItemEntities.Equiped, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
+      const Cloth = await frp.Items.New(item, 1, ItemEntities.Player, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
       Cloth.Equip(player);
    })
 
    if (Created) return Created;
 
 };
+
+
+mp.Player.prototype.Notification = function (message, type, time = 4) {
+   this.call('client:player.interface:notification', [message, type, time]);
+};
+
+
+mp.Player.prototype.Instructions = function (content, time) {
+   this.call('client:player.interface:instructions', [content, time]);
+};
+
+
+mp.Player.prototype.Character = async function () {
+   const character = await frp.Characters.findOne({ where: { id: this.character } });
+   return character ? character : null;
+};
+
+
+mp.Player.prototype.Account = async function () {
+   const account = await frp.Accounts.findOne({ where: { id: this.account } });
+   return account ? account : null;
+};
+
+
+mp.Player.prototype.SendMessage = function (message, color) {
+   this.outputChatBox('!{' + color + '}' + message);
+};
+
+
+mp.Player.prototype.IsNear = function (target) {
+   return this.dist(target.position) < 3.0 ? true : false;
+};
+
+
+mp.Player.prototype.NearbyPlayers = function (radius) {
+   let near = [];
+   mp.players.forEachInRange(this.position, radius, (player) => {
+      near.push(player);
+   });
+   return near;
+};
+
+
+mp.Player.prototype.Nearest = async function () { 
+
+   const Businesses = await frp.Business.findAll();
+   for (const Business of Businesses) { 
+      const Position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
+      if (this.dist(Position) < 2.0) return Business;
+   }
+
+   const Houses = await frp.Houses.findAll();
+   for (const House of Houses) { 
+      const Position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
+      if (this.dist(Position) < 2.0) return House;
+   }
+
+   const Vehicles = await mp.vehicles.toArray();
+   for (const Vehicle of Vehicles) { 
+      if (this.dist(Vehicle.position) < 2.25) return Vehicle;
+   }
+
+};
+
+
+
+mp.Player.prototype.ProximityMessage = function (radius, message, colors) {
+   mp.players.forEachInRange(this.position, radius, (target) => {
+      const distanceGap = radius / 5;
+      const distance = target.dist(this.position)
+      let color = null;
+
+      switch (true) {
+         case (distance < distanceGap): color = colors[0]; break;
+         case (distance < distanceGap * 2): color = colors[1]; break;
+         case (distance < distanceGap * 3): color = colors[2]; break;
+         case (distance < distanceGap * 4): color = colors[3]; break;
+         default: color = colors[0]; break;
+      }
+      
+      target.outputChatBox('!{' + color + '}' + message);
+   });
+};
+
+
+mp.Player.prototype.VehicleMessage = function (message, colors) {
+   const Radius = 8;
+   mp.players.forEachInRange(this.position, Radius, (target) => {
+      if (this.vehicle == target.vehicle) { 
+         const distanceGap = Radius / 5;
+         const distance = target.dist(this.position)
+         let color = null;
+   
+         switch (true) {
+            case (distance < distanceGap): color = colors[0]; break;
+            case (distance < distanceGap * 2): color = colors[1]; break;
+            case (distance < distanceGap * 3): color = colors[2]; break;
+            case (distance < distanceGap * 4): color = colors[3]; break;
+            default: color = colors[0]; break;
+         }
+         
+         target.outputChatBox('!{' + color + '}' + message);
+      }
+   });
+};
+
+
+mp.Player.prototype.message = function (color, message) {
+   this.outputChatBox(`!{${color}}${message}`);
+};
+
+
+mp.events.add({
+   'playerChat': async (Player, Content) => {
+      if (Player.data.logged && Player.data.spawned) {
+
+         if (Player.getVariable('Muted')) return;
+
+         const Character = await Player.Character();
+
+         const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
+
+         if (Player.vehicle) { 
+
+            const vClass = await Player.callProc('client:player.vehicle:class');
+            if (vClass == 14 || vClass == 13 || vClass == 8) { 
+               Player.ProximityMessage(frp.Globals.distances.ic, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+            } else { 
+
+               const Seat = Player.seat;
+               let Windows = Player.vehicle.getVariable('Windows');
+
+               if (Windows[Seat]) { 
+                  Player.ProximityMessage(frp.Globals.distances.vehicle, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+
+               } else { 
+                  Player.VehicleMessage(Name + frp.Globals.messages.PERSON_SAYS_IN_VEHICLE + Content, frp.Globals.Colors.vehicle);
+               }
+            }
+
+         } else { 
+            Player.ProximityMessage(frp.Globals.distances.ic, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+         }
+
+      }
+   }
+});
+
+
+mp.players.find = (playerName) => {
+   let foundPlayer = null;
+   if (playerName == parseInt(playerName)) {
+      foundPlayer = mp.players.at(playerName);
+   }
+   if (!foundPlayer) {
+      mp.players.forEach((target) => {
+         if (target.name === playerName) {
+            foundPlayer = target;
+         }
+         else if (target.name.includes(playerName)) {
+            foundPlayer = target;
+         }
+      });
+   }
+   return foundPlayer;
+};
+
+
+mp.events.add({
+
+   "server:onPlayerDamageHimself": (player, healthLoss) => {
+   }
+});
+
 
 
 (async () => {

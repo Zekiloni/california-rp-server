@@ -9,9 +9,11 @@ frp.Database = require('./classes/Database');
 
 
 frp.GameObjects = {
-   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: []
+   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: {}, Garages: {}
 };
 
+
+const Pederi = [ 'Mare', 'Zeki', 'Mile' ];
 
 
 // !!! TEST //
@@ -28,24 +30,23 @@ let Logs = require('./models/Logs');
 // MODULES
 const Helpers = require('./modules/Helpers');
 
-
 // CLASSES
-let Player = require('./classes/Player');
 let Accounts = require('./classes/Account');
 let Admin = require('./classes/Admin');
 let Characters = require('./classes/Character');
 let Savings = require('./classes/Savings');
 let Discord = require('./classes/Discord');
+let Jobs = require('./classes/Jobs');
 let Commands = require('./classes/Commands');
 let Animals = require('./classes/Animals');
 let Doors = require('./classes/Doors');
 let Inventory = require('./classes/Inventory');
 let Vehicles = require('./classes/Vehicles');
 let Minute = require('./classes/Minute');
+let Houses = require('./classes/Houses');
 let Business = require('./classes/Business');
 let Factions = require('./classes/Factions');
-let Weather = require('./classes/Weather');
-let Jobs = require('./classes/Jobs');
+let Ambient = require('./classes/Ambient');
 const AntiCheat = require('./classes/Anticheat');
 
 
@@ -68,8 +69,6 @@ const AntiCheat = require('./classes/Anticheat');
 })();
 
 
-console.log(mp.joaat('prop_gas_pump_1d'));
-
 
 
 const Exit = async () => {
@@ -80,7 +79,9 @@ const Exit = async () => {
       player.kick('Server se gasi !')
    });
 
-   frp.Main.Sleep(5).then(process.exit());
+   frp.Main.Sleep(2.5).then(() => { 
+      process.exit();
+   })
 };
 
 
@@ -88,5 +89,6 @@ process.on('SIGHUP', Exit);
 process.on('SIGQUIT', Exit);
 process.on('SIGTERM', Exit);
 process.on('SIGINT', Exit);
+
 
 

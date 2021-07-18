@@ -1,12 +1,12 @@
 'use strict';
 
-const Account = require('../models/Account');
+require('../models/Account');
 
 mp.events.add({
    'playerJoin': async (player) => {
       const Banned = await frp.Bans.Check(player);
       if (Banned) player.kick('Bannedovan');
-      player.call('client:player.login:show');
+      if (player) player.call('client:player.login:show');
    },
 
    'playerReady': (player) => {
@@ -21,20 +21,23 @@ mp.events.add({
 
 mp.events.addProc({
    'server:player.login:credentials': async (player, username, password) => {
-      let account = await frp.Accounts.findOne({ where: { Username: username } });
-      if (account) {
-         let success = await account.login(password);
-         if (success) {
-            let characters = await frp.Characters.findAll({ where: { Account: account.id } });
-            player.account = account.id;
-            return await { Account: account, Characters: characters };
-         } else {
-            return false;
-         }
-      } else {
-         return false;
-      }
-
+      return new Promise((resolve, reject) => {
+         frp.Accounts.findOne({ where: { Username: username } }).then((Account) => { 
+            if (Account) { 
+               const Logged = Account.Login(password);
+               if (Logged) { 
+                  frp.Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
+                     player.account = Account.id;
+                     resolve({ Account: Account, Characters: Characters });
+                  });
+               } else { 
+                  reject(frp.Globals.messages.INCCORRECT_PASSWORD);
+               }
+            } else { 
+               reject(frp.Globals.messages.USER_DOESNT_EXIST);
+            }
+         });
+      });
    },
 
    'server:player.character:delete': async (player, character) => {

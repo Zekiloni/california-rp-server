@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!-- meta tags-->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+   <!-- source -->
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/fonts.css" />
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/font-awesome.css" />
+
+   <link rel="stylesheet" type="text/css" href="src/vendor/css/leaflet.css" />
+   <link rel="stylesheet" type="text/css" href="src/styles/food.css" />
+
+</head>
+<body>
+
+   <div id="food">
+      <div class="header">
+         <h2> Dostava Hrane </h2>
+         <h4> Porudžbine su označene na mapi tačkama </h4>
+         <i v-on:click="Close()" class="close fa fa-times"> </i>
+      </div>
+      <div id="map"> </div>
+      <ul class="orders">
+         <li class="order" v-for="(order, i) in Orders" v-on:click="Fly(order)"> 
+            <h2 class="title"> 
+               Narudžbina <b> {{ i + 1 }}</b>
+               <small v-bind:style="{ color: Status(order.Status).color }"> {{ Status(order.Status).name }} </small> 
+               <small class="contact"> Kontakt <b> {{ order.Contact }} </b></small>
+            </h2>
+
+            <div class="order-info">
+               <ul class="items">
+                  <li v-for="(item, i) in order.Items"> {{ item }} </li>
+               </ul>
+            </div>
+            
+            <button class="accept" v-on:click="Accept(order)"> <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
+         </li>
+      </ul>
+   </div>
+      
+   <!-- scripts -->
+   <script src="src/vendor/js/vue.js"> </script>
+   <script src="src/vendor/js/leaflet.js"> </script>
+
+   <script>      
+      let food = new Vue({
+         el: '#food',
+         data: {
+
+            Map: null,
+            Layer: null,
+
+            Orders: [
+               // { Position: { x: 151.09954, y: -1509.0583496, z: 29.14162 }, Items: ['Pizza', 'Donut'], Contact: '321 199', Status: 0 },
+               // { Position: { x: 421.21234, y: -979.00042728, z: 30.30240 }, Items: ['Burger', 'Fries'], Contact: 'N / A', Status: 1 },
+               // { Position: { x: 791.39, y: -1193.9, z: 51.59 }, Items: ['Chips'], Contact: 'N / A', Status: 2 },
+               // { Position: { x: -1374.98, y: -524.72, z: 32.53 }, Items: ['Chips'], Contact: 'N / A', Status: 2 },
+               // { Position: { x: -2069.2, y: -1022.98, z: 11.49 }, Items: ['Chips'], Contact: 'N / A', Status: 2 }
+                
+            ]
+         },
+
+         mounted () { 
+            this.Initialize();
+         },
+
+         methods: { 
+
+            Close: () => { mp.trigger('client:job.food:deliveries'); },
+
+            Initialize: function () { 
+    
+               this.Layer = L.tileLayer('src/images/tiles/postal/minimap_sea_{y}_{x}.png', {
+                  attribution: 'Map by &copy; <a href="https://fb.com/almir.kvakic.10">kvaX</a>',
+                  minZoom: 0,
+                  maxZoom: 0,
+                  tileSize: 1024,
+                  maxNativeZoom: 0,
+                  minNativeZoom: 0,
+                  tileDirectory: 'tiles'
+               });
+               
+               this.Map = L.map('map', { 
+                  crs: L.CRS.Simple, 
+                  layers: [this.Layer] 
+               }).setView([0, 0], 0);
+
+
+               getMapBounds = (t) => {
+                  let e = 3 * t.options.tileSize,
+                     n = 2 * t.options.tileSize,
+                     i = this.Map.unproject([0, e], 0),
+                     o = this.Map.unproject([n, 0], 0);
+                  return new L.LatLngBounds(i, o);
+               }
+
+               var r = getMapBounds(this.Layer);
+               this.Map.setMaxBounds(r.pad(1));
+               this.Map.fitBounds(r);
+               
+               this.Map.on('click', function(e){
+                  const coord = e.latlng;
+                  let lat = coord.lat;
+                  let lng = coord.lng;
+                  // console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+               });
+
+               setTimeout(() => {
+                  const Icon = L.icon({
+                     iconUrl: 'order.png',
+                     iconSize: [15, 15],
+                  });
+
+                  this.Orders.forEach(Order => {
+                     const Coords = this.convertToMap(this.Layer, Order.Position.x, Order.Position.y);
+                     Order.Marker = L.marker(new L.LatLng(Coords.lat, Coords.lng), { icon: Icon }).addTo(this.Map);
+                  });
+               }, 500);
+               
+            },
+
+            Status: (i) => { 
+               const Config = [
+                  { color: '#adadad', name: 'Naručeno' },
+                  { color: '#fbc60c', name: 'Dostavlja se...' },
+                  { color: '#2ed076', name: 'Dostavljeno' }
+               ];
+               return Config[i];
+            },
+
+            convertToMap: function (e, n, i) {
+               var o = 3 * e.options.tileSize,
+                  r = 2 * e.options.tileSize,
+                  s = this.Map.unproject([0, 0], 0),
+                  a = this.Map.unproject([r / 2, o - e.options.tileSize], 0),
+                  l = s.lng + ((n - -4230) * (s.lng - a.lng)) / (-4230 - 370);
+               return { lat: s.lat + ((i - 8420) * (s.lat - a.lat)) / (8420 - (-640)), lng: l };
+            },
+
+            Fly: function (order) { 
+               const Coords = this.convertToMap(this.Layer, order.Position.x, order.Position.y);
+               this.Map.flyTo([Coords.lat, Coords.lng], 0);
+            },
+   
+            Accept: function (order) { 
+               if (order.Status == 0) { 
+                  const Index = this.Orders.indexOf(order);
+                  mp.trigger('client:job.food.order:accept', Index);
+               }
+            }
+         }
+      })
+
+   </script>
+</body>     
+</html>

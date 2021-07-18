@@ -43,7 +43,7 @@
                      <div class="type"> 
                         <i class="" v-bind:class="NotifyType(notification.Type)" aria-hidden="true"></i>
                      </div>
-                     <h4> {{ notification.Message }} </h4>
+                     <h4 v-html="notification.Message"> </h4>
                   </li>
                </transition-group>
 
@@ -60,6 +60,16 @@
                      <li> {{ time }} </li>
                      <li> {{ date }} </li>
                   </ul>
+               </div>
+
+               <div class="instruction-handler">
+                  <transition name="slide-top">
+                     <div class="instruction" v-if="instruction">
+                        <i class="instruction-mark fas fa-question"> </i>
+                        <h2 class="instruction-text" v-html="instruction.Content"> </h2>
+                     </div>
+                  </transition>
+
                </div>
 
                <div class="bottom-right">
@@ -144,7 +154,11 @@
                Speedometer: null,
                Fuelmeter: null,
 
+               instruction: null,
+
                notifications: [],
+
+               taximeter: null,
 
                players: 100,
 
@@ -243,12 +257,24 @@
                   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
                },
 
-               Notification: function (message, type, time = 3) { 
+               Notification: function (message, type, time = 4) { 
                   this.sounds.notification.play();
                   this.notifications.push({ Message: message, Type: type, Time: time });
                },
 
+               Instructions: function (content, time = 4) { 
+                  this.instruction = { Content: content, Time: time };
+               },
+
                Check: function (i) { 
+
+                  if (this.instruction) { 
+                     this.instruction.Time --;
+                     if (this.instruction.Time == 0) { 
+                        this.instruction = null;
+                     }
+                  }
+
                   if (this.notifications.length == 0) return;
                   this.notifications.forEach(notification => {
                      notification.Time --;

@@ -104,6 +104,7 @@
                            <iframe src="http://localhost/focus/safari/" title="xvideos my fav" class="xvideos"> </iframe>
                         </div>
 
+
                         <div class="page" v-if="phone.page == 'weather'">
                            <div class="header">
                               <i v-on:click="phone.page = 'home'" class="go-back fas fa-angle-left"></i>
@@ -111,8 +112,18 @@
                               <h3> </h3>
                            </div>
 
-                           <div class="current-weather" v-bind:style="{ 'background-image': 'linear-gradient(253deg, rgb(255 255 255 / 32%), transparent), url(src/images/' + dayNight() + '.png)' }">
+                           <div class="current-weather">
+                              <div class="weather-heather">
+                                 <h3> Los Santos </h3>
+                                 <img class="weather-icon" :src="wIcon(weather.current.condition.icon)">
+                              </div>
 
+                              <ul class="weather">
+                                 <li> <h4> Temperatura </h4> <h3> {{ weather.current.temp_c }} C </h3> </li>
+                                 <li> <h4> Osećaj </h4> <h3> {{ weather.current.feelslike_c }} C </h3> </li>
+                                 <li> <h4> Vetar </h4> <h3> {{ weather.current.gust_kph }} km/h ( {{ weather.current.wind_dir }} ) </h3> </li>
+                                 <li> <h4> Vlažnost vazduha </h4> <h3> {{ weather.current.humidity }} </h3> </li>
+                              </ul>
                            </div>
 
                         </div>
@@ -167,6 +178,37 @@
                               <i v-on:click="phone.page = 'home'" class="go-back fas fa-angle-left"></i>
                               <h3> mBanking </h3>
                            </div>
+
+                           <transition name="bounce">
+                              <div class="transfer-page" v-if="bank.transfer.show">
+                                 <i v-on:click="bank.transfer.show = false, bank.transfer.amount = '', bank.transfer.target = ''" class="padding-20 go-back fas fa-angle-left"> </i>
+   
+                                 <div class="transfer">
+                                    <input type="text" v-model="bank.transfer.target" placeholder="Primalac..."> 
+                                    <input type="number" v-model="bank.transfer.amount" placeholder="Količina"> 
+                                    <button class="send"> Transfer </button>
+                                 </div>
+   
+                              </div>
+                           </transition>
+
+                           <div class="banking">
+                              <h3 class="bank-balance"> {{ Dollars(bank.balance) }} <small> balans </small> </h3>
+
+                              <ul class="transactions">
+                                 <li v-for="(transaction, i) in bank.transactions"> 
+                                    <h4 class="trans-info"> 
+                                       {{ transaction.type }} 
+                                       <small> {{ transaction.date }} </small>
+                                    </h4>
+                                    <h2 class="amouunt"> {{ Dollars(transaction.amount) }} </h2>
+                                 </li>
+                              </ul>
+
+                              <div class="transfer-button" v-on:click="bank.transfer.show = true">
+                                 <i class="fas fa-exchange-alt" aria-hidden="true"></i>
+                              </div>
+                           </div>
                         </div>
 
 
@@ -178,7 +220,7 @@
                            </div>
 
                            <ul class="contacts">
-                              <li class="contact" v-for="(contact, i) in contacts" v-el="right" v-on:click="showContactMenu()">
+                              <li class="contact" v-for="(contact, i) in contacts" v-on:click="showContactMenu()">
                                     <h3> {{ contact }} </h3>
                                     <small> {{ i }} </small>
                                     <!-- <ul id="right-click-menu" tabindex="-1" v-el="right" v-if="contactMenu.show" v-on="blur: contactMenu.show = false"  v-style="top:contactMenu.top, left:contactMenu.left">
@@ -192,9 +234,9 @@
 
                            <div class="single-contact" v-if="showingContact"> 
                               <div class="header">
-                                    <i v-on:click="showingContact = false" class="go-back fas fa-angle-left"></i>
-                                    <h3 class="contact-name"> {{ showingContact.name }} </h3>
-                                    <i v-on:click="removeContact(showingContact.number)" class="create-contact fa fa-times" aria-hidden="true"></i>
+                                 <i v-on:click="showingContact = false" class="go-back fas fa-angle-left"></i>
+                                 <h3 class="contact-name"> {{ showingContact.name }} </h3>
+                                 <i v-on:click="removeContact(showingContact.number)" class="create-contact fa fa-times" aria-hidden="true"></i>
                               </div>
                            </div>
                         </div>
@@ -208,30 +250,28 @@
                            
                            <ul class="calls" v-if="phone.calls == 'calls'">
                               <li v-for="(c, i) in calls">
-                                    <h3> 
-                                       {{ isContact(c.number) }} 
-                                       <small v-if="c.status == 0"> Propušteni </small>
-                                       <small v-if="c.status == 1"> Nadolazeći </small>
-                                       <small v-if="c.status == 2"> Odlezeći </small>
-                                    </h3> 
+                                 <h3> 
+                                    {{ isContact(c.number) }} 
+                                    <small v-if="c.status == 0"> Propušteni </small>
+                                    <small v-if="c.status == 1"> Nadolazeći </small>
+                                    <small v-if="c.status == 2"> Odlezeći </small>
+                                 </h3> 
 
-                                    <h3> {{ c.time }} </h3>
+                                 <h3> {{ c.time }} </h3>
                               </li>
                            </ul>
 
                            <div v-else>
                               <ul class="digits">
-                                    <h3 class="calling-number"> {{ call.number }} </h3>
-                                    <li v-for="n in numbers" v-on:click="input('calling', n)">
-                                       {{ n }}
-                                    </li>
-                                    <li class="call"><button :disabled="call.number.length < 2" v-on:click="Call(call.number)"> <i class="fa fa-phone" aria-hidden="true"></i> </button> </li>
-                                    <li v-on:click="input('calling', -1)" class="delete"> <i class="fa fa-times" aria-hidden="true"></i> </li>
+                                 <h3 class="calling-number"> {{ call.number }} </h3>
+                                 <li v-for="n in numbers" v-on:click="input('calling', n)">
+                                    {{ n }}
+                                 </li>
+                                 <li class="call"><button :disabled="call.number.length < 2" v-on:click="Call(call.number)"> <i class="fa fa-phone" aria-hidden="true"></i> </button> </li>
+                                 <li v-on:click="input('calling', -1)" class="delete"> <i class="fa fa-times" aria-hidden="true"></i> </li>
                               </ul>
                            </div>
-
                         </div>
-
                      </div>
                   </div>
                </div>
@@ -262,6 +302,21 @@
                         number: '',
                         length: '00:00',
                         timer: null,
+                    },
+
+                    bank: { 
+                       balance: 333,
+                       transfer: { 
+                          show: false,
+                          amount: '',
+                          target: ''
+                       },
+                       transactions: [ 
+                          { type: 'Withdraw', date: '23.06.2001  11:10:00', amount: 3120 },
+                          { type: 'Transfer', date: '11.06.2001  16:05:22', amount: 4300 },
+                          { type: 'Deposit', date: '08.06.2001  20:10:56', amount: 750 },
+                          { type: 'Deposit', date: '06.06.2001  21:33:43', amount: 2500 }
+                       ]
                     },
 
                     search: {
@@ -303,6 +358,8 @@
                         time: this.Time,
                     },
 
+                    weather: {},
+
                     contacts: {
                         '243242': 'Narkoman Onaj',
                         '332123': 'Batocanin',
@@ -335,7 +392,6 @@
                         { number: '321199', text: 'Eeeeee', type: 'to' },
                         { number: '064915', text: 'Brate jesi tu ?', type: 'to' },
 
-
                     ],
 
                     calls: [
@@ -351,6 +407,7 @@
 
                created() {
                   this.Time();
+                  this.Weather();
                },
 
                computed: { 
@@ -386,6 +443,7 @@
                      this.phone.locked = this.phone.active;
                      setTimeout(() => { this.phone.page = 'home'; }, 700);
                   },
+                  
 
                   dayNight: function () { 
                      let now = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Belgrade' });
@@ -394,25 +452,60 @@
                      return hours > 5 && hours < 21 ? ( 'day' ) : ( 'night' );
                   },
 
+                  wText: (i) => { 
+                     let text = 'Sunčano';
+                     switch (i) { 
+                        case 1000: text = 'Sunčano'; break; 
+                        case 1003: text = 'Oblačno'; break;
+                        case 1006: text = 'Oblačno'; break;
+                        case 1066: text = 'Sneg'; break;
+                        case 1135: text = 'Maglovito'; break;
+                        case 1183: text = 'Kišovito'; break;
+                        case 1189: text = 'Kišovito'; break;
+                        case 1273: text = 'Oluja'; break;
+                        case 1009: text = 'Pblačno'; break;
+                        default: text = 'Vedro';
+                     }
+                     return text;
+                  },
+                  
+                  wIcon: (i) => { 
+                     return i.replace('//', 'https://');
+                  },
+
                   isSent: function (type) { 
                      return type == 'to' ? true : false;
                   },
 
+                  Weather: function () { 
+                     const requestOptions = {
+                        method: 'GET',
+                        redirect: 'follow'
+                     };
+
+                     fetch("http://api.weatherapi.com/v1/current.json?key=c5aab2441e9248e49ee81903201910&q=los_angeles", requestOptions)
+                        .then(response => response.json())
+                        .then(result => this.weather = result)
+                        .catch(error => console.log('Focus Roleplay - Weather Fetch Error: ', error));
+                  },
+
                   input: function (e, i) { 
                      switch (e) { 
-                           case 'calling': { 
-                              if (i == -1) { 
-                                 this.call.number = this.call.number.slice(0, -1); 
-                              } else { 
-                                 let audio = new Audio('src/sounds/' + i + '.mp3');
-                                 audio.volume = 0.1;
-                                 audio.play();
-                                 this.call.number += i; 
-                              }
-                              break;
+                        case 'calling': { 
+                           if (i == -1) { 
+                              this.call.number = this.call.number.slice(0, -1); 
+                           } else { 
+                              let audio = new Audio('src/sounds/' + i + '.mp3');
+                              audio.volume = 0.1;
+                              audio.play();
+                              this.call.number += i; 
                            }
+                           break;
+                        }
                      }
                   },
+
+                  Dollars: (i) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); },
 
                   Send: function (target, message) { 
                      this.message.text = '';

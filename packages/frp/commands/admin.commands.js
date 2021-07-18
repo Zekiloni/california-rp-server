@@ -105,8 +105,8 @@ module.exports = {
          admin: 2,
          params: ['igrac'],
          call: async (player, args) => {
-            let Target = mp.players.find(args[0]);
-            if (Target) { player.call('client:spectate', target, true); } else { player.Notificatioon(frp.Globals.messages.USER_NOT_FOUND, frp.Globals.Notification.Error, 4); }
+            const Target = mp.players.find(args[0]);
+            if (Target) { player.call('client:spectate', Target, true); } else { player.Notificatioon(frp.Globals.messages.USER_NOT_FOUND, frp.Globals.Notification.Error, 4); }
          }
       },
 
@@ -264,7 +264,7 @@ module.exports = {
 
       {
          name: 'ban',
-         description: 'Ban a player',
+         desc: 'Ban a player',
          admin: 3,
          call: (player, ...args) => {
          }
@@ -272,7 +272,7 @@ module.exports = {
 
       {
          name: 'fly',
-         description: 'Letiš',
+         desc: 'Letiš',
          admin: 2,
          call: (player, ...args) => {
             player.call('client:player.administrator:fly');
@@ -281,30 +281,30 @@ module.exports = {
 
       {
          name: 'goto',
-         description: 'Teleport do igraca.',
+         desc: 'Teleport do igraca.',
          admin: 3,
          params: ['igrac'],
          call: (player, args) => {
-            let target = mp.players.find(args[0]);
-            if (target) {
+            const Target = mp.players.find(args[0]);
+            if (Target && Target.id != player.id) {
                if (player.vehicle) { 
                   const Seat = player.seat, Vehicle = player.vehicle;
-                  Vehicle.position = new mp.Vector3(target.position.x + 2, target.position.y, target.position.z);
-                  Vehicle.dimension = target.dimension;
+                  Vehicle.position = new mp.Vector3(Target.position.x + 2, Target.position.y, Target.position.z);
+                  Vehicle.dimension = Target.dimension;
                   player.putIntoVehicle(Vehicle, Seat);
                } else { 
-                  player.position = target.position;
-                  player.dimension = target.dimension;
+                  player.position = Target.position;
+                  player.dimension = Target.dimension;
                }
-               target.SendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
-               player.SendMessage('Teleportovali ste se do ' + target.name + ' !', frp.Globals.Colors.tomato);
+               Target.SendMessage('Admin ' + player.name + ' se teleportovao do vas !', frp.Globals.Colors.tomato);
+               player.SendMessage('Teleportovali ste se do ' + Target.name + ' !', frp.Globals.Colors.tomato);
             }
          }
       },
 
       {
          name: 'gethere',
-         description: 'Teleport igraca do sebe.',
+         desc: 'Teleport igraca do sebe.',
          admin: 2,
          call: (player, args) => {
             let target = mp.players.find(args[0]);
@@ -432,6 +432,26 @@ module.exports = {
          }
       },
 
+      
+      {
+         name: 'destroyveh',
+         admin: 4,
+         call: (Player) => {
+            let Vehicle = null;
+
+            if (Player.vehicle) Vehicle = Player.vehicle;
+            else Vehicle = frp.Vehicles.Nearest(Player.position, 3.2);
+
+            if (Vehicle) { 
+               if (Vehicle.Database) { 
+
+               } else { 
+                  Vehicle.destroy();
+               }
+            }
+         }
+      },
+
       {
          name: 'fixveh',
          admin: 3,
@@ -443,6 +463,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'setmoney',
          admin: 4,
@@ -456,6 +477,7 @@ module.exports = {
             }
          }
       },
+
       {
          name: 'givemoney',
          admin: 4,

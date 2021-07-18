@@ -13,8 +13,7 @@
 
 </head>
 <body>
-   <div id="dealership" v-on:keyup.72="console.log('aa')">
-
+   <div id="dealership">
 
       <div class="left">
          <div class="customization" v-if="customization"> 
@@ -169,7 +168,11 @@
                },
 
                Buy: function () { 
-                  let vehicle = this.Business.Products[this.current];
+                  const Vehicle = this.Business.Products[this.current];
+                  const Total = Vehicle.Multiplier * this.Business.Multiplier;
+                  const Color = JSON.stringify([this.colors.primary, this.colors.secondary]);
+
+                  mp.trigger('client:business.dealership.vehicle:buy', Total, Vehicle.Model, Color, this.Business.id);
                },
 
                Dollars: (i) => { 

@@ -10,7 +10,6 @@ let Interface = require('./player/Interface');
 let PlayerCore = require('./player/Core');
 let PlayersOnline = require('./player/Onlines');
 let PlayerHelp = require('./player/Help');
-let Nametags = require('./player/Nametags');
 let Attachments = require('./player/Attachments');
 let Documents = require('./player/documents/Documents');
 let Inventory = require('./player/inventory/Items');
@@ -27,13 +26,12 @@ let Streamer = require('./player/Streamer');
 let Damage = require('./player/Damage');
 
 // GAME CORE 
-let Chat = require('./player/Chat');
 let CayoPerico = require('./cayo-perico/heistisland');
 //let ChatBubble = require('./player/ChatBubble');
 
 // VEHICLES
-let Vehicles = require('./vehicles/Vehicles')
-let DepartmentOfVehicles = require('./vehicles-department/DMV'); 
+let Vehicles = require('./vehicles/Vehicles');
+let DepartmentMV = require('./vehicles/Department');
 
 // HOUSES
 let Houses = require('./houses/Houses');
@@ -57,11 +55,13 @@ let Rent = require('./business/Rent');
 let Dealeship = require('./business/Dealership');
 
 // JOBS
-let Jobs = require('./jobs/Jobs');
+let Jobs = require('./jobs/Job');
 let Jetsam = require('./jobs/Jetsam');
 let Transit = require('./jobs/Transit');
 let Sanitation = require('./jobs/Sanitation');
 let Mining = require('./jobs/Miner');
+let Food = require('./jobs/Food');
+let Taxi = require('./jobs/Taxi');
 
 // DIAMOND CASINO
 // let Roulette = require('./casino/Roulette');

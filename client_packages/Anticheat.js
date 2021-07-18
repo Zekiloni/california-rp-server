@@ -1,36 +1,69 @@
 
 
 
-const FlaggedWords = ['Cit', 'Čit', 'Admin'],
-      BlacklistedWeapons =   [mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_rayminigun"), mp.game.joaat("weapon_hominglauncher"),
-                              mp.game.joaat("weapon_compactlauncher"), mp.game.joaat("weapon_railgun"), mp.game.joaat("weapon_minigun"),
-                              mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_grenadelauncher"), mp.game.joaat("weapon_rpg"),
-                              mp.game.joaat("weapon_raycarbine"), mp.game.joaat("weapon_raypistol")],
-      Player = mp.players.local;
+const FlaggedWords       =   ['Cit', 'Čit', 'Admin'],
+      BlacklistedWeapons = [mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_rayminigun"), mp.game.joaat("weapon_hominglauncher"),
+                           mp.game.joaat("weapon_compactlauncher"), mp.game.joaat("weapon_railgun"), mp.game.joaat("weapon_minigun"),
+                           mp.game.joaat("weapon_grenadelauncher_smoke"), mp.game.joaat("weapon_grenadelauncher"), mp.game.joaat("weapon_rpg"),
+                           mp.game.joaat("weapon_raycarbine"), mp.game.joaat("weapon_raypistol")],
+      Player             = mp.players.local,
+      LastDamage         = 0;
 
-let AnticheatSafe = false,
-    AnticheatSafeTimer = null,
-    Positions = [],
-    Waypoint = null;
+let AnticheatSafe        = false,
+    AnticheatSafeTimer   = null,
+    Positions            = [],
+    Waypoint             = null,
+    CurrentWeapon        = null,
+    CurrentAmmo          = 0,
+    CurrentClipSize      = 0;
+    
 
 
 // Main timer
  setInterval(() => {
-   if (Player.admin) return;
-   if (!Player.spawned) { AnticheatSafe = true; } else { AnticheatSafe = false; }
+   
+   Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
 
+   // Enabled checks for admins
    SpeedHack ();
    FlyHack ();
    UnAllowedWeapons ();
+   Misc ();
+   // Disable checks for admins
+   //if (Player.admin) return;
+
  }, 1000);
 
-/*
-// Teleport hack timer
+
+/* Teleport hack timer
 setInterval(() => {
    TeleportHack ();
-}, 1000);
+}, 1000);*/
 
 
+
+
+/*   
+   0 : 'Health hack',
+   1 : 'Armour hack',
+   2 : 'Godmode',
+   3 : 'Teleport hack',
+   4 : 'Ammo hack',
+   5 : 'Blacklisted weapon',
+   6 : 'High ping',
+   7 : 'Headshot Aim',
+   8 : 'Aim',
+   9 : 'No Reload',
+   10 : 'Speed hack (OnFoot)',
+   11 : 'Speed hack (Vehicle)',
+   12 : 'Vehicle Repair',
+   13 : 'Vehicle Mods',
+   14 : 'Fly/Teleport Hack (OnFoot)',
+   15 : 'Fly/Teleport Hack (Vehicle)',
+   16 : 'Fly/Teleport Hack (Water)',
+   17 : 'Fly/Teleport Hack (Waypoint)' */
+
+/*
 function TeleportHack() {
    Positions.push(Player.position);
    if (Positions.length === 2) {
@@ -40,15 +73,15 @@ function TeleportHack() {
       const Distance = utils.Distance(Vector1, Vector2);
       if (Player.vehicle) {
          if (Distance > 55) {
-            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 16, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 17, 'warn', 'WP');
+            Waypoint === null ? mp.events.callRemote('server:ac.dc', 16, 'warn') : mp.events.callRemote('server:ac.dc', 17, 'warn', 'WP');
          }
       } else if (!Player.vehicle) { 
          if (Distance > 7 && !Player.isFalling()) {
-            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 15, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
+            Waypoint === null ? mp.events.callRemote('server:ac.dc', 15, 'warn') : mp.events.callRemote('server:ac.dc', 15, 'warn', 'WP');
          }
       } else if (Player.isInWater()) {
          if (Distance > 5) {
-            Waypoint === null ? mp.events.callRemote('server:anti_cheat:detected', 17, 'warn') : mp.events.callRemote('server:anti_cheat:detected', 15, 'warn', 'WP');
+            Waypoint === null ? mp.events.callRemote('server:ac:.etected', 17, 'warn') : mp.events.callRemote('server:ac.dc', 15, 'warn', 'WP');
          }
       }
       Positions = [];
@@ -56,11 +89,16 @@ function TeleportHack() {
 }
 */
 
+function NoReload () {
+   if (AnticheatSafe) return;
+   if (!Player.weapon) return;
+}
+
 function UnAllowedWeapons () {
    if (AnticheatSafe) return;
    for (const WeaponHash in BlacklistedWeapons) {
       if (Player.Weapon === WeaponHash) {
-        // mp.events.callRemote('server:anti_cheat:detected', 6, 'ban');
+         mp.events.callRemote('server:ac.dc', 6, 'ban'); // Blacklisted weapons
       }
    }
 }
@@ -70,56 +108,41 @@ function SubtractVector(v1, v2) {
 }
 
 function FlyHack () {
-   /*
    if (AnticheatSafe) return;
-   if (Player.isInAir()) {
-      if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
-         mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
-      } 
-   }*/
 
    const GroundZ = mp.game.gameplay.getGroundZFor3dCoord(Player.position.x, Player.position.y, Player.position.z, parseFloat(0), false);
    if (Player.position.z > GroundZ + 5) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
-         // mp.events.callRemote('server:anti_cheat:detected', 4, 'warn');
-         // mp.gui.chat.push(`Ground z: ${GroundZ}`);
+         mp.events.callRemote('server:ac.dc', 14, 'warn'); // Flyhack
       }
    }
 }
 
-function IsOnFoot() {
-   if(mp.players.local.isFalling() || mp.players.local.isRagdoll()) return false
-   else if(!mp.players.local.vehicle) return true
+function IsOnFoot() { // Is Player Walking?
+   if(Player.isFalling() || Player.isRagdoll()) return false
+   else if(!Player.vehicle) return true
 }
 
 function SpeedHack () {
    if (AnticheatSafe) return;
    if (Player.vehicle) {
-      let Vehicle = Player.vehicle;
-      let VehSpeed = Vehicle.getSpeed();
-      let MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
+      const Vehicle = Player.vehicle;
+      const VehSpeed = Vehicle.getSpeed();
+      const MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (VehSpeed > MaxSpeed + 10) {
-        // mp.events.callRemote('server:ac.detected', 12, 'warn'); // 6 Warnova kick/ban
+         mp.events.callRemote('server:ac.dc', 11, 'warn'); // Vehicle speed hack
       }
    } 
    else {
-      let PedSpeed = Player.getSpeed();
-      if (PedSpeed > 6.2) {
-        // mp.events.callRemote('server:ac.detected', 11, 'warn');
+      const PedSpeed = Player.getSpeed();
+      if (PedSpeed > 7.2) {
+        mp.events.callRemote('server:ac.dc', 10, 'warn'); // On Foot Speedhack
       }
    }
 }
 
-function PlayerHealthArmour () {
-   if (AnticheatSafe) return;
-   if (Player.getHealth() != Player.realHealth) {
 
-   } 
-   if (Player.getArmour() != Player.realArmour) {
-
-   } 
-}
 
 
 // Dodati Player.frozen sharovanu varijablu zbog anti unfreeze cheate
@@ -135,7 +158,10 @@ function Misc () {
                if (Player.vehicle) {
                   Player.vehicle.freezePosition(true);
                }
-               else { Player.freezePosition(true); }
+               else { 
+                  Player.freezePosition(true);
+                  mp.events.callRemote('server:ac.dc', 19, 'warn');
+               }
             }
          }
          break;
@@ -161,19 +187,17 @@ mp.events.addDataHandler({
                }, 1000);
             }
          }
-         else if (newValue === 'admin') {
-            AnticheatSafe = true;
-         }
       }
    }
 });
+
 
 // Chat filter
 mp.events.add({
    'playerChat': (text) => {
       for (const i of FlaggedWords) {
          if (text.toLowerCase().includes(i.toLowerCase())) {
-           // mp.events.callRemote('server:ac.chat', text);
+           // mp.events.callRemote('server:ac.chat', text); Forbidden words
          }
       }
    },
@@ -192,7 +216,21 @@ mp.events.add({
       
    },
 
-   'playerWeaponShot': (targetPosition, targetEntity) => {
-      
+   'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
+      if (targetEntity.entity == 'player' && targetEntity.entity.remoteId == Player.remoteId) {
+         LastHealth = targetEntity.getHealth();
+         setTimeout(() => {
+            const NewHealth = targetEntity.getHealth();
+            if (NewHealth != (LastHealth - damage)) {
+               mp.events.callRemote('server:ac:detected', 7, 'Warn'); // Health hack
+            }
+         }, 250);
+      }
+   },
+
+   'playerWeaponChange': (oldWeapon, newWeapon) => {
+       CurrentWeapon = mp.game.invoke(`0x0A6DB4965674D243`, Player.handle); //GET_SELECTED_PED_WEAPON
+       CurrentAmmo = CurrentWeapon.getWeaponAmmo;
+       CurrentClipSize = mp.game.weapon.getWeaponClipSize(weaponHash);
    }
 });

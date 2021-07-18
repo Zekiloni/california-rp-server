@@ -17,40 +17,12 @@ function LoadAnimDict (i) {
    return new Promise(async resolve => { 
       mp.game.streaming.requestAnimDict(i);
       while (!mp.game.streaming.hasAnimDictLoaded(i)) { 
-         await mp.game.waitAsync(25);
+         await mp.game.waitAsync(10);
       }
       resolve();
    })
 };
 
-
-
-function Attachment (entity, value) { 
-   if (value) { 
-      const Position = new mp.Vector3(entity.position.x, entity.position.y, entity.position.z);
-      const Rotation = new mp.Vector3(entity.rotation.x, entity.rotation.y, entity.rotation.z);
-
-      entity.Attachment = mp.objects.new(mp.game.joaat(value.name), Position, {
-         rotation: Rotation,
-         alpha: 255,
-         dimension: entity.dimension
-      });
-
-      entity.Attachment.notifyStreaming = true;
-      utils.WaitEntity(entity.Attachment).then(() => {
-         const Bone = entity.getBoneIndex(entity.Bone);
-         entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, true);
-      })
-
-   }
-   else {
-      if (entity.Attachment) { 
-         if (entity.Attachment.doesExist()) { 
-            entity.Attachment.destroy();
-         }
-      }
-   }
-}
 
 
 function WaitEntity (entity) {
@@ -96,7 +68,8 @@ function GetAdress (position) {
 
 function BrowserControls (freezeControls, mouse) {
    mouse ? mp.gui.chat.activate(false) : mp.gui.chat.activate(true);
-   // mp.game.invoke('setTypingInChatState', mouse);
+   
+   mp.game.invoke('setTypingInChatState', mouse);
    setTimeout(() => { mp.gui.cursor.show(freezeControls, mouse); }, 250);
 }
 
@@ -172,13 +145,13 @@ function MoveCamera () {
 }
 
 
-function CreateInteractionSport (name, position) { 
-   const checkpoint = mp.checkpoints.new(47, position, 3.5, { color: [196, 12, 28, 175], visible: true, dimension: Player.dimension });
+function CreateInteractionSpot (name, position) { 
+   const checkpoint = mp.checkpoints.new(48, position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
    const blip = mp.blips.new(1, new mp.Vector3(position.x, position.y, 0), { name: name, color: 1, shortRange: false });
    return { checkpoint: checkpoint, blip: blip };
 };
 
-Player.CreateInteractionSport = CreateInteractionSport;
+Player.CreateInteractionSpot = CreateInteractionSpot;
 
 
 global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server };

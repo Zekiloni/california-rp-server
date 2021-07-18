@@ -1,4 +1,6 @@
 const { DataTypes } = require('sequelize');
+
+
 frp.Bank = frp.Database.define('bank', {
       Number: { type: DataTypes.INTEGER, unique: true },
       Pin: { type: DataTypes.INTEGER, allowNull: false },
@@ -12,8 +14,8 @@ frp.Bank = frp.Database.define('bank', {
    }, {
       timestamps: true,
       underscrored: true,
-      createdAt: "Created_Date",
-      updatedAt: "Update_Date"
+      createdAt: 'Created_Date',
+      updatedAt: 'Update_Date'
    }
 );
 

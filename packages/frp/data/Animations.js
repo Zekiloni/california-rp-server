@@ -19,6 +19,7 @@ const Animations = {
    'laydead':['misssolomon_5@end','dead_black_ops','laying'],
    'laycouch':['amb@prop_human_seat_sunlounger@female@base','base','laying'],
    'sunbatheback':['amb@world_human_sunbathe@female@back@base','base','laying'],
+   'wakeup':['safe@trevor@ig_8','ig_8_wake_up_front_player', 'laying'],
 
 
    /// Standing
@@ -35,7 +36,12 @@ const Animations = {
    'walkeat1':['amb@code_human_wander_eating_donut@male@idle_a','idle_c','food'],
    'walkeat2':['amb@code_human_wander_eating_donut@male@idle_a','idle_b','food'],
    'walkeat3':['amb@code_human_wander_eating_donut@male@idle_a','idle_a','food'],
+   'eat': ['amb@medic@standing@timeofdeath@idle_a', 'idle_a', 'food'],
+   'eat2': ['mp_player_inteat@burger', 'mp_player_int_eat_burger', 'food'],
    'coffee1':['amb@world_human_aa_coffee@idle_a','idle_a','food'],
+   'drink':['amb@world_human_drinking@beer@male@idle_a', 'idle_a', 'food'],
+   'drink2':['amb@code_human_wander_drinking@beer@male@idle_a', 'idle_a', 'food'],
+   
 
 
    // Expressions

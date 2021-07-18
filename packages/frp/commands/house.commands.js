@@ -1,24 +1,28 @@
+
+
 module.exports = {
    commands: [
+
       {
          name: 'createhouse',
-         admin: 3,
-         call: (player, args) => {
-            frp.Houses.create
+         desc: 'Kreiranje kuće.',
+         admin: 4,
+         params: ['tip', 'cena'],
+         call: (Player, args) => {
+            const [Type, Price] = args;
+            frp.Houses.Create(Player, Type, Price);
          }
       },
+
       {
          name: 'deletehouse',
-         admin: 3,
-         call: (player, args) => {
-               if (player.near != null && player.near.type == 'house') {
-                  let house = mp.houses[player.near.id];
-                  if (house) {
-                     mp.house.delete(house);
-                  }
-               }
+         desc: 'Brisanje najbliže kuće.',
+         admin: 4,
+         call: (Player) => {
+         
          }
       },
+
       {
          name: 'house',
          desc: 'Kuća',

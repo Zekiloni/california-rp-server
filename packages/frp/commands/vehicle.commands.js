@@ -1,22 +1,13 @@
 module.exports = {
    commands: [
-      {
-         name: 'createvehicle',
-         desc: 'Kontrola motora vozila',
-         admin: 2,
-         call: (player, args) => {
-            if (player.vehicle) return;
-            const [model, owner, color, color2] = args;
-         }
-      },    
 
       {
          name: 'engine',
          desc: 'Kontrola motora vozila',
          vehicle: true,
-         call: (player, args) => {
-            let vehicle = player.vehicle, character = player.Character();
-            vehicle.engine = !vehicle.engine;
+         call: async (player, args) => {
+            const Vehicle = player.vehicle, Character = await player.Character();
+            Vehicle.engine = !Vehicle.engine;
          }
       },
 
@@ -24,11 +15,31 @@ module.exports = {
          name: 'seatbelt',
          desc: 'Vezanje pojasa',
          vehicle: true,
-         call: (player, args) => {
-            player.data.Seatbelt = !player.data.Seatbelt;
+         call: (Player) => {
+            Player.data.Seatbelt = !Player.data.Seatbelt;
+            let message = Player.data.Seatbelt ? ' stavlja pojas.' : ' skida pojas.';
+            Player.ProximityMessage(frp.Globals.distances.me, '* ' + Player.name + message, frp.Globals.Colors.purple);
+         }
+      },
 
-            let message = player.data.Seatbelt ? ' stavlja pojas.' : ' skida pojas.';
-            player.ProximityMessage(frp.Globals.distances.me, '* ' + player.name + message, frp.Globals.Colors.purple);
+      {
+         name: 'trunk',
+         desc: 'Opcije gepeka vozila.',
+         call: (Player) => {
+            const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
+            console.log(Vehicle);
+            if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
+            if (Vehicle) Vehicle.data.Trunk = !Vehicle.data.Trunk;
+         }
+      },
+
+      {
+         name: 'hood',
+         desc: 'Opcije haube vozila.',
+         call: (Player) => {
+            const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
+            if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
+            if (Vehicle) Vehicle.data.Hood = !Vehicle.data.Hood;
          }
       },
 

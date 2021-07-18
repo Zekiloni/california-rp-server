@@ -13,7 +13,6 @@ class Miner {
 
     }
     start(player) {
-        console.log('START 2');
         player.call('client:player.miner.start', [MiningSpots]);
         player.setProp(0, 145, 0); // yellow helmet
         player.setClothes(8, 59, 0, 2); // green vest

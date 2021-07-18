@@ -21,7 +21,10 @@ frp.Business = frp.Database.define('business', {
       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
       Position: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Position')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Position'))
+            return new mp.Vector3(Position.x, Position.y, Position.z); 
+          },
          set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
       },
       Vehicle_Point: {
@@ -29,9 +32,12 @@ frp.Business = frp.Database.define('business', {
          get: function () { return JSON.parse(this.getDataValue('Vehicle_Point')); },
          set: function (value) { this.setDataValue('Vehicle_Point', JSON.stringify(value)); }
       },
-      Interior: {
+      Interior_Position: {
          type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Interior')); },
+         get: function () { 
+            const Position = JSON.parse(this.getDataValue('Interior_Position'))
+            return new mp.Vector3(Position.x, Position.y, Position.z); 
+         },         
          set: function (value) { this.setDataValue('Interior', JSON.stringify(value)); }
       },
       Interior_Dimension: { type: DataTypes.INTEGER, defaultValue: this.id },
@@ -128,9 +134,9 @@ frp.Business.prototype.Refresh = function () {
 
    if (this.GameObject == null) { 
       const GameObjects = { 
-         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.5, 2.0, 0),
+         colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 1.8, 2.0, 0),
          blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
-         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z -0.99), 2.5, {
+         marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 1.8, {
             color: frp.Globals.MarkerColors.Business, 
             rotation: new mp.Vector3(0, 0, 90), 
             visible: true, 
@@ -186,7 +192,6 @@ frp.Business.prototype.Menu = async function (player) {
 
    const Character = await frp.Characters.findOne({ where: { id: player.character } });
 
-   console.log('Tip je ' + this.Type);
    switch (this.Type) { 
       case frp.Globals.Business.Types.Dealership: {
          if (this.Vehicle_Point) { 
@@ -224,11 +229,9 @@ frp.Business.prototype.Menu = async function (player) {
 
       case frp.Globals.Business.Types.Clothing: { 
          const Info = { 
-            Business: {
-               Name: this.Name,
-               id: this.id,
-               Multiplier: BusinessTypes[this.Type].multiplier
-            }
+            Name: this.Name,
+            id: this.id,
+            Multiplier: BusinessTypes[this.Type].multiplier
          };
          
          player.call('client:business.clothing:menu', [Info]);

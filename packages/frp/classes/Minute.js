@@ -2,18 +2,21 @@
 
 const interval = 60 * 1000;
 
-async function Update(player) {
-   let character = await player.Character(), account = await player.Account();
+async function Update (player) {
+   const Character = await player.Character(), account = await player.Account();
    
-   character.increment('Minutes', { by: frp.Settings.HappyHours == true ? 2 : 1 }).then(async (Char) => {
-      if (Char.Minutes >= 60) {
-         await character.increment('Hours', { by: 1 });
-         Char.update({ Minutes: 0 });
-      }
-   });
+   Character.increment('Minutes', { by: frp.Settings.HappyHours == true ? 2 : 1 });
 
-   if (character.Muted > 0) {
-      await character.increment('Muted', { by: -1 });
+   if (Character.Minutes >= 60) { 
+      await Character.increment('Hours', { by: 1 });
+      Character.update({ Minutes: 0 });
+   }
+
+   Character.increment('Hunger', { by: -0.35 });
+   Character.increment('Thirst', { by: -0.70 });
+
+   if (Character.Muted > 0) {
+      await Character.increment('Muted', { by: -1 });
    }
 }
 
