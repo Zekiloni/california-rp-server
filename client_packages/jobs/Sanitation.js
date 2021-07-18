@@ -72,10 +72,11 @@ mp.keys.bind(0x59, false, function() {
                let model = InteractionObjects[i];
                let object = mp.game.object.getClosestObjectOfType(position.x, position.y, position.z, 1, model, false, true, true);
                if (object && model) {
-                  // Uzima smece sa poda animacija
+                  // Napraviti proveru da li je kanta, kontejner ili kesa
+                  // Uzima smece sa poda animacija 
                   // dict: pickup_object , pickup_low, 
                   mp.gui.chat.push('Trash Found. Total: ' + Visited.length);
-                  Interact ();
+                  Interact();
                   Visited.push(object);
                   break;
                }
