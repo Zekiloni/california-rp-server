@@ -24,6 +24,7 @@ let AnticheatSafe        = false,
    
 //    Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
 
+<<<<<<< HEAD
 //    // Enabled checks for admins
 //    SpeedHack ();
 //    FlyHack ();
@@ -31,6 +32,15 @@ let AnticheatSafe        = false,
    
 //    // Disable checks for admins
 //    //if (Player.admin) return;
+=======
+   // Enabled checks for admins
+   SpeedHack ();
+   FlyHack ();
+   UnAllowedWeapons ();
+   Misc ();
+   // Disable checks for admins
+   //if (Player.admin) return;
+>>>>>>> 0472e18388f37a5bb2a29d04ca58e16edefb2fdc
 
 //  }, 1000);
 
@@ -113,7 +123,7 @@ function FlyHack () {
    const GroundZ = mp.game.gameplay.getGroundZFor3dCoord(Player.position.x, Player.position.y, Player.position.z, parseFloat(0), false);
    if (Player.position.z > GroundZ + 5) {
       if (!Player.isInAnyHeli() && !Player.isInAnyPlane() && !Player.isRagdoll() && !Player.isFalling()) {
-         mp.events.callRemote('server:ac.dc', 4, 'warn'); // Flyhack
+         mp.events.callRemote('server:ac.dc', 14, 'warn'); // Flyhack
       }
    }
 }
@@ -131,13 +141,13 @@ function SpeedHack () {
       const MaxSpeed = mp.game.vehicle.getVehicleModelMaxSpeed(Vehicle.model);
       
       if (VehSpeed > MaxSpeed + 10) {
-         mp.events.callRemote('server:ac.dc', 12, 'warn'); // Vehicle speed hack
+         mp.events.callRemote('server:ac.dc', 11, 'warn'); // Vehicle speed hack
       }
    } 
    else {
       const PedSpeed = Player.getSpeed();
-      if (PedSpeed > 6.2) {
-        mp.events.callRemote('server:ac.dc', 11, 'warn'); // On Foot Speedhack
+      if (PedSpeed > 7.2) {
+        mp.events.callRemote('server:ac.dc', 10, 'warn'); // On Foot Speedhack
       }
    }
 }
