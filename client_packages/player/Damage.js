@@ -1,18 +1,71 @@
 
 
-
 const Player = mp.players.local;
 
 
-mp.events.add('outgoingDamage', (sourceEntity, targetEntity, sourcePlayer, weapon, boneIndex, damage) => {
-   // 1. Da li je boneIndex glava
-   // 1.1 Ako jeste, da li ima helmet? => Da/Ne => Da(Blokiraj hit i ukloni helmet)
+let SendToServer = true;
 
-   // 2. Da li je boneIndex stomak? => Da/Ne => Da(Napraviti wounded state gde igrac krvari)
 
-   mp.gui.chat.push(JSON.stringify(targetEntity.type));
-   if (targetEntity.type === 'player') { 
-      mp.events.callRemote('server:player:damage', sourceEntity, targetEntity, sourcePlayer, weapon, boneIndex, damage);
+mp.events.add({
+
+   'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
+      if (targetEntity.id == Player.id) { 
+         
+         if (Player.getVariable('Wounded')) {
+
+         } else { 
+            let Injury = { Weapon: weapon, Bone: boneIndex };
+   
+            Damage.Effect(boneIndex);
+
+            if (SendToServer) {
+               mp.events.callRemote('server:character.injuries:add', JSON.stringify(Injury));
+               SendToServer = false;
+               setTimeout(() => { SendToServer = true; }, 1000);
+            }
+   
+            if (Player.getHealth() - damage < damage) {
+               mp.events.callRemote('server:character.wounded');
+               return true;
+            }
+         }
+      }
    }
 
 });
+
+
+const Damage = { 
+   Check: function () { 
+      if (Player.logged && Player.spawned) { 
+         const Injuries = Player.getVariable('Injuries');
+         if (Injuries.length > 0 && Player.getSpeed() > 5) { 
+            if (Injuries.find(Element => Element.Bone == 4 || Element.Bone == 2)) {
+               if (SendToServer) mp.events.callRemote('server:character.wounded:fall');
+            }
+         }
+      }
+   
+      setTimeout(() => { Damage.Check(); }, 1000);
+   },
+
+   Effect: function (Bone) { 
+
+      switch (Bone) { 
+         case 20: { 
+            mp.game.graphics.startScreenEffect('DefaultFlash', 1500, false);
+            break;
+         }
+
+         default: {
+
+         }
+      }
+
+   }
+};
+
+Damage.Check();
+
+
+

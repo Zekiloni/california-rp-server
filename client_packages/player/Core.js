@@ -5,9 +5,7 @@ Player.Attachment = null;
 
 mp.nametags.enabled = false;
 
-
 const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
-
 
 let AntiKeySpam = false;
 
@@ -52,22 +50,39 @@ mp.events.addDataHandler({
       }
    },
 
+   'Wounded': (Entity, newValue, oldValue) => {
+      if (Entity.type == 'player') {
+         Entity.Wounded = newValue;
+      }
+   },
+
    'Seatbelt': (entity, newValue, oldValue) => { 
       if (entity && entity.remoteId === Player.remoteId) { 
          Player.Seatbelt = newValue;
       }
    },
-
-   'Duty': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.Duty = newValue;
+   
+   'Ragdoll': (entity, newValue, oldValue) => { 
+      if (entity.type == 'player' && newValue != oldValue) { 
+         Interactions.Ragdoll(entity, newValue);
       }
    },
 
    'Bubble': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId && newValue != oldValue) {
+      if (entity.type == 'player' && newValue != oldValue) {
          Player.Bubble = newValue;
-         mp.gui.chat.push(JSON.stringify(Player.Bubble));
+      }
+   },
+
+   'Walking_Style': (Entity, Value, oldValue) => {
+      if (Entity.type == 'player') {
+         Interactions.WalkingStyle(Entity, Value);
+      }
+   },
+
+   'Mood': (Entity, Value, oldValue) => {
+      if (Entity.type == 'player') {
+         Interactions.FacialMood(Entity, Value);
       }
    },
 
@@ -86,10 +101,11 @@ mp.events.addDataHandler({
 
 mp.events.add({
 
-   'entityStreamIn': (entity) => { 
-      if (entity.Attachment) { 
-         Attachments.StreamIn(entity, entity.getVariable('Attachment'));
-      }
+   'entityStreamIn': (Entity) => { 
+      if (Entity.Attachment) { Attachments.StreamIn(Entity, Entity.getVariable('Attachment')); }
+      if (Entity.type == 'player' && Entity.hasVariable('Walking_Style')) Interactions.WalkingStyle(Entity, Entity.getVariable('Walking_Style'));
+      if (Entity.type == 'player' && Entity.hasVariable('Ragdoll')) Interactions.Ragdoll(Entity, Entity.getVariable('Ragdoll'));
+      if (Entity.type == 'player' && Entity.hasVariable('Wounded')) Interactions.Ragdoll(Entity, Entity.getVariable('Wounded')); 
    },
 
    'render': () => { 
@@ -119,13 +135,26 @@ mp.events.add({
                      y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
 
                      if (Target.hasVariable('Bubble') && Target.getVariable('Bubble')) { 
-                        const BubblePosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.65));
+                        const BubblePosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.6));
                         if (BubblePosition) { 
                            const Bubble = Target.getVariable('Bubble');
                            mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
                               font: 4,
                               color: Bubble.Color,
                               scale: [0.325, 0.325],
+                              outline: false
+                           });
+                        }
+                     }
+
+                     if (Target.hasVariable('Wounded') && Target.getVariable('Wounded')) {
+                        const WoundedPosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.75));
+                        if (WoundedPosition) { 
+                           const Wound = Target.getVariable('Wounded');
+                           mp.game.graphics.drawText('(( ' + Wound.Text + ' ))', [WoundedPosition.x, WoundedPosition.y], {
+                              font: 4,
+                              color: Wound.Color,
+                              scale: [0.315, 0.315],
                               outline: false
                            });
                         }
@@ -147,6 +176,9 @@ mp.events.add({
          });
 
       }
+   },
+
+   'entityModelChange': (entity, oldModel) => { 
    },
 
    'entityStreamOut': (entity) => { 
@@ -181,6 +213,7 @@ mp.keys.bind(Controls.keyX, false, async function () {
 });
 
 
+
 // INTERACTIONS :: LOCK
 mp.keys.bind(Controls.keyL, false, async function () {
    if (Player.logged && Player.spawned && Player.isTypingInTextChat == false) { 
@@ -194,7 +227,6 @@ mp.keys.bind(Controls.keyL, false, async function () {
 });
 
 
-
 mp.keys.bind(Controls.keyY, false, () => {
    if (!Player.logged || !Player.spawned || Player.isTypingInTextChat || Player.Cuffed) return;
    if (AntiKeySpam) return;
@@ -202,6 +234,7 @@ mp.keys.bind(Controls.keyY, false, () => {
    if (Player.vehicle) { 
 
       mp.events.callRemote('server:vehicle:windows', Player.vehicle);
+
 
       AntiKeySpam = true;
       setTimeout(() => { AntiKeySpam = false; }, 2000);
@@ -225,9 +258,6 @@ mp.keys.bind(Controls.keyY, false, () => {
             const {x, y, z} = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
       
             const Distance = mp.game.gameplay.getDistanceBetweenCoords(Position.x, Position.y, Position.z, x, y + Offset, z, true);
-   
-            // TEST MARKER
-            // mp.markers.new(0, new mp.Vector3(x, y + Offset, z - 0.35), 0.4, { rotation: new mp.Vector3(0, 0, 0), color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
             
             if (Distance < 1.35) { 
                mp.events.callRemote('server:vehicle:interaction', Vehicle, Bone);
@@ -243,11 +273,7 @@ mp.keys.bind(Controls.keyY, false, () => {
 
 mp.events.addProc({
    'client:player.vehicle:class': () => { 
-      if (Player.vehicle) { 
-         return Player.vehicle.getClass()
-      } else { 
-         return null;
-      }
+      return Player.vehicle ? Player.vehicle.getClass() : null;
    }
 });
 
@@ -285,7 +311,29 @@ const Attachments = {
          Object.destroy();
       }
    }
-   
 };
+
+
+const Interactions = { 
+   WalkingStyle: async function (Entity, Style) {
+      if (Style == null) { 
+         Entity.resetMovementClipset(0.0);
+      } else { 
+         utils.LoadMovementClipset(Style).then(() => {
+            Entity.setMovementClipset(Style, 1.0);
+         })
+      }
+   },
+
+   Ragdoll: function (Entity, Value) {
+      if (Value) { 
+         Entity.setToRagdoll(Value.Time || 5000, Value.Time || 5000, 0, true, true, true);
+      }
+   },
+
+   FacialMood: function (Entity, Mood) { 
+      Mood == 'normal' ? Entity.clearFacialIdleAnimOverride() : mp.game.invoke('0xFFC24B988B938B38', Entity.handle, Mood, 0);
+   }
+}
 
 

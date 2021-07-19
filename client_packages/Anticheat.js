@@ -20,19 +20,19 @@ let AnticheatSafe        = false,
 
 
 // Main timer
- setInterval(() => {
+//  setInterval(() => {
    
-   Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
+//    Player.spawned ? AnticheatSafe = false : AnticheatSafe = true; 
 
-   // Enabled checks for admins
-   SpeedHack ();
-   FlyHack ();
-   UnAllowedWeapons ();
+//    // Enabled checks for admins
+//    SpeedHack ();
+//    FlyHack ();
+//    UnAllowedWeapons ();
    
-   // Disable checks for admins
-   //if (Player.admin) return;
+//    // Disable checks for admins
+//    //if (Player.admin) return;
 
- }, 1000);
+//  }, 1000);
 
 
 /* Teleport hack timer
@@ -216,17 +216,17 @@ mp.events.add({
       
    },
 
-   'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
-      if (targetEntity.entity == 'player' && targetEntity.entity.remoteId == Player.remoteId) {
-         LastHealth = targetEntity.getHealth();;
-         setTimeout(() => {
-            const NewHealth = targetEntity.getHealth();
-            if (NewHealth != (LastHealth - damage)) {
-               mp.events.callRemote('server:ac:detected', 7, 'Warn'); // Health hack
-            }
-         }, 250);
-      }
-   },
+   // 'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
+   //    if (targetEntity.entity == 'player' && targetEntity.entity.remoteId == Player.remoteId) {
+   //       LastHealth = targetEntity.getHealth();;
+   //       setTimeout(() => {
+   //          const NewHealth = targetEntity.getHealth();
+   //          if (NewHealth != (LastHealth - damage)) {
+   //             mp.events.callRemote('server:ac:detected', 7, 'Warn'); // Health hack
+   //          }
+   //       }, 250);
+   //    }
+   // },
    'playerWeaponChange': (oldWeapon, newWeapon) => {
        CurrentWeapon = mp.game.invoke(`0x0A6DB4965674D243`, Player.handle); //GET_SELECTED_PED_WEAPON
        CurrentAmmo = CurrentWeapon.getWeaponAmmo;

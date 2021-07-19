@@ -22,7 +22,16 @@ const GLOBALS = {
       server: '0792E5',
       property: '1ABC4F',
       whitesmoke: 'CECECE',
-      Bubble: [179, 128, 196, 255]
+      Bubble: [179, 128, 196, 255],
+      Injured: [255, 99, 71, 255]
+   },
+
+   Items: { 
+      Supplies: { 
+         Market: 'Market Supplies',
+         Ammunation: 'Ammunation Supplies',
+         Clothing: 'Clothes Supplies'
+      }
    },
 
    distances: {
@@ -120,6 +129,8 @@ const GLOBALS = {
       UNEMPLOYED: 'Niste zaposleni.',
       PERSON_SAYS: ' kaže: ',
       PERSON_SAYS_IN_VEHICLE: ' [vozilo] kaže: ',
+      PERSON_IS_INJURED: 'Ova osoba je ranjena ',
+      TIMES: ' puta',
       QUITJOB: 'Uspešno ste dali otkaz na poslu.',
       NOT_SPECIFIC_JOB: 'Nemate odredjeni posao.',
       ORDER_NOT_COMPLETED: 'Niste dostavili kompletnu porudžbinu',

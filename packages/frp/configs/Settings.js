@@ -10,7 +10,10 @@ module.exports = {
       Max_Houses: 3,
       Max_Business: 2,
       Max_Vehicles: 5,
-      Taximeter: 0.7
+      Taximeter: 0.7,
+      Wound: { 
+         Health: 30
+      }
    },
 
    database: {

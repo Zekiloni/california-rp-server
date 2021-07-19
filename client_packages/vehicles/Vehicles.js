@@ -7,6 +7,9 @@ let DistanceTemporary;
 
 mp.game.controls.useDefaultVehicleEntering = true;
 
+// AUTO HELMET
+Player.setConfigFlag(35, false);
+
 
 const Controls = {
    arrowLeft: 3,

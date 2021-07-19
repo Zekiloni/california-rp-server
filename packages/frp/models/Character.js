@@ -3,7 +3,9 @@ const { DataTypes, BOOLEAN } = require('sequelize');
 
 const { ItemEntities } = require('../classes/Items.Registry');
 const { VehicleEntities } = require('./Vehicle');
+
 let Appearance = require('./Appearance');
+const Enums = require('../data/Enums');
 
 
 frp.Characters = frp.Database.define('character', {
@@ -26,10 +28,11 @@ frp.Characters = frp.Database.define('character', {
       Armour: { type: DataTypes.INTEGER, defaultValue: 100 },
       Hunger: { type: DataTypes.FLOAT, defaultValue: 100 },
       Thirst: { type: DataTypes.FLOAT, defaultValue: 100 },
-      Wounded: { 
-         type: DataTypes.TEXT, defaultValue: null,
-         get: function () { return JSON.parse(this.getDataValue('Wounded')); },
-         set: function (value) { this.setDataValue('Wounded', JSON.stringify(value)); }
+      Wounded: { type: DataTypes.BOOLEAN, defaultValue: false },
+      Injuries: { 
+         type: DataTypes.TEXT, defaultValue: '[]',
+         get: function () { return JSON.parse(this.getDataValue('Injuries')); },
+         set: function (value) { this.setDataValue('Injuries', JSON.stringify(value)); }
       },
 
       Last_Position: {
@@ -48,7 +51,7 @@ frp.Characters = frp.Database.define('character', {
       Hours: { type: DataTypes.INTEGER, defaultValue: 0 },
       Minutes: { type: DataTypes.INTEGER, defaultValue: 0 },
       Mood: { type: DataTypes.STRING, defaultValue: 'normal' },
-      Walking_Style: { type: DataTypes.STRING, defaultValue: 'normal' },
+      Walking_Style: { type: DataTypes.STRING, defaultValue: null },
 
       Max_Houses: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Houses },
       Max_Business: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Business },
@@ -61,7 +64,6 @@ frp.Characters = frp.Database.define('character', {
          set: function (value) { this.setDataValue('Licenses', JSON.stringify(value)); }
       },
       Cuffed: { type: DataTypes.BOOLEAN, defaultValue: false },
-      Freezed: { type: DataTypes.BOOLEAN, defaultValue: false },
       Mask: { type: DataTypes.INTEGER, defaultValue: 0 },
       Masked: { type: DataTypes.BOOLEAN, defaultValue: false },
       Rented_Vehicle: { 
@@ -105,13 +107,16 @@ frp.Characters.prototype.Spawn = async function (player) {
    player.setVariable('Admin_Duty', false);
    player.setVariable('Attachment', null);
    player.setVariable('Phone_Ringing', false);
+   player.setVariable('Freezed', false);
+   player.setVariable('Ragdoll', false);
 
    // this.SetWalkingStyle(player, this.Walking_Style);
    // this.SetMood(player, this.Mood);
    // this.Cuff(player, this.Cuffed);
 
-   player.RespawnTimer = null;
 
+   player.setVariable('Injuries', this.Injuries);
+   player.RespawnTimer = null;
    player.setVariable('Wounded', this.Wounded);
    if (this.Wounded) { 
       // ciba na pod...
@@ -151,25 +156,6 @@ frp.Characters.prototype.Spawn = async function (player) {
 };
 
 
-mp.events.add({
-
-   'server:character.animation': (player, dict, name, flag) => { 
-      player.playAnimation(dict, name, 8, flag);
-   },
-
-   'server:character.attachment': async (player, model, bone) => { 
-      const Character = await player.Character();
-      Character.Attachment(player, model, bone);
-   }
-});
-
-
-mp.events.addProc('server:character.attachment:remove', (Player) => {
-   Player.setVariable('Attachment', null);
-   Player.stopAnimation();
-   return null;
-});
-
 
 frp.Characters.prototype.Attachment = async function (player, model, bone, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) {
    if (model) { 
@@ -199,18 +185,79 @@ frp.Characters.prototype.QuitGame = function (player) {
 };
 
 
-frp.Characters.prototype.Wound = async function (player, info = null) { 
-   if (this.Wounded) { 
-      // play animation / freeze
-   } else { 
-      if (info) { 
+frp.Characters.prototype.Injury = async function (Player, Injury) {
 
+   Injuries = Player.getVariable('Injuries');
+
+   const AlreadyExist = Injuries.find(Element => Element.Weapon == Injury.Weapon && Element.Bone == Injury.Bone);
+   if (AlreadyExist) { 
+      if (AlreadyExist.Times) { 
+         AlreadyExist.Times ++;
       } else { 
-         this.Wounded = null;
+         AlreadyExist.Times = 2;
+      }
+   } else { 
+      Injuries.push(Injury);
+   }
+
+   if (Injuries.length > 0) { 
+      const LastInjury = Injuries[Injuries.length - 1];
+
+      switch (LastInjury.Bone) { 
+         case Enums.Player.Body_Bones.Torso: { 
+            this.SetWalkingStyle(Player, Enums.Player.Walking_Styles['DeadlyWound']);
+            break;
+         } 
+
+         case Enums.Player.Body_Bones.Leg: { 
+            this.SetWalkingStyle(Player, Enums.Player.Walking_Styles['MediumWound']);
+         }
+
+         default: {
+            this.SetWalkingStyle(Player, 'Wounded');
+         }
       }
    }
 
+   this.Injuries = Injuries;
+   Player.setVariable('Injuries', Injuries);
+
    await this.save();
+   return true;
+  
+};
+
+
+frp.Characters.prototype.Wound = function (Player, Toggle, Position = null) { 
+   console.log('Wounded ' + Player.name);
+   if (Toggle) { 
+
+      Injuries = Player.getVariable('Injuries');
+
+      Player.health = frp.Settings.default.Wound.health;
+
+      const Content = { Text: frp.Globals.messages.PERSON_IS_INJURED + Injuries.length + frp.Globals.messages.TIMES, Color: frp.Globals.Colors.Injured };
+
+      Player.setVariable('Wounded', Content);
+      Player.setVariable('Injuries', Injuries);
+      
+      this.Injuries = Injuries;
+      this.Wounded = true;   
+      return true;
+   }
+   // } else { 
+   //    if (Player.RespawnTimer) clearTimeout(Player.RespawnTimer);
+
+   //    Player.setVariable('Injuries', []);
+   //    Player.spawn(Position ? Position : Player.position);     
+   //    Player.setVariable('Wounded', false);
+
+   //    this.Injuries = [];
+   //    this.Wounded = false;
+   // }
+
+   // return true;
+   //    await this.save();
 };
 
 
@@ -240,9 +287,10 @@ frp.Characters.prototype.SetMood = function (player, mood) {
 };
 
 
-frp.Characters.prototype.SetWalkingStyle = function (player, style) {
-   this.Walking_Style = style;
-   player.setVariable('Walking_Style', style);
+frp.Characters.prototype.SetWalkingStyle = async function (Player, Style) {
+   this.Walking_Style = Style;
+   Player.setVariable('Walking_Style', Style);
+   await this.save();
 };
 
 
@@ -436,8 +484,10 @@ mp.Player.prototype.Instructions = function (content, time) {
 
 
 mp.Player.prototype.Character = async function () {
-   const character = await frp.Characters.findOne({ where: { id: this.character } });
-   return character ? character : null;
+   if (this.character) { 
+      const character = await frp.Characters.findOne({ where: { id: this.character } });
+      return character ? character : null;
+   }
 };
 
 
@@ -535,6 +585,13 @@ mp.Player.prototype.message = function (color, message) {
 };
 
 
+mp.Player.prototype.Bubble = function (Content, Color) { 
+   Player.setVariable('Bubble', { Content: Content, Color: Color });
+   Player.BubbleExpire = setTimeout(() => {
+      if (Player) Player.setVariable('Bubble', null);
+   }, 4000);
+};
+
 mp.events.add({
    'playerChat': async (Player, Content) => {
       if (Player.data.logged && Player.data.spawned) {
@@ -589,13 +646,6 @@ mp.players.find = (playerName) => {
    }
    return foundPlayer;
 };
-
-
-mp.events.add({
-
-   "server:onPlayerDamageHimself": (player, healthLoss) => {
-   }
-});
 
 
 

@@ -3,41 +3,10 @@
 const player = mp.players.local;
 let interactionMenu, opened = false;
 
-const moods = [
-    { name: 'Normalna', AnimName: 'normal' },
-    { name: 'Zamišljena', AnimName: 'mood_aiming_1' },
-    { name: 'Ljutita', AnimName: 'mood_angry_1' },
-    { name: 'Pijana', AnimName: 'mood_drunk_1' },
-    { name: 'Srećna', AnimName: 'mood_happy_1' },
-    { name: 'Povredjena', AnimName: 'mood_injured_1' },
-    { name: 'Stresirana', AnimName: 'mood_stressed_1' },
-    { name: 'Uvređena', AnimName: 'mood_sulk_1' }
-];
 
-const walkingStyles = [
-    {Name: "Normalna", AnimSet: null},
-    {Name: "Brave", AnimSet: "move_m@brave"},
-    {Name: "Confident", AnimSet: "move_m@confident"},
-    {Name: "Drunk", AnimSet: "move_m@drunk@verydrunk"},
-    {Name: "Fat", AnimSet: "move_m@fat@a"},
-    {Name: "Gangster", AnimSet: "move_m@shadyped@a"},
-    {Name: "Hurry", AnimSet: "move_m@hurry@a"},
-    {Name: "Injured", AnimSet: "move_m@injured"},
-    {Name: "Intimidated", AnimSet: "move_m@intimidation@1h"},
-    {Name: "Quick", AnimSet: "move_m@quick"},
-    {Name: "Sad", AnimSet: "move_m@sad@a"},
-    {Name: "Tough", AnimSet: "move_m@tool_belt@a"}
-];
  
 
 mp.events.addDataHandler({
-    'Mood': (entity, value) => {
-        if (entity.type === 'player') setMood(entity, value);
-    },
-
-    'Walking_Style': (entity, value) => {
-        if (entity.type === 'player') setWalkingStyle(entity, value);
-    },
 
     'ragdoll': (entity, newValue, oldValue) => { 
         if (entity.type === 'player') { 
@@ -94,13 +63,6 @@ mp.keys.bind(0x4D, false, function() {
     }
 });
 
-function setMood (entity, mood) {
-    if (mood == 'normal') {
-        entity.clearFacialIdleAnimOverride();
-    } else {
-        mp.game.invoke('0xFFC24B988B938B38', entity.handle, mood, 0);
-    }
-}
 
 function setWalkingStyle(entity, walkstyle) {
     try {

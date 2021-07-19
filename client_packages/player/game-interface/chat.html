@@ -98,6 +98,7 @@
                mp.invoke('focus', toggle);
                if (toggle) { 
                   mp.invoke('setTypingInChatState', true);
+                  this.Inactive = false;
                   Vue.nextTick(function() { this.$refs.ChatInput.focus(); }.bind(this));
                } else { 
                   mp.invoke('setTypingInChatState', false);

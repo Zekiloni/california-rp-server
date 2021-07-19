@@ -327,14 +327,13 @@ module.exports = {
 
       {
          name: 'revive',
-         admin: 2,
-         call: (player, args) => {
-            let target = mp.players.find(args[0]);
-            if (target) {
-               let position = target.position;
-               clearTimeout(target.respawnTimer);
-               target.isDead = false;
-               setTimeout(() => { target.spawn(position); }, 350);
+         des: 'Oživljavanje.',
+         admin: 3,
+         call: async (Player, args) => {
+            const Target = mp.players.find(args[0]);
+            if (Target) {
+               const Character = await Target.Character();
+               Character.Wound(Target, false);
             }
          }
       },

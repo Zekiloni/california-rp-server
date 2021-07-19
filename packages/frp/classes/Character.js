@@ -2,6 +2,9 @@
 
 let Character = require('../models/Character');
 
+
+
+
 mp.events.addProc({
    'server:player.character:create': async (player, character) => {
       character = JSON.parse(character);
@@ -14,6 +17,12 @@ mp.events.addProc({
          const Created = await frp.Characters.New(player, character);
          return Created.id;
       }
+   },
+
+   'server:character.attachment:remove': (Player) => {
+      Player.setVariable('Attachment', null);
+      Player.stopAnimation();
+      return null;
    }
 });
 
@@ -28,4 +37,35 @@ mp.events.add({
       const Character = await Player.Character();
       frp.Items.Equipment(Player, Character.Gender);
    },
+
+   'server:character.wounded': async (Player) => {     
+      const Character = await Player.Character();
+      await Character.Wound(Player, true);
+      return true;
+   },
+
+   'server:character.animation': (player, dict, name, flag) => { 
+      player.playAnimation(dict, name, 8, flag);
+   },
+
+   'server:character.attachment': async (player, model, bone) => { 
+      const Character = await player.Character();
+      Character.Attachment(player, model, bone);
+   },
+
+   'server:character.wounded:fall': (Player) => { 
+      Player.setVariable('Ragdoll', { Time: 2000 });
+      setTimeout(() => { if (Player) Player.setVariable('Ragdoll', false); }, 2000);
+   },
+
+   'server:character.injuries:add': async (Player, Injury) => { 
+      Injury = JSON.parse(Injury);
+      const Character = await Player.Character();
+      Character.Injury(Player, Injury);
+      return true;
+   },
+   
+   'playerDeath': (Player) => { 
+      console.log('Umro ' + Player.name)
+   }
 })

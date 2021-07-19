@@ -40,8 +40,8 @@ mp.events.addCommand('interior', (player, full, x, y, z, ipl) => {
 });
 
 
-mp.events.addCommand("alpr", (player, fullText) => {
-    player.call('client:vehicle.alpr');
+mp.events.addCommand("wstyle", (player, fullText, style) => {
+   player.setVariable('Walking_Style', style);
 });
 
 mp.objects.new('prop_hanger_door_1', new mp.Vector3(-1570.9510498, -379.50936, 200.633560), {

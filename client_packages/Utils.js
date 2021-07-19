@@ -17,11 +17,23 @@ function LoadAnimDict (i) {
    return new Promise(async resolve => { 
       mp.game.streaming.requestAnimDict(i);
       while (!mp.game.streaming.hasAnimDictLoaded(i)) { 
-         await mp.game.waitAsync(10);
+         await mp.game.waitAsync(0);
       }
       resolve();
    })
 };
+
+
+function LoadMovementClipset (Clipset) { 
+   if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve();
+   return new Promise(async resolve => { 
+      mp.game.streaming.requestClipSet(Clipset);
+      while (!mp.game.streaming.hasClipSetLoaded(Clipset)) { 
+         await mp.game.waitAsync(10);
+      }
+      resolve();
+   })
+}
 
 
 
@@ -51,8 +63,8 @@ function Distance (first, second) {
 
 function OnlinePlayers () {
    let list = [];
-   mp.players.forEach(p => { 
-      list.push({ id: p.remoteId, name: p.name }); 
+   mp.players.forEach(_Player => {
+      list.push({ id: _Player.remoteId, name: _Player.name }); 
    }); 
    return list;
 }
@@ -154,4 +166,4 @@ function CreateInteractionSpot (name, position) {
 Player.CreateInteractionSpot = CreateInteractionSpot;
 
 
-global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, Server };
+global.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, LoadMovementClipset, Server };
