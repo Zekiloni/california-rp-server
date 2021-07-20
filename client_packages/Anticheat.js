@@ -221,10 +221,18 @@ mp.events.add({
          LastHealth = targetEntity.getHealth();
          setTimeout(() => {
             const NewHealth = targetEntity.getHealth();
-            if (NewHealth != (LastHealth - damage)) {
-               mp.events.callRemote('server:ac:detected', 7, 'Warn'); // Health hack
+            if (NewHealth == (LastHealth - damage)) {
+               // Radi
             }
          }, 250);
+      }
+   },
+
+   'outgoingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
+      if (targetEntity.entity == 'player') {
+         if (targetEntity.getHealth() <= damage) { // Ukoliko će ovaj hit ubiti igrača
+            return true;
+         }
       }
    },
 
