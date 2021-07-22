@@ -16,6 +16,7 @@ declare global {
       Character (): Character;
       Account (): Account;
       Notification (Message: text, Type: number, Time: number): void;
+      SendMessage (Message: text, Color: any): void;
    }
 
    interface PlayerMpPool { 
