@@ -7,7 +7,7 @@ import { Messages } from '../Globals/Messages';
 const Salt = bcrypt.genSaltSync(10);
 
 @Table
-class Account extends Model {
+export class Account extends Model {
    @Column
    @PrimaryKey
    @AutoIncrement
@@ -61,7 +61,7 @@ class Account extends Model {
    Online: boolean
 
    @Column
-   @Default(null)
+   @Default(-1)
    Last_Character: number
 
    @Column

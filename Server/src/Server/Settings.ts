@@ -2,7 +2,7 @@
 export const Settings = {
    HappyHours: false,
 
-   default: {
+   Default: {
       spawn: new mp.Vector3(-1355.6395, -519.5300, 23.4648),
       heading: 120,
       dimension: 0,
@@ -10,6 +10,7 @@ export const Settings = {
       Max_Houses: 3,
       Max_Business: 2,
       Max_Vehicles: 5,
+      Money: 5000,
       Taximeter: 0.7,
       Wound: { 
          Health: 30,

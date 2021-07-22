@@ -1,4 +1,133 @@
-// const { DataTypes, BOOLEAN } = require('sequelize');
+
+
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Settings } from '../Server/Settings';
+import { Injury } from './Injury';
+
+
+@Table
+export class Character extends Model {
+   @Column
+   @PrimaryKey
+   @AutoIncrement
+   id: number
+
+   @Column
+   Account: number
+
+   @Column
+   @Unique
+   Name: string
+
+   @Column
+   Gender: number
+
+   @Column
+   Birth: string
+
+   @Column
+   Origin: string
+
+   @Column
+   @Default(0)
+   Faction: number
+
+   @Column
+   @Default('none')
+   Faction_Rank: string
+
+   @Column
+   @Default(0)
+   Faction_Permissions: number
+
+   @Column
+   @Default(0)
+   Job: number
+
+   @Column
+   @Default(0)
+   Working_Hours: number
+
+   @Column
+   @Default(Settings.Default.Money)
+   Money: number
+
+   @Column
+   @Default(0)
+   Salary: number
+
+   @Column
+   @Default(0)
+   Bank: number
+
+   @Column
+   @Default(0)
+   Paycheck: number
+
+   @Column
+   @Default(100)
+   Health: number
+
+   @Column
+   @Default(100)
+   Hunger: number
+
+   @Column
+   @Default(100)
+   Thirst: number
+   
+   @Column
+   @Default(false)
+   Wounded: boolean
+
+
+   @Column
+   @Default([])
+   Injuries: Injury[]
+
+   @Column
+   Last_Position: Vector3Mp
+
+   @Column
+   @Default(0)
+   Spawn_Point: number
+
+   @Column
+   Inside: object
+
+   @Column
+   @Default(0)
+   Muted: number
+
+   @Column
+   @Default(0)
+   Hours: number
+
+   @Column
+   @Default(0)
+   Minutes: number
+
+   @Column
+   @Default('normal')
+   Walking_Style: string
+
+   @Column
+   @Default('normal')
+   Facial_Mood: string
+
+
+   
+
+   @Column
+   @CreatedAt
+   Created_At: Date;
+
+   @Column
+   @UpdatedAt
+   Updated_At: Date;
+   
+}
+
 
 
 // const { ItemEntities } = require('../classes/Items.Registry');
@@ -9,49 +138,9 @@
 
 
 // frp.Characters = frp.Database.define('character', {
-//       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-//       Account: { type: DataTypes.INTEGER, allowNull: false },
-//       Name: { type: DataTypes.STRING, unique: true },
-//       Gender: { type: DataTypes.TINYINT, defaultValue: 0 },
-//       Birth: { type: DataTypes.DATEONLY },
-//       Origin: { type: DataTypes.STRING, defaultValue: 'Los Santos' },
 
-//       Faction: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Faction_Rank: { type: DataTypes.STRING, defaultValue: 'none' },
-//       Faction_Perms: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Job: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Working_Hours: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Money: { type: DataTypes.INTEGER, defaultValue: 3000 },
-//       Salary: { type: DataTypes.INTEGER, defaultValue: 0 },
 
-//       Health: { type: DataTypes.INTEGER, defaultValue: 100 },
-//       Armour: { type: DataTypes.INTEGER, defaultValue: 100 },
-//       Hunger: { type: DataTypes.FLOAT, defaultValue: 100 },
-//       Thirst: { type: DataTypes.FLOAT, defaultValue: 100 },
-//       Wounded: { type: DataTypes.BOOLEAN, defaultValue: false },
-//       Injuries: { 
-//          type: DataTypes.TEXT, defaultValue: '[]',
-//          get: function () { return JSON.parse(this.getDataValue('Injuries')); },
-//          set: function (value) { this.setDataValue('Injuries', JSON.stringify(value)); }
-//       },
 
-//       Last_Position: {
-//          type: DataTypes.TEXT, defaultValue: null,
-//          get: function () { return JSON.parse(this.getDataValue('Last_Position')); },
-//          set: function (value) { this.setDataValue('Last_Position', JSON.stringify(value)); }
-//       },
-//       Spawn_Point: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Inside: {
-//          type: DataTypes.TEXT, defaultValue: null,
-//          get: function () { return JSON.parse(this.getDataValue('Inside')); },
-//          set: function (value) { this.setDataValue('Inside', JSON.stringify(value)); }
-//       },
-
-//       Muted: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Hours: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Minutes: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Mood: { type: DataTypes.STRING, defaultValue: 'normal' },
-//       Walking_Style: { type: DataTypes.STRING, defaultValue: null },
 
 //       Max_Houses: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Houses },
 //       Max_Business: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Business },

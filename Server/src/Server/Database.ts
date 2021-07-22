@@ -1,7 +1,7 @@
 
 
 import { Sequelize } from 'sequelize-typescript';
-import { Config } from '../Config';
+import { Config } from '../Server/Config';
 import { Main, LogType } from './Main';
 
 
