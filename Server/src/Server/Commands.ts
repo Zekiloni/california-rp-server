@@ -1,13 +1,29 @@
+import { Colors } from '../Globals/Colors';
+import { Globals } from '../Globals/Globals';
+import { Messages } from '../Globals/Messages';
 
 
-let Commands: Array<Command> = [];
 
-interface Command {
-   name: string,
-   desc: string,
-   params: Array<any>
-   call(): void
+
+const Commands: Commands = {};
+
+type Commands = {
+   [key: string]: Command
 }
+
+type Command = {
+   name: string;
+   desc: string;
+   params: string[];
+   faction?: any;
+   item?: any;
+   vehicle?: VehicleMp;
+   job?: number;
+   position?: Vector3Mp;
+   admin?: any;
+   call (Player: PlayerMp, args: string[]): void;
+}
+
 
 
 const commandFiles = [
@@ -48,25 +64,25 @@ mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
       const Account = await Player.Account();
       const Character = await Player.Character();
       
-      if (cmd.admin && Account.Administrator < cmd.admin) return player.Notification('Nije vam dozvoljeno !', frp.Globals.Notification.Error, 4);
+      if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', Globals.Notification.Error, 4);
       
-      if (cmd.job && Character.Job != cmd.job) return player.Notification(frp.Globals.messages.NOT_SPECIFIC_JOB, frp.Globals.Notification.Error, 4);
+      if (cmd.job && Character.Job != cmd.job) return Player.Notification(Messages.NOT_SPECIFIC_JOB, Globals.Notification.Error, 4);
 
-      if (cmd.position && player.dist(cmd.position) > 1.85) return player.Notification(frp.Globals.messages.NOT_ON_POSITION, frp.Globals.Notification.Error, 4);
+      if (cmd.position && Player.dist(cmd.position) > 1.85) return Player.Notification(Messages.NOT_ON_POSITION, Globals.Notification.Error, 4);
 
       if (cmd.faction) { 
          //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
          if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       }
 
-      if (cmd.vehicle && player.vehicle == null) return player.Notification(frp.Globals.messages.NOT_IN_VEHICLE, frp.Globals.Notification.Error, 5);
+      if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, Globals.Notification.Error, 5);
 
-      if (cmd.item && await frp.Items.HasItem(player.character, cmd.item) == false) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + cmd.item + '.', frp.Globals.Notification.Error, 4);
+      if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', Globals.Notification.Error, 4);
       
-      if (cmd.params && cmd.params.length > args.length) return player.SendMessage('Komanda: /' + Name + ' [' + cmd.params.join('] [') + '] ', frp.Globals.Colors.help);
+      if (cmd.params && cmd.params.length > args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + cmd.params.join('] [') + '] ', Colors.help);
 
-      cmd.call(player, args);
+      cmd.call(Player, args);
    } else {
-      player.Notification(frp.Globals.messages.CMD_DOESNT_EXIST, frp.Globals.Notification.Error, 4);
+      Player.Notification(Messages.CMD_DOESNT_EXIST, Globals.Notification.Error, 4);
    }
 });

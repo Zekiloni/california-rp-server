@@ -1,8 +1,11 @@
 
 
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Globals } from '../Globals/Globals';
+import { Messages } from '../Globals/Messages';
 import { Settings } from '../Server/Settings';
 import { Injury } from './Injury';
+import { License } from './License';
 
 
 @Table
@@ -115,8 +118,28 @@ export class Character extends Model {
    @Default('normal')
    Facial_Mood: string
 
+   @Column
+   @Default(Settings.Limitations.Max_Houses)
+   Max_Houses: number
 
-   
+   @Column
+   @Default(Settings.Limitations.Max_Business)
+   Max_Business: number
+
+   @Column
+   @Default(Settings.Limitations.Max_Vehicles)
+   Max_Vehicles: number
+
+   @Column
+   @Default([])
+   Licenses: License[]
+
+   @Column
+   @Default(false)
+   Cuffed: boolean
+
+   @Column
+   Stranger_ID: number
 
    @Column
    @CreatedAt
@@ -125,6 +148,85 @@ export class Character extends Model {
    @Column
    @UpdatedAt
    Updated_At: Date;
+
+
+   async Spawn (Player: PlayerMp) { 
+      const Account = await Player.Account();
+
+      await Account.Logged(Player, true, this.id);
+
+      Player.CHARACTER_ID = this.id;
+      Player.name = this.Name;
+      Player.setVariable('Spawned', true);
+
+      // Loading money & health
+      this.SetHealth(Player, this.Health);
+      this.SetMoney(Player, this.Money);
+
+      Player.setVariable('Job', this.Job);
+
+      // Temporary Variables
+      Player.setVariable('Duty', false);
+      Player.setVariable('Job_Duty', false);
+      Player.setVariable('Job_Vehicle', null);
+      Player.setVariable('Working_Uniform', false);
+      Player.setVariable('Admin_Duty', false);
+      Player.setVariable('Attachment', null);
+      Player.setVariable('Phone_Ringing', false);
+      Player.setVariable('Freezed', false);
+      Player.setVariable('Ragdoll', false);
+
+      // this.SetWalkingStyle(player, this.Walking_Style);
+      // this.SetMood(player, this.Mood);
+      // this.Cuff(player, this.Cuffed);
+
+
+      Player.setVariable('Injuries', this.Injuries);
+      Player.RespawnTimer = null;
+      Player.setVariable('Wounded', this.Wounded);
+      if (this.Wounded) { 
+         // ciba na pod...
+      }
+      
+      Player.setVariable('Bubble', null);
+      Player.setVariable('Seatbelt', false);
+
+      Player.Notification(Messages.WELCOME, Globals.Notification.Info, 4);
+
+      // Applying appearance & clothing
+      const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
+      if (Appearance) Appearance.Apply(Player, this.Gender);
+
+      frp.Items.Equipment(Player, this.Gender);
+      
+      // spawning player on desired point
+      switch (this.Spawn_Point) {
+         case 0: {
+            Player.position = Settings.Default.spawn
+            Player.heading = Settings.Default.heading;
+            Player.dimension = Settings.Default.dimension;
+            break;
+         }
+         case 1: {
+               Player.position = this.Last_Position;
+               Player.dimension = Settings.Default.dimension;
+            break;
+         }
+         case 2: {
+            break;
+         }
+      }
+   }
+
+   SetHealth (Player: PlayerMp, value: number) { 
+      Player.health = value;
+      this.Health = value;
+   }
+
+   SetMoney (Player: PlayerMp, value: number) { 
+      Player.setVariable('Money', value);
+      this.Money = value;
+   }
    
 }
 
@@ -137,111 +239,8 @@ export class Character extends Model {
 // const Enums = require('../data/Enums');
 
 
-// frp.Characters = frp.Database.define('character', {
-
-
-
-
-//       Max_Houses: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Houses },
-//       Max_Business: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Business },
-//       Max_Vehicles: { type: DataTypes.INTEGER, defaultValue: frp.Settings.default.Max_Vehicles },
-
-//       Frequency: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Licenses: {
-//          type: DataTypes.TEXT, defaultValue: '[]',
-//          get: function () { return JSON.parse(this.getDataValue('Licenses')); },
-//          set: function (value) { this.setDataValue('Licenses', JSON.stringify(value)); }
-//       },
-//       Cuffed: { type: DataTypes.BOOLEAN, defaultValue: false },
-//       Mask: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Masked: { type: DataTypes.BOOLEAN, defaultValue: false },
-//       Rented_Vehicle: { 
-//          type: DataTypes.VIRTUAL, defaultValue: null,
-//          get () { return frp.GameObjects.TemporaryVehicles; },
-//          set (x) { return frp.GameObjects.TemporaryVehicles; }
-//       } 
-//    }, {
-//       // Options
-//       timestamps: true,
-//       underscrored: true,
-//       createdAt: 'Register_Date',
-//       updatedAt: 'Update_Date'
-//    }
-// );
-
-
 // frp.Characters.prototype.Spawn = async function (player) {
-//    let account = await player.Account();
 
-//    try { 
-//       await account.SetLogged(player, true, this.id);
-//    } catch (e) { 
-//       console.log(e);
-//    }
-//    player.character = this.id;
-//    player.name = this.Name;
-//    player.setVariable('spawned', true);
-
-//    // Loading money & health
-//    this.SetHealth(player, this.Health);
-//    this.SetMoney(player, this.Money);
-
-//    player.setVariable('Job', this.Job);
-
-//    // Temporary Variables
-//    player.setVariable('Duty', false);
-//    player.setVariable('Job_Duty', false);
-//    player.setVariable('Job_Vehicle', null);
-//    player.setVariable('Working_Uniform', false);
-//    player.setVariable('Admin_Duty', false);
-//    player.setVariable('Attachment', null);
-//    player.setVariable('Phone_Ringing', false);
-//    player.setVariable('Freezed', false);
-//    player.setVariable('Ragdoll', false);
-
-//    // this.SetWalkingStyle(player, this.Walking_Style);
-//    // this.SetMood(player, this.Mood);
-//    // this.Cuff(player, this.Cuffed);
-
-
-//    player.setVariable('Injuries', this.Injuries);
-//    player.RespawnTimer = null;
-//    player.setVariable('Wounded', this.Wounded);
-//    if (this.Wounded) { 
-//       // ciba na pod...
-//    }
-   
-//    player.setVariable('Bubble', null);
-//    player.data.Seatbelt = false;
-
-//    await player.call('client:player.interface:toggle');
-//    await player.Notification(frp.Globals.messages.WELCOME, frp.Globals.Notification.Info, 4);
-
-//    // Applying appearance & clothing
-//    const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
-//    if (Appearance) Appearance.Apply(player, this.Gender);
-
-//    frp.Items.Equipment(player, this.Gender);
-   
-//    // spawning player on desired point
-//    switch (this.Spawn_Point) {
-//       case 0: {
-//          player.position = frp.Settings.default.spawn;
-//          player.heading = frp.Settings.default.heading;
-//          player.dimension = frp.Settings.default.dimension;
-//          break;
-//       }
-//       case 1: {
-//          const Position = this.Last_Position;
-//          if (this.Last_Position) 
-//             player.position = new mp.Vector3(Position.x, Position.y, Position.z);
-//             player.dimension = frp.Settings.default.dimension; // promeniti posle na last dimension
-//          break;
-//       }
-//       case 2: {
-//          break;
-//       }
-//    }
 // };
 
 

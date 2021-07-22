@@ -7,9 +7,6 @@ export const Settings = {
       heading: 120,
       dimension: 0,
       Health: 99,
-      Max_Houses: 3,
-      Max_Business: 2,
-      Max_Vehicles: 5,
       Money: 5000,
       Taximeter: 0.7,
       Wound: { 
@@ -18,6 +15,12 @@ export const Settings = {
       }
    },
 
+   Limitations: {
+      Max_Houses: 3,
+      Max_Business: 2,
+      Max_Vehicles: 5,
+   },
+   
    Lobby: { 
       Position: new mp.Vector3(-9.04086685180664, 617.648681640625, 223.2291564),
       LookAt: new mp.Vector3(-12.960082054138184, 574.8402099609375, 223.19261)

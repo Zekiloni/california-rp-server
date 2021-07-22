@@ -1,3 +1,5 @@
+import { Globals } from "../Globals/Globals";
+import { Settings } from "./Settings";
 
 
 export enum LogType {
@@ -38,17 +40,6 @@ export class Main {
    static ValidateIP (ip: string) {  
       return /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip) ? true : false ;  
    }  
-
-   static GenerateNumber (n: number) {
-      let add = 1, max = 12 - add;
-      if (n > max) {
-         return Main.GenerateNumber(max) + Main.GenerateNumber(n - max);
-      }
-      max = Math.pow(10, n + add);
-      let min = max / 10;
-      let number = Math.floor(Math.random() * (max - min + 1)) + min;
-      return ("" + number).substring(add);
-   }
    
    static CountDigits (n: number) {
       let count = 0;
@@ -81,29 +72,26 @@ export class Main {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
    }
 
-   static Help () { 
-      let Admin = [], Basic = [], Faction = [], Property = [];
-      for (const cmd of frp.Commands) { 
-
-      }
-   }
 
    static Sleep (Seconds: number) {
       return new Promise(resolve => setTimeout(resolve, Seconds * 1000));
    }
 
-   static IsAnyVehicleAtPoint (position, range = 2.5) {
-      mp.vehicles.forEachInRange(position, range, (vehicle) => { 
-         if (vehicle) { return vehicle; } else { false };
-      })
-   }
+   static InfoColshape (Position: Vector3Mp, Name: string, Info: string, Radius: number, Color: RGBA, Dimension: number = Settings.Default.dimension, Blip:any = false, Sprite: number = 4) { 
 
-   static InfoColshape (position: Vector3Mp, name: string, info: string, radius: number, color, dimension = frp.Settings.default.dimension, blip = null, sprite = 4) { 
-      const Colshape = mp.colshapes.newRectangle(position.x, position.y, radius, 2.0, 0);
-      if (info) Colshape.OnPlayerEnter = (player) => { player.Notification(info, frp.Globals.Notification.Info, 5); };
-      const Marker = mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.985), radius, { color: color, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: dimension });
-      const Label = mp.labels.new(name, position, { los: true, font: 0, drawDistance: radius, dimension: dimension });
-      if (blip) mp.blips.new(blip, new mp.Vector3(position.x, position.y, 0), { shortRange: true, scale: 0.85, name: name, dimension: dimension });
+      const Colshape = mp.colshapes.newRectangle(Position.x, Position.y, Radius, 2.0, 0);
+
+      if (Info) 
+         Colshape.OnPlayerEnter = (Player: PlayerMp) => { Player.Notification(Info, Globals.Notification.Info, 5); };
+
+      mp.markers.new(27, new mp.Vector3(Position.x, Position.y, Position.z - 0.985), Radius, {
+         color: Color, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: Dimension 
+      });
+
+      mp.labels.new(Name, Position, { los: true, font: 0, drawDistance: Radius, dimension: Dimension });
+
+      if (Blip) 
+         mp.blips.new(Blip, new mp.Vector3(Position.x, Position.y, 0), { shortRange: true, scale: 0.85, name: Name, dimension: Dimension });
    }
 
 };

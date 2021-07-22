@@ -22,11 +22,7 @@ const GLOBALS = {
       me: 8.5,
    },
 
-   Notification: {
-      Succes: 0,
-      Error: 1,
-      Info: 2
-   },
+
 
    Business: { 
       Types: { 
