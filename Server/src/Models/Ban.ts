@@ -71,16 +71,14 @@ class Ban extends Model {
          let Online = mp.players.find(target);
          if (Online) {
             const ActiveChar = await Character.findOne({ where: { id: Online.character } });
-            const UserAcc = await Character.findOne({ where: { id: Online.account } });
 
-            Ban.create({ Account: UserAcc.id, Character: ActiveChar.id, IP: UserAcc.ip, Hardwer: UserAcc.Hardwer, Social: UserAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.account });
+            Ban.create({ Account: ActiveChar.id, Character: ActiveChar.id, IP: ActiveChar.ip, Hardwer: ActiveChar.Hardwer, Social: ActiveChar.Social_Club, Date: date, Expiring: expiring, Issuer: player.account });
             Online.kick(reason);
          } else {
-            const OfflineChar = await Characters.findOne({ where: { Name: target } });
-            const UserAcc = await Character.findOne({ where: { id: Online.account } });
+            const OfflineChar = await Character.findOne({ where: { Name: target } });
 
             if (OfflineChar) {
-               Ban.create({ Account: UserAcc.id, Character: OfflineChar.id, IP: UserAcc.ip, Hardwer: UserAcc.Hardwer, Social: UserAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.account });
+               Ban.create({ Account: OfflineChar.id, Character: OfflineChar.id, IP: OfflineChar.ip, Hardwer: OfflineChar.Hardwer, Social: OfflineChar.Social_Club, Date: date, Expiring: expiring, Issuer: player.account });
             } else {
                // That user is not found
             }
