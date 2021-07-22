@@ -1,5 +1,5 @@
 "use strict";
-const Ban = require('../models/Ban');
+// const Ban = require('../models/Ban');
 const Ranks = {
     1: 'Helper',
     2: 'Junior Admin',

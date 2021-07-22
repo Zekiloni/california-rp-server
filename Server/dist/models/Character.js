@@ -13,7 +13,7 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const Globals_1 = require("../Globals/Globals");
 const Messages_1 = require("../Globals/Messages");
 const Settings_1 = require("../Server/Settings");
-let Character = class Character extends sequelize_typescript_1.Model {
+let Characters = class Characters extends sequelize_typescript_1.Model {
     async Spawn(Player) {
         const Account = await Player.Account();
         await Account.Logged(Player, true, this.id);
@@ -83,179 +83,179 @@ __decorate([
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
     __metadata("design:type", Number)
-], Character.prototype, "id", void 0);
+], Characters.prototype, "id", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Character.prototype, "Account", void 0);
+], Characters.prototype, "Account", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Unique,
     __metadata("design:type", String)
-], Character.prototype, "Name", void 0);
+], Characters.prototype, "Name", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Character.prototype, "Gender", void 0);
+], Characters.prototype, "Gender", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
-], Character.prototype, "Birth", void 0);
+], Characters.prototype, "Birth", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
-], Character.prototype, "Origin", void 0);
+], Characters.prototype, "Origin", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Faction", void 0);
+], Characters.prototype, "Faction", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default('none'),
     __metadata("design:type", String)
-], Character.prototype, "Faction_Rank", void 0);
+], Characters.prototype, "Faction_Rank", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Faction_Permissions", void 0);
+], Characters.prototype, "Faction_Permissions", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Job", void 0);
+], Characters.prototype, "Job", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Working_Hours", void 0);
+], Characters.prototype, "Working_Hours", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(Settings_1.Settings.Default.Money),
     __metadata("design:type", Number)
-], Character.prototype, "Money", void 0);
+], Characters.prototype, "Money", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Salary", void 0);
+], Characters.prototype, "Salary", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Bank", void 0);
+], Characters.prototype, "Bank", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Paycheck", void 0);
+], Characters.prototype, "Paycheck", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(100),
     __metadata("design:type", Number)
-], Character.prototype, "Health", void 0);
+], Characters.prototype, "Health", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(100),
     __metadata("design:type", Number)
-], Character.prototype, "Hunger", void 0);
+], Characters.prototype, "Hunger", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(100),
     __metadata("design:type", Number)
-], Character.prototype, "Thirst", void 0);
+], Characters.prototype, "Thirst", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(false),
     __metadata("design:type", Boolean)
-], Character.prototype, "Wounded", void 0);
+], Characters.prototype, "Wounded", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default([]),
     __metadata("design:type", Array)
-], Character.prototype, "Injuries", void 0);
+], Characters.prototype, "Injuries", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Object)
-], Character.prototype, "Last_Position", void 0);
+], Characters.prototype, "Last_Position", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Spawn_Point", void 0);
+], Characters.prototype, "Spawn_Point", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Object)
-], Character.prototype, "Inside", void 0);
+], Characters.prototype, "Inside", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Muted", void 0);
+], Characters.prototype, "Muted", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Hours", void 0);
+], Characters.prototype, "Hours", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Character.prototype, "Minutes", void 0);
+], Characters.prototype, "Minutes", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default('normal'),
     __metadata("design:type", String)
-], Character.prototype, "Walking_Style", void 0);
+], Characters.prototype, "Walking_Style", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default('normal'),
     __metadata("design:type", String)
-], Character.prototype, "Facial_Mood", void 0);
+], Characters.prototype, "Facial_Mood", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Houses),
     __metadata("design:type", Number)
-], Character.prototype, "Max_Houses", void 0);
+], Characters.prototype, "Max_Houses", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Business),
     __metadata("design:type", Number)
-], Character.prototype, "Max_Business", void 0);
+], Characters.prototype, "Max_Business", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Vehicles),
     __metadata("design:type", Number)
-], Character.prototype, "Max_Vehicles", void 0);
+], Characters.prototype, "Max_Vehicles", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default([]),
     __metadata("design:type", Array)
-], Character.prototype, "Licenses", void 0);
+], Characters.prototype, "Licenses", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(false),
     __metadata("design:type", Boolean)
-], Character.prototype, "Cuffed", void 0);
+], Characters.prototype, "Cuffed", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Character.prototype, "Stranger_ID", void 0);
+], Characters.prototype, "Stranger_ID", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
-], Character.prototype, "Created_At", void 0);
+], Characters.prototype, "Created_At", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
-], Character.prototype, "Updated_At", void 0);
-Character = __decorate([
+], Characters.prototype, "Updated_At", void 0);
+Characters = __decorate([
     sequelize_typescript_1.Table
-], Character);
-exports.default = Character;
+], Characters);
+exports.default = Characters;
 // const { ItemEntities } = require('../classes/Items.Registry');
 // const { VehicleEntities } = require('./Vehicle');
 // let Appearance = require('./Appearance');

@@ -1,5 +1,12 @@
 'use strict';
-require('../models/Account');
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Messages_1 = require("../Globals/Messages");
+const Account_1 = __importDefault(require("../Models/Account"));
+const Character_1 = __importDefault(require("../Models/Character"));
+const Character_2 = __importDefault(require("../Models/Character"));
 mp.events.add({
     'playerJoin': async (Player) => {
         const Banned = await frp.Bans.Check(Player);
@@ -9,38 +16,38 @@ mp.events.add({
     'playerReady': (Player) => {
         Player.dimension = Player.id + 1;
     },
-    'server:player.character:select': async (Player, Selected) => {
-        frp.Characters.findOne({ where: { id: Selected } }).then((Character) => { Character.Spawn(Player); });
+    'server:player.character:select': async (Player, CHARACTER_ID) => {
+        const Selected = await Character_2.default.findOne({ where: { id: CHARACTER_ID } });
+        Selected?.Spawn(Player);
     }
 });
 mp.events.addProc({
     'SERVER::AUTHORIZATION:VERIFY': async (Player, Username, Password) => {
         console.log('Verify');
         return new Promise((resolve, reject) => {
-            frp.Accounts.findOne({ where: { Username: Username } }).then((Account) => {
+            Account_1.default.findOne({ where: { Username: Username } }).then((Account) => {
                 if (Account) {
-                    console.log('ACcount found');
                     const Logged = Account.Login(Password);
                     if (Logged) {
                         console.log('logged');
-                        frp.Characters.findAll({ where: { Account: Account.id } }).then((Characters) => {
-                            Player.account = Account.id;
+                        Character_1.default.findAll({ where: { Account: Account.id } }).then((Characters) => {
+                            Player.ACCOUNT_ID = Account.id;
                             resolve({ Account: Account, Characters: Characters });
                         });
                     }
                     else {
-                        reject(frp.Globals.messages.INCCORRECT_PASSWORD);
+                        reject(Messages_1.Messages.INCCORRECT_PASSWORD);
                     }
                 }
                 else {
-                    reject(frp.Globals.messages.USER_DOESNT_EXIST);
+                    reject(Messages_1.Messages.USER_DOESNT_EXIST);
                 }
             });
         });
     },
     'server:player.character:delete': async (Player, Char_ID) => {
-        const Character = await frp.Characters.findOne({ where: { id: Char_ID } });
-        let response = await Character.destroy();
-        return response;
+        Character_1.default.findOne({ where: { id: Char_ID } }).then((Character) => {
+            return Character?.destroy();
+        });
     }
 });
