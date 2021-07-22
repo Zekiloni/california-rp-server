@@ -1,3 +1,4 @@
+import { Settings } from '../Server/Settings';
 
 
 export let GameObjectts = {
@@ -29,7 +30,7 @@ mp.events.addProc(
       'SERVER::PLAYER:LOBY': (Player: PlayerMp) => { 
          Player.dimension = Player.id;
          console.log('stepbro')
-         return frp.Settings.Lobby;
+         return Settings.Lobby;
       }
       
    }

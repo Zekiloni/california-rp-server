@@ -1,5 +1,5 @@
-module.exports = {
-   
+
+export const Settings = {
    HappyHours: false,
 
    default: {
@@ -45,5 +45,5 @@ module.exports = {
    Houses: { 
       Multiplier: 255
    }
-
-};
+}
+   

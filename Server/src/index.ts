@@ -1,18 +1,10 @@
 
 
-global.frp = {};
+
+import './scripts/Database';
+import { LogType, Main } from './scripts/Main';
 
 
-
-frp.Settings = require('./configs/Settings');
-frp.Config = require('./configs/Config');
-frp.Main = require('./classes/Main');
-frp.Database = require('./classes/Database');
-
-
-frp.GameObjects = {
-   Houses: {}, Items: {}, Businesses: {}, Vehicles: {}, TemporaryVehicles: {}, Garages: {}
-};
 
 
 
@@ -64,7 +56,7 @@ const AntiCheat = require('./classes/Anticheat');
 (async () => {
    const Chars = await frp.Characters.count();
    const Users = await frp.Accounts.count();
-   frp.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
+   Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
 })();
 
@@ -72,14 +64,14 @@ const AntiCheat = require('./classes/Anticheat');
 
 
 const Exit = async () => {
-   frp.Main.Terminal(2, 'Closing Connection, Bye-bye !');
+   Main.Terminal(LogType.Succes, 'Clossing Connection, Bye-bye !')
    mp.players.broadcast('Server se gasi. Rekonektujte se na F1.');
 
    mp.players.forEach((player) =>  {
       player.kick('Server se gasi !')
    });
 
-   frp.Main.Sleep(2.5).then(() => { 
+   Main.Sleep(2.5).then(() => { 
       process.exit();
    })
 };

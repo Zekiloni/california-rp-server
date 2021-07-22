@@ -1,39 +1,80 @@
 
-'use strict';
 
-import { Table, Column, Model, HasMany } from 'sequelize-typescript'
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default } from 'sequelize-typescript'
 
+@Table
 class Account extends Model {
+   @Column
+   @PrimaryKey
+   @AutoIncrement
    id: number
 
-   name: string
+   @Column
+   @Unique(true)
+   Username: string
 
-   birthday: Date
+   @Column
+   @Unique(true)
+   Email: string
 
+   @Column
+   Password: string
+
+   @Column
+   @Default(0)
+   Administrator: number
+
+   @Column
+   @Default(null)
+   Login_Date: Date
+
+   @Column
+   @Default(null)
+   IP_Adress: string
+
+   @Column
+   @Default(null)
+   Social_Club: string
+   
+   @Column
+   @Default(null)
+   Hardwer: string
+
+   @Column
+   @Default(0)
+   Warns: number
+
+   @Column
+   @Default(0)
+   Donator: number
+
+   @Column
+   @Default(0)
+   Coins: number
+
+   @Column
+   @Default(false)
+   Online: boolean
+
+   @Column
+   @Default(null)
+   Last_Character: number
+
+   @Column
+   Created_At: Date;
+
+   @Column
+   Updated_At: Date;
+
+   Login () { 
+
+   }
 }
 
 
-const bcrypt = require('bcryptjs');
-let salt = bcrypt.genSaltSync(10);
-const { DataTypes } = require('sequelize');
-
 
 // frp.Accounts = frp.Database.define('account', {
-//       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-//       Username: { type: DataTypes.STRING, unique: true },
-//       Email: { type: DataTypes.STRING, unique: true },
-//       Password: { type: DataTypes.STRING },
-//       Administrator: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Admin_Code: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Login_Date: { type: DataTypes.DATE },
-//       IP_Adress: { type: DataTypes.STRING },
-//       Social_Club: { type: DataTypes.STRING, unique: true },
-//       Hardwer: { type: DataTypes.STRING, unique: true },
-//       Warns: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Donator: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Coins: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Online: { type: DataTypes.INTEGER, defaultValue: false },
-//       Last_Character: { type: DataTypes.INTEGER, defaultValue: 0 }
+
       
 //    }, 
 //    {
