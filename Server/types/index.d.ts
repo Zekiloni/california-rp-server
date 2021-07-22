@@ -21,7 +21,7 @@ declare global {
    }
 
    interface PlayerMpPool { 
-      find (Target: any): void;
+      find (Target: any): PlayerMp;
    }
    
 }
