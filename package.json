@@ -2,25 +2,6 @@
   "name": "focus-roleplay",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "fs": "0.0.1-security",
-    "https": "^1.0.0",
-    "mysql2": "^2.2.5",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6",
-    "sequelize": "^6.6.2",
-    "uuid": "^3.4.0"
-  },
-  "devDependencies": {
-    "@types/ragemp-c": "https://github.com/CocaColaBear/types-ragemp-c/tarball/master",
-    "@types/ragemp-s": "github:CocaColaBear/types-ragemp-s#master"
-  },
-  "scripts": {
-    "start": "ragemp-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zekiloni/focus-roleplay.git"
