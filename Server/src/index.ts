@@ -1,8 +1,10 @@
 
 
 
+import { Account } from './Models/Account';
+import { Character } from './Models/Character';
 import './scripts/Database';
-import { LogType, Main } from './scripts/Main';
+import { LogType, Main } from './Server/Main';
 
 
 
@@ -22,24 +24,6 @@ let Logs = require('./models/Logs');
 // MODULES
 const Helpers = require('./modules/Managers');
 
-// CLASSES
-let Accounts = require('./classes/Account');
-let Admin = require('./classes/Admin');
-let Characters = require('./classes/Character');
-let Savings = require('./classes/Savings');
-let Discord = require('./classes/Discord');
-let Jobs = require('./classes/Jobs');
-let Commands = require('./classes/Commands');
-let Animals = require('./classes/Animals');
-let Doors = require('./classes/Doors');
-let Inventory = require('./classes/Inventory');
-let Vehicles = require('./classes/Vehicles');
-let Minute = require('./classes/Minute');
-let Houses = require('./classes/Houses');
-let Business = require('./classes/Business');
-let Factions = require('./classes/Factions');
-let Ambient = require('./classes/Ambient');
-const AntiCheat = require('./classes/Anticheat');
 
 
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
@@ -54,8 +38,8 @@ const AntiCheat = require('./classes/Anticheat');
 
 
 (async () => {
-   const Chars = await frp.Characters.count();
-   const Users = await frp.Accounts.count();
+   const Chars = await Character.count()
+   const Users = await Account.count();
    Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
 })();

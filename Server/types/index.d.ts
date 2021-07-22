@@ -1,4 +1,5 @@
 import { Account } from "../src/Models/Account";
+import { Character } from "../src/Models/Character";
 
 
 declare global { 
@@ -9,18 +10,17 @@ declare global {
    }
 
    interface PlayerMp { 
-      character: number;
-      account: number;
-
+      CHARACTER_ID: number;
+      ACCOUNT_ID: number;
+      
       Character (): Character;
       Account (): Account;
       Notification (Message: text, Type: number, Time: number): void;
    }
 
-   interface PlayerMpPool {
+   interface PlayerMpPool { 
       find (Target: any): PlayerMp;
    }
-
 }
 
 export {};

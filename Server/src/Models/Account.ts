@@ -61,7 +61,7 @@ export class Account extends Model {
    Online: boolean
 
    @Column
-   @Default(null)
+   @Default(-1)
    Last_Character: number
 
    @Column
