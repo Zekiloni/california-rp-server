@@ -35,7 +35,7 @@
       mounted () { 
          // mp.events.add('Browser.ShowInterface', data => { 
          //    this.show(data);
-         // });
+         // });  
 
          this.show('Authorization');
       },
