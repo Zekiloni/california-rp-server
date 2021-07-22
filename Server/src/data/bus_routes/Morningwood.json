@@ -1,0 +1,193 @@
+{
+    "Stations": [
+        {
+            "StationIndex": "0",
+            "StationName": "Morningwood",
+            "StationCoords": {
+                "X": "-1496.00623",
+                "Y": "-140.175369",
+                "Z": "52.1859856"
+            }
+        },
+        {
+            "StationIndex": "1",
+            "StationName": "Elgin House",
+            "StationCoords": {
+                "X": "-1272.51233",
+                "Y": "-415.944366",
+                "Z": "34.484066"
+            }
+        },
+        {
+            "StationIndex": "2",
+            "StationName": "The Archipelago",
+            "StationCoords": {
+                "X": "-1047.01978",
+                "Y": "-388.1033",
+                "Z": "37.6040573"
+            }
+        },
+        {
+            "StationIndex": "3",
+            "StationName": "Leopolds",
+            "StationCoords": {
+                "X": "-682.5808",
+                "Y": "-373.939636",
+                "Z": "34.2808838"
+            }
+        },
+        {
+            "StationIndex": "4",
+            "StationName": "Rockford Hills",
+            "StationCoords": {
+                "X": "-584.804",
+                "Y": "-321.815643",
+                "Z": "34.9280128"
+            }
+        },
+        {
+            "StationIndex": "5",
+            "StationName": "Occupation Ave",
+            "StationCoords": {
+                "X": "-35.9150276",
+                "Y": "-265.785919",
+                "Z": "46.2298279"
+            }
+        },
+        {
+            "StationIndex": "6",
+            "StationName": "Elgin Ave",
+            "StationCoords": {
+                "X": "296.881378",
+                "Y": "-439.406677",
+                "Z": "43.98363"
+            }
+        },
+        {
+            "StationIndex": "7",
+            "StationName": "Alesandro",
+            "StationCoords": {
+                "X": "215.7572",
+                "Y": "-667.0898",
+                "Z": "37.58236"
+            }
+        },
+        {
+            "StationIndex": "8",
+            "StationName": "Fleeca",
+            "StationCoords": {
+                "X": "165.433884",
+                "Y": "-1032.16211",
+                "Z": "29.2776718"
+            }
+        },
+        {
+            "StationIndex": "9",
+            "StationName": "Strawberry",
+            "StationCoords": {
+                "X": "262.931458",
+                "Y": "-1187.22034",
+                "Z": "29.4726639"
+            }
+        },
+        {
+            "StationIndex": "10",
+            "StationName": "Legion Square",
+            "StationCoords": {
+                "X": "161.913116",
+                "Y": "-1013.411",
+                "Z": "29.3838863"
+            }
+        },
+        {
+            "StationIndex": "11",
+            "StationName": "Alesandro",
+            "StationCoords": {
+                "X": "228.155121",
+                "Y": "-695.0113",
+                "Z": "36.2757721"
+            }
+        },
+        {
+            "StationIndex": "12",
+            "StationName": "Elgin Ave",
+            "StationCoords": {
+                "X": "311.2263",
+                "Y": "-438.7339",
+                "Z": "44.1910248"
+            }
+        },
+        {
+            "StationIndex": "13",
+            "StationName": "Capital Blvd",
+            "StationCoords": {
+                "X": "-38.6951828",
+                "Y": "-246.447372",
+                "Z": "45.9479637"
+            }
+        },
+        {
+            "StationIndex": "14",
+            "StationName": "Rockford Plaza",
+            "StationCoords": {
+                "X": "-161.984177",
+                "Y": "-178.835785",
+                "Z": "43.6153526"
+            }
+        },
+        {
+            "StationIndex": "15",
+            "StationName": "Mount Zonah Medical Center",
+            "StationCoords": {
+                "X": "-520.7445",
+                "Y": "-266.674",
+                "Z": "35.30272"
+            }
+        },
+        {
+            "StationIndex": "16",
+            "StationName": "Rockford Hills",
+            "StationCoords": {
+                "X": "-594.9581",
+                "Y": "-307.706238",
+                "Z": "34.89307"
+            }
+        },
+        {
+            "StationIndex": "17",
+            "StationName": "Perseus before Archipelago",
+            "StationCoords": {
+                "X": "-687.67",
+                "Y": "-348.698364",
+                "Z": "34.5933876"
+            }
+        },
+        {
+            "StationIndex": "18",
+            "StationName": "The Archipelago",
+            "StationCoords": {
+                "X": "-1165.48328",
+                "Y": "-401.390747",
+                "Z": "35.4922447"
+            }
+        },
+        {
+            "StationIndex": "19",
+            "StationName": "Elgin House",
+            "StationCoords": {
+                "X": "-1259.248",
+                "Y": "-406.744171",
+                "Z": "34.5521736"
+            }
+        },
+        {
+            "StationIndex": "20",
+            "StationName": "Morningwood",
+            "StationCoords": {
+                "X": "-1509.676",
+                "Y": "-123.295532",
+                "Z": "52.1960144"
+            }
+        }
+    ]
+}

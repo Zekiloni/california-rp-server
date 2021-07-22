@@ -1,0 +1,103 @@
+{
+    "Stations": [
+        {
+            "StationIndex": "0",
+            "StationName": "Wolfs Realty",
+            "StationCoords": {
+                "X": "81.85276",
+                "Y": "-1088.08118",
+                "Z": "30.0789356"
+            }
+        },
+        {
+            "StationIndex": "1",
+            "StationName": "The Emissary",
+            "StationCoords": {
+                "X": "146.195709",
+                "Y": "-922.447266",
+                "Z": "30.8362751"
+            }
+        },
+        {
+            "StationIndex": "2",
+            "StationName": "Alesandro",
+            "StationCoords": {
+                "X": "228.836258",
+                "Y": "-694.4093",
+                "Z": "37.1407433"
+            }
+        },
+        {
+            "StationIndex": "3",
+            "StationName": "Rob's Liquor",
+            "StationCoords": {
+                "X": "-2980.33716",
+                "Y": "408.9248",
+                "Z": "15.7776966"
+            }
+        },
+        {
+            "StationIndex": "4",
+            "StationName": "Banham Canyon",
+            "StationCoords": {
+                "X": "-3075.44043",
+                "Y": "777.243164",
+                "Z": "20.93228"
+            }
+        },
+        {
+            "StationIndex": "5",
+            "StationName": "Fort Zancudo",
+            "StationCoords": {
+                "X": "-2362.99756",
+                "Y": "3428.81934",
+                "Z": "28.84157"
+            }
+        },
+        {
+            "StationIndex": "6",
+            "StationName": "Banham Canyon",
+            "StationCoords": {
+                "X": "-3095.064",
+                "Y": "765.948242",
+                "Z": "20.783886"
+            }
+        },
+        {
+            "StationIndex": "7",
+            "StationName": "Rob's Liquor",
+            "StationCoords": {
+                "X": "-3001.72217",
+                "Y": "416.230255",
+                "Z": "15.8015022"
+            }
+        },
+        {
+            "StationIndex": "8",
+            "StationName": "F.I.B.",
+            "StationCoords": {
+                "X": "215.831787",
+                "Y": "-667.2384",
+                "Z": "38.414917"
+            }
+        },
+        {
+            "StationIndex": "9",
+            "StationName": "The Emissary",
+            "StationCoords": {
+                "X": "117.734436",
+                "Y": "-935.6682",
+                "Z": "30.5690956"
+            }
+        },
+        {
+            "StationIndex": "10",
+            "StationName": "L.S.G.C.",
+            "StationCoords": {
+                "X": "63.56424",
+                "Y": "-1072.89111",
+                "Z": "30.2116547"
+            }
+        }
+    ]
+}

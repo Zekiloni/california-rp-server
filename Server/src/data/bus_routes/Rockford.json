@@ -1,0 +1,130 @@
+{
+    "Stations": [
+        {
+            "StationIndex": "0",
+            "StationName": "Auto Repairs",
+            "StationCoords": {
+                "X": "505.239075",
+                "Y": "-1878.292",
+                "Z": "26.7411957"
+            }
+        },
+        {
+            "StationIndex": "1",
+            "StationName": "Hayes Autos",
+            "StationCoords": {
+                "X": "310.010742",
+                "Y": "-1692.55945",
+                "Z": "30.1356468"
+            }
+        },
+        {
+            "StationIndex": "2",
+            "StationName": "La Vaca Loca",
+            "StationCoords": {
+                "X": "126.091156",
+                "Y": "-1549.8075",
+                "Z": "30.05715"
+            }
+        },
+        {
+            "StationIndex": "3",
+            "StationName": "Helga Kreppsohle",
+            "StationCoords": {
+                "X": "-647.932251",
+                "Y": "-299.391266",
+                "Z": "36.08214"
+            }
+        },
+        {
+            "StationIndex": "4",
+            "StationName": "Rockford Hills",
+            "StationCoords": {
+                "X": "-926.7475",
+                "Y": "-125.8316",
+                "Z": "38.4411049"
+            }
+        },
+        {
+            "StationIndex": "5",
+            "StationName": "Von Crastenburg",
+            "StationCoords": {
+                "X": "-1185.28076",
+                "Y": "-104.8881",
+                "Z": "41.18012"
+            }
+        },
+        {
+            "StationIndex": "6",
+            "StationName": "Morningwood",
+            "StationCoords": {
+                "X": "-1510.10583",
+                "Y": "-123.239052",
+                "Z": "53.0464935"
+            }
+        },
+        {
+            "StationIndex": "7",
+            "StationName": "The Grain of Truth",
+            "StationCoords": {
+                "X": "-1423.29053",
+                "Y": "-87.26643",
+                "Z": "53.1706352"
+            }
+        },
+        {
+            "StationIndex": "8",
+            "StationName": "Von Crastenburg",
+            "StationCoords": {
+                "X": "-1165.04065",
+                "Y": "-141.653854",
+                "Z": "40.4953461"
+            }
+        },
+        {
+            "StationIndex": "9",
+            "StationName": "Rockford Hills",
+            "StationCoords": {
+                "X": "-812.1165",
+                "Y": "-87.97026",
+                "Z": "38.6188049"
+            }
+        },
+        {
+            "StationIndex": "10",
+            "StationName": "Sessanta Nove",
+            "StationCoords": {
+                "X": "-675.0937",
+                "Y": "-290.812561",
+                "Z": "36.5733757"
+            }
+        },
+        {
+            "StationIndex": "11",
+            "StationName": "Suds Law Laundromat",
+            "StationCoords": {
+                "X": "107.718147",
+                "Y": "-1550.97522",
+                "Z": "30.0820541"
+            }
+        },
+        {
+            "StationIndex": "12",
+            "StationName": "Hayes Auto",
+            "StationCoords": {
+                "X": "288.662964",
+                "Y": "-1682.4707",
+                "Z": "30.15563"
+            }
+        },
+        {
+            "StationIndex": "13",
+            "StationName": "Auto Repairs",
+            "StationCoords": {
+                "X": "491.021973",
+                "Y": "-1863.8252",
+                "Z": "27.6188622"
+            }
+        }
+    ]
+}

@@ -1,0 +1,193 @@
+{
+    "Stations": [
+        {
+            "StationIndex": "0",
+            "StationName": "Designer Slave",
+            "StationCoords": {
+                "X": "213.313934",
+                "Y": "251.269119",
+                "Z": "105.522423"
+            }
+        },
+        {
+            "StationIndex": "1",
+            "StationName": "Pop's Pills",
+            "StationCoords": {
+                "X": "129.704529",
+                "Y": "6.62729025",
+                "Z": "67.96631"
+            }
+        },
+        {
+            "StationIndex": "2",
+            "StationName": "Alta St",
+            "StationCoords": {
+                "X": "-33.2123947",
+                "Y": "-420.8946",
+                "Z": "39.7420578"
+            }
+        },
+        {
+            "StationIndex": "3",
+            "StationName": "Arcadius Business Center",
+            "StationCoords": {
+                "X": "-96.32127",
+                "Y": "-611.757446",
+                "Z": "36.20688"
+            }
+        },
+        {
+            "StationIndex": "4",
+            "StationName": "Gruppe Sechs",
+            "StationCoords": {
+                "X": "-171.02301",
+                "Y": "-817.826538",
+                "Z": "31.16323"
+            }
+        },
+        {
+            "StationIndex": "5",
+            "StationName": "Banner Hotel",
+            "StationCoords": {
+                "X": "-256.526",
+                "Y": "-1048.79822",
+                "Z": "26.9780388"
+            }
+        },
+        {
+            "StationIndex": "6",
+            "StationName": "Larry's Lean Pork",
+            "StationCoords": {
+                "X": "-290.387726",
+                "Y": "-1318.087",
+                "Z": "31.1510029"
+            }
+        },
+        {
+            "StationIndex": "7",
+            "StationName": "Davis Mega Mall",
+            "StationCoords": {
+                "X": "117.105171",
+                "Y": "-1743.43164",
+                "Z": "28.9277382"
+            }
+        },
+        {
+            "StationIndex": "8",
+            "StationName": "Davis Electricals",
+            "StationCoords": {
+                "X": "439.652863",
+                "Y": "-2027.96558",
+                "Z": "23.4690533"
+            }
+        },
+        {
+            "StationIndex": "9",
+            "StationName": "Popular St",
+            "StationCoords": {
+                "X": "747.336243",
+                "Y": "-2213.35718",
+                "Z": "29.33654"
+            }
+        },
+        {
+            "StationIndex": "10",
+            "StationName": "Jetsam Terminal",
+            "StationCoords": {
+                "X": "744.74",
+                "Y": "-2968.03223",
+                "Z": "5.797706"
+            }
+        },
+        {
+            "StationIndex": "11",
+            "StationName": "Popular St",
+            "StationCoords": {
+                "X": "774.22406",
+                "Y": "-2252.69336",
+                "Z": "29.2551727"
+            }
+        },
+        {
+            "StationIndex": "12",
+            "StationName": "Carson Ave",
+            "StationCoords": {
+                "X": "435.7862",
+                "Y": "-1991.46033",
+                "Z": "23.065321"
+            }
+        },
+        {
+            "StationIndex": "13",
+            "StationName": "Herr Kutz Barber",
+            "StationCoords": {
+                "X": "126.562378",
+                "Y": "-1716.67334",
+                "Z": "29.0819817"
+            }
+        },
+        {
+            "StationIndex": "14",
+            "StationName": "Benny's Original Motor Works",
+            "StationCoords": {
+                "X": "-266.7794",
+                "Y": "-1329.767",
+                "Z": "31.22876"
+            }
+        },
+        {
+            "StationIndex": "15",
+            "StationName": "Banner Hotel",
+            "StationCoords": {
+                "X": "-217.916321",
+                "Y": "-1007.07111",
+                "Z": "29.2616863"
+            }
+        },
+        {
+            "StationIndex": "16",
+            "StationName": "Maze Bank",
+            "StationCoords": {
+                "X": "-158.254257",
+                "Y": "-846.7615",
+                "Z": "30.273756"
+            }
+        },
+        {
+            "StationIndex": "17",
+            "StationName": "4 Integrity Way",
+            "StationCoords": {
+                "X": "-77.3478546",
+                "Y": "-623.8293",
+                "Z": "36.22672"
+            }
+        },
+        {
+            "StationIndex": "18",
+            "StationName": "Alta St",
+            "StationCoords": {
+                "X": "-12.558857",
+                "Y": "-428.710541",
+                "Z": "39.7417564"
+            }
+        },
+        {
+            "StationIndex": "19",
+            "StationName": "Pop's Pills",
+            "StationCoords": {
+                "X": "139.201965",
+                "Y": "0.409181863",
+                "Z": "67.8355255"
+            }
+        },
+        {
+            "StationIndex": "20",
+            "StationName": "Singleton's",
+            "StationCoords": {
+                "X": "241.122223",
+                "Y": "279.845917",
+                "Z": "105.502991"
+            }
+        }
+    ]
+}
