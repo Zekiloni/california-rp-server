@@ -13,6 +13,7 @@
       "dev": "tsc && cd.. && cd..cd  && ragemp-server.exe"
    },
    "devDependencies": {
+      "@types/bcryptjs": "^2.4.2",
       "@types/ragemp-s": "github:CocaColaBear/types-ragemp-s#v1.0"
    }
 }

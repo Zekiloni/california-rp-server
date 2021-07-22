@@ -1,6 +1,10 @@
 
 
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default } from 'sequelize-typescript'
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import bcrypt from 'bcryptjs';
+import { Messages } from '../Globals/Messages';
+
+const Salt = bcrypt.genSaltSync(10);
 
 @Table
 class Account extends Model {
@@ -61,81 +65,49 @@ class Account extends Model {
    Last_Character: number
 
    @Column
+   @CreatedAt
    Created_At: Date;
 
    @Column
+   @UpdatedAt
    Updated_At: Date;
 
-   Login () { 
+   @BeforeCreate
+   static Creating (Account: Account) { 
+      Account.Password = bcrypt.hashSync(Account.Password, Salt);
+   }
+   
+   Login (Password: string) {     
+      return bcrypt.compareSync(Password, this.Password);
+   }
 
+   async Logged (Player: PlayerMp, Toggle: boolean, Character: any) {
+      this.Online = Toggle;
+      this.Last_Character = Character;
+      this.Login_Date = new Date();
+      this.IP_Adress = Player.ip;
+      
+      Player.setVariable('Logged', true);
+
+      if (this.Hardwer == null || this.Social_Club == null) {
+         const Already = await Account.findOne({ where: { Social_Club: Player.socialClub, Hardwer: Player.serial } });
+         if (Already) Player.kick(Messages.USER_ALREADY_EXIST);
+         this.Hardwer = Player.serial;
+         this.Social_Club = Player.socialClub;
+      }
+      
+   }
+
+   MakeAdministrator (Player: PlayerMp, Level: number) {
+      this.Administrator = Level;
+      Player.setVariable('Admin', Level); 
+      this.save();
    }
 }
 
 
+(async () => { 
 
-// frp.Accounts = frp.Database.define('account', {
-
-      
-//    }, 
-//    {
-//       timestamps: true,
-//       underscrored: true,
-//       createdAt: "Register_Date",
-//       updatedAt: "Update_Date"
-//    }
-// );
-
-
-// frp.Accounts.beforeCreate(async (account, options) => {
-//    const Hashed = await bcrypt.hash(account.Password, salt);
-//    account.Password = Hashed;
-// });
-
-
-// frp.Accounts.prototype.Login = function (password) {
-//    return bcrypt.compareSync(password, this.Password);
-// };
-
-
-// frp.Accounts.prototype.SetLogged = async function (player, value, character) {
-//    this.Online = value;
-//    this.Last_Character = character;
-//    this.Login_Date = frp.Database.literal('CURRENT_TIMESTAMP');
-//    this.IP_Adress = player.ip;
+   Account.sync();
    
-//    if (this.Hardwer == null || this.Social_Club == null) {
-//       const Already = await frp.Accounts.findOne({ where: { Social_Club: player.socialClub, Hardwer: player.serial } });
-//       if (Already) player.kick('Korisnicki racun sa tim socialom vec postoji');
-//       this.Hardwer = player.serial;
-//       this.Social_Club = player.socialClub;
-//    }
-
-//    await this.save();
-//    this.Logged = value;
-//    player.setVariable('logged', this.Logged);
-// };
-
-// frp.Accounts.prototype.SetAdmin = async function (player, value) {
-//    this.Administrator = value;
-//    this.Admin_Code = frp.Main.GenerateNumber(5);
-   
-//    player.SendMessage(`Dodeljen vam je admin level ${value}.
-//                        Admin kod: ${this.Admin_Code}, zapišite negde svoj admin kod.`, frp.Globals.Colors.info);
-//    await this.save();
-// };
-
-
-// (async () => {
-//    await frp.Accounts.sync({ force: true });
-
-//    await frp.Accounts.create({ Username: 'Zekiloni', Password: 'test', Administrator: 6 });
-//    // await frp.Accounts.create({ Username: 'Kopra', Password: 'test', Administrator: 6 });
-//    // await frp.Accounts.create({ Username: 'Petron', Password: 'test', Administrator: 5 });
-//    // await frp.Accounts.create({ Username: 'Bolic', Password: 'test', Administrator: 4 });
-//    // await frp.Accounts.create({ Username: 'GranTH', Password: 'test', Administrator: 4 });
-//    // await frp.Accounts.create({ Username: 'Deker', Password: 'test', Administrator: 6 });
-//    // await frp.Accounts.create({ Username: 'Mile', Password: 'test', Administrator: 6 });
-//    // await frp.Accounts.create({ Username: 'Tihi', Password: 'test', Administrator: 6 });
-
-// })();
-
+})();
