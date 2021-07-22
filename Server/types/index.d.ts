@@ -12,16 +12,18 @@ declare global {
    interface PlayerMp { 
       CHARACTER_ID: number;
       ACCOUNT_ID: number;
+      RespawnTimer: any;
       
       Character (): Character;
       Account (): Account;
-      Notification (Message: text, Type: number, Time: number): void;
-      SendMessage (Message: text, Color: any): void;
+      SendMessage (Message: string, Color: string): void;
+      Notification (Message: string, Type: number, Time: number): void;
    }
 
    interface PlayerMpPool { 
       find (Target: any): PlayerMp;
    }
+
 }
 
 export {};

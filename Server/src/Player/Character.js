@@ -1,6 +1,5 @@
 
 
-let Character = require('../models/Character');
 
 
 mp.events.addProc({
