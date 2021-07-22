@@ -4,6 +4,8 @@
 
    <div id="app">
       <Notifications v-if="interfaces.Notifications" />
+      <GameInterface v-if="interfaces.GameInterface" />
+      <Chat v-if="interfaces.Chat" />
       <transition name="bounce">
          <Authorization v-if="interfaces.Authorization" />
       </transition>
@@ -19,11 +21,13 @@
 
    import Authorization from './components/Authorization.vue';
    import Notifications from './components/Notifications.vue';
+   import GameInterface from './components/Game.Interface.vue';
+   import Chat from './components/Chat';
 
    export default { 
 
       components: { 
-         Authorization, Notifications
+         Authorization, Notifications, GameInterface, Chat
       },
 
       data () { 
@@ -36,8 +40,8 @@
          // mp.events.add('Browser.ShowInterface', data => { 
          //    this.show(data);
          // });  
-
-         this.show('Authorization');
+         console.log('Focus Roleplay - Game Interface');
+         // this.show('Authorization');
       },
 
       methods: {

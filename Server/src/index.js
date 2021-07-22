@@ -2,6 +2,8 @@
 
 global.frp = {};
 
+
+
 frp.Settings = require('./configs/Settings');
 frp.Config = require('./configs/Config');
 frp.Main = require('./classes/Main');
@@ -26,7 +28,7 @@ let Logs = require('./models/Logs');
 
 
 // MODULES
-const Helpers = require('./modules/Helpers');
+const Helpers = require('./modules/Managers');
 
 // CLASSES
 let Accounts = require('./classes/Account');
