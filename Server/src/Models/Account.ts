@@ -7,7 +7,7 @@ import { Messages } from '../Globals/Messages';
 const Salt = bcrypt.genSaltSync(10);
 
 @Table
-export class Account extends Model {
+export default class Accounts extends Model {
    @Column
    @PrimaryKey
    @AutoIncrement
@@ -73,7 +73,7 @@ export class Account extends Model {
    Updated_At: Date;
 
    @BeforeCreate
-   static Creating (Account: Account) { 
+   static Creating (Account: Accounts) { 
       Account.Password = bcrypt.hashSync(Account.Password, Salt);
    }
    
@@ -90,7 +90,7 @@ export class Account extends Model {
       Player.setVariable('Logged', true);
 
       if (this.Hardwer == null || this.Social_Club == null) {
-         const Already = await Account.findOne({ where: { Social_Club: Player.socialClub, Hardwer: Player.serial } });
+         const Already = await Accounts.findOne({ where: { Social_Club: Player.socialClub, Hardwer: Player.serial } });
          if (Already) Player.kick(Messages.USER_ALREADY_EXIST);
          this.Hardwer = Player.serial;
          this.Social_Club = Player.socialClub;
@@ -108,6 +108,6 @@ export class Account extends Model {
 
 (async () => { 
 
-   Account.sync();
+   Accounts.sync();
    
 })();

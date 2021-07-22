@@ -9,7 +9,7 @@ import { License } from './License';
 
 
 @Table
-export class Character extends Model {
+export default class Characters extends Model {
    @Column
    @PrimaryKey
    @AutoIncrement

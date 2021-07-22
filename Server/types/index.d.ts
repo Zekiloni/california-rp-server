@@ -23,7 +23,7 @@ declare global {
    interface PlayerMpPool { 
       find (Target: any): PlayerMp;
    }
-   
+
 }
 
 export {};

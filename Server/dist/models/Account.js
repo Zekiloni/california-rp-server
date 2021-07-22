@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var Account_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Account = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const Messages_1 = require("../Globals/Messages");
@@ -134,7 +133,7 @@ __decorate([
 Account = Account_1 = __decorate([
     sequelize_typescript_1.Table
 ], Account);
-exports.Account = Account;
+exports.default = Account;
 (async () => {
     Account.sync();
 })();

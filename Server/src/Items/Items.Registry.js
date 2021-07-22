@@ -1,5 +1,5 @@
 
-const Weapons = require('../data/Weapons.json');
+// const Weapons = require('../data/Weapons.json');
 
 const ItemEntities = {
    Ground: -1, Player: 0, Vehicle: 1, House: 2, Wheel: 3, 

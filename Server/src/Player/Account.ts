@@ -1,6 +1,7 @@
 'use strict';
 
-require('../models/Account');
+import Character from "../Models/Character";
+
 
 mp.events.add({
    'playerJoin': async (Player: PlayerMp) => {
@@ -12,8 +13,9 @@ mp.events.add({
       Player.dimension = Player.id + 1;
    },
 
-   'server:player.character:select': async (Player: PlayerMp, Selected: number) => {
-      frp.Characters.findOne({ where: { id: Selected } }).then((Character) => { Character.Spawn(Player); });
+   'server:player.character:select': async (Player: PlayerMp, CHARACTER_ID: number) => {
+      const Selected = await Character.findOne({ where: { id: CHARACTER_ID } });
+      Selected?.Spawn(Player);
    }
 });
 

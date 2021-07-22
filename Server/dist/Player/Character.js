@@ -1,5 +1,4 @@
 "use strict";
-let Character = require('../models/Character');
 mp.events.addProc({
     'server:player.character:create': async (player, character) => {
         character = JSON.parse(character);
