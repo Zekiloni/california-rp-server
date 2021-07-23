@@ -1,7 +1,57 @@
-'use strict';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey } from 'sequelize-typescript';
 
-const { DataTypes } = require('sequelize');
+@Table
+export default class Channel extends Model {
+   @Column
+   @PrimaryKey
+   @AutoIncrement
+   ID: number;
 
+   @Column
+   @Unique(true)
+   @AllowNull(false)
+   Frequency: number;
+
+   @Column
+   @AllowNull(false)
+   Password: string;
+
+   @Column
+   @AllowNull(false)
+   Owner: number;
+
+   @Column
+   @UpdatedAt
+   Created_At: Date;
+
+   @Column
+   @UpdatedAt
+   Updated_At: Date;
+
+   static async New(Player: PlayerMp, NewFreq: number, NewPass: string) {
+      const NewChannel = await Channel.create({ Frequency: NewFreq, Password: NewPass, Owner: Player.CHARACTER_ID });
+   }
+
+   static async Exists(FreqForCheck: number) {
+      const Exist = await Channel.count({ where: { Frequency: FreqForCheck } });
+      if (Exist > 0)
+         return true;
+      else
+         return false;
+   }
+
+   async ChangePassword(NewPassword: string) {
+      this.Password = NewPassword;
+      await this.save();
+   }
+
+}
+
+(async () => {
+   await Channel.sync();
+})();
+
+/*
 frp.Channels = frp.Database.define('channel', {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       Frequency: { type: DataTypes.INTEGER, unique: true, allowNull: false },
@@ -24,7 +74,7 @@ frp.Channels.New = async function (player, frequency, password = null) {
 
    const Character = await player.Character();
    if (Character.Frequency != 0) return player.Notification(frp.Globals.messages.ALREADY_IN_CHANNEL, frp.Globals.Notification.Error, 4);
-   
+
    frp.Channels.create({ Frequency: frequency, Password: password, Owner: Character.id });
 
    Character.Frequency = frequency;
@@ -55,11 +105,11 @@ frp.Channels.prototype.Delete = async function (player) {
 };
 
 
-frp.Channels.prototype.Send = async function (message) { 
-   mp.players.forEach(async (Target) => { 
-      if (Target.data.spawned) { 
+frp.Channels.prototype.Send = async function (message) {
+   mp.players.forEach(async (Target) => {
+      if (Target.data.spawned) {
          const Character = await Target.Character();
-         if (Character.Frequency == this.Frequency) { 
+         if (Character.Frequency == this.Frequency) {
             Target.SendMessage(message, frp.Globals.Colors.radio);
          }
       }
@@ -67,7 +117,7 @@ frp.Channels.prototype.Send = async function (message) {
 };
 
 
-frp.Channels.Edit = async function (player, password) { 
+frp.Channels.Edit = async function (player, password) {
 
    const Character = await player.Character();
    if (Character.Frequency == 0) return;
@@ -78,17 +128,17 @@ frp.Channels.Edit = async function (player, password) {
 
    Channel.Password = password;
    await Channel.save();
-   
+
    player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_EDITED, frp.Globals.Notification.Succes, 5);
 };
 
 
-frp.Channels.Join = async function (player, frequency, password = null) { 
+frp.Channels.Join = async function (player, frequency, password = null) {
    const exist = await frp.Channels.count({ where: { Frequency: frequency } });
    if (!exist) return player.Notification(frp.Globals.messages.CHANNEL_NOT_FOUND, frp.Globals.Notification.Error, 4);
-   
-   if (this.Password != null && this.Password != password) return player.Notification(frp.Globals.messages.CHANNEL_WRONG_PASSWORD, frp.Globals.Notification.Error, 4);  
-   
+
+   if (this.Password != null && this.Password != password) return player.Notification(frp.Globals.messages.CHANNEL_WRONG_PASSWORD, frp.Globals.Notification.Error, 4);
+
    const Character = await player.Character();
    Character.Frequency = frequency;
    await Character.save();
@@ -98,7 +148,7 @@ frp.Channels.Join = async function (player, frequency, password = null) {
 
 frp.Channels.Leave = async function (player) {
    const Character = await player.Character();
-   if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.Globals.Notification.Error, 4);  
+   if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.Globals.Notification.Error, 4);
 
    const Frequency = await frp.Channels.findOne({ where: { Frequency: Character.Frequency } });
    if (Frequency.Owner == player.character) return player.Notification(frp.Globals.messages.NOT_ALLOWED, frp.Globals.Notification.Error, 4);
@@ -113,3 +163,4 @@ frp.Channels.Leave = async function (player) {
 (async () => {
    frp.Channels.sync();
 })();
+*/

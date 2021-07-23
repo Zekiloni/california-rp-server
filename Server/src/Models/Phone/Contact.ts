@@ -17,6 +17,14 @@ export default class Contact extends Model {
    @AllowNull(false)
    Name: string; 
 
+   @Column
+   @UpdatedAt
+   Created_At: Date;
+
+   @Column
+   @UpdatedAt
+   Updated_At: Date;
+
    static async New(PhoneNumber: number, TargetName: string) {
       const NewContact = await Contact.create({ Number: PhoneNumber, Name: TargetName });
    }

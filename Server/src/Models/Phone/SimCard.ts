@@ -27,15 +27,23 @@ export default class SimCard extends Model {
    @AllowNull(false)
    PIN: string;
 
+   @Column
+   @UpdatedAt
+   Created_At: Date;
+
+   @Column
+   @UpdatedAt
+   Updated_At: Date;
+
    static async New() {
       let NewNumber = SimCard.GenerateNumber(100000, 999999);
-      do { NewNumber = SimCard.GenerateNumber(100000, 999999); } while (SimCard.Exists(NewNumber));
+      do NewNumber = SimCard.GenerateNumber(100000, 999999); while (SimCard.Exists(NewNumber));
       const NewSim = await SimCard.create({ Number: NewNumber, PIN: SimCard.GenerateNumber(1000, 9999) });
    }
 
    static async Exists(PhoneNumber: number) {
-      const Exist = await SimCard.findOne({ where: { Number: PhoneNumber} });
-      if (Exist)
+      const Exist = await SimCard.count({ where: { Number: PhoneNumber} });
+      if (Exist > 0)
          return true;
       else
          return false;
