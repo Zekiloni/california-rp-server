@@ -228,6 +228,13 @@ export default class Characters extends Model {
       Player.setVariable('Money', value);
       this.Money = value;
    }
+
+   async GiveMoney (Player: PlayerMp, value: number) {
+      let Money = await this.increment('Money', { by: value });
+      if (Money) {
+         Player.setVariable('Money', this.Money + value);
+      }
+   };
    
 }
 
