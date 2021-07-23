@@ -6,7 +6,7 @@ export enum LogType {
    Error, Succes, Info
 }
 
-export class Main {
+export default class Main {
 
    static Terminal (Status: number, Message: string) {
       const Colors = ['\x1b[31m', '\x1b[33m', '\x1b[32m', '\x1b[37m'];

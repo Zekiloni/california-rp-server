@@ -71,7 +71,7 @@ export default class Garages extends Model {
    }
 
    async ParkVehicle (player: PlayerMp) { 
-      const Vehicle = await frp.Vehicles.GetVehicleInstance(player.vehicle);
+      const Vehicle = await Vehicles.GetVehicleInstance(player.vehicle);
       if (Vehicle) {
          if (this.Type == 0) {
             Vehicle.Park(GarageTypes[0].Position);
