@@ -37,7 +37,7 @@ export default class Message extends Model {
     const NewSMS = Message.create({ Sim_Number_From: NumberFrom, Sim_Number_To: NumberTo, MessageText: Text })
   }
 
-  async Seen () {
+  async Seen() {
     this.Readed = true;
     await this.save();
   }

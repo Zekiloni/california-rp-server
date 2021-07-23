@@ -42,7 +42,7 @@ export default class SimCard extends Model {
    }
 
    static async Exists(PhoneNumber: number) {
-      const Exist = await SimCard.count({ where: { Number: PhoneNumber} });
+      const Exist = await SimCard.count({ where: { Number: PhoneNumber } });
       if (Exist > 0)
          return true;
       else
@@ -53,10 +53,10 @@ export default class SimCard extends Model {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-   
+   }
+
 }
 
 (async () => {
-    await SimCard.sync();
- })();
+   await SimCard.sync();
+})();

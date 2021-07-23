@@ -15,7 +15,7 @@ export default class Contact extends Model {
 
    @Column
    @AllowNull(false)
-   Name: string; 
+   Name: string;
 
    @Column
    @UpdatedAt
@@ -30,7 +30,7 @@ export default class Contact extends Model {
    }
 
    static async Exists(PhoneNumber: number, TargetName: string) {
-      const Exist = await Contact.findOne({ where: { Number: PhoneNumber, Name: TargetName} });
+      const Exist = await Contact.findOne({ where: { Number: PhoneNumber, Name: TargetName } });
       if (Exist)
          return true;
       else
@@ -42,12 +42,12 @@ export default class Contact extends Model {
       this.Name = NewName;
       await this.save();
    }
-   
+
 }
 
 (async () => {
-    await Contact.sync();
- })();
+   await Contact.sync();
+})();
 
 
 
