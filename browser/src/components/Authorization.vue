@@ -85,8 +85,6 @@
 
 <script> 
 
-   import '../assets/styles/authorization.css';
-
    export default { 
 
       data () { 
@@ -129,13 +127,5 @@
 
 </script>
 
-<style scoped> 
-
-
-
-
-   *:focus { outline: none; }
-
-
-</style>
+<style scoped src="@/assets/styles/authorization.css"> </style>
 

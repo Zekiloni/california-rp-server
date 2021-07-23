@@ -1,4 +1,4 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, AfterDestroy } from 'sequelize-typescript';
 import { Messages } from '../Globals/Messages';
 import { Main } from '../Server/Main';
 import { ItemRegistry } from '../Items/Items.Registry';
@@ -74,6 +74,16 @@ class Business extends Model {
     @UpdatedAt
     Updated_At: Date;
 
+
+   @AfterDestroy
+   static Destroyed (Business: Business) {
+      // if (Business.GameObject) {
+      //     Business.GameObject.colshape.destroy();
+      //     Business.GameObject.blip.destroy();
+      //     Business.GameObject.marker.destroy();
+      // }
+   };
+
     static async New(Player: PlayerMp, Type: number, WalkIn: boolean, Price: number) {
 
         if (!BusinessTypes[Price]) return;
@@ -109,11 +119,11 @@ class Business extends Model {
 
 
     static async GetNearestGasStation(player: PlayerMp) {
-        const GasStations = await Business.findAll({ where: { Type: frp.Globals.Business.Types.GasStation } });
-        for (const Station of GasStations) {
-            const Position = new mp.Vector3(Station.Position.x, Station.Position.y, Station.Position.z);
-            if (player.dist(Position) < 50) return Station;
-        }
+      //   const GasStations = await Business.findAll({ where: { Type: frp.Globals.Business.Types.GasStation } });
+      //   for (const Station of GasStations) {
+      //       const Position = new mp.Vector3(Station.Position.x, Station.Position.y, Station.Position.z);
+      //       if (player.dist(Position) < 50) return Station;
+      //   }
     };
 
     async afterCreate(Business: Business, Options: any) {
@@ -126,53 +136,44 @@ class Business extends Model {
 
         const Sprite = this.Sprite ? this.Sprite : Info.blip;
 
-        if (this.GameObject == null) {
-            const GameObjects = {
-                colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 1.8, 2.0, 0),
-                blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
-                marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 1.8, {
-                    color: [255, 255, 255, 1], // PROMENITI
-                    rotation: new mp.Vector3(0, 0, 90),
-                    visible: true,
-                    dimension: this.Dimension
-                })
-            };
+      //   if (this.GameObject == null) {
+      //       const GameObjects = {
+      //           colshape: mp.colshapes.newRectangle(this.Position.x, this.Position.y, 1.8, 2.0, 0),
+      //           blip: mp.blips.new(Sprite, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: this.Name, color: 37, shortRange: true, scale: 0.85 }),
+      //           marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 1.8, {
+      //               color: [255, 255, 255, 1], // PROMENITI
+      //               rotation: new mp.Vector3(0, 0, 90),
+      //               visible: true,
+      //               dimension: this.Dimension
+      //           })
+      //       };
 
 
-            GameObjects.colshape.OnPlayerEnter = (player) => {
-                const Price = Main.Dollars(this.Price);
-                const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Biznis u vlasništvu';
-                const Locked = this.Locked ? 'Zatvoren' : 'Otvoren';
+      //       GameObjects.colshape.OnPlayerEnter = (player) => {
+      //           const Price = Main.Dollars(this.Price);
+      //           const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Biznis u vlasništvu';
+      //           const Locked = this.Locked ? 'Zatvoren' : 'Otvoren';
                 
-                player.SendMessage('[Business] !{' + Colors.whitesmoke + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + ', No ' + this.id + '.', Colors.property);
-                player.SendMessage('[Business] !{' + Colors.whitesmoke + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', Colors.property);
-                player.SendMessage((this.Walk_In ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), Colors.whitesmoke);
-            };
+      //           player.SendMessage('[Business] !{' + Colors.whitesmoke + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + ', No ' + this.id + '.', Colors.property);
+      //           player.SendMessage('[Business] !{' + Colors.whitesmoke + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', Colors.property);
+      //           player.SendMessage((this.Walk_In ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), Colors.whitesmoke);
+      //       };
 
-            if (this.Color) {
-                GameObjects.blip.color = this.Color;
-            } else {
-                if (Info.color) {
-                    GameObjects.blip.color = Info.color;
-                }
-            }
+      //       if (this.Color) {
+      //           GameObjects.blip.color = this.Color;
+      //       } else {
+      //           if (Info.color) {
+      //               GameObjects.blip.color = Info.color;
+      //           }
+      //       }
 
-            this.GameObject = GameObjects;
-        } else {
-            if (this.GameObject.blip) {
-                this.GameObject.blip.sprite = this.Sprite ? this.Sprite : Info.blip;
-                this.GameObject.blip.color = this.Color ? this.Color : Info.color;
-            }
-        }
+      //       // this.GameObject = GameObjects;
+      //   } else {
+      //       // if (this.GameObject.blip) {
+      //       //     this.GameObject.blip.sprite = this.Sprite ? this.Sprite : Info.blip;
+      //       //     this.GameObject.blip.color = this.Color ? this.Color : Info.color;
+      //       // }
+      //   }
     };
-
-
-    frp.Business.afterDestroy(async (Business, Options) => {
-        if (Business.GameObject) {
-            Business.GameObject.colshape.destroy();
-            Business.GameObject.blip.destroy();
-            Business.GameObject.marker.destroy();
-        }
-    });
 
 }

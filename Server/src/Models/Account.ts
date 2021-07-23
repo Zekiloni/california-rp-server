@@ -98,6 +98,7 @@ export default class Accounts extends Model {
       
    }
 
+   
    MakeAdministrator (Player: PlayerMp, Level: number) {
       this.Administrator = Level;
       Player.setVariable('Admin', Level); 

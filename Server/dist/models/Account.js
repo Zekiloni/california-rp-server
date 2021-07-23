@@ -45,7 +45,7 @@ let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model 
     }
 };
 __decorate([
-    sequelize_typescript_1.Column,
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.INTEGER),
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
     __metadata("design:type", Number)

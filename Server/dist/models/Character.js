@@ -50,7 +50,7 @@ let Characters = class Characters extends sequelize_typescript_1.Model {
         const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
         if (Appearance)
             Appearance.Apply(Player, this.Gender);
-        frp.Items.Equipment(Player, this.Gender);
+        // frp.Items.Equipment(Player, this.Gender);
         // spawning player on desired point
         switch (this.Spawn_Point) {
             case 0: {

@@ -1,9 +1,10 @@
 
 
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, BelongsTo } from 'sequelize-typescript';
 import { Globals } from '../Globals/Globals';
 import { Messages } from '../Globals/Messages';
 import { Settings } from '../Server/Settings';
+import Accounts from './Account';
 import { Injury } from './Injury';
 import { License } from './License';
 
@@ -197,7 +198,7 @@ export default class Characters extends Model {
       const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
       if (Appearance) Appearance.Apply(Player, this.Gender);
 
-      frp.Items.Equipment(Player, this.Gender);
+      // frp.Items.Equipment(Player, this.Gender);
       
       // spawning player on desired point
       switch (this.Spawn_Point) {

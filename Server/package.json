@@ -10,7 +10,7 @@
       "uuid": "^3.4.0"
    },
    "scripts": {
-      "dev": "tsc && cd.. && cd..cd  && ragemp-server.exe"
+      "dev": "tsc && cd.. && cd.. && ragemp-server.exe"
    },
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",

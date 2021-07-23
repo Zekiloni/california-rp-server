@@ -22,6 +22,7 @@ exports.Colors = {
     server: '0792E5',
     property: '1ABC4F',
     whitesmoke: 'CECECE',
+    Business: [255, 255, 255, 1],
     Bubble: [179, 128, 196, 255],
     Injured: [255, 99, 71, 255]
 };

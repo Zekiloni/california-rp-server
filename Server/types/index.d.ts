@@ -9,6 +9,12 @@ declare global {
       OnPlayerLeave (Player: PlayerMp): void; 
    }
 
+   interface VehicleMp { 
+      Job: number;
+      Faction: number;
+      DATABASE: number;
+   }
+
    interface PlayerMp { 
       CHARACTER_ID: number;
       ACCOUNT_ID: number;

@@ -1,8 +1,8 @@
 
 
 
-import { Account } from './Models/Account';
-import { Character } from './Models/Character';
+import Accounts from './Models/Account';
+import Characters from './Models/Character';
 import './scripts/Database';
 import { LogType, Main } from './Server/Main';
 
@@ -38,8 +38,8 @@ const Helpers = require('./modules/Managers');
 
 
 (async () => {
-   const Chars = await Character.count()
-   const Users = await Account.count();
+   const Chars = await Characters.count()
+   const Users = await Accounts.count();
    Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
 })();

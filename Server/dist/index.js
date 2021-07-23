@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Account_1 = require("./Models/Account");
-const Character_1 = require("./Models/Character");
+const Account_1 = __importDefault(require("./Models/Account"));
+const Character_1 = __importDefault(require("./Models/Character"));
 require("./scripts/Database");
 const Main_1 = require("./Server/Main");
 // !!! TEST //
@@ -21,8 +24,8 @@ const Helpers = require('./modules/Managers');
 // let End = new Date();
 // console.log('Finished in ' + ((End - Start) / 1000));
 (async () => {
-    const Chars = await Character_1.Character.count();
-    const Users = await Account_1.Account.count();
+    const Chars = await Character_1.default.count();
+    const Users = await Account_1.default.count();
     Main_1.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 })();
 const Exit = async () => {
