@@ -10,13 +10,13 @@ class Ban extends Model {
    @Column
    @PrimaryKey
    @AutoIncrement
-   ID: number
+   ID: number;
 
    @Column
-   Account: number
+   Account: number;
 
    @Column
-   Character: number
+   Character: number;
 
    @Column
    @Default('')
@@ -24,27 +24,27 @@ class Ban extends Model {
 
    @Column
    @Default(0)
-   HardwareId: string
+   HardwareId: string;
 
    @Column
    @Default('')
-   Social: string
+   Social: string;
 
    @Column
    @Default(0)
-   Issuer: number
+   Issuer: number;
 
    @Column
    @Default('')
-   Reason: string
+   Reason: string;
 
    @Column
    @Default(Date.now())
-   Date: string
+   Date: string;
 
    @Column
    @Default(0)
-   Expiring: string
+   Expiring: string;
 
    @Column
    @UpdatedAt
