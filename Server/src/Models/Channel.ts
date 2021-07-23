@@ -21,7 +21,7 @@ export default class Channel extends Model {
    Owner: number;
 
    @Column
-   @UpdatedAt
+   @CreatedAt
    Created_At: Date;
 
    @Column

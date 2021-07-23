@@ -35,7 +35,7 @@ export default class Logs extends Model {
    Message: number
 
    @Column
-   @UpdatedAt
+   @CreatedAt
    Created_At: Date;
 
    @Column
