@@ -1,7 +1,7 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, AfterDestroy } from 'sequelize-typescript';
 import { Messages } from '../Globals/Messages';
 import { Main } from '../Server/Main';
-import { ItemRegistry } from '../Items/Items.Registry';
+import { ItemRegistry } from '../Items/Items';
 import BusinessTypes from '../data/Businesses.json';
 import Vehicles from '../data/Vehicles.json';
 import { Settings } from '../Server/Settings';

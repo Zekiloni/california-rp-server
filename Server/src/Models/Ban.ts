@@ -96,7 +96,7 @@ export default class Bans extends Model {
    }
 
    static async Check(player: PlayerMp) {
-      const Result = await Ban.findOne({ where: { IP: player.ip, Social: player.socialClub } });
+      const Result = await Bans.findOne({ where: { IP: player.ip, Social: player.socialClub } });
       return Result ? Result : false;
    };
 }
