@@ -6,6 +6,8 @@ import BusinessTypes from '../data/Businesses.json';
 import Vehicles from '../data/Vehicles.json';
 import { Settings } from '../Server/Settings';
 import { Colors } from '../Globals/Colors';
+import Characters from './Character';
+import { Globals } from '../Globals/Globals';
 
 class Business extends Model {
     @Column
@@ -51,7 +53,7 @@ class Business extends Model {
 
     @Column
     @Default([])
-    Workers: string[]
+    Workers: number[]
 
     @Column
     @Default([])
@@ -116,17 +118,163 @@ class Business extends Model {
         }
     };
 
-    async Buy (player: PlayerMp) {
+    async Buy(player: PlayerMp) {
         const Character = await player.Character();
-     
+
         if (this.Owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
         if (this.Price > Character.Money) return; // PORUKA: Nemate dovoljno novca
-     
+
         this.Owner = Character.id;
         Character.GiveMoney(player, -this.Price);
         // PORUKA: Uspesno ste kupili biznis
         await this.save();
-     };
+    };
+
+    async Menu(player: PlayerMp) {
+
+        const Character = await Characters.findOne({ where: { id: player.CHARACTER_ID } });
+
+        switch (this.Type) {
+            case Globals.Business.Types.Dealership: {
+                if (this.Vehicle_Point) {
+                    const Info = { Name: this.Name, id: this.id, Point: this.Vehicle_Point, Multiplier: BusinessTypes[this.Type].multiplier, Products: DealershipMenu(this.Products) }
+                    player.call('client:business.dealership:menu', [Info]);
+                    break;
+                }
+            }
+
+            case Globals.Business.Types.Rent: {
+                player.call('client:business:menu', ['rent', this]);
+                break;
+            }
+
+            case Globals.Business.Types.Restaurant: {
+
+                break;
+            }
+
+            case Globals.Business.Types.Cafe: {
+                const Info = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
+                for (const i in this.Products) { Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies }; }
+
+                player.call('client:business.drinks:menu', [Info]);
+                break;
+            }
+
+            case Globals.Business.Types.NightClub: {
+                const Info: any = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
+                for (const i in this.Products) { Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies }; }
+
+                player.call('client:business.drinks:menu', [Info]);
+                break;
+            }
+
+            case Globals.Business.Types.Clothing: {
+                const Info = {
+                    Name: this.Name,
+                    id: this.id,
+                    Multiplier: BusinessTypes[this.Type].multiplier
+                };
+
+                player.call('client:business.clothing:menu', [Info]);
+                break;
+            }
+
+            default: {
+                const Info: any = {
+                    Name: this.Name,
+                    Multiplier: BusinessTypes[this.Type].multiplier,
+                    id: this.id,
+                    Products: {}
+                }
+
+                for (const i in this.Products) {
+                    if (i != 'Fuel') {
+                        Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies };
+                    }
+                }
+
+                player.call('client:business.market:menu', [Info]);
+            }
+        }
+    };
+
+    async Sell(player: PlayerMp, target: any = 0, price = 0) {
+        let Character = await player.Character();
+        if (price == 0) price = (this.Price / 100) * 65;
+
+        Character.GiveMoney(player, price);
+        this.Owner = target;
+
+        if (target != 0) {
+            let TargetCharacter = await target.Character();
+            TargetCharacter.GiveMoney(player, -price);
+            // PORUKA: targetu Uspesno ste kupiili biznis od player.name za price
+        }
+        // PORUKA: Prodali ste biznis
+        await this.save();
+    };
+
+
+    async AddProduct(player: PlayerMp, product: number, multiplier: number, amount = 5) {
+        let Products = this.Products;
+        Products[product] = { price: multiplier, supplies: amount };
+        this.Products = Products;
+        // PORUKA: Uspesno ste dodali produkt u vas bizni
+        await this.save();
+        return this.Products;
+    };
+
+    async EditProduct(player: PlayerMp, product: number, multiplier: number) {
+        let Products = this.Products;
+        Products[product] = multiplier;
+        this.Products = Products;
+        // PORUKA: Uspesno ste editovali produkt
+        await this.save();
+    };
+
+    async RemoveProduct(player: PlayerMp, product: number) {
+        let Products = this.Products;
+        delete Products[product];
+        this.Products = Products;
+        // PORUKA: Uspesno ste izbrisali produkt
+        await this.save();
+    };
+
+    async WorkersAdd(player: PlayerMp) {
+        let Workers = this.Workers;
+        Workers.push(player.CHARACTER_ID);
+        this.Workers = Workers;
+        // PORUKA: Uspesno ste zaposlili igraca da radi u vas biznis
+        await this.save();
+    };
+
+
+    async WorkerRemove(characterId: number) {
+        let Workers = this.Workers;
+        let x = Workers.find(worker => worker === characterId);
+        let i = Workers.indexOf(x);
+        Workers.splice(i, 1);
+        this.Workers = Workers;
+        // PORUKA: Uspesno ste dali otkaz igracu koji je radio u vasem biznisu
+        await this.save();
+    };
+
+    async DealershipMenu(products: any) {
+        let Menu = [];
+        for (const i in products) {
+            Menu.push({
+                Model: i, Name: 'Ime vozila', Multiplier: products[i].multiplier, Category: Vehicles[i].category,
+                Stats: {
+                    MaxSpeed: Vehicles[i].stats.max_speed,
+                    MaxOccupants: Vehicles[i].stats.max_occupants,
+                    MaxBraking: Vehicles[i].stats.max_braking,
+                    MaxAcceleration: Vehicles[i].stats.max_acceleration
+                }
+            })
+        }
+        return Menu;
+    };
 
     async Refresh() {
 
@@ -151,7 +299,7 @@ class Business extends Model {
                 const Price = Main.Dollars(this.Price);
                 const ForSale = this.Owner == 0 ? 'Na prodaju !' : 'Biznis u vlasništvu';
                 const Locked = this.Locked ? 'Zatvoren' : 'Otvoren';
-                
+
                 player.SendMessage('[Business] !{' + Colors.whitesmoke + '} Ime: ' + this.Name + ', Tip: ' + BusinessTypes[this.Type].name + ', No ' + this.id + '.', Colors.property);
                 player.SendMessage('[Business] !{' + Colors.whitesmoke + '} ' + ForSale + ' Cena: ' + Price + ', Status: ' + Locked + '.', Colors.property);
                 player.SendMessage((this.Walk_In ? '/buy' : '/enter') + ' ' + (this.Owner == 0 ? '/buy business' : ''), Colors.whitesmoke);
@@ -175,3 +323,14 @@ class Business extends Model {
     };
 
 }
+
+(async () => {
+    await Business.sync();
+
+    const Biz = await Business.findAll();
+    Biz.forEach((Business) => {
+        Business.Refresh();
+    });
+
+    Main.Terminal(3, Biz.length + ' Businesses Loaded !');
+})();
