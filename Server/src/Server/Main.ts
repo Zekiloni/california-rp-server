@@ -1,4 +1,4 @@
-import { Globals } from "../Globals/Globals";
+import { Globals } from "../Global/Globals";
 import { Settings } from "./Settings";
 
 

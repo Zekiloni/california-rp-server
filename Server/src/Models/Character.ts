@@ -1,8 +1,8 @@
 
 
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, BelongsTo } from 'sequelize-typescript';
-import { Globals } from '../Globals/Globals';
-import { Messages } from '../Globals/Messages';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Globals } from '../Global/Globals';
+import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
 import Accounts from './Account';
 import { Injury } from './Injury';
