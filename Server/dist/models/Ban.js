@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var Bans_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Globals_1 = require("../Globals/Globals");
-const Messages_1 = require("../Globals/Messages");
+const Globals_1 = require("../Global/Globals");
+const Messages_1 = require("../Global/Messages");
 const Main_1 = require("../Server/Main");
 const Account_1 = __importDefault(require("./Account"));
 let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
@@ -116,7 +116,7 @@ __decorate([
 ], Bans.prototype, "Expiring", void 0);
 __decorate([
     sequelize_typescript_1.Column,
-    sequelize_typescript_1.UpdatedAt,
+    sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
 ], Bans.prototype, "Created_At", void 0);
 __decorate([

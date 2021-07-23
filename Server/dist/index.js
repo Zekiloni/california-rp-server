@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Account_1 = __importDefault(require("./Models/Account"));
 const Character_1 = __importDefault(require("./Models/Character"));
-require("./scripts/Database");
+require("./Server/Database");
 const Main_1 = require("./Server/Main");
 // !!! TEST //
 require('./Test');

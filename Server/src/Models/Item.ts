@@ -1,3 +1,95 @@
+
+
+import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, Default, Model, PrimaryKey, Table, UpdatedAt } from "sequelize-typescript";
+import { Items } from "../Items/Items";
+
+
+@Table
+export default class Item extends Model { 
+
+   @Column
+   @PrimaryKey
+   @AutoIncrement
+   ID: number;
+
+   @Column
+   Name: string;
+
+   @Column
+   Entity: Items.Entity;
+
+   @Column
+   Owner: number;
+
+   @Column
+   @Default(1)
+   Quantity: number;
+   
+   @Column
+   @Default(0)
+   Fingerpring: number; 
+
+   @Column
+   Position: Vector3Mp;
+
+   @Column
+   Rotation: Vector3Mp
+
+   @Column
+   Dimension: number;
+
+   @Column
+   @Default({})
+   Extra: Object;
+
+   @CreatedAt
+   Created_At: Date;
+
+   @UpdatedAt
+   Updated_On: Date;
+
+   Object: ObjectMp;
+
+   @AfterCreate
+   static Creating (Item: Item) { 
+      
+      Item.Refresh();
+
+   }
+
+   @AfterDestroy
+   static Destroying (Item: Item) { 
+      if (Item.Object) Item.Object.destroy();
+   }
+
+   Refresh () { 
+      if (this.Entity == Items.Entity.Ground) { 
+         this.Object = mp.objects.new('zeki', this.Position, { alpha: 255, rotation: this.Rotation, dimension: this.Dimension });
+         this.Object.setVariable('Item', this.Name);
+      } else { 
+         if (this.Object) { 
+            this.Object.destroy();
+         }
+      }
+   }
+
+
+   Drop () { 
+
+   }
+
+   async Use (Player: PlayerMp) { 
+      const Character = await Player.Character();
+      
+      const rItem = Items.List[this.Name];
+
+   
+
+   }
+
+   
+}
+
 // 'use strict';
 
 // const { DataTypes } = require('sequelize');

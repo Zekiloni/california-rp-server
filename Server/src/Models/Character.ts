@@ -1,6 +1,6 @@
 
 
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length } from 'sequelize-typescript';
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
@@ -21,6 +21,7 @@ export default class Characters extends Model {
 
    @Column
    @Unique
+   @Length({ min: 6, max: 48 })
    Name: string
 
    @Column
@@ -84,7 +85,6 @@ export default class Characters extends Model {
    @Default(false)
    Wounded: boolean
 
-
    @Column
    @Default([])
    Injuries: Injury[]
@@ -140,6 +140,7 @@ export default class Characters extends Model {
    Cuffed: boolean
 
    @Column
+   @IsUUID(5)
    Stranger_ID: number
 
    @Column

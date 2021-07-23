@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Main = exports.LogType = void 0;
-const Globals_1 = require("../Globals/Globals");
+const Globals_1 = require("../Global/Globals");
 const Settings_1 = require("./Settings");
 var LogType;
 (function (LogType) {

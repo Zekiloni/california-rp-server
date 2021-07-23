@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Messages_1 = require("../Globals/Messages");
+const Messages_1 = require("../Global/Messages");
 const Account_1 = __importDefault(require("../Models/Account"));
 const Ban_1 = __importDefault(require("../Models/Ban"));
 const Character_1 = __importDefault(require("../Models/Character"));

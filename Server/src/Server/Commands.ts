@@ -25,7 +25,6 @@ type Command = {
 }
 
 
-
 const commandFiles = [
    'basic.commands',
    'admin.commands',

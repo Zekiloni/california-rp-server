@@ -1,4 +1,111 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const sequelize_typescript_1 = require("sequelize-typescript");
+const Items_1 = require("../Items/Items");
+let Item = class Item extends sequelize_typescript_1.Model {
+    static Creating(Item) {
+        Item.Refresh();
+    }
+    static Destroying(Item) {
+        if (Item.Object)
+            Item.Object.destroy();
+    }
+    Refresh() {
+        if (this.Entity == Items_1.Items.Entity.Ground) {
+            this.Object = mp.objects.new('zeki', this.Position, { alpha: 255, rotation: this.Rotation, dimension: this.Dimension });
+            this.Object.setVariable('Item', this.Name);
+        }
+        else {
+            if (this.Object) {
+                this.Object.destroy();
+            }
+        }
+    }
+    Drop() {
+    }
+    async Use(Player) {
+        const Character = await Player.Character();
+        const rItem = Items_1.Items.List[this.Name];
+    }
+};
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.PrimaryKey,
+    sequelize_typescript_1.AutoIncrement,
+    __metadata("design:type", Number)
+], Item.prototype, "ID", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Item.prototype, "Name", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Item.prototype, "Entity", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Item.prototype, "Owner", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.Default(1),
+    __metadata("design:type", Number)
+], Item.prototype, "Quantity", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.Default(0),
+    __metadata("design:type", Number)
+], Item.prototype, "Fingerpring", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Object)
+], Item.prototype, "Position", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Object)
+], Item.prototype, "Rotation", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Item.prototype, "Dimension", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.Default({}),
+    __metadata("design:type", Object)
+], Item.prototype, "Extra", void 0);
+__decorate([
+    sequelize_typescript_1.CreatedAt,
+    __metadata("design:type", Date)
+], Item.prototype, "Created_At", void 0);
+__decorate([
+    sequelize_typescript_1.UpdatedAt,
+    __metadata("design:type", Date)
+], Item.prototype, "Updated_On", void 0);
+__decorate([
+    sequelize_typescript_1.AfterCreate,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Item]),
+    __metadata("design:returntype", void 0)
+], Item, "Creating", null);
+__decorate([
+    sequelize_typescript_1.AfterDestroy,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Item]),
+    __metadata("design:returntype", void 0)
+], Item, "Destroying", null);
+Item = __decorate([
+    sequelize_typescript_1.Table
+], Item);
+exports.default = Item;
 // 'use strict';
 // const { DataTypes } = require('sequelize');
 // const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');

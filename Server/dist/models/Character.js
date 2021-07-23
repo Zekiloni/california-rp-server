@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Globals_1 = require("../Globals/Globals");
-const Messages_1 = require("../Globals/Messages");
+const Globals_1 = require("../Global/Globals");
+const Messages_1 = require("../Global/Messages");
 const Settings_1 = require("../Server/Settings");
 let Characters = class Characters extends sequelize_typescript_1.Model {
     async Spawn(Player) {
@@ -77,6 +77,13 @@ let Characters = class Characters extends sequelize_typescript_1.Model {
         Player.setVariable('Money', value);
         this.Money = value;
     }
+    async GiveMoney(Player, value) {
+        let Money = await this.increment('Money', { by: value });
+        if (Money) {
+            Player.setVariable('Money', this.Money + value);
+        }
+    }
+    ;
 };
 __decorate([
     sequelize_typescript_1.Column,

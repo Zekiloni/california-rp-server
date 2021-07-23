@@ -3,7 +3,7 @@
 
 import Accounts from './Models/Account';
 import Characters from './Models/Character';
-import './scripts/Database';
+import './Server/Database';
 import { LogType, Main } from './Server/Main';
 
 

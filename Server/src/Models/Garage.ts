@@ -67,13 +67,13 @@ export default class Garages extends Model {
             Vehicle.Park(GarageTypes[0].Position);
             Vehicle.Respawn();
          } else if (this.Type == 1) {
-            if (Main.IsAnyVehicleAtPoint(GarageTypes[0].Position)) {
-               Vehicle.Park(GarageTypes[1].Position);
-               Vehicle.Respawn();
-            } else {
-               Vehicle.Park(GarageTypes[0].Position);
-               Vehicle.Respawn();
-            } 
+            // if (Main.IsAnyVehicleAtPoint(GarageTypes[0].Position)) {
+            //    Vehicle.Park(GarageTypes[1].Position);
+            //    Vehicle.Respawn();
+            // } else {
+            //    Vehicle.Park(GarageTypes[0].Position);
+            //    Vehicle.Respawn();
+            // } 
          }
       }
    };
@@ -84,7 +84,6 @@ export default class Garages extends Model {
             colshape: mp.colshapes.newSphere(this.Entrance.x, this.Entrance.y, this.Entrance.z, 3, this.Dimension),
             blip: mp.blips.new(50, new mp.Vector3(this.Entrance.x, this.Entrance.y, this.Entrance.z), { dimension: this.Dimension, name: 'Garage', color: 37, shortRange: true, scale: 0.85 }),
             marker: mp.markers.new(27, new mp.Vector3(this.Entrance.x, this.Entrance.y, this.Entrance.z - 0.98), 2.5, {
-               color: Globals.MarkerColors.Garages, 
                rotation: new mp.Vector3(0, 0, 90), 
                visible: true, 
                dimension: this.Dimension
@@ -101,7 +100,7 @@ export default class Garages extends Model {
                      Garage.ParkVehicle(player);
                   }
                } else {
-                  player.SendMessage('Garaža nije u tvom vlasništvu.', Globals.); 
+                  // player.SendMessage('Garaža nije u tvom vlasništvu.', Globals.); 
                }
             }
             else {
@@ -253,14 +252,14 @@ export default class Garages extends Model {
    
    */
 
-   (async () => {
+(async () => {
 
-      await Garages.sync();
+   await Garages.sync();
 
-      const Garage = await Garages.findAll();
-      Garage.forEach((GarageObj) => {
-         GarageObj.Refresh();
-      });
+   const Garage = await Garages.findAll();
+   Garage.forEach((GarageObj) => {
+      GarageObj.Refresh();
+   });
 
-      Main.Terminal(3, Garage.length + ' Garages Loaded !');
-   })();
+   Main.Terminal(3, Garage.length + ' Garages Loaded !');
+})();

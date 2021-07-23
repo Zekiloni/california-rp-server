@@ -15,7 +15,7 @@ var Accounts_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const Messages_1 = require("../Globals/Messages");
+const Messages_1 = require("../Global/Messages");
 const Salt = bcryptjs_1.default.genSaltSync(10);
 let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model {
     static Creating(Account) {
@@ -45,7 +45,6 @@ let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model 
     }
 };
 __decorate([
-    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.INTEGER),
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
     __metadata("design:type", Number)
