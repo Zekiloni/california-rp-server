@@ -51,10 +51,10 @@ export class Main {
       return count;
    }
 
-   static IsAnyVehAtPos (position: Vector3Mp, radius: number = 2) {
+   static IsAnyVehAtPos (position: Vector3Mp, radius: number = 2, dimension = 0) {
       let Vehicles:Array<VehicleMp> = [];
       mp.vehicles.forEachInRange(position, radius, (Vehicle: VehicleMp) => { 
-         if (Vehicle) Vehicles.push(Vehicle);
+         if (Vehicle && Vehicle.dimension == dimension) Vehicles.push(Vehicle);
       });
       return Vehicles;
    }
