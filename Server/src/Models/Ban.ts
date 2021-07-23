@@ -6,7 +6,7 @@ import Accounts from './Account';
 import Characters from './Character';
 
 @Table
-class Ban extends Model {
+export default class Bans extends Model {
    @Column
    @PrimaryKey
    @AutoIncrement
@@ -60,7 +60,7 @@ class Ban extends Model {
       const IP = Main.ValidateIP(target);
       if (IP) {
          const UserAcc = await Accounts.findOne({ where: { id: player.CHARACTER_ID } })
-         const Banned = await Ban.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+         const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
          if (UserAcc) {
             Banned.Account = UserAcc.id;
             Banned.HardwareId = UserAcc.Hardwer;
@@ -73,12 +73,12 @@ class Ban extends Model {
          if (Online) {
             const Account = Online.Account();
 
-            Ban.create({ Account: Online.ACCOUNT_ID, Character: Online.CHARACTER_ID, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+            Bans.create({ Account: Online.ACCOUNT_ID, Character: Online.CHARACTER_ID, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
             Online.kick(reason);
          } else {
             const OfflineAcc = await Accounts.findOne({ where: { Name: target } })
             if (OfflineAcc) {
-               Ban.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
             } else {
                // That user is not found
                player.Notification(Messages.USER_NOT_FOUND, Globals.Notification.Error, 5);
@@ -96,7 +96,7 @@ class Ban extends Model {
    }
 
    static async Check(player: PlayerMp) {
-      const Result = await Ban.findOne({ where: { IP: player.ip, Social: player.socialClub } });
+      const Result = await Bans.findOne({ where: { IP: player.ip, Social: player.socialClub } });
       return Result ? Result : false;
    };
 }
@@ -104,6 +104,6 @@ class Ban extends Model {
 
 (async () => {
 
-   Ban.sync();
+   Bans.sync();
 
 })();

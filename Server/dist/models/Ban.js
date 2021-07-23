@@ -8,112 +8,126 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var Ban_1;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var Bans_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
+const Globals_1 = require("../Globals/Globals");
 const Messages_1 = require("../Globals/Messages");
 const Main_1 = require("../Server/Main");
-const Account_1 = require("./Account");
-let Ban = Ban_1 = class Ban extends sequelize_typescript_1.Model {
-    constructor() {
-        super(...arguments);
-        this.BanPlayer = async function (player, target, reason, date, expiring, isIp = false) {
-            if (isIp) {
-                const IP = Main_1.Main.ValidateIP(target.ip);
-                if (IP) {
-                    const UserAcc = await Account_1.Account.findOne({ where: { id: player.CHARACTER_ID } });
-                    const Banned = await Ban_1.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
-                    if (UserAcc) {
-                        Banned.Account = UserAcc.id;
-                        Banned.HardwareId = UserAcc.Hardwer;
-                        Banned.Social = UserAcc.Social_Club;
-                    }
-                    await Banned.save();
-                }
+const Account_1 = __importDefault(require("./Account"));
+let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
+    // Target can be IP/Exact_Character_Name
+    static async New(player, target, reason, date, expiring) {
+        const IP = Main_1.Main.ValidateIP(target);
+        if (IP) {
+            const UserAcc = await Account_1.default.findOne({ where: { id: player.CHARACTER_ID } });
+            const Banned = await Bans_1.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+            if (UserAcc) {
+                Banned.Account = UserAcc.id;
+                Banned.HardwareId = UserAcc.Hardwer;
+                Banned.Social = UserAcc.Social_Club;
+            }
+            await Banned.save();
+        }
+        else {
+            let Online = mp.players.find(target);
+            if (Online) {
+                const Account = Online.Account();
+                Bans_1.create({ Account: Online.ACCOUNT_ID, Character: Online.CHARACTER_ID, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+                Online.kick(reason);
             }
             else {
-                let Online = mp.players.find(target);
-                if (Online) {
-                    const ActiveChar = await Character.findOne({ where: { id: Online.CHARACTER_ID } });
-                    Ban_1.create({ Account: ActiveChar.id, Character: ActiveChar.id, IP: ActiveChar.ip, Hardwer: ActiveChar.Hardwer, Social: ActiveChar.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
-                    Online.kick(reason);
+                const OfflineAcc = await Account_1.default.findOne({ where: { Name: target } });
+                if (OfflineAcc) {
+                    Bans_1.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
                 }
                 else {
-                    const OfflineChar = await Character.findOne({ where: { Name: target } });
-                    if (OfflineChar) {
-                        Ban_1.create({ Account: OfflineChar.id, Character: OfflineChar.id, IP: OfflineChar.ip, Hardwer: OfflineChar.Hardwer, Social: OfflineChar.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
-                    }
-                    else {
-                        // That user is not found
-                        player.Notification(Messages_1.Messages.USER_NOT_FOUND, frp.Globals.Notification.Error, 5);
-                    }
+                    // That user is not found
+                    player.Notification(Messages_1.Messages.USER_NOT_FOUND, Globals_1.Globals.Notification.Error, 5);
                 }
             }
-        };
+        }
     }
+    ;
+    static async Delete(player) {
+        const Result = await this.Check(player);
+        if (Result) {
+            Result.destroy();
+            // Log
+        }
+    }
+    static async Check(player) {
+        const Result = await Bans_1.findOne({ where: { IP: player.ip, Social: player.socialClub } });
+        return Result ? Result : false;
+    }
+    ;
 };
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
     __metadata("design:type", Number)
-], Ban.prototype, "ID", void 0);
+], Bans.prototype, "ID", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Ban.prototype, "Account", void 0);
+], Bans.prototype, "Account", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Ban.prototype, "Character", void 0);
+], Bans.prototype, "Character", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(''),
     __metadata("design:type", String)
-], Ban.prototype, "IP", void 0);
+], Bans.prototype, "IP", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", String)
-], Ban.prototype, "HardwareId", void 0);
+], Bans.prototype, "HardwareId", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(''),
     __metadata("design:type", String)
-], Ban.prototype, "Social", void 0);
+], Bans.prototype, "Social", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Ban.prototype, "Issuer", void 0);
+], Bans.prototype, "Issuer", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(''),
     __metadata("design:type", String)
-], Ban.prototype, "Reason", void 0);
+], Bans.prototype, "Reason", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(Date.now()),
     __metadata("design:type", String)
-], Ban.prototype, "Date", void 0);
+], Bans.prototype, "Date", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", String)
-], Ban.prototype, "Expiring", void 0);
+], Bans.prototype, "Expiring", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
-], Ban.prototype, "Created_At", void 0);
+], Bans.prototype, "Created_At", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
-], Ban.prototype, "Updated_At", void 0);
-Ban = Ban_1 = __decorate([
+], Bans.prototype, "Updated_At", void 0);
+Bans = Bans_1 = __decorate([
     sequelize_typescript_1.Table
-], Ban);
+], Bans);
+exports.default = Bans;
 (async () => {
-    Ban.sync();
+    Bans.sync();
 })();

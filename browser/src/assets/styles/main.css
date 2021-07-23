@@ -1,6 +1,17 @@
 
 
 
+body { 
+   width: 100%;
+   height: 100vh;
+   overflow: hidden;
+   margin: 0;
+   font-family: 'Roboto', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   line-height: 1.5;
+}
+
 
 .frp-purple-text { 
    text-shadow: 0 1px 2px rgb(72 39 198);

@@ -2,13 +2,14 @@
 
 import { Messages } from '../Global/Messages';
 import Accounts from '../Models/Account';
+import Bans from '../Models/Ban';
 import Characters from '../Models/Character';
 import Character from '../Models/Character';
 
 
 mp.events.add({
    'playerJoin': async (Player: PlayerMp) => {
-      const Banned = await frp.Bans.Check(Player);
+      const Banned = await Bans.Check(Player);
       if (Banned) Player.kick('Bannedovan');
    },
 
@@ -33,7 +34,8 @@ mp.events.addProc({
                   console.log('logged');
                   Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
                      Player.ACCOUNT_ID = Account.id;
-                     resolve({ Account: Account, Characters: Characters });
+                     resolve()
+                    // resolve({ Account: Account, Characters: Characters });
                   });
                } else { 
                   reject(Messages.INCCORRECT_PASSWORD);

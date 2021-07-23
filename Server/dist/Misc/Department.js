@@ -9,8 +9,8 @@ const Department = {
     }
 };
 module.exports = { Department };
-const Route = require('../data/Driving.Route');
-const Quiz = require('../data/Driving.Quiz');
+// const Route = require('../data/Driving.Route');
+// const Quiz = require('../data/Driving.Quiz');
 mp.events.add({
     'server:vehicle.department.license:give': async (Player, Category, vehicle) => {
         frp.Main.Sleep(4).then(async () => {

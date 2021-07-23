@@ -5,11 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Messages_1 = require("../Globals/Messages");
 const Account_1 = __importDefault(require("../Models/Account"));
+const Ban_1 = __importDefault(require("../Models/Ban"));
 const Character_1 = __importDefault(require("../Models/Character"));
 const Character_2 = __importDefault(require("../Models/Character"));
 mp.events.add({
     'playerJoin': async (Player) => {
-        const Banned = await frp.Bans.Check(Player);
+        const Banned = await Ban_1.default.Check(Player);
         if (Banned)
             Player.kick('Bannedovan');
     },
@@ -32,7 +33,8 @@ mp.events.addProc({
                         console.log('logged');
                         Character_1.default.findAll({ where: { Account: Account.id } }).then((Characters) => {
                             Player.ACCOUNT_ID = Account.id;
-                            resolve({ Account: Account, Characters: Characters });
+                            resolve();
+                            // resolve({ Account: Account, Characters: Characters });
                         });
                     }
                     else {
