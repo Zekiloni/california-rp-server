@@ -116,9 +116,17 @@ class Business extends Model {
         }
     };
 
-    async afterCreate(Business: Business, Options: any) {
-        Business.Refresh();
-    };
+    async Buy (player: PlayerMp) {
+        const Character = await player.Character();
+     
+        if (this.Owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
+        if (this.Price > Character.Money) return; // PORUKA: Nemate dovoljno novca
+     
+        this.Owner = Character.id;
+        Character.GiveMoney(player, -this.Price);
+        // PORUKA: Uspesno ste kupili biznis
+        await this.save();
+     };
 
     async Refresh() {
 
@@ -165,14 +173,5 @@ class Business extends Model {
             }
         }
     };
-
-
-    frp.Business.afterDestroy(async (Business, Options) => {
-        if (Business.GameObject) {
-            Business.GameObject.colshape.destroy();
-            Business.GameObject.blip.destroy();
-            Business.GameObject.marker.destroy();
-        }
-    });
 
 }
