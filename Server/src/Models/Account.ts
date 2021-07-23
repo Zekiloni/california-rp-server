@@ -2,7 +2,7 @@
 
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
-import { Messages } from '../Globals/Messages';
+import { Messages } from '../Global/Messages';
 
 const Salt = bcrypt.genSaltSync(10);
 

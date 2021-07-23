@@ -1,6 +1,6 @@
-import { Colors } from '../Globals/Colors';
-import { Globals } from '../Globals/Globals';
-import { Messages } from '../Globals/Messages';
+import { Colors } from '../Global/Colors';
+import { Globals } from '../Global/Globals';
+import { Messages } from '../Global/Messages';
 
 
 

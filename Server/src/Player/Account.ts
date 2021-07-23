@@ -1,6 +1,6 @@
 'use strict';
 
-import { Messages } from '../Globals/Messages';
+import { Messages } from '../Global/Messages';
 import Accounts from '../Models/Account';
 import Characters from '../Models/Character';
 import Character from '../Models/Character';

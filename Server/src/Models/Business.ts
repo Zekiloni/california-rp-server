@@ -1,13 +1,13 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope } from 'sequelize-typescript';
-import { Messages } from '../Globals/Messages';
+import { Messages } from '../Global/Messages';
 import { Main } from '../Server/Main';
 import { ItemRegistry } from '../Items/Items.Registry';
 import BusinessTypes from '../data/Businesses.json';
 import Vehicles from '../data/Vehicles.json';
 import { Settings } from '../Server/Settings';
-import { Colors } from '../Globals/Colors';
+import { Colors } from '../Global/Colors';
 import Characters from './Character';
-import { Globals } from '../Globals/Globals';
+import { Globals } from '../Global/Globals';
 
 class Business extends Model {
     @Column
@@ -69,12 +69,15 @@ class Business extends Model {
     Interior_Position: Vector3Mp
 
     @Column
-    @UpdatedAt
+    @CreatedAt
     Created_At: Date;
 
     @Column
     @UpdatedAt
     Updated_At: Date;
+
+    // GameObject
+    GameObject: any;
 
     static async New(Player: PlayerMp, Type: number, WalkIn: boolean, Price: number) {
 
@@ -111,7 +114,7 @@ class Business extends Model {
 
 
     static async GetNearestGasStation(player: PlayerMp) {
-        const GasStations = await Business.findAll({ where: { Type: frp.Globals.Business.Types.GasStation } });
+        const GasStations = await Business.findAll({ where: { Type: Globals.Business.Types.GasStation } });
         for (const Station of GasStations) {
             const Position = new mp.Vector3(Station.Position.x, Station.Position.y, Station.Position.z);
             if (player.dist(Position) < 50) return Station;
@@ -137,7 +140,7 @@ class Business extends Model {
         switch (this.Type) {
             case Globals.Business.Types.Dealership: {
                 if (this.Vehicle_Point) {
-                    const Info = { Name: this.Name, id: this.id, Point: this.Vehicle_Point, Multiplier: BusinessTypes[this.Type].multiplier, Products: DealershipMenu(this.Products) }
+                    const Info = { Name: this.Name, id: this.id, Point: this.Vehicle_Point, Multiplier: BusinessTypes[this.Type].multiplier, Products: this.DealershipMenu(this.Products) }
                     player.call('client:business.dealership:menu', [Info]);
                     break;
                 }
@@ -162,7 +165,7 @@ class Business extends Model {
             }
 
             case Globals.Business.Types.NightClub: {
-                const Info: any = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
+                const Info = { Name: this.Name, id: this.id, Multiplier: BusinessTypes[this.Type].multiplier, Products: {} }
                 for (const i in this.Products) { Info.Products[i] = { hash: ItemRegistry[i].hash, multiplier: this.Products[i].multiplier, supplies: this.Products[i].supplies }; }
 
                 player.call('client:business.drinks:menu', [Info]);
@@ -224,14 +227,14 @@ class Business extends Model {
         await this.save();
         return this.Products;
     };
-
+    /*
     async EditProduct(player: PlayerMp, product: number, multiplier: number) {
         let Products = this.Products;
         Products[product] = multiplier;
         this.Products = Products;
         // PORUKA: Uspesno ste editovali produkt
         await this.save();
-    };
+    };*/
 
     async RemoveProduct(player: PlayerMp, product: number) {
         let Products = this.Products;

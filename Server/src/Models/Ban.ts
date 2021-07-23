@@ -1,6 +1,6 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
-import { Globals } from '../Globals/Globals';
-import { Messages } from '../Globals/Messages';
+import { Globals } from '../Global/Globals';
+import { Messages } from '../Global/Messages';
 import { Main } from '../Server/Main';
 import Accounts from './Account';
 import Characters from './Character';
@@ -47,7 +47,7 @@ class Ban extends Model {
    Expiring: string;
 
    @Column
-   @UpdatedAt
+   @CreatedAt
    Created_At: Date;
 
    @Column
