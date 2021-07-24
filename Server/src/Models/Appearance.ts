@@ -1,44 +1,44 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey, AfterCreate, AfterDestroy } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
 
 @Table
 export default class Appearances extends Model {
-   @Column
    @PrimaryKey
    @AutoIncrement
+   @Column
    ID: number;
 
-   @Column
    @Unique(true)
    @AllowNull(false)
+   @Column
    Character: number;
 
-   @Column
    @AllowNull(false)
+   @Column(DataType.ARRAY)
    Face_Features: number[];
 
-   @Column
    @AllowNull(false)
+   @Column(DataType.ARRAY)
    Blend_Data: number[];
 
-   @Column
    @AllowNull(false)
+   @Column
    Hair: string;
 
-   @Column
    @AllowNull(false)
+   @Column
    Beard: string;
 
-   @Column
    @AllowNull(false)
+   @Column
    Eyes: string;
 
-   @Column
    @AllowNull(false)
-   Overlays: string;
+   @Column(DataType.ARRAY)
+   Overlays: number[];
 
-   @Column
    @AllowNull(false)
-   Overlays_Colors: string;
+   @Column(DataType.ARRAY)
+   Overlays_Colors: number[];
 
    @CreatedAt
    Created_At: Date;
@@ -73,7 +73,7 @@ export default class Appearances extends Model {
 }
 
 (async () => {
-   await Appearances.sync();
+   // await Appearances.sync();
 })();
 
 

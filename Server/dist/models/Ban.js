@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var Bans_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Globals_1 = require("../Globals/Globals");
-const Messages_1 = require("../Globals/Messages");
+const Globals_1 = require("../Global/Globals");
+const Messages_1 = require("../Global/Messages");
 const Main_1 = require("../Server/Main");
 const Account_1 = __importDefault(require("./Account"));
 let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
@@ -66,9 +66,9 @@ let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
     ;
 };
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Bans.prototype, "ID", void 0);
 __decorate([
@@ -80,47 +80,45 @@ __decorate([
     __metadata("design:type", Number)
 ], Bans.prototype, "Character", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(''),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Bans.prototype, "IP", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Bans.prototype, "HardwareId", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(''),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Bans.prototype, "Social", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Bans.prototype, "Issuer", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(''),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Bans.prototype, "Reason", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(Date.now()),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Bans.prototype, "Date", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Bans.prototype, "Expiring", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.UpdatedAt,
+    sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
 ], Bans.prototype, "Created_At", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
 ], Bans.prototype, "Updated_At", void 0);

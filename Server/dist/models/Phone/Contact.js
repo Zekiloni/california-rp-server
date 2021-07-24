@@ -8,20 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var Logs_1;
+var Contact_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Types = {
-    0: 'SERVER',
-    1: 'PLAYER',
-    2: 'ADMIN',
-    3: 'MONEY',
-    4: 'SELL',
-    5: 'GIVE'
-};
-let Logs = Logs_1 = class Logs extends sequelize_typescript_1.Model {
-    static async New(accountId, characterId, participant, message) {
-        Logs_1.create({ Account: accountId, Character: characterId, Participant: participant, Message: message });
+let Contact = Contact_1 = class Contact extends sequelize_typescript_1.Model {
+    static async New(PhoneNumber, TargetName) {
+        const NewContact = await Contact_1.create({ Number: PhoneNumber, Name: TargetName });
+    }
+    static async Exists(PhoneNumber, TargetName) {
+        const Exist = await Contact_1.findOne({ where: { Number: PhoneNumber, Name: TargetName } });
+        if (Exist)
+            return true;
+        else
+            return false;
+    }
+    async Update(NewNumber, NewName) {
+        this.Number = NewNumber;
+        this.Name = NewName;
+        await this.save();
     }
 };
 __decorate([
@@ -29,43 +33,32 @@ __decorate([
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
     __metadata("design:type", Number)
-], Logs.prototype, "ID", void 0);
+], Contact.prototype, "ID", void 0);
 __decorate([
     sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(''),
+    sequelize_typescript_1.Unique(true),
+    sequelize_typescript_1.AllowNull(false),
+    __metadata("design:type", Number)
+], Contact.prototype, "Number", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.AllowNull(false),
     __metadata("design:type", String)
-], Logs.prototype, "Type", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Logs.prototype, "Account", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Logs.prototype, "Character", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Logs.prototype, "Participant", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(''),
-    __metadata("design:type", Number)
-], Logs.prototype, "Message", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.CreatedAt,
-    __metadata("design:type", Date)
-], Logs.prototype, "Created_At", void 0);
+], Contact.prototype, "Name", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
-], Logs.prototype, "Updated_At", void 0);
-Logs = Logs_1 = __decorate([
+], Contact.prototype, "Created_At", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.UpdatedAt,
+    __metadata("design:type", Date)
+], Contact.prototype, "Updated_At", void 0);
+Contact = Contact_1 = __decorate([
     sequelize_typescript_1.Table
-], Logs);
-exports.default = Logs;
+], Contact);
+exports.default = Contact;
 (async () => {
-    Logs.sync();
+    await Contact.sync();
 })();

@@ -1,7 +1,5 @@
 <template>
 
-  
-
    <div id="app">
       <Notifications v-if="interfaces.Notifications" />
       <GameInterface v-if="interfaces.GameInterface" />
@@ -9,6 +7,16 @@
       <transition name="bounce">
          <Authorization v-if="interfaces.Authorization" />
       </transition>
+
+
+         <!-- FOCUS ROLEPLAY BUTTON LOL 
+         <button class="frp-1"> Test </button>
+         <button class="frp-2"> Test </button>
+         <button class="frp-3"> Test </button>
+         <button class="frp-4"> Test </button>
+         <button class="frp-red"> Test </button>
+         <button class="frp-green"> Test </button> 
+         -->
 
    </div>
 </template>
@@ -54,6 +62,7 @@
          ...mapState(['interfaces'])
       }
    }
+   
 
 </script>
 

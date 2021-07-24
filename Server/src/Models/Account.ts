@@ -1,6 +1,6 @@
 
 
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
 import { Messages } from '../Global/Messages';
 
@@ -8,67 +8,65 @@ const Salt = bcrypt.genSaltSync(10);
 
 @Table
 export default class Accounts extends Model {
-   @Column
-   @PrimaryKey
    @AutoIncrement
+   @PrimaryKey
+   @Column
    id: number
 
-   @Column
    @Unique(true)
+   @Column
    Username: string
 
-   @Column
    @Unique(true)
+   @Column
    Email: string
 
    @Column
    Password: string
 
-   @Column
    @Default(0)
+   @Column
    Administrator: number
 
-   @Column
    @Default(null)
+   @Column
    Login_Date: Date
 
-   @Column
    @Default(null)
+   @Column
    IP_Adress: string
 
-   @Column
    @Default(null)
+   @Column
    Social_Club: string
    
-   @Column
    @Default(null)
+   @Column
    Hardwer: string
 
-   @Column
    @Default(0)
+   @Column
    Warns: number
 
-   @Column
    @Default(0)
+   @Column
    Donator: number
 
-   @Column
    @Default(0)
+   @Column
    Coins: number
 
-   @Column
    @Default(false)
+   @Column
    Online: boolean
 
-   @Column
    @Default(-1)
+   @Column
    Last_Character: number
 
-   @Column
    @CreatedAt
    Created_At: Date;
 
-   @Column
    @UpdatedAt
    Updated_At: Date;
 
@@ -107,8 +105,3 @@ export default class Accounts extends Model {
 }
 
 
-(async () => { 
-
-   Accounts.sync();
-   
-})();

@@ -4,6 +4,12 @@ import { Character } from "../src/Models/Character";
 
 declare global { 
 
+
+   interface Mp {
+      Player: any
+
+   }
+
    interface ColshapeMp { 
       OnPlayerEnter (Player: PlayerMp): void;    
       OnPlayerLeave (Player: PlayerMp): void; 

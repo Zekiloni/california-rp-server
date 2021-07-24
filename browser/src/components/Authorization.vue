@@ -21,7 +21,7 @@
             <input type="password" name="passsword" v-model="Inputs.Password" />
 
             <h4 class="forgotten-password frp-purple-text"> Zaboravljena lozinka ? </h4>
-            <button v-on:click="Authorize(Inputs.Username, Inputs.Password)" class="login"> Prijavi Se </button>
+            <button class="frp-1" v-on:click="Authorize(Inputs.Username, Inputs.Password)" > Prijavi Se </button>
          </div>
       </div>
 
@@ -103,7 +103,7 @@
          
          Authorize: async function (Username, Password) { 
             const response = await mp.events.callProc('CLIENT:AUTHORIZATION:SEND_CREDENTIALS', Username, Password);
-            console.log(JSON.stringify(response))
+            console.log(response)
 
             if (response) {
                console.log('Logged in');
@@ -126,6 +126,10 @@
    }
 
 </script>
+
+<style scoped>
+   button.frp-1 { padding: 10px 70px; }
+</style>
 
 <style scoped src="@/assets/styles/authorization.css"> </style>
 

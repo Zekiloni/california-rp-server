@@ -7,9 +7,9 @@ import Characters from './Character';
 
 @Table
 export default class Bans extends Model {
-   @Column
    @PrimaryKey
    @AutoIncrement
+   @Column
    ID: number;
 
    @Column
@@ -18,39 +18,37 @@ export default class Bans extends Model {
    @Column
    Character: number;
 
-   @Column
    @Default('')
+   @Column
    IP: string
 
-   @Column
    @Default(0)
+   @Column
    HardwareId: string;
 
-   @Column
    @Default('')
+   @Column
    Social: string;
 
-   @Column
    @Default(0)
+   @Column
    Issuer: number;
 
-   @Column
    @Default('')
+   @Column
    Reason: string;
 
-   @Column
    @Default(Date.now())
+   @Column
    Date: string;
 
-   @Column
    @Default(0)
+   @Column
    Expiring: string;
 
-   @Column
    @CreatedAt
    Created_At: Date;
 
-   @Column
    @UpdatedAt
    Updated_At: Date;
 

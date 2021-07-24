@@ -15,7 +15,7 @@ var Accounts_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const Messages_1 = require("../Globals/Messages");
+const Messages_1 = require("../Global/Messages");
 const Salt = bcryptjs_1.default.genSaltSync(10);
 let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model {
     static Creating(Account) {
@@ -45,19 +45,19 @@ let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model 
     }
 };
 __decorate([
-    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.INTEGER),
-    sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
+    sequelize_typescript_1.PrimaryKey,
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Accounts.prototype, "id", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Unique(true),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Accounts.prototype, "Username", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Unique(true),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Accounts.prototype, "Email", void 0);
 __decorate([
@@ -65,62 +65,60 @@ __decorate([
     __metadata("design:type", String)
 ], Accounts.prototype, "Password", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Accounts.prototype, "Administrator", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(null),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Date)
 ], Accounts.prototype, "Login_Date", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(null),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Accounts.prototype, "IP_Adress", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(null),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Accounts.prototype, "Social_Club", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(null),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Accounts.prototype, "Hardwer", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Accounts.prototype, "Warns", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Accounts.prototype, "Donator", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Accounts.prototype, "Coins", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(false),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Boolean)
 ], Accounts.prototype, "Online", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(-1),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Accounts.prototype, "Last_Character", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
 ], Accounts.prototype, "Created_At", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
 ], Accounts.prototype, "Updated_At", void 0);
@@ -134,6 +132,3 @@ Accounts = Accounts_1 = __decorate([
     sequelize_typescript_1.Table
 ], Accounts);
 exports.default = Accounts;
-(async () => {
-    Accounts.sync();
-})();

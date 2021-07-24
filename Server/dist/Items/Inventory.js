@@ -1,5 +1,5 @@
 "use strict";
-let { ItemRegistry, ItemEntities } = require('./Items.Registry');
+let { ItemRegistry, ItemEntities } = require('./Items');
 // require('../models/Item');
 // require('../models/Channel');
 class Inventory {

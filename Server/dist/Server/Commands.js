@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Colors_1 = require("../Globals/Colors");
-const Globals_1 = require("../Globals/Globals");
-const Messages_1 = require("../Globals/Messages");
+const Colors_1 = require("../Global/Colors");
+const Globals_1 = require("../Global/Globals");
+const Messages_1 = require("../Global/Messages");
 const Commands = {};
 const commandFiles = [
     'basic.commands',

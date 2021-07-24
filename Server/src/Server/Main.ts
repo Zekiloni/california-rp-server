@@ -6,11 +6,12 @@ export enum LogType {
    Error, Succes, Info
 }
 
-export default class Main {
+export class Main {
 
    static Terminal (Status: number, Message: string) {
-      const Colors = ['\x1b[31m', '\x1b[33m', '\x1b[32m', '\x1b[37m'];
-      console.log(Colors[Status] + this.DateTime() + Colors[0] + ' | ' + Message)
+      const Colors = ['\x1b[31m', '\x1b[32m', '\x1b[33m', '\x1b[0m'];
+      
+      console.log(Colors[Status] + this.DateTime() + Colors[3] + ' | ' + Message)
    }
 
    

@@ -3,12 +3,12 @@
 
 <template>
    
-   <ul class="notifications">
+   <transition-group name="notification" tag="ul" class="notifications">
       <li v-for="(Notification, i) in Notifications" v-bind:key="i" class="notification" :class="Types[Notification.Type].Class"> 
          <i aria-hidden="true" :class="Types[Notification.Type].Icon"> </i>
          <p> {{ Notification.Message }} </p>
       </li>
-   </ul>
+   </transition-group>
 
 </template>
 
@@ -30,20 +30,20 @@
       },
 
       mounted: function () { 
-         // mp.events.add('BROWSER::NOTIFICATION:SEND', (Message, Type, Time = 4) => { 
-         //    this.Push(Message, Type, Time);
-         // });
+         mp.events.add('BROWSER::NOTIFICATION', (Message, Type, Time = 4) => { 
+            this.Push(Message, Type, Time);
+         });
 
-         setTimeout(() => {
-            this.Push('3333', 0, 3);
-         }, 2000);
       },
 
       methods: { 
          Push: function (Message, Type, Time) { 
             console.log('a')
             this.Audio.play();
-            this.Notifications.push({ Message: Message, Type: Type, Time: Time });
+            this.Notifications.push({ Message: Message, Type: Type });
+            setTimeout(() => {
+               this.Notifications.splice(0, 1);
+            }, Time * 1000);
          },
       }
    }
@@ -79,6 +79,15 @@
    li.notification.success { 
       border-color: rgb(68, 191, 103) !important;
       text-shadow: 0 2px 5px rgb(68 191 103 / 55%);
+   }
+
+   .notification-enter-active { animation: notification-in 0.35s; }
+   .notification-leave-active { animation: notification-in 0.55s reverse; }
+
+   @keyframes notification-in {
+      0% { transform: translateX(-200px); }
+      50% { transform: translateX(10px); }
+      100% { transform: translateX(0px); }
    }
 
 </style>

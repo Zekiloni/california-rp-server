@@ -8,64 +8,59 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var Logs_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Types = {
-    0: 'SERVER',
-    1: 'PLAYER',
-    2: 'ADMIN',
-    3: 'MONEY',
-    4: 'SELL',
-    5: 'GIVE'
-};
-let Logs = Logs_1 = class Logs extends sequelize_typescript_1.Model {
-    static async New(accountId, characterId, participant, message) {
-        Logs_1.create({ Account: accountId, Character: characterId, Participant: participant, Message: message });
+class Message extends sequelize_typescript_1.Model {
+    static async Send(NumberFrom, NumberTo, Text) {
+        const NewSMS = Message.create({ Sim_Number_From: NumberFrom, Sim_Number_To: NumberTo, MessageText: Text });
     }
-};
+    async Seen() {
+        this.Readed = true;
+        await this.save();
+    }
+}
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
     __metadata("design:type", Number)
-], Logs.prototype, "ID", void 0);
+], Message.prototype, "ID", void 0);
+__decorate([
+    sequelize_typescript_1.Column
+    //@ForeignKey(() => SimCard)
+    ,
+    sequelize_typescript_1.AllowNull(false),
+    __metadata("design:type", Number)
+], Message.prototype, "Sim_Number_From", void 0);
+__decorate([
+    sequelize_typescript_1.Column
+    //@ForeignKey(() => SimCard)
+    ,
+    sequelize_typescript_1.AllowNull(false),
+    __metadata("design:type", Number)
+], Message.prototype, "Sim_Number_To", void 0);
 __decorate([
     sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(''),
+    sequelize_typescript_1.AllowNull(false),
     __metadata("design:type", String)
-], Logs.prototype, "Type", void 0);
+], Message.prototype, "MessageText", void 0);
 __decorate([
     sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Logs.prototype, "Account", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Logs.prototype, "Character", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Logs.prototype, "Participant", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(''),
-    __metadata("design:type", Number)
-], Logs.prototype, "Message", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.CreatedAt,
-    __metadata("design:type", Date)
-], Logs.prototype, "Created_At", void 0);
+    sequelize_typescript_1.AllowNull(false),
+    sequelize_typescript_1.Default(false),
+    __metadata("design:type", Boolean)
+], Message.prototype, "Readed", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
-], Logs.prototype, "Updated_At", void 0);
-Logs = Logs_1 = __decorate([
-    sequelize_typescript_1.Table
-], Logs);
-exports.default = Logs;
+], Message.prototype, "Created_At", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.UpdatedAt,
+    __metadata("design:type", Date)
+], Message.prototype, "Updated_At", void 0);
+exports.default = Message;
 (async () => {
-    Logs.sync();
+    await Message.sync();
 })();

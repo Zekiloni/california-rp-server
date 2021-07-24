@@ -1,67 +1,65 @@
-
+"use strict";
 // const Weapons = require('../data/Weapons.json');
-
-export class Items {
-
-   Name: string;
-   Type: Items.Type[];
-   Model: string;
-   Weight: number;
-   Description?: string;
-   Carry_Model?: string;
-   Weapon_Hash?: string;
-   Caliber?: string;
-   Component?: number;
-   Consist?: string;
-   Hunger?: number;
-   Thirst?: number;
-   Use?(): void;
-   
-   constructor (Name: string, Type: Items.Type[], Model: string, Weight: number = 0.1, Desc: string = '', Data: object = {}) { // Data: Items
-      this.Name = Name;
-      this.Type = Type;
-      this.Model = Model;
-      this.Weight = Weight;     
-      this.Description = Desc;
-      // this.Carry_Model = Data.Carry_Model;
-      // this.Weapon_Hash = Data.Weapon_Hash;
-      // this.Caliber = Data.Caliber;
-      // this.Component = Data.Component;
-      // this.Hunger = Data.Hunger;
-      // this.Thirst = Data.Thirst;
-      
-      Items.List[this.Name] = this;
-   }
-
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Items = void 0;
+class Items {
+    constructor(Name, Type, Model, Weight = 0.1, Desc = '', Data = {}) {
+        this.Name = Name;
+        this.Type = Type;
+        this.Model = Model;
+        this.Weight = Weight;
+        this.Description = Desc;
+        // this.Carry_Model = Data.Carry_Model;
+        // this.Weapon_Hash = Data.Weapon_Hash;
+        // this.Caliber = Data.Caliber;
+        // this.Component = Data.Component;
+        // this.Hunger = Data.Hunger;
+        // this.Thirst = Data.Thirst;
+        Items.List[this.Name] = this;
+    }
 }
-
-
-export namespace Items {
-
-   export const List: { [key:string] : Items } = {};
-
-   export enum Type {
-      Equipable, Consumable, Openable, 
-      Drink, Food, Alcohol, Drug, Weapon, 
-      Ammo, Ilegal, Legal, Misc, Clothing,
-      Prop, Heavy, Stackable, Usable
-   }
-
-   export enum Entity { 
-      Ground, Player, Equiped,
-      Left_Hand, Right_Hand, Bag,
-      Vehicle, tempVehicle, House,
-      Business
-   }
-
-   export const Status = { 
-      Food: {
-         Raw: 0, Cooked: 1
-      }
-   }
-}
-
-
+exports.Items = Items;
+(function (Items) {
+    Items.List = {};
+    let Type;
+    (function (Type) {
+        Type[Type["Equipable"] = 0] = "Equipable";
+        Type[Type["Consumable"] = 1] = "Consumable";
+        Type[Type["Openable"] = 2] = "Openable";
+        Type[Type["Drink"] = 3] = "Drink";
+        Type[Type["Food"] = 4] = "Food";
+        Type[Type["Alcohol"] = 5] = "Alcohol";
+        Type[Type["Drug"] = 6] = "Drug";
+        Type[Type["Weapon"] = 7] = "Weapon";
+        Type[Type["Ammo"] = 8] = "Ammo";
+        Type[Type["Ilegal"] = 9] = "Ilegal";
+        Type[Type["Legal"] = 10] = "Legal";
+        Type[Type["Misc"] = 11] = "Misc";
+        Type[Type["Clothing"] = 12] = "Clothing";
+        Type[Type["Prop"] = 13] = "Prop";
+        Type[Type["Heavy"] = 14] = "Heavy";
+        Type[Type["Stackable"] = 15] = "Stackable";
+        Type[Type["Usable"] = 16] = "Usable";
+    })(Type = Items.Type || (Items.Type = {}));
+    let Entity;
+    (function (Entity) {
+        Entity[Entity["Ground"] = 0] = "Ground";
+        Entity[Entity["Player"] = 1] = "Player";
+        Entity[Entity["Equiped"] = 2] = "Equiped";
+        Entity[Entity["Left_Hand"] = 3] = "Left_Hand";
+        Entity[Entity["Right_Hand"] = 4] = "Right_Hand";
+        Entity[Entity["Bag"] = 5] = "Bag";
+        Entity[Entity["Vehicle"] = 6] = "Vehicle";
+        Entity[Entity["tempVehicle"] = 7] = "tempVehicle";
+        Entity[Entity["House"] = 8] = "House";
+        Entity[Entity["Business"] = 9] = "Business";
+    })(Entity = Items.Entity || (Items.Entity = {}));
+    Items.Status = {
+        Food: {
+            Raw: 0, Cooked: 1
+        }
+    };
+})(Items = exports.Items || (exports.Items = {}));
 /* CLOTHING */
 new Items('Mask', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_balaclava', 0.3, 'Mask for Head');
 new Items('Pants', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_jeans_01', 0.2, 'Pants for legs');
@@ -70,17 +68,13 @@ new Items('Shoes', [Items.Type.Equipable, Items.Type.Clothing], 'v_ret_ps_shoe_0
 new Items('Accesories', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_box_clothes', 0.3);
 new Items('Undershirt', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_tshirt_ball_01', 0.1);
 new Items('Armour', [Items.Type.Equipable, Items.Type.Clothing], 'prop_bodyarmour_03', 1.25);
-new Items('Tops', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_shirt_01', 0.2); 
-
-
+new Items('Tops', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_shirt_01', 0.2);
 /* PROPS */
 new Items('Hat', [Items.Type.Equipable, Items.Type.Prop], 'prop_ld_hat_01', 0.05);
 new Items('Glasses', [Items.Type.Equipable, Items.Type.Prop], 'xm_prop_x17_b_glasses_01', 0.05);
 new Items('Ears', [Items.Type.Equipable, Items.Type.Prop], 'v_ret_gc_ear01', 0.05);
 new Items('Watch', [Items.Type.Equipable, Items.Type.Prop], 'p_watch_01', 0.1);
 new Items('Bracelet', [Items.Type.Equipable, Items.Type.Prop], 'h4_prop_h4_bracelet_01a', 0.2);
-
-
 /* FOOD */
 new Items('Cheeseburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
 new Items('Hamburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
@@ -91,8 +85,6 @@ new Items('Chips', [Items.Type.Food, Items.Type.Consumable], 'v_ret_ml_chips4', 
 new Items('Donut', [Items.Type.Food, Items.Type.Consumable], 'prop_donut_02', 0.1);
 new Items('Sandwich', [Items.Type.Food, Items.Type.Consumable], 'prop_sandwich_01');
 new Items('Taco', [Items.Type.Food, Items.Type.Consumable], 'prop_taco_01', 0.2);
-
-
 /* DRINKS */
 new Items('Coffe', [Items.Type.Drink, Items.Type.Consumable], 'prop_fib_coffee', 0.1);
 new Items('Soda Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01b', 0.3);
@@ -110,8 +102,6 @@ new Items('Rum Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_rum_bot
 new Items('Cognac Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_cognac', 0.6);
 new Items('Wine Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_richard', 0.7);
 new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 0.6);
-
-
 // // MISCELLANEOUS
 // new Item('Handheld Radio', ItemType.Misc, 'prop_cs_hand_radio', 0.2, false, false);
 // new Item('Smartphone', ItemType.Misc, 'prop_amb_phone', 0.2, false, false);
@@ -129,20 +119,13 @@ new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 
 // new Item('Fish Bait', ItemType.Misc, 'ng_proc_paintcan02a', 0.3, false, function (player) { });
 // new Item('Baking Soda', ItemType.Misc, 'bkr_prop_coke_bakingsoda', 0.6, false, function (player) { });
 // new Item('Hydrochloric Acid', ItemType.Misc, 'bkr_prop_meth_sacid', 0.6, false, function (player) { });
-
-
 // // OPENABLE
 // new Item('Pack of Beers', ItemType.Openable, 'v_ret_ml_beerpis1', 1.2, { quantity: 6, inside: 'Beer Bottle' }, function (player) { });
-
-
 // // AMMUNITION
 // new Item('9mm Ammo', ItemType.Ammo, 'prop_ld_ammo_pack_01', 0.9, false, function (player) { });
 // new Item('5.56×45mm Ammo', ItemType.Ammo, 'prop_ld_ammo_pack_03', 1.05, false, function (player) { });
 // new Item('12ga Slug Ammo', ItemType.Ammo, 'prop_ld_ammo_pack_02', 0.9, false, function (player) { });
-
-
 // // WEAPONS / ORUZIJE
-
 // new Item('Antique Cavalry Dagger', ItemType.Weapon, 'w_me_dagger', 0, { weapon: 'weapon_dagger' }, function (player, ammo = 0) {
 //    player.giveWeapon(mp.joaat(this.weapon), ammo);
 // });
@@ -158,19 +141,15 @@ new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 
 // new Item('Golf Club', ItemType.Weapon, 'w_me_gclub', 0, { weapon: 'weapon_golfclub' }, function (player, ammo = 0) {
 //    player.giveWeapon(mp.joaat(this.weapon), ammo);
 // });
-
 // new Item('Hammer', ItemType.Weapon, 'w_me_hammer', 0.3, { weapon: 'weapon_hammer' }, function (player, ammo = 0) {
 //    player.giveWeapon(mp.joaat(this.weapon), ammo);
 // });
-
 // new Item('Hatchet', ItemType.Weapon, 'w_me_hatchet', 1.0, { weapon: 'weapon_hatchet' }, function (player, ammo = 0) {
 //     player.giveWeapon(mp.joaat(this.weapon), ammo);
 // });
-
 // new Item('Brass Knuckles', ItemType.Weapon, 'w_me_knuckle_dmd', 0.3, { weapon: 'weapon_knuckle' }, function (player, ammo = 0) {
 //     player.giveWeapon(mp.joaat(this.weapon), ammo);
 // });
-
 // new Item('Knife', ItemType.Weapon, 'w_me_knife_01', 0.35, { weapon: 'weapon_knife' }, function (player, ammo = 0) {
 //     player.giveWeapon(mp.joaat(this.weapon), ammo);
 // });
@@ -378,11 +357,7 @@ new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 
 // new Item('Fire Extinguisher', ItemType.Weapon, 'w_am_fire_exting', 1.0, { weapon: 'weapon_fireextingusher' }, function (player, ammo = 0) {
 //     player.giveWeapon(mp.joaat(this.weapon), ammo);
 // });
-
-
 // // mp.ItemRegistry = {};
-
-
 // function weaponNameByHash(i) {
 //     let query = "0x" + i.toString(16).toUpperCase();
 //     for (let f in Weapons) {
@@ -392,8 +367,6 @@ new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 
 //         }
 //     }
 // }
-
-
 // function isAmmoValid(weapon, ammo) {
 //     let name = weaponNameByHash(weapon);
 //     for (let i in mp.ItemRegistry) {
@@ -408,8 +381,6 @@ new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 
 //         }
 //     }
 // }
-
-
 // mp.Player.prototype.giveAmmo = function (quantity, catridge) {
 //     let weapon = this.weapon;
 //     if (weapon) {
@@ -426,6 +397,4 @@ new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 
 //         return false;
 //     }
 // };
-
-
 // module.exports = { ItemType, ItemEntities, ItemRegistry };

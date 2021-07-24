@@ -1,117 +1,105 @@
-"use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const sequelize_typescript_1 = require("sequelize-typescript");
-const Items_1 = require("../Items/Items");
-let Item = class Item extends sequelize_typescript_1.Model {
-    static Creating(Item) {
-        Item.Refresh();
-    }
-    static Destroying(Item) {
-        if (Item.Object)
-            Item.Object.destroy();
-    }
-    Refresh() {
-        if (this.Entity == Items_1.Items.Entity.Ground) {
-            this.Object = mp.objects.new('zeki', this.Position, { alpha: 255, rotation: this.Rotation, dimension: this.Dimension });
-            this.Object.setVariable('Item', this.Name);
-        }
-        else {
-            if (this.Object) {
-                this.Object.destroy();
-            }
-        }
-    }
-    Drop() {
-    }
-    async Use(Player) {
-        const Character = await Player.Character();
-        const rItem = Items_1.Items.List[this.Name];
-    }
-};
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.PrimaryKey,
-    sequelize_typescript_1.AutoIncrement,
-    __metadata("design:type", Number)
-], Item.prototype, "ID", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Item.prototype, "Name", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Item.prototype, "Entity", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Item.prototype, "Owner", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(1),
-    __metadata("design:type", Number)
-], Item.prototype, "Quantity", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Item.prototype, "Fingerpring", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Object)
-], Item.prototype, "Position", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Object)
-], Item.prototype, "Rotation", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Number)
-], Item.prototype, "Dimension", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default({}),
-    __metadata("design:type", Object)
-], Item.prototype, "Extra", void 0);
-__decorate([
-    sequelize_typescript_1.CreatedAt,
-    __metadata("design:type", Date)
-], Item.prototype, "Created_At", void 0);
-__decorate([
-    sequelize_typescript_1.UpdatedAt,
-    __metadata("design:type", Date)
-], Item.prototype, "Updated_On", void 0);
-__decorate([
-    sequelize_typescript_1.AfterCreate,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Item]),
-    __metadata("design:returntype", void 0)
-], Item, "Creating", null);
-__decorate([
-    sequelize_typescript_1.AfterDestroy,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Item]),
-    __metadata("design:returntype", void 0)
-], Item, "Destroying", null);
-Item = __decorate([
-    sequelize_typescript_1.Table
-], Item);
-exports.default = Item;
+
+
+import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, Default, Model, PrimaryKey, Table, UpdatedAt } from "sequelize-typescript";
+import { Items } from "../Items/Items";
+
+
+@Table
+export default class Item extends Model { 
+
+   @Column
+   @PrimaryKey
+   @AutoIncrement
+   ID: number;
+
+   @Column
+   Name: string;
+
+   @Column
+   Entity: Items.Entity;
+
+   @Column
+   Owner: number;
+
+   @Column
+   @Default(1)
+   Quantity: number;
+   
+   @Column
+   @Default(0)
+   Fingerpring: number; 
+
+   @Column
+   Position: Vector3Mp;
+
+   @Column
+   Rotation: Vector3Mp
+
+   @Column
+   Dimension: number;
+
+   @Column
+   @Default({})
+   Extra: Object;
+
+   @CreatedAt
+   Created_At: Date;
+
+   @UpdatedAt
+   Updated_On: Date;
+
+   Object: ObjectMp;
+
+   @AfterCreate
+   static Creating (Item: Item) { 
+      
+      Item.Refresh();
+
+   }
+
+   @AfterDestroy
+   static Destroying (Item: Item) { 
+      if (Item.Object) Item.Object.destroy();
+   }
+
+   Refresh () { 
+      if (this.Entity == Items.Entity.Ground) { 
+         this.Object = mp.objects.new('zeki', this.Position, { alpha: 255, rotation: this.Rotation, dimension: this.Dimension });
+         this.Object.setVariable('Item', this.Name);
+      } else { 
+         if (this.Object) { 
+            this.Object.destroy();
+         }
+      }
+   }
+
+
+   Drop () { 
+
+   }
+
+   async Use (Player: PlayerMp) { 
+      const Character = await Player.Character();
+      
+      const rItem = Items.List[this.Name];
+
+   
+
+   }
+
+   
+}
+
 // 'use strict';
+
 // const { DataTypes } = require('sequelize');
 // const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');
+
 // const Torsos = require('../data/Torsos.json');
 // const Clothing = require('../data/Clothing');
 // const Animations = require('../data/Animations');
+
+
 // frp.Items = frp.Database.define('item', {
 //       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
 //       Item: { type: DataTypes.STRING },
@@ -158,11 +146,13 @@ exports.default = Item;
 //       updatedAt: "Update_Date",
 //    }
 // );
+
 // frp.Items.afterCreate(async (Item, Options) => {
 //    if (Item.Entity == ItemEntities.Player) { 
 //       if (Item.Item == 'Phone' || Item.Item == 'Smartphone') { 
 //          console.log('Kreiranje broja telefona');
 //          let pNumber = frp.Main.GenerateNumber(6);
+
 //          let Exist = await frp.Items.count({ where: { Number: pNumber } });
 //          do {
 //             console.log('Pokusajem opet');
@@ -176,9 +166,12 @@ exports.default = Item;
 //       }
 //    }
 // });
+
+
 // frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0, ammo = 0, extra = {}) {
 //    const HasItem = await frp.Items.HasItem(owner, item);
 //    const Info = ItemRegistry[item];
+
 //    if (HasItem && Info.type != ItemType.Equipable && Info.type != ItemType.Weapon) { 
 //       HasItem.increment('Quantity', { by: quantity } );
 //       return HasItem;
@@ -188,6 +181,8 @@ exports.default = Item;
 //       return Item;
 //    }
 // };
+
+
 // frp.Items.Inventory = async function (Player) {
 //    let Inventory = [];
 //    const Items = await frp.Items.findAll({ where: { Owner: Player.character } });
@@ -196,6 +191,8 @@ exports.default = Item;
 //    });
 //    return Inventory;
 // };
+
+
 // frp.Items.Trunk = async function (Vehicle) { 
 //    let Trunk = [];
 //    if (Vehicle.Database) { 
@@ -211,6 +208,8 @@ exports.default = Item;
 //    }
 //    return Trunk;
 // };
+
+
 // frp.Items.Weapons = async function (player) { 
 //    let PlayerWeapons = [];
 //    const Weapons = await frp.Items.findAll({ where: { Owner: player.character, Entity: ItemEntities.Wheel } });
@@ -219,10 +218,14 @@ exports.default = Item;
 //    });
 //    return PlayerWeapons;
 // };
+
+
 // frp.Items.HasItem = async function (character, item) {
 //    const Item = await frp.Items.findOne({ where: { Owner: character, Item: item } });
 //    return Item == null ? false : Item;
 // };
+
+
 // frp.Items.prototype.Disarm = async function (player) { 
 //    const Weapons = await frp.Items.findAll({ where: { Owner: player.character, Entity: ItemEntities.Wheel } });
 //    Weapons.forEach(async (Weapon) => { 
@@ -235,31 +238,45 @@ exports.default = Item;
 //          await Weapon.save();  
 //       }
 //    });
+
 //    this.Entity = ItemEntities.Player;
 //    await this.save();
+
 //    return frp.Items.Inventory(player);
 // };
+
+
 // frp.Items.prototype.Refresh = function () {
 //    if (this.Entity == ItemEntities.Ground) {
+
 //       const Position = new mp.Vector3(this.Position.x, this.Position.y, this.Position.z);
 //       const Rotation = new mp.Vector3(this.Rotation.x, this.Rotation.y, this.Rotation.z);
+
 //       this.GameObject = mp.objects.new(ItemRegistry[this.Item].hash, Position, {
 //          rotation: Rotation,
 //          alpha: 255,
 //          dimension: this.Dimension
 //       });
+
 //       this.GameObject.setVariable('Item', this.Item);
+
 //       this.GameObject.Item = this.id;
+
 //    } else {
 //       if (this.GameObject) {
 //          this.GameObject.destroy();
 //       }
 //    }
 // };
+
+
+
 // frp.Items.prototype.Delete = async function () {
 //    this.GameObject.destroy();
 //    await this.destroy();
 // };
+
+
 // frp.Items.prototype.Drop = async function (player, place, quantity = 1) {
 //    const Position = JSON.parse(place);
 //    if (this.Quantity == quantity) {
@@ -274,9 +291,13 @@ exports.default = Item;
 //       this.increment('Quantity', { by: -quantity });
 //       frp.Items.New(this.Item, quantity, ItemEntities.Ground, 0, Position.position, Position.rotation, player.dimension);
 //    }
+
 //    player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} baca ${this.Item} na zemlju.`, frp.Globals.Colors.purple);
+
 //    return frp.Items.Inventory(player);
 // };
+
+
 // frp.Items.prototype.Pickup = async function (player) {
 //    // PROKS PORUKA: Podigao taj i taj predmet /me
 //    this.Entity = ItemEntities.Player;
@@ -284,9 +305,13 @@ exports.default = Item;
 //    this.Refresh();
 //    await this.save();
 // };
+
+
 // frp.Items.prototype.Give = async function (player, target, quantity) {
 //    if (player.dist(target.position) > 2.5) return; // PORUKA: Taj igrac se ne nalazi u vasoj blizini
+
 //    const Has = await frp.Items.HasItem(target.character, this.Item);
+
 //    console.log(this.Quantity + ' je kolicina itema, data kolicina je ' + quantity);
 //    if (this.Quantity == quantity) {
 //       this.Owner = target.character;
@@ -304,9 +329,13 @@ exports.default = Item;
 //          frp.Items.New(this.Item, quantity, ItemEntities.Player, target.character);
 //       }
 //    }
+
 //    player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje ${this.Item} ${target.name}. (( Give ))`, frp.Globals.Colors.purple);
+
 //    return frp.Items.Inventory(player);
 // };
+
+
 // frp.Items.Near = async function (player) {
 //    return new Promise((resolve, reject) => { 
 //       const Position = player.position;
@@ -324,6 +353,9 @@ exports.default = Item;
 //       });
 //    })   
 // };
+ 
+
+
 // frp.Items.GetRandomByType = function (type) { 
 //    let Items = [];
 //    for (const i in ItemRegistry) { 
@@ -334,10 +366,14 @@ exports.default = Item;
 //    }
 //    return Items[Math.floor(Math.random() * Items.length)];
 // };
+
+
 // frp.Items.prototype.Use = async function (player) {
 //    return new Promise(async (resolve) => { 
 //       const Item = ItemRegistry[this.Item];
+      
 //       let Decrement = false;
+
 //       switch (Item.type) { 
 //          case ItemType.Weapon: { 
 //             this.Entity = ItemEntities.Wheel;
@@ -346,22 +382,27 @@ exports.default = Item;
 //             Decrement = false;
 //             break;
 //          }
+
 //          case ItemType.Equipable: {
 //             await this.Equip(player);
 //             Decrement = false;
 //             break;
 //          }
+
 //          case ItemType.Food: { 
 //             await this.Eat(player);
 //             Decrement = true;
 //             break;
 //          }
+
 //          case ItemType.Drink: { 
 //             await this.Drink(player);
 //             Decrement = true;
 //             break;
 //          }
+
 //          default: {
+
 //             if (Item.use == false) { 
 //                return;
 //             } else { 
@@ -369,6 +410,7 @@ exports.default = Item;
 //             }
 //          }
 //       }
+
 //       if (Decrement) { 
 //          if (this.Quantity > 1) { 
 //             await this.increment('Quantity', { by: -1 });
@@ -376,51 +418,74 @@ exports.default = Item;
 //             await this.destroy();
 //          }
 //       }
+
 //       resolve(frp.Items.Inventory(player));
 //    });
 // };
+
+
 // frp.Items.prototype.Equip = async function (player) { 
+
 //    const Character = await player.Character();
 //    const Item = ItemRegistry[this.Item];
+
 //    const AlreadyEquiped = await frp.Items.IsEquiped(player, this.Item);
 //    if (AlreadyEquiped) { 
 //       AlreadyEquiped.Entity = ItemEntities.Player;
 //       await AlreadyEquiped.save();
 //    }
+
 //    this.Entity = ItemEntities.Equiped;
+
 //    if (Item.clothing) { 
 //       player.setClothes(Item.component, parseInt(this.Extra.Drawable), parseInt(this.Extra.Texture), 2);
+
 //       if (Item.component == Clothing.Components.Tops) { 
 //          const BestOne = Torsos[Character.Gender][this.Extra.Drawable];
 //          console
 //          player.setClothes(Clothing.Components.Torso, BestOne, 0, 2);
 //       }
+
 //    } else { 
 //       player.setProp(Item.component, parseInt(this.Extra.Drawable), parseInt(this.Extra.Texture));
 //    }
+
 //    await this.save();
+
 // };
+
+
+
 // frp.Items.prototype.Unequip = async function (player) {
 //    return new Promise(async (resolve) => { 
 //       const Character = await player.Character(), Item = ItemRegistry[this.Item];
+
 //       this.Entity = ItemEntities.Player;
 //       await this.save();
+
 //       const Naked = Clothing.Naked[Character.Gender][Item.name]
 //       Item.prop ? player.setProp(Item.component, 0, 255) : player.setClothes(Item.component, Naked, 0, 2);
+
 //       if (Item.component == Clothing.Components.Tops) { 
 //          const Best = Torsos[Character.Gender][Naked];
 //          player.setClothes(Clothing.Components.Torso, Best, 0, 2);
 //       }
+
 //       const inventory = await frp.Items.Inventory(player);
 //       resolve(inventory);
 //    });
 // };
+
+
 // frp.Items.Equipment = async function (player, gender) { 
+
 //    const Clothings = [
 //       'Pants', 'Bag', 'Shoes', 'Accesories', 'Undershirt', 'Armour',
 //       'Tops', 'Hat', 'Glasses', 'Ears', 'Mask',  'Watch',  'Bracelet'
 //    ];
+
 //    let items = {};
+
 //    for (const clothing of Clothings) { 
 //       const item = await frp.Items.HasItem(player.character, clothing);
 //       if (item && item.Entity == ItemEntities.Equiped) { 
@@ -429,9 +494,11 @@ exports.default = Item;
 //          items[clothing] = null;
 //       }
 //    }
+
 //    for (const name in items) { 
 //       const item = items[name];
 //       const info = ItemRegistry[name];
+
 //       if (item) { 
 //          info.prop ? 
 //             player.setProp(info.component, parseInt(item.Extra.Drawable), parseInt(item.Extra.Texture)) : player.setClothes(info.component, parseInt(item.Extra.Drawable), parseInt(item.Extra.Texture), 2);
@@ -440,53 +507,79 @@ exports.default = Item;
 //             player.setProp(info.component, 0, 255) : player.setClothes(info.component, Clothing.Naked[gender][name], 0, 2);
 //       }
 //    }
+
 //    let BestTorso = 0
 //    if (items['Tops']) { 
 //       BestTorso = Torsos[gender][items['Tops'].Extra.Drawable];
 //    } else { 
 //       BestTorso = Torsos[gender][Clothing.Naked[gender]['Tops']];
 //    }
+
 //    player.setClothes(Clothing.Components.Torso, BestTorso, 0, 2);
 // };
+
+
 // frp.Items.IsEquiped = async function (player, item) { 
 //    const Equipped = await frp.Items.findOne({ where: { Entity: ItemEntities.Equiped, Owner: player.character, Item: item } });
 //    return Equipped == null ? false : Equipped;
 // };
+
+
 // frp.Items.Clear = async function (player) {
 //    const Items = await frp.Items.findAll({ where: { Owner: player.character } });
 //    Items.forEach(async (Item) => {
 //       await Item.destroy();
 //    });
 // };
+
+
 // frp.Items.Weight = async function (player) {
 //    const Inventory = await frp.Items.Inventory(player);
 //    let Weight = 0;
+   
 //    Inventory.forEach((Item) => {
 //       Weight += ItemRegistry[Item.Item].weight;
 //    });
+
 //    return Weight;
 // };
+
+
 // frp.Items.prototype.Eat = async function (player) { 
 //    const Character = await player.Character();
 //    const Item = ItemRegistry[this.Item];
+
 //    const animation = Animations['eat'];
 //    player.playAnimation(animation[0], animation[1], 1, 49);
+
 //    if (player.getVariable('Attachment') != null) return;
+
 //    Character.Attachment(player, Item.hash, 6286);
+
 //    Character.increment('Hunger', { by: Item.Hunger });
 // };
+
 // frp.Items.prototype.Drink = async function (player) { 
 //    const Character = await player.Character();
 //    const Item = ItemRegistry[this.Item];
+
 //    const animation = Animations['drink2'];
 //    player.playAnimation(animation[0], animation[1], 1, 39);
+
 //    Character.increment('Hunger', { by: Item.Hunger });
 // };
+
 // (async () => { 
+
 //    await frp.Items.sync();
+
 //    const Items = await frp.Items.findAll();
 //    Items.forEach((Item) => {
 //       Item.Refresh();
 //    });
+
+
 //    frp.Main.Terminal(3, Items.length + ' Items Loaded !');
 // })();
+
+

@@ -1,26 +1,28 @@
 
 
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType } from 'sequelize-typescript';
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
 import Accounts from './Account';
+import Appearances from './Appearance';
 import { Injury } from './Injury';
 import { License } from './License';
 
 
 @Table
 export default class Characters extends Model {
-   @Column
    @PrimaryKey
    @AutoIncrement
+   @Column
    id: number
 
    @Column
    Account: number
 
-   @Column
    @Unique
+   @Length({ min: 6, max: 48 })
+   @Column
    Name: string
 
    @Column
@@ -32,121 +34,121 @@ export default class Characters extends Model {
    @Column
    Origin: string
 
-   @Column
-   @Default(0)
-   Faction: number
-
-   @Column
-   @Default('none')
-   Faction_Rank: string
-
-   @Column
-   @Default(0)
-   Faction_Permissions: number
-
-   @Column
-   @Default(0)
-   Job: number
-
-   @Column
-   @Default(0)
-   Working_Hours: number
-
-   @Column
    @Default(Settings.Default.Money)
+   @Column
    Money: number
 
-   @Column
    @Default(0)
+   @Column
    Salary: number
 
-   @Column
    @Default(0)
+   @Column
    Bank: number
 
-   @Column
    @Default(0)
+   @Column
    Paycheck: number
 
-   @Column
-   @Default(100)
-   Health: number
-
-   @Column
-   @Default(100)
-   Hunger: number
-
-   @Column
-   @Default(100)
-   Thirst: number
-   
-   @Column
-   @Default(false)
-   Wounded: boolean
-
-
-   @Column
-   @Default([])
-   Injuries: Injury[]
-
-   @Column
-   Last_Position: Vector3Mp
-
-   @Column
-   @Default(0)
-   Spawn_Point: number
-
-   @Column
-   Inside: object
-
-   @Column
-   @Default(0)
-   Muted: number
-
-   @Column
-   @Default(0)
-   Hours: number
-
-   @Column
-   @Default(0)
-   Minutes: number
-
-   @Column
-   @Default('normal')
-   Walking_Style: string
-
-   @Column
-   @Default('normal')
-   Facial_Mood: string
-
-   @Column
-   @Default(Settings.Limitations.Max_Houses)
-   Max_Houses: number
-
-   @Column
-   @Default(Settings.Limitations.Max_Business)
-   Max_Business: number
-
-   @Column
-   @Default(Settings.Limitations.Max_Vehicles)
-   Max_Vehicles: number
-
-   @Column
-   @Default([])
-   Licenses: License[]
-
-   @Column
-   @Default(false)
-   Cuffed: boolean
-
+   @IsUUID(4)
+   @Default(DataType.UUIDV4)
    @Column
    Stranger_ID: number
 
+   @Default(0)
    @Column
+   Faction: number
+
+   @Default('none')
+   @Column
+   Faction_Rank: string
+
+   @Default(0)
+   @Column
+   Faction_Permissions: number
+
+   @Default(0)
+   @Column
+   Job: number
+
+   @Default(0)
+   @Column
+   Working_Hours: number
+
+   @Default(100)
+   @Column
+   Health: number
+
+   @Default(100)
+   @Column
+   Hunger: number
+
+   @Default(100)
+   @Column
+   Thirst: number
+   
+   @Default(false)
+   @Column
+   Wounded: boolean
+
+   @Default('[]')
+   @Column(DataType.JSON)
+   Injuries: Injury[]
+
+   @Column(DataType.JSON)
+   Last_Position: Vector3Mp
+
+   @Default(0)
+   @Column
+   Spawn_Point: number
+
+   @Column(DataType.JSON)
+   Inside: object
+
+   @Default(0)
+   @Column
+   Muted: number
+
+   @Default(0)
+   @Column
+   Hours: number
+
+   @Default(0)
+   @Column
+   Minutes: number
+
+   @Default('normal')
+   @Column
+   Walking_Style: string
+
+   @Default('normal')
+   @Column
+   Facial_Mood: string
+
+   @Default(Settings.Limitations.Max_Houses)
+   @Column
+   Max_Houses: number
+
+   @Default(Settings.Limitations.Max_Business)
+   @Column
+   Max_Business: number
+
+   @Default(Settings.Limitations.Max_Vehicles)
+   @Column
+   Max_Vehicles: number
+
+   @Default([])
+   @Column(DataType.JSON)
+   Licenses: License[]
+
+   @Default(false)
+   @Column
+   Cuffed: boolean
+
+
    @CreatedAt
    Created_At: Date;
 
-   @Column
    @UpdatedAt
    Updated_At: Date;
 
@@ -195,7 +197,7 @@ export default class Characters extends Model {
       Player.Notification(Messages.WELCOME, Globals.Notification.Info, 4);
 
       // Applying appearance & clothing
-      const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
+      const Appearance = await Appearances.findOne({ where: { Character: this.id } });
       if (Appearance) Appearance.Apply(Player, this.Gender);
 
       // frp.Items.Equipment(Player, this.Gender);
@@ -237,7 +239,6 @@ export default class Characters extends Model {
    };
    
 }
-
 
 
 // const { ItemEntities } = require('../classes/Items.Registry');
@@ -576,9 +577,7 @@ export default class Characters extends Model {
 // };
 
 
-// mp.Player.prototype.Notification = function (message, type, time = 4) {
-//    this.call('client:player.interface:notification', [message, type, time]);
-// };
+
 
 
 // mp.Player.prototype.Instructions = function (content, time) {
