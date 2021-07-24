@@ -111,7 +111,7 @@ export class Vehicles extends Model {
       }
    }
 
-   async New(model: string, entity: any, owner: number, position: Vector3Mp, rotation: number) {
+   static async New(model: string, entity: any, owner: number, position: Vector3Mp, rotation: number) {
       const Vehicle = await Vehicles.create({
          Model: model,
          Entity: entity,

@@ -6,7 +6,7 @@ import { Globals } from "../Global/Globals";
 import { Messages } from "../Global/Messages";
 import Business from "../Models/Business";
 import Items from "../Models/Item";
-import { Vehicles } from "../Models/Vehicles";
+import { VehicleEntities, Vehicles } from "../Models/Vehicles";
 import { Main } from "../Server/Main";
 
 // const { VehicleEntities } = require('../models/Vehicle');
@@ -74,19 +74,19 @@ mp.events.add({
       if (!InBusiness) return Main.Terminal(3, '[ERROR][SERVER:BUSINESS.CLOTHING:BUY] Business not found in database. | ' + `ID: ${Biz} CharId: ${player.CHARACTER_ID}`);
       let Products = InBusiness.Products;
 
-      if (Products['Clothing'].supplies < 1) return player.Notification(Messages.NOT_ENOUGH_PRODUCTS, Globals.Notification.Error, 5);
+      if (Products['Clothing'].Supplies < 1) return player.Notification(Messages.NOT_ENOUGH_PRODUCTS, Globals.Notification.Error, 5);
 
 
       Items = JSON.parse(Items);
 
       Items.forEach(async (Item) => { 
-         const clothing = await Items.New(Item.component, 1, ItemEntities.Player, player.character);
+         const clothing = await Items.New(Item.component, 1, ItemEntities., player.character);
          clothing.Extra = { Drawable: Item.drawable, Texture: Item.texture };
          await clothing.save();
          Products['Clothing'].supplies --;
       });
 
-      frp.Items.Equipment(player, Character.Gender);
+      Items.Equipment(player, Character.Gender);
 
       Character.GiveMoney(player, -Total);
       
@@ -108,7 +108,7 @@ mp.events.add({
 
       let Products = InBusiness.Products;
       const VehiclePoint = InBusiness.Vehicle_Point;
-      if (Main.IsAnyVehAtPos(new mp.Vector3(VehiclePoint.x, VehiclePoint.y, VehiclePoint.z), 1.5).length > 0) return; Player.Notification(Messages.VEHICLE_POINT_IS_NOT_FREE, frp.Globals.Notification.Error, 4);
+      if (Main.IsAnyVehAtPos(new mp.Vector3(VehiclePoint.x, VehiclePoint.y, VehiclePoint.z), 1.5).length > 0) return; Player.Notification(Messages.VEHICLE_POINT_IS_NOT_FREE, Globals.Notification.Error, 4);
 
       
 
@@ -132,8 +132,7 @@ mp.events.add({
          VehicleEntities.Player,
          Character.id, 
          new mp.Vector3(VehiclePoint.x, VehiclePoint.y, VehiclePoint.z),
-         new mp.Vector3(0, 0, 0),
-         Color
+         180
       );
       
       InBusiness.Products = Products;
