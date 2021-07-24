@@ -122,7 +122,7 @@ export class Vehicles extends Model {
       });
    }
 
-   async CreateTemporary(model: string, position: Vector3Mp, rotation: number, color: number[], plate: string, dimension = Settings.Default.dimension) {
+   static async CreateTemporary(model: string, position: Vector3Mp, rotation: number, color: number[], plate: string, dimension = Settings.Default.dimension) {
       const [primary, secondary] = color;
 
       const Vehicle = mp.vehicles.new(mp.joaat(model), position, {

@@ -90,9 +90,9 @@ mp.events.add({
 
       Character.GiveMoney(player, -Total);
       
-      Business.Products = Products;
-      Business.increment('Budget', { by: Total });
-      await Business.save();
+      InBusiness.Products = Products;
+      InBusiness.increment('Budget', { by: Total });
+      await InBusiness.Save();
    },
 
    'server:business.dealership.vehicle:buy': async (Player, Total, Model, Color, Biz) => { 
