@@ -11,12 +11,12 @@ const VehicleEntities = {
 
 let TemporaryVehicles = [];
 
-interface VehicleComponent { 
+interface VehicleComponent {
    Component: number,
    Value: number
 };
 
-export interface VehiclePlate { 
+export interface VehiclePlate {
    Content: string,
    Issued: number,
    Expiring: number
@@ -175,7 +175,7 @@ export class Vehicles extends Model {
 
    async GetVehicleInstance(Vehicle: VehicleMp) {
       const Veh = await Vehicles.findAll();
-      Veh.forEach( (Instance) => {
+      Veh.forEach((Instance) => {
          if (Instance.Vehicle == Vehicle) return Instance;
       });
    }
@@ -242,11 +242,11 @@ export class Vehicles extends Model {
 
    async GeneratePlate(ExpiringDays: number = 92) {
       let CurrentDate = Date.now();
-      
-      const Plate: VehiclePlate = { 
+
+      const Plate: VehiclePlate = {
          Content: '1312-DB',
          Issued: CurrentDate,
-         Expiring: CurrentDate + (ExpiringDays * 84000) 
+         Expiring: CurrentDate + (ExpiringDays * 84000)
       };
 
       this.Numberplate = Plate;

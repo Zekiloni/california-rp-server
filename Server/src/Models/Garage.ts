@@ -2,7 +2,8 @@ import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Defau
 import { Colors } from '../Global/Colors';
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
-import { Main } from '../Server/Main';
+import Main from '../Server/Main';
+import { Vehicles } from './Vehicles';
 
 const GarageTypes = [
    { Type: 'Small', Position: new mp.Vector3(0, 0, 0)}, // Garage type 0
