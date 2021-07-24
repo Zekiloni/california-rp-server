@@ -3,18 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Account_1 = __importDefault(require("./Models/Account"));
-const Character_1 = __importDefault(require("./Models/Character"));
 require("./Server/Database");
 const Main_1 = require("./Server/Main");
+require("./Player/Player");
+require("./Player/Account");
+const Account_1 = __importDefault(require("./Models/Account"));
+const Character_1 = __importDefault(require("./Models/Character"));
 // !!! TEST //
-require('./Test');
 // DATA
-let Globals = require('./configs/Globals');
-// MODELS 
-let Logs = require('./models/Logs');
-// MODULES
-const Helpers = require('./modules/Managers');
+// let Globals = require('./configs/Globals');
+// // MODELS 
+// let Logs = require('./models/Logs');
+// // MODULES
+// const Helpers = require('./modules/Managers');
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
 // let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta
@@ -26,7 +27,7 @@ const Helpers = require('./modules/Managers');
 (async () => {
     const Chars = await Character_1.default.count();
     const Users = await Account_1.default.count();
-    Main_1.Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
+    Main_1.Main.Terminal(Main_1.LogType.Info, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 })();
 const Exit = async () => {
     Main_1.Main.Terminal(Main_1.LogType.Succes, 'Clossing Connection, Bye-bye !');

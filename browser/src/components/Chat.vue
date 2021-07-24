@@ -11,6 +11,10 @@
          </li>
       </ul>
 
+
+
+
+
       <transition name="slide-fade">
          <div class="input-form" v-if="Typing">
             <input
@@ -74,12 +78,12 @@
          this.Push('Focus Roleplay - www.focus-rp.com');
          this.Check();
          
-         document.addEventListener('keyup', function (e) { 
+         document.addEventListener('keyup', (e) => { 
             switch (e.keyCode) {
                case 84: { 
-                  if (chat.Typing) return;
-                  if (chat.Toggle && chat.Controllable) {
-                     chat.ToggleInput(chat.Typing = !chat.Typing);
+                  if (this.Typing) return;
+                  if (this.Toggle && this.Controllable) {
+                     this.ToggleInput(chat.Typing = !chat.Typing);
                   }
                   break;
                }
@@ -100,9 +104,23 @@
             this.Controllable = toggle;
          },
 
-          Close: function () { 
-            if (this.Toggle && this.Controllable && this.Typing) { 
-               this.ToggleInput(false);     
+         Toggle: function (toggle) { 
+            this.Typing = toggle;
+            mp.invoke('focus', toggle);
+            if (toggle) { 
+               mp.invoke('setTypingInChatState', true);
+               this.Inactive = false;
+               Vue.nextTick(function() { this.$refs.ChatInput.focus(); }.bind(this));
+            } else { 
+               mp.invoke('setTypingInChatState', false);
+               this.$refs.ChatInput.blur();
+               this.Input = '';
+            }
+         },
+
+         Close: function () { 
+            if (this.Controllable && this.Typing) { 
+               this.Toggle(false);     
             }
          },
 
@@ -128,8 +146,10 @@
    .chat {
       max-width: 800px;
       height: 300px;
-      margin: 20px 20px;
-      position: relative;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 0;
       transition: all 0.35s ease;
    }
 
@@ -160,7 +180,6 @@
    }
 
    ul.messages {
-      padding: 0 10px;
       list-style: none;
       margin: 0;
       transition: all 0.35s ease;

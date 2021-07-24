@@ -11,8 +11,8 @@ var LogType;
 })(LogType = exports.LogType || (exports.LogType = {}));
 class Main {
     static Terminal(Status, Message) {
-        const Colors = ['\x1b[31m', '\x1b[33m', '\x1b[32m', '\x1b[37m'];
-        console.log(Colors[Status] + this.DateTime() + Colors[0] + ' | ' + Message);
+        const Colors = ['\x1b[31m', '\x1b[32m', '\x1b[33m', '\x1b[0m'];
+        console.log(Colors[Status] + this.DateTime() + Colors[3] + ' | ' + Message);
     }
     static Size(object) {
         let size = 0;
@@ -49,10 +49,10 @@ class Main {
         }
         return count;
     }
-    static IsAnyVehAtPos(position, radius = 2) {
+    static IsAnyVehAtPos(position, radius = 2, dimension = 0) {
         let Vehicles = [];
         mp.vehicles.forEachInRange(position, radius, (Vehicle) => {
-            if (Vehicle)
+            if (Vehicle && Vehicle.dimension == dimension)
                 Vehicles.push(Vehicle);
         });
         return Vehicles;

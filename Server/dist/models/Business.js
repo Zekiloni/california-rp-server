@@ -9,7 +9,7 @@
 // import { Colors } from '../Global/Colors';
 // import Characters from './Character';
 // import { Globals } from '../Global/Globals';
-// class Business extends Model {
+// export default class Business extends Model {
 //     @Column
 //     @PrimaryKey
 //     @AutoIncrement

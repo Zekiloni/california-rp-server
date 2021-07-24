@@ -10,11 +10,11 @@
 // import { Globals } from '../Global/Globals';
 
 
-export default class Business extends Model {
-    @Column
-    @PrimaryKey
-    @AutoIncrement
-    ID: number
+// export default class Business extends Model {
+//     @Column
+//     @PrimaryKey
+//     @AutoIncrement
+//     ID: number
 
 //     @Column
 //     Name: string

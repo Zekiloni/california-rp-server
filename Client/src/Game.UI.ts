@@ -1,3 +1,4 @@
+import { Browser } from './Browser';
 
 
 
@@ -14,4 +15,12 @@ let Configuration = {
    Status: UI_Status.Fully_Hidden
 };
 
+
+mp.events.add(
+   {
+      'CLIENT::NOTIFICATION': (Message: string, Type: number, Time: number) => { 
+         Browser.call('BROWSER::NOTIFICATION', Message, Type, Time);
+      }
+   }
+);
 

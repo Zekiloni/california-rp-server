@@ -1,28 +1,27 @@
 
-
-
-import Accounts from './Models/Account';
-import Characters from './Models/Character';
 import './Server/Database';
 import { LogType, Main } from './Server/Main';
+import './Player/Player';
+import './Player/Account';
+import Accounts from './Models/Account';
+import Characters from './Models/Character';
+
 
 
 
 
 
 // !!! TEST //
-require('./Test');
-
 
 // DATA
-let Globals = require('./configs/Globals');
+// let Globals = require('./configs/Globals');
 
-// MODELS 
-let Logs = require('./models/Logs');
+// // MODELS 
+// let Logs = require('./models/Logs');
 
 
-// MODULES
-const Helpers = require('./modules/Managers');
+// // MODULES
+// const Helpers = require('./modules/Managers');
 
 
 
@@ -40,7 +39,7 @@ const Helpers = require('./modules/Managers');
 (async () => {
    const Chars = await Characters.count()
    const Users = await Accounts.count();
-   Main.Terminal(3, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
+   Main.Terminal(LogType.Info, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
 })();
 

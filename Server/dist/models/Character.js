@@ -8,11 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Globals_1 = require("../Global/Globals");
 const Messages_1 = require("../Global/Messages");
 const Settings_1 = require("../Server/Settings");
+const Appearance_1 = __importDefault(require("./Appearance"));
 let Characters = class Characters extends sequelize_typescript_1.Model {
     async Spawn(Player) {
         const Account = await Player.Account();
@@ -47,7 +51,7 @@ let Characters = class Characters extends sequelize_typescript_1.Model {
         Player.setVariable('Seatbelt', false);
         Player.Notification(Messages_1.Messages.WELCOME, Globals_1.Globals.Notification.Info, 4);
         // Applying appearance & clothing
-        const Appearance = await frp.Appearances.findOne({ where: { Character: this.id } });
+        const Appearance = await Appearance_1.default.findOne({ where: { Character: this.id } });
         if (Appearance)
             Appearance.Apply(Player, this.Gender);
         // frp.Items.Equipment(Player, this.Gender);
@@ -86,9 +90,9 @@ let Characters = class Characters extends sequelize_typescript_1.Model {
     ;
 };
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.AutoIncrement,
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Characters.prototype, "id", void 0);
 __decorate([
@@ -96,8 +100,9 @@ __decorate([
     __metadata("design:type", Number)
 ], Characters.prototype, "Account", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Unique,
+    sequelize_typescript_1.Length({ min: 6, max: 48 }),
+    sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Characters.prototype, "Name", void 0);
 __decorate([
@@ -113,149 +118,149 @@ __decorate([
     __metadata("design:type", String)
 ], Characters.prototype, "Origin", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Faction", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default('none'),
-    __metadata("design:type", String)
-], Characters.prototype, "Faction_Rank", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Faction_Permissions", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Job", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Working_Hours", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(Settings_1.Settings.Default.Money),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Characters.prototype, "Money", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Characters.prototype, "Salary", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Characters.prototype, "Bank", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Characters.prototype, "Paycheck", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(100),
-    __metadata("design:type", Number)
-], Characters.prototype, "Health", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(100),
-    __metadata("design:type", Number)
-], Characters.prototype, "Hunger", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(100),
-    __metadata("design:type", Number)
-], Characters.prototype, "Thirst", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(false),
-    __metadata("design:type", Boolean)
-], Characters.prototype, "Wounded", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default([]),
-    __metadata("design:type", Array)
-], Characters.prototype, "Injuries", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Object)
-], Characters.prototype, "Last_Position", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Spawn_Point", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Object)
-], Characters.prototype, "Inside", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Muted", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Hours", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(0),
-    __metadata("design:type", Number)
-], Characters.prototype, "Minutes", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default('normal'),
-    __metadata("design:type", String)
-], Characters.prototype, "Walking_Style", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default('normal'),
-    __metadata("design:type", String)
-], Characters.prototype, "Facial_Mood", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Houses),
-    __metadata("design:type", Number)
-], Characters.prototype, "Max_Houses", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Business),
-    __metadata("design:type", Number)
-], Characters.prototype, "Max_Business", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Vehicles),
-    __metadata("design:type", Number)
-], Characters.prototype, "Max_Vehicles", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default([]),
-    __metadata("design:type", Array)
-], Characters.prototype, "Licenses", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(false),
-    __metadata("design:type", Boolean)
-], Characters.prototype, "Cuffed", void 0);
-__decorate([
+    sequelize_typescript_1.IsUUID(4),
+    sequelize_typescript_1.Default(sequelize_typescript_1.DataType.UUIDV4),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Characters.prototype, "Stranger_ID", void 0);
 __decorate([
+    sequelize_typescript_1.Default(0),
     sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Faction", void 0);
+__decorate([
+    sequelize_typescript_1.Default('none'),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Characters.prototype, "Faction_Rank", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Faction_Permissions", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Job", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Working_Hours", void 0);
+__decorate([
+    sequelize_typescript_1.Default(100),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Health", void 0);
+__decorate([
+    sequelize_typescript_1.Default(100),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Hunger", void 0);
+__decorate([
+    sequelize_typescript_1.Default(100),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Thirst", void 0);
+__decorate([
+    sequelize_typescript_1.Default(false),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Boolean)
+], Characters.prototype, "Wounded", void 0);
+__decorate([
+    sequelize_typescript_1.Default('[]'),
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
+    __metadata("design:type", Array)
+], Characters.prototype, "Injuries", void 0);
+__decorate([
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
+    __metadata("design:type", Object)
+], Characters.prototype, "Last_Position", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Spawn_Point", void 0);
+__decorate([
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
+    __metadata("design:type", Object)
+], Characters.prototype, "Inside", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Muted", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Hours", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Minutes", void 0);
+__decorate([
+    sequelize_typescript_1.Default('normal'),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Characters.prototype, "Walking_Style", void 0);
+__decorate([
+    sequelize_typescript_1.Default('normal'),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Characters.prototype, "Facial_Mood", void 0);
+__decorate([
+    sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Houses),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Max_Houses", void 0);
+__decorate([
+    sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Business),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Max_Business", void 0);
+__decorate([
+    sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Vehicles),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Max_Vehicles", void 0);
+__decorate([
+    sequelize_typescript_1.Default([]),
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
+    __metadata("design:type", Array)
+], Characters.prototype, "Licenses", void 0);
+__decorate([
+    sequelize_typescript_1.Default(false),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Boolean)
+], Characters.prototype, "Cuffed", void 0);
+__decorate([
     sequelize_typescript_1.CreatedAt,
     __metadata("design:type", Date)
 ], Characters.prototype, "Created_At", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
 ], Characters.prototype, "Updated_At", void 0);
@@ -505,9 +510,6 @@ exports.default = Characters;
 //       Cloth.Equip(player);
 //    })
 //    if (Created) return Created;
-// };
-// mp.Player.prototype.Notification = function (message, type, time = 4) {
-//    this.call('client:player.interface:notification', [message, type, time]);
 // };
 // mp.Player.prototype.Instructions = function (content, time) {
 //    this.call('client:player.interface:instructions', [content, time]);

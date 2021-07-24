@@ -25,16 +25,7 @@ mp.events.add(
    }
 );
 
-mp.events.addProc(
-   {
-      'SERVER::PLAYER:LOBY': (Player: PlayerMp) => { 
-         Player.dimension = Player.id;
-         console.log('stepbro')
-         return Settings.Lobby;
-      }
-      
-   }
-);
+
 
 
 

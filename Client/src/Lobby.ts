@@ -4,18 +4,21 @@ const Player:PlayerMp = mp.players.local;
 
 
 mp.events.add({
-   'playerReady': () => {
-      mp.events.callRemoteProc('SERVER::PLAYER:LOBY').then((Info) => { 
-         Lobby(true, Info.Position, Info.LookAt);
-      });
+   'playerReady': async () => {
+      const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
+      Lobby(true, Info.Position, Info.LookAt);
    }
 });
 
-mp.events.addProc({
-   'CLIENT:AUTHORIZATION:SEND_CREDENTIALS': (Username: string, Password: string) => { 
-      mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', Username, Password);
+mp.events.addProc(
+   {
+      'CLIENT:AUTHORIZATION:SEND_CREDENTIALS': async (Username: string, Password: string) => { 
+         const Response = await mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', Username, Password);
+         mp.gui.chat.push(JSON.stringify(Response));
+         return Response;
+      }
    }
-})
+);
 
 
 let Camera: CameraMp;

@@ -5,20 +5,23 @@
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-var __webpack_unused_export__;
 
-__webpack_unused_export__ = ({ value: true });
-__webpack_unused_export__ = void 0;
-__webpack_unused_export__ = mp.browsers.new('localhost:8080');
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Browser = void 0;
+exports.Browser = mp.browsers.new('localhost:8080');
+// Browser.markAsChat();
 
 
 /***/ }),
 
-/***/ 1499:
-/***/ (() => {
+/***/ 805:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
+var __webpack_unused_export__;
 
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
 const Player = mp.players.local;
 var UI_Status;
 (function (UI_Status) {
@@ -30,6 +33,11 @@ var UI_Status;
 let Configuration = {
     Status: UI_Status.Fully_Hidden
 };
+mp.events.add({
+    'CLIENT::NOTIFICATION': (Message, Type, Time) => {
+        Browser_1.Browser.call('BROWSER::NOTIFICATION', Message, Type, Time);
+    }
+});
 
 
 /***/ }),
@@ -44,17 +52,16 @@ __webpack_unused_export__ = ({ value: true });
 __webpack_unused_export__ = void 0;
 const Player = mp.players.local;
 mp.events.add({
-    'playerReady': () => {
-        mp.events.callRemoteProc('SERVER::PLAYER:LOBY').then((Info) => {
-            Lobby(true, Info.Position, Info.LookAt);
-        });
+    'playerReady': async () => {
+        const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
+        Lobby(true, Info.Position, Info.LookAt);
     }
 });
 mp.events.addProc({
-    'CLIENT:AUTHORIZATION:SEND_CREDENTIALS': (Username, Password) => {
-        mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', Username, Password).then((Response) => {
-            return Response;
-        });
+    'CLIENT:AUTHORIZATION:SEND_CREDENTIALS': async (Username, Password) => {
+        const Response = await mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', Username, Password);
+        mp.gui.chat.push(JSON.stringify(Response));
+        return Response;
     }
 });
 let Camera;
@@ -5852,101 +5859,6 @@ mp.events.add({
 
 /***/ }),
 
-/***/ 8138:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-
-
-
-// import './Browser';
-// import './Lobby';
-
-
-
-// UTILs
-let Utils = __webpack_require__(2591);
-
-// PLAYER CORE
-let CharacterCreator = __webpack_require__(4534);
-let Interface = __webpack_require__(9158);
-let PlayerCore = __webpack_require__(3045);
-let PlayersOnline = __webpack_require__(1500);
-let PlayerHelp = __webpack_require__(9133);
-let Attachments = __webpack_require__(7373);
-let Documents = __webpack_require__(555);
-let Inventory = __webpack_require__(7304);
-let Banking = __webpack_require__(3886);
-
-__webpack_require__(5639);
-
-// ADMIN
-let AdminStuffs = __webpack_require__(5626);
-
-// SYNCHRONIZATION & STREAMER
-let Streamer = __webpack_require__(8083);
-let Damage = __webpack_require__(6573);
-
-// GAME CORE 
-//let ChatBubble = require('./player/ChatBubble');
-
-// VEHICLES
-let Vehicles = __webpack_require__(8878);
-let DepartmentMV = __webpack_require__(6687);
-
-// HOUSES
-let Houses = __webpack_require__(2687);
-
-// INTERACTIONS
-let Interactions = __webpack_require__(1917);
-let Animations = __webpack_require__(1189);
-let Crouching = __webpack_require__(8201);
-let FingerPointing = __webpack_require__(5531);
-
-// FACTIONS
-let Police = __webpack_require__(8319);
-
-// BUSINESS
-let Business = __webpack_require__(2983);
-let Markets = __webpack_require__(9445);
-let Clothing = __webpack_require__(9853);
-let Gastations = __webpack_require__(9050);
-let Drinks = __webpack_require__(3080);
-let Rent = __webpack_require__(4508);
-let Dealeship = __webpack_require__(3582);
-
-// JOBS
-let Jobs = __webpack_require__(4032);
-let Jetsam = __webpack_require__(9408);
-let Transit = __webpack_require__(4116);
-let Sanitation = __webpack_require__(2399);
-let Mining = __webpack_require__(9247);
-let Food = __webpack_require__(2816);
-let Taxi = __webpack_require__(1846);
-
-// DIAMOND CASINO
-// let Roulette = require('./casino/Roulette');
-// let Slots = require('./casino/Slots');
-
-// let casino = require('./casino/CasinoSlots');
-// let fuel = require('./fuel');
-
-
-// var charClohing = require('./clothing/clothing');
-// // var interactionsMenu = require('./interactions-menu/interactions')
-// var jobs = require('./jobs/jobs');
-// var furniture = require('./furniture/furniture');
-// var syncObjects = require('./syncObjects');
-
-
-
-
-
-
-
-
-
-/***/ }),
-
 /***/ 9179:
 /***/ (() => {
 
@@ -9459,9 +9371,9 @@ const natives = {
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__(2910);
 /******/ 	__webpack_require__(994);
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__(2983);
 /******/ 	__webpack_require__(9853);
 /******/ 	__webpack_require__(3582);
@@ -9478,9 +9390,8 @@ const natives = {
 /******/ 	__webpack_require__(7193);
 /******/ 	__webpack_require__(8319);
 /******/ 	__webpack_require__(1406);
+/******/ 	__webpack_require__(805);
 /******/ 	__webpack_require__(2687);
-/******/ 	__webpack_require__(8138);
-/******/ 	__webpack_require__(1499);
 /******/ 	__webpack_require__(9179);
 /******/ 	__webpack_require__(2816);
 /******/ 	__webpack_require__(2387);

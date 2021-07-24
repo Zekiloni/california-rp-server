@@ -66,11 +66,6 @@ const GLOBALS = {
       Taxi: 7,
       Food_Delivery: 6,
    },
-
-   
-
-   
   
 };
 
-frp.Globals = GLOBALS;
