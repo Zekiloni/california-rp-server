@@ -1,6 +1,9 @@
+import { Colors, MarkerColors } from '../Global/Colors';
+import { Globals } from '../Global/Globals';
+import { Main } from '../Server/Main'
+import { Settings } from '../Server/Settings';
 
-
-frp.Factions = class Factions {
+export default class Factions {
 
    static Types = {
       Law: 0, Ems: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Cartel: 7, Party: 8
@@ -9,37 +12,37 @@ frp.Factions = class Factions {
    static Permissions = {
       Member: 0, Moderator: 35, Leader: 100
    };
-   
-   static List = { 
-      1: { 
+
+   static List: { [key: number]: any } = {
+      1: {
          Name: 'Los Santos Police Department', Description: 'To protect & Serve', Type: Factions.Types.Law, Sprite: 60, Color: 3,
          Position: new mp.Vector3(-1099.8215, -841.9021, 19.0015), Equipment: new mp.Vector3(-1094.0113, -825.75311, 26.8274),
          Govrepair: new mp.Vector3(-1077.8933, -846.7360, 4.8840), Garage: new mp.Vector3(-1117.0683593, -846.19830, 13.3847),
          Armory: new mp.Vector3(-1095.3900, -832.8939, 14.28303)
       }
-   }
+   };
 
 
-   static Init () { 
-      for (const i in this.List) { 
+   static Init() {
+      for (const i in this.List) {
          const Faction = this.List[i];
 
-         if (Faction.Sprite && Faction.Color) { 
-            mp.blips.new(Faction.Sprite, Faction.Position, { name: Faction.Name, dimension: frp.Settings.default.dimension, shortRange: true, color: Faction.Color });
+         if (Faction.Sprite && Faction.Color) {
+            mp.blips.new(Faction.Sprite, Faction.Position, { name: Faction.Name, dimension: Settings.Default.dimension, shortRange: true, color: Faction.Color });
          }
 
-         if (Faction.Type == this.Types.Law) { 
-            frp.Main.InfoColshape(Faction.Position, Faction.Name, null, 1.85, frp.Globals.MarkerColors.Faction);
-            frp.Main.InfoColshape(Faction.Equipment, Faction.Name + ' Cloakroom', 'Korišćenje: /cloakroom', 1.8, frp.Globals.MarkerColors.Faction);
-            frp.Main.InfoColshape(Faction.Armory, Faction.Name + ' Armory', 'Korišćenje: /equipment', 1.8, frp.Globals.MarkerColors.Faction);
-            frp.Main.InfoColshape(Faction.Govrepair, Faction.Name + ' Mehanical', 'Korišćenje: /govrepair', 3, frp.Globals.MarkerColors.Faction);
-            frp.Main.InfoColshape(Faction.Garage, Faction.Name + ' Garage', 'Korišćenje: /garage', 2, frp.Globals.MarkerColors.Faction);
+         if (Faction.Type == this.Types.Law) {
+            Main.InfoColshape(Faction.Position, Faction.Name, '', 1.85, MarkerColors.Faction);
+            Main.InfoColshape(Faction.Equipment, Faction.Name + ' Cloakroom', 'Korišćenje: /cloakroom', 1.8, MarkerColors.Faction);
+            Main.InfoColshape(Faction.Armory, Faction.Name + ' Armory', 'Korišćenje: /equipment', 1.8, MarkerColors.Faction);
+            Main.InfoColshape(Faction.Govrepair, Faction.Name + ' Mehanical', 'Korišćenje: /govrepair', 3, MarkerColors.Faction);
+            Main.InfoColshape(Faction.Garage, Faction.Name + ' Garage', 'Korišćenje: /garage', 2, MarkerColors.Faction);
          }
       }
    };
 
 
-   static async MakeLeader (player, faction) { 
+   static async MakeLeader(player: PlayerMp, faction: number) {
       if (this.List[faction]) {
          const Character = await player.Character();
          Character.Faction = faction;
@@ -49,33 +52,33 @@ frp.Factions = class Factions {
       }
 
    }
-   
 
-   static async Invite (player, target) { 
+
+   static async Invite(player: PlayerMp, target: PlayerMp) {
 
    }
 
 
-   static async Chat (player, message) { 
+   static async Chat(player: PlayerMp, message: string) {
       if (!message.trim()) return;
       const Character = await player.Character();
-      
-      mp.players.forEach(async (target) => { 
-         if (target.data.logged && target.data.spawned) { 
+
+      mp.players.forEach(async (target) => {
+         if (target.data.logged && target.data.spawned) {
             const TargetCharacter = await target.Character();
-            if (TargetCharacter.Faction == Character.Faction) { 
-               target.SendMessage('(( ' + Character.Faction_Rank + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.faction);
+            if (TargetCharacter.Faction == Character.Faction) {
+               target.SendMessage('(( ' + Character.Faction_Rank + ' ' + player.name + ': ' + message + ' ))', Colors.faction);
             }
          }
       });
    }
-   
+
 };
 
 
-(async () => { 
+(async () => {
 
-   frp.Factions.Init();
+   Factions.Init();
 
 })();
 
@@ -89,7 +92,7 @@ frp.Factions = class Factions {
 
 
 
-frp.Factions.prototype.Classing = function () { };
+//frp.Factions.prototype.Classing = function () { };
 
 
 // class Factions { 
