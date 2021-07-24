@@ -1,299 +1,305 @@
-// import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey, AfterCreate, AfterDestroy } from 'sequelize-typescript';
-// import { Settings } from '../Server/Settings';
-// import Business from './Business';
-// import Main from '../Server/Main';
-// import { Messages } from '../Global/Messages';
-// import { Globals } from '../Global/Globals';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey, AfterCreate, AfterDestroy } from 'sequelize-typescript';
+import { Settings } from '../Server/Settings';
+import Business from './Business';
+import { Main } from '../Server/Main';
+import { Messages } from '../Global/Messages';
+import { Globals } from '../Global/Globals';
+/*
+const VehicleEntities = {
+   Player: 0, Business: 1, Faction: 2, Job: 3
+};*/
 
-// const VehicleEntities = {
-//    Player: 0, Business: 1, Faction: 2, Job: 3
-// };
+let TemporaryVehicles = [];
 
-// let TemporaryVehicles = [];
+interface VehicleComponent { 
+   Component: number,
+   Value: number
+};
 
-// interface VehicleComponent { 
-//    Component: number,
-//    Value: number
-// };
+export interface VehiclePlate { 
+   Content: string,
+   Issued: number,
+   Expiring: number
+}
 
-// export interface VehiclePlate { 
-//    Content: string,
-//    Issued: number,
-//    Expiring: number
-// }
+export enum VehicleEntities {
+   Player, Business, Faction, Job
+}
 
-// export class Vehicles extends Model {
-//    @Column
-//    @PrimaryKey
-//    @AutoIncrement
-//    ID: number;
 
-//    @Column
-//    @AllowNull(false)
-//    Model: string;
+export class Vehicles extends Model {
+   @Column
+   @PrimaryKey
+   @AutoIncrement
+   ID: number;
 
-//    @Column
-//    @AllowNull(false)
-//    Entity: number;
+   @Column
+   @AllowNull(false)
+   Model: string;
 
-//    @Column
-//    @AllowNull(false)
-//    Owner: string;
+   @Column
+   @AllowNull(false)
+   Entity: number;
 
-//    @Column
-//    @AllowNull(false)
-//    Locked: boolean;
+   @Column
+   @AllowNull(false)
+   Owner: string;
 
-//    @Column
-//    @AllowNull(false)
-//    Numberplate: VehiclePlate;
+   @Column
+   @AllowNull(false)
+   Locked: boolean;
 
-//    @Column
-//    @AllowNull(false)
-//    Fuel: number;
+   @Column
+   @AllowNull(false)
+   Numberplate: VehiclePlate;
 
-//    @Column
-//    @AllowNull(false)
-//    Dirt: number;
+   @Column
+   @AllowNull(false)
+   Fuel: number;
 
-//    @Column
-//    @AllowNull(false)
-//    Mileage: number;
+   @Column
+   @AllowNull(false)
+   Dirt: number;
 
-//    @Column
-//    @AllowNull(false)
-//    Parked: boolean;
+   @Column
+   @AllowNull(false)
+   Mileage: number;
 
-//    @Column
-//    @AllowNull(false)
-//    Garage: number;
+   @Column
+   @AllowNull(false)
+   Parked: boolean;
 
-//    @Column
-//    @AllowNull(false)
-//    Color: number[]
+   @Column
+   @AllowNull(false)
+   Garage: number;
 
-//    @Column
-//    @AllowNull(false)
-//    Components: VehicleComponent[]
+   @Column
+   @AllowNull(false)
+   Color: number[]
 
-//    @Column
-//    @AllowNull(false)
-//    Parking: Vector3Mp;
+   @Column
+   @AllowNull(false)
+   Components: VehicleComponent[]
 
-//    @Column
-//    @AllowNull(false)
-//    Position: Vector3Mp;
+   @Column
+   @AllowNull(false)
+   Parking: Vector3Mp;
 
-//    @Column
-//    @AllowNull(false)
-//    Rotation: Vector3Mp;
+   @Column
+   @AllowNull(false)
+   Position: Vector3Mp;
 
-//    @CreatedAt
-//    Created_At: Date;
+   @Column
+   @AllowNull(false)
+   Rotation: Vector3Mp;
 
-//    @UpdatedAt
-//    Updated_At: Date;
+   @CreatedAt
+   Created_At: Date;
 
-//    Vehicle: VehicleMp;
+   @UpdatedAt
+   Updated_At: Date;
 
-//    @AfterCreate
-//    static async AfterCreating(Veh: Vehicles) { Veh.Spawn(); }
+   Vehicle: VehicleMp;
 
-//    @AfterDestroy
-//    static async AfterDestroying(Vehicle: Vehicles, Options: any) {
-//       if (Vehicle.Vehicle) {
-//          Vehicle.Vehicle.destroy();
-//       }
-//    }
+   @AfterCreate
+   static async AfterCreating(Veh: Vehicles) { Veh.Spawn(); }
 
-//    async New(model: string, entity: any, owner: number, position: Vector3Mp, rotation: number) {
-//       const Vehicle = await Vehicles.create({
-//          Model: model,
-//          Entity: entity,
-//          Owner: owner,
-//          Position: position,
-//          Rotation: rotation,
-//          Fuel: 100
-//       });
-//    }
+   @AfterDestroy
+   static async AfterDestroying(Vehicle: Vehicles, Options: any) {
+      if (Vehicle.Vehicle) {
+         Vehicle.Vehicle.destroy();
+      }
+   }
 
-//    async CreateTemporary(model: string, position: Vector3Mp, rotation: number, color: number[], plate: string, dimension = Settings.Default.dimension) {
-//       const [primary, secondary] = color;
+   static async New(model: string, entity: any, owner: number, position: Vector3Mp, rotation: number) {
+      const Vehicle = await Vehicles.create({
+         Model: model,
+         Entity: entity,
+         Owner: owner,
+         Position: position,
+         Rotation: rotation,
+         Fuel: 100
+      });
+      return Vehicle;
+   }
 
-//       const Vehicle = mp.vehicles.new(mp.joaat(model), position, {
-//          heading: rotation, alpha: 255, locked: false,
-//          numberPlate: plate, dimension: dimension, engine: false
-//       });
+   static async CreateTemporary(model: string, position: Vector3Mp, rotation: Vector3Mp, color: number[], plate: string, dimension = Settings.Default.dimension) {
+      const [primary, secondary] = color;
 
-//       Vehicle.setColor(primary, secondary);
+      const Vehicle = mp.vehicles.new(mp.joaat(model), position, {
+         heading: rotation.z, alpha: 255, locked: false,
+         numberPlate: plate, dimension: dimension, engine: false
+      });
 
-//       Vehicle.setVariable('Mileage', 0.0);
-//       Vehicle.setVariable('Fuel', 100.0);
-//       Vehicle.setVariable('Admin', true);
+      Vehicle.setColor(primary, secondary);
 
-//       TemporaryVehicles.push(Vehicle);
-//       return Vehicle;
-//    };
+      Vehicle.setVariable('Mileage', 0.0);
+      Vehicle.setVariable('Fuel', 100.0);
+      Vehicle.setVariable('Admin', true);
 
-//    async Dimension(i: number) {
-//       this.Vehicle.dimension = i;
-//    }
+      TemporaryVehicles.push(Vehicle);
+      return Vehicle;
+   };
 
-//    Spawn() {
-//       if (this.Vehicle) return;
+   async Dimension(i: number) {
+      this.Vehicle.dimension = i;
+   }
 
-//       const Vehicle = mp.vehicles.new(mp.joaat(this.Model), this.Position, {
-//          heading: this.Rotation.z,
-//          numberPlate: this.Numberplate.Content,
-//          alpha: 255,
-//          locked: this.Locked,
-//          engine: false,
-//          dimension: this.Garage
-//       });
+   Spawn() {
+      if (this.Vehicle) return;
 
-//       const [primary, secondary] = this.Color;
-//       Vehicle.setColor(primary, secondary);
+      const Vehicle = mp.vehicles.new(mp.joaat(this.Model), this.Position, {
+         heading: this.Rotation.z,
+         numberPlate: this.Numberplate.Content,
+         alpha: 255,
+         locked: this.Locked,
+         engine: false,
+         dimension: this.Garage
+      });
 
-//       Vehicle.DATABASE = this.id;
+      const [primary, secondary] = this.Color;
+      Vehicle.setColor(primary, secondary);
 
-//       Vehicle.setVariable('Mileage', this.Mileage);
-//       Vehicle.setVariable('Fuel', this.Fuel);
+      Vehicle.DATABASE = this.id;
 
-//       Vehicle.setVariable('Hood', false);
-//       Vehicle.setVariable('Trunk', false);
-//       Vehicle.setVariable('Windows', [false, false, false, false]);
+      Vehicle.setVariable('Mileage', this.Mileage);
+      Vehicle.setVariable('Fuel', this.Fuel);
 
-//       this.Vehicle = Vehicle;
-//    }
+      Vehicle.setVariable('Hood', false);
+      Vehicle.setVariable('Trunk', false);
+      Vehicle.setVariable('Windows', [false, false, false, false]);
 
-//    Respawn() {
-//       if (this.Vehicle) {
-//          this.Vehicle.position = this.Parking;
-//          this.Vehicle.rotation = this.Rotation;
-//       }
-//    }
+      this.Vehicle = Vehicle;
+   }
 
-//    static async GetVehicleInstance (Vehicle: VehicleMp) {
-//       const Veh = await Vehicles.findAll();
-//       Veh.forEach( (Instance) => {
-//          if (Instance.Vehicle == Vehicle) return Instance;
-//       });
-//    }
+   Respawn() {
+      if (this.Vehicle) {
+         this.Vehicle.position = this.Parking;
+         this.Vehicle.rotation = this.Rotation;
+      }
+   }
 
-//    async Park(Position: Vector3Mp, Rotation: Vector3Mp, garage: any = null) {
-//       if (this.Vehicle) {
-//          this.Parking = Position;
-//          this.Rotation = Rotation;
+   static async GetVehicleInstance (Vehicle: VehicleMp) {
+      const Veh = await Vehicles.findAll();
+      Veh.forEach( (Instance) => {
+         if (Instance.Vehicle == Vehicle) return Instance;
+      });
+   }
 
-//          if (garage != null) {
-//             this.Garage = garage;
-//          }
+   async Park(Position: Vector3Mp, Rotation: Vector3Mp, garage: any = null) {
+      if (this.Vehicle) {
+         this.Parking = Position;
+         this.Rotation = Rotation;
 
-//          this.Vehicle.position = Position;
-//          this.Vehicle.rotation = Rotation;
+         if (garage != null) {
+            this.Garage = garage;
+         }
 
-//          await this.save();
-//       }
-//    }
+         this.Vehicle.position = Position;
+         this.Vehicle.rotation = Rotation;
 
-//    async Paint(primary: number, secondary: number) {
-//       this.Color = [primary, secondary];
-//       if (this.Vehicle) this.Vehicle.setColor(primary, secondary);
-//       await this.save();
-//    }
+         await this.save();
+      }
+   }
 
-//    async Lock(Player: PlayerMp) {
-//       const Character = await Player.Character();
+   async Paint(primary: number, secondary: number) {
+      this.Color = [primary, secondary];
+      if (this.Vehicle) this.Vehicle.setColor(primary, secondary);
+      await this.save();
+   }
 
-//       switch (true) {
-//          case this.Entity == VehicleEntities.Player: {
-//             if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+   async Lock(Player: PlayerMp) {
+      const Character = await Player.Character();
 
-//             this.Vehicle.locked = !this.Vehicle.locked;
-//             this.Locked = this.Vehicle.locked;
-//             await this.save();
+      switch (true) {
+         case this.Entity == VehicleEntities.Player: {
+            if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
 
-//             break;
-//          }
+            this.Vehicle.locked = !this.Vehicle.locked;
+            this.Locked = this.Vehicle.locked;
+            await this.save();
 
-//          case this.Entity == VehicleEntities.Business: {
-//             const Biz = await Business.findOne(({ where: { Owner: this.Owner } }));
-//             if (Biz == null) return;
-//             if (Biz.Workers.includes(Character.id) == false) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+            break;
+         }
 
-//             this.Vehicle.locked = !this.Vehicle.locked;
-//             this.Locked = this.Vehicle.locked;
-//             await this.save();
+         case this.Entity == VehicleEntities.Business: {
+            const Biz = await Business.findOne(({ where: { Owner: this.Owner } }));
+            if (Biz == null) return;
+            if (Biz.Workers.includes(Character.id) == false) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
 
-//             break;
-//          }
+            this.Vehicle.locked = !this.Vehicle.locked;
+            this.Locked = this.Vehicle.locked;
+            await this.save();
 
-//          case this.Entity == VehicleEntities.Faction: {
-//             if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+            break;
+         }
 
-//             this.Vehicle.locked = !this.Vehicle.locked;
-//             this.Locked = this.Vehicle.locked;
-//             await this.save();
+         case this.Entity == VehicleEntities.Faction: {
+            if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
 
-//             break;
-//          }
-//       }
-//    }
+            this.Vehicle.locked = !this.Vehicle.locked;
+            this.Locked = this.Vehicle.locked;
+            await this.save();
 
-//    async GeneratePlate(ExpiringDays: number = 92) {
-//       let CurrentDate = Date.now();
+            break;
+         }
+      }
+   }
+
+   async GeneratePlate(ExpiringDays: number = 92) {
+      let CurrentDate = Date.now();
       
-//       const Plate: VehiclePlate = { 
-//          Content: '1312-DB',
-//          Issued: CurrentDate,
-//          Expiring: CurrentDate + (ExpiringDays * 84000) 
-//       };
+      const Plate: VehiclePlate = { 
+         Content: '1312-DB',
+         Issued: CurrentDate,
+         Expiring: CurrentDate + (ExpiringDays * 84000) 
+      };
 
-//       this.Numberplate = Plate;
-//       this.Vehicle.numberPlate = Plate.Content;
-//       await this.save();
-//    }
+      this.Numberplate = Plate;
+      this.Vehicle.numberPlate = Plate.Content;
+      await this.save();
+   }
 
-//    Nearest(position: Vector3Mp, radius: number) {
-//       let Result = null;
-//       mp.vehicles.forEachInRange(position, radius, (Vehicle) => {
-//          if (Vehicle) {
-//             Result = Vehicle;
-//             return;
-//          }
-//       });
-//       return Result;
-//    }
+   Nearest(position: Vector3Mp, radius: number) {
+      let Result = null;
+      mp.vehicles.forEachInRange(position, radius, (Vehicle) => {
+         if (Vehicle) {
+            Result = Vehicle;
+            return;
+         }
+      });
+      return Result;
+   }
 
-//    async Update(fuel: number, mileage: number, position: Vector3Mp) {
-//       this.Fuel = fuel;
-//       this.Vehicle.setVariable('Fuel', this.Fuel);
-//       this.Dirt = mileage;
-//       this.Vehicle.setVariable('Dirt', this.Dirt);
-//       this.Position = position;
-//       await this.save();
-//    }
+   async Update(fuel: number, mileage: number, position: Vector3Mp) {
+      this.Fuel = fuel;
+      this.Vehicle.setVariable('Fuel', this.Fuel);
+      this.Dirt = mileage;
+      this.Vehicle.setVariable('Dirt', this.Dirt);
+      this.Position = position;
+      await this.save();
+   }
 
-//    Window(i: number) {
-//       let Windows = this.Vehicle.getVariable('Windows');
-//       Windows[i] = !Windows[i];
-//       this.Vehicle.setVariable('Windows', Windows);
-//    }
+   Window(i: number) {
+      let Windows = this.Vehicle.getVariable('Windows');
+      Windows[i] = !Windows[i];
+      this.Vehicle.setVariable('Windows', Windows);
+   }
 
-//    Tune() {
-//       const Components = this.Components;
-//       Components.forEach(component => {
-//          this.Vehicle.setMod(component.Component, component.Value);
-//       });
-//    }
-// }
+   Tune() {
+      const Components = this.Components;
+      Components.forEach(component => {
+         this.Vehicle.setMod(component.Component, component.Value);
+      });
+   }
+}
 
-// (async () => {
-//    await Vehicles.sync();
+(async () => {
+   await Vehicles.sync();
 
-//    const Vehicle = await Vehicles.findAll();
-//    Vehicle.forEach((Veh) => {
-//       Veh.Spawn();
-//    });
-// })();
+   const Vehicle = await Vehicles.findAll();
+   Vehicle.forEach((Veh) => {
+      Veh.Spawn();
+   });
+})();
 

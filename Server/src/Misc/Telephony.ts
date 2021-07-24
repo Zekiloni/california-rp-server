@@ -2,7 +2,7 @@
 
 
 
-frp.Telephony = class Telephony {
+export class Telephony {
 
    static Services = { 
       Emergency: 911,

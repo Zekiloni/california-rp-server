@@ -8,15 +8,15 @@ const MiningSpots = [
     [2919.107, 2798.439, 40.998], [2936.635, 2812.305, 42.972],
     [2945.963, 2818.271, 42.655]
 ];
-class Miner {
+
+export class Miner {
     constructor() {
 
     }
-    start(player) {
-        player.call('client:player.miner.start', [MiningSpots]);
-        player.setProp(0, 145, 0); // yellow helmet
-        player.setClothes(8, 59, 0, 2); // green vest
+
+    start (Player: PlayerMp) {
+        Player.call('client:player.miner.start', [MiningSpots]);
+        Player.setProp(0, 145, 0); // yellow helmet
+        Player.setClothes(8, 59, 0, 2); // green vest
     }
 }
-let miner = new Miner();
-module.exports = miner;

@@ -1,11 +1,12 @@
+import { Settings } from "./Settings";
 
 
 const interval = 60 * 1000;
 
-async function Update (player) {
-   const Character = await player.Character(), account = await player.Account();
+async function Update (Player: PlayerMp) {
+   const Character = await Player.Character(), account = await Player.Account();
    
-   Character.increment('Minutes', { by: frp.Settings.HappyHours == true ? 2 : 1 });
+   Character.increment('Minutes', { by: Settings.HappyHours == true ? 2 : 1 });
 
    if (Character.Minutes >= 60) { 
       await Character.increment('Hours', { by: 1 });
@@ -22,7 +23,7 @@ async function Update (player) {
 
 
 function Minute() {
-   mp.players.forEach((player) => {
+   mp.players.forEach((player: PlayerMp) => {
       if (player.data.logged && player.data.spawned) {
          Update(player);
       }

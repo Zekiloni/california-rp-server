@@ -27,14 +27,14 @@ export const Colors = {
    Business: [255, 255, 255, 1],
    Bubble: [179, 128, 196, 255],
    Injured: [255, 99, 71, 255],
-};
 
+};
 
 type MarkerColors = {
    [key: string]: RGBA
 };
 
-export const MarkerColors = { 
+export const MarkerColors: MarkerColors = { 
    Business: [253, 201, 41, 185],
    Faction: [69, 222, 105, 113],
    Job: [254, 213, 46, 70],

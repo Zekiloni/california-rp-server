@@ -1,20 +1,25 @@
+import { Main } from "../Server/Main";
+
 const rp = require('request-promise');
 const hook = 'https://discord.com/api/webhooks/776875976633876490/zjzUiip35FUX5arAdjtKnpHGP4RRQ-nP9j_Frlqs63QrRC279_Uq-CHlBi3KipFWzGRx';
 const vinewoodOnline = {
     color: '#ffcd1d',
     url: 'https://discord.com/api/webhooks/823659820833832971/Jcpo0AcSVsTU_labTWbnO8dSLg0yxQFd9fDDYuDH5DfL6DKHFkd1FGF7tCxJCDp1STdn'
 };
-class Discord {
+
+export class Discord {
+    send: any;
+
     constructor() {
         // send hook
-        this.send = (title, subtitle, message, color) => {
+        this.send = (title: string, subtitle: string, message: string, color: string) => {
             var myEmbed = {
                 author: {
                     name: title
                 },
                 title: subtitle,
                 description: message,
-                color: frp.Main.HexToDecimal(color)
+                color: Main.HexToDecimal(color)
             };
             var params = {
                 username: 'Focus Roleplay',
@@ -30,7 +35,7 @@ class Discord {
                 .then(function (parsedBody) {
             })
                 .catch(function (err) {
-                core.terminal(1, 'Discord send Error ' + err);
+                Main.Terminal(1, 'Discord send Error ' + err);
             });
         };
         // screenshot
@@ -46,7 +51,7 @@ class Discord {
                     image: {
                         url: res.data.image.url
                     },
-                    color: frp.Main.HexToDecimal(vinewoodOnline.color)
+                    color: Main.HexToDecimal(vinewoodOnline.color)
                 };
                 var params = {
                     username: 'focus.online',
@@ -68,6 +73,6 @@ class Discord {
         });
     }
 }
-mp.discord = new Discord();
+//mp.discord = new Discord();
 
 // mp.discord.send('Server Startovan', 'adadada', 'adada', '#fffff')
