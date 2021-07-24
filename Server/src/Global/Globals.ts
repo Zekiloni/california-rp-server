@@ -15,6 +15,13 @@ export const Globals = {
          Furniture: 10, Pawn: 11, Tatto: 12
       }
    },
-
+   
+   Jobs: { 
+      Multiplier: 5.75,
+      Unemployed: 0,
+      Sanitation: 4,
+      Taxi: 7,
+      Food_Delivery: 6,
+   },
    
 }

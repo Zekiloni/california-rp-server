@@ -1,9 +1,15 @@
 import { Globals } from "../Global/Globals";
 import { Settings } from "./Settings";
+let Path = require('path');
+var scriptName = Path.basename(__filename);
 
 
 export enum LogType {
    Error, Succes, Info
+}
+
+export enum ExceptionType {
+   Null
 }
 
 export class Main {
@@ -14,6 +20,10 @@ export class Main {
       console.log(Colors[Status] + this.DateTime() + Colors[3] + ' | ' + Message)
    }
 
+   static Exception(Type: ExceptionType, FileName: string, Message?: string) {
+      this.Terminal(0, `[${FileName}] ` + Message);
+      // Upis u log
+   }
    
    static Size (object: Object) {
       let size = 0;
@@ -68,6 +78,12 @@ export class Main {
       }
       return result;
    }
+
+   static GenerateNumber(Min: number, Max: number) {
+      Min = Math.ceil(Min);
+      Max = Math.floor(Max);
+      return Math.floor(Math.random() * (Max - Min + 1)) + Min;
+  }
 
    static Dollars (i: number) { 
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);

@@ -1,3 +1,8 @@
+import { Globals } from "../Global/Globals";
+import { Messages } from "../Global/Messages";
+import { Vehicles } from "../Models/Vehicles";
+import { Main } from "../Server/Main";
+import { Jobs } from "./Jobs";
 
 
 
@@ -28,16 +33,16 @@ const Configuration = {
 };
 
 
-frp.Sanitation = class Sanitation {
+export class Sanitation {
 
-   static async Stop (Player) { 
+   static async Stop (Player: PlayerMp) { 
 
-      if (!Player.getVariable('Job_Duty')) return Player.Notification(frp.Globals.messages.JOB_NOT_STARTED, frp.Globals.Notification.Error, 5);
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, Globals.Notification.Error, 5);
 
       if (Player.getVariable('Job_Vehicle')) { 
          const Vehicle = mp.vehicles.at(Player.getVariable('Job_Vehicle'));
 
-         if (Vehicle.dist(frp.Jobs.Job[frp.Globals.Jobs.Sanitation].position) > 25) return Player.Notification(frp.Globals.messages.JOB_VEHICLE_RETURN_BACK, frp.Globals.Notification.Error, 5);
+         if (Vehicle.dist(Jobs.Job[Globals.Jobs.Sanitation].Position) > 25) return Player.Notification(Messages.JOB_VEHICLE_RETURN_BACK, Globals.Notification.Error, 5);
 
          Player.setVariable('Job_Vehicle', null);
          Vehicle.destroy();
@@ -53,36 +58,35 @@ frp.Sanitation = class Sanitation {
    }
 
 
-   static async Start (Player) { 
+   static async Start (Player: PlayerMp) { 
 
-      if (Player.getVariable('Job_Duty')) return Player.Notification(frp.Globals.messages.JOB_ALREADY_STARTED, frp.Globals.Notification.Error, 5);
+      if (Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_ALREADY_STARTED, Globals.Notification.Error, 5);
 
       let AvailablePosition = null;
 
       for (const Position of Configuration.Vehicle.Positions) { 
-         if (frp.Main.IsAnyVehAtPos(Position, 1.5).length == 0) {
+         if (Main.IsAnyVehAtPos(Position, 1.5).length == 0) {
             AvailablePosition = Position;
             break;
          }
       }
 
-      if (AvailablePosition == null) return Player.Notification(frp.Globals.messages.THERE_IS_NO_PLACE_FOR_VEHICLE, frp.Globals.Notification.Error, 5);
+      if (AvailablePosition == null) return Player.Notification(Messages.THERE_IS_NO_PLACE_FOR_VEHICLE, Globals.Notification.Error, 5);
 
-      const Vehicle = frp.Vehicles.CreateTemporary(
+      const Vehicle = Vehicles.CreateTemporary(
          Configuration.Vehicle.Model, 
          AvailablePosition, Configuration.Vehicle.Rotation, 
-         Configuration.Vehicle.Color, 'FO0' + frp.Main.GenerateNumber(3)
+         Configuration.Vehicle.Color, 'FO0' + Main.GenerateNumber(1, 3)
       );
 
-      Vehicle.setVariable('Job', frp.Globals.Jobs.Sanitation);
+      (await Vehicle).setVariable('Job', Globals.Jobs.Sanitation);
 
-      Player.setVariable('Job_Vehicle', Vehicle.id);
+      Player.setVariable('Job_Vehicle', (await Vehicle).id);
       Player.setVariable('Job_Duty', true);
 
-      Player.Notification(frp.Globals.messages.GARBAGE_JOB_STARTED, frp.Globals.Notification.Info, 12);
-     
-      const Character = await Player.Character();
-      Character.Uniform(Player, Configuration.Uniform);
+      Player.Notification(Messages.GARBAGE_JOB_STARTED, Globals.Notification.Info, 12);
+   
+      (await Player.Character()).Uniform(Player, Configuration.Uniform);
    }
 
 };
@@ -90,7 +94,7 @@ frp.Sanitation = class Sanitation {
 
 mp.events.add({
    'server:job.garbage:finish': (Player) => { 
-      Player.Notification(frp.Globals.messages.GARBAGE_HOW_TO_STOP, frp.Globals.Notification.Info, 12);
+      Player.Notification(Messages.GARBAGE_HOW_TO_STOP, Globals.Notification.Info, 12);
    }
 })
 

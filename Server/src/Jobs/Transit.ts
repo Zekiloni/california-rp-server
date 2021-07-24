@@ -1,3 +1,5 @@
+import { Colors } from "../Global/Colors";
+
 const routes = [
     require('../../data/bus_routes/Airport.json'),
     require('../../data/bus_routes/Zacundo.json'),
@@ -5,12 +7,13 @@ const routes = [
     require('../../data/bus_routes/Morningwood.json'),
     require('../../data/bus_routes/Rockford.json')
 ];
-class Bus {
+
+export class Bus {
     constructor() {
         mp.events.add({
             'server:player.transit.start': (player, route) => {
-                let character = player.getCharacter(), checkpoints = {};
-                routes[route].Stations.forEach((s) => {
+                let character = player.getCharacter(), checkpoints: any = {};
+                routes[route].Stations.forEach((s: any) => {
                     let coords = s.StationCoords;
                     checkpoints[s.StationIndex] = { name: s.StationName, position: new mp.Vector3(coords.X, coords.Y, coords.Z) };
                 });
@@ -21,7 +24,7 @@ class Bus {
                 if (finished) {
                     let character = player.getCharacter(), money = 0;
                     money += distance * 0.002, money += stations * 0.05;
-                    player.SendMessage('Novac za rutu ' + Math.ceil(money), mp.colors.info);
+                    player.SendMessage('Novac za rutu ' + Math.ceil(money), Colors.info);
                     character.working.salary += Math.ceil(money);
                     if (player.vehicle)
                         player.vehicle.destroy();
@@ -30,7 +33,8 @@ class Bus {
         });
     }
 }
-let transit = new Bus();
-mp.events.addCommand("bus", (player, message, i) => {
-    mp.events.call('server:player.transit.start', player, i);
+/*
+mp.events.addCommand("bus", (Player: PlayerMp, Message: string, i: number) => {
+    mp.events.call('server:player.transit.start', Player, i);
 });
+*/
