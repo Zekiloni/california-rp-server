@@ -10,12 +10,12 @@ mp.events.add({
    }
 });
 
+
 mp.events.addProc(
    {
       'CLIENT:AUTHORIZATION:SEND_CREDENTIALS': async (Username: string, Password: string) => { 
          const Response = await mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', Username, Password);
-         mp.gui.chat.push(JSON.stringify(Response));
-         return Response;
+         return JSON.stringify(Response);
       }
    }
 );

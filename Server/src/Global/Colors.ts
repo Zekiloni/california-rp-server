@@ -1,5 +1,8 @@
 
 
+
+
+
 export const Colors = {
    white: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'],
    low: ['BDBDBD', 'DEDEDE', 'A3A2A2', '909090', '909090'],
@@ -23,5 +26,18 @@ export const Colors = {
    whitesmoke: 'CECECE',
    Business: [255, 255, 255, 1],
    Bubble: [179, 128, 196, 255],
-   Injured: [255, 99, 71, 255]
+   Injured: [255, 99, 71, 255],
+};
+
+
+type MarkerColors = {
+   [key: string]: RGBA
+};
+
+export const MarkerColors = { 
+   Business: [253, 201, 41, 185],
+   Faction: [69, 222, 105, 113],
+   Job: [254, 213, 46, 70],
+   Houses: [199, 0, 0, 70],
+   Garages : [255, 255, 255, 70]
 };

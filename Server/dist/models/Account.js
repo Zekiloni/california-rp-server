@@ -24,9 +24,9 @@ let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model 
     Login(Password) {
         return bcryptjs_1.default.compareSync(Password, this.Password);
     }
-    async Logged(Player, Toggle, Character) {
+    async Logged(Player, Toggle) {
         this.Online = Toggle;
-        this.Last_Character = Character;
+        Player.ACCOUNT_ID = this.id;
         this.Login_Date = new Date();
         this.IP_Adress = Player.ip;
         Player.setVariable('Logged', true);
@@ -37,6 +37,7 @@ let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model 
             this.Hardwer = Player.serial;
             this.Social_Club = Player.socialClub;
         }
+        await this.save();
     }
     MakeAdministrator(Player, Level) {
         this.Administrator = Level;

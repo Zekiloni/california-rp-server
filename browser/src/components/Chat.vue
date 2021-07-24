@@ -5,7 +5,7 @@
    
    <div class="chat">
       <ul class="messages" ref="Entries" id="messages">
-         <li v-for="message in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="message">
+         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="i">
             <b class="timestamp" v-if="Settings.Timestamp" v-html="DateTime(message.timestamp)"> </b>
             <span v-html="message.content"> </span>
          </li>
@@ -69,7 +69,7 @@
 
       watch: {
          Messages: function (value) {
-            this.Update();
+            // this.Update();
          }
       },
 

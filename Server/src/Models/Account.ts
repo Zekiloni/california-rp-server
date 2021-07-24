@@ -79,9 +79,9 @@ export default class Accounts extends Model {
       return bcrypt.compareSync(Password, this.Password);
    }
 
-   async Logged (Player: PlayerMp, Toggle: boolean, Character: any) {
+   async Logged (Player: PlayerMp, Toggle: boolean) {
       this.Online = Toggle;
-      this.Last_Character = Character;
+      Player.ACCOUNT_ID = this.id;
       this.Login_Date = new Date();
       this.IP_Adress = Player.ip;
       
@@ -93,7 +93,8 @@ export default class Accounts extends Model {
          this.Hardwer = Player.serial;
          this.Social_Club = Player.socialClub;
       }
-      
+
+      await this.save();
    }
 
    

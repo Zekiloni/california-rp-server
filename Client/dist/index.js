@@ -8,6 +8,7 @@
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Browser = void 0;
+mp.gui.chat.show(false);
 exports.Browser = mp.browsers.new('localhost:8080');
 // Browser.markAsChat();
 
@@ -60,8 +61,7 @@ mp.events.add({
 mp.events.addProc({
     'CLIENT:AUTHORIZATION:SEND_CREDENTIALS': async (Username, Password) => {
         const Response = await mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', Username, Password);
-        mp.gui.chat.push(JSON.stringify(Response));
-        return Response;
+        return JSON.stringify(Response);
     }
 });
 let Camera;

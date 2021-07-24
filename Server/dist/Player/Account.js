@@ -8,7 +8,6 @@ const Messages_1 = require("../Global/Messages");
 const Account_1 = __importDefault(require("../Models/Account"));
 const Ban_1 = __importDefault(require("../Models/Ban"));
 const Character_1 = __importDefault(require("../Models/Character"));
-const Character_2 = __importDefault(require("../Models/Character"));
 const Settings_1 = require("../Server/Settings");
 mp.events.add({
     'playerJoin': async (Player) => {
@@ -16,8 +15,8 @@ mp.events.add({
         if (Banned)
             Player.kick('Bannedovan');
     },
-    'server:player.character:select': async (Player, CHARACTER_ID) => {
-        const Selected = await Character_2.default.findOne({ where: { id: CHARACTER_ID } });
+    'SERVER::CHARACTER:PLAY': async (Player, CHARACTER_ID) => {
+        const Selected = await Character_1.default.findOne({ where: { id: CHARACTER_ID } });
         Selected?.Spawn(Player);
     }
 });
@@ -33,7 +32,7 @@ mp.events.addProc({
                     const Logged = Account.Login(Password);
                     if (Logged) {
                         Character_1.default.findAll({ where: { Account: Account.id } }).then((Characters) => {
-                            Player.ACCOUNT_ID = Account.id;
+                            Account.Logged(Player, true);
                             resolve({ Account: Account, Characters: Characters });
                         });
                     }

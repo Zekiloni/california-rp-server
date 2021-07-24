@@ -1,7 +1,6 @@
 import { Browser } from './Browser';
 
 
-
 const Player = mp.players.local;
 
 enum UI_Status {

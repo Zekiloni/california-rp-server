@@ -13,6 +13,21 @@ body {
 }
 
 
+input {
+   letter-spacing: 1.2px;
+   width: 100%;
+   border: 1px solid rgb(121 121 121 / 13%);
+   color: #cdcdcd;
+   background: rgb(21 21 21 / 75%);
+   position: relative;
+   padding: 10px 20px;
+   font-size: 15px;
+   font-weight: 300;
+   box-shadow: 0 5px 10px rgb(12 12 12 / 10%);
+   transition: all 0.45s ease;
+}
+input:focus { border-color: #fbc60c; }
+
 .frp-purple-text { 
    text-shadow: 0 1px 2px rgb(72 39 198);
    color: #6f4cee;
@@ -22,7 +37,6 @@ body {
    color: #fbc60c;
    text-shadow: 0 1px 5px rgb(250 184 10 / 80%);
 }
-
 
 button { 
    font-family: 'Akrobat', sans-serif; 
@@ -89,7 +103,6 @@ button.frp-red:hover {
    background: #ff4422;
 }
 
-
 button.frp-green { 
    color: whitesmoke;
    background: rgb(68, 191, 103);
@@ -122,6 +135,9 @@ button:focus {
    transform: translateX(-15px);
    opacity: 0;
 }
+
+.fade-enter-active, .fade-leave-active { transition: opacity .5s; }
+.fade-enter, .fade-leave-to { opacity: 0; }
 
 
 

@@ -5,7 +5,6 @@ import { Messages } from '../Global/Messages';
 import Accounts from '../Models/Account';
 import Bans from '../Models/Ban';
 import Characters from '../Models/Character';
-import Character from '../Models/Character';
 import { Settings } from '../Server/Settings';
 
 
@@ -16,12 +15,13 @@ mp.events.add(
          if (Banned) Player.kick('Bannedovan');
       },
 
-      'server:player.character:select': async (Player: PlayerMp, CHARACTER_ID: number) => {
-         const Selected = await Character.findOne({ where: { id: CHARACTER_ID } });
+      'SERVER::CHARACTER:PLAY': async (Player: PlayerMp, CHARACTER_ID: number) => {
+         const Selected = await Characters.findOne({ where: { id: CHARACTER_ID } });
          Selected?.Spawn(Player);
       }
    }
 );
+
 
 mp.events.addProc(
    {
@@ -39,7 +39,7 @@ mp.events.addProc(
                   const Logged = Account.Login(Password);
                   if (Logged) { 
                      Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
-                        Player.ACCOUNT_ID = Account.id;
+                        Account.Logged(Player, true);
                         resolve({ Account: Account, Characters: Characters });
                      });
                   } else { 
