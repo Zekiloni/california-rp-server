@@ -23,7 +23,7 @@ mp.events.add({
       const ItemsObj = JSON.parse(ItemsList);
 
       const InBusiness = await Business.findOne({ where: { id: Biz } });
-      if (!InBusiness) return Main.Terminal(3, '[ERROR][SERVER:BUSINESS.DRINKS:BUY] Business not found in database. | ' + `Biz ID: ${Biz} CharId: ${Player.CHARACTER_ID}`);
+      if (!InBusiness) return Main.Terminal(3, '[ERROR][SERVER:BUSINESS.MARKET:BUY] Business not found in database. | ' + `Biz ID: ${Biz} CharId: ${Player.CHARACTER_ID}`);
       
       let Products = InBusiness.Products;
 
