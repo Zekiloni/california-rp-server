@@ -4,10 +4,10 @@ import Business from './Business';
 import { Main } from '../Server/Main';
 import { Messages } from '../Global/Messages';
 import { Globals } from '../Global/Globals';
-
+/*
 const VehicleEntities = {
    Player: 0, Business: 1, Faction: 2, Job: 3
-};
+};*/
 
 let TemporaryVehicles = [];
 
@@ -21,6 +21,11 @@ export interface VehiclePlate {
    Issued: number,
    Expiring: number
 }
+
+export enum VehicleEntities {
+   Player, Business, Faction, Job
+}
+
 
 export class Vehicles extends Model {
    @Column

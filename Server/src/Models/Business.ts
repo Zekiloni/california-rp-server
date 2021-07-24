@@ -121,6 +121,10 @@ export default class Business extends Model {
         }
     };
 
+    async Save() {
+        await this.save();
+    }
+
     async Buy(player: PlayerMp) {
         const Character = await player.Character();
 
