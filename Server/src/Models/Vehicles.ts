@@ -225,79 +225,6 @@
 //             this.Locked = this.Vehicle.locked;
 //             await this.save();
 
-<<<<<<< HEAD
-            break;
-         }
-
-         case this.Entity == VehicleEntities.Faction: {
-            if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
-
-            this.Vehicle.locked = !this.Vehicle.locked;
-            this.Locked = this.Vehicle.locked;
-            await this.save();
-
-            break;
-         }
-      }
-   }
-
-   async GeneratePlate(ExpiringDays: number = 92) {
-      let CurrentDate = Date.now();
-
-      const Plate: VehiclePlate = {
-         Content: '1312-DB',
-         Issued: CurrentDate,
-         Expiring: CurrentDate + (ExpiringDays * 84000)
-      };
-
-      this.Numberplate = Plate;
-      this.Vehicle.numberPlate = Plate.Content;
-      await this.save();
-   }
-
-   Nearest(position: Vector3Mp, radius: number) {
-      let Result = null;
-      mp.vehicles.forEachInRange(position, radius, (Vehicle) => {
-         if (Vehicle) {
-            Result = Vehicle;
-            return;
-         }
-      });
-      return Result;
-   }
-
-   async Update(fuel: number, mileage: number, position: Vector3Mp) {
-      this.Fuel = fuel;
-      this.Vehicle.setVariable('Fuel', this.Fuel);
-      this.Dirt = mileage;
-      this.Vehicle.setVariable('Dirt', this.Dirt);
-      this.Position = position;
-      await this.save();
-   }
-
-   Window(i: number) {
-      let Windows = this.Vehicle.getVariable('Windows');
-      Windows[i] = !Windows[i];
-      this.Vehicle.setVariable('Windows', Windows);
-   }
-
-   Tune() {
-      const Components = this.Components;
-      Components.forEach(component => {
-         this.Vehicle.setMod(component.Component, component.Value);
-      });
-   }
-}
-
-(async () => {
-   await Vehicles.sync();
-
-   const Vehicle = await Vehicles.findAll();
-   Vehicle.forEach((Veh) => {
-      Veh.Spawn();
-   });
-})();
-=======
 //             break;
 //          }
 
@@ -369,5 +296,4 @@
 //       Veh.Spawn();
 //    });
 // })();
->>>>>>> d24982c41b557db791c51b4fae10e0bff486c569
 
