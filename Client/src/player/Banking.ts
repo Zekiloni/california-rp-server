@@ -1,6 +1,6 @@
 
 
-const player = mp.players.local;
+const Player = mp.players.local;
 let browser = null, opened = false, bank = null;
 
 const banks = { 
