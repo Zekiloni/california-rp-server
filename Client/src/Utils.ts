@@ -8,15 +8,15 @@ const Server = {
    }
 }
 
-function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 
+export function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 
    return i.x == x.x && i.y == x.y && i.z == x.z;
 };
 
-function DistanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
+export function DistanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
    return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
 }
 
-function LoadAnimationDictionary (i: string): Promise<boolean> { 
+export function LoadAnimationDictionary (i: string): Promise<boolean> { 
    if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve(true);
    return new Promise(async resolve => { 
       mp.game.streaming.requestAnimDict(i);
@@ -28,7 +28,7 @@ function LoadAnimationDictionary (i: string): Promise<boolean> {
 };
 
 
-function LoadMovementClipset (Clipset: string): Promise<boolean> { 
+export function LoadMovementClipset (Clipset: string): Promise<boolean> { 
    if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve(true);
    return new Promise(async resolve => { 
       mp.game.streaming.requestClipSet(Clipset);
@@ -41,7 +41,7 @@ function LoadMovementClipset (Clipset: string): Promise<boolean> {
 
 
 
-function WaitEntity (Entity: EntityMp) {
+export function WaitEntity (Entity: EntityMp) {
    return new Promise(resolve => {
       let wait = setInterval(() => {
          if (mp.game.entity.isAnEntity(Entity.handle)) {
@@ -52,7 +52,7 @@ function WaitEntity (Entity: EntityMp) {
    });
 }
 
-function WeaponString (Weapon: number) {
+export function WeaponString (Weapon: number) {
 	if (typeof Weapon !== 'undefined')
 		return '0x' + Weapon.toString(16).toUpperCase()
 	else 

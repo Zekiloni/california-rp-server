@@ -2,7 +2,6 @@
 
 
 const Player = mp.players.local;
-let browser = null, opened = false;
 
 const Instructor = mp.peds.new(
    mp.game.joaat('a_m_y_bevhills_01'), 

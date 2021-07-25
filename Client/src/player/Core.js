@@ -12,7 +12,9 @@ let AntiKeySpam = false;
 const Controls = { 
    keyX: 0x58,
    keyL: 0x4C,
-   keyY: 0x59
+   keyY: 0x59,
+   LeftArrow: 0x25,
+   RightArrow: 0x27
 };
 
 
