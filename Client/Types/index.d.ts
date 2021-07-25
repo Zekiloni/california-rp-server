@@ -11,8 +11,15 @@ declare global {
 
   interface PlayerMp {
     Logged: boolean;
+    Spawned: boolean;
     Cuffed: boolean = false;
     Cuffs: ObjectMp;
+    Money: number;
+    Job: number;
+    Wounded: boolean;
+    Seatbelt: boolean;
+    Bubble: string;
+    Attachment: ObjectMp;
   }
 
   interface VehicleMp {

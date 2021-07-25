@@ -1,6 +1,7 @@
 import { WaitEntity } from '../Utils';
 
-const Player = mp.players.local;
+const Player = mp.players.local,
+      CuffsModel: string = 'p_cs_cuffs_02_s';
 
 
 mp.events.addDataHandler({
@@ -29,8 +30,8 @@ mp.events.add({
       }
    },
 
-   'client:player:cuff': (entity, toggle) => { 
-      Cuff(entity, toggle);
+   'client:player:cuff': (Entity: PlayerMp, Toggle: boolean) => { 
+      Cuff(Entity, Toggle);
    }
 
 });
@@ -41,7 +42,7 @@ function Cuff (Entity: PlayerMp, Toggle: boolean) {
       Entity.setEnableHandcuffs(true);
       Entity.Cuffed = true;
 
-      Entity.Cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), Entity.position, {
+      Entity.Cuffs = mp.objects.new(mp.game.joaat(CuffsModel), Entity.position, {
          rotation: new mp.Vector3(0, 0, 0),
          alpha: 255,
          dimension: Entity.dimension

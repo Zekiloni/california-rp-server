@@ -8,7 +8,7 @@ let SendToServer = true;
 
 mp.events.add({
 
-   'outgoingDamage': (sourceEntity, targetEntity, sourcePlayer, weapon, boneIndex, damage) => {
+   'outgoingDamage': (SourceEntity: EntityMp, TargetEntity: EntityMp, SourcePlayer: PlayerMp, Weapon: number, BoneIndex: number, Damage: number) => {
       // if (targetEntity.type === 'player') {
       //    if (targetEntity.getHealth() - damage < damage) { 
       //       mp.events.callRemoteProc('server:character.wounded', mp.players.at(targetEntity.id)).then((Response) => { 
@@ -19,16 +19,16 @@ mp.events.add({
       // }
    },
 
-   'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
-      if (targetEntity.id == Player.id) { 
+   'incomingDamage': (SourceEntity: EntityMp, TargetEntity: EntityMp, SourcePlayer: PlayerMp, Weapon: number, BoneIndex: number, Damage: number) => {
+      if (TargetEntity.id == Player.id) { 
          
          if (Player.getVariable('Wounded')) {
             mp.gui.chat.push('wounded');
 
          } else { 
-            let Injury = { Weapon: weapon, Bone: boneIndex };
+            let Injury = { Weapon: Weapon, Bone: BoneIndex };
    
-            Damage.Effect(boneIndex);
+            PlayerDamage.Effect(BoneIndex);
 
             mp.gui.chat.push('Nije wounded');
 
@@ -49,10 +49,10 @@ mp.events.add({
 });
 
 
-const Damage = { 
-   Check: function () { 
-      if (Player.logged && Player.spawned) { 
-         const Injuries = Player.getVariable('Injuries');
+class PlayerDamage {
+   static Check() { 
+      if (Player.Logged && Player.Spawned) { 
+         const Injuries: any[] = Player.getVariable('Injuries');
          if (Injuries.length > 0 && Player.getSpeed() > 5) { 
             if (Injuries.find(Element => Element.Bone == 4 || Element.Bone == 2)) {
                if (SendToServer) mp.events.callRemote('server:character.wounded:fall');
@@ -60,10 +60,10 @@ const Damage = {
          }
       }
    
-      setTimeout(() => { Damage.Check(); }, 1000);
-   },
+      setTimeout(() => { PlayerDamage.Check(); }, 1000);
+   }
 
-   Effect: function (Bone) { 
+   static Effect (Bone: number) { 
 
       switch (Bone) { 
          case 20: { 
@@ -77,9 +77,11 @@ const Damage = {
       }
 
    }
-};
+}
+   
 
-Damage.Check();
+
+//Damage.Check();
 
 
 

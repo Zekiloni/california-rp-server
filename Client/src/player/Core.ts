@@ -1,7 +1,7 @@
+import { WaitEntity, LoadMovementClipset } from "../Utils";
+
 
 const Player = mp.players.local;
-
-Player.Attachment = null;
 
 mp.nametags.enabled = false;
 
@@ -14,7 +14,8 @@ const Controls = {
    keyL: 0x4C,
    keyY: 0x59,
    LeftArrow: 0x25,
-   RightArrow: 0x27
+   RightArrow: 0x27,
+   Enter: 0x0D
 };
 
 
@@ -28,72 +29,72 @@ Player.setCanSwitchWeapon(false);
 
 
 mp.events.addDataHandler({
-   'logged': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.logged = newValue;
+   'logged': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+      if (Entity && Entity.remoteId === Player.remoteId) {
+         (<PlayerMp>Player).Logged = NewValue;
       }
    },
 
-   'spawned': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.spawned = newValue;
+   'spawned': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+      if (Entity && Entity.remoteId === Player.remoteId) {
+         Player.Spawned = NewValue;
       }
    },
 
-   'Money': (entity, newCash, oldCash) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.Money = newCash;
+   'Money': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+      if (Entity && Entity.remoteId === Player.remoteId) {
+         Player.Money = NewValue;
       }
    },
 
-   'Job': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.Job = newValue;
+   'Job': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+      if (Entity && Entity.remoteId === Player.remoteId) {
+         Player.Job = NewValue;
       }
    },
 
-   'Wounded': (Entity, newValue, oldValue) => {
+   'Wounded': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => {
       if (Entity.type == 'player') {
-         Entity.Wounded = newValue;
+         (<PlayerMp>Entity).Wounded = NewValue;
       }
    },
 
-   'Seatbelt': (entity, newValue, oldValue) => { 
-      if (entity && entity.remoteId === Player.remoteId) { 
-         Player.Seatbelt = newValue;
+   'Seatbelt': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => { 
+      if (Entity && Entity.remoteId === Player.remoteId) { 
+         Player.Seatbelt = NewValue;
       }
    },
    
-   'Ragdoll': (entity, newValue, oldValue) => { 
-      if (entity.type == 'player' && newValue != oldValue) { 
-         Interactions.Ragdoll(entity, newValue);
+   'Ragdoll': (Entity: EntityMp, NewValue: number, OldValue: number) => { 
+      if (Entity.type == 'player' && NewValue != OldValue) { 
+         Interactions.Ragdoll(Entity, NewValue);
       }
    },
 
-   'Bubble': (entity, newValue, oldValue) => {
-      if (entity.type == 'player' && newValue != oldValue) {
-         Player.Bubble = newValue;
+   'Bubble': (Entity: EntityMp, NewValue: string, OldValue: string) => {
+      if (Entity.type == 'player' && NewValue != OldValue) {
+         Player.Bubble = NewValue;
       }
    },
 
-   'Walking_Style': (Entity, Value, oldValue) => {
+   'Walking_Style': (Entity: EntityMp, NewValue: number, OldValue: number) => {
       if (Entity.type == 'player') {
-         Interactions.WalkingStyle(Entity, Value);
+         Interactions.WalkingStyle(Entity, NewValue);
       }
    },
 
-   'Mood': (Entity, Value, oldValue) => {
+   'Mood': (Entity: EntityMp, NewValue: number, OldValue: number) => {
       if (Entity.type == 'player') {
-         Interactions.FacialMood(Entity, Value);
+         Interactions.FacialMood(Entity, NewValue);
       }
    },
 
-   'Attachment': (entity, valueNew, valueOld) => {
-      if (valueNew !== valueOld) { 
-         if (valueNew) { 
-            Attachments.Add(entity, valueNew);
+   'Attachment': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+      if (NewValue !== OldValue) { 
+         if (NewValue) { 
+            Attachments.Add(Entity, NewValue);
          } else { 
-            Attachments.Remove(entity);
+            Attachments.Remove(Entity);
          }
       }
    }
@@ -111,7 +112,7 @@ mp.events.add({
    },
 
    'render': () => { 
-      if (Player.logged && Player.spawned) { 
+      if (Player.Logged && Player.Spawned) { 
          mp.players.forEach((Target) => { 
 
             const TargetPosition = Target.position;
@@ -125,7 +126,7 @@ mp.events.add({
                   const Index = Target.getBoneIndex(12844)
                   const NameTag = Target.getWorldPositionOfBone(Index);
 
-                  const Position = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.4));
+                  const Position = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.4);
 
                   if (Position) { 
                      let x = Position.x;
@@ -137,7 +138,7 @@ mp.events.add({
                      y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
 
                      if (Target.hasVariable('Bubble') && Target.getVariable('Bubble')) { 
-                        const BubblePosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.6));
+                        const BubblePosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.6);
                         if (BubblePosition) { 
                            const Bubble = Target.getVariable('Bubble');
                            mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
@@ -150,7 +151,7 @@ mp.events.add({
                      }
 
                      if (Target.hasVariable('Wounded') && Target.getVariable('Wounded')) {
-                        const WoundedPosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.75));
+                        const WoundedPosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.75);
                         if (WoundedPosition) { 
                            const Wound = Target.getVariable('Wounded');
                            mp.game.graphics.drawText('(( ' + Wound.Text + ' ))', [WoundedPosition.x, WoundedPosition.y], {
@@ -180,32 +181,32 @@ mp.events.add({
       }
    },
 
-   'entityModelChange': (entity, oldModel) => { 
+   'entityModelChange': (Entity: EntityMp, OldModel: PedBaseMp) => { 
    },
 
-   'entityStreamOut': (entity) => { 
-      if (entity.Attachment) { 
-         Attachments.StreamOut(entity);
+   'entityStreamOut': (Entity: EntityMp) => { 
+      if ((<PlayerMp>Entity).Attachment) { 
+         Attachments.StreamOut(Entity);
       }
    },
 
-   'client:player:freeze': (toggle) => {
-      Player.freezePosition(toggle);
+   'client:player:freeze': (Toggle: boolean) => {
+      Player.freezePosition(Toggle);
    },
 
-   'client:player:rotate': (value) => {
-      Player.setHeading(value);
+   'client:player:rotate': (Value: number) => {
+      Player.setHeading(Value);
    },
 
-   'client:request:ipl': (ipl) => { 
-      mp.game.streaming.requestIpl(ipl);
+   'client:request:ipl': (Ipl: string) => { 
+      mp.game.streaming.requestIpl(Ipl);
    }
 });
 
 
 // INTERACTIONS :: REMOVE ATTACHMENT
 mp.keys.bind(Controls.keyX, false, async function () {
-   if (Player.logged && Player.spawned) { 
+   if (Player.Logged && Player.Spawned) { 
       if (Player.isTypingInTextChat) return;
       if (Player.getVariable('Attachment') != null) {
          const response = await mp.events.callRemoteProc('server:character.attachment:remove');
@@ -218,7 +219,7 @@ mp.keys.bind(Controls.keyX, false, async function () {
 
 // INTERACTIONS :: LOCK
 mp.keys.bind(Controls.keyL, false, async function () {
-   if (Player.logged && Player.spawned && Player.isTypingInTextChat == false) { 
+   if (Player.Logged && Player.Spawned && Player.isTypingInTextChat == false) { 
      if (AntiKeySpam) return;
 
       mp.events.callRemote('server:interactions:lock');
@@ -230,7 +231,8 @@ mp.keys.bind(Controls.keyL, false, async function () {
 
 
 mp.keys.bind(Controls.keyY, false, () => {
-   if (!Player.logged || !Player.spawned || Player.isTypingInTextChat || Player.Cuffed) return;
+   let Vehicle: VehicleMp;
+   if (!Player.Logged || !Player.Spawned || Player.isTypingInTextChat || Player.Cuffed) return;
    if (AntiKeySpam) return;
 
    if (Player.vehicle) { 
@@ -242,15 +244,15 @@ mp.keys.bind(Controls.keyY, false, () => {
       setTimeout(() => { AntiKeySpam = false; }, 2000);
 
    } else { 
-      let Vehicle = null;
+      
 
       mp.vehicles.forEachInRange(Player.position, 4.5, (NearbyVehicle) => { 
          Vehicle = NearbyVehicle;
       });
    
-      if (Vehicle) { 
+      if (Vehicle.doesExist()) { 
    
-         const Bones = { 'boot': -1.35, 'bonnet': 2.0 };
+         const Bones: any = { 'boot': -1.35, 'bonnet': 2.0 };
    
          const Position = Player.position;
          
@@ -282,33 +284,33 @@ mp.events.addProc({
 
 const Attachments = { 
 
-   StreamIn: function (entity, attachment) { 
-      if (attachment) { 
-         Attachments.Add(entity, attachment);
+   StreamIn: function (Entity: EntityMp, Attachment: object) { 
+      if (Attachment) { 
+         Attachments.Add(Entity, Attachment);
       }
    },
 
-   StreamOut: function (entity) { 
-      Attachments.Remove(entity);
+   StreamOut: function (Entity: EntityMp) { 
+      Attachments.Remove(Entity);
    },
 
-   Add: function (entity, value) { 
+   Add: function (Entity: PlayerMp, Value: any) { 
 
-      entity.Attachment = mp.objects.new(mp.game.joaat(value.Model), entity.position, {
-         rotation: entity.rotation,
+      Entity.Attachment = mp.objects.new(mp.game.joaat(Value.Model), (<PlayerMp>Entity).position, {
+         rotation: new mp.Vector3(0, 0, Entity.heading),
          alpha: 255,
-         dimension: entity.dimension
+         dimension: Entity.dimension
       });
 
-      utils.WaitEntity(entity.Attachment).then(() => {
-         const Bone = entity.getBoneIndex(value.Bone);
-         entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, value.Rotation || false);
+      WaitEntity(Entity.Attachment).then(() => {
+         const Bone = Entity.getBoneIndex(Value.Bone);
+         Entity.Attachment.attachTo(Entity.handle, Bone, Value.Offset.X, Value.Offset.Y, Value.Offset.Z, Value.Offset.rX, Value.Offset.rY, Value.Offset.rZ, true, true, false, false, 0, Value.Rotation || false);
       })
 
    },
 
-   Remove: function (entity) { 
-      let Object = entity.Attachment;
+   Remove: function (Entity: PlayerMp) { 
+      let Object = Entity.Attachment;
       if (Object && mp.objects.exists(Object)) { 
          Object.destroy();
       }
@@ -317,24 +319,24 @@ const Attachments = {
 
 
 const Interactions = { 
-   WalkingStyle: async function (Entity, Style) {
+   WalkingStyle: async function (Entity: PlayerMp, Style: string) {
       if (Style == null) { 
          Entity.resetMovementClipset(0.0);
       } else { 
-         utils.LoadMovementClipset(Style).then(() => {
+         LoadMovementClipset(Style).then(() => {
             Entity.setMovementClipset(Style, 1.0);
          })
       }
    },
 
-   Ragdoll: function (Entity, Value) {
+   Ragdoll: function (Entity: PlayerMp, Value: any) {
       if (Value) { 
          mp.gui.chat.push(JSON.stringify(Value))
          Entity.setToRagdoll(Value.Time || 5000, Value.Time || 5000, 0, true, true, true);
       }
    },
 
-   FacialMood: function (Entity, Mood) { 
+   FacialMood: function (Entity: PlayerMp, Mood: string) { 
       Mood == 'normal' ? Entity.clearFacialIdleAnimOverride() : mp.game.invoke('0xFFC24B988B938B38', Entity.handle, Mood, 0);
    }
 }
