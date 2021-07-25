@@ -7,6 +7,10 @@ mp.events.add({
    'playerReady': async () => {
       const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
       Lobby(true, Info.Position, Info.LookAt);
+   },
+
+   'CLIENT::AUTHORIZATION:PLAY': (Character: number) => { 
+      
    }
 });
 
@@ -33,10 +37,12 @@ export function Lobby (Toggle: boolean, Position: Vector3Mp, LookAt: Vector3Mp) 
       Camera.pointAtCoord(LookAt.x, LookAt.y, LookAt.z);
       mp.game.cam.renderScriptCams(true, false, 0, true, false);
       mp.game.ui.displayRadar(false);
+      mp.game.graphics.transitionToBlurred(1000)
    } else { 
       if (Camera) Camera.destroy();
       Player.freezePosition(false);
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
       mp.game.ui.displayRadar(true);
+      mp.game.graphics.transitionFromBlurred(1000)
    }
 }

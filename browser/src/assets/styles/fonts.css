@@ -673,90 +673,80 @@
 
 
 /* AKROBAT */
-
- @font-face {
-   font-family: 'Akrobat';
-   font-style: normal;
-   font-weight: 500;
-   src: local('Akrobat'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Regular.woff') format('woff');
-}
+/* AKROBAT */
 @font-face {
-   font-family: 'Akrobat Light';
-   font-style: normal;
-   font-weight: 400;
-   src: local('Akrobat Light'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Light.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat ExtraLight';
-   font-style: normal;
-   font-weight: 300;
-   src: local('Akrobat ExtraLight'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-ExtraLight.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat SemiBold';
-   font-style: normal;
-   font-weight: 600;
-   src: local('Akrobat SemiBold'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-SemiBold.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat Bold';
-   font-style: normal;
-   font-weight: 700;
-   src: local('Akrobat Bold'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Bold.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat ExtraBold';
-   font-style: normal;
-   font-weight: 800;
-   src: local('Akrobat ExtraBold'), url('https://fonts.cdnfonts.com/s/14486/akrobat-extrabold-webfont.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat Black';
-   font-style: normal;
-   font-weight: 900;
-   src: local('Akrobat Black'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Black.woff') format('woff');
+	font-family: 'Akrobat';
+	src: url('../webfonts/Akrobat-Regular.eot');
+	src: local('Akrobat Regular'), local('Akrobat-Regular'),
+		url('../webfonts/Akrobat-Regular.eot?#iefix') format('embedded-opentype'),
+		url('../webfonts/Akrobat-Regular.woff') format('woff'),
+		url('../webfonts/Akrobat-Regular.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
 }
 
 @font-face {
-   font-family: 'Akrobat';
-   font-style: normal;
-   font-weight: 500;
-   src: local('Akrobat'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Regular.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat Light';
-   font-style: normal;
-   font-weight: 400;
-   src: local('Akrobat Light'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Light.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat ExtraLight';
-   font-style: normal;
-   font-weight: 300;
-   src: local('Akrobat ExtraLight'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-ExtraLight.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat SemiBold';
-   font-style: normal;
-   font-weight: 600;
-   src: local('Akrobat SemiBold'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-SemiBold.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat Bold';
-   font-style: normal;
-   font-weight: 700;
-   src: local('Akrobat Bold'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Bold.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat ExtraBold';
-   font-style: normal;
-   font-weight: 800;
-   src: local('Akrobat ExtraBold'), url('https://fonts.cdnfonts.com/s/14486/akrobat-extrabold-webfont.woff') format('woff');
-}
-@font-face {
-   font-family: 'Akrobat Black';
-   font-style: normal;
-   font-weight: 900;
-   src: local('Akrobat Black'), url('https://fonts.cdnfonts.com/s/14486/Akrobat-Black.woff') format('woff');
+	font-family: 'Akrobat';
+	src: url('../webfonts/Akrobat-ExtraLight.eot');
+	src: local('Akrobat ExtraLight'), local('Akrobat-ExtraLight'),
+		url('../webfonts/Akrobat-ExtraLight.eot?#iefix') format('embedded-opentype'),
+		url('../webfonts/Akrobat-ExtraLight.woff') format('woff'),
+		url('../webfonts/Akrobat-ExtraLight.ttf') format('truetype');
+	font-weight: 200;
+	font-style: normal;
 }
 
+@font-face {
+	font-family: 'Akrobat';
+	src: url('../webfonts/Akrobat-SemiBold.eot');
+	src: local('Akrobat SemiBold'), local('Akrobat-SemiBold'),
+		url('../webfonts/Akrobat-SemiBold.eot?#iefix') format('embedded-opentype'),
+		url('../webfonts/Akrobat-SemiBold.woff') format('woff'),
+		url('../webfonts/Akrobat-SemiBold.ttf') format('truetype');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Akrobat';
+	src: url('../webfonts/Akrobat-Light.eot');
+	src: local('Akrobat Light'), local('Akrobat-Light'),
+		url('../webfonts/Akrobat-Light.eot?#iefix') format('embedded-opentype'),
+		url('../webfonts/Akrobat-Light.woff') format('woff'),
+		url('../webfonts/Akrobat-Light.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Akrobat';
+	src: url('../webfonts/Akrobat-Black.eot');
+	src: local('Akrobat Black'), local('Akrobat-Black'),
+		url('../webfonts/Akrobat-Black.eot?#iefix') format('embedded-opentype'),
+		url('../webfonts/Akrobat-Black.woff') format('woff'),
+		url('../webfonts/Akrobat-Black.ttf') format('truetype');
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Akrobat';
+	src: url('../webfonts/Akrobat-Bold.eot');
+	src: local('Akrobat Bold'), local('Akrobat-Bold'),
+		url('../webfonts/Akrobat-Bold.eot?#iefix') format('embedded-opentype'),
+		url('../webfonts/Akrobat-Bold.woff') format('woff'),
+		url('../webfonts/Akrobat-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Akrobat';
+	src: url('../webfonts/Akrobat-ExtraBold.eot');
+	src: local('Akrobat ExtraBold'), local('Akrobat-ExtraBold'),
+		url('../webfonts/Akrobat-ExtraBold.eot?#iefix') format('embedded-opentype'),
+		url('../webfonts/Akrobat-ExtraBold.woff') format('woff'),
+		url('../webfonts/Akrobat-ExtraBold.ttf') format('truetype');
+	font-weight: 800;
+	font-style: normal;
+}

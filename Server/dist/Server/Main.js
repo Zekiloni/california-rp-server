@@ -1,18 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Main = exports.LogType = void 0;
+exports.Main = exports.ExceptionType = exports.LogType = void 0;
 const Globals_1 = require("../Global/Globals");
 const Settings_1 = require("./Settings");
+let Path = require('path');
+var scriptName = Path.basename(__filename);
 var LogType;
 (function (LogType) {
     LogType[LogType["Error"] = 0] = "Error";
     LogType[LogType["Succes"] = 1] = "Succes";
     LogType[LogType["Info"] = 2] = "Info";
 })(LogType = exports.LogType || (exports.LogType = {}));
+var ExceptionType;
+(function (ExceptionType) {
+    ExceptionType[ExceptionType["Null"] = 0] = "Null";
+})(ExceptionType = exports.ExceptionType || (exports.ExceptionType = {}));
 class Main {
     static Terminal(Status, Message) {
         const Colors = ['\x1b[31m', '\x1b[32m', '\x1b[33m', '\x1b[0m'];
         console.log(Colors[Status] + this.DateTime() + Colors[3] + ' | ' + Message);
+    }
+    static Exception(Type, FileName, Message) {
+        this.Terminal(0, `[${FileName}] ` + Message);
+        // Upis u log
     }
     static Size(object) {
         let size = 0;
@@ -65,6 +75,12 @@ class Main {
         }
         return result;
     }
+    /* NIJE OVO TAJ KOJ SI TI KORISTIO :(
+    static GenerateNumber(Min: number, Max: number) {
+       Min = Math.ceil(Min);
+       Max = Math.floor(Max);
+       return Math.floor(Math.random() * (Max - Min + 1)) + Min;
+    }*/
     static Dollars(i) {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);
     }

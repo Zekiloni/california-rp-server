@@ -26,16 +26,17 @@ input {
    box-shadow: 0 5px 10px rgb(12 12 12 / 10%);
    transition: all 0.45s ease;
 }
-input:focus { border-color: #fbc60c; }
 
-.frp-purple-text { 
-   text-shadow: 0 1px 2px rgb(72 39 198);
+input:focus { border-color: #fbc60c; outline: none; }
+
+.frp-purple { 
+   text-shadow: 0 1px 2px rgb(72 39 198 / 40%);
    color: #6f4cee;
 }
 
-.frp-orange-text { 
+.frp-orange { 
    color: #fbc60c;
-   text-shadow: 0 1px 5px rgb(250 184 10 / 80%);
+   text-shadow: 0 1px 5px rgb(250 184 10 / 40%);
 }
 
 button { 
@@ -58,8 +59,8 @@ button.frp-1 {
 }
 
 button.frp-1:hover { 
-   filter: brightness(1.05);
-   box-shadow: 0 4px 10px rgb(251 198 12 / 60%);
+   color: white;
+   box-shadow: 0 4px 10px rgb(251 198 12 / 50%);
 }
 
 button.frp-2 { 

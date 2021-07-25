@@ -1,7 +1,8 @@
 
 
 const Player = mp.players.local;
-let browser = null, opened = false;
+
+let Active:boolean = false;
 
 
 const Creator = { 
@@ -13,25 +14,24 @@ const Genders = [ mp.game.joaat('mp_m_freemode_01'), mp.game.joaat('mp_f_freemod
 
 let Hair = [0, 0, 0];
 
-mp.events.add({
-   'client:player.character.creator:show': async () => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://player/game-interface/creator.html');
-         Player.position = Creator.Position;
-         Player.setHeading(Creator.Heading);
-         Player.BrowserControls(true, true);
-         Player.freezePosition(true);
-         mp.game.ui.displayRadar(false);
-         utils.PlayerPreviewCamera(true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-         Player.freezePosition(false);
-         mp.game.ui.displayRadar(true);
-         utils.PlayerPreviewCamera(false);
-      }
-   },
+mp.events.add(
+   {
+      'CLIENT::CREATOR:START': () => { 
+
+         Active = true;
+
+         if (opened) { 
+            Player.position = Creator.Position;
+            Player.setHeading(Creator.Heading);
+            Player.freezePosition(true);
+            mp.game.ui.displayRadar(false);
+            utils.PlayerPreviewCamera(true);
+         } else { 
+            Player.freezePosition(false);
+            mp.game.ui.displayRadar(true);
+            utils.PlayerPreviewCamera(false);
+         }
+      },
 
    'render': () => { 
       if (opened && browser) { 

@@ -32,5 +32,6 @@ Database.authenticate()
 
 
 // Accounts.create({ Username: 'Zekiloni', Password: 'test' });
+Characters.create({ Name: 'Zachary Parker', Account: 1 });
 
 export default Database;

@@ -40,6 +40,7 @@ mp.events.addProc(
                   if (Logged) { 
                      Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
                         Account.Logged(Player, true);
+                        console.log(Characters);
                         resolve({ Account: Account, Characters: Characters });
                      });
                   } else { 

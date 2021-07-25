@@ -2,7 +2,12 @@
 // let Terminal = require('../modules/jobs/Jetsam');
 // let Transit = require('../modules/jobs/Transit');
 // let Miner = require('../modules/jobs/Miner');
-var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Jobs = void 0;
+const Colors_1 = require("../Global/Colors");
+const Globals_1 = require("../Global/Globals");
+const Messages_1 = require("../Global/Messages");
+const Settings_1 = require("../Server/Settings");
 require('../modules/jobs/Sanitation');
 require('../modules/jobs/Food');
 require('../modules/jobs/Taxi');
@@ -38,56 +43,59 @@ const List = {
 };
 mp.events.add({
     'server:job:accept': async (player, i) => {
-        const Job = frp.Jobs.Job[i];
+        const Job = Jobs.Job[i];
         Job.Take(player);
     }
 });
-frp.Jobs = (_a = class Jobs {
-        constructor(id, name, description, position, blip) {
-            this.id = id;
-            this.name = name;
-            this.description = description;
-            this.position = position;
-            this.blip = mp.blips.new(blip[0], this.position, { name: this.name, color: blip[1], shortRange: true, scale: 0.8 });
-            this.colshape = mp.colshapes.newRectangle(this.position.x, this.position.y, 2.0, 2.0, 0),
-                this.marker = mp.markers.new(1, new mp.Vector3(this.position.x, this.position.y, this.position.z - 0.98), 1.5, {
-                    color: frp.Globals.MarkerColors.Job,
-                    rotation: new mp.Vector3(0, 0, 90),
-                    visible: true,
-                    dimension: frp.Settings.default.dimension
-                });
-            this.colshape.OnPlayerEnter = async (player) => {
-                const Character = await player.Character();
-                if (Character.Job != frp.Globals.Jobs.Unemployed)
-                    return;
-                player.Notification(this.name + ', ' + this.description + '.<br>' + '/takejob', frp.Globals.Notification.Info, 5);
-            };
-            Jobs.Job[id] = this;
+class Jobs {
+    constructor(Id, JobName, Descr, Pos, Blip) {
+        this.ID = Id;
+        this.Name = JobName;
+        this.Description = Descr;
+        this.Position = Pos;
+        this.Blip = mp.blips.new(Blip[0], this.Position, { name: this.Name, color: Blip[1], shortRange: true, scale: 0.8 });
+        this.Colshape = mp.colshapes.newRectangle(this.Position.x, this.Position.y, 2.0, 2.0, 0),
+            this.Marker = mp.markers.new(1, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 1.5, {
+                color: Colors_1.MarkerColors.Job,
+                rotation: new mp.Vector3(0, 0, 90),
+                visible: true,
+                dimension: Settings_1.Settings.Default.dimension
+            });
+        this.Colshape.OnPlayerEnter = async (player) => {
+            const Character = await player.Character();
+            if (Character.Job != Globals_1.Globals.Jobs.Unemployed)
+                return;
+            player.Notification(this.Name + ', ' + this.Description + '.<br>' + '/takejob', Globals_1.Globals.Notification.Info, 5);
+        };
+        Jobs.Job[this.ID] = this;
+    }
+    static Init() {
+        for (const i in List) {
+            const Job = List[i];
+            new Jobs(Job.id, Job.name, Job.description, Job.point, [Job.blip, Job.sprite]);
         }
-        static Init() {
-            for (const i in List) {
-                const Job = List[i];
-                new Jobs(Job.id, Job.name, Job.description, Job.point, [Job.blip, Job.sprite]);
-            }
+    }
+    static Nearest(Player) {
+        for (const i in Jobs.Job) {
+            const Job = Jobs.Job[i];
+            if (Player.dist(Job.Position) < 3)
+                return Job;
         }
-        static Nearest(player) {
-            for (const i in frp.Jobs.Job) {
-                const Job = frp.Jobs.Job[i];
-                if (player.dist(Job.position) < 3)
-                    return Job;
-            }
-        }
-    },
-    _a.Job = {},
-    _a);
-frp.Jobs.prototype.Take = async function (player) {
-    const Character = await player.Character();
-    player.Notification(frp.Globals.messages.SUCCESFULLY_JOB + this.description, frp.Globals.Notification.Succes, 5);
-    Character.SetJob(player, this.id);
-};
-frp.Jobs.prototype.Quit = async function (player) {
-    const Character = await player.Character();
-    if (Character.Job == frp.Globals.Jobs.Unemployed)
-        return player.Notification(frp.Globals.messages.UNEMPLOYED, frp.Globals.Notification.Error, 5);
-};
-frp.Jobs.Init();
+    }
+    async Take(Player) {
+        const Character = await Player.Character();
+        Player.Notification(Messages_1.Messages.SUCCESFULLY_JOB + this.Description, Globals_1.Globals.Notification.Succes, 5);
+        Character.SetJob(Player, this.ID);
+    }
+    async Quit(Player) {
+        const Character = await Player.Character();
+        if (Character.Job == Globals_1.Globals.Jobs.Unemployed)
+            return Player.Notification(Messages_1.Messages.UNEMPLOYED, Globals_1.Globals.Notification.Error, 5);
+    }
+}
+exports.Jobs = Jobs;
+Jobs.Job = [];
+;
+(async () => {
+    Jobs.Init();
+})();

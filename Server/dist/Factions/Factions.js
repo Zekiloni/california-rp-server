@@ -1,66 +1,70 @@
 "use strict";
-var _a;
-frp.Factions = (_a = class Factions {
-        static Init() {
-            for (const i in this.List) {
-                const Faction = this.List[i];
-                if (Faction.Sprite && Faction.Color) {
-                    mp.blips.new(Faction.Sprite, Faction.Position, { name: Faction.Name, dimension: frp.Settings.default.dimension, shortRange: true, color: Faction.Color });
-                }
-                if (Faction.Type == this.Types.Law) {
-                    frp.Main.InfoColshape(Faction.Position, Faction.Name, null, 1.85, frp.Globals.MarkerColors.Faction);
-                    frp.Main.InfoColshape(Faction.Equipment, Faction.Name + ' Cloakroom', 'Korišćenje: /cloakroom', 1.8, frp.Globals.MarkerColors.Faction);
-                    frp.Main.InfoColshape(Faction.Armory, Faction.Name + ' Armory', 'Korišćenje: /equipment', 1.8, frp.Globals.MarkerColors.Faction);
-                    frp.Main.InfoColshape(Faction.Govrepair, Faction.Name + ' Mehanical', 'Korišćenje: /govrepair', 3, frp.Globals.MarkerColors.Faction);
-                    frp.Main.InfoColshape(Faction.Garage, Faction.Name + ' Garage', 'Korišćenje: /garage', 2, frp.Globals.MarkerColors.Faction);
-                }
+Object.defineProperty(exports, "__esModule", { value: true });
+const Colors_1 = require("../Global/Colors");
+const Main_1 = require("../Server/Main");
+const Settings_1 = require("../Server/Settings");
+class Factions {
+    static Init() {
+        for (const i in this.List) {
+            const Faction = this.List[i];
+            if (Faction.Sprite && Faction.Color) {
+                mp.blips.new(Faction.Sprite, Faction.Position, { name: Faction.Name, dimension: Settings_1.Settings.Default.dimension, shortRange: true, color: Faction.Color });
+            }
+            if (Faction.Type == this.Types.Law) {
+                Main_1.Main.InfoColshape(Faction.Position, Faction.Name, '', 1.85, Colors_1.MarkerColors.Faction);
+                Main_1.Main.InfoColshape(Faction.Equipment, Faction.Name + ' Cloakroom', 'Korišćenje: /cloakroom', 1.8, Colors_1.MarkerColors.Faction);
+                Main_1.Main.InfoColshape(Faction.Armory, Faction.Name + ' Armory', 'Korišćenje: /equipment', 1.8, Colors_1.MarkerColors.Faction);
+                Main_1.Main.InfoColshape(Faction.Govrepair, Faction.Name + ' Mehanical', 'Korišćenje: /govrepair', 3, Colors_1.MarkerColors.Faction);
+                Main_1.Main.InfoColshape(Faction.Garage, Faction.Name + ' Garage', 'Korišćenje: /garage', 2, Colors_1.MarkerColors.Faction);
             }
         }
-        ;
-        static async MakeLeader(player, faction) {
-            if (this.List[faction]) {
-                const Character = await player.Character();
-                Character.Faction = faction;
-                Character.Faction_Rank = 'Leader';
-                Character.Faction_Perms = this.Permissions.Leader;
-                await Character.save();
-            }
-        }
-        static async Invite(player, target) {
-        }
-        static async Chat(player, message) {
-            if (!message.trim())
-                return;
+    }
+    ;
+    static async MakeLeader(player, faction) {
+        if (this.List[faction]) {
             const Character = await player.Character();
-            mp.players.forEach(async (target) => {
-                if (target.data.logged && target.data.spawned) {
-                    const TargetCharacter = await target.Character();
-                    if (TargetCharacter.Faction == Character.Faction) {
-                        target.SendMessage('(( ' + Character.Faction_Rank + ' ' + player.name + ': ' + message + ' ))', frp.Globals.Colors.faction);
-                    }
+            Character.Faction = faction;
+            Character.Faction_Rank = 'Leader';
+            Character.Faction_Perms = this.Permissions.Leader;
+            await Character.save();
+        }
+    }
+    static async Invite(player, target) {
+    }
+    static async Chat(player, message) {
+        if (!message.trim())
+            return;
+        const Character = await player.Character();
+        mp.players.forEach(async (target) => {
+            if (target.data.logged && target.data.spawned) {
+                const TargetCharacter = await target.Character();
+                if (TargetCharacter.Faction == Character.Faction) {
+                    target.SendMessage('(( ' + Character.Faction_Rank + ' ' + player.name + ': ' + message + ' ))', Colors_1.Colors.faction);
                 }
-            });
-        }
-    },
-    _a.Types = {
-        Law: 0, Ems: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Cartel: 7, Party: 8
-    },
-    _a.Permissions = {
-        Member: 0, Moderator: 35, Leader: 100
-    },
-    _a.List = {
-        1: {
-            Name: 'Los Santos Police Department', Description: 'To protect & Serve', Type: _a.Types.Law, Sprite: 60, Color: 3,
-            Position: new mp.Vector3(-1099.8215, -841.9021, 19.0015), Equipment: new mp.Vector3(-1094.0113, -825.75311, 26.8274),
-            Govrepair: new mp.Vector3(-1077.8933, -846.7360, 4.8840), Garage: new mp.Vector3(-1117.0683593, -846.19830, 13.3847),
-            Armory: new mp.Vector3(-1095.3900, -832.8939, 14.28303)
-        }
-    },
-    _a);
+            }
+        });
+    }
+}
+exports.default = Factions;
+Factions.Types = {
+    Law: 0, Ems: 1, Gov: 2, News: 3, Gang: 4, Mafia: 5, Cartel: 7, Party: 8
+};
+Factions.Permissions = {
+    Member: 0, Moderator: 35, Leader: 100
+};
+Factions.List = {
+    1: {
+        Name: 'Los Santos Police Department', Description: 'To protect & Serve', Type: Factions.Types.Law, Sprite: 60, Color: 3,
+        Position: new mp.Vector3(-1099.8215, -841.9021, 19.0015), Equipment: new mp.Vector3(-1094.0113, -825.75311, 26.8274),
+        Govrepair: new mp.Vector3(-1077.8933, -846.7360, 4.8840), Garage: new mp.Vector3(-1117.0683593, -846.19830, 13.3847),
+        Armory: new mp.Vector3(-1095.3900, -832.8939, 14.28303)
+    }
+};
+;
 (async () => {
-    frp.Factions.Init();
+    Factions.Init();
 })();
-frp.Factions.prototype.Classing = function () { };
+//frp.Factions.prototype.Classing = function () { };
 // class Factions { 
 //    constructor () { 
 //       mp.events.add({

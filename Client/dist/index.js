@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Browser = void 0;
 mp.gui.chat.show(false);
 exports.Browser = mp.browsers.new('localhost:8080');
-// Browser.markAsChat();
+exports.Browser.markAsChat();
 
 
 /***/ }),
@@ -56,6 +56,8 @@ mp.events.add({
     'playerReady': async () => {
         const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
         Lobby(true, Info.Position, Info.LookAt);
+    },
+    'CLIENT:AUTHORIZATION:PLAY': (Character) => {
     }
 });
 mp.events.addProc({
@@ -75,6 +77,7 @@ function Lobby(Toggle, Position, LookAt) {
         Camera.pointAtCoord(LookAt.x, LookAt.y, LookAt.z);
         mp.game.cam.renderScriptCams(true, false, 0, true, false);
         mp.game.ui.displayRadar(false);
+        mp.game.graphics.transitionToBlurred(1000);
     }
     else {
         if (Camera)
@@ -82,6 +85,7 @@ function Lobby(Toggle, Position, LookAt) {
         Player.freezePosition(false);
         mp.game.cam.renderScriptCams(false, false, 0, false, false);
         mp.game.ui.displayRadar(true);
+        mp.game.graphics.transitionFromBlurred(1000);
     }
 }
 __webpack_unused_export__ = Lobby;

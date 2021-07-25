@@ -29,4 +29,5 @@ Database.authenticate()
     Main_1.Main.Terminal(Main_1.LogType.Error, Error);
 });
 // Accounts.create({ Username: 'Zekiloni', Password: 'test' });
+Character_1.default.create({ Name: 'Zachary Parker', Account: 1 });
 exports.default = Database;

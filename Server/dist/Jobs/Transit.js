@@ -1,4 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Bus = void 0;
+const Colors_1 = require("../Global/Colors");
 const routes = [
     require('../../data/bus_routes/Airport.json'),
     require('../../data/bus_routes/Zacundo.json'),
@@ -22,7 +25,7 @@ class Bus {
                 if (finished) {
                     let character = player.getCharacter(), money = 0;
                     money += distance * 0.002, money += stations * 0.05;
-                    player.SendMessage('Novac za rutu ' + Math.ceil(money), mp.colors.info);
+                    player.SendMessage('Novac za rutu ' + Math.ceil(money), Colors_1.Colors.info);
                     character.working.salary += Math.ceil(money);
                     if (player.vehicle)
                         player.vehicle.destroy();
@@ -31,7 +34,9 @@ class Bus {
         });
     }
 }
-let transit = new Bus();
-mp.events.addCommand("bus", (player, message, i) => {
-    mp.events.call('server:player.transit.start', player, i);
+exports.Bus = Bus;
+/*
+mp.events.addCommand("bus", (Player: PlayerMp, Message: string, i: number) => {
+    mp.events.call('server:player.transit.start', Player, i);
 });
+*/ 

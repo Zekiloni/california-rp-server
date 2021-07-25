@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Miner = void 0;
 const MiningSpots = [
     [2955.808, 2769.739, 39.228], [2965.794, 2772.616, 39.404],
     [2968.642, 2782.328, 39.037], [2981.407, 2780.817, 39.590],
@@ -12,11 +14,10 @@ const MiningSpots = [
 class Miner {
     constructor() {
     }
-    start(player) {
-        player.call('client:player.miner.start', [MiningSpots]);
-        player.setProp(0, 145, 0); // yellow helmet
-        player.setClothes(8, 59, 0, 2); // green vest
+    start(Player) {
+        Player.call('client:player.miner.start', [MiningSpots]);
+        Player.setProp(0, 145, 0); // yellow helmet
+        Player.setClothes(8, 59, 0, 2); // green vest
     }
 }
-let miner = new Miner();
-module.exports = miner;
+exports.Miner = Miner;

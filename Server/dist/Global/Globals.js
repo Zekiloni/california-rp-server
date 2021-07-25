@@ -15,11 +15,11 @@ exports.Globals = {
             Furniture: 10, Pawn: 11, Tatto: 12
         }
     },
-    MarkerColors: {
-        Business: [253, 201, 41, 185],
-        Faction: [69, 222, 105, 113],
-        Job: [254, 213, 46, 70],
-        Houses: [199, 0, 0, 70],
-        Garages: [255, 255, 255, 70] // IZABRATI BOJU
+    Jobs: {
+        Multiplier: 5.75,
+        Unemployed: 0,
+        Sanitation: 4,
+        Taxi: 7,
+        Food_Delivery: 6,
     },
 };
