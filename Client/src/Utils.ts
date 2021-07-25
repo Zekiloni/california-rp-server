@@ -146,7 +146,6 @@ export function MoveCamera () {
    }
 }
 
-
 export function CreateInteractionSpot (Name: string, Position: Vector3Mp) { 
    const checkpoint = mp.checkpoints.new(48, Position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
    const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
