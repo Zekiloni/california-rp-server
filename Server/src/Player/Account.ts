@@ -17,6 +17,7 @@ mp.events.add(
 
       'SERVER::CHARACTER:PLAY': async (Player: PlayerMp, CHARACTER_ID: number) => {
          const Selected = await Characters.findOne({ where: { id: CHARACTER_ID } });
+         console.log('Valele gey')
          Selected?.Spawn(Player);
       }
    }

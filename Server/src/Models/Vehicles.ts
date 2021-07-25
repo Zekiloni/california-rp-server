@@ -213,7 +213,7 @@ export class Vehicles extends Model {
 
       switch (true) {
          case this.Entity == VehicleEntities.Player: {
-            if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+            // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
 
             this.Vehicle.locked = !this.Vehicle.locked;
             this.Locked = this.Vehicle.locked;
@@ -235,7 +235,7 @@ export class Vehicles extends Model {
          }
 
          case this.Entity == VehicleEntities.Faction: {
-            if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+            // if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
 
             this.Vehicle.locked = !this.Vehicle.locked;
             this.Locked = this.Vehicle.locked;

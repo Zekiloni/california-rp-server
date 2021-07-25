@@ -1,5 +1,6 @@
-import { Account } from "../src/Models/Account";
-import { Character } from "../src/Models/Character";
+import Accounts from "../src/Models/Account";
+import Characters from "../src/Models/Character";
+
 
 
 declare global { 
@@ -7,8 +8,8 @@ declare global {
 
    interface Mp {
       Player: any
-
    }
+
 
    interface ColshapeMp { 
       OnPlayerEnter (Player: PlayerMp): void;    
@@ -26,8 +27,8 @@ declare global {
       ACCOUNT_ID: number;
       RespawnTimer: any;
       
-      Character (): Character;
-      Account (): Account;
+      Character (): Promise<Characters>;
+      Account (): Promise<Accounts>;
       SendMessage (Message: string, Color: string): void;
       Notification (Message: string, Type: number, Time: number): void;
       Properties (): any;

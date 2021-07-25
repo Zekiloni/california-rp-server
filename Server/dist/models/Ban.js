@@ -35,7 +35,7 @@ let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
         else {
             let Online = mp.players.find(target);
             if (Online) {
-                const Account = Online.Account();
+                const Account = await Online.Account();
                 Bans_1.create({ Account: Online.ACCOUNT_ID, Character: Online.CHARACTER_ID, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
                 Online.kick(reason);
             }

@@ -47,7 +47,7 @@
             <ul class="characters">
                <li class="character" v-for="i in Max_Characters" v-bind:key="i">
 
-                  <fieldset v-if="Info.Characters[i]" class="info">
+                  <fieldset v-if="Info.Characters[i]" class="info" v-on:click="Play(Info.Characters[i].id)">
                      <legend> {{ Info.Characters[i].Name }} </legend>
 
                      <h2 class="playing-hours">
@@ -79,15 +79,17 @@
    import Helpers from '../Helpers';
    import { Notification, Messages, Genders } from '../Globals';
 
+
    export default { 
 
       components: {
-         Loading, 
+         Loading,        
       }, 
 
       data () { 
          return { 
             Inputs: { Username: null, Password: null },
+            Slider: 30,
             Logged: true,
             Info: {
                "Account":{
@@ -181,8 +183,11 @@
             return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
          },
 
-         Play: async function (Character_ID) { 
-            mp.events.call('CLIENT:AUTHORIZATION:PLAY', Character_ID);
+         Play: async function (i) { 
+            this.Logged = 'loading';
+            Helpers.Sleep(3).then(() => { 
+               mp.events.call('CLIENT:AUTHORIZATION:PLAY', i);
+            });
          },
 
          Create: function (i) { 
@@ -262,9 +267,10 @@
 
    .account .info h4.rank { 
       margin: 0;
-      color: whitesmoke;
-      letter-spacing: 2px;
+      color: #b8b8b8;
+      letter-spacing: 3px;
       font-size: 16px;
+      text-transform: uppercase;
       font-weight: 100;
    }
 
@@ -283,6 +289,14 @@
 
    ul.other li b { 
       float: right;
+   }
+
+
+   ul.char-info { 
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
    }
 
    .lobby ul.characters { 
@@ -323,7 +337,7 @@
       box-shadow: 0 5px 10px rgb(250 184 10 / 10%);
    }
 
-   .character .info:hover legend { color: white; background: #fab80a; box-shadow: 0 1px 4px rgb(250 184 10 / 22%); }
+   .character .info:hover legend { color: white; /* background: #fab80a; box-shadow: 0 1px 4px rgb(250 184 10 / 22%); */ }
 
    .character .info legend { 
       padding: 0 15px; color: #cdcdcd; font-size: 18.5px; font-weight: 300; transition: all 0.35s ease; border-radius: 5px;

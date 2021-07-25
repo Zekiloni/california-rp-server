@@ -20,7 +20,7 @@ const Appearance_1 = __importDefault(require("./Appearance"));
 let Characters = class Characters extends sequelize_typescript_1.Model {
     async Spawn(Player) {
         const Account = await Player.Account();
-        await Account.Logged(Player, true, this.id);
+        await Account.Logged(Player, true);
         Player.CHARACTER_ID = this.id;
         Player.name = this.Name;
         Player.setVariable('Spawned', true);

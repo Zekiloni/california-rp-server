@@ -4,7 +4,6 @@ import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Defau
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
-import Accounts from './Account';
 import Appearances from './Appearance';
 import { Injury } from './Injury';
 import { License } from './License';
@@ -152,11 +151,10 @@ export default class Characters extends Model {
    @UpdatedAt
    Updated_At: Date;
 
-
    async Spawn (Player: PlayerMp) { 
       const Account = await Player.Account();
 
-      await Account.Logged(Player, true, this.id);
+      await Account.Logged(Player, true);
 
       Player.CHARACTER_ID = this.id;
       Player.name = this.Name;

@@ -122,8 +122,7 @@ class Vehicles extends sequelize_typescript_1.Model {
         const Character = await Player.Character();
         switch (true) {
             case this.Entity == VehicleEntities.Player: {
-                if (this.Owner != Character.id)
-                    return Player.Notification(Messages_1.Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals_1.Globals.Notification.Error, 6);
+                // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
                 this.Vehicle.locked = !this.Vehicle.locked;
                 this.Locked = this.Vehicle.locked;
                 await this.save();
@@ -141,8 +140,7 @@ class Vehicles extends sequelize_typescript_1.Model {
                 break;
             }
             case this.Entity == VehicleEntities.Faction: {
-                if (this.Owner != Character.Faction)
-                    return Player.Notification(Messages_1.Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals_1.Globals.Notification.Error, 6);
+                // if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
                 this.Vehicle.locked = !this.Vehicle.locked;
                 this.Locked = this.Vehicle.locked;
                 await this.save();

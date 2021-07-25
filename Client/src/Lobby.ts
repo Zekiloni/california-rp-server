@@ -3,16 +3,18 @@
 const Player:PlayerMp = mp.players.local;
 
 
-mp.events.add({
-   'playerReady': async () => {
-      const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
-      Lobby(true, Info.Position, Info.LookAt);
-   },
+mp.events.add(
+   {
+      'playerReady': async () => {
+         const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
+         Lobby(true, Info.Position, Info.LookAt);
+      },
 
-   'CLIENT::AUTHORIZATION:PLAY': (Character: number) => { 
-      
+      'CLIENT::AUTHORIZATION:PLAY': async (Character: number) => { 
+         const Response = await mp.events.callRemoteProc('SERVER::CHARACTER:PLAY', Character);
+      }
    }
-});
+);
 
 
 mp.events.addProc(
