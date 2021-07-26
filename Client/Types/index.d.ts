@@ -20,6 +20,7 @@ declare global {
     Seatbelt: boolean;
     Bubble: string;
     Attachment: ObjectMp;
+    Crouching: boolean = false;
   }
 
   interface VehicleMp {

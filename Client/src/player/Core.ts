@@ -29,13 +29,13 @@ Player.setCanSwitchWeapon(false);
 
 
 mp.events.addDataHandler({
-   'logged': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+   'logged': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => {
       if (Entity && Entity.remoteId === Player.remoteId) {
          (<PlayerMp>Player).Logged = NewValue;
       }
    },
 
-   'spawned': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+   'spawned': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => {
       if (Entity && Entity.remoteId === Player.remoteId) {
          Player.Spawned = NewValue;
       }
@@ -65,31 +65,31 @@ mp.events.addDataHandler({
       }
    },
    
-   'Ragdoll': (Entity: EntityMp, NewValue: number, OldValue: number) => { 
+   'Ragdoll': (Entity: PlayerMp, NewValue: number, OldValue: number) => { 
       if (Entity.type == 'player' && NewValue != OldValue) { 
          Interactions.Ragdoll(Entity, NewValue);
       }
    },
 
-   'Bubble': (Entity: EntityMp, NewValue: string, OldValue: string) => {
+   'Bubble': (Entity: PlayerMp, NewValue: string, OldValue: string) => {
       if (Entity.type == 'player' && NewValue != OldValue) {
          Player.Bubble = NewValue;
       }
    },
 
-   'Walking_Style': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+   'Walking_Style': (Entity: PlayerMp, NewValue: string, OldValue: number) => {
       if (Entity.type == 'player') {
          Interactions.WalkingStyle(Entity, NewValue);
       }
    },
 
-   'Mood': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+   'Mood': (Entity: PlayerMp, NewValue: string, OldValue: number) => {
       if (Entity.type == 'player') {
          Interactions.FacialMood(Entity, NewValue);
       }
    },
 
-   'Attachment': (Entity: EntityMp, NewValue: number, OldValue: number) => {
+   'Attachment': (Entity: PlayerMp, NewValue: number, OldValue: number) => {
       if (NewValue !== OldValue) { 
          if (NewValue) { 
             Attachments.Add(Entity, NewValue);
@@ -231,7 +231,7 @@ mp.keys.bind(Controls.keyL, false, async function () {
 
 
 mp.keys.bind(Controls.keyY, false, () => {
-   let Vehicle: VehicleMp;
+   let Vehicle: any; // PITATI ZAŠTO NE MOŽE VehicleMp 
    if (!Player.Logged || !Player.Spawned || Player.isTypingInTextChat || Player.Cuffed) return;
    if (AntiKeySpam) return;
 
@@ -286,12 +286,12 @@ const Attachments = {
 
    StreamIn: function (Entity: EntityMp, Attachment: object) { 
       if (Attachment) { 
-         Attachments.Add(Entity, Attachment);
+         Attachments.Add(<PlayerMp>Entity, Attachment);
       }
    },
 
    StreamOut: function (Entity: EntityMp) { 
-      Attachments.Remove(Entity);
+      Attachments.Remove(<PlayerMp>Entity);
    },
 
    Add: function (Entity: PlayerMp, Value: any) { 

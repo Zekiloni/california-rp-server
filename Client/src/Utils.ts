@@ -1,4 +1,6 @@
 
+
+
 const Player = mp.players.local;
 
 
@@ -27,7 +29,6 @@ export function LoadAnimationDictionary (i: string): Promise<boolean> {
    })
 };
 
-
 export function LoadMovementClipset (Clipset: string): Promise<boolean> { 
    if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve(true);
    return new Promise(async resolve => { 
@@ -38,8 +39,6 @@ export function LoadMovementClipset (Clipset: string): Promise<boolean> {
       resolve(true);
    })
 }
-
-
 
 export function WaitEntity (Entity: EntityMp) {
    return new Promise(resolve => {
@@ -59,8 +58,6 @@ export function WeaponString (Weapon: number) {
 		return '0xA2719263'
 }
 
-
-
 export function OnlinePlayers () {
    let List: any = [];
    mp.players.forEach(_Player => {
@@ -68,7 +65,6 @@ export function OnlinePlayers () {
    }); 
    return List;
 }
-
 
 export function GetAdress (Position: Vector3Mp) { 
    const path = mp.game.pathfind.getStreetNameAtCoord(Position.x, Position.y, Position.z, 0, 0),
@@ -151,4 +147,3 @@ export function CreateInteractionSpot (Name: string, Position: Vector3Mp) {
    const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
    return { checkpoint: checkpoint, blip: blip };
 };
-
