@@ -1,4 +1,4 @@
-
+import { CreateInteractionSpot, DistanceBetweenVectors } from "../Utils";
 
 
 const Player = mp.players.local, MAX = 25;
@@ -11,16 +11,16 @@ mp.events.add({
    },  
 });
 
-function HouseInteraction (position) {
-   const { Checkpoint, Blip } = Player.CreateInteractionSpot(`Mail Deliver No${DeliveredMails}`, deliverPos);
+function HouseInteraction (Position: Vector3Mp) {
+   const { Checkpoint, Blip } = CreateInteractionSpot(`Mail Deliver No${DeliveredMails}`, Position);
 
    mp.events.add('playerEnterCheckpoint', OnPlayerDeliverMail);
 
-   function OnPlayerDeliverMail (point) { 
+   function OnPlayerDeliverMail (Point: CheckpointMp) { 
       if (DeliveredMails == MAX) {
          //mp.events.callRemote('server:job:finish', 6); // jobId
       }
-      if (point == Checkpoint) { 
+      if (Point == Checkpoint) { 
          DeliveredMails++;
          Checkpoint.destroy();
          Blip.destroy();
@@ -34,12 +34,12 @@ function BehindTruckInteraction () {
    const Truck = player.getVariable('Job_Veh');
    if (Truck) {
       const PosBehind = Truck.getOffsetFromInWorldCoords(0.0, -3.8, 0.0);
-      const { Checkpoint, Blip } = Player.CreateInteractionSpot('GoPostal Van', PosBehind);
+      const { Checkpoint, Blip } = CreateInteractionSpot('GoPostal Van', PosBehind);
 
       mp.events.add('playerEnterCheckpoint', OnPlayerTakeMail);
-      function OnPlayerTakeMail (point) { 
-         if (point == Checkpoint) {
-            if (Utils.Distance(Player.position, PosBehind) <= 0.5) {
+      function OnPlayerTakeMail (Point: CheckpointMp) { 
+         if (Point == Checkpoint) {
+            if (DistanceBetweenVectors(Player.position, PosBehind) <= 0.5) {
                Player.heading = Truck.heading;
                Checkpoint.destroy();
                Blip.destroy();

@@ -1,37 +1,47 @@
 
 
-const player = mp.players.local;
-let route = [], current = false, max = 0, distance = 0;
-let browser = null, finishing = false, wrong = false;
+const Player = mp.players.local;
+let Route: any = []
+let Current: boolean = false;
+let Max: number = 0
+let Distance: number = 0;
+let Browser = null
+let Finishing = false
+let Wrong = false;
 
 let cancel = null;
 let garage = new mp.Vector3(447.428, -591.51739, 28.0754);
 
 
 class Station { 
-   constructor (id, name, position) { 
-      this.id = id;
-      this.name = name;
-      this.position = new mp.Vector3(parseFloat(position.x), parseFloat(position.y), parseFloat(position.z - 1.07));
-      this.checkpoint = mp.checkpoints.new(47, this.position, 5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension, visible: false });
-      this.checkpoint.station = this.id;
-      let number = this.id + 1;
-      this.blip = mp.blips.new(1, new mp.Vector3(this.position.x, this.position.y, 0), { name: number + '. ' + this.name, color: 5, shortRange: false, alpha: 0 });
+   ID: number;
+   Name: string;
+   Position: Vector3Mp;
+   Checkpoint: CheckpointMp;
+   Blip: BlipMp;
+
+   constructor (Id: number, Name: string, Pos: Vector3Mp) { 
+      this.ID = Id;
+      this.Name = Name;
+      this.Position = new mp.Vector3(Pos.x, Pos.y, Pos.z - 1.07);
+      this.Checkpoint = mp.checkpoints.new(47, this.Position, 5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension });
+      this.Checkpoint.Station = this.ID;
+      let number = this.ID + 1;
+      this.Blip = mp.blips.new(1, new mp.Vector3(this.Position.x, this.Position.y, 0), { name: number + '. ' + this.Name, color: 5, shortRange: false, alpha: 0 });
       
-      route.push(this)
+      Route.push(this)
    }
 
    delete () { 
-      this.checkpoint.destroy();
-      this.blip.destroy();
-      let i = route.indexOf(this);
-      route.splice(i, 1)
+      this.Checkpoint.destroy();
+      this.Blip.destroy();
+      let i = Route.indexOf(this);
+      Route.splice(i, 1)
    }
    
-
    visible () { 
-      this.checkpoint.visible = true;
-      this.blip.setAlpha(255);
+      this.Checkpoint.setAlpha(255);
+      this.Blip.setAlpha(255);
    }
 }
 

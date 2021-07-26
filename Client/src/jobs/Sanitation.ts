@@ -1,11 +1,12 @@
-
+import { CreateInteractionSpot } from "../Utils";
 
 const Player = mp.players.local;
 
 const Max = 25;
 const Depony = new mp.Vector3(-435.5779, -1704.9042, 18.06115);
 
-let Visited = [], Picked = false;
+let Visited: any = []
+let Picked = false;
 
 
 const GarbageObjects = [
@@ -68,18 +69,18 @@ const GarbageObjects = [
   
 
 mp.keys.bind(0x59, false, async function () {
-   if (Player.logged && Player.spawned && Player.getVariable('Job') == 4 && Player.getVariable('Job_Duty') == true) { 
+   if (Player.Logged && Player.Spawned && Player.getVariable('Job') == 4 && Player.getVariable('Job_Duty') == true) { 
       if (Player.vehicle || Player.Cuffed || Player.isTypingInTextChat) return;
       
       if (Visited.length == Max) return;
 
       if (Visited.length == Max - 1) { 
-         const {checkpoint, blip} = Player.CreateInteractionSpot('Depony', Depony);
+         const { Checkpoint, Blip } = CreateInteractionSpot('Depony', Depony);
 
          mp.events.add('playerEnterCheckpoint', PlayerEnterDepony);
 
-         function PlayerEnterDepony (point) { 
-            if (point == checkpoint) { 
+         function PlayerEnterDepony (Point: CheckpointMp) { 
+            if (Point == Checkpoint) { 
 
                let Truck = mp.vehicles.atRemoteId(Player.getVariable('Job_Vehicle'));
                if (Player.vehicle == Truck) { 
@@ -95,8 +96,8 @@ mp.keys.bind(0x59, false, async function () {
                      mp.events.callRemote('server:job.garbage:finish');
                   }, 15000);
 
-                  checkpoint.destroy();
-                  blip.destroy();
+                  Checkpoint.destroy();
+                  Blip.destroy();
                   mp.events.remove('playerEnterCheckpoint', PlayerEnterDepony);
                }
             }
@@ -122,12 +123,12 @@ mp.keys.bind(0x59, false, async function () {
    
             mp.events.add('playerEnterColshape', BehindGarbageTruck);
    
-            function BehindGarbageTruck (shape) { 
-               if (shape == colshape) {        
+            function BehindGarbageTruck (Shape: ColshapeMp) { 
+               if (Shape == colshape) {        
                   
                   if (Player.vehicle) return;
 
-                  Player.setHeading(Truck.heading);
+                  Player.setHeading(Truck.getHeading());
                   Picked = false;
 
                   colshape.destroy();
@@ -179,9 +180,9 @@ function AlreadyPicked () {
 };
 
 
-function LittleMarker (position) { 
-   const Marker = mp.markers.new(0, new mp.Vector3(position.x, position.y, position.z - 0.35), 0.4, { rotation: new mp.Vector3(0, 0, 0), color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
-   const Colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 0.75, Player.dimension);
+function LittleMarker (Position: Vector3Mp) { 
+   const Marker = mp.markers.new(0, new mp.Vector3(Position.x, Position.y, Position.z - 0.35), 0.4, { rotation: new mp.Vector3(0, 0, 0), color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
+   const Colshape = mp.colshapes.newSphere(Position.x, Position.y, Position.z, 0.75, Player.dimension);
    return [Colshape, Marker]
 };
 

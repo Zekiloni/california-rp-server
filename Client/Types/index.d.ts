@@ -10,6 +10,7 @@ declare global {
   }
 
   interface PlayerMp {
+    /* Variables */
     Logged: boolean;
     Spawned: boolean;
     Cuffed: boolean = false;
@@ -21,6 +22,15 @@ declare global {
     Bubble: string;
     Attachment: ObjectMp;
     Crouching: boolean = false;
+    /* Functions */
+    
+    /* Finger pointing */
+    LastReceivedPointing: any;
+    PointingInterval: Timer;
+  }
+
+  interface CheckpointMp {
+    Station: number = -1;
   }
 
   interface VehicleMp {
