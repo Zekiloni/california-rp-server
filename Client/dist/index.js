@@ -5854,11 +5854,6 @@ mp.events.add({
 
       }
    },
-
-
-   'client:house.money.update': (info) => { 
-      mp.events.callRemote('server:house.update', info)
-   }
 })
 
 /***/ }),
