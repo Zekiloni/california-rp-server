@@ -1,8 +1,9 @@
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
 import { Messages } from '../Global/Messages';
+import Characters from './Character';
 
 const Salt = bcrypt.genSaltSync(10);
 
@@ -74,6 +75,9 @@ export default class Accounts extends Model {
    static Creating (Account: Accounts) { 
       Account.Password = bcrypt.hashSync(Account.Password, Salt);
    }
+
+   @HasMany(() => Characters)
+   Characters: Characters[]
    
    Login (Password: string) {     
       return bcrypt.compareSync(Password, this.Password);
@@ -81,11 +85,12 @@ export default class Accounts extends Model {
 
    async Logged (Player: PlayerMp, Toggle: boolean) {
       this.Online = Toggle;
-      Player.ACCOUNT_ID = this.id;
+      Player.Account = this;
       this.Login_Date = new Date();
       this.IP_Adress = Player.ip;
       
       Player.setVariable('Logged', true);
+      Player.setVariable('Admin', this.Administrator);
 
       if (this.Hardwer == null || this.Social_Club == null) {
          const Already = await Accounts.findOne({ where: { Social_Club: Player.socialClub, Hardwer: Player.serial } });

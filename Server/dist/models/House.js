@@ -54,7 +54,7 @@ let House = House_1 = class House extends sequelize_typescript_1.Model {
     async Buy(Player) {
         if (this.Owner != 0)
             return Player.Notification(Messages_1.Messages.HOUSE_ALREADY_OWNER, Globals_1.Globals.Notification.Error, 5);
-        const Character = await Player.Character();
+        const Character = Player.Character;
         const Houses = await Player.Properties().Houses;
         if (Houses.length == Character.Max_Houses)
             return; // PORUKA: Imate maksimalno kuca;
@@ -66,9 +66,9 @@ let House = House_1 = class House extends sequelize_typescript_1.Model {
         await this.save();
     }
     async Lock(Player) {
-        if (this.Owner != Player.CHARACTER_ID)
+        if (this.Owner != Player.Character.id)
             return Player.Notification(Messages_1.Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals_1.Globals.Notification.Error, 5);
-        if (!this.Tenants.includes(Player.CHARACTER_ID))
+        if (!this.Tenants.includes(Player.Character.id))
             return Player.Notification(Messages_1.Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals_1.Globals.Notification.Error, 5);
         this.Locked = !this.Locked;
         await this.save();

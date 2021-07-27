@@ -4,7 +4,6 @@ import { Messages } from '../Global/Messages';
 
 
 
-
 const Commands: Commands = {};
 
 type Commands = {
@@ -60,8 +59,8 @@ mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
    let cmd = Commands[Name];
 
    if (cmd) {
-      const Account = await Player.Account();
-      const Character = await Player.Character();
+      const Account = Player.Account;
+      const Character = Player.Character;
       
       if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', Globals.Notification.Error, 4);
       

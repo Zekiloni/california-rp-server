@@ -28,6 +28,13 @@ Database.authenticate()
     .catch((Error) => {
     Main_1.Main.Terminal(Main_1.LogType.Error, Error);
 });
-// Accounts.create({ Username: 'Zekiloni', Password: 'test' });
-Character_1.default.create({ Name: 'Zachary Parker', Account: 1 });
+(async () => {
+    // const Acc = await Accounts.create({ Username: 'Zekiloni', Password: 'test' });
+    // const char = new Characters({ Name: 'Zachary Parker', Account_id: Acc.id });
+    // char.save();
+    const aca = await Character_1.default.findAll({ include: [Account_1.default] });
+    aca[0].Account.Username = 'Dzafur';
+    aca[0].save();
+    //Characters.create({ Name: 'Zachary Parker', Account: 1 });
+})();
 exports.default = Database;

@@ -3,6 +3,7 @@
 export const Messages = {
    WELCOME: 'Dobrodošli na Focus Roleplay ! Uživajte u igri.',
    USER_ALREADY_EXIST: 'Korisnik sa tim serijskim brojem već postoji.',
+   CHARACTER_ALREADY_EXIST: 'Karakter sa tim imenom i prezimenom već postoji.',
    NOT_ALLOWED: 'Niste ovlašteni za korišćenje ove komande.',
    USER_NOT_FOUND: 'Korisnik nije pronadjen.',
    PLAYER_NOT_NEAR: 'Igrač nije u vašoj blizini.',

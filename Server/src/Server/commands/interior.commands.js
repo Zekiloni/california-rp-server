@@ -58,7 +58,7 @@ module.exports = {
          name: 'exit',
          desc: 'Izlaz iz interijera.',
          call: async (Player) => {
-            const Character = await Player.Character();
+            const Character = Player.Character;
 
             if (!Character.Inside) return;
 

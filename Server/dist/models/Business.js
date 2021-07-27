@@ -18,7 +18,6 @@ const Items_1 = require("../Items/Items");
 const Businesses_json_1 = __importDefault(require("../data/Businesses.json"));
 const Settings_1 = require("../Server/Settings");
 const Colors_1 = require("../Global/Colors");
-const Character_1 = __importDefault(require("./Character"));
 const Globals_1 = require("../Global/Globals");
 class Business extends sequelize_typescript_1.Model {
     static async New(Player, Type, WalkIn, Price) {
@@ -64,7 +63,7 @@ class Business extends sequelize_typescript_1.Model {
         await this.save();
     }
     async Buy(player) {
-        const Character = await player.Character();
+        const Character = player.Character;
         if (this.Owner != 0)
             return; // PORUKA: Neko vec poseduje ovaj biznis
         if (this.Price > Character.Money)
@@ -76,7 +75,7 @@ class Business extends sequelize_typescript_1.Model {
     }
     ;
     async Menu(player) {
-        const Character = await Character_1.default.findOne({ where: { id: player.CHARACTER_ID } });
+        const Character = player.Character;
         switch (this.Type) {
             case Globals_1.Globals.Business.Types.Dealership: {
                 if (this.Vehicle_Point) {
@@ -135,7 +134,7 @@ class Business extends sequelize_typescript_1.Model {
     }
     ;
     async Sell(player, target = 0, price = 0) {
-        let Character = await player.Character();
+        let Character = player.Character;
         if (price == 0)
             price = (this.Price / 100) * 65;
         Character.GiveMoney(player, price);
@@ -176,7 +175,7 @@ class Business extends sequelize_typescript_1.Model {
     ;
     async WorkersAdd(player) {
         let Workers = this.Workers;
-        Workers.push(player.CHARACTER_ID);
+        Workers.push(player.Character.id);
         this.Workers = Workers;
         // PORUKA: Uspesno ste zaposlili igraca da radi u vas biznis
         await this.save();

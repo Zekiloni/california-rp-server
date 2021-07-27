@@ -5,6 +5,7 @@ import { Messages } from '../Global/Messages';
 import Accounts from '../Models/Account';
 import Bans from '../Models/Ban';
 import Characters from '../Models/Character';
+import Appearances from  '../Models/Appearance';
 import { Settings } from '../Server/Settings';
 
 
@@ -16,8 +17,9 @@ mp.events.add(
       },
 
       'SERVER::CHARACTER:PLAY': async (Player: PlayerMp, CHARACTER_ID: number) => {
+         console.log('Selected character is ' + CHARACTER_ID);
          const Selected = await Characters.findOne({ where: { id: CHARACTER_ID } });
-         console.log('Valele gey')
+         console.log(Selected);
          Selected?.Spawn(Player);
       }
    }
@@ -33,17 +35,20 @@ mp.events.addProc(
       },
 
 
+      'SERVER::CREATOR:INFO': (Player: PlayerMp) => { 
+         return Settings.Creator;
+      },
+
+
       'SERVER::AUTHORIZATION:VERIFY': async (Player: PlayerMp, Username: string, Password: string): Promise<{Account: Accounts, Characters: Characters[]}> => {
          return new Promise((resolve) => {
-            Accounts.findOne({ where: { Username: Username } }).then((Account) => { 
+            Accounts.findOne({ where: { Username: Username }, include: [Characters] }).then((Account) => { 
                if (Account) { 
                   const Logged = Account.Login(Password);
                   if (Logged) { 
-                     Characters.findAll({ where: { Account: Account.id } }).then((Characters) => { 
-                        Account.Logged(Player, true);
-                        console.log(Characters);
-                        resolve({ Account: Account, Characters: Characters });
-                     });
+                     Account.Logged(Player, true);
+                     console.log(Account.Characters)
+                     resolve({ Account: Account, Characters: Account.Characters });
                   } else { 
                      Player.Notification(Messages.INCCORRECT_PASSWORD, Globals.Notification.Error, 5);
                   }
@@ -53,6 +58,26 @@ mp.events.addProc(
             });
          });
       },
+
+
+      'SERVER::CREATOR:FINISH': async (Player: PlayerMp, Character: any, Appearance: any) => { 
+
+         Character = JSON.parse(Character);
+         Appearance = JSON.parse(Appearance);
+
+         const Exist = await Characters.findOne({ where: { Name: Character.First_Name } });
+         if (Exist) return Player.Notification(Messages.CHARACTER_ALREADY_EXIST, Globals.Notification.Error, 5);
+
+         Characters.create({ 
+            Name: Character.First_Name + ' ' + Character.Last_Name, 
+            Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
+         });
+
+         Appearances.create({
+            
+         });
+      },
+
 
       'server:player.character:delete': async (Player: PlayerMp, Char_ID: number) => {
          Characters.findOne({ where: { id: Char_ID } }).then((Character) => { 

@@ -119,7 +119,7 @@ class Vehicles extends sequelize_typescript_1.Model {
         await this.save();
     }
     async Lock(Player) {
-        const Character = await Player.Character();
+        const Character = Player.Character;
         switch (true) {
             case this.Entity == VehicleEntities.Player: {
                 // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);

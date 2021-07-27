@@ -4,7 +4,7 @@ module.exports = {
          name: 'takejob',
          desc: 'Zapošljavanje.',
          call: async (player, args) => {
-            const Character = await player.Character();
+            const Character = player.Character;
             if (Character.Job != frp.Globals.Jobs.Unemployed) return player.Notification(frp.Globals.messages.ALREADY_EMPLOYED, frp.Globals.Notification.Error, 5);
 
             const Nearest = frp.Jobs.Nearest(player);
@@ -20,7 +20,7 @@ module.exports = {
          name: 'quitjob',
          desc: 'Otkaz sa posla.',
          call: async (Player, args) => {
-            const Characcter = await Player.Character();
+            const Characcter = Player.Character;
             if (Characcter.Job == frp.Globals.Jobs.Unemployed) return Player.Notification(frp.Globals.messages.UNEMPLOYED, frp.Globals.Notification.Error, 5);
 
             Characcter.SetJob(Player, frp.Globals.Jobs.Unemployed);

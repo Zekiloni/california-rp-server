@@ -11,10 +11,6 @@
          </li>
       </ul>
 
-
-
-
-
       <transition name="slide-fade">
          <div class="input-form" v-if="Typing">
             <input
@@ -22,7 +18,7 @@
                v-model="Input"
                type="text"
                class="chat-input form-control rounded-0"
-               ref="ChatInput"
+               ref="InputChat"
                maxlength="200"
                @keyup.esc="Close"
                @blur="Close"
@@ -40,10 +36,10 @@
    export default { 
       data () { 
          return { 
+            Active: true,
+
             Typing: false,
             Input: '',
-
-            Controllable: true,
 
             Inactive: false,
             
@@ -73,35 +69,10 @@
          }
       },
 
-        mounted () {
-
-         this.Push('Focus Roleplay - www.focus-rp.com');
-         this.Check();
-         
-         document.addEventListener('keyup', (e) => { 
-            switch (e.keyCode) {
-               case 84: { 
-                  if (this.Typing) return;
-                  if (this.Toggle && this.Controllable) {
-                     this.ToggleInput(chat.Typing = !chat.Typing);
-                  }
-                  break;
-               }
-
-               case 13: {
-                  if (chat.Toggle && chat.Typing) {
-                     chat.Send();
-                  }
-                  break;
-               }
-            }
-         });
-      },
-
       methods: { 
          Activate: function (toggle) { 
             if (this.Typing) this.Typing = false, this.Input = '';
-            this.Controllable = toggle;
+            this.Active = toggle;
          },
 
          Toggle: function (toggle) { 
@@ -110,18 +81,60 @@
             if (toggle) { 
                mp.invoke('setTypingInChatState', true);
                this.Inactive = false;
-               Vue.nextTick(function() { this.$refs.ChatInput.focus(); }.bind(this));
+               this.$nextTick(function() { this.$refs.InputChat.focus(); }.bind(this));
             } else { 
                mp.invoke('setTypingInChatState', false);
-               this.$refs.ChatInput.blur();
+               this.$refs.InputChat.blur();
                this.Input = '';
             }
          },
 
+         Check: function () { 
+            const Now = new Date();
+            if (this.Messages.length > 0) {
+               const LastMessage = this.Messages[this.Messages.length -1];
+               const Last = new Date(LastMessage.timestamp);
+
+               const diff = (Now.getTime() - Last.getTime()) / 1000;;
+               if (diff > 60) { 
+                  this.Inactive = true;
+               } else { 
+                  this.Inactive = false;
+               }
+            }
+
+            setTimeout(() => { this.Check(); }, 1500);
+         },
+
+
+         Send: function () {
+            let content = this.Input;
+            this.Toggle(false);
+
+            if (content && content.length > 0) {
+               this.History.unshift(content);
+
+               if (content[0] == '/') {
+                  content = content.substr(1);
+                  mp.invoke('command', content);
+               } else if (content.includes('timestamp')) { 
+                  this.Settings.Timestamp = !this.Settings.Timestamp;
+               } else {
+                  mp.invoke('chatMessage', content);
+               }
+
+               this.Current = -1
+            }
+         },
+
          Close: function () { 
-            if (this.Controllable && this.Typing) { 
+            if (this.Active && this.Typing) { 
                this.Toggle(false);     
             }
+         },
+
+         Clear: function () { 
+            this.Messages = [];
          },
 
          Push: function (content, type = null) {
@@ -135,9 +148,41 @@
             const message = { timestamp: Date.now(), content: content, type: type }
             this.Messages.push(message);
          },
+      },
 
+      mounted () {
+
+         this.Push('Focus Roleplay - www.focus-rp.com');
+         this.Check();
+
+         const events = {
+            'chat:push': this.Push, 'chat:clear': this.Clear,
+            'chat:activate': this.Activate, 'chat:show': this.Activate
+         }
+
+         for (let i in events) { mp.events.add(i, events[i]); }
+
+         document.addEventListener('keyup', (e) => { 
+            switch (e.keyCode) {
+               case 84: { 
+                  if (this.Typing) return;
+                  if (this.Active) { 
+                     this.Toggle(this.Typing = !this.Typing);
+                  }
+                  break;
+               }
+
+               case 13: {
+                  if (this.Active && this.Typing) {
+                     this.Send();
+                  }
+                  break;
+               }
+            }
+         });
       }
    }
+
 
 </script>
 

@@ -1,7 +1,6 @@
 import { Groups } from "./Globals";
 
 
-
 const Helpers = { 
    Truncate (str: string, n: number) { 
       return (str.length > n) ? str.substr(0, n-1) + '...' : str; 
@@ -20,13 +19,26 @@ const Helpers = {
       return Groups[i];
    },
 
+   isUpper: (str: string) => {
+      return /[A-Z]/.test(str[0]);
+   },
+
    isDonator (i: number) { 
       return i > 0 ? 'Donator ' + i : 'Ne';
    },
 
    Sleep (Seconds: number) {
       return new Promise(resolve => setTimeout(resolve, Seconds * 1000));
+   },
+
+   RandomBackground () { 
+      const Backgrounds = ['city-night.png'];
+      let Random = Backgrounds[Math.floor(Math.random() * Backgrounds.length)];
+      return Random;
+
    }
+
+
 }
 
 export default Helpers;

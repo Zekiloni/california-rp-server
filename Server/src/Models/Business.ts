@@ -126,7 +126,7 @@ export default class Business extends Model {
     }
 
     async Buy(player: PlayerMp) {
-        const Character = await player.Character();
+        const Character = player.Character;
 
         if (this.Owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
         if (this.Price > Character.Money) return; // PORUKA: Nemate dovoljno novca
@@ -139,7 +139,7 @@ export default class Business extends Model {
 
     async Menu(player: PlayerMp) {
 
-        const Character = await Characters.findOne({ where: { id: player.CHARACTER_ID } });
+        const Character = player.Character;
 
         switch (this.Type) {
             case Globals.Business.Types.Dealership: {
@@ -207,7 +207,7 @@ export default class Business extends Model {
     };
 
     async Sell(player: PlayerMp, target: any = 0, price = 0) {
-        let Character = await player.Character();
+        let Character = player.Character;
         if (price == 0) price = (this.Price / 100) * 65;
 
         Character.GiveMoney(player, price);
@@ -250,7 +250,7 @@ export default class Business extends Model {
 
     async WorkersAdd(player: PlayerMp) {
         let Workers = this.Workers;
-        Workers.push(player.CHARACTER_ID);
+        Workers.push(player.Character.id);
         this.Workers = Workers;
         // PORUKA: Uspesno ste zaposlili igraca da radi u vas biznis
         await this.save();

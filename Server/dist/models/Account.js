@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const Messages_1 = require("../Global/Messages");
+const Character_1 = __importDefault(require("./Character"));
 const Salt = bcryptjs_1.default.genSaltSync(10);
 let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model {
     static Creating(Account) {
@@ -26,10 +27,11 @@ let Accounts = Accounts_1 = class Accounts extends sequelize_typescript_1.Model 
     }
     async Logged(Player, Toggle) {
         this.Online = Toggle;
-        Player.ACCOUNT_ID = this.id;
+        Player.Account = this;
         this.Login_Date = new Date();
         this.IP_Adress = Player.ip;
         Player.setVariable('Logged', true);
+        Player.setVariable('Admin', this.Administrator);
         if (this.Hardwer == null || this.Social_Club == null) {
             const Already = await Accounts_1.findOne({ where: { Social_Club: Player.socialClub, Hardwer: Player.serial } });
             if (Already)
@@ -123,6 +125,10 @@ __decorate([
     sequelize_typescript_1.UpdatedAt,
     __metadata("design:type", Date)
 ], Accounts.prototype, "Updated_At", void 0);
+__decorate([
+    sequelize_typescript_1.HasMany(() => Character_1.default),
+    __metadata("design:type", Array)
+], Accounts.prototype, "Characters", void 0);
 __decorate([
     sequelize_typescript_1.BeforeCreate,
     __metadata("design:type", Function),

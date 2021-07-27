@@ -19,8 +19,8 @@ class Items {
     }
 }
 exports.Items = Items;
+Items.List = {};
 (function (Items) {
-    Items.List = {};
     let Type;
     (function (Type) {
         Type[Type["Equipable"] = 0] = "Equipable";

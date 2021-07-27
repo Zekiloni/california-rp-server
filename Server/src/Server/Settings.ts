@@ -15,6 +15,12 @@ export const Settings = {
       }
    },
 
+   Creator: { 
+      Position: new mp.Vector3(2.7733354, 525.318298, 170.617156),
+      Heading: 0,
+      Time: 20
+   },
+
    Limitations: {
       Max_Houses: 3,
       Max_Business: 2,

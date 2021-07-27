@@ -47,8 +47,8 @@
             <ul class="characters">
                <li class="character" v-for="i in Max_Characters" v-bind:key="i">
 
-                  <fieldset v-if="Info.Characters[i]" class="info" v-on:click="Play(Info.Characters[i].id)">
-                     <legend> {{ Info.Characters[i].Name }} </legend>
+                  <div v-if="Info.Characters[i]" class="info" v-on:click="Play(Info.Characters[i].id)">
+                     <h1 class="character-name"> {{ Info.Characters[i].Name }} </h1>
 
                      <h2 class="playing-hours">
                         {{ Info.Characters[i].Hours + 's' + Info.Characters[i].Minutes + 'm' }} 
@@ -59,7 +59,7 @@
                         <li> {{ Messages.GENDER }}: {{ Genders[Info.Characters[i].Gender] }} </li>
                         <li> {{ Messages.CASH }}: {{ Helpers.Dollars(Info.Characters[i].Money) }} </li>
                      </ul>
-                  </fieldset>
+                  </div>
 
                   <div v-else class="create" v-on:click="Create(i)"> 
                      <i class="fas fa-plus"> </i>
@@ -89,8 +89,7 @@
       data () { 
          return { 
             Inputs: { Username: null, Password: null },
-            Slider: 30,
-            Logged: true,
+            Logged: false,
             Info: {
                "Account":{
                "id":1,
@@ -154,9 +153,6 @@
 
             Helpers, Messages, Genders,
 
-            modal: {
-               forgoten: false
-            },
          }
       },
       
@@ -175,18 +171,10 @@
             }
          },
 
-         Group: (i) => { return i == 0 ? 'Korisnik': 'Administrator ' + i; },
-         Donator: (i) => { return i > 0 ? 'Da' : 'Ne'; },
-
-         DateFormat: (i) => { 
-            i = new Date(i); 
-            return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
-         },
-
          Play: async function (i) { 
             this.Logged = 'loading';
             Helpers.Sleep(3).then(() => { 
-               mp.events.call('CLIENT:AUTHORIZATION:PLAY', i);
+               mp.trigger('CLIENT::AUTHORIZATION:PLAY', i);
             });
          },
 
@@ -200,6 +188,10 @@
       mounted () { 
          mp.invoke('focus', true);
          this.$refs.iUsername.focus();
+      },
+
+      beforeDestroy () { 
+         mp.invoke('focus', false);
       }
    }
 
@@ -210,7 +202,7 @@
       position: absolute; top: 0; left: 0;
       width: 100%; height: 100%; display: flex;
       justify-content: center; align-items: center;
-      background: linear-gradient(179deg, rgb(8 8 8 / 90%), rgb(0 0 0 / 81%));
+      background: linear-gradient(45deg, rgb(10 10 10 / 95%) 0%, rgba(8, 8, 8 , 0.80) 100%);
    }
 
    div.login { 
@@ -249,17 +241,19 @@
    .account .info { 
       width: 100%;
       height: 350px;
-      border-radius: 5px;
-      background: rgb(0 0 0 / 30%);
+      border-radius: 10px;
+      background: url('/images/backgrounds/account-info.png');
+      box-shadow: 0 3px 17px rgb(124 91 241 / 35%);
       display: flex;
       flex-direction: column;
       align-items: center;
+      transition: all 0.35s ease;
    }
 
    .account .info h3.username { 
-      color: #fab80a;
-      font-size: 25px;
-      text-shadow: 0 1px 2px rgb(250 184 10 / 70%);
+      color: white;
+      font-size: 30px;
+      text-shadow: 0 1px 2px rgb(250 184 10 / 5%);
       margin: 0;
       margin-top: 20px;
       text-transform: uppercase;
@@ -267,57 +261,58 @@
 
    .account .info h4.rank { 
       margin: 0;
-      color: #b8b8b8;
+      color: #c5c5c5;
       letter-spacing: 3px;
       font-size: 16px;
       text-transform: uppercase;
-      font-weight: 100;
+      font-weight: 200;
    }
 
    .account .info ul.other { 
       padding: 20px;
-      width: 225px;
+      width: 255px;
       list-style: none;
    }
 
    ul.other li { 
       font-size: 14px;
-      color: #adadad;
+      color: #e4e4e4;
       margin: 5px 0;
       font-weight: 100;
+      padding: 5px 10px;
+      backdrop-filter: brightness(1.1);
+      border-radius: 5px;
    }
 
    ul.other li b { 
       float: right;
+      letter-spacing: 0.65px;
+      color: rgb(235, 235, 235);
    }
 
+   .character-name { font-size: 22px; margin: 0; padding: 10px 20px; color: #fab80a; }
 
    ul.char-info { 
-      height: 100%;
-      display: flex;
-      justify-content: space-around;
-      flex-direction: column;
+      list-style: none;
+      padding: 0 20px;
    }
 
+   ul.char-info li { margin: 10px 0; text-transform: uppercase; font-weight: 400; color: #cdcdcd; }
+
    .lobby ul.characters { 
-      padding: 0; list-style: none;
-      width: 500px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
+      padding: 0; list-style: none; width: 500px; height: 100%; display: flex;
+      flex-direction: column; align-items: center; justify-content: space-between; margin: 0; margin-top: 20px; 
    }
 
    .characters .character { width: 100%; height: 165px;  margin-top: -10px; }
 
    .characters .character .info {
-      height: 100%; margin: 0;
-      background: rgb(0 0 0 / 30%);
-      border-radius: 5px;
-      border: 1px solid transparent;
-      transition: all 0.35s ease;
-      position: relative;
+    height: 100%;
+    margin: 0;
+    border-radius: 5px;
+    background: linear-gradient(45deg, rgb(255 255 255 / 20%), transparent);
+    border: none;
+    position: relative;
    }
 
    h2.playing-hours { 
@@ -332,20 +327,35 @@
    }
 
    .character .info:hover { 
-      border-color: rgb(250 184 10);
-      background: rgb(0 0 0 / 15%);
-      box-shadow: 0 5px 10px rgb(250 184 10 / 10%);
+      filter: brightness(1.05);
+      
    }
 
    .character .info:hover legend { color: white; /* background: #fab80a; box-shadow: 0 1px 4px rgb(250 184 10 / 22%); */ }
 
    .character .info legend { 
-      padding: 0 15px; color: #cdcdcd; font-size: 18.5px; font-weight: 300; transition: all 0.35s ease; border-radius: 5px;
+      padding: 0 15px;
+      color: #eaeaea;
+      font-size: 25px;
+      font-weight: 600;
+      transition: all 0.35s ease;
+      border-radius: 5px;
+      text-transform: uppercase;
    }
 
-   .character .create { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; opacity: 0.45; background: rgb(255 255 255 / 5%); transition: all 0.35s ease; border-radius: 5px; }
+   .character .create { 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      opacity: 0.45;
+      background: linear-gradient(45deg, rgb(255 255 255 / 15%), transparent);
+      transition: all 0.35s ease;
+      border-radius: 5px;
+   }
    .create h2 { text-transform: uppercase; color: whitesmoke; font-weight: 300; letter-spacing: 5px; }
-   .create:hover { opacity: 1; }
+   .create:hover { opacity: 0.9; }
    .create .fa-plus { font-size: 45px; color: whitesmoke; }
 
 

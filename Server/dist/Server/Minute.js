@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Settings_1 = require("./Settings");
 const interval = 60 * 1000;
 async function Update(Player) {
-    const Character = await Player.Character(), account = await Player.Account();
+    const Character = Player.Character, account = Player.Account;
     Character.increment('Minutes', { by: Settings_1.Settings.HappyHours == true ? 2 : 1 });
     if (Character.Minutes >= 60) {
         await Character.increment('Hours', { by: 1 });

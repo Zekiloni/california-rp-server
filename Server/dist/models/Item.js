@@ -33,7 +33,7 @@ let Item = class Item extends sequelize_typescript_1.Model {
     Drop() {
     }
     async Use(Player) {
-        const Character = await Player.Character();
+        const Character = Player.Character;
         const rItem = Items_1.Items.List[this.Name];
     }
 };

@@ -5,9 +5,11 @@ import './Player/Player';
 import './Player/Account';
 import Accounts from './Models/Account';
 import Characters from './Models/Character';
+import { Items } from './Items/Items';
 
 
 
+console.log(Items.List);
 
 
 

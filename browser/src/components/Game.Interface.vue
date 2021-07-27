@@ -5,7 +5,7 @@
    
    <div class="screen">
       
-      
+      <Offer />
 
    </div>
 
@@ -13,7 +13,14 @@
 
 <script>
 
+   import Offer from './Offer.vue';
+
    export default { 
+
+      components: {
+         Offer
+      },
+
       data () { 
          return { 
      

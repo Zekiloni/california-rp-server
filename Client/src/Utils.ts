@@ -1,11 +1,38 @@
+import { Clothing_Components } from "./Data/Player";
 
 const Player = mp.players.local;
 
 
-const Server = {
-   Color: {
-      R: 104, G: 69, B: 234, A: 255
+export function RemoveClothing (Entity: PlayerMp) { 
+   switch (true) { 
+      case Entity.model == 0x705E61F2: { 
+         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Legs, 61, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Shoes, 34, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Undershirt, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
+         break;
+      }
+
+      case Entity.model == 0x9C9EFFD8: { 
+         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Legs, 17, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Shoes, 35, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Undershirt, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
+         break;
+      }
    }
+}
+
+
+export function DisableMoving () { 
+   mp.game.controls.disableControlAction(0, 30, true);
+   mp.game.controls.disableControlAction(0, 31, true);
+   mp.game.controls.disableControlAction(0, 32, true);
+   mp.game.controls.disableControlAction(0, 33, true);
+   mp.game.controls.disableControlAction(0, 34, true);
+   mp.game.controls.disableControlAction(0, 35, true);
 }
 
 function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 
@@ -82,17 +109,17 @@ let MovableCamera: CameraMp;
 export function PlayerPreviewCamera (Toggle: boolean) { 
    if (Toggle) { 
       MovableCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
-      const CameraPositon = new mp.Vector3(Player.position.x + Player.getForwardX() * 1.5, Player.position.y + Player.getForwardY() * 1.5, Player.position.z);
+      const CameraPositon = new mp.Vector3(Player.position.x + Player.getForwardX() * 1.5, Player.position.y + Player.getForwardY() * 1.5, Player.position.z + 0.3);
       MovableCamera.setCoord(CameraPositon.x, CameraPositon.y, CameraPositon.z);
-      MovableCamera.pointAtCoord(Player.position.x, Player.position.y, Player.position.z);
+      MovableCamera.pointAtCoord(Player.position.x, Player.position.y, Player.position.z + 0.3);
       MovableCamera.setActive(true);
       mp.game.cam.renderScriptCams(true, false, 0, true, false);
    
       mp.events.add('render', MoveCamera);
-      mp.events.add('client:player.camera:zoom', ZoomCamera);
+      mp.events.add('CLIENT::PLAYER_CAMERA:ZOOM', ZoomCamera);
    } else { 
       mp.events.remove('render', MoveCamera);
-      mp.events.remove('client:player.camera:zoom', ZoomCamera);
+      mp.events.remove('CLIENT::PLAYER_CAMERA:ZOOM', ZoomCamera);
       if (MovableCamera) MovableCamera.destroy();
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
    }
@@ -113,7 +140,7 @@ function ZoomCamera (Delta: number) {
    const dist = mp.game.gameplay.getDistanceBetweenCoords(Player.position.x, Player.position.y, Player.position.z, x, y, z, false);
    if (dist > 3.5 || dist < 0.3) return;
 
-   MovableCamera.setPosition(x, y, z);
+   MovableCamera.setCoord(x, y, z);
 }
 
 let [PrevX, PrevY] = mp.gui.cursor.position;
@@ -133,16 +160,14 @@ export function MoveCamera () {
    Player.setHeading(newHeading);
 
    let { x: camPosX, y: camPosY, z: camPosZ } = MovableCamera.getCoord();
-   let { pointX: camPointX, pointY: camPointY, pointZ: camPointZ } = MovableCamera.getDirection();
+   let { x: camPointX, y: camPointY, z: camPointZ } = MovableCamera.getDirection();
 
    camPosZ = camPosZ + Data.DeltaY * 0.001;
    const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
 
    if (camPosZ < charPosZ + 0.7 && camPosZ > charPosZ - 0.8) { 
-      MovableCamera.setPosition(camPosX, camPosY, camPosZ);
+      MovableCamera.setCoord(camPosX, camPosY, camPosZ);
       MovableCamera.pointAtCoord(charPosX, charPosY, camPosZ);
-
-      
    }
 }
 

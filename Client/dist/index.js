@@ -15,6 +15,165 @@ exports.Browser.markAsChat();
 
 /***/ }),
 
+/***/ 1828:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Player = mp.players.local;
+mp.nametags.enabled = false;
+const ScreenResolution = mp.game.graphics.getScreenActiveResolution(100, 100);
+mp.events.add({
+    'CLIENT::OFFER': (Title, Message, Event, Time) => {
+        Browser_1.Browser.call('BROWSER::OFFER', Title, Message, Event, Time);
+    },
+    'CLIENT::OFFER:ACCEPT': (Info) => {
+        mp.events.callRemote('SERVER::OFFER:ACCEPT', Info);
+    },
+    'CLIENT::OFFER:DECLINe': (Info) => {
+        mp.events.callRemote('SERVER::OFFER:DECLINE', Info);
+    }
+});
+
+
+/***/ }),
+
+/***/ 7845:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const Browser_1 = __webpack_require__(2910);
+const Player_1 = __webpack_require__(8412);
+const Lobby_1 = __webpack_require__(551);
+const Utils_1 = __webpack_require__(8675);
+const Female_Torsos_json_1 = __importDefault(__webpack_require__(7886));
+const Male_Torsos_json_1 = __importDefault(__webpack_require__(3649));
+const Player = mp.players.local;
+let Active = false;
+mp.events.add({
+    'CLIENT::CREATOR:START': () => {
+        Active = true;
+        mp.events.callRemoteProc('SERVER::CREATOR:INFO').then((Info) => {
+            Lobby_1.Lobby(false);
+            Browser_1.Browser.call('BROWSER::SHOW', 'Creator');
+            Player.position = Info.Position;
+            Player.setHeading(0);
+            mp.game.time.setClockTime(Info.Time, 0, 0);
+            Player.freezePosition(true);
+            mp.events.add('render', Utils_1.DisableMoving);
+            Utils_1.RemoveClothing(Player);
+            mp.game.ui.displayRadar(false);
+            Utils_1.PlayerPreviewCamera(true);
+        });
+    },
+    'CLIENT::CREATOR:FINISH': async (Character, Appearance, Clothing) => {
+        Active = false;
+        const Created = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance, Clothing);
+        if (Created) {
+            mp.events.remove('render', Utils_1.DisableMoving);
+            Player.freezePosition(false);
+            Utils_1.PlayerPreviewCamera(false);
+        }
+    },
+    'CLIENT::CREATOR:BLEND': (shapeM, shapeF, skinM, skinF, shapeMix, skinMix) => {
+        Player.setHeadBlendData(shapeM, shapeF, 0, skinM, skinF, 0, shapeMix, skinMix, 0, true);
+    },
+    'CLIENT::CREATOR:FACE': (Index, Value) => {
+        Player.setFaceFeature(Index, Value);
+    },
+    'CLIENT::CREATOR:GENDER': (x) => {
+        Player.model = Player_1.Player_Models[x];
+        Utils_1.RemoveClothing(Player);
+    },
+    'CLIENT::CREATOR:HAIR': (Style, Color, Highlights) => {
+        Player.setComponentVariation(2, Style, 0, 0);
+        Player.setHairColor(Color, Highlights);
+    },
+    'CLIENT::CREATOR:CLOTHING': (Component, Drawable) => {
+        Player.setComponentVariation(Component, Drawable, 0, 2);
+        if (Component == Player_1.Clothing_Components.Top) {
+            const Gender = Player_1.Genders[Player.model];
+            switch (Gender) {
+                case '0': {
+                    if (Male_Torsos_json_1.default[String(Drawable)] != undefined || Male_Torsos_json_1.default[String(Drawable)][0] != undefined) {
+                        const Torso = Male_Torsos_json_1.default[String(Drawable)][0].BestTorsoDrawable;
+                        if (Torso != -1)
+                            Player.setComponentVariation(Player_1.Clothing_Components.Torso, Torso, 0, 2);
+                    }
+                    break;
+                }
+                case '1': {
+                    if (Female_Torsos_json_1.default[String(Drawable)] != undefined || Female_Torsos_json_1.default[String(Drawable)][0] != undefined) {
+                        const Torso = Female_Torsos_json_1.default[String(Drawable)][0].BestTorsoDrawable;
+                        if (Torso != -1)
+                            Player.setComponentVariation(Player_1.Clothing_Components.Torso, Torso, 0, 2);
+                    }
+                    break;
+                }
+            }
+        }
+    },
+    'CLIENT::CREATOR:EYES_COLOR': (Color) => {
+        Player.eyeColour = Color;
+    },
+    'client:player.character.creator:beard': (x) => {
+        x = JSON.parse(x);
+        Player.setHeadOverlay(1, parseInt(x[0]), 1.0, parseInt(x[1]), 0);
+    },
+    'client:player.character.creator:overlay': (i, e, x) => {
+        Player.setHeadOverlay(i, e, 1.0, x, 0);
+    },
+    'client:player.character.creator:blend': (x) => {
+        x = JSON.parse(x);
+        Player.setHeadBlendData(parseInt(x[0]), parseInt(x[1]), 0, parseInt(x[2]), parseInt(x[3]), 0, parseFloat(x[4]), parseFloat(x[5]), 0, true);
+    },
+    'client:player.character.creator:clothing': (i, d) => {
+        Player.setComponentVariation(i, d, 0, 2);
+    }
+});
+
+
+/***/ }),
+
+/***/ 8412:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Genders = exports.Player_Models = exports.Clothing_Components = void 0;
+var Clothing_Components;
+(function (Clothing_Components) {
+    Clothing_Components[Clothing_Components["Head"] = 0] = "Head";
+    Clothing_Components[Clothing_Components["Mask"] = 1] = "Mask";
+    Clothing_Components[Clothing_Components["HairStyle"] = 2] = "HairStyle";
+    Clothing_Components[Clothing_Components["Torso"] = 3] = "Torso";
+    Clothing_Components[Clothing_Components["Legs"] = 4] = "Legs";
+    Clothing_Components[Clothing_Components["Bag"] = 5] = "Bag";
+    Clothing_Components[Clothing_Components["Shoes"] = 6] = "Shoes";
+    Clothing_Components[Clothing_Components["Accessorie"] = 7] = "Accessorie";
+    Clothing_Components[Clothing_Components["Undershirt"] = 8] = "Undershirt";
+    Clothing_Components[Clothing_Components["Armour"] = 9] = "Armour";
+    Clothing_Components[Clothing_Components["Decal"] = 10] = "Decal";
+    Clothing_Components[Clothing_Components["Top"] = 11] = "Top";
+})(Clothing_Components = exports.Clothing_Components || (exports.Clothing_Components = {}));
+exports.Player_Models = [mp.game.joaat('mp_m_freemode_01'), mp.game.joaat('mp_f_freemode_01')];
+exports.Genders = {
+    0x705E61F2: '0',
+    0x9C9EFFD8: '1'
+};
+
+
+/***/ }),
+
 /***/ 805:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -27,37 +186,97 @@ const Player = mp.players.local;
 var UI_Status;
 (function (UI_Status) {
     UI_Status[UI_Status["Full_Visible"] = 0] = "Full_Visible";
-    UI_Status[UI_Status["Chat_Hidden"] = 1] = "Chat_Hidden";
-    UI_Status[UI_Status["Fully_Hidden"] = 2] = "Fully_Hidden";
+    UI_Status[UI_Status["Only_Chat"] = 1] = "Only_Chat";
+    UI_Status[UI_Status["Chat_Hidden"] = 2] = "Chat_Hidden";
+    UI_Status[UI_Status["Fully_Hidden"] = 3] = "Fully_Hidden";
 })(UI_Status || (UI_Status = {}));
 ;
-let Configuration = {
-    Status: UI_Status.Fully_Hidden
-};
 mp.events.add({
     'CLIENT::NOTIFICATION': (Message, Type, Time) => {
         Browser_1.Browser.call('BROWSER::NOTIFICATION', Message, Type, Time);
     }
 });
+class GAME_UI {
+    constructor() {
+        this.Vehicle_UI = false;
+        this.Weapon_UI = false;
+        this.Status = UI_Status.Fully_Hidden;
+        mp.events.add('render', this.GTA_HUD);
+    }
+    Toggle() {
+        this.Status++;
+        if (this.Status > UI_Status.Fully_Hidden)
+            this.Status = 0;
+        switch (true) {
+            case this.Status == UI_Status.Full_Visible: {
+                mp.events.add('render', this.MainInterface);
+                break;
+            }
+        }
+    }
+    GTA_HUD() {
+        mp.game.ui.hideHudComponentThisFrame(7); // HUD_AREA_NAME
+        mp.game.ui.hideHudComponentThisFrame(9); // HUD_STREET_NAME
+        mp.game.ui.hideHudComponentThisFrame(6); // HUD_VEHICLE_NAME
+        mp.game.ui.hideHudComponentThisFrame(2); // HUD_WEAPON_ICON
+        mp.game.ui.hideHudComponentThisFrame(3); // HUD_CASH
+        mp.game.ui.hideHudComponentThisFrame(4); // HUD_MP_CASH
+        mp.game.ui.hideHudComponentThisFrame(19); // HUD_WEAPON_WHEEL
+        mp.game.ui.hideHudComponentThisFrame(20); // HUD_WEAPON_WHEEL_STATS
+        mp.game.invoke('0x9E4CFFF989258472');
+        mp.game.invoke('0xF4F2C0D4EE209E20');
+        GameInterface.HIDE_CORSSAIR();
+    }
+    MainInterface() {
+        const { x: x, y: y, z: z } = Player.position;
+        const path = mp.game.pathfind.getStreetNameAtCoord(x, y, z, 0, 0);
+        const Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(x, y, z));
+        const Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
+        const Heading = this.Headed(Player.getHeading());
+    }
+    HIDE_CORSSAIR() {
+        const Weapon = Player.weapon;
+        Weapon == 0x05FC3C11 || Weapon == 0x0C472FE2 || Weapon == 0xA914799 || Weapon == 0xC734385A || Weapon == 0x6A6C02E0 ?
+            (mp.game.ui.showHudComponentThisFrame(14)) : mp.game.ui.hideHudComponentThisFrame(14);
+    }
+    Headed(H) {
+        switch (true) {
+            case (H < 30): return 'N';
+            case (H < 90): return 'NW';
+            case (H < 135): return 'W';
+            case (H < 180): return 'SW';
+            case (H < 225): return 'S';
+            case (H < 270): return 'SE';
+            case (H < 315): return 'E';
+            case (H < 360): return 'NE';
+            default: return 'N';
+        }
+    }
+}
+const GameInterface = new GAME_UI();
+__webpack_unused_export__ = GameInterface;
 
 
 /***/ }),
 
 /***/ 551:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-var __webpack_unused_export__;
 
-__webpack_unused_export__ = ({ value: true });
-__webpack_unused_export__ = void 0;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Lobby = void 0;
+const Browser_1 = __webpack_require__(2910);
 const Player = mp.players.local;
 mp.events.add({
     'playerReady': async () => {
         const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
         Lobby(true, Info.Position, Info.LookAt);
     },
-    'CLIENT:AUTHORIZATION:PLAY': (Character) => {
+    'CLIENT::AUTHORIZATION:PLAY': (Character) => {
+        Lobby(false);
+        mp.events.callRemote('SERVER::CHARACTER:PLAY', Character);
+        Browser_1.Browser.call('BROWSER::SHOW', 'Chat');
     }
 });
 mp.events.addProc({
@@ -68,7 +287,7 @@ mp.events.addProc({
 });
 let Camera;
 function Lobby(Toggle, Position, LookAt) {
-    if (Toggle) {
+    if (Toggle && Position && LookAt) {
         Player.position = new mp.Vector3(Position.x, Position.y + 1, Position.z);
         Player.freezePosition(true);
         Camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
@@ -80,6 +299,7 @@ function Lobby(Toggle, Position, LookAt) {
         mp.game.graphics.transitionToBlurred(1000);
     }
     else {
+        Browser_1.Browser.call('BROWSER::HIDE', 'Authorization');
         if (Camera)
             Camera.destroy();
         Player.freezePosition(false);
@@ -88,8 +308,193 @@ function Lobby(Toggle, Position, LookAt) {
         mp.game.graphics.transitionFromBlurred(1000);
     }
 }
-__webpack_unused_export__ = Lobby;
+exports.Lobby = Lobby;
 
+
+/***/ }),
+
+/***/ 8675:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateInteractionSpot = exports.MoveCamera = exports.CursorData = exports.PlayerPreviewCamera = exports.GetAdress = exports.OnlinePlayers = exports.DisableMoving = exports.RemoveClothing = void 0;
+const Player_1 = __webpack_require__(8412);
+const Player = mp.players.local;
+function RemoveClothing(Entity) {
+    switch (true) {
+        case Entity.model == 0x705E61F2: {
+            Entity.setComponentVariation(Player_1.Clothing_Components.Torso, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Legs, 61, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Shoes, 34, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Undershirt, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Top, 15, 0, 2);
+            break;
+        }
+        case Entity.model == 0x9C9EFFD8: {
+            Entity.setComponentVariation(Player_1.Clothing_Components.Torso, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Legs, 17, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Shoes, 35, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Undershirt, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Top, 15, 0, 2);
+            break;
+        }
+    }
+}
+exports.RemoveClothing = RemoveClothing;
+function DisableMoving() {
+    mp.game.controls.disableControlAction(0, 30, true);
+    mp.game.controls.disableControlAction(0, 31, true);
+    mp.game.controls.disableControlAction(0, 32, true);
+    mp.game.controls.disableControlAction(0, 33, true);
+    mp.game.controls.disableControlAction(0, 34, true);
+    mp.game.controls.disableControlAction(0, 35, true);
+}
+exports.DisableMoving = DisableMoving;
+function CompareVectors(i, x) {
+    return i.x == x.x && i.y == x.y && i.z == x.z;
+}
+;
+function DistanceBetweenVectors(First, Second) {
+    return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
+}
+function LoadAnimationDictionary(i) {
+    if (mp.game.streaming.hasAnimDictLoaded(i))
+        return Promise.resolve(true);
+    return new Promise(async (resolve) => {
+        mp.game.streaming.requestAnimDict(i);
+        while (!mp.game.streaming.hasAnimDictLoaded(i)) {
+            await mp.game.waitAsync(0);
+        }
+        resolve(true);
+    });
+}
+;
+function LoadMovementClipset(Clipset) {
+    if (mp.game.streaming.hasClipSetLoaded(Clipset))
+        return Promise.resolve(true);
+    return new Promise(async (resolve) => {
+        mp.game.streaming.requestClipSet(Clipset);
+        while (!mp.game.streaming.hasClipSetLoaded(Clipset)) {
+            await mp.game.waitAsync(10);
+        }
+        resolve(true);
+    });
+}
+function WaitEntity(Entity) {
+    return new Promise(resolve => {
+        let wait = setInterval(() => {
+            if (mp.game.entity.isAnEntity(Entity.handle)) {
+                clearInterval(wait);
+                resolve(true);
+            }
+        }, 1);
+    });
+}
+function WeaponString(Weapon) {
+    if (typeof Weapon !== 'undefined')
+        return '0x' + Weapon.toString(16).toUpperCase();
+    else
+        return '0xA2719263';
+}
+function OnlinePlayers() {
+    let List = [];
+    mp.players.forEach(_Player => {
+        List.push({ id: _Player.remoteId, name: _Player.name });
+    });
+    return List;
+}
+exports.OnlinePlayers = OnlinePlayers;
+function GetAdress(Position) {
+    const path = mp.game.pathfind.getStreetNameAtCoord(Position.x, Position.y, Position.z, 0, 0), Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(Position.x, Position.y, Position.z)), Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
+    return { zone: Zone, street: Street };
+}
+exports.GetAdress = GetAdress;
+let MovableCamera;
+function PlayerPreviewCamera(Toggle) {
+    if (Toggle) {
+        MovableCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
+        const CameraPositon = new mp.Vector3(Player.position.x + Player.getForwardX() * 1.5, Player.position.y + Player.getForwardY() * 1.5, Player.position.z + 0.3);
+        MovableCamera.setCoord(CameraPositon.x, CameraPositon.y, CameraPositon.z);
+        MovableCamera.pointAtCoord(Player.position.x, Player.position.y, Player.position.z + 0.3);
+        MovableCamera.setActive(true);
+        mp.game.cam.renderScriptCams(true, false, 0, true, false);
+        mp.events.add('render', MoveCamera);
+        mp.events.add('CLIENT::PLAYER_CAMERA:ZOOM', ZoomCamera);
+    }
+    else {
+        mp.events.remove('render', MoveCamera);
+        mp.events.remove('CLIENT::PLAYER_CAMERA:ZOOM', ZoomCamera);
+        if (MovableCamera)
+            MovableCamera.destroy();
+        mp.game.cam.renderScriptCams(false, false, 0, false, false);
+    }
+}
+exports.PlayerPreviewCamera = PlayerPreviewCamera;
+function ZoomCamera(Delta) {
+    let { x, y, z } = MovableCamera.getCoord();
+    if (Delta < 0) {
+        x += MovableCamera.getDirection().x * 0.1;
+        y += MovableCamera.getDirection().y * 0.1;
+    }
+    else {
+        x -= MovableCamera.getDirection().x * 0.1;
+        y -= MovableCamera.getDirection().y * 0.1;
+    }
+    const dist = mp.game.gameplay.getDistanceBetweenCoords(Player.position.x, Player.position.y, Player.position.z, x, y, z, false);
+    if (dist > 3.5 || dist < 0.3)
+        return;
+    MovableCamera.setCoord(x, y, z);
+}
+let [PrevX, PrevY] = mp.gui.cursor.position;
+function CursorData() {
+    const x = PrevX, y = PrevY;
+    PrevX = mp.gui.cursor.position[0];
+    PrevY = mp.gui.cursor.position[1];
+    return { DeltaX: mp.gui.cursor.position[0] - x, DeltaY: mp.gui.cursor.position[1] - y };
+}
+exports.CursorData = CursorData;
+function MoveCamera() {
+    const Data = CursorData();
+    if (!mp.keys.isDown(0x02))
+        return;
+    const newHeading = Player.getHeading() + Data.DeltaX * 0.15;
+    Player.setHeading(newHeading);
+    let { x: camPosX, y: camPosY, z: camPosZ } = MovableCamera.getCoord();
+    let { x: camPointX, y: camPointY, z: camPointZ } = MovableCamera.getDirection();
+    camPosZ = camPosZ + Data.DeltaY * 0.001;
+    const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
+    if (camPosZ < charPosZ + 0.7 && camPosZ > charPosZ - 0.8) {
+        MovableCamera.setCoord(camPosX, camPosY, camPosZ);
+        MovableCamera.pointAtCoord(charPosX, charPosY, camPosZ);
+    }
+}
+exports.MoveCamera = MoveCamera;
+function CreateInteractionSpot(Name, Position) {
+    const checkpoint = mp.checkpoints.new(48, Position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
+    const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
+    return { checkpoint: checkpoint, blip: blip };
+}
+exports.CreateInteractionSpot = CreateInteractionSpot;
+;
+
+
+/***/ }),
+
+/***/ 7886:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"0":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"1":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"2":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"3":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"4":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"5":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"6":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"7":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"8":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"9":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"10":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"11":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"12":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"13":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"14":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"15":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"16":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"17":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"18":{"0":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":15,"BestTorsoTexture":0}},"19":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"20":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"21":{"0":{"BestTorsoDrawable":16,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":16,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":16,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":16,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":16,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":16,"BestTorsoTexture":5}},"22":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"23":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"24":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"25":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"26":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"27":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"28":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"29":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"30":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"31":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"32":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"33":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"34":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"35":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"36":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"37":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"38":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"39":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"40":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"41":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"42":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"43":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"44":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"45":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"46":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"47":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"48":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"49":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"50":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"51":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"52":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"53":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"54":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"55":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"56":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"57":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"58":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"59":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"60":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"61":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"62":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"63":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"64":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"65":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"66":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"67":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"68":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"69":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"70":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"71":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"72":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"73":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"74":{"0":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":15,"BestTorsoTexture":0}},"75":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"76":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"77":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"78":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"79":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"80":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"81":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"82":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"83":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"84":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"85":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"86":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"87":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"88":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"89":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"90":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"91":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"92":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"93":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"94":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"95":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"96":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"97":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"98":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"99":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"100":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"101":{"0":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":15,"BestTorsoTexture":0}},"102":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"103":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"104":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"105":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"106":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"107":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"108":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"109":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"110":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"111":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"112":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"113":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"114":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"115":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"116":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"117":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"118":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"119":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"120":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"16":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"121":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"122":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"123":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"124":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"125":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"126":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"127":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"128":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"129":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"130":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"131":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"132":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"133":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"134":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"135":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"136":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"137":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"138":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"139":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"140":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"141":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"142":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"143":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"144":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"145":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"146":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"147":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"148":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"149":{"0":{"BestTorsoDrawable":128,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":128,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":128,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":128,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":128,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":128,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":128,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":128,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":128,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":128,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":128,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":128,"BestTorsoTexture":11},"12":{"BestTorsoDrawable":128,"BestTorsoTexture":12},"13":{"BestTorsoDrawable":128,"BestTorsoTexture":13},"14":{"BestTorsoDrawable":128,"BestTorsoTexture":14},"15":{"BestTorsoDrawable":128,"BestTorsoTexture":15}},"150":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"151":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"152":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"153":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"154":{"0":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":129,"BestTorsoTexture":0}},"155":{"0":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":130,"BestTorsoTexture":0}},"156":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"157":{"0":{"BestTorsoDrawable":132,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":132,"BestTorsoTexture":0}},"158":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"159":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"160":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"161":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"162":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"163":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"164":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"165":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"166":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"167":{"0":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":129,"BestTorsoTexture":0}},"168":{"0":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":161,"BestTorsoTexture":0}},"169":{"0":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":153,"BestTorsoTexture":0}},"170":{"0":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":15,"BestTorsoTexture":0}},"171":{"0":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":153,"BestTorsoTexture":0}},"172":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"173":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"174":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"175":{"0":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":129,"BestTorsoTexture":0}},"176":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"177":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"178":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"179":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"180":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"181":{"0":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":129,"BestTorsoTexture":0}},"182":{"0":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":130,"BestTorsoTexture":0}},"183":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"184":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"185":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"186":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"187":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"188":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"189":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"190":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"191":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"192":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"193":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"194":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"195":{"0":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":153,"BestTorsoTexture":0}},"196":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"197":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"198":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"199":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"200":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"201":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"202":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"203":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"204":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"205":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"206":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"207":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"208":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"209":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"210":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"211":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"212":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"213":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"214":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"215":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"216":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"217":{"0":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"218":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"219":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"220":{"0":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":129,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"221":{"0":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":161,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"222":{"0":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":153,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"223":{"0":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"224":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"225":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"226":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"227":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"228":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"229":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"230":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"231":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"232":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"233":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"234":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"235":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"236":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"237":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"238":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"239":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"240":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"241":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"242":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"243":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"244":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"245":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"246":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"247":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"248":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"249":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"250":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"251":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"252":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"253":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"254":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"255":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"256":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"257":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"258":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"259":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"260":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"261":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"262":{"0":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":7,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":7,"BestTorsoTexture":0}},"263":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"264":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"24":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"25":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"265":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"266":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"267":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"268":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"24":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"25":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"269":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"270":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"271":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"272":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"273":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"274":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"275":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"276":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"277":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"278":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"279":{"0":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":15,"BestTorsoTexture":0}},"280":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"281":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"282":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"283":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"284":{"0":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":15,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":15,"BestTorsoTexture":0}},"285":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"286":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"287":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"288":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"289":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"290":{"0":{"BestTorsoDrawable":205,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":205,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":205,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":205,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":205,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":205,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":205,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":205,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":205,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":205,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":205,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":205,"BestTorsoTexture":11}},"291":{"0":{"BestTorsoDrawable":206,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":206,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":206,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":206,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":206,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":206,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":206,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":206,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":206,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":206,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":206,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":206,"BestTorsoTexture":11},"12":{"BestTorsoDrawable":206,"BestTorsoTexture":12},"13":{"BestTorsoDrawable":206,"BestTorsoTexture":13},"14":{"BestTorsoDrawable":206,"BestTorsoTexture":14},"15":{"BestTorsoDrawable":206,"BestTorsoTexture":15},"16":{"BestTorsoDrawable":206,"BestTorsoTexture":16},"17":{"BestTorsoDrawable":206,"BestTorsoTexture":17}},"292":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"293":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"294":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"295":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"296":{"0":{"BestTorsoDrawable":207,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":207,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":207,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":207,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":207,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":207,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":207,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":207,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":207,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":207,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":207,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":207,"BestTorsoTexture":11}},"297":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"298":{"0":{"BestTorsoDrawable":18,"BestTorsoTexture":0}},"299":{"0":{"BestTorsoDrawable":208,"BestTorsoTexture":0}},"300":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"301":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"302":{"0":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":131,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":131,"BestTorsoTexture":0}},"303":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"304":{"0":{"BestTorsoDrawable":209,"BestTorsoTexture":0}},"305":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"306":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"307":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"308":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"309":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"310":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"311":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"312":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"313":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"314":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"315":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"316":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"317":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"318":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"319":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"320":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"321":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"322":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"323":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"324":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"325":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"326":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"327":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"328":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"329":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"330":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"331":{"0":{"BestTorsoDrawable":18,"BestTorsoTexture":0}},"332":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"333":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"334":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"335":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"336":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"337":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"338":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"339":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"340":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"341":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"342":{"0":{"BestTorsoDrawable":130,"BestTorsoTexture":0}},"343":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"344":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"345":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"346":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"347":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"348":{"0":{"BestTorsoDrawable":210,"BestTorsoTexture":0}},"349":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"350":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"351":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"352":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"353":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"354":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"16":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"17":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"18":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"19":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"24":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"355":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"356":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"357":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"358":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"359":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"360":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"361":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"362":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"363":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"364":{"0":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":229,"BestTorsoTexture":0}},"365":{"0":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":229,"BestTorsoTexture":0}},"366":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"367":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"368":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"369":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"370":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"371":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"372":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":9,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"373":{"0":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":229,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":229,"BestTorsoTexture":0}},"374":{"0":{"BestTorsoDrawable":9,"BestTorsoTexture":0}},"375":{"0":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":130,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":130,"BestTorsoTexture":0}},"376":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"377":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"378":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"379":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"380":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0}}}');
+
+/***/ }),
+
+/***/ 3649:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"0":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"1":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"2":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"3":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"4":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"5":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"6":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"7":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"8":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"9":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"10":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"11":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"12":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"13":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"14":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"15":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"16":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"17":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"18":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"19":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"20":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"21":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"22":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"23":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"24":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"25":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"26":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"27":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"28":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"29":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"30":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"31":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"32":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"33":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"34":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"35":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"36":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"37":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"38":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"39":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"40":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"41":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"42":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"43":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"44":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"45":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"46":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"47":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"48":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"49":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"50":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"51":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"52":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"53":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"54":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"55":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"56":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"57":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"58":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"59":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"60":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"61":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"62":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"63":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"64":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"65":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"66":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"67":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"68":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"69":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"70":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"71":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"72":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"73":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"74":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"75":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"76":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"77":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"78":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"79":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"80":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"81":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"82":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"83":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"84":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"85":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"86":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"87":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"88":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"89":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"90":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"91":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"92":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"93":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"94":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"95":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"96":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"97":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"98":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"99":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"100":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"101":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"102":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"103":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"104":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"105":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"106":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"107":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"108":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"109":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"110":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"111":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"112":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"113":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"114":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"115":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"116":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"117":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"118":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"119":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"120":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"121":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"122":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"123":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"124":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"125":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"126":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"127":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"128":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"129":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"130":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"131":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"132":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"133":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"134":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"135":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"136":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"137":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"138":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"139":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"140":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"141":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"142":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"143":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"144":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"145":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"146":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"147":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"148":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"149":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"150":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"151":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"152":{"0":{"BestTorsoDrawable":111,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":111,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":111,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":111,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":111,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":111,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":111,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":111,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":111,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":111,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":111,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":111,"BestTorsoTexture":11},"12":{"BestTorsoDrawable":111,"BestTorsoTexture":12},"13":{"BestTorsoDrawable":111,"BestTorsoTexture":13},"14":{"BestTorsoDrawable":111,"BestTorsoTexture":14},"15":{"BestTorsoDrawable":111,"BestTorsoTexture":15}},"153":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"154":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"155":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"156":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"157":{"0":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":112,"BestTorsoTexture":0}},"158":{"0":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":113,"BestTorsoTexture":0}},"159":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0}},"160":{"0":{"BestTorsoDrawable":115,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":115,"BestTorsoTexture":0}},"161":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"162":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":114,"BestTorsoTexture":0}},"163":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"164":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"165":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"166":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"167":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"168":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0}},"169":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"170":{"0":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":112,"BestTorsoTexture":0}},"171":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"172":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"173":{"0":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":112,"BestTorsoTexture":0}},"174":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"175":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":114,"BestTorsoTexture":0}},"176":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0}},"177":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"178":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"179":{"0":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":112,"BestTorsoTexture":0}},"180":{"0":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":113,"BestTorsoTexture":0}},"181":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"182":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"183":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"184":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"185":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"186":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"187":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"188":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"189":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"190":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"191":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"192":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"193":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"194":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"195":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"196":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"197":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"198":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"199":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"200":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"201":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"202":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":114,"BestTorsoTexture":0}},"203":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"204":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"205":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":114,"BestTorsoTexture":0}},"206":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"207":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"208":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"209":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"210":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"211":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"212":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"213":{"0":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":113,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"214":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"215":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"216":{"0":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":112,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"217":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"218":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"219":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"220":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"221":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"222":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"223":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"224":{"0":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":12,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"225":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"226":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"227":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"228":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"229":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"230":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"231":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"232":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"233":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"234":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"235":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"236":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"237":{"0":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":5,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":5,"BestTorsoTexture":0}},"238":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"239":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"240":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"241":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"242":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"243":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"244":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"245":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"246":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"247":{"0":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":114,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":114,"BestTorsoTexture":0}},"248":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"249":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"250":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"251":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"252":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"253":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"254":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"255":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"256":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"257":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"258":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"259":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"260":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"261":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"262":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"263":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"264":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"265":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"266":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"267":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"268":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"269":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"270":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"271":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"272":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"273":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"274":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"275":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"276":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"277":{"0":{"BestTorsoDrawable":164,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":164,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":164,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":164,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":164,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":164,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":164,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":164,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":164,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":164,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":164,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":164,"BestTorsoTexture":11}},"278":{"0":{"BestTorsoDrawable":165,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":165,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":165,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":165,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":165,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":165,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":165,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":165,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":165,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":165,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":165,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":165,"BestTorsoTexture":11},"12":{"BestTorsoDrawable":165,"BestTorsoTexture":12},"13":{"BestTorsoDrawable":165,"BestTorsoTexture":13},"14":{"BestTorsoDrawable":165,"BestTorsoTexture":14},"15":{"BestTorsoDrawable":165,"BestTorsoTexture":15},"16":{"BestTorsoDrawable":165,"BestTorsoTexture":16},"17":{"BestTorsoDrawable":165,"BestTorsoTexture":17}},"279":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"280":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"281":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"282":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"283":{"0":{"BestTorsoDrawable":166,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":166,"BestTorsoTexture":1},"2":{"BestTorsoDrawable":166,"BestTorsoTexture":2},"3":{"BestTorsoDrawable":166,"BestTorsoTexture":3},"4":{"BestTorsoDrawable":166,"BestTorsoTexture":4},"5":{"BestTorsoDrawable":166,"BestTorsoTexture":5},"6":{"BestTorsoDrawable":166,"BestTorsoTexture":6},"7":{"BestTorsoDrawable":166,"BestTorsoTexture":7},"8":{"BestTorsoDrawable":166,"BestTorsoTexture":8},"9":{"BestTorsoDrawable":166,"BestTorsoTexture":9},"10":{"BestTorsoDrawable":166,"BestTorsoTexture":10},"11":{"BestTorsoDrawable":166,"BestTorsoTexture":11}},"284":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"285":{"0":{"BestTorsoDrawable":17,"BestTorsoTexture":0}},"286":{"0":{"BestTorsoDrawable":167,"BestTorsoTexture":0}},"287":{"0":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":3,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":3,"BestTorsoTexture":0}},"288":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"289":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"290":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"291":{"0":{"BestTorsoDrawable":168,"BestTorsoTexture":0}},"292":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"293":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"294":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"295":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"296":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"297":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"298":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"299":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"300":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"301":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"302":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"303":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"304":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"305":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"306":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"307":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"308":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"309":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"310":{"0":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":14,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":14,"BestTorsoTexture":0}},"311":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"312":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"313":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"314":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"315":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"316":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"317":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"318":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"319":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"320":{"0":{"BestTorsoDrawable":17,"BestTorsoTexture":0}},"321":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"322":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"323":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"324":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"325":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"326":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"327":{"0":{"BestTorsoDrawable":113,"BestTorsoTexture":0}},"328":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"329":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"330":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"331":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"332":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"333":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"334":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"335":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":8,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"336":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"337":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"338":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"339":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"9":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"10":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"11":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"12":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"13":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"14":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"15":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"16":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"17":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"18":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"19":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"20":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"21":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"22":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"23":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"340":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"1":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"2":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"3":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"4":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"5":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"6":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"7":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1},"8":{"BestTorsoDrawable":-1,"BestTorsoTexture":-1}},"341":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"342":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"343":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"344":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"345":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"346":{"0":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":184,"BestTorsoTexture":0}},"347":{"0":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":184,"BestTorsoTexture":0}},"348":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"349":{"0":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":1,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":1,"BestTorsoTexture":0}},"350":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"351":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":0,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":0,"BestTorsoTexture":0}},"352":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"353":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":4,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"354":{"0":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":11,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":11,"BestTorsoTexture":0}},"355":{"0":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"10":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"11":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"12":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"13":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"14":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"15":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"16":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"17":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"18":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"19":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"20":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"21":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"22":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"23":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"24":{"BestTorsoDrawable":184,"BestTorsoTexture":0},"25":{"BestTorsoDrawable":184,"BestTorsoTexture":0}},"356":{"0":{"BestTorsoDrawable":8,"BestTorsoTexture":0}},"357":{"0":{"BestTorsoDrawable":2,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":2,"BestTorsoTexture":0}},"358":{"0":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"1":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"2":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"3":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"4":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"5":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"6":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"7":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"8":{"BestTorsoDrawable":6,"BestTorsoTexture":0},"9":{"BestTorsoDrawable":6,"BestTorsoTexture":0}},"359":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"360":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"361":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}},"362":{"0":{"BestTorsoDrawable":4,"BestTorsoTexture":0}}}');
 
 /***/ }),
 
@@ -201,182 +606,6 @@ mp.events.add({
 // CLIENTSIDE / inventory.js
 
 
-
-
-/***/ }),
-
-/***/ 2591:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-
-const Player = mp.players.local;
-
-const Server = {
-   Color: {
-      R: 104, G: 69, B: 234, A: 255
-   }
-}
-
-function CompareVectors (i, x) { 
-   return i.x == x.x && i.y == x.y && i.z == x.z;
-};
-
-
-function LoadAnimDict (i) { 
-   if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve();
-   return new Promise(async resolve => { 
-      mp.game.streaming.requestAnimDict(i);
-      while (!mp.game.streaming.hasAnimDictLoaded(i)) { 
-         await mp.game.waitAsync(0);bro
-      }
-      resolve();
-   })
-};
-
-
-function LoadMovementClipset (Clipset) { 
-   if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve();
-   return new Promise(async resolve => { 
-      mp.game.streaming.requestClipSet(Clipset);
-      while (!mp.game.streaming.hasClipSetLoaded(Clipset)) { 
-         await mp.game.waitAsync(10);
-      }
-      resolve();
-   })
-}
-
-
-
-function WaitEntity (entity) {
-   return new Promise(resolve => {
-      let wait = setInterval(() => {
-         if (mp.game.entity.isAnEntity(entity.handle)) {
-            clearInterval(wait);
-            resolve();
-         }
-      }, 1);
-   });
-}
-
-function weaponString (weapon) {
-	if (typeof weapon !== 'undefined')
-		return '0x' + weapon.toString(16).toUpperCase()
-	else 
-		return '0xA2719263'
-}
-
-
-
-function Distance (first, second) {
-   return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(second.x, second.y, second.z)).length();
-}
-
-
-function OnlinePlayers () {
-   let list = [];
-   mp.players.forEach(_Player => {
-      list.push({ id: _Player.remoteId, name: _Player.name }); 
-   }); 
-   return list;
-}
-
-
-function GetAdress (position) { 
-   const path = mp.game.pathfind.getStreetNameAtCoord(position.x, position.y, position.z, 0, 0),
-      Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(position.x, position.y, position.z)),
-      Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
-   return { zone: Zone, street: Street };
-}
-
-
-function BrowserControls (freezeControls, mouse) {
-   mouse ? mp.gui.chat.activate(false) : mp.gui.chat.activate(true);
-   
-   setTimeout(() => { mp.gui.cursor.show(freezeControls, mouse); }, 250);
-}
-
-Player.BrowserControls = BrowserControls;
-
-
-let MovableCamera = null;
-
-function PlayerPreviewCamera (toggle) { 
-   if (toggle) { 
-      MovableCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
-      const CameraPositon = new mp.Vector3(Player.position.x + Player.getForwardX() * 1.5, Player.position.y + Player.getForwardY() * 1.5, Player.position.z);
-      MovableCamera.setCoord(CameraPositon.x, CameraPositon.y, CameraPositon.z);
-      MovableCamera.pointAtCoord(Player.position.x, Player.position.y, Player.position.z);
-      MovableCamera.setActive(true);
-      mp.game.cam.renderScriptCams(true, false, 0, true, false);
-   
-      mp.events.add('render', MoveCamera);
-      mp.events.add('client:player.camera:zoom', ZoomCamera);
-   } else { 
-      mp.events.remove('render', MoveCamera);
-      mp.events.remove('client:player.camera:zoom', ZoomCamera);
-      if (MovableCamera) MovableCamera.destroy();
-      MovableCamera = null;
-      mp.game.cam.renderScriptCams(false, false, 0, false, false);
-   }
-}
-
-function ZoomCamera (delta) {
-   let { x, y, z } = MovableCamera.getCoord();
-
-   if (delta < 0) { 
-      x += MovableCamera.getDirection().x * 0.1;
-      y += MovableCamera.getDirection().y * 0.1;
-      
-   } else { 
-      x -= MovableCamera.getDirection().x * 0.1;
-      y -= MovableCamera.getDirection().y * 0.1;
-   }
-
-   const dist = mp.game.gameplay.getDistanceBetweenCoords(Player.position.x, Player.position.y, Player.position.z, x, y, z, false);
-   if (dist > 3.5 || dist < 0.3) return;
-
-   MovableCamera.setPosition(x, y, z);
-}
-
-let [PrevX, PrevY] = mp.gui.cursor.position;
-
-function CursorData () { 
-   const x = PrevX, y = PrevY;
-   PrevX = mp.gui.cursor.position[0];
-   PrevY = mp.gui.cursor.position[1];
-   return { DeltaX: mp.gui.cursor.position[0] - x, DeltaY: mp.gui.cursor.position[1] - y };
-}
-
-function MoveCamera () { 
-   const Data = CursorData();
-
-   if (!mp.keys.isDown(0x02)) return;
-   const newHeading = Player.getHeading() + Data.DeltaX * 0.15;
-   Player.setHeading(newHeading);
-
-   let { x: camPosX, y: camPosY, z: camPosZ } = MovableCamera.getCoord();
-   let { pointX: camPointX, pointY: camPointY, pointZ: camPointZ } = MovableCamera.getDirection();
-
-   camPosZ = camPosZ + Data.DeltaY * 0.001;
-   const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
-
-   if (camPosZ < charPosZ + 0.7 && camPosZ > charPosZ - 0.8) { 
-      MovableCamera.setPosition(camPosX, camPosY, camPosZ);
-      MovableCamera.pointAtCoord(charPosX, charPosY, camPosZ);
-   }
-}
-
-
-function CreateInteractionSpot (name, position) { 
-   const checkpoint = mp.checkpoints.new(48, position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
-   const blip = mp.blips.new(1, new mp.Vector3(position.x, position.y, 0), { name: name, color: 1, shortRange: false });
-   return { checkpoint: checkpoint, blip: blip };
-};
-
-Player.CreateInteractionSpot = CreateInteractionSpot;
-
-
-__webpack_require__.g.utils = { CompareVectors, LoadAnimDict, weaponString, Distance, OnlinePlayers, GetAdress, PlayerPreviewCamera, WaitEntity, LoadMovementClipset, Server };
 
 
 /***/ }),
@@ -2748,345 +2977,345 @@ mp.keys.bind(0x09, false, function () { // change bet
 /***/ 7193:
 /***/ (() => {
 
-// FOCUS ROLEPLAY DIAMOND CASINO - Slots
+// // FOCUS ROLEPLAY DIAMOND CASINO - Slots
 
 
-const localPlayer = mp.players.local;
+// const localPlayer = mp.players.local;
 
-let lpSlotMachine = null,
-    slotMachineToJoin = null,
-    interactingWithSlotMachine = null,
-    canSpin = false,
-    interactingWithSlotMachineTimeout = null,
-    slotMachineData = [];
+// let lpSlotMachine = null,
+//     slotMachineToJoin = null,
+//     interactingWithSlotMachine = null,
+//     canSpin = false,
+//     interactingWithSlotMachineTimeout = null,
+//     slotMachineData = [];
 
-let SPINNING_TIME = []; 
-SPINNING_TIME[1] = [2000,2500,3000];
-SPINNING_TIME[2] = [2000,4000,6000];
+// let SPINNING_TIME = []; 
+// SPINNING_TIME[1] = [2000,2500,3000];
+// SPINNING_TIME[2] = [2000,4000,6000];
 
-const reelsOffsets = 
-[
-	[-0.115, 0.047, 1.106],
-	[0.005, 0.047, 1.106],
-	[0.125, 0.047, 1.106]
-]
+// const reelsOffsets = 
+// [
+// 	[-0.115, 0.047, 1.106],
+// 	[0.005, 0.047, 1.106],
+// 	[0.125, 0.047, 1.106]
+// ]
 
-let slotMachineBets = [];
-slotMachineBets[1] = 100;
-slotMachineBets[2] = 25;
-slotMachineBets[3] = 25;
-slotMachineBets[4] = 5;
-slotMachineBets[5] = 500;
-slotMachineBets[6] = 100;
-slotMachineBets[7] = 500;
-slotMachineBets[8] = 5;
+// let slotMachineBets = [];
+// slotMachineBets[1] = 100;
+// slotMachineBets[2] = 25;
+// slotMachineBets[3] = 25;
+// slotMachineBets[4] = 5;
+// slotMachineBets[5] = 500;
+// slotMachineBets[6] = 100;
+// slotMachineBets[7] = 500;
+// slotMachineBets[8] = 5;
 
-let slotMachineNames = [];
-slotMachineNames[1] = "Angel and the Knight";
-slotMachineNames[2] = "Impotent RAGE";
-slotMachineNames[3] = "Republican Space Rangers";
-slotMachineNames[4] = "Fame or Shame";
-slotMachineNames[5] = "Deity of the Sun";
-slotMachineNames[6] = "Twilight Knife";
-slotMachineNames[7] = "Diamond Miner";
-slotMachineNames[8] = "Evacuator";
+// let slotMachineNames = [];
+// slotMachineNames[1] = "Angel and the Knight";
+// slotMachineNames[2] = "Impotent RAGE";
+// slotMachineNames[3] = "Republican Space Rangers";
+// slotMachineNames[4] = "Fame or Shame";
+// slotMachineNames[5] = "Deity of the Sun";
+// slotMachineNames[6] = "Twilight Knife";
+// slotMachineNames[7] = "Diamond Miner";
+// slotMachineNames[8] = "Evacuator";
 
-const slotMachinePos =
-[
-	{ "type": 1, "x": 1135.1024169921875, "y": 256.709716796875, "z": -52.03075408935547, "rz": 101.998046875 },
-	{ "type": 1, "x": 1120.8575439453125, "y": 233.18858337402344, "z": -50.84077453613281, "rz": -104.99775695800781 },
-	{ "type": 1, "x": 1108.9188232421875, "y": 239.50234985351562, "z": -50.84078598022461, "rz": -44.99958038330078 },
-	{ "type": 1, "x": 1105.031982421875, "y": 230.81637573242188, "z": -50.84077072143555, "rz": -177.001220703125 },
-	{ "type": 1, "x": 1114.0848388671875, "y": 235.03343200683594, "z": -50.84077453613281, "rz": -179.00137329101562 },
-	{ "type": 2, "x": 1134.7552490234375, "y": 255.9905242919922, "z": -52.03075408935547, "rz": 30.999441146850586 },
-	{ "type": 2, "x": 1132.4876708984375, "y": 247.59466552734375, "z": -52.03075408935547, "rz": 88.49937438964844 },
-	{ "type": 2, "x": 1109.5211181640625, "y": 239.04225158691406, "z": -50.84078598022461, "rz": -29.499794006347656 },
-	{ "type": 2, "x": 1105.7384033203125, "y": 230.33175659179688, "z": -50.84077072143555, "rz": 107.99896240234375 },
-	{ "type": 2, "x": 1120.756103515625, "y": 232.42312622070312, "z": -50.84077453613281, "rz": -90.49939727783203 },
-	{ "type": 2, "x": 1114.8876953125, "y": 234.52394104003906, "z": -50.84077453613281, "rz": 108.99903869628906 },
-	{ "type": 3, "x": 1133.948974609375, "y": 256.10711669921875, "z": -52.0307502746582, "rz": -46.99979782104492 },
-	{ "type": 3, "x": 1132.41357421875, "y": 248.33412170410156, "z": -52.03075408935547, "rz": 105.99855041503906 },
-	{ "type": 3, "x": 1105.5439453125, "y": 229.40882873535156, "z": -50.84077072143555, "rz": 38.49977111816406 },
-	{ "type": 3, "x": 1110.232666015625, "y": 238.7513427734375, "z": -50.84078598022461, "rz": -12.999954223632812 },
-	{ "type": 3, "x": 1114.5487060546875, "y": 233.68020629882812, "z": -50.84077453613281, "rz": 33.99979019165039 },
-	{ "type": 3, "x": 1120.85302734375, "y": 231.6873779296875, "z": -50.84077072143555, "rz": -73.99937438964844 },
-	{ "type": 4, "x": 1139.37109375, "y": 252.4561767578125, "z": -52.03075408935547, "rz": 97.49907684326172 },
-	{ "type": 4, "x": 1132.109130859375, "y": 249.05078125, "z": -52.03075408935547, "rz": 118.9986801147461 },
-	{ "type": 4, "x": 1133.8514404296875, "y": 256.8948669433594, "z": -52.0307502746582, "rz": -115.99858856201172 },
-	{ "type": 4, "x": 1110.988037109375, "y": 238.6630401611328, "z": -50.84078598022461, "rz": 0 },
-	{ "type": 4, "x": 1100.46630859375, "y": 230.39248657226562, "z": -50.84077072143555, "rz": 44.49960708618164 },
-	{ "type": 4, "x": 1104.66650390625, "y": 229.47808837890625, "z": -50.84077453613281, "rz": -30.99989128112793 },
-	{ "type": 4, "x": 1108.446533203125, "y": 235.39356994628906, "z": -50.84077453613281, "rz": -179.0015106201172 },
-	{ "type": 4, "x": 1113.65576171875, "y": 233.69044494628906, "z": -50.84077453613281, "rz": -34.49992752075195 },
-	{ "type": 4, "x": 1117.1199951171875, "y": 230.25537109375, "z": -50.84077453613281, "rz": -176.5015106201172 },
-	{ "type": 4, "x": 1121.1380615234375, "y": 230.99908447265625, "z": -50.84077453613281, "rz": -58.999629974365234 },
-	{ "type": 5, "x": 1134.55615234375, "y": 257.2640075683594, "z": -52.03075408935547, "rz": 170.9969940185547 },
-	{ "type": 5, "x": 1138.998046875, "y": 251.7522430419922, "z": -52.03075408935547, "rz": 29.49958610534668 },
-	{ "type": 5, "x": 1131.660400390625, "y": 249.63453674316406, "z": -52.03075408935547, "rz": 135.99819946289062 },
-	{ "type": 5, "x": 1100.9368896484375, "y": 230.99258422851562, "z": -50.84077453613281, "rz": 59.49959945678711 },
-	{ "type": 5, "x": 1111.7265625, "y": 238.75173950195312, "z": -50.84078598022461, "rz": 12.99996566772461 },
-	{ "type": 5, "x": 1104.3472900390625, "y": 230.33616638183594, "z": -50.84077453613281, "rz": -106.99888610839844 },
-	{ "type": 5, "x": 1109.1422119140625, "y": 234.78053283691406, "z": -50.84077453613281, "rz": 106.9991455078125 },
-	{ "type": 5, "x": 1113.37841796875, "y": 234.48037719726562, "z": -50.84077072143555, "rz": -104.99906158447266 },
-	{ "type": 5, "x": 1117.8211669921875, "y": 229.77664184570312, "z": -50.84077072143555, "rz": 111.9986801147461 },
-	{ "type": 6, "x": 1138.1981201171875, "y": 251.86956787109375, "z": -52.03075408935547, "rz": -45.4997444152832 },
-	{ "type": 6, "x": 1131.0672607421875, "y": 250.08070373535156, "z": -52.03075408935547, "rz": 149.9978790283203 },
-	{ "type": 6, "x": 1112.40869140625, "y": 239.02345275878906, "z": -50.84078598022461, "rz": 30.4997615814209 },
-	{ "type": 6, "x": 1121.614501953125, "y": 230.38429260253906, "z": -50.84077453613281, "rz": -45.499813079833984 },
-	{ "type": 6, "x": 1117.5740966796875, "y": 228.9528045654297, "z": -50.84077072143555, "rz": 34.49982452392578 },
-	{ "type": 6, "x": 1108.875244140625, "y": 233.94735717773438, "z": -50.84077453613281, "rz": 33.99979019165039 },
-	{ "type": 6, "x": 1101.227783203125, "y": 231.69332885742188, "z": -50.84077453613281, "rz": 75.49949645996094 },
-	{ "type": 7, "x": 1138.080810546875, "y": 252.67027282714844, "z": -52.03075408935547, "rz": -118.99893951416016 },
-	{ "type": 7, "x": 1130.3834228515625, "y": 250.3516082763672, "z": -52.03075408935547, "rz": 165.49742126464844 },
-	{ "type": 7, "x": 1101.32080078125, "y": 232.4326629638672, "z": -50.84077453613281, "rz": 90.99922943115234 },
-	{ "type": 7, "x": 1108.02001953125, "y": 233.9359130859375, "z": -50.84077072143555, "rz": -35.499839782714844 },
-	{ "type": 7, "x": 1116.7257080078125, "y": 228.941162109375, "z": -50.84077453613281, "rz": -33.499881744384766 },
-	{ "type": 8, "x": 1138.8004150390625, "y": 253.02676391601562, "z": -52.03075408935547, "rz": 170.9975128173828 },
-	{ "type": 8, "x": 1129.5975341796875, "y": 250.44863891601562, "z": -52.03075408935547, "rz": 179.49769592285156 },
-	{ "type": 8, "x": 1113.0006103515625, "y": 239.52088928222656, "z": -50.840789794921875, "rz": 46.499603271484375 },
-	{ "type": 8, "x": 1107.7371826171875, "y": 234.7730712890625, "z": -50.84077453613281, "rz": -106.99908447265625 },
-	{ "type": 8, "x": 1116.4288330078125, "y": 229.7194061279297, "z": -50.84077453613281, "rz": -102.49913024902344 },
-	{ "type": 8, "x": 1101.1824951171875, "y": 233.19720458984375, "z": -50.84077453613281, "rz": -50.84077453613281 }
-];
-
-
-for(var i=1; i <= 8; i++)
-{
-	mp.game.entity.createModelHideExcludingScriptObjects(1127.1312255859375, 254.82090759277344, -50.4407958984375, 300.0, mp.game.joaat("vw_prop_casino_slot_0"+i+"a"), true);
-}
+// const slotMachinePos =
+// [
+// 	{ "type": 1, "x": 1135.1024169921875, "y": 256.709716796875, "z": -52.03075408935547, "rz": 101.998046875 },
+// 	{ "type": 1, "x": 1120.8575439453125, "y": 233.18858337402344, "z": -50.84077453613281, "rz": -104.99775695800781 },
+// 	{ "type": 1, "x": 1108.9188232421875, "y": 239.50234985351562, "z": -50.84078598022461, "rz": -44.99958038330078 },
+// 	{ "type": 1, "x": 1105.031982421875, "y": 230.81637573242188, "z": -50.84077072143555, "rz": -177.001220703125 },
+// 	{ "type": 1, "x": 1114.0848388671875, "y": 235.03343200683594, "z": -50.84077453613281, "rz": -179.00137329101562 },
+// 	{ "type": 2, "x": 1134.7552490234375, "y": 255.9905242919922, "z": -52.03075408935547, "rz": 30.999441146850586 },
+// 	{ "type": 2, "x": 1132.4876708984375, "y": 247.59466552734375, "z": -52.03075408935547, "rz": 88.49937438964844 },
+// 	{ "type": 2, "x": 1109.5211181640625, "y": 239.04225158691406, "z": -50.84078598022461, "rz": -29.499794006347656 },
+// 	{ "type": 2, "x": 1105.7384033203125, "y": 230.33175659179688, "z": -50.84077072143555, "rz": 107.99896240234375 },
+// 	{ "type": 2, "x": 1120.756103515625, "y": 232.42312622070312, "z": -50.84077453613281, "rz": -90.49939727783203 },
+// 	{ "type": 2, "x": 1114.8876953125, "y": 234.52394104003906, "z": -50.84077453613281, "rz": 108.99903869628906 },
+// 	{ "type": 3, "x": 1133.948974609375, "y": 256.10711669921875, "z": -52.0307502746582, "rz": -46.99979782104492 },
+// 	{ "type": 3, "x": 1132.41357421875, "y": 248.33412170410156, "z": -52.03075408935547, "rz": 105.99855041503906 },
+// 	{ "type": 3, "x": 1105.5439453125, "y": 229.40882873535156, "z": -50.84077072143555, "rz": 38.49977111816406 },
+// 	{ "type": 3, "x": 1110.232666015625, "y": 238.7513427734375, "z": -50.84078598022461, "rz": -12.999954223632812 },
+// 	{ "type": 3, "x": 1114.5487060546875, "y": 233.68020629882812, "z": -50.84077453613281, "rz": 33.99979019165039 },
+// 	{ "type": 3, "x": 1120.85302734375, "y": 231.6873779296875, "z": -50.84077072143555, "rz": -73.99937438964844 },
+// 	{ "type": 4, "x": 1139.37109375, "y": 252.4561767578125, "z": -52.03075408935547, "rz": 97.49907684326172 },
+// 	{ "type": 4, "x": 1132.109130859375, "y": 249.05078125, "z": -52.03075408935547, "rz": 118.9986801147461 },
+// 	{ "type": 4, "x": 1133.8514404296875, "y": 256.8948669433594, "z": -52.0307502746582, "rz": -115.99858856201172 },
+// 	{ "type": 4, "x": 1110.988037109375, "y": 238.6630401611328, "z": -50.84078598022461, "rz": 0 },
+// 	{ "type": 4, "x": 1100.46630859375, "y": 230.39248657226562, "z": -50.84077072143555, "rz": 44.49960708618164 },
+// 	{ "type": 4, "x": 1104.66650390625, "y": 229.47808837890625, "z": -50.84077453613281, "rz": -30.99989128112793 },
+// 	{ "type": 4, "x": 1108.446533203125, "y": 235.39356994628906, "z": -50.84077453613281, "rz": -179.0015106201172 },
+// 	{ "type": 4, "x": 1113.65576171875, "y": 233.69044494628906, "z": -50.84077453613281, "rz": -34.49992752075195 },
+// 	{ "type": 4, "x": 1117.1199951171875, "y": 230.25537109375, "z": -50.84077453613281, "rz": -176.5015106201172 },
+// 	{ "type": 4, "x": 1121.1380615234375, "y": 230.99908447265625, "z": -50.84077453613281, "rz": -58.999629974365234 },
+// 	{ "type": 5, "x": 1134.55615234375, "y": 257.2640075683594, "z": -52.03075408935547, "rz": 170.9969940185547 },
+// 	{ "type": 5, "x": 1138.998046875, "y": 251.7522430419922, "z": -52.03075408935547, "rz": 29.49958610534668 },
+// 	{ "type": 5, "x": 1131.660400390625, "y": 249.63453674316406, "z": -52.03075408935547, "rz": 135.99819946289062 },
+// 	{ "type": 5, "x": 1100.9368896484375, "y": 230.99258422851562, "z": -50.84077453613281, "rz": 59.49959945678711 },
+// 	{ "type": 5, "x": 1111.7265625, "y": 238.75173950195312, "z": -50.84078598022461, "rz": 12.99996566772461 },
+// 	{ "type": 5, "x": 1104.3472900390625, "y": 230.33616638183594, "z": -50.84077453613281, "rz": -106.99888610839844 },
+// 	{ "type": 5, "x": 1109.1422119140625, "y": 234.78053283691406, "z": -50.84077453613281, "rz": 106.9991455078125 },
+// 	{ "type": 5, "x": 1113.37841796875, "y": 234.48037719726562, "z": -50.84077072143555, "rz": -104.99906158447266 },
+// 	{ "type": 5, "x": 1117.8211669921875, "y": 229.77664184570312, "z": -50.84077072143555, "rz": 111.9986801147461 },
+// 	{ "type": 6, "x": 1138.1981201171875, "y": 251.86956787109375, "z": -52.03075408935547, "rz": -45.4997444152832 },
+// 	{ "type": 6, "x": 1131.0672607421875, "y": 250.08070373535156, "z": -52.03075408935547, "rz": 149.9978790283203 },
+// 	{ "type": 6, "x": 1112.40869140625, "y": 239.02345275878906, "z": -50.84078598022461, "rz": 30.4997615814209 },
+// 	{ "type": 6, "x": 1121.614501953125, "y": 230.38429260253906, "z": -50.84077453613281, "rz": -45.499813079833984 },
+// 	{ "type": 6, "x": 1117.5740966796875, "y": 228.9528045654297, "z": -50.84077072143555, "rz": 34.49982452392578 },
+// 	{ "type": 6, "x": 1108.875244140625, "y": 233.94735717773438, "z": -50.84077453613281, "rz": 33.99979019165039 },
+// 	{ "type": 6, "x": 1101.227783203125, "y": 231.69332885742188, "z": -50.84077453613281, "rz": 75.49949645996094 },
+// 	{ "type": 7, "x": 1138.080810546875, "y": 252.67027282714844, "z": -52.03075408935547, "rz": -118.99893951416016 },
+// 	{ "type": 7, "x": 1130.3834228515625, "y": 250.3516082763672, "z": -52.03075408935547, "rz": 165.49742126464844 },
+// 	{ "type": 7, "x": 1101.32080078125, "y": 232.4326629638672, "z": -50.84077453613281, "rz": 90.99922943115234 },
+// 	{ "type": 7, "x": 1108.02001953125, "y": 233.9359130859375, "z": -50.84077072143555, "rz": -35.499839782714844 },
+// 	{ "type": 7, "x": 1116.7257080078125, "y": 228.941162109375, "z": -50.84077453613281, "rz": -33.499881744384766 },
+// 	{ "type": 8, "x": 1138.8004150390625, "y": 253.02676391601562, "z": -52.03075408935547, "rz": 170.9975128173828 },
+// 	{ "type": 8, "x": 1129.5975341796875, "y": 250.44863891601562, "z": -52.03075408935547, "rz": 179.49769592285156 },
+// 	{ "type": 8, "x": 1113.0006103515625, "y": 239.52088928222656, "z": -50.840789794921875, "rz": 46.499603271484375 },
+// 	{ "type": 8, "x": 1107.7371826171875, "y": 234.7730712890625, "z": -50.84077453613281, "rz": -106.99908447265625 },
+// 	{ "type": 8, "x": 1116.4288330078125, "y": 229.7194061279297, "z": -50.84077453613281, "rz": -102.49913024902344 },
+// 	{ "type": 8, "x": 1101.1824951171875, "y": 233.19720458984375, "z": -50.84077453613281, "rz": -50.84077453613281 }
+// ];
 
 
-for(let i=0; i < slotMachinePos.length; i++)
-{
-	slotMachineData[i] = { spinning: [] };
-	slotMachineData[i].machine = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a"), new mp.Vector3(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
+// for(var i=1; i <= 8; i++)
+// {
+// 	mp.game.entity.createModelHideExcludingScriptObjects(1127.1312255859375, 254.82090759277344, -50.4407958984375, 300.0, mp.game.joaat("vw_prop_casino_slot_0"+i+"a"), true);
+// }
+
+
+// for(let i=0; i < slotMachinePos.length; i++)
+// {
+// 	slotMachineData[i] = { spinning: [] };
+// 	slotMachineData[i].machine = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a"), new mp.Vector3(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
 	
-	slotMachineData[i].reels = [];
+// 	slotMachineData[i].reels = [];
 	
-	var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, 0, -1.5, 1);
-	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 0.25);
-	newShape.casinoSlotMachime = i;
+// 	var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, 0, -1.5, 1);
+// 	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 0.25);
+// 	newShape.casinoSlotMachime = i;
 	
-	for(var c=0; c < 3; c++)
-	{
-		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, reelsOffsets[c][0], reelsOffsets[c][1], reelsOffsets[c][2]);
-		slotMachineData[i].reels[c] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
-	}
-}
+// 	for(var c=0; c < 3; c++)
+// 	{
+// 		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, reelsOffsets[c][0], reelsOffsets[c][1], reelsOffsets[c][2]);
+// 		slotMachineData[i].reels[c] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
+// 	}
+// }
 
 
-mp.events.add('playerEnterColshape', (shape) => {
+// mp.events.add('playerEnterColshape', (shape) => {
 
-	if(shape.casinoSlotMachime !== undefined && lpSlotMachine == null && interactingWithSlotMachine == null)
-	{
-		slotMachineToJoin = shape.casinoSlotMachime;
-		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
-		mp.game.graphics.notify(`~b~${slotMachineNames[slotMachinePos[slotMachineToJoin].type]}~n~~w~Pritisnite E da igrate`);
-	}
-});
-
-
-mp.events.add('playerExitColshape', (shape) => {
-	if(shape.casinoSlotMachime !== undefined)
-	{
-		slotMachineToJoin = null;
-	}
-});
+// 	if(shape.casinoSlotMachime !== undefined && lpSlotMachine == null && interactingWithSlotMachine == null)
+// 	{
+// 		slotMachineToJoin = shape.casinoSlotMachime;
+// 		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
+// 		mp.game.graphics.notify(`~b~${slotMachineNames[slotMachinePos[slotMachineToJoin].type]}~n~~w~Pritisnite E da igrate`);
+// 	}
+// });
 
 
+// mp.events.add('playerExitColshape', (shape) => {
+// 	if(shape.casinoSlotMachime !== undefined)
+// 	{
+// 		slotMachineToJoin = null;
+// 	}
+// });
 
-mp.keys.bind(0x45, true, () =>  // E
-{
+
+
+// mp.keys.bind(0x45, true, () =>  // E
+// {
 	
-	if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
+// 	if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
 	
-	if(lpSlotMachine != null)
-	{
+// 	if(lpSlotMachine != null)
+// 	{
 		
-		mp.events.callRemote("leaveSlotMachine");
-		interactingWithSlotMachine = lpSlotMachine;
-		lpSlotMachine = null;
-		BLOCK_CONTROLS_DURING_ANIMATION = false;
-		if(canSpin) canSpin = false;
+// 		mp.events.callRemote("leaveSlotMachine");
+// 		interactingWithSlotMachine = lpSlotMachine;
+// 		lpSlotMachine = null;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = false;
+// 		if(canSpin) canSpin = false;
 		
-		interactingWithSlotMachineTimeout = setTimeout(
-			function()
-			{
-				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
-				interactingWithSlotMachine = null;
-				interactingWithSlotMachineTimeout = null;
-			},4500
-		);
-	}
-	else
-	{
-		if(slotMachineToJoin == null) return false;
+// 		interactingWithSlotMachineTimeout = setTimeout(
+// 			function()
+// 			{
+// 				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
+// 				interactingWithSlotMachine = null;
+// 				interactingWithSlotMachineTimeout = null;
+// 			},4500
+// 		);
+// 	}
+// 	else
+// 	{
+// 		if(slotMachineToJoin == null) return false;
 		
-		interactingWithSlotMachine = slotMachineToJoin;
+// 		interactingWithSlotMachine = slotMachineToJoin;
 		
-		slotMachineData[slotMachineToJoin].machine.setCollision(false, false);
+// 		slotMachineData[slotMachineToJoin].machine.setCollision(false, false);
 		
-		var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[slotMachineToJoin].x, slotMachinePos[slotMachineToJoin].y, slotMachinePos[slotMachineToJoin].z, slotMachinePos[slotMachineToJoin].rz, 0, -1.5, 1);
-		localPlayer.position = new mp.Vector3(pos.x, pos.y, pos.z);
-		localPlayer.setHeading(slotMachinePos[slotMachineToJoin].rz);
+// 		var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[slotMachineToJoin].x, slotMachinePos[slotMachineToJoin].y, slotMachinePos[slotMachineToJoin].z, slotMachinePos[slotMachineToJoin].rz, 0, -1.5, 1);
+// 		localPlayer.position = new mp.Vector3(pos.x, pos.y, pos.z);
+// 		localPlayer.setHeading(slotMachinePos[slotMachineToJoin].rz);
 		
-		mp.events.callRemote("server:casino.slot.occupy", slotMachineToJoin);
-		mp.events.call('client:casino.slot.occupy', localPlayer, slotMachine);
+// 		mp.events.callRemote("server:casino.slot.occupy", slotMachineToJoin);
+// 		mp.events.call('client:casino.slot.occupy', localPlayer, slotMachine);
 		
-		interactingWithSlotMachineTimeout = setTimeout(
-			function()
-			{
-				interactingWithSlotMachine = null;
-				interactingWithSlotMachineTimeout = null;
-			},5500
-		);
-	}	
-});
+// 		interactingWithSlotMachineTimeout = setTimeout(
+// 			function()
+// 			{
+// 				interactingWithSlotMachine = null;
+// 				interactingWithSlotMachineTimeout = null;
+// 			},5500
+// 		);
+// 	}	
+// });
 
-/* Server-eventi
-mp.events.add("server:casino.slot.occupy", (player, slotMachine) => 
-{   
-	if (mp.characters[player.character].slotMachine == -1) {
-		mp.characters[player.character].slotMachine = slotMachine;
-	}
+// /* Server-eventi
+// mp.events.add("server:casino.slot.occupy", (player, slotMachine) => 
+// {   
+// 	if (mp.characters[player.character].slotMachine == -1) {
+// 		mp.characters[player.character].slotMachine = slotMachine;
+// 	}
 	
-});
+// });
 
-mp.events.add("server:casino.slot.leave", (player) => 
-{
-	if (mp.characters[player.character].slotMachine != -1) {
-		mp.characters[player.character].slotMachine = -1;
-		player.call('client:casino.cancelInteractingWithSlotMachine');
-	}
+// mp.events.add("server:casino.slot.leave", (player) => 
+// {
+// 	if (mp.characters[player.character].slotMachine != -1) {
+// 		mp.characters[player.character].slotMachine = -1;
+// 		player.call('client:casino.cancelInteractingWithSlotMachine');
+// 	}
     
-	mp.characters[player.character].slotMachine = -1;
-});
+// 	mp.characters[player.character].slotMachine = -1;
+// });
 
-mp.events.add("server:casino.slot.spin", (player, slotMachine) => 
-{
-    player.call('client:spinSlotMachine', mp.characters[player.character].slotMachine, JSON.stringify(player.position))
-});*/
+// mp.events.add("server:casino.slot.spin", (player, slotMachine) => 
+// {
+//     player.call('client:spinSlotMachine', mp.characters[player.character].slotMachine, JSON.stringify(player.position))
+// });*/
 
 
-mp.events.add("client:casino.cancelInteractingWithSlotMachine", () => 
-{
-	slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
-	interactingWithSlotMachine = null;
-	if(interactingWithSlotMachineTimeout != null)
-	{
-		clearTimeout(interactingWithSlotMachineTimeout);
-		interactingWithSlotMachineTimeout = null;
-	}
-});
+// mp.events.add("client:casino.cancelInteractingWithSlotMachine", () => 
+// {
+// 	slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
+// 	interactingWithSlotMachine = null;
+// 	if(interactingWithSlotMachineTimeout != null)
+// 	{
+// 		clearTimeout(interactingWithSlotMachineTimeout);
+// 		interactingWithSlotMachineTimeout = null;
+// 	}
+// });
 
-mp.events.add("client:casino.slot.occupy", (player, machineID) => {
-	if(player == localPlayer) 
-	{
-		lpSlotMachine = slotMachineToJoin;
-		BLOCK_CONTROLS_DURING_ANIMATION = true;
+// mp.events.add("client:casino.slot.occupy", (player, machineID) => {
+// 	if(player == localPlayer) 
+// 	{
+// 		lpSlotMachine = slotMachineToJoin;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = true;
 		
-		mp.game.graphics.notify(`Pritisnite levi klik misa(LMB) da zapocnete kockanje`);
-		mp.events.call('client:slotMachineAllowSpin', true);
-	}
-	else
-	{
-		slotMachineData[machineID].machine.setNoCollision(player.handle, false);
-		mp.events.call('client:slotMachineAllowSpin', true);
+// 		mp.game.graphics.notify(`Pritisnite levi klik misa(LMB) da zapocnete kockanje`);
+// 		mp.events.call('client:slotMachineAllowSpin', true);
+// 	}
+// 	else
+// 	{
+// 		slotMachineData[machineID].machine.setNoCollision(player.handle, false);
+// 		mp.events.call('client:slotMachineAllowSpin', true);
 		
-	}
-});
+// 	}
+// });
 
-mp.events.add("client:slotMachineAllowSpin", (toggle) => {	
-	canSpin = toggle;
-});
-
-
-mp.events.add('playerDeath', (player) => 
-{
-	if(player == localPlayer) 
-	{
-		if(lpSlotMachine != null) lpSlotMachine = null;
-		if(interactingWithSlotMachine != null) interactingWithSlotMachine = null;
-		if(canSpin) canSpin = false;
-	}
-});
+// mp.events.add("client:slotMachineAllowSpin", (toggle) => {	
+// 	canSpin = toggle;
+// });
 
 
-mp.events.add('render', (nametags) => {
+// mp.events.add('playerDeath', (player) => 
+// {
+// 	if(player == localPlayer) 
+// 	{
+// 		if(lpSlotMachine != null) lpSlotMachine = null;
+// 		if(interactingWithSlotMachine != null) interactingWithSlotMachine = null;
+// 		if(canSpin) canSpin = false;
+// 	}
+// });
+
+
+// mp.events.add('render', (nametags) => {
 	
-	var rot = null;
-	for(var machine = 0; machine < slotMachineData.length; machine++)
-	{
-		for(var i=0; i < 3; i++)
-		{
-			if(slotMachineData[machine]['spinning'][i])
-			{
-				rot = slotMachineData[machine].reels[i].rotation;
-				slotMachineData[machine].reels[i].rotation = new mp.Vector3(rot.x+5.0, 0.0, rot.z);
-			}
-		}
-	}
+// 	var rot = null;
+// 	for(var machine = 0; machine < slotMachineData.length; machine++)
+// 	{
+// 		for(var i=0; i < 3; i++)
+// 		{
+// 			if(slotMachineData[machine]['spinning'][i])
+// 			{
+// 				rot = slotMachineData[machine].reels[i].rotation;
+// 				slotMachineData[machine].reels[i].rotation = new mp.Vector3(rot.x+5.0, 0.0, rot.z);
+// 			}
+// 		}
+// 	}
 	
-	if(canSpin)
-	{
-		if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // LMB
-		{
-			mp.events.callRemote("server:spinSlotMachine");
-		}
-	}
-});
+// 	if(canSpin)
+// 	{
+// 		if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // LMB
+// 		{
+// 			mp.events.callRemote("server:spinSlotMachine");
+// 		}
+// 	}
+// });
 
 
-mp.events.add('client:spinSlotMachine', (id, position) => 
-{
-	let machine = id;
-	slotMachineData[machine].endPos = JSON.parse(position);
+// mp.events.add('client:spinSlotMachine', (id, position) => 
+// {
+// 	let machine = id;
+// 	slotMachineData[machine].endPos = JSON.parse(position);
 
-	mp.events.call('client:slotMachineAllowSpin', false);
+// 	mp.events.call('client:slotMachineAllowSpin', false);
 	
-	var pos = null;
-	for(var i=0; i < 3; i++)
-	{
-		slotMachineData[machine].reels[i].destroy();
-		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
-		slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
-		slotMachineData[machine]['spinning'][i] = true;
-	}
+// 	var pos = null;
+// 	for(var i=0; i < 3; i++)
+// 	{
+// 		slotMachineData[machine].reels[i].destroy();
+// 		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
+// 		slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
+// 		slotMachineData[machine]['spinning'][i] = true;
+// 	}
 	
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][0] = null;
+// 	setTimeout(
+// 		function()
+// 		{
+// 			slotMachineData[machine]['spinning'][0] = null;
 	
-			slotMachineData[machine].reels[0].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
-			slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
-	);
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][1] = null;
+// 			slotMachineData[machine].reels[0].destroy();
+// 			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
+// 			slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
+// 		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
+// 	);
+// 	setTimeout(
+// 		function()
+// 		{
+// 			slotMachineData[machine]['spinning'][1] = null;
 	
-			slotMachineData[machine].reels[1].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
-			slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
-	);
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][2] = null;
+// 			slotMachineData[machine].reels[1].destroy();
+// 			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
+// 			slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
+// 		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
+// 	);
+// 	setTimeout(
+// 		function()
+// 		{
+// 			slotMachineData[machine]['spinning'][2] = null;
 	
-			slotMachineData[machine].reels[2].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
-			slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
-	);
-});
+// 			slotMachineData[machine].reels[2].destroy();
+// 			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
+// 			slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
+// 		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
+// 	);
+// });
 
-// Loading IPL 
-mp.game.streaming.requestIpl('vw_casino_main');
+// // Loading IPL 
+// mp.game.streaming.requestIpl('vw_casino_main');
 
 
 
@@ -3098,326 +3327,326 @@ mp.game.streaming.requestIpl('vw_casino_main');
 /***/ 921:
 /***/ (() => {
 
-// FOCUS ROLEPLAY DIAMOND CASINO - Slots
+// // FOCUS ROLEPLAY DIAMOND CASINO - Slots
 
 
-const localPlayer = mp.players.local;
+// const localPlayer = mp.players.local;
 
-mp.game.streaming.requestIpl('vw_casino_main');
-mp.game.streaming.requestIpl('hei_dlc_windows_casino');
-mp.game.streaming.requestIpl('hei_dlc_casino_door');
-mp.game.streaming.requestIpl('vw_dlc_casino_door');
-mp.game.streaming.requestIpl('hei_dlc_casino_aircon');
-
-
-
-let lpSlotMachine = null,
-    slotMachineToJoin = null,
-    interactingWithSlotMachine = null,
-    canSpin = false,
-    interactingWithSlotMachineTimeout = null,
-    slotMachineData = [];
-
-let SPINNING_TIME = []; 
-SPINNING_TIME[1] = [2000,2500,3000];
-SPINNING_TIME[2] = [2000,4000,6000];
-
-const reelsOffsets = 
-[
-	[-0.115, 0.047, 1.106],
-	[0.005, 0.047, 1.106],
-	[0.125, 0.047, 1.106]
-]
-
-let slotMachineBets = [];
-slotMachineBets[1] = 100;
-slotMachineBets[2] = 25;
-slotMachineBets[3] = 25;
-slotMachineBets[4] = 5;
-slotMachineBets[5] = 500;
-slotMachineBets[6] = 100;
-slotMachineBets[7] = 500;
-slotMachineBets[8] = 5;
-
-let slotMachineNames = [];
-slotMachineNames[1] = "Angel and the Knight";
-slotMachineNames[2] = "Impotent RAGE";
-slotMachineNames[3] = "Republican Space Rangers";
-slotMachineNames[4] = "Fame or Shame";
-slotMachineNames[5] = "Deity of the Sun";
-slotMachineNames[6] = "Twilight Knife";
-slotMachineNames[7] = "Diamond Miner";
-slotMachineNames[8] = "Evacuator";
-
-const slotMachinePos =
-[
-	{ "type": 1, "x": 1135.1024169921875, "y": 256.709716796875, "z": -52.03075408935547, "rz": 101.998046875 },
-	{ "type": 1, "x": 1120.8575439453125, "y": 233.18858337402344, "z": -50.84077453613281, "rz": -104.99775695800781 },
-	{ "type": 1, "x": 1108.9188232421875, "y": 239.50234985351562, "z": -50.84078598022461, "rz": -44.99958038330078 },
-	{ "type": 1, "x": 1105.031982421875, "y": 230.81637573242188, "z": -50.84077072143555, "rz": -177.001220703125 },
-	{ "type": 1, "x": 1114.0848388671875, "y": 235.03343200683594, "z": -50.84077453613281, "rz": -179.00137329101562 },
-	{ "type": 2, "x": 1134.7552490234375, "y": 255.9905242919922, "z": -52.03075408935547, "rz": 30.999441146850586 },
-	{ "type": 2, "x": 1132.4876708984375, "y": 247.59466552734375, "z": -52.03075408935547, "rz": 88.49937438964844 },
-	{ "type": 2, "x": 1109.5211181640625, "y": 239.04225158691406, "z": -50.84078598022461, "rz": -29.499794006347656 },
-	{ "type": 2, "x": 1105.7384033203125, "y": 230.33175659179688, "z": -50.84077072143555, "rz": 107.99896240234375 },
-	{ "type": 2, "x": 1120.756103515625, "y": 232.42312622070312, "z": -50.84077453613281, "rz": -90.49939727783203 },
-	{ "type": 2, "x": 1114.8876953125, "y": 234.52394104003906, "z": -50.84077453613281, "rz": 108.99903869628906 },
-	{ "type": 3, "x": 1133.948974609375, "y": 256.10711669921875, "z": -52.0307502746582, "rz": -46.99979782104492 },
-	{ "type": 3, "x": 1132.41357421875, "y": 248.33412170410156, "z": -52.03075408935547, "rz": 105.99855041503906 },
-	{ "type": 3, "x": 1105.5439453125, "y": 229.40882873535156, "z": -50.84077072143555, "rz": 38.49977111816406 },
-	{ "type": 3, "x": 1110.232666015625, "y": 238.7513427734375, "z": -50.84078598022461, "rz": -12.999954223632812 },
-	{ "type": 3, "x": 1114.5487060546875, "y": 233.68020629882812, "z": -50.84077453613281, "rz": 33.99979019165039 },
-	{ "type": 3, "x": 1120.85302734375, "y": 231.6873779296875, "z": -50.84077072143555, "rz": -73.99937438964844 },
-	{ "type": 4, "x": 1139.37109375, "y": 252.4561767578125, "z": -52.03075408935547, "rz": 97.49907684326172 },
-	{ "type": 4, "x": 1132.109130859375, "y": 249.05078125, "z": -52.03075408935547, "rz": 118.9986801147461 },
-	{ "type": 4, "x": 1133.8514404296875, "y": 256.8948669433594, "z": -52.0307502746582, "rz": -115.99858856201172 },
-	{ "type": 4, "x": 1110.988037109375, "y": 238.6630401611328, "z": -50.84078598022461, "rz": 0 },
-	{ "type": 4, "x": 1100.46630859375, "y": 230.39248657226562, "z": -50.84077072143555, "rz": 44.49960708618164 },
-	{ "type": 4, "x": 1104.66650390625, "y": 229.47808837890625, "z": -50.84077453613281, "rz": -30.99989128112793 },
-	{ "type": 4, "x": 1108.446533203125, "y": 235.39356994628906, "z": -50.84077453613281, "rz": -179.0015106201172 },
-	{ "type": 4, "x": 1113.65576171875, "y": 233.69044494628906, "z": -50.84077453613281, "rz": -34.49992752075195 },
-	{ "type": 4, "x": 1117.1199951171875, "y": 230.25537109375, "z": -50.84077453613281, "rz": -176.5015106201172 },
-	{ "type": 4, "x": 1121.1380615234375, "y": 230.99908447265625, "z": -50.84077453613281, "rz": -58.999629974365234 },
-	{ "type": 5, "x": 1134.55615234375, "y": 257.2640075683594, "z": -52.03075408935547, "rz": 170.9969940185547 },
-	{ "type": 5, "x": 1138.998046875, "y": 251.7522430419922, "z": -52.03075408935547, "rz": 29.49958610534668 },
-	{ "type": 5, "x": 1131.660400390625, "y": 249.63453674316406, "z": -52.03075408935547, "rz": 135.99819946289062 },
-	{ "type": 5, "x": 1100.9368896484375, "y": 230.99258422851562, "z": -50.84077453613281, "rz": 59.49959945678711 },
-	{ "type": 5, "x": 1111.7265625, "y": 238.75173950195312, "z": -50.84078598022461, "rz": 12.99996566772461 },
-	{ "type": 5, "x": 1104.3472900390625, "y": 230.33616638183594, "z": -50.84077453613281, "rz": -106.99888610839844 },
-	{ "type": 5, "x": 1109.1422119140625, "y": 234.78053283691406, "z": -50.84077453613281, "rz": 106.9991455078125 },
-	{ "type": 5, "x": 1113.37841796875, "y": 234.48037719726562, "z": -50.84077072143555, "rz": -104.99906158447266 },
-	{ "type": 5, "x": 1117.8211669921875, "y": 229.77664184570312, "z": -50.84077072143555, "rz": 111.9986801147461 },
-	{ "type": 6, "x": 1138.1981201171875, "y": 251.86956787109375, "z": -52.03075408935547, "rz": -45.4997444152832 },
-	{ "type": 6, "x": 1131.0672607421875, "y": 250.08070373535156, "z": -52.03075408935547, "rz": 149.9978790283203 },
-	{ "type": 6, "x": 1112.40869140625, "y": 239.02345275878906, "z": -50.84078598022461, "rz": 30.4997615814209 },
-	{ "type": 6, "x": 1121.614501953125, "y": 230.38429260253906, "z": -50.84077453613281, "rz": -45.499813079833984 },
-	{ "type": 6, "x": 1117.5740966796875, "y": 228.9528045654297, "z": -50.84077072143555, "rz": 34.49982452392578 },
-	{ "type": 6, "x": 1108.875244140625, "y": 233.94735717773438, "z": -50.84077453613281, "rz": 33.99979019165039 },
-	{ "type": 6, "x": 1101.227783203125, "y": 231.69332885742188, "z": -50.84077453613281, "rz": 75.49949645996094 },
-	{ "type": 7, "x": 1138.080810546875, "y": 252.67027282714844, "z": -52.03075408935547, "rz": -118.99893951416016 },
-	{ "type": 7, "x": 1130.3834228515625, "y": 250.3516082763672, "z": -52.03075408935547, "rz": 165.49742126464844 },
-	{ "type": 7, "x": 1101.32080078125, "y": 232.4326629638672, "z": -50.84077453613281, "rz": 90.99922943115234 },
-	{ "type": 7, "x": 1108.02001953125, "y": 233.9359130859375, "z": -50.84077072143555, "rz": -35.499839782714844 },
-	{ "type": 7, "x": 1116.7257080078125, "y": 228.941162109375, "z": -50.84077453613281, "rz": -33.499881744384766 },
-	{ "type": 8, "x": 1138.8004150390625, "y": 253.02676391601562, "z": -52.03075408935547, "rz": 170.9975128173828 },
-	{ "type": 8, "x": 1129.5975341796875, "y": 250.44863891601562, "z": -52.03075408935547, "rz": 179.49769592285156 },
-	{ "type": 8, "x": 1113.0006103515625, "y": 239.52088928222656, "z": -50.840789794921875, "rz": 46.499603271484375 },
-	{ "type": 8, "x": 1107.7371826171875, "y": 234.7730712890625, "z": -50.84077453613281, "rz": -106.99908447265625 },
-	{ "type": 8, "x": 1116.4288330078125, "y": 229.7194061279297, "z": -50.84077453613281, "rz": -102.49913024902344 },
-	{ "type": 8, "x": 1101.1824951171875, "y": 233.19720458984375, "z": -50.84077453613281, "rz": -50.84077453613281 }
-];
+// mp.game.streaming.requestIpl('vw_casino_main');
+// mp.game.streaming.requestIpl('hei_dlc_windows_casino');
+// mp.game.streaming.requestIpl('hei_dlc_casino_door');
+// mp.game.streaming.requestIpl('vw_dlc_casino_door');
+// mp.game.streaming.requestIpl('hei_dlc_casino_aircon');
 
 
-for(var i=1; i <= 8; i++)
-{
-	mp.game.entity.createModelHideExcludingScriptObjects(1127.1312255859375, 254.82090759277344, -50.4407958984375, 300.0, mp.game.joaat("vw_prop_casino_slot_0"+i+"a"), true);
-}
+
+// let lpSlotMachine = null,
+//     slotMachineToJoin = null,
+//     interactingWithSlotMachine = null,
+//     canSpin = false,
+//     interactingWithSlotMachineTimeout = null,
+//     slotMachineData = [];
+
+// let SPINNING_TIME = []; 
+// SPINNING_TIME[1] = [2000,2500,3000];
+// SPINNING_TIME[2] = [2000,4000,6000];
+
+// const reelsOffsets = 
+// [
+// 	[-0.115, 0.047, 1.106],
+// 	[0.005, 0.047, 1.106],
+// 	[0.125, 0.047, 1.106]
+// ]
+
+// let slotMachineBets = [];
+// slotMachineBets[1] = 100;
+// slotMachineBets[2] = 25;
+// slotMachineBets[3] = 25;
+// slotMachineBets[4] = 5;
+// slotMachineBets[5] = 500;
+// slotMachineBets[6] = 100;
+// slotMachineBets[7] = 500;
+// slotMachineBets[8] = 5;
+
+// let slotMachineNames = [];
+// slotMachineNames[1] = "Angel and the Knight";
+// slotMachineNames[2] = "Impotent RAGE";
+// slotMachineNames[3] = "Republican Space Rangers";
+// slotMachineNames[4] = "Fame or Shame";
+// slotMachineNames[5] = "Deity of the Sun";
+// slotMachineNames[6] = "Twilight Knife";
+// slotMachineNames[7] = "Diamond Miner";
+// slotMachineNames[8] = "Evacuator";
+
+// const slotMachinePos =
+// [
+// 	{ "type": 1, "x": 1135.1024169921875, "y": 256.709716796875, "z": -52.03075408935547, "rz": 101.998046875 },
+// 	{ "type": 1, "x": 1120.8575439453125, "y": 233.18858337402344, "z": -50.84077453613281, "rz": -104.99775695800781 },
+// 	{ "type": 1, "x": 1108.9188232421875, "y": 239.50234985351562, "z": -50.84078598022461, "rz": -44.99958038330078 },
+// 	{ "type": 1, "x": 1105.031982421875, "y": 230.81637573242188, "z": -50.84077072143555, "rz": -177.001220703125 },
+// 	{ "type": 1, "x": 1114.0848388671875, "y": 235.03343200683594, "z": -50.84077453613281, "rz": -179.00137329101562 },
+// 	{ "type": 2, "x": 1134.7552490234375, "y": 255.9905242919922, "z": -52.03075408935547, "rz": 30.999441146850586 },
+// 	{ "type": 2, "x": 1132.4876708984375, "y": 247.59466552734375, "z": -52.03075408935547, "rz": 88.49937438964844 },
+// 	{ "type": 2, "x": 1109.5211181640625, "y": 239.04225158691406, "z": -50.84078598022461, "rz": -29.499794006347656 },
+// 	{ "type": 2, "x": 1105.7384033203125, "y": 230.33175659179688, "z": -50.84077072143555, "rz": 107.99896240234375 },
+// 	{ "type": 2, "x": 1120.756103515625, "y": 232.42312622070312, "z": -50.84077453613281, "rz": -90.49939727783203 },
+// 	{ "type": 2, "x": 1114.8876953125, "y": 234.52394104003906, "z": -50.84077453613281, "rz": 108.99903869628906 },
+// 	{ "type": 3, "x": 1133.948974609375, "y": 256.10711669921875, "z": -52.0307502746582, "rz": -46.99979782104492 },
+// 	{ "type": 3, "x": 1132.41357421875, "y": 248.33412170410156, "z": -52.03075408935547, "rz": 105.99855041503906 },
+// 	{ "type": 3, "x": 1105.5439453125, "y": 229.40882873535156, "z": -50.84077072143555, "rz": 38.49977111816406 },
+// 	{ "type": 3, "x": 1110.232666015625, "y": 238.7513427734375, "z": -50.84078598022461, "rz": -12.999954223632812 },
+// 	{ "type": 3, "x": 1114.5487060546875, "y": 233.68020629882812, "z": -50.84077453613281, "rz": 33.99979019165039 },
+// 	{ "type": 3, "x": 1120.85302734375, "y": 231.6873779296875, "z": -50.84077072143555, "rz": -73.99937438964844 },
+// 	{ "type": 4, "x": 1139.37109375, "y": 252.4561767578125, "z": -52.03075408935547, "rz": 97.49907684326172 },
+// 	{ "type": 4, "x": 1132.109130859375, "y": 249.05078125, "z": -52.03075408935547, "rz": 118.9986801147461 },
+// 	{ "type": 4, "x": 1133.8514404296875, "y": 256.8948669433594, "z": -52.0307502746582, "rz": -115.99858856201172 },
+// 	{ "type": 4, "x": 1110.988037109375, "y": 238.6630401611328, "z": -50.84078598022461, "rz": 0 },
+// 	{ "type": 4, "x": 1100.46630859375, "y": 230.39248657226562, "z": -50.84077072143555, "rz": 44.49960708618164 },
+// 	{ "type": 4, "x": 1104.66650390625, "y": 229.47808837890625, "z": -50.84077453613281, "rz": -30.99989128112793 },
+// 	{ "type": 4, "x": 1108.446533203125, "y": 235.39356994628906, "z": -50.84077453613281, "rz": -179.0015106201172 },
+// 	{ "type": 4, "x": 1113.65576171875, "y": 233.69044494628906, "z": -50.84077453613281, "rz": -34.49992752075195 },
+// 	{ "type": 4, "x": 1117.1199951171875, "y": 230.25537109375, "z": -50.84077453613281, "rz": -176.5015106201172 },
+// 	{ "type": 4, "x": 1121.1380615234375, "y": 230.99908447265625, "z": -50.84077453613281, "rz": -58.999629974365234 },
+// 	{ "type": 5, "x": 1134.55615234375, "y": 257.2640075683594, "z": -52.03075408935547, "rz": 170.9969940185547 },
+// 	{ "type": 5, "x": 1138.998046875, "y": 251.7522430419922, "z": -52.03075408935547, "rz": 29.49958610534668 },
+// 	{ "type": 5, "x": 1131.660400390625, "y": 249.63453674316406, "z": -52.03075408935547, "rz": 135.99819946289062 },
+// 	{ "type": 5, "x": 1100.9368896484375, "y": 230.99258422851562, "z": -50.84077453613281, "rz": 59.49959945678711 },
+// 	{ "type": 5, "x": 1111.7265625, "y": 238.75173950195312, "z": -50.84078598022461, "rz": 12.99996566772461 },
+// 	{ "type": 5, "x": 1104.3472900390625, "y": 230.33616638183594, "z": -50.84077453613281, "rz": -106.99888610839844 },
+// 	{ "type": 5, "x": 1109.1422119140625, "y": 234.78053283691406, "z": -50.84077453613281, "rz": 106.9991455078125 },
+// 	{ "type": 5, "x": 1113.37841796875, "y": 234.48037719726562, "z": -50.84077072143555, "rz": -104.99906158447266 },
+// 	{ "type": 5, "x": 1117.8211669921875, "y": 229.77664184570312, "z": -50.84077072143555, "rz": 111.9986801147461 },
+// 	{ "type": 6, "x": 1138.1981201171875, "y": 251.86956787109375, "z": -52.03075408935547, "rz": -45.4997444152832 },
+// 	{ "type": 6, "x": 1131.0672607421875, "y": 250.08070373535156, "z": -52.03075408935547, "rz": 149.9978790283203 },
+// 	{ "type": 6, "x": 1112.40869140625, "y": 239.02345275878906, "z": -50.84078598022461, "rz": 30.4997615814209 },
+// 	{ "type": 6, "x": 1121.614501953125, "y": 230.38429260253906, "z": -50.84077453613281, "rz": -45.499813079833984 },
+// 	{ "type": 6, "x": 1117.5740966796875, "y": 228.9528045654297, "z": -50.84077072143555, "rz": 34.49982452392578 },
+// 	{ "type": 6, "x": 1108.875244140625, "y": 233.94735717773438, "z": -50.84077453613281, "rz": 33.99979019165039 },
+// 	{ "type": 6, "x": 1101.227783203125, "y": 231.69332885742188, "z": -50.84077453613281, "rz": 75.49949645996094 },
+// 	{ "type": 7, "x": 1138.080810546875, "y": 252.67027282714844, "z": -52.03075408935547, "rz": -118.99893951416016 },
+// 	{ "type": 7, "x": 1130.3834228515625, "y": 250.3516082763672, "z": -52.03075408935547, "rz": 165.49742126464844 },
+// 	{ "type": 7, "x": 1101.32080078125, "y": 232.4326629638672, "z": -50.84077453613281, "rz": 90.99922943115234 },
+// 	{ "type": 7, "x": 1108.02001953125, "y": 233.9359130859375, "z": -50.84077072143555, "rz": -35.499839782714844 },
+// 	{ "type": 7, "x": 1116.7257080078125, "y": 228.941162109375, "z": -50.84077453613281, "rz": -33.499881744384766 },
+// 	{ "type": 8, "x": 1138.8004150390625, "y": 253.02676391601562, "z": -52.03075408935547, "rz": 170.9975128173828 },
+// 	{ "type": 8, "x": 1129.5975341796875, "y": 250.44863891601562, "z": -52.03075408935547, "rz": 179.49769592285156 },
+// 	{ "type": 8, "x": 1113.0006103515625, "y": 239.52088928222656, "z": -50.840789794921875, "rz": 46.499603271484375 },
+// 	{ "type": 8, "x": 1107.7371826171875, "y": 234.7730712890625, "z": -50.84077453613281, "rz": -106.99908447265625 },
+// 	{ "type": 8, "x": 1116.4288330078125, "y": 229.7194061279297, "z": -50.84077453613281, "rz": -102.49913024902344 },
+// 	{ "type": 8, "x": 1101.1824951171875, "y": 233.19720458984375, "z": -50.84077453613281, "rz": -50.84077453613281 }
+// ];
 
 
-for(let i=0; i < slotMachinePos.length; i++)
-{
-	slotMachineData[i] = { spinning: [] };
-	slotMachineData[i].machine = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a"), new mp.Vector3(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
+// for(var i=1; i <= 8; i++)
+// {
+// 	mp.game.entity.createModelHideExcludingScriptObjects(1127.1312255859375, 254.82090759277344, -50.4407958984375, 300.0, mp.game.joaat("vw_prop_casino_slot_0"+i+"a"), true);
+// }
+
+
+// for(let i=0; i < slotMachinePos.length; i++)
+// {
+// 	slotMachineData[i] = { spinning: [] };
+// 	slotMachineData[i].machine = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a"), new mp.Vector3(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
 	
-	slotMachineData[i].reels = [];
+// 	slotMachineData[i].reels = [];
 	
-	var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, 0, -1.5, 1);
-	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 0.25);
-	newShape.casinoSlotMachime = i;
+// 	var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, 0, -1.5, 1);
+// 	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 0.25);
+// 	newShape.casinoSlotMachime = i;
 	
-	for(var c=0; c < 3; c++)
-	{
-		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, reelsOffsets[c][0], reelsOffsets[c][1], reelsOffsets[c][2]);
-		slotMachineData[i].reels[c] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
-	}
-}
+// 	for(var c=0; c < 3; c++)
+// 	{
+// 		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, reelsOffsets[c][0], reelsOffsets[c][1], reelsOffsets[c][2]);
+// 		slotMachineData[i].reels[c] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
+// 	}
+// }
 
 
-mp.events.add('playerEnterColshape', (shape) => {
+// mp.events.add('playerEnterColshape', (shape) => {
 
-	if(shape.casinoSlotMachime !== undefined && lpSlotMachine == null && interactingWithSlotMachine == null)
-	{
-		slotMachineToJoin = shape.casinoSlotMachime;
-		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
-		mp.game.graphics.notify(`~b~${slotMachineNames[slotMachinePos[slotMachineToJoin].type]}~n~~w~Pritisnite E da igrate`);
-	}
-});
-
-
-mp.events.add('playerExitColshape', (shape) => {
-	if(shape.casinoSlotMachime !== undefined)
-	{
-		slotMachineToJoin = null;
-	}
-});
+// 	if(shape.casinoSlotMachime !== undefined && lpSlotMachine == null && interactingWithSlotMachine == null)
+// 	{
+// 		slotMachineToJoin = shape.casinoSlotMachime;
+// 		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
+// 		mp.game.graphics.notify(`~b~${slotMachineNames[slotMachinePos[slotMachineToJoin].type]}~n~~w~Pritisnite E da igrate`);
+// 	}
+// });
 
 
+// mp.events.add('playerExitColshape', (shape) => {
+// 	if(shape.casinoSlotMachime !== undefined)
+// 	{
+// 		slotMachineToJoin = null;
+// 	}
+// });
 
-mp.keys.bind(0x45, true, () =>  // E
-{
-	//if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
+
+
+// mp.keys.bind(0x45, true, () =>  // E
+// {
+// 	//if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
 	
-	if (lpSlotMachine != null)
-	{
+// 	if (lpSlotMachine != null)
+// 	{
 
 		
-		mp.events.callRemote("leaveSlotMachine");
-		interactingWithSlotMachine = lpSlotMachine;
-		lpSlotMachine = null;
-		BLOCK_CONTROLS_DURING_ANIMATION = false;
-		if(canSpin) canSpin = false;
+// 		mp.events.callRemote("leaveSlotMachine");
+// 		interactingWithSlotMachine = lpSlotMachine;
+// 		lpSlotMachine = null;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = false;
+// 		if(canSpin) canSpin = false;
 		
-		interactingWithSlotMachineTimeout = setTimeout(
-			function()
-			{
-				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
-				interactingWithSlotMachine = null;
-				interactingWithSlotMachineTimeout = null;
-			},4500
-		);
-	}
-	else
-	{
+// 		interactingWithSlotMachineTimeout = setTimeout(
+// 			function()
+// 			{
+// 				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
+// 				interactingWithSlotMachine = null;
+// 				interactingWithSlotMachineTimeout = null;
+// 			},4500
+// 		);
+// 	}
+// 	else
+// 	{
 
-		if(slotMachineToJoin == null) return false;
+// 		if(slotMachineToJoin == null) return false;
 
-		interactingWithSlotMachine = slotMachineToJoin;
+// 		interactingWithSlotMachine = slotMachineToJoin;
 		
-		slotMachineData[slotMachineToJoin].machine.setCollision(false, false);
+// 		slotMachineData[slotMachineToJoin].machine.setCollision(false, false);
 		
-		var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[slotMachineToJoin].x, slotMachinePos[slotMachineToJoin].y, slotMachinePos[slotMachineToJoin].z, slotMachinePos[slotMachineToJoin].rz, 0, -1.5, 1);
-		localPlayer.position = new mp.Vector3(pos.x, pos.y, pos.z);
-		localPlayer.setHeading(slotMachinePos[slotMachineToJoin].rz);
+// 		var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[slotMachineToJoin].x, slotMachinePos[slotMachineToJoin].y, slotMachinePos[slotMachineToJoin].z, slotMachinePos[slotMachineToJoin].rz, 0, -1.5, 1);
+// 		localPlayer.position = new mp.Vector3(pos.x, pos.y, pos.z);
+// 		localPlayer.setHeading(slotMachinePos[slotMachineToJoin].rz);
 		
-		mp.events.callRemote("server:casino.slot.occupy", slotMachineToJoin);
-		mp.events.call('client:casino.slot.occupy', localPlayer, slotMachine);
+// 		mp.events.callRemote("server:casino.slot.occupy", slotMachineToJoin);
+// 		mp.events.call('client:casino.slot.occupy', localPlayer, slotMachine);
 		
-		interactingWithSlotMachineTimeout = setTimeout(
-			function()
-			{
-				interactingWithSlotMachine = null;
-				interactingWithSlotMachineTimeout = null;
-			},5500
-		);
-	}	
-});
+// 		interactingWithSlotMachineTimeout = setTimeout(
+// 			function()
+// 			{
+// 				interactingWithSlotMachine = null;
+// 				interactingWithSlotMachineTimeout = null;
+// 			},5500
+// 		);
+// 	}	
+// });
 
-mp.events.add("client:casino.cancelInteractingWithSlotMachine", () => 
-{
-	slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
-	interactingWithSlotMachine = null;
-	if(interactingWithSlotMachineTimeout != null)
-	{
-		clearTimeout(interactingWithSlotMachineTimeout);
-		interactingWithSlotMachineTimeout = null;
-	}
-});
+// mp.events.add("client:casino.cancelInteractingWithSlotMachine", () => 
+// {
+// 	slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
+// 	interactingWithSlotMachine = null;
+// 	if(interactingWithSlotMachineTimeout != null)
+// 	{
+// 		clearTimeout(interactingWithSlotMachineTimeout);
+// 		interactingWithSlotMachineTimeout = null;
+// 	}
+// });
 
-mp.events.add("client:casino.slot.occupy", (player, machineID) => {
-	if(player == localPlayer) 
-	{
-		lpSlotMachine = slotMachineToJoin;
-		BLOCK_CONTROLS_DURING_ANIMATION = true;
+// mp.events.add("client:casino.slot.occupy", (player, machineID) => {
+// 	if(player == localPlayer) 
+// 	{
+// 		lpSlotMachine = slotMachineToJoin;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = true;
 		
-		mp.game.graphics.notify(`Pritisnite levi klik misa(LMB) da zapocnete kockanje`);
-		mp.events.call('client:slotMachineAllowSpin', true);
-	}
-	else
-	{
-		slotMachineData[machineID].machine.setNoCollision(player.handle, false);
-		mp.events.call('client:slotMachineAllowSpin', true);
+// 		mp.game.graphics.notify(`Pritisnite levi klik misa(LMB) da zapocnete kockanje`);
+// 		mp.events.call('client:slotMachineAllowSpin', true);
+// 	}
+// 	else
+// 	{
+// 		slotMachineData[machineID].machine.setNoCollision(player.handle, false);
+// 		mp.events.call('client:slotMachineAllowSpin', true);
 		
-	}
-});
+// 	}
+// });
 
-mp.events.add("client:slotMachineAllowSpin", (toggle) => {	
-	canSpin = toggle;
-});
-
-
-mp.events.add('playerDeath', (player) => 
-{
-	if(player == localPlayer) 
-	{
-		if(lpSlotMachine != null) lpSlotMachine = null;
-		if(interactingWithSlotMachine != null) interactingWithSlotMachine = null;
-		if(canSpin) canSpin = false;
-	}
-});
+// mp.events.add("client:slotMachineAllowSpin", (toggle) => {	
+// 	canSpin = toggle;
+// });
 
 
-mp.events.add('render', (nametags) => {
+// mp.events.add('playerDeath', (player) => 
+// {
+// 	if(player == localPlayer) 
+// 	{
+// 		if(lpSlotMachine != null) lpSlotMachine = null;
+// 		if(interactingWithSlotMachine != null) interactingWithSlotMachine = null;
+// 		if(canSpin) canSpin = false;
+// 	}
+// });
+
+
+// mp.events.add('render', (nametags) => {
 	
-	var rot = null;
-	for(var machine = 0; machine < slotMachineData.length; machine++)
-	{
-		for(var i=0; i < 3; i++)
-		{
-			if(slotMachineData[machine]['spinning'][i])
-			{
-				rot = slotMachineData[machine].reels[i].rotation;
-				slotMachineData[machine].reels[i].rotation = new mp.Vector3(rot.x+5.0, 0.0, rot.z);
-			}
-		}
-	}
+// 	var rot = null;
+// 	for(var machine = 0; machine < slotMachineData.length; machine++)
+// 	{
+// 		for(var i=0; i < 3; i++)
+// 		{
+// 			if(slotMachineData[machine]['spinning'][i])
+// 			{
+// 				rot = slotMachineData[machine].reels[i].rotation;
+// 				slotMachineData[machine].reels[i].rotation = new mp.Vector3(rot.x+5.0, 0.0, rot.z);
+// 			}
+// 		}
+// 	}
 	
-	if(canSpin)
-	{
-		if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // LMB
-		{
-			mp.events.callRemote("server:spinSlotMachine");
-		}
-	}
-});
+// 	if(canSpin)
+// 	{
+// 		if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // LMB
+// 		{
+// 			mp.events.callRemote("server:spinSlotMachine");
+// 		}
+// 	}
+// });
 
 
-mp.events.add('client:spinSlotMachine', (id, position) => 
-{
-	let machine = id;
-	slotMachineData[machine].endPos = JSON.parse(position);
+// mp.events.add('client:spinSlotMachine', (id, position) => 
+// {
+// 	let machine = id;
+// 	slotMachineData[machine].endPos = JSON.parse(position);
 
-	mp.events.call('client:slotMachineAllowSpin', false);
+// 	mp.events.call('client:slotMachineAllowSpin', false);
 	
-	var pos = null;
-	for(var i=0; i < 3; i++)
-	{
-		slotMachineData[machine].reels[i].destroy();
-		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
-		slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
-		slotMachineData[machine]['spinning'][i] = true;
-	}
+// 	var pos = null;
+// 	for(var i=0; i < 3; i++)
+// 	{
+// 		slotMachineData[machine].reels[i].destroy();
+// 		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
+// 		slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
+// 		slotMachineData[machine]['spinning'][i] = true;
+// 	}
 	
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][0] = null;
+// 	setTimeout(
+// 		function()
+// 		{
+// 			slotMachineData[machine]['spinning'][0] = null;
 	
-			slotMachineData[machine].reels[0].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
-			slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
-	);
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][1] = null;
+// 			slotMachineData[machine].reels[0].destroy();
+// 			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
+// 			slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
+// 		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
+// 	);
+// 	setTimeout(
+// 		function()
+// 		{
+// 			slotMachineData[machine]['spinning'][1] = null;
 	
-			slotMachineData[machine].reels[1].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
-			slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
-	);
-	setTimeout(
-		function()
-		{
-			slotMachineData[machine]['spinning'][2] = null;
+// 			slotMachineData[machine].reels[1].destroy();
+// 			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
+// 			slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
+// 		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
+// 	);
+// 	setTimeout(
+// 		function()
+// 		{
+// 			slotMachineData[machine]['spinning'][2] = null;
 	
-			slotMachineData[machine].reels[2].destroy();
-			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
-			slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
-		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
-	);
-});
+// 			slotMachineData[machine].reels[2].destroy();
+// 			var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
+// 			slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
+// 		}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
+// 	);
+// });
 
 
 
@@ -3429,332 +3658,332 @@ mp.events.add('client:spinSlotMachine', (id, position) =>
 /***/ 8680:
 /***/ (() => {
 
-// FOCUS ROLEPLAY DIAMOND CASINO - Slots
+// // FOCUS ROLEPLAY DIAMOND CASINO - Slots
 
 
-const localPlayer = mp.players.local;
+// const localPlayer = mp.players.local;
 
-let lpSlotMachine = null,
-    slotMachineToJoin = null,
-    interactingWithSlotMachine = null,
-    canSpin = false,
-    interactingWithSlotMachineTimeout = null,
-    slotMachineData = [];
+// let lpSlotMachine = null,
+//     slotMachineToJoin = null,
+//     interactingWithSlotMachine = null,
+//     canSpin = false,
+//     interactingWithSlotMachineTimeout = null,
+//     slotMachineData = [];
 
-let SPINNING_TIME = []; 
-SPINNING_TIME[1] = [2000,2500,3000];
-SPINNING_TIME[2] = [2000,4000,6000];
+// let SPINNING_TIME = []; 
+// SPINNING_TIME[1] = [2000,2500,3000];
+// SPINNING_TIME[2] = [2000,4000,6000];
 
-const reelsOffsets = 
-[
-	[-0.115, 0.047, 1.106],
-	[0.005, 0.047, 1.106],
-	[0.125, 0.047, 1.106]
-]
+// const reelsOffsets = 
+// [
+// 	[-0.115, 0.047, 1.106],
+// 	[0.005, 0.047, 1.106],
+// 	[0.125, 0.047, 1.106]
+// ]
 
-let slotMachineBets = [];
-slotMachineBets[1] = 100;
-slotMachineBets[2] = 25;
-slotMachineBets[3] = 25;
-slotMachineBets[4] = 5;
-slotMachineBets[5] = 500;
-slotMachineBets[6] = 100;
-slotMachineBets[7] = 500;
-slotMachineBets[8] = 5;
+// let slotMachineBets = [];
+// slotMachineBets[1] = 100;
+// slotMachineBets[2] = 25;
+// slotMachineBets[3] = 25;
+// slotMachineBets[4] = 5;
+// slotMachineBets[5] = 500;
+// slotMachineBets[6] = 100;
+// slotMachineBets[7] = 500;
+// slotMachineBets[8] = 5;
 
-let slotMachineNames = [];
-slotMachineNames[1] = "Angel and the Knight";
-slotMachineNames[2] = "Impotent RAGE";
-slotMachineNames[3] = "Republican Space Rangers";
-slotMachineNames[4] = "Fame or Shame";
-slotMachineNames[5] = "Deity of the Sun";
-slotMachineNames[6] = "Twilight Knife";
-slotMachineNames[7] = "Diamond Miner";
-slotMachineNames[8] = "Evacuator";
+// let slotMachineNames = [];
+// slotMachineNames[1] = "Angel and the Knight";
+// slotMachineNames[2] = "Impotent RAGE";
+// slotMachineNames[3] = "Republican Space Rangers";
+// slotMachineNames[4] = "Fame or Shame";
+// slotMachineNames[5] = "Deity of the Sun";
+// slotMachineNames[6] = "Twilight Knife";
+// slotMachineNames[7] = "Diamond Miner";
+// slotMachineNames[8] = "Evacuator";
 
-const slotMachinePos =
-[
-	{ "type": 1, "x": 1135.1024169921875, "y": 256.709716796875, "z": -52.03075408935547, "rz": 101.998046875 },
-	{ "type": 1, "x": 1120.8575439453125, "y": 233.18858337402344, "z": -50.84077453613281, "rz": -104.99775695800781 },
-	{ "type": 1, "x": 1108.9188232421875, "y": 239.50234985351562, "z": -50.84078598022461, "rz": -44.99958038330078 },
-	{ "type": 1, "x": 1105.031982421875, "y": 230.81637573242188, "z": -50.84077072143555, "rz": -177.001220703125 },
-	{ "type": 1, "x": 1114.0848388671875, "y": 235.03343200683594, "z": -50.84077453613281, "rz": -179.00137329101562 },
-	{ "type": 2, "x": 1134.7552490234375, "y": 255.9905242919922, "z": -52.03075408935547, "rz": 30.999441146850586 },
-	{ "type": 2, "x": 1132.4876708984375, "y": 247.59466552734375, "z": -52.03075408935547, "rz": 88.49937438964844 },
-	{ "type": 2, "x": 1109.5211181640625, "y": 239.04225158691406, "z": -50.84078598022461, "rz": -29.499794006347656 },
-	{ "type": 2, "x": 1105.7384033203125, "y": 230.33175659179688, "z": -50.84077072143555, "rz": 107.99896240234375 },
-	{ "type": 2, "x": 1120.756103515625, "y": 232.42312622070312, "z": -50.84077453613281, "rz": -90.49939727783203 },
-	{ "type": 2, "x": 1114.8876953125, "y": 234.52394104003906, "z": -50.84077453613281, "rz": 108.99903869628906 },
-	{ "type": 3, "x": 1133.948974609375, "y": 256.10711669921875, "z": -52.0307502746582, "rz": -46.99979782104492 },
-	{ "type": 3, "x": 1132.41357421875, "y": 248.33412170410156, "z": -52.03075408935547, "rz": 105.99855041503906 },
-	{ "type": 3, "x": 1105.5439453125, "y": 229.40882873535156, "z": -50.84077072143555, "rz": 38.49977111816406 },
-	{ "type": 3, "x": 1110.232666015625, "y": 238.7513427734375, "z": -50.84078598022461, "rz": -12.999954223632812 },
-	{ "type": 3, "x": 1114.5487060546875, "y": 233.68020629882812, "z": -50.84077453613281, "rz": 33.99979019165039 },
-	{ "type": 3, "x": 1120.85302734375, "y": 231.6873779296875, "z": -50.84077072143555, "rz": -73.99937438964844 },
-	{ "type": 4, "x": 1139.37109375, "y": 252.4561767578125, "z": -52.03075408935547, "rz": 97.49907684326172 },
-	{ "type": 4, "x": 1132.109130859375, "y": 249.05078125, "z": -52.03075408935547, "rz": 118.9986801147461 },
-	{ "type": 4, "x": 1133.8514404296875, "y": 256.8948669433594, "z": -52.0307502746582, "rz": -115.99858856201172 },
-	{ "type": 4, "x": 1110.988037109375, "y": 238.6630401611328, "z": -50.84078598022461, "rz": 0 },
-	{ "type": 4, "x": 1100.46630859375, "y": 230.39248657226562, "z": -50.84077072143555, "rz": 44.49960708618164 },
-	{ "type": 4, "x": 1104.66650390625, "y": 229.47808837890625, "z": -50.84077453613281, "rz": -30.99989128112793 },
-	{ "type": 4, "x": 1108.446533203125, "y": 235.39356994628906, "z": -50.84077453613281, "rz": -179.0015106201172 },
-	{ "type": 4, "x": 1113.65576171875, "y": 233.69044494628906, "z": -50.84077453613281, "rz": -34.49992752075195 },
-	{ "type": 4, "x": 1117.1199951171875, "y": 230.25537109375, "z": -50.84077453613281, "rz": -176.5015106201172 },
-	{ "type": 4, "x": 1121.1380615234375, "y": 230.99908447265625, "z": -50.84077453613281, "rz": -58.999629974365234 },
-	{ "type": 5, "x": 1134.55615234375, "y": 257.2640075683594, "z": -52.03075408935547, "rz": 170.9969940185547 },
-	{ "type": 5, "x": 1138.998046875, "y": 251.7522430419922, "z": -52.03075408935547, "rz": 29.49958610534668 },
-	{ "type": 5, "x": 1131.660400390625, "y": 249.63453674316406, "z": -52.03075408935547, "rz": 135.99819946289062 },
-	{ "type": 5, "x": 1100.9368896484375, "y": 230.99258422851562, "z": -50.84077453613281, "rz": 59.49959945678711 },
-	{ "type": 5, "x": 1111.7265625, "y": 238.75173950195312, "z": -50.84078598022461, "rz": 12.99996566772461 },
-	{ "type": 5, "x": 1104.3472900390625, "y": 230.33616638183594, "z": -50.84077453613281, "rz": -106.99888610839844 },
-	{ "type": 5, "x": 1109.1422119140625, "y": 234.78053283691406, "z": -50.84077453613281, "rz": 106.9991455078125 },
-	{ "type": 5, "x": 1113.37841796875, "y": 234.48037719726562, "z": -50.84077072143555, "rz": -104.99906158447266 },
-	{ "type": 5, "x": 1117.8211669921875, "y": 229.77664184570312, "z": -50.84077072143555, "rz": 111.9986801147461 },
-	{ "type": 6, "x": 1138.1981201171875, "y": 251.86956787109375, "z": -52.03075408935547, "rz": -45.4997444152832 },
-	{ "type": 6, "x": 1131.0672607421875, "y": 250.08070373535156, "z": -52.03075408935547, "rz": 149.9978790283203 },
-	{ "type": 6, "x": 1112.40869140625, "y": 239.02345275878906, "z": -50.84078598022461, "rz": 30.4997615814209 },
-	{ "type": 6, "x": 1121.614501953125, "y": 230.38429260253906, "z": -50.84077453613281, "rz": -45.499813079833984 },
-	{ "type": 6, "x": 1117.5740966796875, "y": 228.9528045654297, "z": -50.84077072143555, "rz": 34.49982452392578 },
-	{ "type": 6, "x": 1108.875244140625, "y": 233.94735717773438, "z": -50.84077453613281, "rz": 33.99979019165039 },
-	{ "type": 6, "x": 1101.227783203125, "y": 231.69332885742188, "z": -50.84077453613281, "rz": 75.49949645996094 },
-	{ "type": 7, "x": 1138.080810546875, "y": 252.67027282714844, "z": -52.03075408935547, "rz": -118.99893951416016 },
-	{ "type": 7, "x": 1130.3834228515625, "y": 250.3516082763672, "z": -52.03075408935547, "rz": 165.49742126464844 },
-	{ "type": 7, "x": 1101.32080078125, "y": 232.4326629638672, "z": -50.84077453613281, "rz": 90.99922943115234 },
-	{ "type": 7, "x": 1108.02001953125, "y": 233.9359130859375, "z": -50.84077072143555, "rz": -35.499839782714844 },
-	{ "type": 7, "x": 1116.7257080078125, "y": 228.941162109375, "z": -50.84077453613281, "rz": -33.499881744384766 },
-	{ "type": 8, "x": 1138.8004150390625, "y": 253.02676391601562, "z": -52.03075408935547, "rz": 170.9975128173828 },
-	{ "type": 8, "x": 1129.5975341796875, "y": 250.44863891601562, "z": -52.03075408935547, "rz": 179.49769592285156 },
-	{ "type": 8, "x": 1113.0006103515625, "y": 239.52088928222656, "z": -50.840789794921875, "rz": 46.499603271484375 },
-	{ "type": 8, "x": 1107.7371826171875, "y": 234.7730712890625, "z": -50.84077453613281, "rz": -106.99908447265625 },
-	{ "type": 8, "x": 1116.4288330078125, "y": 229.7194061279297, "z": -50.84077453613281, "rz": -102.49913024902344 },
-	{ "type": 8, "x": 1101.1824951171875, "y": 233.19720458984375, "z": -50.84077453613281, "rz": -50.84077453613281 }
-];
-
-
-for(var i=1; i <= 8; i++)
-{
-	mp.game.entity.createModelHideExcludingScriptObjects(1127.1312255859375, 254.82090759277344, -50.4407958984375, 300.0, mp.game.joaat("vw_prop_casino_slot_0"+i+"a"), true);
-}
+// const slotMachinePos =
+// [
+// 	{ "type": 1, "x": 1135.1024169921875, "y": 256.709716796875, "z": -52.03075408935547, "rz": 101.998046875 },
+// 	{ "type": 1, "x": 1120.8575439453125, "y": 233.18858337402344, "z": -50.84077453613281, "rz": -104.99775695800781 },
+// 	{ "type": 1, "x": 1108.9188232421875, "y": 239.50234985351562, "z": -50.84078598022461, "rz": -44.99958038330078 },
+// 	{ "type": 1, "x": 1105.031982421875, "y": 230.81637573242188, "z": -50.84077072143555, "rz": -177.001220703125 },
+// 	{ "type": 1, "x": 1114.0848388671875, "y": 235.03343200683594, "z": -50.84077453613281, "rz": -179.00137329101562 },
+// 	{ "type": 2, "x": 1134.7552490234375, "y": 255.9905242919922, "z": -52.03075408935547, "rz": 30.999441146850586 },
+// 	{ "type": 2, "x": 1132.4876708984375, "y": 247.59466552734375, "z": -52.03075408935547, "rz": 88.49937438964844 },
+// 	{ "type": 2, "x": 1109.5211181640625, "y": 239.04225158691406, "z": -50.84078598022461, "rz": -29.499794006347656 },
+// 	{ "type": 2, "x": 1105.7384033203125, "y": 230.33175659179688, "z": -50.84077072143555, "rz": 107.99896240234375 },
+// 	{ "type": 2, "x": 1120.756103515625, "y": 232.42312622070312, "z": -50.84077453613281, "rz": -90.49939727783203 },
+// 	{ "type": 2, "x": 1114.8876953125, "y": 234.52394104003906, "z": -50.84077453613281, "rz": 108.99903869628906 },
+// 	{ "type": 3, "x": 1133.948974609375, "y": 256.10711669921875, "z": -52.0307502746582, "rz": -46.99979782104492 },
+// 	{ "type": 3, "x": 1132.41357421875, "y": 248.33412170410156, "z": -52.03075408935547, "rz": 105.99855041503906 },
+// 	{ "type": 3, "x": 1105.5439453125, "y": 229.40882873535156, "z": -50.84077072143555, "rz": 38.49977111816406 },
+// 	{ "type": 3, "x": 1110.232666015625, "y": 238.7513427734375, "z": -50.84078598022461, "rz": -12.999954223632812 },
+// 	{ "type": 3, "x": 1114.5487060546875, "y": 233.68020629882812, "z": -50.84077453613281, "rz": 33.99979019165039 },
+// 	{ "type": 3, "x": 1120.85302734375, "y": 231.6873779296875, "z": -50.84077072143555, "rz": -73.99937438964844 },
+// 	{ "type": 4, "x": 1139.37109375, "y": 252.4561767578125, "z": -52.03075408935547, "rz": 97.49907684326172 },
+// 	{ "type": 4, "x": 1132.109130859375, "y": 249.05078125, "z": -52.03075408935547, "rz": 118.9986801147461 },
+// 	{ "type": 4, "x": 1133.8514404296875, "y": 256.8948669433594, "z": -52.0307502746582, "rz": -115.99858856201172 },
+// 	{ "type": 4, "x": 1110.988037109375, "y": 238.6630401611328, "z": -50.84078598022461, "rz": 0 },
+// 	{ "type": 4, "x": 1100.46630859375, "y": 230.39248657226562, "z": -50.84077072143555, "rz": 44.49960708618164 },
+// 	{ "type": 4, "x": 1104.66650390625, "y": 229.47808837890625, "z": -50.84077453613281, "rz": -30.99989128112793 },
+// 	{ "type": 4, "x": 1108.446533203125, "y": 235.39356994628906, "z": -50.84077453613281, "rz": -179.0015106201172 },
+// 	{ "type": 4, "x": 1113.65576171875, "y": 233.69044494628906, "z": -50.84077453613281, "rz": -34.49992752075195 },
+// 	{ "type": 4, "x": 1117.1199951171875, "y": 230.25537109375, "z": -50.84077453613281, "rz": -176.5015106201172 },
+// 	{ "type": 4, "x": 1121.1380615234375, "y": 230.99908447265625, "z": -50.84077453613281, "rz": -58.999629974365234 },
+// 	{ "type": 5, "x": 1134.55615234375, "y": 257.2640075683594, "z": -52.03075408935547, "rz": 170.9969940185547 },
+// 	{ "type": 5, "x": 1138.998046875, "y": 251.7522430419922, "z": -52.03075408935547, "rz": 29.49958610534668 },
+// 	{ "type": 5, "x": 1131.660400390625, "y": 249.63453674316406, "z": -52.03075408935547, "rz": 135.99819946289062 },
+// 	{ "type": 5, "x": 1100.9368896484375, "y": 230.99258422851562, "z": -50.84077453613281, "rz": 59.49959945678711 },
+// 	{ "type": 5, "x": 1111.7265625, "y": 238.75173950195312, "z": -50.84078598022461, "rz": 12.99996566772461 },
+// 	{ "type": 5, "x": 1104.3472900390625, "y": 230.33616638183594, "z": -50.84077453613281, "rz": -106.99888610839844 },
+// 	{ "type": 5, "x": 1109.1422119140625, "y": 234.78053283691406, "z": -50.84077453613281, "rz": 106.9991455078125 },
+// 	{ "type": 5, "x": 1113.37841796875, "y": 234.48037719726562, "z": -50.84077072143555, "rz": -104.99906158447266 },
+// 	{ "type": 5, "x": 1117.8211669921875, "y": 229.77664184570312, "z": -50.84077072143555, "rz": 111.9986801147461 },
+// 	{ "type": 6, "x": 1138.1981201171875, "y": 251.86956787109375, "z": -52.03075408935547, "rz": -45.4997444152832 },
+// 	{ "type": 6, "x": 1131.0672607421875, "y": 250.08070373535156, "z": -52.03075408935547, "rz": 149.9978790283203 },
+// 	{ "type": 6, "x": 1112.40869140625, "y": 239.02345275878906, "z": -50.84078598022461, "rz": 30.4997615814209 },
+// 	{ "type": 6, "x": 1121.614501953125, "y": 230.38429260253906, "z": -50.84077453613281, "rz": -45.499813079833984 },
+// 	{ "type": 6, "x": 1117.5740966796875, "y": 228.9528045654297, "z": -50.84077072143555, "rz": 34.49982452392578 },
+// 	{ "type": 6, "x": 1108.875244140625, "y": 233.94735717773438, "z": -50.84077453613281, "rz": 33.99979019165039 },
+// 	{ "type": 6, "x": 1101.227783203125, "y": 231.69332885742188, "z": -50.84077453613281, "rz": 75.49949645996094 },
+// 	{ "type": 7, "x": 1138.080810546875, "y": 252.67027282714844, "z": -52.03075408935547, "rz": -118.99893951416016 },
+// 	{ "type": 7, "x": 1130.3834228515625, "y": 250.3516082763672, "z": -52.03075408935547, "rz": 165.49742126464844 },
+// 	{ "type": 7, "x": 1101.32080078125, "y": 232.4326629638672, "z": -50.84077453613281, "rz": 90.99922943115234 },
+// 	{ "type": 7, "x": 1108.02001953125, "y": 233.9359130859375, "z": -50.84077072143555, "rz": -35.499839782714844 },
+// 	{ "type": 7, "x": 1116.7257080078125, "y": 228.941162109375, "z": -50.84077453613281, "rz": -33.499881744384766 },
+// 	{ "type": 8, "x": 1138.8004150390625, "y": 253.02676391601562, "z": -52.03075408935547, "rz": 170.9975128173828 },
+// 	{ "type": 8, "x": 1129.5975341796875, "y": 250.44863891601562, "z": -52.03075408935547, "rz": 179.49769592285156 },
+// 	{ "type": 8, "x": 1113.0006103515625, "y": 239.52088928222656, "z": -50.840789794921875, "rz": 46.499603271484375 },
+// 	{ "type": 8, "x": 1107.7371826171875, "y": 234.7730712890625, "z": -50.84077453613281, "rz": -106.99908447265625 },
+// 	{ "type": 8, "x": 1116.4288330078125, "y": 229.7194061279297, "z": -50.84077453613281, "rz": -102.49913024902344 },
+// 	{ "type": 8, "x": 1101.1824951171875, "y": 233.19720458984375, "z": -50.84077453613281, "rz": -50.84077453613281 }
+// ];
 
 
-for(let i=0; i < slotMachinePos.length; i++)
-{
-	slotMachineData[i] = { spinning: [] };
-	slotMachineData[i].machine = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a"), new mp.Vector3(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
+// for(var i=1; i <= 8; i++)
+// {
+// 	mp.game.entity.createModelHideExcludingScriptObjects(1127.1312255859375, 254.82090759277344, -50.4407958984375, 300.0, mp.game.joaat("vw_prop_casino_slot_0"+i+"a"), true);
+// }
+
+
+// for(let i=0; i < slotMachinePos.length; i++)
+// {
+// 	slotMachineData[i] = { spinning: [] };
+// 	slotMachineData[i].machine = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a"), new mp.Vector3(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
 	
-	slotMachineData[i].reels = [];
+// 	slotMachineData[i].reels = [];
 	
-	var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, 0, -1.5, 1);
-	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 1);
-	newShape.casinoSlotMachime = i;
+// 	var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, 0, -1.5, 1);
+// 	var newShape = mp.colshapes.newSphere(pos.x, pos.y, pos.z, 1);
+// 	newShape.casinoSlotMachime = i;
 	
-	for(var c=0; c < 3; c++)
-	{
-		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, reelsOffsets[c][0], reelsOffsets[c][1], reelsOffsets[c][2]);
-		slotMachineData[i].reels[c] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
-	}
-}
+// 	for(var c=0; c < 3; c++)
+// 	{
+// 		pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[i].x, slotMachinePos[i].y, slotMachinePos[i].z, slotMachinePos[i].rz, reelsOffsets[c][0], reelsOffsets[c][1], reelsOffsets[c][2]);
+// 		slotMachineData[i].reels[c] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[i].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[i].rz) });
+// 	}
+// }
 
 
-mp.events.add('playerEnterColshape', (shape) => {
+// mp.events.add('playerEnterColshape', (shape) => {
 
-	if(shape.casinoSlotMachime !== undefined && lpSlotMachine == null && interactingWithSlotMachine == null)
-	{
-		slotMachineToJoin = shape.casinoSlotMachime;
-		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
-		mp.game.graphics.notify(`~b~${slotMachineNames[slotMachinePos[slotMachineToJoin].type]}~n~~w~Pritisnite E da igrate`);
-		mp.gui.chat.push('shape ' + shape.casinoSlotMachime);
-	}
-});
-
-
-mp.events.add('playerExitColshape', (shape) => {
-	if(shape.casinoSlotMachime !== undefined)
-	{
-		slotMachineToJoin = null;
-	}
-});
+// 	if(shape.casinoSlotMachime !== undefined && lpSlotMachine == null && interactingWithSlotMachine == null)
+// 	{
+// 		slotMachineToJoin = shape.casinoSlotMachime;
+// 		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
+// 		mp.game.graphics.notify(`~b~${slotMachineNames[slotMachinePos[slotMachineToJoin].type]}~n~~w~Pritisnite E da igrate`);
+// 		mp.gui.chat.push('shape ' + shape.casinoSlotMachime);
+// 	}
+// });
 
 
-
-mp.keys.bind(0x45, true, () =>  // E
-{
-	mp.gui.chat.push('1');
-	if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
-	mp.gui.chat.push('2');
-	if(lpSlotMachine != null)
-	{
-		mp.gui.chat.push('3');
-		mp.events.callRemote("leaveSlotMachine");
-		interactingWithSlotMachine = lpSlotMachine;
-		lpSlotMachine = null;
-		BLOCK_CONTROLS_DURING_ANIMATION = false;
-		if(canSpin) canSpin = false;
-		mp.gui.chat.push('4');
-		interactingWithSlotMachineTimeout = setTimeout(
-			function()
-			{
-				mp.gui.chat.push('5');
-				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
-				interactingWithSlotMachine = null;
-				interactingWithSlotMachineTimeout = null;
-			},4500
-		);
-	}
-	else
-	{
-		mp.gui.chat.push('6');
-		//if(slotMachineToJoin == null) return false;
-		mp.gui.chat.push('7');
-		interactingWithSlotMachine = slotMachineToJoin;
-		mp.gui.chat.push('8');
-		slotMachineData[slotMachineToJoin].machine.setCollision(false, false);
-		mp.gui.chat.push('9');
-		var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[slotMachineToJoin].x, slotMachinePos[slotMachineToJoin].y, slotMachinePos[slotMachineToJoin].z, slotMachinePos[slotMachineToJoin].rz, 0, -1.5, 1);
-		localPlayer.position = new mp.Vector3(pos.x, pos.y, pos.z);
-		localPlayer.setHeading(slotMachinePos[slotMachineToJoin].rz);
-		mp.gui.chat.push('10');
-		mp.events.callRemote("server:casino.slot.occupy", slotMachineToJoin);
-		mp.events.call('client:casino.slot.occupy', localPlayer, slotMachine);
-		mp.gui.chat.push('11');
-		interactingWithSlotMachineTimeout = setTimeout(
-			function()
-			{
-				mp.gui.chat.push('12');
-				interactingWithSlotMachine = null;
-				interactingWithSlotMachineTimeout = null;
-			},5500
-		);
-	}
-	mp.gui.chat.push('13');	
-});
+// mp.events.add('playerExitColshape', (shape) => {
+// 	if(shape.casinoSlotMachime !== undefined)
+// 	{
+// 		slotMachineToJoin = null;
+// 	}
+// });
 
 
-mp.events.add("client:casino.cancelInteractingWithSlotMachine", () => 
-{
-	slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
-	interactingWithSlotMachine = null;
-	if(interactingWithSlotMachineTimeout != null)
-	{
-		clearTimeout(interactingWithSlotMachineTimeout);
-		interactingWithSlotMachineTimeout = null;
-	}
-});
 
-mp.events.add("client:casino.slot.occupy", (player, machineID) => {
-	if(player == localPlayer) 
-	{
-		lpSlotMachine = slotMachineToJoin;
-		BLOCK_CONTROLS_DURING_ANIMATION = true;
+// mp.keys.bind(0x45, true, () =>  // E
+// {
+// 	mp.gui.chat.push('1');
+// 	if(mp.gui.cursor.visible || interactingWithSlotMachine != null) return false;
+// 	mp.gui.chat.push('2');
+// 	if(lpSlotMachine != null)
+// 	{
+// 		mp.gui.chat.push('3');
+// 		mp.events.callRemote("leaveSlotMachine");
+// 		interactingWithSlotMachine = lpSlotMachine;
+// 		lpSlotMachine = null;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = false;
+// 		if(canSpin) canSpin = false;
+// 		mp.gui.chat.push('4');
+// 		interactingWithSlotMachineTimeout = setTimeout(
+// 			function()
+// 			{
+// 				mp.gui.chat.push('5');
+// 				slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
+// 				interactingWithSlotMachine = null;
+// 				interactingWithSlotMachineTimeout = null;
+// 			},4500
+// 		);
+// 	}
+// 	else
+// 	{
+// 		mp.gui.chat.push('6');
+// 		//if(slotMachineToJoin == null) return false;
+// 		mp.gui.chat.push('7');
+// 		interactingWithSlotMachine = slotMachineToJoin;
+// 		mp.gui.chat.push('8');
+// 		slotMachineData[slotMachineToJoin].machine.setCollision(false, false);
+// 		mp.gui.chat.push('9');
+// 		var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[slotMachineToJoin].x, slotMachinePos[slotMachineToJoin].y, slotMachinePos[slotMachineToJoin].z, slotMachinePos[slotMachineToJoin].rz, 0, -1.5, 1);
+// 		localPlayer.position = new mp.Vector3(pos.x, pos.y, pos.z);
+// 		localPlayer.setHeading(slotMachinePos[slotMachineToJoin].rz);
+// 		mp.gui.chat.push('10');
+// 		mp.events.callRemote("server:casino.slot.occupy", slotMachineToJoin);
+// 		mp.events.call('client:casino.slot.occupy', localPlayer, slotMachine);
+// 		mp.gui.chat.push('11');
+// 		interactingWithSlotMachineTimeout = setTimeout(
+// 			function()
+// 			{
+// 				mp.gui.chat.push('12');
+// 				interactingWithSlotMachine = null;
+// 				interactingWithSlotMachineTimeout = null;
+// 			},5500
+// 		);
+// 	}
+// 	mp.gui.chat.push('13');	
+// });
+
+
+// mp.events.add("client:casino.cancelInteractingWithSlotMachine", () => 
+// {
+// 	slotMachineData[interactingWithSlotMachine].machine.setCollision(true, false);
+// 	interactingWithSlotMachine = null;
+// 	if(interactingWithSlotMachineTimeout != null)
+// 	{
+// 		clearTimeout(interactingWithSlotMachineTimeout);
+// 		interactingWithSlotMachineTimeout = null;
+// 	}
+// });
+
+// mp.events.add("client:casino.slot.occupy", (player, machineID) => {
+// 	if(player == localPlayer) 
+// 	{
+// 		lpSlotMachine = slotMachineToJoin;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = true;
 		
-		mp.game.graphics.notify(`Pritisnite levi klik misa(LMB) da zapocnete kockanje`);
-		mp.events.call('client:slotMachineAllowSpin', true);
-	}
-	else
-	{
-		slotMachineData[machineID].machine.setNoCollision(player.handle, false);
-		mp.events.call('client:slotMachineAllowSpin', true);
+// 		mp.game.graphics.notify(`Pritisnite levi klik misa(LMB) da zapocnete kockanje`);
+// 		mp.events.call('client:slotMachineAllowSpin', true);
+// 	}
+// 	else
+// 	{
+// 		slotMachineData[machineID].machine.setNoCollision(player.handle, false);
+// 		mp.events.call('client:slotMachineAllowSpin', true);
 		
-	}
-});
+// 	}
+// });
 
-mp.events.add("client:slotMachineAllowSpin", (toggle) => {	
-	canSpin = toggle;
-});
-
-
-mp.events.add('playerDeath', (player) => 
-{
-	if(player == localPlayer) 
-	{
-		if(lpSlotMachine != null) lpSlotMachine = null;
-		if(interactingWithSlotMachine != null) interactingWithSlotMachine = null;
-		if(canSpin) canSpin = false;
-	}
-});
+// mp.events.add("client:slotMachineAllowSpin", (toggle) => {	
+// 	canSpin = toggle;
+// });
 
 
-mp.events.add('render', (nametags) => {
+// mp.events.add('playerDeath', (player) => 
+// {
+// 	if(player == localPlayer) 
+// 	{
+// 		if(lpSlotMachine != null) lpSlotMachine = null;
+// 		if(interactingWithSlotMachine != null) interactingWithSlotMachine = null;
+// 		if(canSpin) canSpin = false;
+// 	}
+// });
+
+
+// mp.events.add('render', (nametags) => {
 	
-	var rot = null;
-	for(var machine = 0; machine < slotMachineData.length; machine++)
-	{
-		for(var i=0; i < 3; i++)
-		{
-			if(slotMachineData[machine]['spinning'][i])
-			{
-				rot = slotMachineData[machine].reels[i].rotation;
-				slotMachineData[machine].reels[i].rotation = new mp.Vector3(rot.x+5.0, 0.0, rot.z);
-			}
-		}
-	}
+// 	var rot = null;
+// 	for(var machine = 0; machine < slotMachineData.length; machine++)
+// 	{
+// 		for(var i=0; i < 3; i++)
+// 		{
+// 			if(slotMachineData[machine]['spinning'][i])
+// 			{
+// 				rot = slotMachineData[machine].reels[i].rotation;
+// 				slotMachineData[machine].reels[i].rotation = new mp.Vector3(rot.x+5.0, 0.0, rot.z);
+// 			}
+// 		}
+// 	}
 	
-	if(canSpin)
-	{
-		if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // LMB
-		{
-			mp.events.callRemote("server:casino.slot.spin");
-		}
-	}
-});
+// 	if(canSpin)
+// 	{
+// 		if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // LMB
+// 		{
+// 			mp.events.callRemote("server:casino.slot.spin");
+// 		}
+// 	}
+// });
 
 
-mp.events.add('client:spinSlotMachine', (id, position) => 
-{
-	try {
-		let machine = id;
-		let endPos = JSON.parse(position);
-		slotMachineData[machine].endPos = endPos;
+// mp.events.add('client:spinSlotMachine', (id, position) => 
+// {
+// 	try {
+// 		let machine = id;
+// 		let endPos = JSON.parse(position);
+// 		slotMachineData[machine].endPos = endPos;
 
-		mp.events.call('client:slotMachineAllowSpin', false);
+// 		mp.events.call('client:slotMachineAllowSpin', false);
 		
-		var pos = null;
-		for(var i=0; i < 3; i++)
-		{
-			slotMachineData[machine].reels[i].destroy();
-			pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
-			slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
-			slotMachineData[machine]['spinning'][i] = true;
-		}
+// 		var pos = null;
+// 		for(var i=0; i < 3; i++)
+// 		{
+// 			slotMachineData[machine].reels[i].destroy();
+// 			pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[i][0], reelsOffsets[i][1], reelsOffsets[i][2]);
+// 			slotMachineData[machine].reels[i] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"b_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(0, 0, slotMachinePos[machine].rz) });
+// 			slotMachineData[machine]['spinning'][i] = true;
+// 		}
 		
-		setTimeout(
-			function()
-			{
-				slotMachineData[machine]['spinning'][0] = null;
+// 		setTimeout(
+// 			function()
+// 			{
+// 				slotMachineData[machine]['spinning'][0] = null;
 		
-				slotMachineData[machine].reels[0].destroy();
-				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
-				slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
-			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
-		);
-		setTimeout(
-			function()
-			{
-				slotMachineData[machine]['spinning'][1] = null;
+// 				slotMachineData[machine].reels[0].destroy();
+// 				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[0][0], reelsOffsets[0][1], reelsOffsets[0][2]);
+// 				slotMachineData[machine].reels[0] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[0], 0, slotMachinePos[machine].rz) });
+// 			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][0]
+// 		);
+// 		setTimeout(
+// 			function()
+// 			{
+// 				slotMachineData[machine]['spinning'][1] = null;
 		
-				slotMachineData[machine].reels[1].destroy();
-				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
-				slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
-			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
-		);
-		setTimeout(
-			function()
-			{
-				slotMachineData[machine]['spinning'][2] = null;
+// 				slotMachineData[machine].reels[1].destroy();
+// 				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[1][0], reelsOffsets[1][1], reelsOffsets[1][2]);
+// 				slotMachineData[machine].reels[1] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[1], 0, slotMachinePos[machine].rz) });
+// 			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][1]
+// 		);
+// 		setTimeout(
+// 			function()
+// 			{
+// 				slotMachineData[machine]['spinning'][2] = null;
 		
-				slotMachineData[machine].reels[2].destroy();
-				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
-				slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
-			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
-		);
-	}
-	catch(e) {
-		console.log(e);
-	}
-});
+// 				slotMachineData[machine].reels[2].destroy();
+// 				var pos = mp.game.object.getObjectOffsetFromCoords(slotMachinePos[machine].x, slotMachinePos[machine].y, slotMachinePos[machine].z, slotMachinePos[machine].rz, reelsOffsets[2][0], reelsOffsets[2][1], reelsOffsets[2][2]);
+// 				slotMachineData[machine].reels[2] = mp.objects.new(mp.game.joaat("vw_prop_casino_slot_0"+slotMachinePos[machine].type+"a_reels"), new mp.Vector3(pos.x, pos.y, pos.z), { rotation: new mp.Vector3(slotMachineData[machine].endPos[2], 0, slotMachinePos[machine].rz) });
+// 			}, SPINNING_TIME[slotMachineData[machine].endPos[3]][2]
+// 		);
+// 	}
+// 	catch(e) {
+// 		console.log(e);
+// 	}
+// });
 
-// Loading IPL 
-mp.game.streaming.requestIpl('vw_casino_main');
+// // Loading IPL 
+// mp.game.streaming.requestIpl('vw_casino_main');
 
 
 
@@ -3766,1740 +3995,1740 @@ mp.game.streaming.requestIpl('vw_casino_main');
 /***/ 9417:
 /***/ (() => {
 
-let canDoBets = true,
-	 betObject = null,
-	 closestChipSpot = null,
-	 rouletteTable = null,
-	 rouletteSeat = null,
-	 startRoullete = false,
-	 roulleteCam = false,
-	 blockControls = false,
-	 setBet = false;
-	 CasinoPedsID = [],
-    rouletteCamera = null,
-    betCoords = null,
-	 RouletteTables = [];
+// let canDoBets = true,
+// 	 betObject = null,
+// 	 closestChipSpot = null,
+// 	 rouletteTable = null,
+// 	 rouletteSeat = null,
+// 	 startRoullete = false,
+// 	 roulleteCam = false,
+// 	 blockControls = false,
+// 	 setBet = false;
+// 	 CasinoPedsID = [],
+//     rouletteCamera = null,
+//     betCoords = null,
+// 	 RouletteTables = [];
 
-let betRoulette = [
-    [],
-    []
-];
+// let betRoulette = [
+//     [],
+//     []
+// ];
 
-const CasinoPeds = [
-    {Hash: 0x1422D45B, Pos: new mp.Vector3(1145.337, 267.7967, -51.8409), Angle: 47.5},
-    {Hash: 0x1422D45B, Pos: new mp.Vector3(1149.791, 263.1628, -51.8409), Angle: 222.2},
-];
+// const CasinoPeds = [
+//     {Hash: 0x1422D45B, Pos: new mp.Vector3(1145.337, 267.7967, -51.8409), Angle: 47.5},
+//     {Hash: 0x1422D45B, Pos: new mp.Vector3(1149.791, 263.1628, -51.8409), Angle: 222.2},
+// ];
 
-const PrizePed = [
-    {Hash: 0x1422D45B, Pos: new mp.Vector3(1087.727, 221.20876, -49.220415), Angle: 178},
-];
+// const PrizePed = [
+//     {Hash: 0x1422D45B, Pos: new mp.Vector3(1087.727, 221.20876, -49.220415), Angle: 178},
+// ];
 
-const CasinoBlip = mp.blips.new(617, new mp.Vector3(935.8140869140625, 46.942176818847656, 81.09580993652344), { name: "Diamond Casino & Resort", color: 83, shortRange: true, scale: 1.0 });
+// const CasinoBlip = mp.blips.new(617, new mp.Vector3(935.8140869140625, 46.942176818847656, 81.09580993652344), { name: "Diamond Casino & Resort", color: 83, shortRange: true, scale: 1.0 });
 
-const RouletteTablesSeatsHeading = (/* unused pure expression or super */ null && ([
-    [45,-45,-135,-135],
-    [225,135,45,45],
+// const RouletteTablesSeatsHeading = [
+//     [45,-45,-135,-135],
+//     [225,135,45,45],
 
-    [110.5,65.5,20.5, 330.5],
-    [216.5,161.5,116.5, 66.5],
-]));
+//     [110.5,65.5,20.5, 330.5],
+//     [216.5,161.5,116.5, 66.5],
+// ];
 
-const RouletteSeats = {
-    0: "Chair_Base_04",
-    1: "Chair_Base_03",
-    2: "Chair_Base_02",
-    3: "Chair_Base_01"
-};
+// const RouletteSeats = {
+//     0: "Chair_Base_04",
+//     1: "Chair_Base_03",
+//     2: "Chair_Base_02",
+//     3: "Chair_Base_01"
+// };
 
-const RouletteCameraPos = [
+// const RouletteCameraPos = [
 
-    new mp.Vector3(1143.73, 268.9541, -52.960873 + 3.5),
-    new mp.Vector3(1151.4585, 262.04517, -52.96084 + 3.5),
-];
-
-
-const RouletteCameraRot = [
-	225,
-   45
-];
+//     new mp.Vector3(1143.73, 268.9541, -52.960873 + 3.5),
+//     new mp.Vector3(1151.4585, 262.04517, -52.96084 + 3.5),
+// ];
 
 
-const RouletteCameraRotStop = [
-	[-173, -112, -160],
-	[13, 68, 17]
-];
+// const RouletteCameraRot = [
+// 	225,
+//    45
+// ];
+
+
+// const RouletteCameraRotStop = [
+// 	[-173, -112, -160],
+// 	[13, 68, 17]
+// ];
 
 
 
-const RouletteTablesPos = [
-    new mp.Vector3(1144.814, 268.2634, -52.8409),
-    new mp.Vector3(1150.355, 262.7224, -52.8409),
-];
+// const RouletteTablesPos = [
+//     new mp.Vector3(1144.814, 268.2634, -52.8409),
+//     new mp.Vector3(1150.355, 262.7224, -52.8409),
+// ];
 
 
-const RouletteTablesHeading = [
-    -135,
-    45
-];
+// const RouletteTablesHeading = [
+//     -135,
+//     45
+// ];
 
 
-setTimeout(function () {
-	for(let tbs = 0; tbs < RouletteTablesPos.length; tbs++){
-		RouletteTables[tbs] = {};
-		RouletteTables[tbs].table = mp.objects.new(mp.game.joaat('vw_prop_casino_roulette_01'), new mp.Vector3( RouletteTablesPos[tbs].x, RouletteTablesPos[tbs].y, RouletteTablesPos[tbs].z), {
-			rotation: new mp.Vector3(0, 0, RouletteTablesHeading[tbs]),
-			alpha: 255,
-			dimension: 0
-		});
-		RouletteTables[tbs].ball = mp.objects.new(87196104, new mp.Vector3( RouletteTablesPos[tbs].x, RouletteTablesPos[tbs].y, RouletteTablesPos[tbs].z));
-	}
-}, 1000);
+// setTimeout(function () {
+// 	for(let tbs = 0; tbs < RouletteTablesPos.length; tbs++){
+// 		RouletteTables[tbs] = {};
+// 		RouletteTables[tbs].table = mp.objects.new(mp.game.joaat('vw_prop_casino_roulette_01'), new mp.Vector3( RouletteTablesPos[tbs].x, RouletteTablesPos[tbs].y, RouletteTablesPos[tbs].z), {
+// 			rotation: new mp.Vector3(0, 0, RouletteTablesHeading[tbs]),
+// 			alpha: 255,
+// 			dimension: 0
+// 		});
+// 		RouletteTables[tbs].ball = mp.objects.new(87196104, new mp.Vector3( RouletteTablesPos[tbs].x, RouletteTablesPos[tbs].y, RouletteTablesPos[tbs].z));
+// 	}
+// }, 1000);
 
 
-setTimeout(function () {
-    mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@dealer@");
-    let n = 0;
-    CasinoPeds.forEach(ped => {
-        CasinoPedsID[n] = mp.peds.new(ped.Hash, ped.Pos, ped.Angle, 0);
-        CasinoPedsID[n].setComponentVariation(0, 2, 1, 0);
-        CasinoPedsID[n].setComponentVariation(1, 1, 0, 0);
-        CasinoPedsID[n].setComponentVariation(2, 2, 0, 0);
-        CasinoPedsID[n].setComponentVariation(3, 0, n + 2, 0);
-        CasinoPedsID[n].setComponentVariation(4, 0, 0, 0);
-        CasinoPedsID[n].setComponentVariation(6, 1, 0, 0);
-        CasinoPedsID[n].setComponentVariation(7, 2, 0, 0);
-        CasinoPedsID[n].setComponentVariation(8, 1, 0, 0);
-        CasinoPedsID[n].setComponentVariation(10, 1, 0, 0);
-        CasinoPedsID[n].setComponentVariation(11, 1, 0, 0);
-        CasinoPedsID[n].setConfigFlag(185, true);
-        CasinoPedsID[n].setConfigFlag(108, true);
-        CasinoPedsID[n].setConfigFlag(208, true);
-        CasinoPedsID[n].taskPlayAnim("anim_casino_b@amb@casino@games@shared@dealer@", "idle", 1000.0, -2.0, -1, 2, 1148846080, false, false, false);
-        n = n + 1;
-        //CasinoPedsID[0].playFacialAnim("idle_facial", "anim_casino_b@amb@casino@games@shared@dealer@");
-        //mp.game.invoke("0xEA47FE3719165B94", CasinoPedsID[0].handle, "anim_casino_b@amb@casino@games@shared@dealer@", "idle", 1000.0, -2.0, -1, 2, 1148846080, false, false, false)
-    });
-	n = 0;
+// setTimeout(function () {
+//     mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@dealer@");
+//     let n = 0;
+//     CasinoPeds.forEach(ped => {
+//         CasinoPedsID[n] = mp.peds.new(ped.Hash, ped.Pos, ped.Angle, 0);
+//         CasinoPedsID[n].setComponentVariation(0, 2, 1, 0);
+//         CasinoPedsID[n].setComponentVariation(1, 1, 0, 0);
+//         CasinoPedsID[n].setComponentVariation(2, 2, 0, 0);
+//         CasinoPedsID[n].setComponentVariation(3, 0, n + 2, 0);
+//         CasinoPedsID[n].setComponentVariation(4, 0, 0, 0);
+//         CasinoPedsID[n].setComponentVariation(6, 1, 0, 0);
+//         CasinoPedsID[n].setComponentVariation(7, 2, 0, 0);
+//         CasinoPedsID[n].setComponentVariation(8, 1, 0, 0);
+//         CasinoPedsID[n].setComponentVariation(10, 1, 0, 0);
+//         CasinoPedsID[n].setComponentVariation(11, 1, 0, 0);
+//         CasinoPedsID[n].setConfigFlag(185, true);
+//         CasinoPedsID[n].setConfigFlag(108, true);
+//         CasinoPedsID[n].setConfigFlag(208, true);
+//         CasinoPedsID[n].taskPlayAnim("anim_casino_b@amb@casino@games@shared@dealer@", "idle", 1000.0, -2.0, -1, 2, 1148846080, false, false, false);
+//         n = n + 1;
+//         //CasinoPedsID[0].playFacialAnim("idle_facial", "anim_casino_b@amb@casino@games@shared@dealer@");
+//         //mp.game.invoke("0xEA47FE3719165B94", CasinoPedsID[0].handle, "anim_casino_b@amb@casino@games@shared@dealer@", "idle", 1000.0, -2.0, -1, 2, 1148846080, false, false, false)
+//     });
+// 	n = 0;
 
-	PrizePed.forEach(ped => {
-		var ped = mp.peds.new(ped.Hash, ped.Pos, ped.Angle, 0);
-        ped.setComponentVariation(0, 2, 1, 0);
-        ped.setComponentVariation(1, 1, 0, 0);
-		ped.setComponentVariation(2, 2, 0, 0);
-        ped.setComponentVariation(3, 0, n + 2, 0);
-        ped.setComponentVariation(4, 0, 0, 0);
-        ped.setComponentVariation(6, 1, 0, 0);
-        ped.setComponentVariation(7, 2, 0, 0);
-        ped.setComponentVariation(8, 1, 0, 0);
-        ped.setComponentVariation(10, 1, 0, 0);
-        ped.setComponentVariation(11, 1, 0, 0);
-        ped.setConfigFlag(185, true);
-        ped.setConfigFlag(108, true);
-        ped.setConfigFlag(208, true);
-	})
+// 	PrizePed.forEach(ped => {
+// 		var ped = mp.peds.new(ped.Hash, ped.Pos, ped.Angle, 0);
+//         ped.setComponentVariation(0, 2, 1, 0);
+//         ped.setComponentVariation(1, 1, 0, 0);
+// 		ped.setComponentVariation(2, 2, 0, 0);
+//         ped.setComponentVariation(3, 0, n + 2, 0);
+//         ped.setComponentVariation(4, 0, 0, 0);
+//         ped.setComponentVariation(6, 1, 0, 0);
+//         ped.setComponentVariation(7, 2, 0, 0);
+//         ped.setComponentVariation(8, 1, 0, 0);
+//         ped.setComponentVariation(10, 1, 0, 0);
+//         ped.setComponentVariation(11, 1, 0, 0);
+//         ped.setConfigFlag(185, true);
+//         ped.setConfigFlag(108, true);
+//         ped.setConfigFlag(208, true);
+// 	})
 
-}, 10000);
+// }, 10000);
 
-mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@dealer@");
-mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@player@");
-mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@table");
-mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@dealer");
-mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@ped_male@seat_1@regular@01a@base");
-mp.game.streaming.requestAnimDict("anim_casino_a@amb@casino@games@lucky7wheel@male");
-mp.game.streaming.requestIpl("vw_casino_main");
+// mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@dealer@");
+// mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@shared@player@");
+// mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@table");
+// mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@dealer");
+// mp.game.streaming.requestAnimDict("anim_casino_b@amb@casino@games@roulette@ped_male@seat_1@regular@01a@base");
+// mp.game.streaming.requestAnimDict("anim_casino_a@amb@casino@games@lucky7wheel@male");
+// mp.game.streaming.requestIpl("vw_casino_main");
 
-mp.events.add('luckyWheel', (entity) => {
-	let wheelPos = new mp.Vector3(1110.2651, 228.62857, -50.7558);
+// mp.events.add('luckyWheel', (entity) => {
+// 	let wheelPos = new mp.Vector3(1110.2651, 228.62857, -50.7558);
 	
-	mp.game.invoke("0x960C9FF8F616E41C", "Press ~INPUT_PICKUP~ to start shopping", true);
-	entity.taskGoStraightToCoord(wheelPos.x, wheelPos.y, wheelPos.z, 1.0,  -1,  312.2,  0.0);
+// 	mp.game.invoke("0x960C9FF8F616E41C", "Press ~INPUT_PICKUP~ to start shopping", true);
+// 	entity.taskGoStraightToCoord(wheelPos.x, wheelPos.y, wheelPos.z, 1.0,  -1,  312.2,  0.0);
 
-	setTimeout(() => {
-		entity.setRotation(0.0, 0.0, 2.464141, 1, true);
-		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "enter_right_to_baseidle", 8.0, -8.0, -1, 0, 0, false, false, false);
-	}, 1000);
+// 	setTimeout(() => {
+// 		entity.setRotation(0.0, 0.0, 2.464141, 1, true);
+// 		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "enter_right_to_baseidle", 8.0, -8.0, -1, 0, 0, false, false, false);
+// 	}, 1000);
 
-	setTimeout(() => {
+// 	setTimeout(() => {
 
-		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "enter_to_armraisedidle", 8.0, -8.0, -1, 0, 0, false, false, false);
-		if(entity == mp.players.local){
+// 		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "enter_to_armraisedidle", 8.0, -8.0, -1, 0, 0, false, false, false);
+// 		if(entity == mp.players.local){
 
-			setTimeout(() => {
-				mp.events.callRemote('startRoll');
-				entity.freezePosition(true);
-				rouletteCamera = mp.cameras.new('default', new mp.Vector3(1111.015, 227.7846, -50.755825 +2.5), new mp.Vector3(0,0,0), 40);
-				rouletteCamera.setRot(0.0, 0, 0, 2);
-				rouletteCamera.setActive(true);
-				//localplayer.freezePosition(true);
-				mp.game.cam.renderScriptCams(true, true, 1500, true, false);
-			}, 1000);
-		}
-	}, 2000);
+// 			setTimeout(() => {
+// 				mp.events.callRemote('startRoll');
+// 				entity.freezePosition(true);
+// 				rouletteCamera = mp.cameras.new('default', new mp.Vector3(1111.015, 227.7846, -50.755825 +2.5), new mp.Vector3(0,0,0), 40);
+// 				rouletteCamera.setRot(0.0, 0, 0, 2);
+// 				rouletteCamera.setActive(true);
+// 				//localplayer.freezePosition(true);
+// 				mp.game.cam.renderScriptCams(true, true, 1500, true, false);
+// 			}, 1000);
+// 		}
+// 	}, 2000);
 
-	setTimeout(() => {
+// 	setTimeout(() => {
 
-		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "armraisedidle_to_spinningidle_high", 8.0, -8.0, -1, 0, 0, false, false, false);
-	}, 3000);
-});
+// 		entity.taskPlayAnim( "anim_casino_a@amb@casino@games@lucky7wheel@male", "armraisedidle_to_spinningidle_high", 8.0, -8.0, -1, 0, 0, false, false, false);
+// 	}, 3000);
+// });
 
-mp.events.add('delWheelCam', () => {
-    rouletteCamera.destroy(true);
-    rouletteCamera = null;
-    mp.game.cam.renderScriptCams(false, true, 1000, true, false);
-	localplayer.freezePosition(false);
-});
+// mp.events.add('delWheelCam', () => {
+//     rouletteCamera.destroy(true);
+//     rouletteCamera = null;
+//     mp.game.cam.renderScriptCams(false, true, 1000, true, false);
+// 	localplayer.freezePosition(false);
+// });
 
-mp.events.add('spin_wheel', function(tb, needSpins, endTable, endBall){
-    RouletteTables[tb].table.playAnim("intro_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
-    RouletteTables[tb].table.forceAiAndAnimationUpdate();
-    const ballPos = RouletteTables[tb].table.getWorldPositionOfBone(RouletteTables[tb].table.getBoneIndexByName("Roulette_Wheel"));
-    RouletteTables[tb].ball.position = ballPos;
+// mp.events.add('spin_wheel', function(tb, needSpins, endTable, endBall){
+//     RouletteTables[tb].table.playAnim("intro_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
+//     RouletteTables[tb].table.forceAiAndAnimationUpdate();
+//     const ballPos = RouletteTables[tb].table.getWorldPositionOfBone(RouletteTables[tb].table.getBoneIndexByName("Roulette_Wheel"));
+//     RouletteTables[tb].ball.position = ballPos;
 
-    RouletteTables[tb].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
-    const ballRot = RouletteTables[tb].table.getRotation(2);
-    RouletteTables[tb].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
-	//RouletteTables[tb].ball.rotation = new mp.Vector3(0.0, 0.0, 0);
+//     RouletteTables[tb].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
+//     const ballRot = RouletteTables[tb].table.getRotation(2);
+//     RouletteTables[tb].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
+// 	//RouletteTables[tb].ball.rotation = new mp.Vector3(0.0, 0.0, 0);
 	
-	RouletteTables[tb].ball.playAnim("intro_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
-    RouletteTables[tb].ball.forceAiAndAnimationUpdate();
+// 	RouletteTables[tb].ball.playAnim("intro_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
+//     RouletteTables[tb].ball.forceAiAndAnimationUpdate();
 
-   RouletteTables[tb].spins = 0;
-	RouletteTables[tb].lastSpinTime = 0;
-	RouletteTables[tb].needSpins = needSpins;
-	RouletteTables[tb].endTable = endTable;
-   RouletteTables[tb].endBall = endBall;
+//    RouletteTables[tb].spins = 0;
+// 	RouletteTables[tb].lastSpinTime = 0;
+// 	RouletteTables[tb].needSpins = needSpins;
+// 	RouletteTables[tb].endTable = endTable;
+//    RouletteTables[tb].endBall = endBall;
     
-   CasinoPedsID[tb].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
+//    CasinoPedsID[tb].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
 
-   setTimeout(
-		function()
-		{
-            CasinoPedsID[tb].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+//    setTimeout(
+// 		function()
+// 		{
+//             CasinoPedsID[tb].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
 
-		}, 8000
-	);
-});
+// 		}, 8000
+// 	);
+// });
 
-mp.events.add('render', () => {
-    if( blockControls) {
-        mp.game.controls.disableControlAction(0, 257, true); // стрельба
-		mp.game.controls.disableControlAction(0, 22, true);
-		mp.game.controls.disableControlAction(2, 25, true);
-		mp.game.controls.disableControlAction(0, 23, true); // INPUT_ENTER
+// mp.events.add('render', () => {
+//     if( blockControls) {
+//         mp.game.controls.disableControlAction(0, 257, true); // стрельба
+// 		mp.game.controls.disableControlAction(0, 22, true);
+// 		mp.game.controls.disableControlAction(2, 25, true);
+// 		mp.game.controls.disableControlAction(0, 23, true); // INPUT_ENTER
 		
-		mp.game.controls.disableControlAction(2, 24, true);
-		mp.game.controls.disableControlAction(2, 69, true);
-		mp.game.controls.disableControlAction(2, 70, true);
-		mp.game.controls.disableControlAction(2, 92, true);
+// 		mp.game.controls.disableControlAction(2, 24, true);
+// 		mp.game.controls.disableControlAction(2, 69, true);
+// 		mp.game.controls.disableControlAction(2, 70, true);
+// 		mp.game.controls.disableControlAction(2, 92, true);
 
-		mp.game.controls.disableControlAction(2, 140, true);
-		mp.game.controls.disableControlAction(2, 141, true);
-		mp.game.controls.disableControlAction(2, 263, true);
-		mp.game.controls.disableControlAction(2, 264, true);
+// 		mp.game.controls.disableControlAction(2, 140, true);
+// 		mp.game.controls.disableControlAction(2, 141, true);
+// 		mp.game.controls.disableControlAction(2, 263, true);
+// 		mp.game.controls.disableControlAction(2, 264, true);
 
-		mp.game.controls.disableControlAction(0, 21, true);
-		mp.game.controls.disableControlAction(0, 23, true);
-		mp.game.controls.disableControlAction(0, 32, true);
-		mp.game.controls.disableControlAction(0, 33, true);
-		mp.game.controls.disableControlAction(0, 34, true);
-		mp.game.controls.disableControlAction(0, 35, true);
-    }
+// 		mp.game.controls.disableControlAction(0, 21, true);
+// 		mp.game.controls.disableControlAction(0, 23, true);
+// 		mp.game.controls.disableControlAction(0, 32, true);
+// 		mp.game.controls.disableControlAction(0, 33, true);
+// 		mp.game.controls.disableControlAction(0, 34, true);
+// 		mp.game.controls.disableControlAction(0, 35, true);
+//     }
 
-    if(setBet && rouletteCamera != null && rouletteTable != null && startRoullete == false && !mp.gui.cursor.visible){
-        if(canDoBets && betObject == null)
-        {
-            betObject = mp.objects.new(mp.game.joaat("vw_prop_chip_100dollar_x1"), new mp.Vector3(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z + 0.4));
-            betObject.setCollision(false, false);
-        }
-        if(betObject != null && canDoBets)
-		{
-			if(mp.game.controls.isDisabledControlJustReleased(0, 25) && !mp.gui.cursor.visible) // ПКМ
-			{
-				if(closestChipSpot != null) mp.events.call('bet_roulette', rouletteTable, closestChipSpot);//mp.events.callRemote("server_remove_roulette_bet", closestChipSpot);
-			}
+//     if(setBet && rouletteCamera != null && rouletteTable != null && startRoullete == false && !mp.gui.cursor.visible){
+//         if(canDoBets && betObject == null)
+//         {
+//             betObject = mp.objects.new(mp.game.joaat("vw_prop_chip_100dollar_x1"), new mp.Vector3(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z + 0.4));
+//             betObject.setCollision(false, false);
+//         }
+//         if(betObject != null && canDoBets)
+// 		{
+// 			if(mp.game.controls.isDisabledControlJustReleased(0, 25) && !mp.gui.cursor.visible) // ПКМ
+// 			{
+// 				if(closestChipSpot != null) mp.events.call('bet_roulette', rouletteTable, closestChipSpot);//mp.events.callRemote("server_remove_roulette_bet", closestChipSpot);
+// 			}
 			
-			if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // ЛКМ
-			{
-				if(closestChipSpot != null) mp.events.call('bet_roulette', rouletteTable, closestChipSpot); //mp.events.callRemote("server_make_roulette_bet", closestChipSpot);
-            }
+// 			if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // ЛКМ
+// 			{
+// 				if(closestChipSpot != null) mp.events.call('bet_roulette', rouletteTable, closestChipSpot); //mp.events.callRemote("server_make_roulette_bet", closestChipSpot);
+//             }
 
-			let drawObj = getCameraHitCoord();
-			if(drawObj != null)
-			{
+// 			let drawObj = getCameraHitCoord();
+// 			if(drawObj != null)
+// 			{
 				
-				// let height = betObject.getHeight(editorFocusObject.position.x, editorFocusObject.position.y, editorFocusObject.position.z, false, true);
-				//drawObj.position.z = RouletteTablesPos[rouletteTable].z;
-                //drawObj.position.z = mp.game.gameplay.getGroundZFor3dCoord(drawObj.position.x, drawObj.position.y, drawObj.position.z, parseFloat(0), false);
-                getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+// 				// let height = betObject.getHeight(editorFocusObject.position.x, editorFocusObject.position.y, editorFocusObject.position.z, false, true);
+// 				//drawObj.position.z = RouletteTablesPos[rouletteTable].z;
+//                 //drawObj.position.z = mp.game.gameplay.getGroundZFor3dCoord(drawObj.position.x, drawObj.position.y, drawObj.position.z, parseFloat(0), false);
+//                 getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
 
-				if(betCoords == null){
-					betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y,RouletteTablesPos[rouletteTable].z + 0.95, false, false, false);
-					getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
-				}
-				else {
+// 				if(betCoords == null){
+// 					betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y,RouletteTablesPos[rouletteTable].z + 0.95, false, false, false);
+// 					getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+// 				}
+// 				else {
 					
-					betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y, RouletteTablesPos[rouletteTable].z + 0.95, false, false, false);
-					getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
-				}				
-				//getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
-			}
-        }
+// 					betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y, RouletteTablesPos[rouletteTable].z + 0.95, false, false, false);
+// 					getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+// 				}				
+// 				//getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+// 			}
+//         }
       
         
-      let rightAxisX = mp.game.controls.getDisabledControlNormal(0, 220);
-		let rightAxisY = mp.game.controls.getDisabledControlNormal(0, 221);
+//       let rightAxisX = mp.game.controls.getDisabledControlNormal(0, 220);
+// 		let rightAxisY = mp.game.controls.getDisabledControlNormal(0, 221);
 		
-		let leftAxisX = 0;
-		let leftAxisY = 0;
+// 		let leftAxisX = 0;
+// 		let leftAxisY = 0;
 		
-		let pos = rouletteCamera.getCoord();
-		let rr = rouletteCamera.getDirection();
-		let vector = new mp.Vector3(0, 0, 0);
-		vector.x = rr.x * leftAxisY;
-		vector.y = rr.y * leftAxisY;
-		vector.z = rr.z * leftAxisY;
+// 		let pos = rouletteCamera.getCoord();
+// 		let rr = rouletteCamera.getDirection();
+// 		let vector = new mp.Vector3(0, 0, 0);
+// 		vector.x = rr.x * leftAxisY;
+// 		vector.y = rr.y * leftAxisY;
+// 		vector.z = rr.z * leftAxisY;
 		
-		let upVector = new mp.Vector3(0, 0, 1);
-		let rightVector = getCrossProduct(getNormalizedVector(rr), getNormalizedVector(upVector));
-		rightVector.x *= leftAxisX * 0.5;
-		rightVector.y *= leftAxisX * 0.5;
-		rightVector.z *= leftAxisX * 0.5;
+// 		let upVector = new mp.Vector3(0, 0, 1);
+// 		let rightVector = getCrossProduct(getNormalizedVector(rr), getNormalizedVector(upVector));
+// 		rightVector.x *= leftAxisX * 0.5;
+// 		rightVector.y *= leftAxisX * 0.5;
+// 		rightVector.z *= leftAxisX * 0.5;
 		
-		let rot = rouletteCamera.getRot(2);
+// 		let rot = rouletteCamera.getRot(2);
 		
-		let rotx = rot.x + rightAxisY * -5.0;
-        let rotz = rot.z + rightAxisX * -5.0;
+// 		let rotx = rot.x + rightAxisY * -5.0;
+//         let rotz = rot.z + rightAxisX * -5.0;
 
-		if(rotx > -57.5) rotx = -57.5;
-		if(rotx < -70) rotx = -70;
+// 		if(rotx > -57.5) rotx = -57.5;
+// 		if(rotx < -70) rotx = -70;
 		
-        if(rotz < RouletteCameraRotStop[rouletteTable][0]) rotz = RouletteCameraRotStop[rouletteTable][0];
-        if(rotz > RouletteCameraRotStop[rouletteTable][1]) rotz = RouletteCameraRotStop[rouletteTable][1];
+//         if(rotz < RouletteCameraRotStop[rouletteTable][0]) rotz = RouletteCameraRotStop[rouletteTable][0];
+//         if(rotz > RouletteCameraRotStop[rouletteTable][1]) rotz = RouletteCameraRotStop[rouletteTable][1];
 
-        if(rotx < -69 && rotz < RouletteCameraRotStop[rouletteTable][2]) {
-            rotz = RouletteCameraRotStop[rouletteTable][2];
-            rotx = -69;
-        }
+//         if(rotx < -69 && rotz < RouletteCameraRotStop[rouletteTable][2]) {
+//             rotz = RouletteCameraRotStop[rouletteTable][2];
+//             rotx = -69;
+//         }
         
 
-        rouletteCamera.setRot(rotx, 0.0, rotz, 2);
+//         rouletteCamera.setRot(rotx, 0.0, rotz, 2);
 
-        let cp = rouletteCamera.getRot(2);
-    }    
-    if(startRoullete == true && rouletteTable != null && !roulleteCam){
+//         let cp = rouletteCamera.getRot(2);
+//     }    
+//     if(startRoullete == true && rouletteTable != null && !roulleteCam){
 		
-        const ballPos = RouletteTables[rouletteTable].table.getWorldPositionOfBone(RouletteTables[rouletteTable].table.getBoneIndexByName("Roulette_Wheel"));
-        //rouletteCamera.setActive(false);
-        //rouletteCamera.destroy();
-        //rouletteCamera = mp.cameras.new('default', new mp.Vector3(ballPos.x, ballPos.y, ballPos.z+1.5), new mp.Vector3(0,0,0), 40);
-        rouletteCamera.setCoord(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z+1.5);
-        rouletteCamera.pointAtCoord(ballPos.x, ballPos.y, ballPos.z);
-        //rouletteCamera.setRot(90.0, 0, 225, 2);
-        rouletteCamera.setActive(true);
-        mp.game.cam.renderScriptCams(true, true, 2500, true, false);
-        roulleteCam = true;
-    }
-    if(startRoullete == false && rouletteTable != null && roulleteCam){
+//         const ballPos = RouletteTables[rouletteTable].table.getWorldPositionOfBone(RouletteTables[rouletteTable].table.getBoneIndexByName("Roulette_Wheel"));
+//         //rouletteCamera.setActive(false);
+//         //rouletteCamera.destroy();
+//         //rouletteCamera = mp.cameras.new('default', new mp.Vector3(ballPos.x, ballPos.y, ballPos.z+1.5), new mp.Vector3(0,0,0), 40);
+//         rouletteCamera.setCoord(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z+1.5);
+//         rouletteCamera.pointAtCoord(ballPos.x, ballPos.y, ballPos.z);
+//         //rouletteCamera.setRot(90.0, 0, 225, 2);
+//         rouletteCamera.setActive(true);
+//         mp.game.cam.renderScriptCams(true, true, 2500, true, false);
+//         roulleteCam = true;
+//     }
+//     if(startRoullete == false && rouletteTable != null && roulleteCam){
 		
-        roulleteCam = false;
-        rouletteCamera.destroy();
-        rouletteCamera = mp.cameras.new('default', RouletteCameraPos[rouletteTable], new mp.Vector3(0,0,0), 40);
-        rouletteCamera.setRot(-63, 0, RouletteCameraRot[rouletteTable], 2);
-        rouletteCamera.setActive(true);
-        mp.game.cam.renderScriptCams(true, true, 1500, true, false);
-    }
+//         roulleteCam = false;
+//         rouletteCamera.destroy();
+//         rouletteCamera = mp.cameras.new('default', RouletteCameraPos[rouletteTable], new mp.Vector3(0,0,0), 40);
+//         rouletteCamera.setRot(-63, 0, RouletteCameraRot[rouletteTable], 2);
+//         rouletteCamera.setActive(true);
+//         mp.game.cam.renderScriptCams(true, true, 1500, true, false);
+//     }
 	
-});
+// });
 
-mp.events.add('render', rouletteRender);
-function rouletteRender() 
-{
-	for(var i=0; i < RouletteTables.length; i++)
-	{
-		if(RouletteTables[i].table.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "intro_wheel", 3))
-		{
-			if(RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "intro_wheel") > 0.9425)
-			{
-				RouletteTables[i].table.playAnim("loop_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, true, true, true, 0, 131072);
-			}
-		}
+// mp.events.add('render', rouletteRender);
+// function rouletteRender() 
+// {
+// 	for(var i=0; i < RouletteTables.length; i++)
+// 	{
+// 		if(RouletteTables[i].table.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "intro_wheel", 3))
+// 		{
+// 			if(RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "intro_wheel") > 0.9425)
+// 			{
+// 				RouletteTables[i].table.playAnim("loop_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, true, true, true, 0, 131072);
+// 			}
+// 		}
 		
-		if(RouletteTables[i].ball.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "intro_ball", 3))
-		{
-			if(RouletteTables[i].ball.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "intro_ball") > 0.99)
-			{
-                const ballPos = RouletteTables[i].table.getWorldPositionOfBone(RouletteTables[i].table.getBoneIndexByName("Roulette_Wheel"));
-                const ballRot = RouletteTables[i].table.getRotation(2);
-				RouletteTables[i].ball.position = new mp.Vector3(ballPos.x, ballPos.y, ballPos.z);
-				RouletteTables[i].ball.rotation = new mp.Vector3(ballRot.x,ballRot.y,ballRot.z + 90);
+// 		if(RouletteTables[i].ball.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "intro_ball", 3))
+// 		{
+// 			if(RouletteTables[i].ball.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "intro_ball") > 0.99)
+// 			{
+//                 const ballPos = RouletteTables[i].table.getWorldPositionOfBone(RouletteTables[i].table.getBoneIndexByName("Roulette_Wheel"));
+//                 const ballRot = RouletteTables[i].table.getRotation(2);
+// 				RouletteTables[i].ball.position = new mp.Vector3(ballPos.x, ballPos.y, ballPos.z);
+// 				RouletteTables[i].ball.rotation = new mp.Vector3(ballRot.x,ballRot.y,ballRot.z + 90);
 				
-				RouletteTables[i].ball.playAnim("loop_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, true, true, false, 0, 136704);
-			}
-		}
+// 				RouletteTables[i].ball.playAnim("loop_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, true, true, false, 0, 136704);
+// 			}
+// 		}
 		
-		if(RouletteTables[i].table.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel", 3))
-		{
+// 		if(RouletteTables[i].table.isPlayingAnim("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel", 3))
+// 		{
 			
-			if(RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel") >= 0.9 && Date.now()-RouletteTables[i].lastSpinTime > 1000)
-			{
-				RouletteTables[i].spins++;
-				RouletteTables[i].lastSpinTime = Date.now();
-			}
-			if(RouletteTables[i].spins == RouletteTables[i].needSpins-1)
-			{
-				RouletteTables[i].ball.setAnimSpeed("anim_casino_b@amb@casino@games@roulette@table", "loop_ball", 0.70);
-			}
-			if(RouletteTables[i].spins == RouletteTables[i].needSpins && RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel") > 0.99)
-			{
-                RouletteTables[i].table.playAnim(RouletteTables[i].endTable, "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
+// 			if(RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel") >= 0.9 && Date.now()-RouletteTables[i].lastSpinTime > 1000)
+// 			{
+// 				RouletteTables[i].spins++;
+// 				RouletteTables[i].lastSpinTime = Date.now();
+// 			}
+// 			if(RouletteTables[i].spins == RouletteTables[i].needSpins-1)
+// 			{
+// 				RouletteTables[i].ball.setAnimSpeed("anim_casino_b@amb@casino@games@roulette@table", "loop_ball", 0.70);
+// 			}
+// 			if(RouletteTables[i].spins == RouletteTables[i].needSpins && RouletteTables[i].table.getAnimCurrentTime("anim_casino_b@amb@casino@games@roulette@table", "loop_wheel") > 0.99)
+// 			{
+//                 RouletteTables[i].table.playAnim(RouletteTables[i].endTable, "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
 				
-                const ballPos = RouletteTables[i].table.getWorldPositionOfBone(RouletteTables[i].table.getBoneIndexByName("Roulette_Wheel"));
-                const ballRot = RouletteTables[i].table.getRotation(2);
-				RouletteTables[i].ball.position = new mp.Vector3(ballPos.x, ballPos.y, ballPos.z);
-				RouletteTables[i].ball.rotation = new mp.Vector3(ballRot.x,ballRot.y,ballRot.z + 90);
-				RouletteTables[i].ball.playAnim(RouletteTables[i].endBall, "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 136704);
-			}
-		}
-	}
-}
+//                 const ballPos = RouletteTables[i].table.getWorldPositionOfBone(RouletteTables[i].table.getBoneIndexByName("Roulette_Wheel"));
+//                 const ballRot = RouletteTables[i].table.getRotation(2);
+// 				RouletteTables[i].ball.position = new mp.Vector3(ballPos.x, ballPos.y, ballPos.z);
+// 				RouletteTables[i].ball.rotation = new mp.Vector3(ballRot.x,ballRot.y,ballRot.z + 90);
+// 				RouletteTables[i].ball.playAnim(RouletteTables[i].endBall, "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 136704);
+// 			}
+// 		}
+// 	}
+// }
 
-mp.events.add('casinoBet', (val) => {
-	setBet = true;
-	mp.gui.cursor.visible = false;
-   mp.events.callRemote('serverSetRouletteBet', val);
-});
-
-
-mp.events.add('clean_chips', function( table){
-
-    CasinoPedsID[table].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_intro", 3.0, 1.0, -1, 2, 0, false, false, false);
-
-    for(let i = 0; i < betRoulette[table].length; i++)
-    {
-        if(betRoulette[table][i] != null)
-        betRoulette[table][i].destroy();
-    }
-
-    betRoulette[table] = [];
-
-    setTimeout(() => {
-        CasinoPedsID[table].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_outro", 3.0, 1.0, -1, 2, 0, false, false, false);
-    }, 1000);
-});
+// mp.events.add('casinoBet', (val) => {
+// 	setBet = true;
+// 	mp.gui.cursor.visible = false;
+//    mp.events.callRemote('serverSetRouletteBet', val);
+// });
 
 
-mp.events.add('start_roulette', function(){
-    startRoullete = true;
-});
+// mp.events.add('clean_chips', function( table){
 
-mp.events.add('stop_roulette', function(){
-    startRoullete = false;
-});
+//     CasinoPedsID[table].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_intro", 3.0, 1.0, -1, 2, 0, false, false, false);
 
-mp.events.add('bet_roulette', function(table, spot){
-    //player.taskPlayAnim("anim_casino_b@amb@casino@games@blackjack@player", "place_bet_small", 3.0, 1.0, -1, 2, 0, false, false, false);
-    let tablePos = RouletteTablesPos[table];
-    let betOffset = tableChipsOffsets[spot]; 
-    let newCardPos = mp.game.object.getObjectOffsetFromCoords(tablePos.x, tablePos.y, tablePos.z, RouletteTablesHeading[table], betOffset[0], betOffset[1], betOffset[2]);
+//     for(let i = 0; i < betRoulette[table].length; i++)
+//     {
+//         if(betRoulette[table][i] != null)
+//         betRoulette[table][i].destroy();
+//     }
+
+//     betRoulette[table] = [];
+
+//     setTimeout(() => {
+//         CasinoPedsID[table].taskPlayAnim("anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_outro", 3.0, 1.0, -1, 2, 0, false, false, false);
+//     }, 1000);
+// });
+
+
+// mp.events.add('start_roulette', function(){
+//     startRoullete = true;
+// });
+
+// mp.events.add('stop_roulette', function(){
+//     startRoullete = false;
+// });
+
+// mp.events.add('bet_roulette', function(table, spot){
+//     //player.taskPlayAnim("anim_casino_b@amb@casino@games@blackjack@player", "place_bet_small", 3.0, 1.0, -1, 2, 0, false, false, false);
+//     let tablePos = RouletteTablesPos[table];
+//     let betOffset = tableChipsOffsets[spot]; 
+//     let newCardPos = mp.game.object.getObjectOffsetFromCoords(tablePos.x, tablePos.y, tablePos.z, RouletteTablesHeading[table], betOffset[0], betOffset[1], betOffset[2]);
    
-	 betRoulette[table].push(mp.objects.new(mp.game.joaat(`vw_prop_chip_100dollar_x1`), new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z),
-	 {
-		rotation: new mp.Vector3(0,0,0),
-		alpha: 255,
-		dimension: 0,
-	 }));
-});
+// 	 betRoulette[table].push(mp.objects.new(mp.game.joaat(`vw_prop_chip_100dollar_x1`), new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z),
+// 	 {
+// 		rotation: new mp.Vector3(0,0,0),
+// 		alpha: 255,
+// 		dimension: 0,
+// 	 }));
+// });
 
-mp.events.add('seat_to_roulette_table', function(table){
-		localplayer.freezePosition(true);
-		rouletteTable = table;
-		setBet = false;
-		rouletteCamera = mp.cameras.new('default', RouletteCameraPos[table], new mp.Vector3(90,0,0), 40);
-		rouletteCamera.setRot(-63, 0, RouletteCameraRot[table], 2);
-	// rouletteCamera.pointAtCoord(RouletteTablesPos[table].x, RouletteTablesPos[table].y, RouletteTablesPos[table].z);
-		rouletteCamera.setActive(true);
-		//localplayer.freezePosition(true);
-		mp.game.cam.renderScriptCams(true, true, 1500, true, false);
-		blockControls = true;
-});
+// mp.events.add('seat_to_roulette_table', function(table){
+// 		localplayer.freezePosition(true);
+// 		rouletteTable = table;
+// 		setBet = false;
+// 		rouletteCamera = mp.cameras.new('default', RouletteCameraPos[table], new mp.Vector3(90,0,0), 40);
+// 		rouletteCamera.setRot(-63, 0, RouletteCameraRot[table], 2);
+// 	// rouletteCamera.pointAtCoord(RouletteTablesPos[table].x, RouletteTablesPos[table].y, RouletteTablesPos[table].z);
+// 		rouletteCamera.setActive(true);
+// 		//localplayer.freezePosition(true);
+// 		mp.game.cam.renderScriptCams(true, true, 1500, true, false);
+// 		blockControls = true;
+// });
 
-mp.events.add('exit_roulette', function(){
-    //entity.taskPlayAnim("anim_casino_b@amb@casino@games@shared@player@", "sit_exit_left", 3.0, 1.0, 2500, 2, 0, false, false, false);
-try {
-		RouletteTables[rouletteTable].table.setCollision(true, false);
-		rouletteCamera.destroy(true);
-		rouletteCamera = null;
-		rouletteTable = null;
-		mp.game.cam.renderScriptCams(false, true, 1000, true, false);
-		localplayer.freezePosition(false);
-		blockControls = false;
-		setBet = false;
+// mp.events.add('exit_roulette', function(){
+//     //entity.taskPlayAnim("anim_casino_b@amb@casino@games@shared@player@", "sit_exit_left", 3.0, 1.0, 2500, 2, 0, false, false, false);
+// try {
+// 		RouletteTables[rouletteTable].table.setCollision(true, false);
+// 		rouletteCamera.destroy(true);
+// 		rouletteCamera = null;
+// 		rouletteTable = null;
+// 		mp.game.cam.renderScriptCams(false, true, 1000, true, false);
+// 		localplayer.freezePosition(false);
+// 		blockControls = false;
+// 		setBet = false;
 
-		clearTableMarkers();
-		if(betObject != null || betObject !== undefined){
-			betObject.destroy();
-			betObject = null;
-		}
-	}
-	catch(e) {
-		console.log(e);
-	}
-});
+// 		clearTableMarkers();
+// 		if(betObject != null || betObject !== undefined){
+// 			betObject.destroy();
+// 			betObject = null;
+// 		}
+// 	}
+// 	catch(e) {
+// 		console.log(e);
+// 	}
+// });
 
-function getCameraHitCoord()
-{
-	let position = rouletteCamera.getCoord();
-	let direction = rouletteCamera.getDirection();
-	let farAway = new mp.Vector3((direction.x * 3) + position.x, (direction.y * 3) + position.y, (direction.z * 3) + position.z);
+// function getCameraHitCoord()
+// {
+// 	let position = rouletteCamera.getCoord();
+// 	let direction = rouletteCamera.getDirection();
+// 	let farAway = new mp.Vector3((direction.x * 3) + position.x, (direction.y * 3) + position.y, (direction.z * 3) + position.z);
 	
-    let hitData = mp.raycasting.testPointToPoint(position, farAway);
-   // mp.game.graphics.drawLine(position.x, position.y, position.z, farAway.x, farAway.y, farAway.z, 255, 0, 0, 255);
-	if(hitData != undefined)
-	{
-		return hitData;
-	}
-	return null;
-}
+//     let hitData = mp.raycasting.testPointToPoint(position, farAway);
+//    // mp.game.graphics.drawLine(position.x, position.y, position.z, farAway.x, farAway.y, farAway.z, 255, 0, 0, 255);
+// 	if(hitData != undefined)
+// 	{
+// 		return hitData;
+// 	}
+// 	return null;
+// }
 
-function getNormalizedVector(vector)
-{
-	let mag = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-	vector.x = vector.x / mag;
-	vector.y = vector.y / mag;
-	vector.z = vector.z / mag;
-	return vector;
-}
+// function getNormalizedVector(vector)
+// {
+// 	let mag = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+// 	vector.x = vector.x / mag;
+// 	vector.y = vector.y / mag;
+// 	vector.z = vector.z / mag;
+// 	return vector;
+// }
 
-function getCrossProduct(v1, v2)
-{
-	let vector = new mp.Vector3(0, 0, 0);
-	vector.x = v1.y * v2.z - v1.z * v2.y;
-	vector.y = v1.z * v2.x - v1.x * v2.z;
-	vector.z = v1.x * v2.y - v1.y * v2.x;
-	return vector;
-}
+// function getCrossProduct(v1, v2)
+// {
+// 	let vector = new mp.Vector3(0, 0, 0);
+// 	vector.x = v1.y * v2.z - v1.z * v2.y;
+// 	vector.y = v1.z * v2.x - v1.x * v2.z;
+// 	vector.z = v1.x * v2.y - v1.y * v2.x;
+// 	return vector;
+// }
 
-let tableMarkers = [];
-const tableMarkersOffsets =
-{
-	"0": [-0.137451171875, -0.146942138671875, 0.9449996948242188],
-	"00": [-0.1387939453125, 0.10546875, 0.9449996948242188],
-	"1": [-0.0560302734375, -0.1898193359375, 0.9449996948242188],
-	"2": [-0.0567626953125, -0.024017333984375, 0.9449996948242188],
-	"3": [-0.056884765625, 0.141632080078125, 0.9449996948242188],
-	"4": [0.02392578125, -0.187347412109375, 0.9449996948242188],
-	"5": [0.0240478515625, -0.02471923828125, 0.9449996948242188],
-	"6": [0.02392578125, 0.1422119140625, 0.9449996948242188],
-	"7": [0.1038818359375, -0.18902587890625, 0.9449996948242188],
-	"8": [0.1044921875, -0.023834228515625, 0.9449996948242188],
-	"9": [0.10546875, 0.1419677734375, 0.9449996948242188],
-	"10": [0.18701171875, -0.188385009765625, 0.9449996948242188],
-	"11": [0.18603515625, -0.0238037109375, 0.9449996948242188],
-	"12": [0.1851806640625, 0.143157958984375, 0.9449996948242188],
-	"13": [0.2677001953125, -0.18780517578125, 0.9449996948242188],
-	"14": [0.26806640625, -0.02301025390625, 0.9449996948242188],
-	"15": [0.26611328125, 0.143310546875, 0.9449996948242188],
-	"16": [0.3497314453125, -0.18829345703125, 0.9449996948242188],
-	"17": [0.349609375, -0.023101806640625, 0.9449996948242188],
-	"18": [0.3497314453125, 0.142242431640625, 0.9449996948242188],
-	"19": [0.4307861328125, -0.18829345703125, 0.9449996948242188],
-	"20": [0.4312744140625, -0.02392578125, 0.9449996948242188],
-	"21": [0.431884765625, 0.1416015625, 0.9449996948242188],
-	"22": [0.51220703125, -0.188873291015625, 0.9449996948242188],
-	"23": [0.5123291015625, -0.023773193359375, 0.9449996948242188],
-	"24": [0.511962890625, 0.14215087890625, 0.9449996948242188],
-	"25": [0.5931396484375, -0.18890380859375, 0.9449996948242188],
-	"26": [0.59375, -0.023651123046875, 0.9449996948242188],
-	"27": [0.59375, 0.14080810546875, 0.9449996948242188],
-	"28": [0.67529296875, -0.189849853515625, 0.9449996948242188],
-	"29": [0.6751708984375, -0.02337646484375, 0.9449996948242188],
-	"30": [0.674560546875, 0.141845703125, 0.9449996948242188],
-	"31": [0.756591796875, -0.18798828125, 0.9449996948242188],
-	"32": [0.7547607421875, -0.0234375, 0.9449996948242188],
-	"33": [0.7554931640625, 0.14263916015625, 0.9449996948242188],
-	"34": [0.836669921875, -0.188323974609375, 0.9449996948242188],
-	"35": [0.8365478515625, -0.0244140625, 0.9449996948242188],
-	"36": [0.8359375, 0.14276123046875, 0.9449996948242188]
-};
+// let tableMarkers = [];
+// const tableMarkersOffsets =
+// {
+// 	"0": [-0.137451171875, -0.146942138671875, 0.9449996948242188],
+// 	"00": [-0.1387939453125, 0.10546875, 0.9449996948242188],
+// 	"1": [-0.0560302734375, -0.1898193359375, 0.9449996948242188],
+// 	"2": [-0.0567626953125, -0.024017333984375, 0.9449996948242188],
+// 	"3": [-0.056884765625, 0.141632080078125, 0.9449996948242188],
+// 	"4": [0.02392578125, -0.187347412109375, 0.9449996948242188],
+// 	"5": [0.0240478515625, -0.02471923828125, 0.9449996948242188],
+// 	"6": [0.02392578125, 0.1422119140625, 0.9449996948242188],
+// 	"7": [0.1038818359375, -0.18902587890625, 0.9449996948242188],
+// 	"8": [0.1044921875, -0.023834228515625, 0.9449996948242188],
+// 	"9": [0.10546875, 0.1419677734375, 0.9449996948242188],
+// 	"10": [0.18701171875, -0.188385009765625, 0.9449996948242188],
+// 	"11": [0.18603515625, -0.0238037109375, 0.9449996948242188],
+// 	"12": [0.1851806640625, 0.143157958984375, 0.9449996948242188],
+// 	"13": [0.2677001953125, -0.18780517578125, 0.9449996948242188],
+// 	"14": [0.26806640625, -0.02301025390625, 0.9449996948242188],
+// 	"15": [0.26611328125, 0.143310546875, 0.9449996948242188],
+// 	"16": [0.3497314453125, -0.18829345703125, 0.9449996948242188],
+// 	"17": [0.349609375, -0.023101806640625, 0.9449996948242188],
+// 	"18": [0.3497314453125, 0.142242431640625, 0.9449996948242188],
+// 	"19": [0.4307861328125, -0.18829345703125, 0.9449996948242188],
+// 	"20": [0.4312744140625, -0.02392578125, 0.9449996948242188],
+// 	"21": [0.431884765625, 0.1416015625, 0.9449996948242188],
+// 	"22": [0.51220703125, -0.188873291015625, 0.9449996948242188],
+// 	"23": [0.5123291015625, -0.023773193359375, 0.9449996948242188],
+// 	"24": [0.511962890625, 0.14215087890625, 0.9449996948242188],
+// 	"25": [0.5931396484375, -0.18890380859375, 0.9449996948242188],
+// 	"26": [0.59375, -0.023651123046875, 0.9449996948242188],
+// 	"27": [0.59375, 0.14080810546875, 0.9449996948242188],
+// 	"28": [0.67529296875, -0.189849853515625, 0.9449996948242188],
+// 	"29": [0.6751708984375, -0.02337646484375, 0.9449996948242188],
+// 	"30": [0.674560546875, 0.141845703125, 0.9449996948242188],
+// 	"31": [0.756591796875, -0.18798828125, 0.9449996948242188],
+// 	"32": [0.7547607421875, -0.0234375, 0.9449996948242188],
+// 	"33": [0.7554931640625, 0.14263916015625, 0.9449996948242188],
+// 	"34": [0.836669921875, -0.188323974609375, 0.9449996948242188],
+// 	"35": [0.8365478515625, -0.0244140625, 0.9449996948242188],
+// 	"36": [0.8359375, 0.14276123046875, 0.9449996948242188]
+// };
 
-const tableChipsOffsets =
-[
-	[-0.154541015625, -0.150604248046875, 0.9449996948242188, ["0"]],
-	[-0.1561279296875, 0.11505126953125, 0.9449996948242188, ["00"]],
-	[-0.059326171875, -0.18701171875, 0.9449996948242188, ["1"]],
-	[-0.058349609375, -0.019378662109375, 0.9449996948242188, ["2"]],
-	[-0.0587158203125, 0.142059326171875, 0.9449996948242188, ["3"]],
-	[0.02294921875, -0.1920166015625, 0.9449996948242188, ["4"]],
-	[0.023193359375, -0.01947021484375, 0.9449996948242188, ["5"]],
-	[0.024658203125, 0.147369384765625, 0.9449996948242188, ["6"]],
-	[0.105224609375, -0.1876220703125, 0.9449996948242188, ["7"]],
-	[0.1055908203125, -0.028472900390625, 0.9449996948242188, ["8"]],
-	[0.10400390625, 0.147430419921875, 0.9449996948242188, ["9"]],
-	[0.187744140625, -0.191802978515625, 0.9449996948242188, ["10"]],
-	[0.1866455078125, -0.02667236328125, 0.9449996948242188, ["11"]],
-	[0.1842041015625, 0.145965576171875, 0.9449996948242188, ["12"]],
-	[0.2696533203125, -0.182464599609375, 0.9449996948242188, ["13"]],
-	[0.265869140625, -0.027862548828125, 0.9449996948242188, ["14"]],
-	[0.2667236328125, 0.138946533203125, 0.9449996948242188, ["15"]],
-	[0.35009765625, -0.186126708984375, 0.9449996948242188, ["16"]],
-	[0.348876953125, -0.027740478515625, 0.9449996948242188, ["17"]],
-	[0.3497314453125, 0.14715576171875, 0.9449996948242188, ["18"]],
-	[0.43212890625, -0.17864990234375, 0.9449996948242188, ["19"]],
-	[0.4337158203125, -0.02508544921875, 0.9449996948242188, ["20"]],
-	[0.430419921875, 0.138336181640625, 0.9449996948242188, ["21"]],
-	[0.51416015625, -0.18603515625, 0.9449996948242188, ["22"]],
-	[0.5135498046875, -0.02301025390625, 0.9449996948242188, ["23"]],
-	[0.5146484375, 0.14239501953125, 0.9449996948242188, ["24"]],
-	[0.59130859375, -0.192413330078125, 0.9449996948242188, ["25"]],
-	[0.596923828125, -0.022216796875, 0.9449996948242188, ["26"]],
-	[0.5924072265625, 0.14385986328125, 0.9449996948242188, ["27"]],
-	[0.6749267578125, -0.187286376953125, 0.9449996948242188, ["28"]],
-	[0.67431640625, -0.0262451171875, 0.9449996948242188, ["29"]],
-	[0.6756591796875, 0.140594482421875, 0.9449996948242188, ["30"]],
-	[0.7542724609375, -0.19415283203125, 0.9449996948242188, ["31"]],
-	[0.7542724609375, -0.01898193359375, 0.9449996948242188, ["32"]],
-	[0.75439453125, 0.1448974609375, 0.9449996948242188, ["33"]],
-	[0.8392333984375, -0.18951416015625, 0.9449996948242188, ["34"]],
-	[0.837646484375, -0.023468017578125, 0.9449996948242188, ["35"]],
-	[0.8380126953125, 0.14227294921875, 0.9449996948242188, ["36"]],
-	[-0.1368408203125, -0.02099609375, 0.9449996948242188, ["0","00"]],
-	[-0.055419921875, -0.105804443359375, 0.9449996948242188, ["1","2"]],
-	[-0.0567626953125, 0.058624267578125, 0.9449996948242188, ["2","3"]],
-	[0.02587890625, -0.10498046875, 0.9449996948242188, ["4","5"]],
-	[0.0244140625, 0.058837890625, 0.9449996948242188, ["5","6"]],
-	[0.100341796875, -0.10382080078125, 0.9449996948242188, ["7","8"]],
-	[0.1064453125, 0.06011962890625, 0.9449996948242188, ["8","9"]],
-	[0.19189453125, -0.1060791015625, 0.9449996948242188, ["10","11"]],
-	[0.1856689453125, 0.05438232421875, 0.9449996948242188, ["11","12"]],
-	[0.27099609375, -0.10870361328125, 0.9449996948242188, ["13","14"]],
-	[0.2667236328125, 0.058502197265625, 0.9449996948242188, ["14","15"]],
-	[0.3463134765625, -0.107696533203125, 0.9449996948242188, ["16","17"]],
-	[0.34814453125, 0.0556640625, 0.9449996948242188, ["17","18"]],
-	[0.42822265625, -0.109130859375, 0.9449996948242188, ["19","20"]],
-	[0.4302978515625, 0.0550537109375, 0.9449996948242188, ["20","21"]],
-	[0.511474609375, -0.107421875, 0.9449996948242188, ["22","23"]],
-	[0.512451171875, 0.0614013671875, 0.9449996948242188, ["23","24"]],
-	[0.5980224609375, -0.107147216796875, 0.9449996948242188, ["25","26"]],
-	[0.596435546875, 0.0574951171875, 0.9449996948242188, ["26","27"]],
-	[0.673828125, -0.106903076171875, 0.9449996948242188, ["28","29"]],
-	[0.6751708984375, 0.058685302734375, 0.9449996948242188, ["29","30"]],
-	[0.7532958984375, -0.1102294921875, 0.9449996948242188, ["31","32"]],
-	[0.750244140625, 0.06103515625, 0.9449996948242188, ["32","33"]],
-	[0.834716796875, -0.108978271484375, 0.9449996948242188, ["34","35"]],
-	[0.836181640625, 0.05828857421875, 0.9449996948242188, ["35","36"]],
-	[-0.0167236328125, -0.187042236328125, 0.9449996948242188, ["1","4"]],
-	[-0.0167236328125, -0.02154541015625, 0.9449996948242188, ["2","5"]],
-	[-0.0164794921875, 0.140350341796875, 0.9449996948242188, ["3","6"]],
-	[0.064453125, -0.1865234375, 0.9449996948242188, ["4","7"]],
-	[0.06494140625, -0.01727294921875, 0.9449996948242188, ["5","8"]],
-	[0.068603515625, 0.13873291015625, 0.9449996948242188, ["6","9"]],
-	[0.144287109375, -0.184173583984375, 0.9449996948242188, ["7","10"]],
-	[0.14501953125, -0.024139404296875, 0.9449996948242188, ["8","11"]],
-	[0.14501953125, 0.136993408203125, 0.9449996948242188, ["9","12"]],
-	[0.2291259765625, -0.18670654296875, 0.9449996948242188, ["10","13"]],
-	[0.227783203125, -0.0242919921875, 0.9449996948242188, ["11","14"]],
-	[0.2286376953125, 0.14398193359375, 0.9449996948242188, ["12","15"]],
-	[0.308349609375, -0.18792724609375, 0.9449996948242188, ["13","16"]],
-	[0.308837890625, -0.02374267578125, 0.9449996948242188, ["14","17"]],
-	[0.3099365234375, 0.14410400390625, 0.9449996948242188, ["15","18"]],
-	[0.39111328125, -0.192230224609375, 0.9449996948242188, ["16","19"]],
-	[0.390869140625, -0.0189208984375, 0.9449996948242188, ["17","20"]],
-	[0.39111328125, 0.146514892578125, 0.9449996948242188, ["18","21"]],
-	[0.470947265625, -0.188690185546875, 0.9449996948242188, ["19","22"]],
-	[0.4705810546875, -0.0205078125, 0.9449996948242188, ["20","23"]],
-	[0.4725341796875, 0.140167236328125, 0.9449996948242188, ["21","24"]],
-	[0.5491943359375, -0.189666748046875, 0.9449996948242188, ["22","25"]],
-	[0.548095703125, -0.022552490234375, 0.9449996948242188, ["23","26"]],
-	[0.553955078125, 0.1446533203125, 0.9449996948242188, ["24","27"]],
-	[0.6324462890625, -0.191131591796875, 0.9449996948242188, ["25","28"]],
-	[0.635498046875, -0.0224609375, 0.9449996948242188, ["26","29"]],
-	[0.6392822265625, 0.139190673828125, 0.9449996948242188, ["27","30"]],
-	[0.71533203125, -0.187042236328125, 0.9449996948242188, ["28","31"]],
-	[0.7181396484375, -0.02447509765625, 0.9449996948242188, ["29","32"]],
-	[0.7152099609375, 0.138153076171875, 0.9449996948242188, ["30","33"]],
-	[0.7969970703125, -0.1904296875, 0.9449996948242188, ["31","34"]],
-	[0.7955322265625, -0.024871826171875, 0.9449996948242188, ["32","35"]],
-	[0.7960205078125, 0.137664794921875, 0.9449996948242188, ["33","36"]],
-	[-0.0560302734375, -0.271240234375, 0.9449996948242188, ["1","2","3"]],
-	[0.024658203125, -0.271392822265625, 0.9449996948242188, ["4","5","6"]],
-	[0.1051025390625, -0.272125244140625, 0.9449996948242188, ["7","8","9"]],
-	[0.1898193359375, -0.27001953125, 0.9449996948242188, ["10","11","12"]],
-	[0.2696533203125, -0.271697998046875, 0.9449996948242188, ["13","14","15"]],
-	[0.351318359375, -0.268096923828125, 0.9449996948242188, ["16","17","18"]],
-	[0.4287109375, -0.269561767578125, 0.9449996948242188, ["19","20","21"]],
-	[0.5098876953125, -0.2716064453125, 0.9449996948242188, ["22","23","24"]],
-	[0.5960693359375, -0.271148681640625, 0.9449996948242188, ["25","26","27"]],
-	[0.67724609375, -0.268524169921875, 0.9449996948242188, ["28","29","30"]],
-	[0.7523193359375, -0.27227783203125, 0.9449996948242188, ["31","32","33"]],
-	[0.8382568359375, -0.272125244140625, 0.9449996948242188, ["34","35","36"]],
-	[-0.017333984375, -0.106170654296875, 0.9449996948242188, ["1","2","4","5"]],
-	[-0.0162353515625, 0.060882568359375, 0.9449996948242188, ["2","3","5","6"]],
-	[0.06591796875, -0.110107421875, 0.9449996948242188, ["4","5","7","8"]],
-	[0.0653076171875, 0.060028076171875, 0.9449996948242188, ["5","6","8","9"]],
-	[0.146484375, -0.10888671875, 0.9449996948242188, ["7","8","10","11"]],
-	[0.1451416015625, 0.057159423828125, 0.9449996948242188, ["8","9","11","12"]],
-	[0.22705078125, -0.1092529296875, 0.9449996948242188, ["10","11","13","14"]],
-	[0.22802734375, 0.059356689453125, 0.9449996948242188, ["11","12","14","15"]],
-	[0.307373046875, -0.1043701171875, 0.9449996948242188, ["13","14","16","17"]],
-	[0.309814453125, 0.05584716796875, 0.9449996948242188, ["14","15","17","18"]],
-	[0.3919677734375, -0.111083984375, 0.9449996948242188, ["16","17","19","20"]],
-	[0.3924560546875, 0.0596923828125, 0.9449996948242188, ["17","18","20","21"]],
-	[0.471923828125, -0.1044921875, 0.9449996948242188, ["19","20","22","23"]],
-	[0.4698486328125, 0.060028076171875, 0.9449996948242188, ["20","21","23","24"]],
-	[0.5531005859375, -0.106170654296875, 0.9449996948242188, ["22","23","25","26"]],
-	[0.5546875, 0.059417724609375, 0.9449996948242188, ["23","24","26","27"]],
-	[0.633544921875, -0.101531982421875, 0.9449996948242188, ["25","26","28","29"]],
-	[0.6337890625, 0.0579833984375, 0.9449996948242188, ["26","27","29","30"]],
-	[0.7156982421875, -0.106292724609375, 0.9449996948242188, ["28","29","31","32"]],
-	[0.7158203125, 0.0604248046875, 0.9449996948242188, ["29","30","32","33"]],
-	[0.7947998046875, -0.108642578125, 0.9449996948242188, ["31","32","34","35"]],
-	[0.7952880859375, 0.059051513671875, 0.9449996948242188, ["32","33","35","36"]],
-	[-0.099609375, -0.2711181640625, 0.9449996948242188, ["0","00","1","2","3"]],
-	[-0.0147705078125, -0.27154541015625, 0.9449996948242188, ["1","2","3","4","5","6"]],
-	[0.064697265625, -0.270263671875, 0.9449996948242188, ["4","5","6","7","8","9"]],
-	[0.144775390625, -0.271209716796875, 0.9449996948242188, ["7","8","9","10","11","12"]],
-	[0.226806640625, -0.27142333984375, 0.9449996948242188, ["10","11","12","13","14","15"]],
-	[0.306396484375, -0.27142333984375, 0.9449996948242188, ["13","14","15","16","17","18"]],
-	[0.3895263671875, -0.27099609375, 0.9449996948242188, ["16","17","18","19","20","21"]],
-	[0.468017578125, -0.275238037109375, 0.9449996948242188, ["19","20","21","22","23","24"]],
-	[0.5509033203125, -0.2738037109375, 0.9449996948242188, ["22","23","24","25","26","27"]],
-	[0.6336669921875, -0.27386474609375, 0.9449996948242188, ["25","26","27","28","29","30"]],
-	[0.7144775390625, -0.272186279296875, 0.9449996948242188, ["28","29","30","31","32","33"]],
-	[0.7935791015625, -0.272918701171875, 0.9449996948242188, ["31","32","33","34","35","36"]],
-	[0.0643310546875, -0.304718017578125, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12"]], 
-	[0.392822265625, -0.304779052734375, 0.9449996948242188, ["13","14","15","16","17","18","19","20","21","22","23","24"]],
-	[0.712158203125, -0.30303955078125, 0.9449996948242188, ["25","26","27","28","29","30","31","32","33","34","35","36"]],
-	[0.9222412109375, -0.185882568359375, 0.9449996948242188, ["1","4","7","10","13","16","19","22","25","28","31","34"]],
-	[0.9229736328125, -0.0181884765625, 0.9449996948242188, ["2","5","8","11","14","17","20","23","26","29","32","35"]],
-	[0.9248046875, 0.14849853515625, 0.9449996948242188, ["3","6","9","12","15","18","21","24","27","30","33","36"]],
-	[-0.011474609375, -0.378875732421875, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]],
-	[0.142822265625, -0.375732421875, 0.9449996948242188, ["2","4","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36"]],
-	[0.308349609375, -0.37542724609375, 0.9449996948242188, ["1","3","5","7","9","12","14","16","18","19","21","23","25","27","30","32","34","36"]],
-	[0.4713134765625, -0.376861572265625, 0.9449996948242188, ["2","4","6","8","10","11","13","15","17","20","22","24","26","28","29","31","33","35"]],
-	[0.6341552734375, -0.376495361328125, 0.9449996948242188, ["1","3","5","7","9","11","13","15","17","19","21","23","25","27","29","31","33","35"]],
-	[0.7926025390625, -0.382232666015625, 0.9449996948242188, ["19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"]]
-];
+// const tableChipsOffsets =
+// [
+// 	[-0.154541015625, -0.150604248046875, 0.9449996948242188, ["0"]],
+// 	[-0.1561279296875, 0.11505126953125, 0.9449996948242188, ["00"]],
+// 	[-0.059326171875, -0.18701171875, 0.9449996948242188, ["1"]],
+// 	[-0.058349609375, -0.019378662109375, 0.9449996948242188, ["2"]],
+// 	[-0.0587158203125, 0.142059326171875, 0.9449996948242188, ["3"]],
+// 	[0.02294921875, -0.1920166015625, 0.9449996948242188, ["4"]],
+// 	[0.023193359375, -0.01947021484375, 0.9449996948242188, ["5"]],
+// 	[0.024658203125, 0.147369384765625, 0.9449996948242188, ["6"]],
+// 	[0.105224609375, -0.1876220703125, 0.9449996948242188, ["7"]],
+// 	[0.1055908203125, -0.028472900390625, 0.9449996948242188, ["8"]],
+// 	[0.10400390625, 0.147430419921875, 0.9449996948242188, ["9"]],
+// 	[0.187744140625, -0.191802978515625, 0.9449996948242188, ["10"]],
+// 	[0.1866455078125, -0.02667236328125, 0.9449996948242188, ["11"]],
+// 	[0.1842041015625, 0.145965576171875, 0.9449996948242188, ["12"]],
+// 	[0.2696533203125, -0.182464599609375, 0.9449996948242188, ["13"]],
+// 	[0.265869140625, -0.027862548828125, 0.9449996948242188, ["14"]],
+// 	[0.2667236328125, 0.138946533203125, 0.9449996948242188, ["15"]],
+// 	[0.35009765625, -0.186126708984375, 0.9449996948242188, ["16"]],
+// 	[0.348876953125, -0.027740478515625, 0.9449996948242188, ["17"]],
+// 	[0.3497314453125, 0.14715576171875, 0.9449996948242188, ["18"]],
+// 	[0.43212890625, -0.17864990234375, 0.9449996948242188, ["19"]],
+// 	[0.4337158203125, -0.02508544921875, 0.9449996948242188, ["20"]],
+// 	[0.430419921875, 0.138336181640625, 0.9449996948242188, ["21"]],
+// 	[0.51416015625, -0.18603515625, 0.9449996948242188, ["22"]],
+// 	[0.5135498046875, -0.02301025390625, 0.9449996948242188, ["23"]],
+// 	[0.5146484375, 0.14239501953125, 0.9449996948242188, ["24"]],
+// 	[0.59130859375, -0.192413330078125, 0.9449996948242188, ["25"]],
+// 	[0.596923828125, -0.022216796875, 0.9449996948242188, ["26"]],
+// 	[0.5924072265625, 0.14385986328125, 0.9449996948242188, ["27"]],
+// 	[0.6749267578125, -0.187286376953125, 0.9449996948242188, ["28"]],
+// 	[0.67431640625, -0.0262451171875, 0.9449996948242188, ["29"]],
+// 	[0.6756591796875, 0.140594482421875, 0.9449996948242188, ["30"]],
+// 	[0.7542724609375, -0.19415283203125, 0.9449996948242188, ["31"]],
+// 	[0.7542724609375, -0.01898193359375, 0.9449996948242188, ["32"]],
+// 	[0.75439453125, 0.1448974609375, 0.9449996948242188, ["33"]],
+// 	[0.8392333984375, -0.18951416015625, 0.9449996948242188, ["34"]],
+// 	[0.837646484375, -0.023468017578125, 0.9449996948242188, ["35"]],
+// 	[0.8380126953125, 0.14227294921875, 0.9449996948242188, ["36"]],
+// 	[-0.1368408203125, -0.02099609375, 0.9449996948242188, ["0","00"]],
+// 	[-0.055419921875, -0.105804443359375, 0.9449996948242188, ["1","2"]],
+// 	[-0.0567626953125, 0.058624267578125, 0.9449996948242188, ["2","3"]],
+// 	[0.02587890625, -0.10498046875, 0.9449996948242188, ["4","5"]],
+// 	[0.0244140625, 0.058837890625, 0.9449996948242188, ["5","6"]],
+// 	[0.100341796875, -0.10382080078125, 0.9449996948242188, ["7","8"]],
+// 	[0.1064453125, 0.06011962890625, 0.9449996948242188, ["8","9"]],
+// 	[0.19189453125, -0.1060791015625, 0.9449996948242188, ["10","11"]],
+// 	[0.1856689453125, 0.05438232421875, 0.9449996948242188, ["11","12"]],
+// 	[0.27099609375, -0.10870361328125, 0.9449996948242188, ["13","14"]],
+// 	[0.2667236328125, 0.058502197265625, 0.9449996948242188, ["14","15"]],
+// 	[0.3463134765625, -0.107696533203125, 0.9449996948242188, ["16","17"]],
+// 	[0.34814453125, 0.0556640625, 0.9449996948242188, ["17","18"]],
+// 	[0.42822265625, -0.109130859375, 0.9449996948242188, ["19","20"]],
+// 	[0.4302978515625, 0.0550537109375, 0.9449996948242188, ["20","21"]],
+// 	[0.511474609375, -0.107421875, 0.9449996948242188, ["22","23"]],
+// 	[0.512451171875, 0.0614013671875, 0.9449996948242188, ["23","24"]],
+// 	[0.5980224609375, -0.107147216796875, 0.9449996948242188, ["25","26"]],
+// 	[0.596435546875, 0.0574951171875, 0.9449996948242188, ["26","27"]],
+// 	[0.673828125, -0.106903076171875, 0.9449996948242188, ["28","29"]],
+// 	[0.6751708984375, 0.058685302734375, 0.9449996948242188, ["29","30"]],
+// 	[0.7532958984375, -0.1102294921875, 0.9449996948242188, ["31","32"]],
+// 	[0.750244140625, 0.06103515625, 0.9449996948242188, ["32","33"]],
+// 	[0.834716796875, -0.108978271484375, 0.9449996948242188, ["34","35"]],
+// 	[0.836181640625, 0.05828857421875, 0.9449996948242188, ["35","36"]],
+// 	[-0.0167236328125, -0.187042236328125, 0.9449996948242188, ["1","4"]],
+// 	[-0.0167236328125, -0.02154541015625, 0.9449996948242188, ["2","5"]],
+// 	[-0.0164794921875, 0.140350341796875, 0.9449996948242188, ["3","6"]],
+// 	[0.064453125, -0.1865234375, 0.9449996948242188, ["4","7"]],
+// 	[0.06494140625, -0.01727294921875, 0.9449996948242188, ["5","8"]],
+// 	[0.068603515625, 0.13873291015625, 0.9449996948242188, ["6","9"]],
+// 	[0.144287109375, -0.184173583984375, 0.9449996948242188, ["7","10"]],
+// 	[0.14501953125, -0.024139404296875, 0.9449996948242188, ["8","11"]],
+// 	[0.14501953125, 0.136993408203125, 0.9449996948242188, ["9","12"]],
+// 	[0.2291259765625, -0.18670654296875, 0.9449996948242188, ["10","13"]],
+// 	[0.227783203125, -0.0242919921875, 0.9449996948242188, ["11","14"]],
+// 	[0.2286376953125, 0.14398193359375, 0.9449996948242188, ["12","15"]],
+// 	[0.308349609375, -0.18792724609375, 0.9449996948242188, ["13","16"]],
+// 	[0.308837890625, -0.02374267578125, 0.9449996948242188, ["14","17"]],
+// 	[0.3099365234375, 0.14410400390625, 0.9449996948242188, ["15","18"]],
+// 	[0.39111328125, -0.192230224609375, 0.9449996948242188, ["16","19"]],
+// 	[0.390869140625, -0.0189208984375, 0.9449996948242188, ["17","20"]],
+// 	[0.39111328125, 0.146514892578125, 0.9449996948242188, ["18","21"]],
+// 	[0.470947265625, -0.188690185546875, 0.9449996948242188, ["19","22"]],
+// 	[0.4705810546875, -0.0205078125, 0.9449996948242188, ["20","23"]],
+// 	[0.4725341796875, 0.140167236328125, 0.9449996948242188, ["21","24"]],
+// 	[0.5491943359375, -0.189666748046875, 0.9449996948242188, ["22","25"]],
+// 	[0.548095703125, -0.022552490234375, 0.9449996948242188, ["23","26"]],
+// 	[0.553955078125, 0.1446533203125, 0.9449996948242188, ["24","27"]],
+// 	[0.6324462890625, -0.191131591796875, 0.9449996948242188, ["25","28"]],
+// 	[0.635498046875, -0.0224609375, 0.9449996948242188, ["26","29"]],
+// 	[0.6392822265625, 0.139190673828125, 0.9449996948242188, ["27","30"]],
+// 	[0.71533203125, -0.187042236328125, 0.9449996948242188, ["28","31"]],
+// 	[0.7181396484375, -0.02447509765625, 0.9449996948242188, ["29","32"]],
+// 	[0.7152099609375, 0.138153076171875, 0.9449996948242188, ["30","33"]],
+// 	[0.7969970703125, -0.1904296875, 0.9449996948242188, ["31","34"]],
+// 	[0.7955322265625, -0.024871826171875, 0.9449996948242188, ["32","35"]],
+// 	[0.7960205078125, 0.137664794921875, 0.9449996948242188, ["33","36"]],
+// 	[-0.0560302734375, -0.271240234375, 0.9449996948242188, ["1","2","3"]],
+// 	[0.024658203125, -0.271392822265625, 0.9449996948242188, ["4","5","6"]],
+// 	[0.1051025390625, -0.272125244140625, 0.9449996948242188, ["7","8","9"]],
+// 	[0.1898193359375, -0.27001953125, 0.9449996948242188, ["10","11","12"]],
+// 	[0.2696533203125, -0.271697998046875, 0.9449996948242188, ["13","14","15"]],
+// 	[0.351318359375, -0.268096923828125, 0.9449996948242188, ["16","17","18"]],
+// 	[0.4287109375, -0.269561767578125, 0.9449996948242188, ["19","20","21"]],
+// 	[0.5098876953125, -0.2716064453125, 0.9449996948242188, ["22","23","24"]],
+// 	[0.5960693359375, -0.271148681640625, 0.9449996948242188, ["25","26","27"]],
+// 	[0.67724609375, -0.268524169921875, 0.9449996948242188, ["28","29","30"]],
+// 	[0.7523193359375, -0.27227783203125, 0.9449996948242188, ["31","32","33"]],
+// 	[0.8382568359375, -0.272125244140625, 0.9449996948242188, ["34","35","36"]],
+// 	[-0.017333984375, -0.106170654296875, 0.9449996948242188, ["1","2","4","5"]],
+// 	[-0.0162353515625, 0.060882568359375, 0.9449996948242188, ["2","3","5","6"]],
+// 	[0.06591796875, -0.110107421875, 0.9449996948242188, ["4","5","7","8"]],
+// 	[0.0653076171875, 0.060028076171875, 0.9449996948242188, ["5","6","8","9"]],
+// 	[0.146484375, -0.10888671875, 0.9449996948242188, ["7","8","10","11"]],
+// 	[0.1451416015625, 0.057159423828125, 0.9449996948242188, ["8","9","11","12"]],
+// 	[0.22705078125, -0.1092529296875, 0.9449996948242188, ["10","11","13","14"]],
+// 	[0.22802734375, 0.059356689453125, 0.9449996948242188, ["11","12","14","15"]],
+// 	[0.307373046875, -0.1043701171875, 0.9449996948242188, ["13","14","16","17"]],
+// 	[0.309814453125, 0.05584716796875, 0.9449996948242188, ["14","15","17","18"]],
+// 	[0.3919677734375, -0.111083984375, 0.9449996948242188, ["16","17","19","20"]],
+// 	[0.3924560546875, 0.0596923828125, 0.9449996948242188, ["17","18","20","21"]],
+// 	[0.471923828125, -0.1044921875, 0.9449996948242188, ["19","20","22","23"]],
+// 	[0.4698486328125, 0.060028076171875, 0.9449996948242188, ["20","21","23","24"]],
+// 	[0.5531005859375, -0.106170654296875, 0.9449996948242188, ["22","23","25","26"]],
+// 	[0.5546875, 0.059417724609375, 0.9449996948242188, ["23","24","26","27"]],
+// 	[0.633544921875, -0.101531982421875, 0.9449996948242188, ["25","26","28","29"]],
+// 	[0.6337890625, 0.0579833984375, 0.9449996948242188, ["26","27","29","30"]],
+// 	[0.7156982421875, -0.106292724609375, 0.9449996948242188, ["28","29","31","32"]],
+// 	[0.7158203125, 0.0604248046875, 0.9449996948242188, ["29","30","32","33"]],
+// 	[0.7947998046875, -0.108642578125, 0.9449996948242188, ["31","32","34","35"]],
+// 	[0.7952880859375, 0.059051513671875, 0.9449996948242188, ["32","33","35","36"]],
+// 	[-0.099609375, -0.2711181640625, 0.9449996948242188, ["0","00","1","2","3"]],
+// 	[-0.0147705078125, -0.27154541015625, 0.9449996948242188, ["1","2","3","4","5","6"]],
+// 	[0.064697265625, -0.270263671875, 0.9449996948242188, ["4","5","6","7","8","9"]],
+// 	[0.144775390625, -0.271209716796875, 0.9449996948242188, ["7","8","9","10","11","12"]],
+// 	[0.226806640625, -0.27142333984375, 0.9449996948242188, ["10","11","12","13","14","15"]],
+// 	[0.306396484375, -0.27142333984375, 0.9449996948242188, ["13","14","15","16","17","18"]],
+// 	[0.3895263671875, -0.27099609375, 0.9449996948242188, ["16","17","18","19","20","21"]],
+// 	[0.468017578125, -0.275238037109375, 0.9449996948242188, ["19","20","21","22","23","24"]],
+// 	[0.5509033203125, -0.2738037109375, 0.9449996948242188, ["22","23","24","25","26","27"]],
+// 	[0.6336669921875, -0.27386474609375, 0.9449996948242188, ["25","26","27","28","29","30"]],
+// 	[0.7144775390625, -0.272186279296875, 0.9449996948242188, ["28","29","30","31","32","33"]],
+// 	[0.7935791015625, -0.272918701171875, 0.9449996948242188, ["31","32","33","34","35","36"]],
+// 	[0.0643310546875, -0.304718017578125, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12"]], 
+// 	[0.392822265625, -0.304779052734375, 0.9449996948242188, ["13","14","15","16","17","18","19","20","21","22","23","24"]],
+// 	[0.712158203125, -0.30303955078125, 0.9449996948242188, ["25","26","27","28","29","30","31","32","33","34","35","36"]],
+// 	[0.9222412109375, -0.185882568359375, 0.9449996948242188, ["1","4","7","10","13","16","19","22","25","28","31","34"]],
+// 	[0.9229736328125, -0.0181884765625, 0.9449996948242188, ["2","5","8","11","14","17","20","23","26","29","32","35"]],
+// 	[0.9248046875, 0.14849853515625, 0.9449996948242188, ["3","6","9","12","15","18","21","24","27","30","33","36"]],
+// 	[-0.011474609375, -0.378875732421875, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]],
+// 	[0.142822265625, -0.375732421875, 0.9449996948242188, ["2","4","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36"]],
+// 	[0.308349609375, -0.37542724609375, 0.9449996948242188, ["1","3","5","7","9","12","14","16","18","19","21","23","25","27","30","32","34","36"]],
+// 	[0.4713134765625, -0.376861572265625, 0.9449996948242188, ["2","4","6","8","10","11","13","15","17","20","22","24","26","28","29","31","33","35"]],
+// 	[0.6341552734375, -0.376495361328125, 0.9449996948242188, ["1","3","5","7","9","11","13","15","17","19","21","23","25","27","29","31","33","35"]],
+// 	[0.7926025390625, -0.382232666015625, 0.9449996948242188, ["19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"]]
+// ];
 
 
 
-function clearTableMarkers()
-{
-	for(var i=0; i < tableMarkers.length; i++)
-	{
-		tableMarkers[i].destroy();
-	}
-	tableMarkers = [];
-}
+// function clearTableMarkers()
+// {
+// 	for(var i=0; i < tableMarkers.length; i++)
+// 	{
+// 		tableMarkers[i].destroy();
+// 	}
+// 	tableMarkers = [];
+// }
 
-function getClosestChipSpot(vector)
-{
-	var spot = null;
-	var prevDistance = 0.025;
-	var dist = null;
+// function getClosestChipSpot(vector)
+// {
+// 	var spot = null;
+// 	var prevDistance = 0.025;
+// 	var dist = null;
 
-	for(var i=0; i < tableChipsOffsets.length; i++)
-	{
-        //dist = mp.Vector3.getDistanceBetweenPoints3D(vector, new mp.Vector3(RouletteTablesPos[0].x+tableChipsOffsets[i][0], RouletteTablesPos[0].y+tableChipsOffsets[i][1], RouletteTablesPos[0].z+tableChipsOffsets[i][2]));
-        let newCordPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableChipsOffsets[i][0], tableChipsOffsets[i][1], tableChipsOffsets[i][2]);
-        dist = mp.game.gameplay.getDistanceBetweenCoords(vector.x, vector.y, vector.z, newCordPos.x, newCordPos.y,newCordPos.z, false);
+// 	for(var i=0; i < tableChipsOffsets.length; i++)
+// 	{
+//         //dist = mp.Vector3.getDistanceBetweenPoints3D(vector, new mp.Vector3(RouletteTablesPos[0].x+tableChipsOffsets[i][0], RouletteTablesPos[0].y+tableChipsOffsets[i][1], RouletteTablesPos[0].z+tableChipsOffsets[i][2]));
+//         let newCordPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableChipsOffsets[i][0], tableChipsOffsets[i][1], tableChipsOffsets[i][2]);
+//         dist = mp.game.gameplay.getDistanceBetweenCoords(vector.x, vector.y, vector.z, newCordPos.x, newCordPos.y,newCordPos.z, false);
 
-        if(dist <= prevDistance)
-		{
-			spot = i;
-            prevDistance = dist;
+//         if(dist <= prevDistance)
+// 		{
+// 			spot = i;
+//             prevDistance = dist;
           
-		}
-	}
+// 		}
+// 	}
 	
-	if(spot != closestChipSpot)
-	{
-		closestChipSpot = spot;
-		clearTableMarkers();
+// 	if(spot != closestChipSpot)
+// 	{
+// 		closestChipSpot = spot;
+// 		clearTableMarkers();
 		
-		if(spot != null)
-		{
-			var key = null;
-            var obj = null;
-            let newBetPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableChipsOffsets[spot][0], tableChipsOffsets[spot][1], tableChipsOffsets[spot][2]);
-            betCoords = newBetPos;
+// 		if(spot != null)
+// 		{
+// 			var key = null;
+//             var obj = null;
+//             let newBetPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableChipsOffsets[spot][0], tableChipsOffsets[spot][1], tableChipsOffsets[spot][2]);
+//             betCoords = newBetPos;
 
-			for(var i=0; i < tableChipsOffsets[spot][3].length; i++)
-			{
-				key = tableChipsOffsets[spot][3][i];
-				if(key == "00" || key == "0")
-				{
-                    let newCardPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableMarkersOffsets[key][0], tableMarkersOffsets[key][1], tableMarkersOffsets[key][2]);
+// 			for(var i=0; i < tableChipsOffsets[spot][3].length; i++)
+// 			{
+// 				key = tableChipsOffsets[spot][3][i];
+// 				if(key == "00" || key == "0")
+// 				{
+//                     let newCardPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableMarkersOffsets[key][0], tableMarkersOffsets[key][1], tableMarkersOffsets[key][2]);
                     
-                    obj = mp.objects.new(269022546, new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z), {rotation: new mp.Vector3(0, 0, RouletteTablesHeading[rouletteTable])});
-					obj.setCollision(false, false);
-					tableMarkers.push(obj);
-				}
-				else
-				{
-                    let newCardPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableMarkersOffsets[key][0], tableMarkersOffsets[key][1], tableMarkersOffsets[key][2]);
+//                     obj = mp.objects.new(269022546, new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z), {rotation: new mp.Vector3(0, 0, RouletteTablesHeading[rouletteTable])});
+// 					obj.setCollision(false, false);
+// 					tableMarkers.push(obj);
+// 				}
+// 				else
+// 				{
+//                     let newCardPos = mp.game.object.getObjectOffsetFromCoords(RouletteTablesPos[rouletteTable].x, RouletteTablesPos[rouletteTable].y, RouletteTablesPos[rouletteTable].z, RouletteTablesHeading[rouletteTable], tableMarkersOffsets[key][0], tableMarkersOffsets[key][1], tableMarkersOffsets[key][2]);
                     
                    
-                    tableMarkers.push(mp.objects.new(3267450776, new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z), {rotation: new mp.Vector3(0, 0, RouletteTablesHeading[rouletteTable])}));
-				}
-			}
-		}
-	}	
-}
-/*
+//                     tableMarkers.push(mp.objects.new(3267450776, new mp.Vector3(newCardPos.x, newCardPos.y, newCardPos.z), {rotation: new mp.Vector3(0, 0, RouletteTablesHeading[rouletteTable])}));
+// 				}
+// 			}
+// 		}
+// 	}	
+// }
+// /*
 
-mp.keys.bind(0x09, false, function () { // change bet
-    if (!loggedin || chatActive || editing || global.menuCheck() || cuffed || localplayer.getVariable('InDeath') == true) return;
+// mp.keys.bind(0x09, false, function () { // change bet
+//     if (!loggedin || chatActive || editing || global.menuCheck() || cuffed || localplayer.getVariable('InDeath') == true) return;
 
-    mp.events.callRemote('serverChangeRouletteBet');
+//     mp.events.callRemote('serverChangeRouletteBet');
     
-    lastCheck = new Date().getTime();
-});*/
+//     lastCheck = new Date().getTime();
+// });*/
 
 /***/ }),
 
 /***/ 6064:
 /***/ (() => {
 
-// FOCUS ROLEPLAY DIAMOND CASINO - Roulette
+// // FOCUS ROLEPLAY DIAMOND CASINO - Roulette
 
 
-let lpCasinoTable = null,
-	casinoTableToJoin = null,
-	casinoSeatToJoin = null,
-	goToSeatInterval = null,
-	interactingWithTable = null,
-	rouletteCamera = null,
-	canDoBets = true,
-	betObject = null,
-	closestChipSpot = null,
-	interactingWithTableTimeout = null,
-	rouletteData = [],
-	posX = 0,
-	posY = 0,
-	posZ = 0;
+// let lpCasinoTable = null,
+// 	casinoTableToJoin = null,
+// 	casinoSeatToJoin = null,
+// 	goToSeatInterval = null,
+// 	interactingWithTable = null,
+// 	rouletteCamera = null,
+// 	canDoBets = true,
+// 	betObject = null,
+// 	closestChipSpot = null,
+// 	interactingWithTableTimeout = null,
+// 	rouletteData = [],
+// 	posX = 0,
+// 	posY = 0,
+// 	posZ = 0;
 
 
-const localPlayer = mp.players.local,
-	  tableLib = "anim_casino_b@amb@casino@games@roulette@table",
-	  dealerLib = "anim_casino_b@amb@casino@games@roulette@dealer",
-	  dealerLibF = "anim_casino_b@amb@casino@games@roulette@dealer_female";
+// const localPlayer = mp.players.local,
+// 	  tableLib = "anim_casino_b@amb@casino@games@roulette@table",
+// 	  dealerLib = "anim_casino_b@amb@casino@games@roulette@dealer",
+// 	  dealerLibF = "anim_casino_b@amb@casino@games@roulette@dealer_female";
 
 
-// U ON PLAYER ENTER CASINO PREBACITI OVO OBAVEZNO!!!!!!
-mp.game.streaming.requestAnimDict(tableLib);
-mp.game.streaming.requestAnimDict(dealerLib);
-mp.game.streaming.requestAnimDict(dealerLibF);
-mp.game.streaming.requestIpl('vw_casino_main');
+// // U ON PLAYER ENTER CASINO PREBACITI OVO OBAVEZNO!!!!!!
+// mp.game.streaming.requestAnimDict(tableLib);
+// mp.game.streaming.requestAnimDict(dealerLib);
+// mp.game.streaming.requestAnimDict(dealerLibF);
+// mp.game.streaming.requestIpl('vw_casino_main');
 
 
-let tablesPos = 
-[
-	[ "vw_prop_casino_roulette_01", 1144.4254150390625, 269.3034973144531, -52.840850830078125 ],
-	[ "vw_prop_casino_roulette_01", 1151.2305908203125, 263.14093017578125, -52.840850830078125 ],
-	[ "vw_prop_casino_roulette_01b", 1148.9163818359375, 248.62892150878906, -52.03075408935547 ],
-	[ "vw_prop_casino_roulette_01b", 1143.677978515625, 251.36131286621094, -52.0307502746582 ],
-	[ "vw_prop_casino_roulette_01b", 1133.1802978515625, 262.3916320800781, -52.03075408935547 ], 
-	[ "vw_prop_casino_roulette_01b", 1129.9976806640625, 266.93695068359375, -52.0307502746582 ] 
-];
+// let tablesPos = 
+// [
+// 	[ "vw_prop_casino_roulette_01", 1144.4254150390625, 269.3034973144531, -52.840850830078125 ],
+// 	[ "vw_prop_casino_roulette_01", 1151.2305908203125, 263.14093017578125, -52.840850830078125 ],
+// 	[ "vw_prop_casino_roulette_01b", 1148.9163818359375, 248.62892150878906, -52.03075408935547 ],
+// 	[ "vw_prop_casino_roulette_01b", 1143.677978515625, 251.36131286621094, -52.0307502746582 ],
+// 	[ "vw_prop_casino_roulette_01b", 1133.1802978515625, 262.3916320800781, -52.03075408935547 ], 
+// 	[ "vw_prop_casino_roulette_01b", 1129.9976806640625, 266.93695068359375, -52.0307502746582 ] 
+// ];
 
-let tablesBets = 
-[
-	[ 500, 2500 ],
-	[ 1000, 5000 ],
-	[ 3000, 15000 ],
-	[ 7000, 35000 ],
-	[ 10000, 50000 ],
-	[ 20000, 100000 ]
-];
+// let tablesBets = 
+// [
+// 	[ 500, 2500 ],
+// 	[ 1000, 5000 ],
+// 	[ 3000, 15000 ],
+// 	[ 7000, 35000 ],
+// 	[ 10000, 50000 ],
+// 	[ 20000, 100000 ]
+// ];
 
-let tableSeatsPos =
-[
-	[-0.7, -1.28, 1, 0],
-	[0.775, -1.68, 1, 0],
-	[1.8, -0.63, 1, 90],
-	[1.27, 1.05, 1, 180]
-]
+// let tableSeatsPos =
+// [
+// 	[-0.7, -1.28, 1, 0],
+// 	[0.775, -1.68, 1, 0],
+// 	[1.8, -0.63, 1, 90],
+// 	[1.27, 1.05, 1, 180]
+// ]
 
-const pedModels =
-[
-   ["S_M_Y_Casino_01"],
-   ["S_F_Y_Casino_01"],
-   ["S_M_Y_Casino_01"], 
-   ["S_F_Y_Casino_01"],
-   ["S_M_Y_Casino_01"], 
-   ["S_F_Y_Casino_01"]
-];
+// const pedModels =
+// [
+//    ["S_M_Y_Casino_01"],
+//    ["S_F_Y_Casino_01"],
+//    ["S_M_Y_Casino_01"], 
+//    ["S_F_Y_Casino_01"],
+//    ["S_M_Y_Casino_01"], 
+//    ["S_F_Y_Casino_01"]
+// ];
 
-const pedModelVariations =
-[
-	[ //S_M_Y_Casino_01
-		[ 0, 2, 2, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 4, 0, 0],
-		[ 3, 0, 3, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	],
-	[//S_F_Y_Casino_01
-		[ 0, 2, 0, 0],
-		[ 1, 0, 0, 0],
-		[ 2, 2, 0, 0],
-		[ 3, 2, 3, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 0, 0, 0],
-		[ 7, 0, 0, 0],
-		[ 8, 2, 0, 0],
-		[ 10, 0, 0, 0],
-		[ 11, 0, 0, 0]
-	],
-	[ //S_M_Y_Casino_01
-		[ 0, 2, 1, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 2, 0, 0],
-		[ 3, 0, 3, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	],
-	[//S_F_Y_Casino_01
-		[ 0, 2, 1, 0],
-		[ 1, 0, 0, 0],
-		[ 2, 2, 1, 0],
-		[ 3, 3, 3, 0],
-		[ 4, 1, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 3, 0, 0],
-		[ 10, 0, 0, 0],
-		[ 11, 0, 0, 0]
-	],
-	[ //S_M_Y_Casino_01
-		[ 0, 4, 2, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 3, 0, 0],
-		[ 3, 0, 0, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	],
-	[//S_F_Y_Casino_01
-		[ 0, 4, 0, 0],
-		[ 1, 0, 0, 0],
-		[ 2, 4, 0, 0],
-		[ 3, 2, 1, 0],
-		[ 4, 1, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 1, 0, 0],
-		[ 8, 2, 0, 0],
-		[ 10, 0, 0, 0],
-		[ 11, 0, 0, 0]
-	],
-	[ //S_M_Y_Casino_01 (not used)
-		[ 0, 4, 0, 0],
-		[ 1, 1, 0, 0],
-		[ 2, 0, 0, 0],
-		[ 3, 0, 0, 0],
-		[ 4, 0, 0, 0],
-		[ 6, 1, 0, 0],
-		[ 7, 2, 0, 0],
-		[ 8, 1, 0, 0],
-		[ 10, 1, 0, 0],
-		[ 11, 1, 0, 0]
-	]
-]
+// const pedModelVariations =
+// [
+// 	[ //S_M_Y_Casino_01
+// 		[ 0, 2, 2, 0],
+// 		[ 1, 1, 0, 0],
+// 		[ 2, 4, 0, 0],
+// 		[ 3, 0, 3, 0],
+// 		[ 4, 0, 0, 0],
+// 		[ 6, 1, 0, 0],
+// 		[ 7, 2, 0, 0],
+// 		[ 8, 1, 0, 0],
+// 		[ 10, 1, 0, 0],
+// 		[ 11, 1, 0, 0]
+// 	],
+// 	[//S_F_Y_Casino_01
+// 		[ 0, 2, 0, 0],
+// 		[ 1, 0, 0, 0],
+// 		[ 2, 2, 0, 0],
+// 		[ 3, 2, 3, 0],
+// 		[ 4, 0, 0, 0],
+// 		[ 6, 0, 0, 0],
+// 		[ 7, 0, 0, 0],
+// 		[ 8, 2, 0, 0],
+// 		[ 10, 0, 0, 0],
+// 		[ 11, 0, 0, 0]
+// 	],
+// 	[ //S_M_Y_Casino_01
+// 		[ 0, 2, 1, 0],
+// 		[ 1, 1, 0, 0],
+// 		[ 2, 2, 0, 0],
+// 		[ 3, 0, 3, 0],
+// 		[ 4, 0, 0, 0],
+// 		[ 6, 1, 0, 0],
+// 		[ 7, 2, 0, 0],
+// 		[ 8, 1, 0, 0],
+// 		[ 10, 1, 0, 0],
+// 		[ 11, 1, 0, 0]
+// 	],
+// 	[//S_F_Y_Casino_01
+// 		[ 0, 2, 1, 0],
+// 		[ 1, 0, 0, 0],
+// 		[ 2, 2, 1, 0],
+// 		[ 3, 3, 3, 0],
+// 		[ 4, 1, 0, 0],
+// 		[ 6, 1, 0, 0],
+// 		[ 7, 2, 0, 0],
+// 		[ 8, 3, 0, 0],
+// 		[ 10, 0, 0, 0],
+// 		[ 11, 0, 0, 0]
+// 	],
+// 	[ //S_M_Y_Casino_01
+// 		[ 0, 4, 2, 0],
+// 		[ 1, 1, 0, 0],
+// 		[ 2, 3, 0, 0],
+// 		[ 3, 0, 0, 0],
+// 		[ 4, 0, 0, 0],
+// 		[ 6, 1, 0, 0],
+// 		[ 7, 2, 0, 0],
+// 		[ 8, 1, 0, 0],
+// 		[ 10, 1, 0, 0],
+// 		[ 11, 1, 0, 0]
+// 	],
+// 	[//S_F_Y_Casino_01
+// 		[ 0, 4, 0, 0],
+// 		[ 1, 0, 0, 0],
+// 		[ 2, 4, 0, 0],
+// 		[ 3, 2, 1, 0],
+// 		[ 4, 1, 0, 0],
+// 		[ 6, 1, 0, 0],
+// 		[ 7, 1, 0, 0],
+// 		[ 8, 2, 0, 0],
+// 		[ 10, 0, 0, 0],
+// 		[ 11, 0, 0, 0]
+// 	],
+// 	[ //S_M_Y_Casino_01 (not used)
+// 		[ 0, 4, 0, 0],
+// 		[ 1, 1, 0, 0],
+// 		[ 2, 0, 0, 0],
+// 		[ 3, 0, 0, 0],
+// 		[ 4, 0, 0, 0],
+// 		[ 6, 1, 0, 0],
+// 		[ 7, 2, 0, 0],
+// 		[ 8, 1, 0, 0],
+// 		[ 10, 1, 0, 0],
+// 		[ 11, 1, 0, 0]
+// 	]
+// ]
 
-// Loading IPL 
-//mp.game.streaming.requestIpl('vw_casino_main');
-//mp.game.streaming.requestIpl('vw_dlc_casino_door');
-//mp.game.streaming.requestIpl('hei_dlc_windows_casino');
-//mp.game.streaming.requestIpl('hei_dlc_casino_door');
-//mp.game.streaming.requestIpl('hei_dlc_casino_aircon');
-//mp.game.streaming.requestIpl('vw_casino_garage');
-//mp.game.streaming.requestIpl('vw_casino_carpark');
-//mp.game.streaming.requestIpl('vw_casino_penthouse');
+// // Loading IPL 
+// //mp.game.streaming.requestIpl('vw_casino_main');
+// //mp.game.streaming.requestIpl('vw_dlc_casino_door');
+// //mp.game.streaming.requestIpl('hei_dlc_windows_casino');
+// //mp.game.streaming.requestIpl('hei_dlc_casino_door');
+// //mp.game.streaming.requestIpl('hei_dlc_casino_aircon');
+// //mp.game.streaming.requestIpl('vw_casino_garage');
+// //mp.game.streaming.requestIpl('vw_casino_carpark');
+// //mp.game.streaming.requestIpl('vw_casino_penthouse');
 
 
-//mp.game.invoke('0xC1F1920BAF281317');
+// //mp.game.invoke('0xC1F1920BAF281317');
 
-// Creating blip
-mp.blips.new(679, new mp.Vector3(935.8140869140625, 46.942176818847656, 81.09580993652344), { name: "Diamond Casino & Resort", color: 4, shortRange: true, scale: 1.0 });
+// // Creating blip
+// mp.blips.new(679, new mp.Vector3(935.8140869140625, 46.942176818847656, 81.09580993652344), { name: "Diamond Casino & Resort", color: 4, shortRange: true, scale: 1.0 });
 
-for(var i=0; i < tablesPos.length; i++)
-{
-	rouletteData[i] = {};
-	rouletteData[i].table = mp.objects.new(mp.game.joaat(tablesPos[i][0]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2], tablesPos[i][3]));
-	rouletteData[i].ball = mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]+posX, tablesPos[i][2]+posY, tablesPos[i][3]+posZ)); // mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]));
-	rouletteData[i].ped = mp.peds.new(mp.game.joaat(pedModels[i]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2]+0.7, tablesPos[i][3]+1), 180, 0); //-0.001587
-	rouletteData[i].label = mp.labels.new(`${tablesBets[i][0]}~n~${tablesBets[i][1]}`, new mp.Vector3(tablesPos[i][1],tablesPos[i][2], tablesPos[i][3]), { los: false, font: 1, drawDistance: 5 })
-	rouletteData[i].ped.croupier = i;
-	//mp.game.invoke('0x971DA0055324D033', rouletteData[i].table.handle, 3);
+// for(var i=0; i < tablesPos.length; i++)
+// {
+// 	rouletteData[i] = {};
+// 	rouletteData[i].table = mp.objects.new(mp.game.joaat(tablesPos[i][0]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2], tablesPos[i][3]));
+// 	rouletteData[i].ball = mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]+posX, tablesPos[i][2]+posY, tablesPos[i][3]+posZ)); // mp.objects.new(87196104, new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]));
+// 	rouletteData[i].ped = mp.peds.new(mp.game.joaat(pedModels[i]), new mp.Vector3(tablesPos[i][1], tablesPos[i][2]+0.7, tablesPos[i][3]+1), 180, 0); //-0.001587
+// 	rouletteData[i].label = mp.labels.new(`${tablesBets[i][0]}~n~${tablesBets[i][1]}`, new mp.Vector3(tablesPos[i][1],tablesPos[i][2], tablesPos[i][3]), { los: false, font: 1, drawDistance: 5 })
+// 	rouletteData[i].ped.croupier = i;
+// 	//mp.game.invoke('0x971DA0055324D033', rouletteData[i].table.handle, 3);
 	
-	for(var c=0; c < tableSeatsPos.length; c++)
-	{
-		var newShape = mp.colshapes.newSphere(tablesPos[i][1]+tableSeatsPos[c][0], tablesPos[i][2]+tableSeatsPos[c][1], tablesPos[i][3]+tableSeatsPos[c][2], 0.5);
-		newShape.casinoTable = i;
-		newShape.seatID = c;
-	}
+// 	for(var c=0; c < tableSeatsPos.length; c++)
+// 	{
+// 		var newShape = mp.colshapes.newSphere(tablesPos[i][1]+tableSeatsPos[c][0], tablesPos[i][2]+tableSeatsPos[c][1], tablesPos[i][3]+tableSeatsPos[c][2], 0.5);
+// 		newShape.casinoTable = i;
+// 		newShape.seatID = c;
+// 	}
 	
-	for(var c=0; c < pedModelVariations[i].length; c++)
-	{
-		rouletteData[i].ped.setComponentVariation(pedModelVariations[i][c][0], pedModelVariations[i][c][1], pedModelVariations[i][c][2], pedModelVariations[i][c][3]);
-	}
-}
+// 	for(var c=0; c < pedModelVariations[i].length; c++)
+// 	{
+// 		rouletteData[i].ped.setComponentVariation(pedModelVariations[i][c][0], pedModelVariations[i][c][1], pedModelVariations[i][c][2], pedModelVariations[i][c][3]);
+// 	}
+// }
 
-mp.events.add('playerEnterColshape', (shape) => {
-	if(shape.casinoTable !== undefined && lpCasinoTable == null && interactingWithTable == null)
-	{
-		casinoTableToJoin = shape.casinoTable;
-		casinoSeatToJoin = shape.seatID;
+// mp.events.add('playerEnterColshape', (shape) => {
+// 	if(shape.casinoTable !== undefined && lpCasinoTable == null && interactingWithTable == null)
+// 	{
+// 		casinoTableToJoin = shape.casinoTable;
+// 		casinoSeatToJoin = shape.seatID;
 
-		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
-		mp.game.graphics.notify(`Pritisnite ~b~E~s~ da sednete.`);
-	}
-});
+// 		mp.game.audio.playSound(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", true, 0, true);
+// 		mp.game.graphics.notify(`Pritisnite ~b~E~s~ da sednete.`);
+// 	}
+// });
 
-mp.events.add('playerExitColshape', (shape) => {
-	if(shape.casinoTable !== undefined)
-	{
-		casinoTableToJoin = null;
-		casinoSeatToJoin = null;
-	}
-});
+// mp.events.add('playerExitColshape', (shape) => {
+// 	if(shape.casinoTable !== undefined)
+// 	{
+// 		casinoTableToJoin = null;
+// 		casinoSeatToJoin = null;
+// 	}
+// });
 
-mp.events.add('playerDeath', (player) => 
-{
-	if(player == localPlayer) 
-	{
-		if(interactingWithTable != null) interactingWithTable = null;
-		if(BLOCK_CONTROLS_DURING_ANIMATION) BLOCK_CONTROLS_DURING_ANIMATION = false;
-		if(rouletteCamera != null) destroyRouletteCamera();
-		if(canDoBets) canDoBets = false;
-	}
+// mp.events.add('playerDeath', (player) => 
+// {
+// 	if(player == localPlayer) 
+// 	{
+// 		if(interactingWithTable != null) interactingWithTable = null;
+// 		if(BLOCK_CONTROLS_DURING_ANIMATION) BLOCK_CONTROLS_DURING_ANIMATION = false;
+// 		if(rouletteCamera != null) destroyRouletteCamera();
+// 		if(canDoBets) canDoBets = false;
+// 	}
 	
-});
+// });
 
-mp.events.add("initRoulette", () => 
-{
-	mp.events.add("render", rouletteRender);
+// mp.events.add("initRoulette", () => 
+// {
+// 	mp.events.add("render", rouletteRender);
 	
-	mp.events.add('entityStreamIn', (entity) => {
-		if(entity.type == "ped" && entity.croupier != null) 
-		{
-			if(entity.model == mp.game.joaat('S_M_Y_Casino_01')) entity.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-			else entity.taskPlayAnim(dealerLibF, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+// 	mp.events.add('entityStreamIn', (entity) => {
+// 		if(entity.type == "ped" && entity.croupier != null) 
+// 		{
+// 			if(entity.model == mp.game.joaat('S_M_Y_Casino_01')) entity.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+// 			else entity.taskPlayAnim(dealerLibF, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
 			
-			var id = entity.croupier;
+// 			var id = entity.croupier;
 			
-			rouletteData[id].ball.position = new mp.Vector3(tablesPos[id][1]-0.734742, tablesPos[id][2]-0.36617, tablesPos[id][3]); // rouletteData[id].ball.position = new mp.Vector3(tablesPos[id][1]-0.734742, tablesPos[id][2]-0.16617, tablesPos[id][3]);
+// 			rouletteData[id].ball.position = new mp.Vector3(tablesPos[id][1]-0.734742, tablesPos[id][2]-0.36617, tablesPos[id][3]); // rouletteData[id].ball.position = new mp.Vector3(tablesPos[id][1]-0.734742, tablesPos[id][2]-0.16617, tablesPos[id][3]);
 			
-			for(var c=0; c < pedModelVariations[id].length; c++)
-			{
-				entity.setComponentVariation(pedModelVariations[id][c][0], pedModelVariations[id][c][1], pedModelVariations[id][c][2], pedModelVariations[id][c][3]);
-			}
-		}
-	});
-});
+// 			for(var c=0; c < pedModelVariations[id].length; c++)
+// 			{
+// 				entity.setComponentVariation(pedModelVariations[id][c][0], pedModelVariations[id][c][1], pedModelVariations[id][c][2], pedModelVariations[id][c][3]);
+// 			}
+// 		}
+// 	});
+// });
 
-mp.events.add("playerSitAtCasinoTable", (player, tableID) => {
+// mp.events.add("playerSitAtCasinoTable", (player, tableID) => {
 	
-	if(player == localPlayer) 
-	{
-		lpCasinoTable = casinoTableToJoin;
-		BLOCK_CONTROLS_DURING_ANIMATION = true;
+// 	if(player == localPlayer) 
+// 	{
+// 		lpCasinoTable = casinoTableToJoin;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = true;
 		
-		//showAlert('alert-blue', 'ЛКМ - сделать/повысить ставку</br>ПКМ - убрать/понизить ставку</br>F - вид на стол');
-	}
-	else
-	{
-		rouletteData[tableID].table.setNoCollision(player.handle, false);
-	}
-});
+// 		//showAlert('alert-blue', 'ЛКМ - сделать/повысить ставку</br>ПКМ - убрать/понизить ставку</br>F - вид на стол');
+// 	}
+// 	else
+// 	{
+// 		rouletteData[tableID].table.setNoCollision(player.handle, false);
+// 	}
+// });
 
-mp.events.add("rouletteAllowBets", (toggle) => {
+// mp.events.add("rouletteAllowBets", (toggle) => {
 	
-	canDoBets = toggle;
-	if(toggle) mp.game.graphics.notify("Place your bets.");
-	else mp.game.graphics.notify("No more bets.");
-});
+// 	canDoBets = toggle;
+// 	if(toggle) mp.game.graphics.notify("Place your bets.");
+// 	else mp.game.graphics.notify("No more bets.");
+// });
 
-mp.events.add('render', () => 
-{
-	//AddInstructionalButtonCustom("Toggle bet camera", "t_F");
+// mp.events.add('render', () => 
+// {
+// 	//AddInstructionalButtonCustom("Toggle bet camera", "t_F");
 
-	if(canDoBets && rouletteCamera && betObject == null)
-	{
-		betObject = mp.objects.new(mp.game.joaat("vw_prop_chip_100dollar_x1"), new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2], tablesPos[lpCasinoTable][3]));
-		betObject.setCollision(false, false);
-	}
+// 	if(canDoBets && rouletteCamera && betObject == null)
+// 	{
+// 		betObject = mp.objects.new(mp.game.joaat("vw_prop_chip_100dollar_x1"), new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2], tablesPos[lpCasinoTable][3]));
+// 		betObject.setCollision(false, false);
+// 	}
 	
-	if(betObject != null)
-	{
-		if(!canDoBets || rouletteCamera == null)
-		{
-			betObject.destroy();
-			betObject = null;
-			clearTableMarkers();
-		}
-	}
+// 	if(betObject != null)
+// 	{
+// 		if(!canDoBets || rouletteCamera == null)
+// 		{
+// 			betObject.destroy();
+// 			betObject = null;
+// 			clearTableMarkers();
+// 		}
+// 	}
 	
-	if(rouletteCamera != null && lpCasinoTable != null)
-	{
-		if(betObject != null)
-		{
-			if(mp.game.controls.isDisabledControlJustReleased(0, 25) && !mp.gui.cursor.visible) // ПКМ
-			{
-				if(closestChipSpot != null) mp.events.callRemote("removeRouletteBet", closestChipSpot);
-			}
+// 	if(rouletteCamera != null && lpCasinoTable != null)
+// 	{
+// 		if(betObject != null)
+// 		{
+// 			if(mp.game.controls.isDisabledControlJustReleased(0, 25) && !mp.gui.cursor.visible) // ПКМ
+// 			{
+// 				if(closestChipSpot != null) mp.events.callRemote("removeRouletteBet", closestChipSpot);
+// 			}
 			
-			if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // ЛКМ
-			{
-				if(closestChipSpot != null) mp.events.callRemote("makeRouletteBet", closestChipSpot);
-			}
+// 			if(mp.game.controls.isDisabledControlJustReleased(0, 24) && !mp.gui.cursor.visible) // ЛКМ
+// 			{
+// 				if(closestChipSpot != null) mp.events.callRemote("makeRouletteBet", closestChipSpot);
+// 			}
 			
-			let drawObj = getCameraHitCoord();
-			if(drawObj != null)
-			{
-				// let height = betObject.getHeight(editorFocusObject.position.x, editorFocusObject.position.y, editorFocusObject.position.z, false, true);
-				//drawObj.position.z += height / 2;
-				drawObj.position.z = tablesPos[lpCasinoTable][3]+0.95;
-				betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y, drawObj.position.z, false, false, false);
+// 			let drawObj = getCameraHitCoord();
+// 			if(drawObj != null)
+// 			{
+// 				// let height = betObject.getHeight(editorFocusObject.position.x, editorFocusObject.position.y, editorFocusObject.position.z, false, true);
+// 				//drawObj.position.z += height / 2;
+// 				drawObj.position.z = tablesPos[lpCasinoTable][3]+0.95;
+// 				betObject.setCoordsNoOffset(drawObj.position.x, drawObj.position.y, drawObj.position.z, false, false, false);
 				
-				getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
-			}
-		}
+// 				getClosestChipSpot(new mp.Vector3(drawObj.position.x, drawObj.position.y, drawObj.position.z));
+// 			}
+// 		}
 		
-		let rightAxisX = mp.game.controls.getDisabledControlNormal(0, 220);
-		let rightAxisY = mp.game.controls.getDisabledControlNormal(0, 221);
+// 		let rightAxisX = mp.game.controls.getDisabledControlNormal(0, 220);
+// 		let rightAxisY = mp.game.controls.getDisabledControlNormal(0, 221);
 		
-		let leftAxisX = 0;
-		let leftAxisY = 0;
+// 		let leftAxisX = 0;
+// 		let leftAxisY = 0;
 		
-		let pos = rouletteCamera.getCoord();
-		let rr = rouletteCamera.getDirection();
-		let vector = new mp.Vector3(0, 0, 0);
-		vector.x = rr.x * leftAxisY;
-		vector.y = rr.y * leftAxisY;
-		vector.z = rr.z * leftAxisY;
+// 		let pos = rouletteCamera.getCoord();
+// 		let rr = rouletteCamera.getDirection();
+// 		let vector = new mp.Vector3(0, 0, 0);
+// 		vector.x = rr.x * leftAxisY;
+// 		vector.y = rr.y * leftAxisY;
+// 		vector.z = rr.z * leftAxisY;
 		
-		let upVector = new mp.Vector3(0, 0, 1);
-		let rightVector = getCrossProduct(getNormalizedVector(rr), getNormalizedVector(upVector));
-		rightVector.x *= leftAxisX * 0.5;
-		rightVector.y *= leftAxisX * 0.5;
-		rightVector.z *= leftAxisX * 0.5;
+// 		let upVector = new mp.Vector3(0, 0, 1);
+// 		let rightVector = getCrossProduct(getNormalizedVector(rr), getNormalizedVector(upVector));
+// 		rightVector.x *= leftAxisX * 0.5;
+// 		rightVector.y *= leftAxisX * 0.5;
+// 		rightVector.z *= leftAxisX * 0.5;
 		
-		let rot = rouletteCamera.getRot(2);
+// 		let rot = rouletteCamera.getRot(2);
 		
-		let rotx = rot.x + rightAxisY * -5.0;
-		if(rotx > 89) rotx = 89;
-		if(rotx < -89) rotx = -89;
+// 		let rotx = rot.x + rightAxisY * -5.0;
+// 		if(rotx > 89) rotx = 89;
+// 		if(rotx < -89) rotx = -89;
 		
-		rouletteCamera.setRot(rotx, 0.0, rot.z + rightAxisX * -5.0, 2);
-	}
-});
-/*
-anim_casino_b@amb@casino@games@roulette@dealer idle
-anim_casino_b@amb@casino@games@roulette@dealer no_more_bets
-anim_casino_b@amb@casino@games@roulette@dealer clear_chips_intro
-anim_casino_b@amb@casino@games@roulette@dealer clear_chips_outro
-anim_casino_b@amb@casino@games@roulette@dealer spin_wheel
-Table:
-anim_casino_b@amb@casino@games@roulette@table    intro_ball
-anim_casino_b@amb@casino@games@roulette@table    intro_wheel
-anim_casino_b@amb@casino@games@roulette@table    loop_ball
-anim_casino_b@amb@casino@games@roulette@table    loop_wheel
-Za završetak:
-anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_wheel
-anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_ball
-*/
+// 		rouletteCamera.setRot(rotx, 0.0, rot.z + rightAxisX * -5.0, 2);
+// 	}
+// });
+// /*
+// anim_casino_b@amb@casino@games@roulette@dealer idle
+// anim_casino_b@amb@casino@games@roulette@dealer no_more_bets
+// anim_casino_b@amb@casino@games@roulette@dealer clear_chips_intro
+// anim_casino_b@amb@casino@games@roulette@dealer clear_chips_outro
+// anim_casino_b@amb@casino@games@roulette@dealer spin_wheel
+// Table:
+// anim_casino_b@amb@casino@games@roulette@table    intro_ball
+// anim_casino_b@amb@casino@games@roulette@table    intro_wheel
+// anim_casino_b@amb@casino@games@roulette@table    loop_ball
+// anim_casino_b@amb@casino@games@roulette@table    loop_wheel
+// Za završetak:
+// anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_wheel
+// anim_casino_b@amb@casino@games@roulette@table   exit_${BROJ_DOBIJENE_LOPTICE}_ball
+// */
 
-/*
+// /*
 
-mp.events.add('spin_wheel', function(tb, needSpins, endTable, endBall){
-    RouletteTables[tb].table.playAnim("intro_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
-    RouletteTables[tb].table.forceAiAndAnimationUpdate();
-    const ballPos = RouletteTables[tb].table.getWorldPositionOfBone(RouletteTables[tb].table.getBoneIndexByName("Roulette_Wheel"));
-    RouletteTables[tb].ball.position = ballPos;
+// mp.events.add('spin_wheel', function(tb, needSpins, endTable, endBall){
+//     RouletteTables[tb].table.playAnim("intro_wheel", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, true, 0, 131072);
+//     RouletteTables[tb].table.forceAiAndAnimationUpdate();
+//     const ballPos = RouletteTables[tb].table.getWorldPositionOfBone(RouletteTables[tb].table.getBoneIndexByName("Roulette_Wheel"));
+//     RouletteTables[tb].ball.position = ballPos;
 
-    RouletteTables[tb].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
-    const ballRot = RouletteTables[tb].table.getRotation(2);
-    RouletteTables[tb].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
-    //RouletteTables[tb].ball.rotation = new mp.Vector3(0.0, 0.0, 0);
+//     RouletteTables[tb].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
+//     const ballRot = RouletteTables[tb].table.getRotation(2);
+//     RouletteTables[tb].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
+//     //RouletteTables[tb].ball.rotation = new mp.Vector3(0.0, 0.0, 0);
 
-    RouletteTables[tb].ball.playAnim("intro_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
-    RouletteTables[tb].ball.forceAiAndAnimationUpdate();
+//     RouletteTables[tb].ball.playAnim("intro_ball", "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
+//     RouletteTables[tb].ball.forceAiAndAnimationUpdate();
 
-    RouletteTables[tb].spins = 0;
-    RouletteTables[tb].lastSpinTime = 0;
-    RouletteTables[tb].needSpins = needSpins;
-    RouletteTables[tb].endTable = endTable;
-    RouletteTables[tb].endBall = endBall;
+//     RouletteTables[tb].spins = 0;
+//     RouletteTables[tb].lastSpinTime = 0;
+//     RouletteTables[tb].needSpins = needSpins;
+//     RouletteTables[tb].endTable = endTable;
+//     RouletteTables[tb].endBall = endBall;
 
 
-*/
+// */
 
-mp.events.add("spinRouletteWheel", (table, needSpins, endTable, endBall) => {
-	rouletteData[table].table.playAnim("intro_wheel", tableLib, 1000.0, false, true, true, 0, 136702); // loop, freezeLastFrame, ?
-	rouletteData[table].table.forceAiAndAnimationUpdate();
+// mp.events.add("spinRouletteWheel", (table, needSpins, endTable, endBall) => {
+// 	rouletteData[table].table.playAnim("intro_wheel", tableLib, 1000.0, false, true, true, 0, 136702); // loop, freezeLastFrame, ?
+// 	rouletteData[table].table.forceAiAndAnimationUpdate();
 	
 
-	const ballPos = rouletteData[table].table.getWorldPositionOfBone(rouletteData[table].table.getBoneIndexByName("Roulette_Wheel"));
-	rouletteData[table].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
-	rouletteData[table].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
+// 	const ballPos = rouletteData[table].table.getWorldPositionOfBone(rouletteData[table].table.getBoneIndexByName("Roulette_Wheel"));
+// 	rouletteData[table].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
+// 	rouletteData[table].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
 
-	//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-	const ballRot = rouletteData[table].table.getRotation(2);
-    rouletteData[table].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
+// 	//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
+// 	const ballRot = rouletteData[table].table.getRotation(2);
+//     rouletteData[table].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1)
 	
-	rouletteData[table].ball.playAnim("intro_ball", tableLib, 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
-	rouletteData[table].ball.forceAiAndAnimationUpdate();
+// 	rouletteData[table].ball.playAnim("intro_ball", tableLib, 1000.0, false, true, false, 0, 136704); // loop, freezeLastFrame, ?
+// 	rouletteData[table].ball.forceAiAndAnimationUpdate();
 
-	rouletteData[table].spins = 0;
-	rouletteData[table].lastSpinTime = 0;
-	rouletteData[table].needSpins = needSpins;
+// 	rouletteData[table].spins = 0;
+// 	rouletteData[table].lastSpinTime = 0;
+// 	rouletteData[table].needSpins = needSpins;
 
-	rouletteNumber(table);
+// 	rouletteNumber(table);
 
-	if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) {
-		rouletteData[table].ped.taskPlayAnim(dealerLib, "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
-	}
-	else {
-		rouletteData[table].ped.taskPlayAnim(dealerLibF, "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
-	}
+// 	if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) {
+// 		rouletteData[table].ped.taskPlayAnim(dealerLib, "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
+// 	}
+// 	else {
+// 		rouletteData[table].ped.taskPlayAnim(dealerLibF, "spin_wheel", 8.0, 1, -1, 2, 0.0, false, false, false);
+// 	}
 	
 	
-	setTimeout(
-		function()
-		{
-			if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-			else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-		}, 8000
-	);
-});
+// 	setTimeout(
+// 		function()
+// 		{
+// 			if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+// 			else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+// 		}, 8000
+// 	);
+// });
 
-mp.events.add("clearRouletteTable", (table) => 
-{
-	if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "clear_chips_zone2", 8.0, 1, -1, 2, 0.0, false, false, false);
-	else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "clear_chips_zone2", 8.0, 1, -1, 2, 0.0, false, false, false);
+// mp.events.add("clearRouletteTable", (table) => 
+// {
+// 	if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "clear_chips_zone2", 8.0, 1, -1, 2, 0.0, false, false, false);
+// 	else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "clear_chips_zone2", 8.0, 1, -1, 2, 0.0, false, false, false);
 	
-	setTimeout(
-		function()
-		{
-			if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-			else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
-		}, 2000
-	);
-});
+// 	setTimeout(
+// 		function()
+// 		{
+// 			if(rouletteData[table].ped.model == mp.game.joaat('S_M_Y_Casino_01')) rouletteData[table].ped.taskPlayAnim(dealerLib, "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+// 			else rouletteData[table].ped.taskPlayAnim(dealerLib+"_female", "idle", 8.0, 1, -1, 1, 0.0, false, false, false);
+// 		}, 2000
+// 	);
+// });
 
-mp.keys.bind(0x45, true, () =>  // E
-{
-	if(mp.gui.cursor.visible || interactingWithTable != null) return false;
+// mp.keys.bind(0x45, true, () =>  // E
+// {
+// 	if(mp.gui.cursor.visible || interactingWithTable != null) return false;
 	
-	if(lpCasinoTable != null)
-	{
-		//mp.events.callRemote("leaveCasinoSeat");
-		rouletteData[lpCasinoTable].table.setCollision(true, false);
-		interactingWithTable = lpCasinoTable;
-		lpCasinoTable = null;
-		BLOCK_CONTROLS_DURING_ANIMATION = false;
-		if(rouletteCamera != null) destroyRouletteCamera();
-		if(canDoBets) canDoBets = false;
+// 	if(lpCasinoTable != null)
+// 	{
+// 		//mp.events.callRemote("leaveCasinoSeat");
+// 		rouletteData[lpCasinoTable].table.setCollision(true, false);
+// 		interactingWithTable = lpCasinoTable;
+// 		lpCasinoTable = null;
+// 		BLOCK_CONTROLS_DURING_ANIMATION = false;
+// 		if(rouletteCamera != null) destroyRouletteCamera();
+// 		if(canDoBets) canDoBets = false;
 		
-		interactingWithTableTimeout = setTimeout(
-			function()
-			{
-				interactingWithTable = null;
-				interactingWithTableTimeout = null;
-			},4500
-		);
-	}
-	else
-	{
-		if(casinoTableToJoin == null) return false;
+// 		interactingWithTableTimeout = setTimeout(
+// 			function()
+// 			{
+// 				interactingWithTable = null;
+// 				interactingWithTableTimeout = null;
+// 			},4500
+// 		);
+// 	}
+// 	else
+// 	{
+// 		if(casinoTableToJoin == null) return false;
 		
-		interactingWithTable = casinoTableToJoin;
+// 		interactingWithTable = casinoTableToJoin;
 		
-		rouletteData[casinoTableToJoin].table.setCollision(false, false);
+// 		rouletteData[casinoTableToJoin].table.setCollision(false, false);
 		
-		localPlayer.position = new mp.Vector3(tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0], tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1], tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2]);
-		localPlayer.setHeading(tableSeatsPos[casinoSeatToJoin][3]);
+// 		localPlayer.position = new mp.Vector3(tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0], tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1], tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2]);
+// 		localPlayer.setHeading(tableSeatsPos[casinoSeatToJoin][3]);
 		
-		mp.events.call("playerSitAtCasinoTable", localPlayer, casinoTableToJoin);
+// 		mp.events.call("playerSitAtCasinoTable", localPlayer, casinoTableToJoin);
 		
-		interactingWithTableTimeout = setTimeout(
-			function()
-			{
-				interactingWithTable = null;
-				interactingWithTableTimeout = null;
-			},5500
-		);
+// 		interactingWithTableTimeout = setTimeout(
+// 			function()
+// 			{
+// 				interactingWithTable = null;
+// 				interactingWithTableTimeout = null;
+// 			},5500
+// 		);
 		
-		// localPlayer.taskGoStraightToCoord(
-			// tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0],
-			// tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1],
-			// tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2],
-			// 1.15, // speed
-			// 3000, // timeout
-			// tableSeatsPos[casinoSeatToJoin][3], // heading
-			// 0.5 // slide (?)
-		// );
+// 		// localPlayer.taskGoStraightToCoord(
+// 			// tablesPos[casinoTableToJoin][1]+tableSeatsPos[casinoSeatToJoin][0],
+// 			// tablesPos[casinoTableToJoin][2]+tableSeatsPos[casinoSeatToJoin][1],
+// 			// tablesPos[casinoTableToJoin][3]+tableSeatsPos[casinoSeatToJoin][2],
+// 			// 1.15, // speed
+// 			// 3000, // timeout
+// 			// tableSeatsPos[casinoSeatToJoin][3], // heading
+// 			// 0.5 // slide (?)
+// 		// );
 		
-		// setTimeout(
-			// function()
-			// {
-				// if(goToSeatInterval != null)
-				// {
-					// clearInterval(goToSeatInterval);
-					// goToSeatInterval = null;
-				// }
-			// },3000
-		// );
+// 		// setTimeout(
+// 			// function()
+// 			// {
+// 				// if(goToSeatInterval != null)
+// 				// {
+// 					// clearInterval(goToSeatInterval);
+// 					// goToSeatInterval = null;
+// 				// }
+// 			// },3000
+// 		// );
 		
-		// goToSeatInterval = setInterval(checkPlayerCanSit, 200, casinoTableToJoin, casinoSeatToJoin);
-	}	
-});
+// 		// goToSeatInterval = setInterval(checkPlayerCanSit, 200, casinoTableToJoin, casinoSeatToJoin);
+// 	}	
+// });
 
-mp.keys.bind(0x46, true, () =>  // F
-{		
-	if(interactingWithTable != null || lpCasinoTable == null) return;
+// mp.keys.bind(0x46, true, () =>  // F
+// {		
+// 	if(interactingWithTable != null || lpCasinoTable == null) return;
 	
-	if(rouletteCamera != null)
-	{
-		destroyRouletteCamera();
-	}
-	else
-	{
-		createRouletteCamera();
-		//mp.events.call('initRoulette');
-		mp.events.call("spinRouletteWheel", lpCasinoTable, 1, "exit_7_wheel", "exit_7_ball");
-	}
-});
+// 	if(rouletteCamera != null)
+// 	{
+// 		destroyRouletteCamera();
+// 	}
+// 	else
+// 	{
+// 		createRouletteCamera();
+// 		//mp.events.call('initRoulette');
+// 		mp.events.call("spinRouletteWheel", lpCasinoTable, 1, "exit_7_wheel", "exit_7_ball");
+// 	}
+// });
 
-function getRandomInt(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-  }
+// function getRandomInt(min, max) {
+// 	min = Math.ceil(min);
+// 	max = Math.floor(max);
+// 	return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+//   }
 
-function rouletteNumber(rouletteId)
-{
-	let random = getRandomInt(1, 38);
-	if(random < 0 || random > 38) { rouletteNumber(rouletteId); return; } 
-	rouletteData[rouletteId].endBall = `exit_${random}_ball`;
-	rouletteData[rouletteId].endTable = `exit_${random}_wheel`;
+// function rouletteNumber(rouletteId)
+// {
+// 	let random = getRandomInt(1, 38);
+// 	if(random < 0 || random > 38) { rouletteNumber(rouletteId); return; } 
+// 	rouletteData[rouletteId].endBall = `exit_${random}_ball`;
+// 	rouletteData[rouletteId].endTable = `exit_${random}_wheel`;
 
-}
+// }
 
-function rouletteRender() 
-{
+// function rouletteRender() 
+// {
 
-	for(var i=0; i < rouletteData.length; i++)
-	{
-		if(rouletteData[i].table.isPlayingAnim(tableLib, "intro_wheel", 3))
-		{
-			if(rouletteData[i].table.getAnimCurrentTime(tableLib, "intro_wheel") > 0.9425)
-			{
-				rouletteData[i].table.playAnim("loop_wheel", tableLib, 1000.0, true, true, true, 0, 13704);
-				rouletteData[i].table.forceAiAndAnimationUpdate();
-			}
-		}
+// 	for(var i=0; i < rouletteData.length; i++)
+// 	{
+// 		if(rouletteData[i].table.isPlayingAnim(tableLib, "intro_wheel", 3))
+// 		{
+// 			if(rouletteData[i].table.getAnimCurrentTime(tableLib, "intro_wheel") > 0.9425)
+// 			{
+// 				rouletteData[i].table.playAnim("loop_wheel", tableLib, 1000.0, true, true, true, 0, 13704);
+// 				rouletteData[i].table.forceAiAndAnimationUpdate();
+// 			}
+// 		}
 		
-		if(rouletteData[i].ball.isPlayingAnim(tableLib, "intro_ball", 3))
-		{
-			if(rouletteData[i].ball.getAnimCurrentTime(tableLib, "intro_ball") > 0.99)
-			{
-				/*
-				rouletteData[i].ball.position = new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.36617, tablesPos[i][3]+1.0715); // new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]+1.0715);
-				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				*/
+// 		if(rouletteData[i].ball.isPlayingAnim(tableLib, "intro_ball", 3))
+// 		{
+// 			if(rouletteData[i].ball.getAnimCurrentTime(tableLib, "intro_ball") > 0.99)
+// 			{
+// 				/*
+// 				rouletteData[i].ball.position = new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.36617, tablesPos[i][3]+1.0715); // new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]+1.0715);
+// 				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
+// 				*/
 
-				const ballPos = rouletteData[i].table.getWorldPositionOfBone(rouletteData[i].table.getBoneIndexByName("Roulette_Wheel"));
-				rouletteData[i].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
-				rouletteData[i].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
+// 				const ballPos = rouletteData[i].table.getWorldPositionOfBone(rouletteData[i].table.getBoneIndexByName("Roulette_Wheel"));
+// 				rouletteData[i].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
+// 				rouletteData[i].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
 
-				//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				const ballRot = rouletteData[i].table.getRotation(2);
-				rouletteData[i].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1);
+// 				//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
+// 				const ballRot = rouletteData[i].table.getRotation(2);
+// 				rouletteData[i].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1);
 
-				rouletteData[i].ball.playAnim("loop_ball", tableLib, 1000.0, true, true, false, 0, 13704);
-				rouletteData[i].ball.forceAiAndAnimationUpdate();
-			}
-		}
+// 				rouletteData[i].ball.playAnim("loop_ball", tableLib, 1000.0, true, true, false, 0, 13704);
+// 				rouletteData[i].ball.forceAiAndAnimationUpdate();
+// 			}
+// 		}
 		
-		if(rouletteData[i].table.isPlayingAnim(tableLib, "loop_wheel", 3))
-		{
-			if(rouletteData[i].table.getAnimCurrentTime(tableLib, "loop_wheel") >= 0.99 && Date.now()-rouletteData[i].lastSpinTime > 1000)
-			{
-				rouletteData[i].spins++;
-				rouletteData[i].lastSpinTime = Date.now();
-			}
-			if(rouletteData[i].spins == rouletteData[i].needSpins-1)
-			{
-				rouletteData[i].ball.setAnimSpeed(tableLib, "loop_ball", 0.71);
-			}
-			if(rouletteData[i].spins == rouletteData[i].needSpins && rouletteData[i].table.getAnimCurrentTime(tableLib, "loop_wheel") > 0.99)
-			{
-				rouletteData[i].table.playAnim(rouletteData[i].endTable, tableLib, 1000.0, false, true, true, 0, 1148846080);
-				rouletteData[i].table.forceAiAndAnimationUpdate();
+// 		if(rouletteData[i].table.isPlayingAnim(tableLib, "loop_wheel", 3))
+// 		{
+// 			if(rouletteData[i].table.getAnimCurrentTime(tableLib, "loop_wheel") >= 0.99 && Date.now()-rouletteData[i].lastSpinTime > 1000)
+// 			{
+// 				rouletteData[i].spins++;
+// 				rouletteData[i].lastSpinTime = Date.now();
+// 			}
+// 			if(rouletteData[i].spins == rouletteData[i].needSpins-1)
+// 			{
+// 				rouletteData[i].ball.setAnimSpeed(tableLib, "loop_ball", 0.71);
+// 			}
+// 			if(rouletteData[i].spins == rouletteData[i].needSpins && rouletteData[i].table.getAnimCurrentTime(tableLib, "loop_wheel") > 0.99)
+// 			{
+// 				rouletteData[i].table.playAnim(rouletteData[i].endTable, tableLib, 1000.0, false, true, true, 0, 1148846080);
+// 				rouletteData[i].table.forceAiAndAnimationUpdate();
 				
-				/*
-				rouletteData[i].ball.position = new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.36617, tablesPos[i][3]+1.0715); // new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]+1.0715);
-				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				*/
+// 				/*
+// 				rouletteData[i].ball.position = new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.36617, tablesPos[i][3]+1.0715); // new mp.Vector3(tablesPos[i][1]-0.734742, tablesPos[i][2]-0.16617, tablesPos[i][3]+1.0715);
+// 				rouletteData[i].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
+// 				*/
 
-				const ballPos = rouletteData[i].table.getWorldPositionOfBone(rouletteData[i].table.getBoneIndexByName("Roulette_Wheel"));
-				rouletteData[i].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
-				rouletteData[i].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
+// 				const ballPos = rouletteData[i].table.getWorldPositionOfBone(rouletteData[i].table.getBoneIndexByName("Roulette_Wheel"));
+// 				rouletteData[i].ball.position = ballPos; //new mp.Vector3(tablesPos[table][1]-0.734742, tablesPos[table][2]-0.26617, tablesPos[table][3]+1.0715); 
+// 				rouletteData[i].ball.setCoordsNoOffset(ballPos.x, ballPos.y, ballPos.z, !1, !1, !1);
 
-				//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
-				const ballRot = rouletteData[i].table.getRotation(2);
-				rouletteData[i].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1);
+// 				//rouletteData[table].ball.rotation = new mp.Vector3(0.0, 0.0, 32.6);
+// 				const ballRot = rouletteData[i].table.getRotation(2);
+// 				rouletteData[i].ball.setRotation(ballRot.x, ballRot.y, ballRot.z + 90, 2, !1);
 
-				rouletteData[i].ball.playAnim(rouletteData[i].endBall, tableLib, 1000.0, false, true, true, 0, 1148846080);
-				rouletteData[i].ball.forceAiAndAnimationUpdate();
-			}
-		}
+// 				rouletteData[i].ball.playAnim(rouletteData[i].endBall, tableLib, 1000.0, false, true, true, 0, 1148846080);
+// 				rouletteData[i].ball.forceAiAndAnimationUpdate();
+// 			}
+// 		}
 		
-	}
-}
+// 	}
+// }
 
-createRouletteCamera = () => 
-{
-	rouletteCamera = mp.cameras.new('default', new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2]-1, tablesPos[lpCasinoTable][3]+3), new mp.Vector3(0,0,0), 45);
-	rouletteCamera.setRot(-75.0, 0.0, 0.0, 2);
-	rouletteCamera.setActive(true);
-	mp.game.cam.renderScriptCams(true, false, 0, true, false);
-}
+// createRouletteCamera = () => 
+// {
+// 	rouletteCamera = mp.cameras.new('default', new mp.Vector3(tablesPos[lpCasinoTable][1], tablesPos[lpCasinoTable][2]-1, tablesPos[lpCasinoTable][3]+3), new mp.Vector3(0,0,0), 45);
+// 	rouletteCamera.setRot(-75.0, 0.0, 0.0, 2);
+// 	rouletteCamera.setActive(true);
+// 	mp.game.cam.renderScriptCams(true, false, 0, true, false);
+// }
 
-destroyRouletteCamera = () => 
-{
-	rouletteCamera.destroy(true);
-	rouletteCamera = null;
-    mp.game.cam.renderScriptCams(false, false, 0, true, false);
-}
+// destroyRouletteCamera = () => 
+// {
+// 	rouletteCamera.destroy(true);
+// 	rouletteCamera = null;
+//     mp.game.cam.renderScriptCams(false, false, 0, true, false);
+// }
 
-getCameraHitCoord = () =>
-{
-	let position = rouletteCamera.getCoord();
-	let direction = rouletteCamera.getDirection();
-	let farAway = new mp.Vector3((direction.x * 150) + position.x, (direction.y * 150) + position.y, (direction.z * 150) + position.z);
+// getCameraHitCoord = () =>
+// {
+// 	let position = rouletteCamera.getCoord();
+// 	let direction = rouletteCamera.getDirection();
+// 	let farAway = new mp.Vector3((direction.x * 150) + position.x, (direction.y * 150) + position.y, (direction.z * 150) + position.z);
 	
-	let hitData = mp.raycasting.testPointToPoint(position, farAway, mp.players.local);
+// 	let hitData = mp.raycasting.testPointToPoint(position, farAway, mp.players.local);
 	
-	if(hitData != undefined)
-	{
-		return hitData;
-	}
-	return null;
-}
+// 	if(hitData != undefined)
+// 	{
+// 		return hitData;
+// 	}
+// 	return null;
+// }
 
-getNormalizedVector = (vector) =>
-{
-	let mag = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-	vector.x = vector.x / mag;
-	vector.y = vector.y / mag;
-	vector.z = vector.z / mag;
-	return vector;
-}
+// getNormalizedVector = (vector) =>
+// {
+// 	let mag = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+// 	vector.x = vector.x / mag;
+// 	vector.y = vector.y / mag;
+// 	vector.z = vector.z / mag;
+// 	return vector;
+// }
 
-getCrossProduct = (v1, v2) =>
-{
-	let vector = new mp.Vector3(0, 0, 0);
-	vector.x = v1.y * v2.z - v1.z * v2.y;
-	vector.y = v1.z * v2.x - v1.x * v2.z;
-	vector.z = v1.x * v2.y - v1.y * v2.x;
-	return vector;
-}
+// getCrossProduct = (v1, v2) =>
+// {
+// 	let vector = new mp.Vector3(0, 0, 0);
+// 	vector.x = v1.y * v2.z - v1.z * v2.y;
+// 	vector.y = v1.z * v2.x - v1.x * v2.z;
+// 	vector.z = v1.x * v2.y - v1.y * v2.x;
+// 	return vector;
+// }
 
-getClosestChipSpot = (vector) =>
-{
-	var spot = null;
-	var prevDistance = 0.05;
-	var dist = null;
+// getClosestChipSpot = (vector) =>
+// {
+// 	var spot = null;
+// 	var prevDistance = 0.05;
+// 	var dist = null;
 	
-	for(var i=0; i < tableChipsOffsets.length; i++)
-	{
-		//dist = mp.Vector3.getDistanceBetweenPoints3D(vector, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableChipsOffsets[i][0], tablesPos[lpCasinoTable][2]+tableChipsOffsets[i][1], tablesPos[lpCasinoTable][3]+tableChipsOffsets[i][2]));
-		dist = mp.game.gameplay.getDistanceBetweenCoords(vector.x, vector.y, vector.z, tablesPos[lpCasinoTable][1]+tableChipsOffsets[i][0], tablesPos[lpCasinoTable][2]+tableChipsOffsets[i][1], tablesPos[lpCasinoTable][3]+tableChipsOffsets[i][2], true);
-		if(dist <= prevDistance)
-		{
-			spot = i;
-			prevDistance = dist;
-		}
-	}
+// 	for(var i=0; i < tableChipsOffsets.length; i++)
+// 	{
+// 		//dist = mp.Vector3.getDistanceBetweenPoints3D(vector, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableChipsOffsets[i][0], tablesPos[lpCasinoTable][2]+tableChipsOffsets[i][1], tablesPos[lpCasinoTable][3]+tableChipsOffsets[i][2]));
+// 		dist = mp.game.gameplay.getDistanceBetweenCoords(vector.x, vector.y, vector.z, tablesPos[lpCasinoTable][1]+tableChipsOffsets[i][0], tablesPos[lpCasinoTable][2]+tableChipsOffsets[i][1], tablesPos[lpCasinoTable][3]+tableChipsOffsets[i][2], true);
+// 		if(dist <= prevDistance)
+// 		{
+// 			spot = i;
+// 			prevDistance = dist;
+// 		}
+// 	}
 	
-	if(spot != closestChipSpot)
-	{
-		closestChipSpot = spot;
-		clearTableMarkers();
+// 	if(spot != closestChipSpot)
+// 	{
+// 		closestChipSpot = spot;
+// 		clearTableMarkers();
 		
-		if(spot != null)
-		{
-			var key = null;
-			var obj = null;
-			for(var i=0; i < tableChipsOffsets[spot][3].length; i++)
-			{
-				key = tableChipsOffsets[spot][3][i];
-				if(key == "00" || key == "0")
-				{
-					obj = mp.objects.new(269022546, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableMarkersOffsets[key][0], tablesPos[lpCasinoTable][2]+tableMarkersOffsets[key][1], tablesPos[lpCasinoTable][3]+tableMarkersOffsets[key][2]));
-					obj.setCollision(false, false);
-					tableMarkers.push(obj);
-				}
-				else
-				{
-					tableMarkers.push(mp.objects.new(3267450776, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableMarkersOffsets[key][0], tablesPos[lpCasinoTable][2]+tableMarkersOffsets[key][1], tablesPos[lpCasinoTable][3]+tableMarkersOffsets[key][2])));
-				}
-			}
-		}
-	}	
-}
+// 		if(spot != null)
+// 		{
+// 			var key = null;
+// 			var obj = null;
+// 			for(var i=0; i < tableChipsOffsets[spot][3].length; i++)
+// 			{
+// 				key = tableChipsOffsets[spot][3][i];
+// 				if(key == "00" || key == "0")
+// 				{
+// 					obj = mp.objects.new(269022546, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableMarkersOffsets[key][0], tablesPos[lpCasinoTable][2]+tableMarkersOffsets[key][1], tablesPos[lpCasinoTable][3]+tableMarkersOffsets[key][2]));
+// 					obj.setCollision(false, false);
+// 					tableMarkers.push(obj);
+// 				}
+// 				else
+// 				{
+// 					tableMarkers.push(mp.objects.new(3267450776, new mp.Vector3(tablesPos[lpCasinoTable][1]+tableMarkersOffsets[key][0], tablesPos[lpCasinoTable][2]+tableMarkersOffsets[key][1], tablesPos[lpCasinoTable][3]+tableMarkersOffsets[key][2])));
+// 				}
+// 			}
+// 		}
+// 	}	
+// }
 
-let tableMarkers = [];
-const tableMarkersOffsets =
-{
-	"0": [-0.137451171875, -0.146942138671875, 0.9449996948242188],
-	"00": [-0.1387939453125, 0.10546875, 0.9449996948242188],
-	"1": [-0.0560302734375, -0.1898193359375, 0.9449996948242188],
-	"2": [-0.0567626953125, -0.024017333984375, 0.9449996948242188],
-	"3": [-0.056884765625, 0.141632080078125, 0.9449996948242188],
-	"4": [0.02392578125, -0.187347412109375, 0.9449996948242188],
-	"5": [0.0240478515625, -0.02471923828125, 0.9449996948242188],
-	"6": [0.02392578125, 0.1422119140625, 0.9449996948242188],
-	"7": [0.1038818359375, -0.18902587890625, 0.9449996948242188],
-	"8": [0.1044921875, -0.023834228515625, 0.9449996948242188],
-	"9": [0.10546875, 0.1419677734375, 0.9449996948242188],
-	"10": [0.18701171875, -0.188385009765625, 0.9449996948242188],
-	"11": [0.18603515625, -0.0238037109375, 0.9449996948242188],
-	"12": [0.1851806640625, 0.143157958984375, 0.9449996948242188],
-	"13": [0.2677001953125, -0.18780517578125, 0.9449996948242188],
-	"14": [0.26806640625, -0.02301025390625, 0.9449996948242188],
-	"15": [0.26611328125, 0.143310546875, 0.9449996948242188],
-	"16": [0.3497314453125, -0.18829345703125, 0.9449996948242188],
-	"17": [0.349609375, -0.023101806640625, 0.9449996948242188],
-	"18": [0.3497314453125, 0.142242431640625, 0.9449996948242188],
-	"19": [0.4307861328125, -0.18829345703125, 0.9449996948242188],
-	"20": [0.4312744140625, -0.02392578125, 0.9449996948242188],
-	"21": [0.431884765625, 0.1416015625, 0.9449996948242188],
-	"22": [0.51220703125, -0.188873291015625, 0.9449996948242188],
-	"23": [0.5123291015625, -0.023773193359375, 0.9449996948242188],
-	"24": [0.511962890625, 0.14215087890625, 0.9449996948242188],
-	"25": [0.5931396484375, -0.18890380859375, 0.9449996948242188],
-	"26": [0.59375, -0.023651123046875, 0.9449996948242188],
-	"27": [0.59375, 0.14080810546875, 0.9449996948242188],
-	"28": [0.67529296875, -0.189849853515625, 0.9449996948242188],
-	"29": [0.6751708984375, -0.02337646484375, 0.9449996948242188],
-	"30": [0.674560546875, 0.141845703125, 0.9449996948242188],
-	"31": [0.756591796875, -0.18798828125, 0.9449996948242188],
-	"32": [0.7547607421875, -0.0234375, 0.9449996948242188],
-	"33": [0.7554931640625, 0.14263916015625, 0.9449996948242188],
-	"34": [0.836669921875, -0.188323974609375, 0.9449996948242188],
-	"35": [0.8365478515625, -0.0244140625, 0.9449996948242188],
-	"36": [0.8359375, 0.14276123046875, 0.9449996948242188]
-};
+// let tableMarkers = [];
+// const tableMarkersOffsets =
+// {
+// 	"0": [-0.137451171875, -0.146942138671875, 0.9449996948242188],
+// 	"00": [-0.1387939453125, 0.10546875, 0.9449996948242188],
+// 	"1": [-0.0560302734375, -0.1898193359375, 0.9449996948242188],
+// 	"2": [-0.0567626953125, -0.024017333984375, 0.9449996948242188],
+// 	"3": [-0.056884765625, 0.141632080078125, 0.9449996948242188],
+// 	"4": [0.02392578125, -0.187347412109375, 0.9449996948242188],
+// 	"5": [0.0240478515625, -0.02471923828125, 0.9449996948242188],
+// 	"6": [0.02392578125, 0.1422119140625, 0.9449996948242188],
+// 	"7": [0.1038818359375, -0.18902587890625, 0.9449996948242188],
+// 	"8": [0.1044921875, -0.023834228515625, 0.9449996948242188],
+// 	"9": [0.10546875, 0.1419677734375, 0.9449996948242188],
+// 	"10": [0.18701171875, -0.188385009765625, 0.9449996948242188],
+// 	"11": [0.18603515625, -0.0238037109375, 0.9449996948242188],
+// 	"12": [0.1851806640625, 0.143157958984375, 0.9449996948242188],
+// 	"13": [0.2677001953125, -0.18780517578125, 0.9449996948242188],
+// 	"14": [0.26806640625, -0.02301025390625, 0.9449996948242188],
+// 	"15": [0.26611328125, 0.143310546875, 0.9449996948242188],
+// 	"16": [0.3497314453125, -0.18829345703125, 0.9449996948242188],
+// 	"17": [0.349609375, -0.023101806640625, 0.9449996948242188],
+// 	"18": [0.3497314453125, 0.142242431640625, 0.9449996948242188],
+// 	"19": [0.4307861328125, -0.18829345703125, 0.9449996948242188],
+// 	"20": [0.4312744140625, -0.02392578125, 0.9449996948242188],
+// 	"21": [0.431884765625, 0.1416015625, 0.9449996948242188],
+// 	"22": [0.51220703125, -0.188873291015625, 0.9449996948242188],
+// 	"23": [0.5123291015625, -0.023773193359375, 0.9449996948242188],
+// 	"24": [0.511962890625, 0.14215087890625, 0.9449996948242188],
+// 	"25": [0.5931396484375, -0.18890380859375, 0.9449996948242188],
+// 	"26": [0.59375, -0.023651123046875, 0.9449996948242188],
+// 	"27": [0.59375, 0.14080810546875, 0.9449996948242188],
+// 	"28": [0.67529296875, -0.189849853515625, 0.9449996948242188],
+// 	"29": [0.6751708984375, -0.02337646484375, 0.9449996948242188],
+// 	"30": [0.674560546875, 0.141845703125, 0.9449996948242188],
+// 	"31": [0.756591796875, -0.18798828125, 0.9449996948242188],
+// 	"32": [0.7547607421875, -0.0234375, 0.9449996948242188],
+// 	"33": [0.7554931640625, 0.14263916015625, 0.9449996948242188],
+// 	"34": [0.836669921875, -0.188323974609375, 0.9449996948242188],
+// 	"35": [0.8365478515625, -0.0244140625, 0.9449996948242188],
+// 	"36": [0.8359375, 0.14276123046875, 0.9449996948242188]
+// };
 
-const tableChipsOffsets =
-[
-	[-0.154541015625, -0.150604248046875, 0.9449996948242188, ["0"]],
-	[-0.1561279296875, 0.11505126953125, 0.9449996948242188, ["00"]],
-	[-0.059326171875, -0.18701171875, 0.9449996948242188, ["1"]],
-	[-0.058349609375, -0.019378662109375, 0.9449996948242188, ["2"]],
-	[-0.0587158203125, 0.142059326171875, 0.9449996948242188, ["3"]],
-	[0.02294921875, -0.1920166015625, 0.9449996948242188, ["4"]],
-	[0.023193359375, -0.01947021484375, 0.9449996948242188, ["5"]],
-	[0.024658203125, 0.147369384765625, 0.9449996948242188, ["6"]],
-	[0.105224609375, -0.1876220703125, 0.9449996948242188, ["7"]],
-	[0.1055908203125, -0.028472900390625, 0.9449996948242188, ["8"]],
-	[0.10400390625, 0.147430419921875, 0.9449996948242188, ["9"]],
-	[0.187744140625, -0.191802978515625, 0.9449996948242188, ["10"]],
-	[0.1866455078125, -0.02667236328125, 0.9449996948242188, ["11"]],
-	[0.1842041015625, 0.145965576171875, 0.9449996948242188, ["12"]],
-	[0.2696533203125, -0.182464599609375, 0.9449996948242188, ["13"]],
-	[0.265869140625, -0.027862548828125, 0.9449996948242188, ["14"]],
-	[0.2667236328125, 0.138946533203125, 0.9449996948242188, ["15"]],
-	[0.35009765625, -0.186126708984375, 0.9449996948242188, ["16"]],
-	[0.348876953125, -0.027740478515625, 0.9449996948242188, ["17"]],
-	[0.3497314453125, 0.14715576171875, 0.9449996948242188, ["18"]],
-	[0.43212890625, -0.17864990234375, 0.9449996948242188, ["19"]],
-	[0.4337158203125, -0.02508544921875, 0.9449996948242188, ["20"]],
-	[0.430419921875, 0.138336181640625, 0.9449996948242188, ["21"]],
-	[0.51416015625, -0.18603515625, 0.9449996948242188, ["22"]],
-	[0.5135498046875, -0.02301025390625, 0.9449996948242188, ["23"]],
-	[0.5146484375, 0.14239501953125, 0.9449996948242188, ["24"]],
-	[0.59130859375, -0.192413330078125, 0.9449996948242188, ["25"]],
-	[0.596923828125, -0.022216796875, 0.9449996948242188, ["26"]],
-	[0.5924072265625, 0.14385986328125, 0.9449996948242188, ["27"]],
-	[0.6749267578125, -0.187286376953125, 0.9449996948242188, ["28"]],
-	[0.67431640625, -0.0262451171875, 0.9449996948242188, ["29"]],
-	[0.6756591796875, 0.140594482421875, 0.9449996948242188, ["30"]],
-	[0.7542724609375, -0.19415283203125, 0.9449996948242188, ["31"]],
-	[0.7542724609375, -0.01898193359375, 0.9449996948242188, ["32"]],
-	[0.75439453125, 0.1448974609375, 0.9449996948242188, ["33"]],
-	[0.8392333984375, -0.18951416015625, 0.9449996948242188, ["34"]],
-	[0.837646484375, -0.023468017578125, 0.9449996948242188, ["35"]],
-	[0.8380126953125, 0.14227294921875, 0.9449996948242188, ["36"]],
-	[-0.1368408203125, -0.02099609375, 0.9449996948242188, ["0","00"]],
-	[-0.055419921875, -0.105804443359375, 0.9449996948242188, ["1","2"]],
-	[-0.0567626953125, 0.058624267578125, 0.9449996948242188, ["2","3"]],
-	[0.02587890625, -0.10498046875, 0.9449996948242188, ["4","5"]],
-	[0.0244140625, 0.058837890625, 0.9449996948242188, ["5","6"]],
-	[0.100341796875, -0.10382080078125, 0.9449996948242188, ["7","8"]],
-	[0.1064453125, 0.06011962890625, 0.9449996948242188, ["8","9"]],
-	[0.19189453125, -0.1060791015625, 0.9449996948242188, ["10","11"]],
-	[0.1856689453125, 0.05438232421875, 0.9449996948242188, ["11","12"]],
-	[0.27099609375, -0.10870361328125, 0.9449996948242188, ["13","14"]],
-	[0.2667236328125, 0.058502197265625, 0.9449996948242188, ["14","15"]],
-	[0.3463134765625, -0.107696533203125, 0.9449996948242188, ["16","17"]],
-	[0.34814453125, 0.0556640625, 0.9449996948242188, ["17","18"]],
-	[0.42822265625, -0.109130859375, 0.9449996948242188, ["19","20"]],
-	[0.4302978515625, 0.0550537109375, 0.9449996948242188, ["20","21"]],
-	[0.511474609375, -0.107421875, 0.9449996948242188, ["22","23"]],
-	[0.512451171875, 0.0614013671875, 0.9449996948242188, ["23","24"]],
-	[0.5980224609375, -0.107147216796875, 0.9449996948242188, ["25","26"]],
-	[0.596435546875, 0.0574951171875, 0.9449996948242188, ["26","27"]],
-	[0.673828125, -0.106903076171875, 0.9449996948242188, ["28","29"]],
-	[0.6751708984375, 0.058685302734375, 0.9449996948242188, ["29","30"]],
-	[0.7532958984375, -0.1102294921875, 0.9449996948242188, ["31","32"]],
-	[0.750244140625, 0.06103515625, 0.9449996948242188, ["32","33"]],
-	[0.834716796875, -0.108978271484375, 0.9449996948242188, ["34","35"]],
-	[0.836181640625, 0.05828857421875, 0.9449996948242188, ["35","36"]],
-	[-0.0167236328125, -0.187042236328125, 0.9449996948242188, ["1","4"]],
-	[-0.0167236328125, -0.02154541015625, 0.9449996948242188, ["2","5"]],
-	[-0.0164794921875, 0.140350341796875, 0.9449996948242188, ["3","6"]],
-	[0.064453125, -0.1865234375, 0.9449996948242188, ["4","7"]],
-	[0.06494140625, -0.01727294921875, 0.9449996948242188, ["5","8"]],
-	[0.068603515625, 0.13873291015625, 0.9449996948242188, ["6","9"]],
-	[0.144287109375, -0.184173583984375, 0.9449996948242188, ["7","10"]],
-	[0.14501953125, -0.024139404296875, 0.9449996948242188, ["8","11"]],
-	[0.14501953125, 0.136993408203125, 0.9449996948242188, ["9","12"]],
-	[0.2291259765625, -0.18670654296875, 0.9449996948242188, ["10","13"]],
-	[0.227783203125, -0.0242919921875, 0.9449996948242188, ["11","14"]],
-	[0.2286376953125, 0.14398193359375, 0.9449996948242188, ["12","15"]],
-	[0.308349609375, -0.18792724609375, 0.9449996948242188, ["13","16"]],
-	[0.308837890625, -0.02374267578125, 0.9449996948242188, ["14","17"]],
-	[0.3099365234375, 0.14410400390625, 0.9449996948242188, ["15","18"]],
-	[0.39111328125, -0.192230224609375, 0.9449996948242188, ["16","19"]],
-	[0.390869140625, -0.0189208984375, 0.9449996948242188, ["17","20"]],
-	[0.39111328125, 0.146514892578125, 0.9449996948242188, ["18","21"]],
-	[0.470947265625, -0.188690185546875, 0.9449996948242188, ["19","22"]],
-	[0.4705810546875, -0.0205078125, 0.9449996948242188, ["20","23"]],
-	[0.4725341796875, 0.140167236328125, 0.9449996948242188, ["21","24"]],
-	[0.5491943359375, -0.189666748046875, 0.9449996948242188, ["22","25"]],
-	[0.548095703125, -0.022552490234375, 0.9449996948242188, ["23","26"]],
-	[0.553955078125, 0.1446533203125, 0.9449996948242188, ["24","27"]],
-	[0.6324462890625, -0.191131591796875, 0.9449996948242188, ["25","28"]],
-	[0.635498046875, -0.0224609375, 0.9449996948242188, ["26","29"]],
-	[0.6392822265625, 0.139190673828125, 0.9449996948242188, ["27","30"]],
-	[0.71533203125, -0.187042236328125, 0.9449996948242188, ["28","31"]],
-	[0.7181396484375, -0.02447509765625, 0.9449996948242188, ["29","32"]],
-	[0.7152099609375, 0.138153076171875, 0.9449996948242188, ["30","33"]],
-	[0.7969970703125, -0.1904296875, 0.9449996948242188, ["31","34"]],
-	[0.7955322265625, -0.024871826171875, 0.9449996948242188, ["32","35"]],
-	[0.7960205078125, 0.137664794921875, 0.9449996948242188, ["33","36"]],
-	[-0.0560302734375, -0.271240234375, 0.9449996948242188, ["1","2","3"]],
-	[0.024658203125, -0.271392822265625, 0.9449996948242188, ["4","5","6"]],
-	[0.1051025390625, -0.272125244140625, 0.9449996948242188, ["7","8","9"]],
-	[0.1898193359375, -0.27001953125, 0.9449996948242188, ["10","11","12"]],
-	[0.2696533203125, -0.271697998046875, 0.9449996948242188, ["13","14","15"]],
-	[0.351318359375, -0.268096923828125, 0.9449996948242188, ["16","17","18"]],
-	[0.4287109375, -0.269561767578125, 0.9449996948242188, ["19","20","21"]],
-	[0.5098876953125, -0.2716064453125, 0.9449996948242188, ["22","23","24"]],
-	[0.5960693359375, -0.271148681640625, 0.9449996948242188, ["25","26","27"]],
-	[0.67724609375, -0.268524169921875, 0.9449996948242188, ["28","29","30"]],
-	[0.7523193359375, -0.27227783203125, 0.9449996948242188, ["31","32","33"]],
-	[0.8382568359375, -0.272125244140625, 0.9449996948242188, ["34","35","36"]],
-	[-0.017333984375, -0.106170654296875, 0.9449996948242188, ["1","2","4","5"]],
-	[-0.0162353515625, 0.060882568359375, 0.9449996948242188, ["2","3","5","6"]],
-	[0.06591796875, -0.110107421875, 0.9449996948242188, ["4","5","7","8"]],
-	[0.0653076171875, 0.060028076171875, 0.9449996948242188, ["5","6","8","9"]],
-	[0.146484375, -0.10888671875, 0.9449996948242188, ["7","8","10","11"]],
-	[0.1451416015625, 0.057159423828125, 0.9449996948242188, ["8","9","11","12"]],
-	[0.22705078125, -0.1092529296875, 0.9449996948242188, ["10","11","13","14"]],
-	[0.22802734375, 0.059356689453125, 0.9449996948242188, ["11","12","14","15"]],
-	[0.307373046875, -0.1043701171875, 0.9449996948242188, ["13","14","16","17"]],
-	[0.309814453125, 0.05584716796875, 0.9449996948242188, ["14","15","17","18"]],
-	[0.3919677734375, -0.111083984375, 0.9449996948242188, ["16","17","19","20"]],
-	[0.3924560546875, 0.0596923828125, 0.9449996948242188, ["17","18","20","21"]],
-	[0.471923828125, -0.1044921875, 0.9449996948242188, ["19","20","22","23"]],
-	[0.4698486328125, 0.060028076171875, 0.9449996948242188, ["20","21","23","24"]],
-	[0.5531005859375, -0.106170654296875, 0.9449996948242188, ["22","23","25","26"]],
-	[0.5546875, 0.059417724609375, 0.9449996948242188, ["23","24","26","27"]],
-	[0.633544921875, -0.101531982421875, 0.9449996948242188, ["25","26","28","29"]],
-	[0.6337890625, 0.0579833984375, 0.9449996948242188, ["26","27","29","30"]],
-	[0.7156982421875, -0.106292724609375, 0.9449996948242188, ["28","29","31","32"]],
-	[0.7158203125, 0.0604248046875, 0.9449996948242188, ["29","30","32","33"]],
-	[0.7947998046875, -0.108642578125, 0.9449996948242188, ["31","32","34","35"]],
-	[0.7952880859375, 0.059051513671875, 0.9449996948242188, ["32","33","35","36"]],
-	[-0.099609375, -0.2711181640625, 0.9449996948242188, ["0","00","1","2","3"]],
-	[-0.0147705078125, -0.27154541015625, 0.9449996948242188, ["1","2","3","4","5","6"]],
-	[0.064697265625, -0.270263671875, 0.9449996948242188, ["4","5","6","7","8","9"]],
-	[0.144775390625, -0.271209716796875, 0.9449996948242188, ["7","8","9","10","11","12"]],
-	[0.226806640625, -0.27142333984375, 0.9449996948242188, ["10","11","12","13","14","15"]],
-	[0.306396484375, -0.27142333984375, 0.9449996948242188, ["13","14","15","16","17","18"]],
-	[0.3895263671875, -0.27099609375, 0.9449996948242188, ["16","17","18","19","20","21"]],
-	[0.468017578125, -0.275238037109375, 0.9449996948242188, ["19","20","21","22","23","24"]],
-	[0.5509033203125, -0.2738037109375, 0.9449996948242188, ["22","23","24","25","26","27"]],
-	[0.6336669921875, -0.27386474609375, 0.9449996948242188, ["25","26","27","28","29","30"]],
-	[0.7144775390625, -0.272186279296875, 0.9449996948242188, ["28","29","30","31","32","33"]],
-	[0.7935791015625, -0.272918701171875, 0.9449996948242188, ["31","32","33","34","35","36"]],
-	[0.0643310546875, -0.304718017578125, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12"]], //1st12
-	[0.392822265625, -0.304779052734375, 0.9449996948242188, ["13","14","15","16","17","18","19","20","21","22","23","24"]],//2nd12
-	[0.712158203125, -0.30303955078125, 0.9449996948242188, ["25","26","27","28","29","30","31","32","33","34","35","36"]],//3rd12
-	[0.9222412109375, -0.185882568359375, 0.9449996948242188, ["1","4","7","10","13","16","19","22","25","28","31","34"]],//2to1
-	[0.9229736328125, -0.0181884765625, 0.9449996948242188, ["2","5","8","11","14","17","20","23","26","29","32","35"]],//2to1
-	[0.9248046875, 0.14849853515625, 0.9449996948242188, ["3","6","9","12","15","18","21","24","27","30","33","36"]],//2to1
-	[-0.011474609375, -0.378875732421875, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]],//1-18
-	[0.142822265625, -0.375732421875, 0.9449996948242188, ["2","4","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36"]], //even
-	[0.308349609375, -0.37542724609375, 0.9449996948242188, ["1","3","5","7","9","12","14","16","18","19","21","23","25","27","30","32","34","36"]],//red
-	[0.4713134765625, -0.376861572265625, 0.9449996948242188, ["2","4","6","8","10","11","13","15","17","20","22","24","26","28","29","31","33","35"]],//black
-	[0.6341552734375, -0.376495361328125, 0.9449996948242188, ["1","3","5","7","9","11","13","15","17","19","21","23","25","27","29","31","33","35"]],//odd
-	[0.7926025390625, -0.382232666015625, 0.9449996948242188, ["19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"]]//19-36
-];
+// const tableChipsOffsets =
+// [
+// 	[-0.154541015625, -0.150604248046875, 0.9449996948242188, ["0"]],
+// 	[-0.1561279296875, 0.11505126953125, 0.9449996948242188, ["00"]],
+// 	[-0.059326171875, -0.18701171875, 0.9449996948242188, ["1"]],
+// 	[-0.058349609375, -0.019378662109375, 0.9449996948242188, ["2"]],
+// 	[-0.0587158203125, 0.142059326171875, 0.9449996948242188, ["3"]],
+// 	[0.02294921875, -0.1920166015625, 0.9449996948242188, ["4"]],
+// 	[0.023193359375, -0.01947021484375, 0.9449996948242188, ["5"]],
+// 	[0.024658203125, 0.147369384765625, 0.9449996948242188, ["6"]],
+// 	[0.105224609375, -0.1876220703125, 0.9449996948242188, ["7"]],
+// 	[0.1055908203125, -0.028472900390625, 0.9449996948242188, ["8"]],
+// 	[0.10400390625, 0.147430419921875, 0.9449996948242188, ["9"]],
+// 	[0.187744140625, -0.191802978515625, 0.9449996948242188, ["10"]],
+// 	[0.1866455078125, -0.02667236328125, 0.9449996948242188, ["11"]],
+// 	[0.1842041015625, 0.145965576171875, 0.9449996948242188, ["12"]],
+// 	[0.2696533203125, -0.182464599609375, 0.9449996948242188, ["13"]],
+// 	[0.265869140625, -0.027862548828125, 0.9449996948242188, ["14"]],
+// 	[0.2667236328125, 0.138946533203125, 0.9449996948242188, ["15"]],
+// 	[0.35009765625, -0.186126708984375, 0.9449996948242188, ["16"]],
+// 	[0.348876953125, -0.027740478515625, 0.9449996948242188, ["17"]],
+// 	[0.3497314453125, 0.14715576171875, 0.9449996948242188, ["18"]],
+// 	[0.43212890625, -0.17864990234375, 0.9449996948242188, ["19"]],
+// 	[0.4337158203125, -0.02508544921875, 0.9449996948242188, ["20"]],
+// 	[0.430419921875, 0.138336181640625, 0.9449996948242188, ["21"]],
+// 	[0.51416015625, -0.18603515625, 0.9449996948242188, ["22"]],
+// 	[0.5135498046875, -0.02301025390625, 0.9449996948242188, ["23"]],
+// 	[0.5146484375, 0.14239501953125, 0.9449996948242188, ["24"]],
+// 	[0.59130859375, -0.192413330078125, 0.9449996948242188, ["25"]],
+// 	[0.596923828125, -0.022216796875, 0.9449996948242188, ["26"]],
+// 	[0.5924072265625, 0.14385986328125, 0.9449996948242188, ["27"]],
+// 	[0.6749267578125, -0.187286376953125, 0.9449996948242188, ["28"]],
+// 	[0.67431640625, -0.0262451171875, 0.9449996948242188, ["29"]],
+// 	[0.6756591796875, 0.140594482421875, 0.9449996948242188, ["30"]],
+// 	[0.7542724609375, -0.19415283203125, 0.9449996948242188, ["31"]],
+// 	[0.7542724609375, -0.01898193359375, 0.9449996948242188, ["32"]],
+// 	[0.75439453125, 0.1448974609375, 0.9449996948242188, ["33"]],
+// 	[0.8392333984375, -0.18951416015625, 0.9449996948242188, ["34"]],
+// 	[0.837646484375, -0.023468017578125, 0.9449996948242188, ["35"]],
+// 	[0.8380126953125, 0.14227294921875, 0.9449996948242188, ["36"]],
+// 	[-0.1368408203125, -0.02099609375, 0.9449996948242188, ["0","00"]],
+// 	[-0.055419921875, -0.105804443359375, 0.9449996948242188, ["1","2"]],
+// 	[-0.0567626953125, 0.058624267578125, 0.9449996948242188, ["2","3"]],
+// 	[0.02587890625, -0.10498046875, 0.9449996948242188, ["4","5"]],
+// 	[0.0244140625, 0.058837890625, 0.9449996948242188, ["5","6"]],
+// 	[0.100341796875, -0.10382080078125, 0.9449996948242188, ["7","8"]],
+// 	[0.1064453125, 0.06011962890625, 0.9449996948242188, ["8","9"]],
+// 	[0.19189453125, -0.1060791015625, 0.9449996948242188, ["10","11"]],
+// 	[0.1856689453125, 0.05438232421875, 0.9449996948242188, ["11","12"]],
+// 	[0.27099609375, -0.10870361328125, 0.9449996948242188, ["13","14"]],
+// 	[0.2667236328125, 0.058502197265625, 0.9449996948242188, ["14","15"]],
+// 	[0.3463134765625, -0.107696533203125, 0.9449996948242188, ["16","17"]],
+// 	[0.34814453125, 0.0556640625, 0.9449996948242188, ["17","18"]],
+// 	[0.42822265625, -0.109130859375, 0.9449996948242188, ["19","20"]],
+// 	[0.4302978515625, 0.0550537109375, 0.9449996948242188, ["20","21"]],
+// 	[0.511474609375, -0.107421875, 0.9449996948242188, ["22","23"]],
+// 	[0.512451171875, 0.0614013671875, 0.9449996948242188, ["23","24"]],
+// 	[0.5980224609375, -0.107147216796875, 0.9449996948242188, ["25","26"]],
+// 	[0.596435546875, 0.0574951171875, 0.9449996948242188, ["26","27"]],
+// 	[0.673828125, -0.106903076171875, 0.9449996948242188, ["28","29"]],
+// 	[0.6751708984375, 0.058685302734375, 0.9449996948242188, ["29","30"]],
+// 	[0.7532958984375, -0.1102294921875, 0.9449996948242188, ["31","32"]],
+// 	[0.750244140625, 0.06103515625, 0.9449996948242188, ["32","33"]],
+// 	[0.834716796875, -0.108978271484375, 0.9449996948242188, ["34","35"]],
+// 	[0.836181640625, 0.05828857421875, 0.9449996948242188, ["35","36"]],
+// 	[-0.0167236328125, -0.187042236328125, 0.9449996948242188, ["1","4"]],
+// 	[-0.0167236328125, -0.02154541015625, 0.9449996948242188, ["2","5"]],
+// 	[-0.0164794921875, 0.140350341796875, 0.9449996948242188, ["3","6"]],
+// 	[0.064453125, -0.1865234375, 0.9449996948242188, ["4","7"]],
+// 	[0.06494140625, -0.01727294921875, 0.9449996948242188, ["5","8"]],
+// 	[0.068603515625, 0.13873291015625, 0.9449996948242188, ["6","9"]],
+// 	[0.144287109375, -0.184173583984375, 0.9449996948242188, ["7","10"]],
+// 	[0.14501953125, -0.024139404296875, 0.9449996948242188, ["8","11"]],
+// 	[0.14501953125, 0.136993408203125, 0.9449996948242188, ["9","12"]],
+// 	[0.2291259765625, -0.18670654296875, 0.9449996948242188, ["10","13"]],
+// 	[0.227783203125, -0.0242919921875, 0.9449996948242188, ["11","14"]],
+// 	[0.2286376953125, 0.14398193359375, 0.9449996948242188, ["12","15"]],
+// 	[0.308349609375, -0.18792724609375, 0.9449996948242188, ["13","16"]],
+// 	[0.308837890625, -0.02374267578125, 0.9449996948242188, ["14","17"]],
+// 	[0.3099365234375, 0.14410400390625, 0.9449996948242188, ["15","18"]],
+// 	[0.39111328125, -0.192230224609375, 0.9449996948242188, ["16","19"]],
+// 	[0.390869140625, -0.0189208984375, 0.9449996948242188, ["17","20"]],
+// 	[0.39111328125, 0.146514892578125, 0.9449996948242188, ["18","21"]],
+// 	[0.470947265625, -0.188690185546875, 0.9449996948242188, ["19","22"]],
+// 	[0.4705810546875, -0.0205078125, 0.9449996948242188, ["20","23"]],
+// 	[0.4725341796875, 0.140167236328125, 0.9449996948242188, ["21","24"]],
+// 	[0.5491943359375, -0.189666748046875, 0.9449996948242188, ["22","25"]],
+// 	[0.548095703125, -0.022552490234375, 0.9449996948242188, ["23","26"]],
+// 	[0.553955078125, 0.1446533203125, 0.9449996948242188, ["24","27"]],
+// 	[0.6324462890625, -0.191131591796875, 0.9449996948242188, ["25","28"]],
+// 	[0.635498046875, -0.0224609375, 0.9449996948242188, ["26","29"]],
+// 	[0.6392822265625, 0.139190673828125, 0.9449996948242188, ["27","30"]],
+// 	[0.71533203125, -0.187042236328125, 0.9449996948242188, ["28","31"]],
+// 	[0.7181396484375, -0.02447509765625, 0.9449996948242188, ["29","32"]],
+// 	[0.7152099609375, 0.138153076171875, 0.9449996948242188, ["30","33"]],
+// 	[0.7969970703125, -0.1904296875, 0.9449996948242188, ["31","34"]],
+// 	[0.7955322265625, -0.024871826171875, 0.9449996948242188, ["32","35"]],
+// 	[0.7960205078125, 0.137664794921875, 0.9449996948242188, ["33","36"]],
+// 	[-0.0560302734375, -0.271240234375, 0.9449996948242188, ["1","2","3"]],
+// 	[0.024658203125, -0.271392822265625, 0.9449996948242188, ["4","5","6"]],
+// 	[0.1051025390625, -0.272125244140625, 0.9449996948242188, ["7","8","9"]],
+// 	[0.1898193359375, -0.27001953125, 0.9449996948242188, ["10","11","12"]],
+// 	[0.2696533203125, -0.271697998046875, 0.9449996948242188, ["13","14","15"]],
+// 	[0.351318359375, -0.268096923828125, 0.9449996948242188, ["16","17","18"]],
+// 	[0.4287109375, -0.269561767578125, 0.9449996948242188, ["19","20","21"]],
+// 	[0.5098876953125, -0.2716064453125, 0.9449996948242188, ["22","23","24"]],
+// 	[0.5960693359375, -0.271148681640625, 0.9449996948242188, ["25","26","27"]],
+// 	[0.67724609375, -0.268524169921875, 0.9449996948242188, ["28","29","30"]],
+// 	[0.7523193359375, -0.27227783203125, 0.9449996948242188, ["31","32","33"]],
+// 	[0.8382568359375, -0.272125244140625, 0.9449996948242188, ["34","35","36"]],
+// 	[-0.017333984375, -0.106170654296875, 0.9449996948242188, ["1","2","4","5"]],
+// 	[-0.0162353515625, 0.060882568359375, 0.9449996948242188, ["2","3","5","6"]],
+// 	[0.06591796875, -0.110107421875, 0.9449996948242188, ["4","5","7","8"]],
+// 	[0.0653076171875, 0.060028076171875, 0.9449996948242188, ["5","6","8","9"]],
+// 	[0.146484375, -0.10888671875, 0.9449996948242188, ["7","8","10","11"]],
+// 	[0.1451416015625, 0.057159423828125, 0.9449996948242188, ["8","9","11","12"]],
+// 	[0.22705078125, -0.1092529296875, 0.9449996948242188, ["10","11","13","14"]],
+// 	[0.22802734375, 0.059356689453125, 0.9449996948242188, ["11","12","14","15"]],
+// 	[0.307373046875, -0.1043701171875, 0.9449996948242188, ["13","14","16","17"]],
+// 	[0.309814453125, 0.05584716796875, 0.9449996948242188, ["14","15","17","18"]],
+// 	[0.3919677734375, -0.111083984375, 0.9449996948242188, ["16","17","19","20"]],
+// 	[0.3924560546875, 0.0596923828125, 0.9449996948242188, ["17","18","20","21"]],
+// 	[0.471923828125, -0.1044921875, 0.9449996948242188, ["19","20","22","23"]],
+// 	[0.4698486328125, 0.060028076171875, 0.9449996948242188, ["20","21","23","24"]],
+// 	[0.5531005859375, -0.106170654296875, 0.9449996948242188, ["22","23","25","26"]],
+// 	[0.5546875, 0.059417724609375, 0.9449996948242188, ["23","24","26","27"]],
+// 	[0.633544921875, -0.101531982421875, 0.9449996948242188, ["25","26","28","29"]],
+// 	[0.6337890625, 0.0579833984375, 0.9449996948242188, ["26","27","29","30"]],
+// 	[0.7156982421875, -0.106292724609375, 0.9449996948242188, ["28","29","31","32"]],
+// 	[0.7158203125, 0.0604248046875, 0.9449996948242188, ["29","30","32","33"]],
+// 	[0.7947998046875, -0.108642578125, 0.9449996948242188, ["31","32","34","35"]],
+// 	[0.7952880859375, 0.059051513671875, 0.9449996948242188, ["32","33","35","36"]],
+// 	[-0.099609375, -0.2711181640625, 0.9449996948242188, ["0","00","1","2","3"]],
+// 	[-0.0147705078125, -0.27154541015625, 0.9449996948242188, ["1","2","3","4","5","6"]],
+// 	[0.064697265625, -0.270263671875, 0.9449996948242188, ["4","5","6","7","8","9"]],
+// 	[0.144775390625, -0.271209716796875, 0.9449996948242188, ["7","8","9","10","11","12"]],
+// 	[0.226806640625, -0.27142333984375, 0.9449996948242188, ["10","11","12","13","14","15"]],
+// 	[0.306396484375, -0.27142333984375, 0.9449996948242188, ["13","14","15","16","17","18"]],
+// 	[0.3895263671875, -0.27099609375, 0.9449996948242188, ["16","17","18","19","20","21"]],
+// 	[0.468017578125, -0.275238037109375, 0.9449996948242188, ["19","20","21","22","23","24"]],
+// 	[0.5509033203125, -0.2738037109375, 0.9449996948242188, ["22","23","24","25","26","27"]],
+// 	[0.6336669921875, -0.27386474609375, 0.9449996948242188, ["25","26","27","28","29","30"]],
+// 	[0.7144775390625, -0.272186279296875, 0.9449996948242188, ["28","29","30","31","32","33"]],
+// 	[0.7935791015625, -0.272918701171875, 0.9449996948242188, ["31","32","33","34","35","36"]],
+// 	[0.0643310546875, -0.304718017578125, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12"]], //1st12
+// 	[0.392822265625, -0.304779052734375, 0.9449996948242188, ["13","14","15","16","17","18","19","20","21","22","23","24"]],//2nd12
+// 	[0.712158203125, -0.30303955078125, 0.9449996948242188, ["25","26","27","28","29","30","31","32","33","34","35","36"]],//3rd12
+// 	[0.9222412109375, -0.185882568359375, 0.9449996948242188, ["1","4","7","10","13","16","19","22","25","28","31","34"]],//2to1
+// 	[0.9229736328125, -0.0181884765625, 0.9449996948242188, ["2","5","8","11","14","17","20","23","26","29","32","35"]],//2to1
+// 	[0.9248046875, 0.14849853515625, 0.9449996948242188, ["3","6","9","12","15","18","21","24","27","30","33","36"]],//2to1
+// 	[-0.011474609375, -0.378875732421875, 0.9449996948242188, ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]],//1-18
+// 	[0.142822265625, -0.375732421875, 0.9449996948242188, ["2","4","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36"]], //even
+// 	[0.308349609375, -0.37542724609375, 0.9449996948242188, ["1","3","5","7","9","12","14","16","18","19","21","23","25","27","30","32","34","36"]],//red
+// 	[0.4713134765625, -0.376861572265625, 0.9449996948242188, ["2","4","6","8","10","11","13","15","17","20","22","24","26","28","29","31","33","35"]],//black
+// 	[0.6341552734375, -0.376495361328125, 0.9449996948242188, ["1","3","5","7","9","11","13","15","17","19","21","23","25","27","29","31","33","35"]],//odd
+// 	[0.7926025390625, -0.382232666015625, 0.9449996948242188, ["19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"]]//19-36
+// ];
 
-clearTableMarkers = () =>
-{
-	for(var i=0; i < tableMarkers.length; i++)
-	{
-		tableMarkers[i].destroy();
-	}
-	tableMarkers = [];
-}
-/*
-mp.events.add('click', (x, y, upOrDown, leftOrRight, relativeX, relativeY, worldPosition, hitEntity) => {
-	mp.gui.chat.push("Mouse X:" + x + " | Mouse Y:" + y); // Displays mouse position on click.
+// clearTableMarkers = () =>
+// {
+// 	for(var i=0; i < tableMarkers.length; i++)
+// 	{
+// 		tableMarkers[i].destroy();
+// 	}
+// 	tableMarkers = [];
+// }
+// /*
+// mp.events.add('click', (x, y, upOrDown, leftOrRight, relativeX, relativeY, worldPosition, hitEntity) => {
+// 	mp.gui.chat.push("Mouse X:" + x + " | Mouse Y:" + y); // Displays mouse position on click.
 	
-	const camera = mp.cameras.new("gameplay");
-	var entity = GetPlayerClickData(x, y, camera.getDirection());
-	mp.gui.chat.push(`1`);
-	if (entity != null) {
-		mp.gui.chat.push(`Nasao ${entity}`);
-	}
-	mp.gui.chat.push(`2`);
+// 	const camera = mp.cameras.new("gameplay");
+// 	var entity = GetPlayerClickData(x, y, camera.getDirection());
+// 	mp.gui.chat.push(`1`);
+// 	if (entity != null) {
+// 		mp.gui.chat.push(`Nasao ${entity}`);
+// 	}
+// 	mp.gui.chat.push(`2`);
 
-});
+// });
 
 
-GetPlayerClickData = (x, y, direction) =>
-{
-	 let pos3d = mp.game.graphics.screen2dToWorld3d(new mp.Vector3(x, y, 0));
-    let farAway = new mp.Vector3((direction.x * 150) + pos3d.x, (direction.y * 150) + pos3d.y, (direction.z * 150) + pos3d.z);
-    let hitData = mp.raycasting.testPointToPoint(pos3d, farAway, mp.players.local);
+// GetPlayerClickData = (x, y, direction) =>
+// {
+// 	 let pos3d = mp.game.graphics.screen2dToWorld3d(new mp.Vector3(x, y, 0));
+//     let farAway = new mp.Vector3((direction.x * 150) + pos3d.x, (direction.y * 150) + pos3d.y, (direction.z * 150) + pos3d.z);
+//     let hitData = mp.raycasting.testPointToPoint(pos3d, farAway, mp.players.local);
     
-    if(hitData != undefined)
-    {
-        return hitData;
-    }
-    return null;
-}*/
+//     if(hitData != undefined)
+//     {
+//         return hitData;
+//     }
+//     return null;
+// }*/
 
 /***/ }),
 
@@ -7500,115 +7729,6 @@ const Interactions = {
 
 /***/ }),
 
-/***/ 4534:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-
-const Creator = { 
-   Position: new mp.Vector3(-612.7821044921875, 611.093261718175, 149.5516967734375),
-   Heading: 20.0,
-}
-
-const Genders = [ mp.game.joaat('mp_m_freemode_01'), mp.game.joaat('mp_f_freemode_01') ];
-
-let Hair = [0, 0, 0];
-
-mp.events.add({
-   'client:player.character.creator:show': async () => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://player/game-interface/creator.html');
-         Player.position = Creator.Position;
-         Player.setHeading(Creator.Heading);
-         Player.BrowserControls(true, true);
-         Player.freezePosition(true);
-         mp.game.ui.displayRadar(false);
-         utils.PlayerPreviewCamera(true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-         Player.freezePosition(false);
-         mp.game.ui.displayRadar(true);
-         utils.PlayerPreviewCamera(false);
-      }
-   },
-
-   'render': () => { 
-      if (opened && browser) { 
-         mp.game.controls.disableControlAction(0, 30, true);
-         mp.game.controls.disableControlAction(0, 31, true);
-         mp.game.controls.disableControlAction(0, 32, true);
-         mp.game.controls.disableControlAction(0, 33, true);
-         mp.game.controls.disableControlAction(0, 34, true);
-         mp.game.controls.disableControlAction(0, 35, true);
-
-      }
-   },
-
-   'client:player.character.creator:finish': async (character) => { 
-      const response = await mp.events.callRemoteProc('server:player.character:create', character);
-      if (response) { 
-         mp.game.cam.doScreenFadeOut(4000);
-         browser.execute('creator.AnimateButton()');
-         setTimeout(() => { 
-            mp.events.call('client:player.character.creator:show');
-            mp.game.cam.doScreenFadeIn(2000);
-            mp.events.callRemote('server:player.character:select', response);
-         }, 5000);
-      } else { 
-         browser.execute('Karakter već postoji ! Odaberite drugo ime.')
-      }
-   },
-
-   'client:player.character.creator:gender': (x) => { 
-      Player.model = Genders[x];
-   },
-
-   'client:player.character.creator:eyes': (eyeColor) => { 
-      Player.setEyeColor(eyeColor);
-   } ,
-
-   'client:player.character.creator:hair': (i, x) => { 
-      Hair[i] = parseInt(x);
-      switch (i) { 
-         case 0: { if (x == 23 || x == 24) return; Player.setComponentVariation(2, parseInt(x), 0, 0); break; }
-         case 1: { Player.setHairColor(parseInt(x), parseInt(Hair[2])); break; }
-         case 2: { Player.setHairColor(parseInt(Hair[1]), parseInt(x)); break; }
-      }
-   },
-
-   'client:player.character.creator:beard': (x) => { 
-      x = JSON.parse(x);
-      Player.setHeadOverlay(1, parseInt(x[0]), 1.0, parseInt(x[1]), 0);
-   },
-
-   'client:player.character.creator:face': (i, x) => { 
-      Player.setFaceFeature(i, parseFloat(x)); 
-   },
-
-   'client:player.character.creator:overlay': (i, e, x) => { 
-      Player.setHeadOverlay(parseInt(i), parseInt(e), 1.0, parseInt(x), 0);
-   },
-
-   'client:player.character.creator:blend': (x) => { 
-      x = JSON.parse(x);
-      Player.setHeadBlendData(parseInt(x[0]), parseInt(x[1]), 0, parseInt(x[2]), parseInt(x[3]), 0, parseFloat(x[4]), parseFloat(x[5]), 0, true);
-   },
-
-   'client:player.character.creator:clothing': (i, d) => { 
-      Player.setComponentVariation(i, d, 0, 2);
-   }
-})
-
-
-
-/***/ }),
-
 /***/ 6573:
 /***/ (() => {
 
@@ -7731,167 +7851,167 @@ mp.events.add({
 /***/ (() => {
 
 
-const player = mp.players.local;
-let onlinePlayers = mp.players.length;
-let playerHUD = mp.browsers.new('package://player/hud-interface/hud.html'), isDriving = false;
+// const player = mp.players.local;
+// let onlinePlayers = mp.players.length;
+// // let playerHUD = mp.browsers.new('package://player/hud-interface/hud.html'), isDriving = false;
 
 
-let screenshotBrowser = false, photoName = null,
-	ScreenShotTimer = false;
+// let screenshotBrowser = false, photoName = null,
+// 	ScreenShotTimer = false;
 
 
-mp.events.add({
-	'client:hud.show': (show) => {
-		if (show)  {
-			playerHUD.execute(`hud.toggle = true;`); 
-			setInterval(() => { updatePlayerHud(); }, 1000);
-		}
-		else { 
-			playerHUD.execute(`hud.toggle = false;`); 
-		}
-	},
+// mp.events.add({
+// 	'client:hud.show': (show) => {
+// 		if (show)  {
+// 			playerHUD.execute(`hud.toggle = true;`); 
+// 			setInterval(() => { updatePlayerHud(); }, 1000);
+// 		}
+// 		else { 
+// 			playerHUD.execute(`hud.toggle = false;`); 
+// 		}
+// 	},
 
-	'client:player.notification:show': (message, type, time) => {
-		playerHUD.execute(`hud.notification(\"${message}\", \"${type}\", \"${time}\");`);
-	}
-})
+// 	'client:player.notification:show': (message, type, time) => {
+// 		playerHUD.execute(`hud.notification(\"${message}\", \"${type}\", \"${time}\");`);
+// 	}
+// })
 
 
-updatePlayerHud = () => { 
-	let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0),
-		zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z)),
-		streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName),
-		heading = getPlayerHeading();
-	playerHUD.execute(
-		`hud.location.street = \"${streetName}\", hud.location.zone = \"${zoneName}\", 
-		hud.location.heading = \"${heading}\", hud.money = \"${player.money}\",
-		hud.onlinePlayers =  \"${onlinePlayers}\", hud.id = \"${player.remoteId}\";`
-	); 
-}
+// updatePlayerHud = () => { 
+// 	let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0),
+// 		zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z)),
+// 		streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName),
+// 		heading = getPlayerHeading();
+// 	playerHUD.execute(
+// 		`hud.location.street = \"${streetName}\", hud.location.zone = \"${zoneName}\", 
+// 		hud.location.heading = \"${heading}\", hud.money = \"${player.money}\",
+// 		hud.onlinePlayers =  \"${onlinePlayers}\", hud.id = \"${player.remoteId}\";`
+// 	); 
+// }
 
-mp.keys.bind(0x77, true, function () {  //F8-Key
-	var date = new Date();
-	photoName = "focusrp-" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + "-" + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".png";
-	mp.gui.takeScreenshot(`${photoName}`, 1, 10, 0);
-	if (!ScreenShotTimer) { 
-		mp.events.call("client:screenshot.taken");
-		ScreenShotTimer = true;
-		setTimeout(() => { ScreenShotTimer = false; }, 6000);
-	}
-});
+// mp.keys.bind(0x77, true, function () {  //F8-Key
+// 	var date = new Date();
+// 	photoName = "focusrp-" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear() + "-" + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".png";
+// 	mp.gui.takeScreenshot(`${photoName}`, 1, 10, 0);
+// 	if (!ScreenShotTimer) { 
+// 		mp.events.call("client:screenshot.taken");
+// 		ScreenShotTimer = true;
+// 		setTimeout(() => { ScreenShotTimer = false; }, 6000);
+// 	}
+// });
 
-getPlayerHeading = () => { 
-	let heading = player.getHeading(), headingString;
-	if (heading >= 0 && heading <= 30) { headingString = "N"; }
-	else if (heading >= 30 && heading <= 90) { headingString = "NW"; }
-	else if (heading >= 90 && heading <= 135) { headingString = "W"; }
-	else if (heading >= 135 && heading <= 180) { headingString = "SW"; }
-	else if (heading >= 180 && heading <= 225) { headingString = "S"; }
-	else if (heading >= 225 && heading <= 270) { headingString = "SE"; }
-	else if (heading >= 270 && heading <= 315) { headingString = "E" ; }
-	else if (heading >= 315 && heading <= 360) { headingString = "NE"; }
-	return headingString;
-}
+// getPlayerHeading = () => { 
+// 	let heading = player.getHeading(), headingString;
+// 	if (heading >= 0 && heading <= 30) { headingString = "N"; }
+// 	else if (heading >= 30 && heading <= 90) { headingString = "NW"; }
+// 	else if (heading >= 90 && heading <= 135) { headingString = "W"; }
+// 	else if (heading >= 135 && heading <= 180) { headingString = "SW"; }
+// 	else if (heading >= 180 && heading <= 225) { headingString = "S"; }
+// 	else if (heading >= 225 && heading <= 270) { headingString = "SE"; }
+// 	else if (heading >= 270 && heading <= 315) { headingString = "E" ; }
+// 	else if (heading >= 315 && heading <= 360) { headingString = "NE"; }
+// 	return headingString;
+// }
 
-mp.events.add({
-	'render': () => { // hiding default GTA Hud
-		mp.game.ui.hideHudComponentThisFrame(7); // HUD_AREA_NAME
-		mp.game.ui.hideHudComponentThisFrame(9); // HUD_STREET_NAME
-		mp.game.ui.hideHudComponentThisFrame(6); // HUD_VEHICLE_NAME
-		mp.game.ui.hideHudComponentThisFrame(2); // HUD_WEAPON_ICON
-		mp.game.ui.hideHudComponentThisFrame(3); // HUD_CASH
-		mp.game.ui.hideHudComponentThisFrame(4); // HUD_MP_CASH
-		mp.game.ui.hideHudComponentThisFrame(14); // CROSSHAIR
-		mp.game.ui.hideHudComponentThisFrame(19); // HUD_WEAPON_WHEEL
-		mp.game.ui.hideHudComponentThisFrame(20); // HUD_WEAPON_WHEEL_STATS
+// mp.events.add({
+// 	'render': () => { // hiding default GTA Hud
+// 		mp.game.ui.hideHudComponentThisFrame(7); // HUD_AREA_NAME
+// 		mp.game.ui.hideHudComponentThisFrame(9); // HUD_STREET_NAME
+// 		mp.game.ui.hideHudComponentThisFrame(6); // HUD_VEHICLE_NAME
+// 		mp.game.ui.hideHudComponentThisFrame(2); // HUD_WEAPON_ICON
+// 		mp.game.ui.hideHudComponentThisFrame(3); // HUD_CASH
+// 		mp.game.ui.hideHudComponentThisFrame(4); // HUD_MP_CASH
+// 		mp.game.ui.hideHudComponentThisFrame(14); // CROSSHAIR
+// 		mp.game.ui.hideHudComponentThisFrame(19); // HUD_WEAPON_WHEEL
+// 		mp.game.ui.hideHudComponentThisFrame(20); // HUD_WEAPON_WHEEL_STATS
 
 	
-		mp.game.invoke('0x9E4CFFF989258472');
-		mp.game.invoke('0xF4F2C0D4EE209E20');
+// 		mp.game.invoke('0x9E4CFFF989258472');
+// 		mp.game.invoke('0xF4F2C0D4EE209E20');
 
-		// disable tab weapon wheel // ENABLE LATER
-		// mp.game.controls.disableControlAction(32, 37, true); 
+// 		// disable tab weapon wheel // ENABLE LATER
+// 		// mp.game.controls.disableControlAction(32, 37, true); 
 
 
-		// show Crosshair if player is aiming with AWP
-		let playerWeapon = player.weapon;
-		if (playerWeapon == '0x05FC3C11' || playerWeapon == '0x0C472FE2' || playerWeapon == '0xA914799' || playerWeapon == '0xC734385A' || playerWeapon == '0x6A6C02E0') {
-			mp.game.ui.showHudComponentThisFrame(14);
-		}
+// 		// show Crosshair if player is aiming with AWP
+// 		let playerWeapon = player.weapon;
+// 		if (playerWeapon == '0x05FC3C11' || playerWeapon == '0x0C472FE2' || playerWeapon == '0xA914799' || playerWeapon == '0xC734385A' || playerWeapon == '0x6A6C02E0') {
+// 			mp.game.ui.showHudComponentThisFrame(14);
+// 		}
 	
 
-      // FINISH
-		// if (playerWeapon != mp.game.joaat('weapon_unarmed')) { 
-		// 	if (player.weapon == 0 || player.isActiveInScenario()) return;
-		// 	let ammoCount = getAmmoCount(playerWeapon);
-		// 	let weapon = getWeaponString();
-		// 	playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = ${ammoCount}, hud.weapon.hash = \"${weapon}\";`); 
-		// } else if (playerWeapon == mp.game.joaat('weapon_unarmed')) { 
-		// 	playerHUD.execute(`hud.weapon.have = false;`);
-		// }
+//       // FINISH
+// 		// if (playerWeapon != mp.game.joaat('weapon_unarmed')) { 
+// 		// 	if (player.weapon == 0 || player.isActiveInScenario()) return;
+// 		// 	let ammoCount = getAmmoCount(playerWeapon);
+// 		// 	let weapon = getWeaponString();
+// 		// 	playerHUD.execute(`hud.weapon.have = true, hud.weapon.ammo = ${ammoCount}, hud.weapon.hash = \"${weapon}\";`); 
+// 		// } else if (playerWeapon == mp.game.joaat('weapon_unarmed')) { 
+// 		// 	playerHUD.execute(`hud.weapon.have = false;`);
+// 		// }
 
-		// update veh speed if driver
-		if (player.vehicle && isDriving) { vehicle() }
+// 		// update veh speed if driver
+// 		if (player.vehicle && isDriving) { vehicle() }
 
-	},
+// 	},
 
-	'client:hud.vehicle': (toggle) => { 
-		playerHUD.execute(`hud.vehicle.driving = ${toggle};`); 
-		isDriving = toggle;
-	},
+// 	'client:hud.vehicle': (toggle) => { 
+// 		playerHUD.execute(`hud.vehicle.driving = ${toggle};`); 
+// 		isDriving = toggle;
+// 	},
 
-	'client:hud.black_screen': () => { 
-		playerHUD.execute(`hud.black_screen = !hud.black_screen;`); 
-	},
+// 	'client:hud.black_screen': () => { 
+// 		playerHUD.execute(`hud.black_screen = !hud.black_screen;`); 
+// 	},
 
-	'client:screenshot.taken': () => {
-		screenshotBrowser = mp.browsers.new("package://player/hud-interface/screen.html");
-	},
+// 	'client:screenshot.taken': () => {
+// 		screenshotBrowser = mp.browsers.new("package://player/hud-interface/screen.html");
+// 	},
 
-	'browserDomReady': (browser) => {
-		if(browser != screenshotBrowser) return;
-		screenshotBrowser.call("client:screenshot.receive", `http://screenshots/${photoName}`);
-  },
+// 	'browserDomReady': (browser) => {
+// 		if(browser != screenshotBrowser) return;
+// 		screenshotBrowser.call("client:screenshot.receive", `http://screenshots/${photoName}`);
+//   },
 
-  'client:screenshot.send.to.server': (base64) => {
-		let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0);
-		let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
-		let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
-		mp.events.callRemote('server:disord.screenshot:send', base64, zoneName, streetName);
-		setTimeout(() => {
-			screenshotBrowser.destroy();
-			screenshotBrowser = false;
-		}, 6500);
-	},
+//   'client:screenshot.send.to.server': (base64) => {
+// 		let street = mp.game.pathfind.getStreetNameAtCoord(player.position.x, player.position.y, player.position.z, 0, 0);
+// 		let zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(player.position.x, player.position.y, player.position.z));
+// 		let streetName = mp.game.ui.getStreetNameFromHashKey(street.streetName);
+// 		mp.events.callRemote('server:disord.screenshot:send', base64, zoneName, streetName);
+// 		setTimeout(() => {
+// 			screenshotBrowser.destroy();
+// 			screenshotBrowser = false;
+// 		}, 6500);
+// 	},
 
-})
+// })
 
-vehicle = () => { 
-	let vehicle = player.vehicle;
-	let vehicleSpeed = vehicle.getSpeed();
-	let lights = vehicle.getLightsState(1, 1);
-	let lightsStatus = 0;
-	vehicleSpeed = vehicleSpeed * 3.6;
-
-
-	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
-}
+// vehicle = () => { 
+// 	let vehicle = player.vehicle;
+// 	let vehicleSpeed = vehicle.getSpeed();
+// 	let lights = vehicle.getLightsState(1, 1);
+// 	let lightsStatus = 0;
+// 	vehicleSpeed = vehicleSpeed * 3.6;
 
 
+// 	playerHUD.execute(`hud.vehicle.speed = ${vehicleSpeed}, hud.vehicle.lights = ${lightsStatus};`); 
+// }
 
-function getAmmoInClip (weaponHash){
-	if (hasWeapon(weaponHash)){
-		let clipCount = mp.game.invoke("0xA38DCFFCEA8962FA", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
-		if (clipCount > 360) clipCount = null 
-		return clipCount
-	}
-	return 0
-}
 
-// Modifying default GTA escape menu
 
-mp.game.gxt.set('PM_PAUSE_HDR', 'Focus Roleplay'); 
-mp.game.gxt.set('PM_CASH', '$~500000~'); // Pare
+// function getAmmoInClip (weaponHash){
+// 	if (hasWeapon(weaponHash)){
+// 		let clipCount = mp.game.invoke("0xA38DCFFCEA8962FA", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
+// 		if (clipCount > 360) clipCount = null 
+// 		return clipCount
+// 	}
+// 	return 0
+// }
+
+// // Modifying default GTA escape menu
+
+// mp.game.gxt.set('PM_PAUSE_HDR', 'Focus Roleplay'); 
+// mp.game.gxt.set('PM_CASH', '$~500000~'); // Pare
 
 
 
@@ -8266,221 +8386,208 @@ function Scenario (name, delay, enterAnim, time) {
 /***/ }),
 
 /***/ 9158:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (() => {
 
 
 
-//mp.gui.chat.show(false);
+// //mp.gui.chat.show(false);
 
-const Player = mp.players.local;
+// const Player = mp.players.local;
 
-let browser = mp.browsers.new('package://player/game-interface/main.html');
-//let Chat = mp.browsers.new('package://player/game-interface/chat.html');
-//Chat.markAsChat();
+// // let browser = mp.browsers.new('package://player/game-interface/main.html');
+// //let Chat = mp.browsers.new('package://player/game-interface/chat.html');
+// //Chat.markAsChat();
 
-let active = false, Timer = null;
-let Radar = true;
+// let active = false, Timer = null;
+// let Radar = true;
 
-let InterfaceStatus = 0;
+// let InterfaceStatus = 0;
 
-__webpack_require__.g.GameInterface = browser;
+// global.GameInterface = browser;
 
-mp.keys.bind(0x76, true, function() {
-   if (Player.logged && Player.spawned) { 
-      InterfaceStatus ++;
-      if (InterfaceStatus > 2) InterfaceStatus = 0;
-      switch (InterfaceStatus) { 
-         case 0: {
-            active = true;
-            browser.execute('hud.toggle = true;');
-            Chat.execute('chat.Toggle = true;');
-            mp.game.ui.displayRadar(true);
-            break;
-         } 
-         case 1: { 
-            Chat.execute('chat.Toggle = false;'); 
-            break;
-         }
-         case 2: { 
-            active = false;
-            browser.execute('hud.toggle = false;');
-            mp.game.ui.displayRadar(false);
-            break; 
-         }
-      }
-   }
-});
+// mp.keys.bind(0x76, true, function() {
+//    if (Player.logged && Player.spawned) { 
+//       InterfaceStatus ++;
+//       if (InterfaceStatus > 2) InterfaceStatus = 0;
+//       switch (InterfaceStatus) { 
+//          case 0: {
+//             active = true;
+//             browser.execute('hud.toggle = true;');
+//             Chat.execute('chat.Toggle = true;');
+//             mp.game.ui.displayRadar(true);
+//             break;
+//          } 
+//          case 1: { 
+//             Chat.execute('chat.Toggle = false;'); 
+//             break;
+//          }
+//          case 2: { 
+//             active = false;
+//             browser.execute('hud.toggle = false;');
+//             mp.game.ui.displayRadar(false);
+//             break; 
+//          }
+//       }
+//    }
+// });
 
-mp.events.add({
-   'client:player.interface:toggle': () => { 
-      active = !active;
-      browser.execute('hud.toggle = !hud.toggle;');
-      if (active) 
-         Timer = setInterval(Update, 1000);
-      else
-         if (Timer) clearInterval(Timer);
-   },
+// mp.events.add({
+//    'client:player.interface:toggle': () => { 
+//       active = !active;
+//       browser.execute('hud.toggle = !hud.toggle;');
+//       if (active) 
+//          Timer = setInterval(Update, 1000);
+//       else
+//          if (Timer) clearInterval(Timer);
+//    },
 
-   'client:player.interface:notification': Notify,
+//    'client:player.interface:notification': Notify,
 
-   'client:player.interface:instructions': Instructions,
+//    'client:player.interface:instructions': Instructions,
 
-   'client:player.interface:black': () => { browser.execute('hud.black = !hud.black;'); },
+//    'client:player.interface:black': () => { browser.execute('hud.black = !hud.black;'); },
 
-   'render': () => { 
-      HideDefault();
+//    'render': () => { 
+//       HideDefault();
 
-      if (Player.vehicle) Vehicle();
+//       if (Player.vehicle) Vehicle();
 
-      // if (Player.weapon != mp.game.joaat('weapon_unarmed')) { 
-      //    let Weapon = utils.weaponString(Player.weapon);
-      //    let ammoCount = getAmmoCount(Player.weapon);
-      //    browser.execute('hud.weapon.hash = \"' + Weapon + '\", hud.weapon.ammo = ')
-      // } else if (Player.weapon == mp.game.joaat('weapon_unarmed')) { 
-      //    browser.execute('hud.weapon.hash = null;')
-      // }
-   },
+//       // if (Player.weapon != mp.game.joaat('weapon_unarmed')) { 
+//       //    let Weapon = utils.weaponString(Player.weapon);
+//       //    let ammoCount = getAmmoCount(Player.weapon);
+//       //    browser.execute('hud.weapon.hash = \"' + Weapon + '\", hud.weapon.ammo = ')
+//       // } else if (Player.weapon == mp.game.joaat('weapon_unarmed')) { 
+//       //    browser.execute('hud.weapon.hash = null;')
+//       // }
+//    },
 
-   'playerEnterVehicle': (vehicle, seat) => { 
-      if (seat == -1) {
-         if (browser) browser.execute('hud.Vehicle(true);')
-      }
-   },
+//    'playerEnterVehicle': (vehicle, seat) => { 
+//       if (seat == -1) {
+//          if (browser) browser.execute('hud.Vehicle(true);')
+//       }
+//    },
 
-   'playerLeaveVehicle': (vehicle, seat) => { 
-      if (seat == -1) {
-         if (browser) browser.execute('hud.Vehicle(false);')
-      }
-   },
+//    'playerLeaveVehicle': (vehicle, seat) => { 
+//       if (seat == -1) {
+//          if (browser) browser.execute('hud.Vehicle(false);')
+//       }
+//    },
 
    
-	'client:clone.ped' : (toggle) => {
-      mp.gui.chat.push('even pozvan')
-		cloneLocalPedToScreen(toggle);
-	}
+// 	'client:clone.ped' : (toggle) => {
+//       mp.gui.chat.push('even pozvan')
+// 		cloneLocalPedToScreen(toggle);
+// 	}
 		
-});
+// });
 
 
 
 
-function Update () { 
-   if (browser) { 
-      browser.execute('hud.players = ' + mp.players.length + ', hud.money = ' + Player.Money + ', hud.id = ' + Player.remoteId + ';');
-      LocationUpdate();
-   }
-}
+// function Update () { 
+//    if (browser) { 
+//       browser.execute('hud.players = ' + mp.players.length + ', hud.money = ' + Player.Money + ', hud.id = ' + Player.remoteId + ';');
+//       LocationUpdate();
+//    }
+// }
 
 
-function getGear (i) { 
-   let vehicle = Player.vehicle;
+// function getGear (i) { 
+//    let vehicle = Player.vehicle;
 
-   if (i == 0 && !vehicle.isStopped()) return 'R';
-   else if (i == 0) return 'N';
-   else return i;
-}
-
-
-function Vehicle () { 
-   let vehicle = Player.vehicle;
-   let Speed = vehicle.getSpeed() * 3.6;
-   let Gear = getGear(vehicle.gear).toString();
-   let Lights = vehicle.getLightsState(1, 1);
-   let Indicators = [vehicle.getVariable('IndicatorLeft'), vehicle.getVariable('IndicatorRight')];
-   let EngineFailure = vehicle.getEngineHealth() < 300 ? true : false;
-   // Mileage, Fuel...
-
-   browser.execute('hud.Fuel(' + (100 - Speed) + ')');
-   browser.execute('hud.vehicle.gear = \"' + Gear + '\";');
-   browser.execute('hud.vehicle.indicators = ' + JSON.stringify(Indicators));
-   browser.execute('hud.vehicle.engine_failure = ' + EngineFailure);
-   browser.execute('hud.vehicle.lights = ' + JSON.stringify(Lights));
-   browser.execute('hud.seatbelt = ' + Player.getVariable('Seatbelt'));
-}
-
-function Notify (message, type, time = 4) { 
-   if (browser) browser.execute('hud.Notification(\"' + message + '\", \"' + type + '\", ' + time + ');')
-}
-
-function Instructions (content, time = 4) { 
-   if (browser) browser.execute('hud.Instructions(\"' + content + '\", ' + time + ');')
-}
-
-function hasWeapon (weaponHash){
-	return mp.game.invoke("0x8DECB02F88F428BC", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
-}
+//    if (i == 0 && !vehicle.isStopped()) return 'R';
+//    else if (i == 0) return 'N';
+//    else return i;
+// }
 
 
-function getAmmoCount (weaponHash){
-	if (hasWeapon(weaponHash)){
-		let ammoCount = mp.game.invoke("0x015A522136D7F951", mp.players.local.handle, parseInt(weaponHash) >> 0)
-		if (ammoCount > 999) ammoCount = null
-		return ammoCount
-	}
-	return 0
-}
+// function Vehicle () { 
+//    let vehicle = Player.vehicle;
+//    let Speed = vehicle.getSpeed() * 3.6;
+//    let Gear = getGear(vehicle.gear).toString();
+//    let Lights = vehicle.getLightsState(1, 1);
+//    let Indicators = [vehicle.getVariable('IndicatorLeft'), vehicle.getVariable('IndicatorRight')];
+//    let EngineFailure = vehicle.getEngineHealth() < 300 ? true : false;
+//    // Mileage, Fuel...
+
+//    browser.execute('hud.Fuel(' + (100 - Speed) + ')');
+//    browser.execute('hud.vehicle.gear = \"' + Gear + '\";');
+//    browser.execute('hud.vehicle.indicators = ' + JSON.stringify(Indicators));
+//    browser.execute('hud.vehicle.engine_failure = ' + EngineFailure);
+//    browser.execute('hud.vehicle.lights = ' + JSON.stringify(Lights));
+//    browser.execute('hud.seatbelt = ' + Player.getVariable('Seatbelt'));
+// }
+
+// function Notify (message, type, time = 4) { 
+//    if (browser) browser.execute('hud.Notification(\"' + message + '\", \"' + type + '\", ' + time + ');')
+// }
+
+// function Instructions (content, time = 4) { 
+//    if (browser) browser.execute('hud.Instructions(\"' + content + '\", ' + time + ');')
+// }
+
+// function hasWeapon (weaponHash){
+// 	return mp.game.invoke("0x8DECB02F88F428BC", mp.players.local.handle, parseInt(weaponHash) >> 0, 0)
+// }
 
 
-function getHeading () { 
-   let H = Player.getHeading(), Heading;
-   switch (true) {
-      case (H < 30): Heading = 'N'; break;
-      case (H < 90): Heading = 'NW'; break;
-      case (H < 135): Heading = 'W'; break;
-      case (H < 180): Heading = 'SW'; break;
-      case (H < 225): Heading = 'S'; break;
-      case (H < 270): Heading = 'SE'; break;
-      case (H < 315): Heading = 'E'; break;
-      case (H < 360): Heading = 'NE'; break;
-      default: Heading = 'N'; break;
-   }
-   return Heading;
-}
+// function getAmmoCount (weaponHash){
+// 	if (hasWeapon(weaponHash)){
+// 		let ammoCount = mp.game.invoke("0x015A522136D7F951", mp.players.local.handle, parseInt(weaponHash) >> 0)
+// 		if (ammoCount > 999) ammoCount = null
+// 		return ammoCount
+// 	}
+// 	return 0
+// }
 
 
-function LocationUpdate () { 
-   const path = mp.game.pathfind.getStreetNameAtCoord(Player.position.x, Player.position.y, Player.position.z, 0, 0),
-      Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(Player.position.x, Player.position.y, Player.position.z)),
-      Street = mp.game.ui.getStreetNameFromHashKey(path.streetName),
-      Heading = getHeading();
-
-   browser.execute('hud.location.street = \"' + Street + '\";');
-   browser.execute('hud.location.zone = \"' + Zone + '\";');
-   browser.execute('hud.location.heading = \"' + Heading + '\";');
-}
-
-
-mp.game.gxt.set('PM_PAUSE_HDR', 'Focus Roleplay'); 
-
-
-function HideDefault () {
-   mp.game.ui.hideHudComponentThisFrame(7); // HUD_AREA_NAME
-   mp.game.ui.hideHudComponentThisFrame(9); // HUD_STREET_NAME
-   mp.game.ui.hideHudComponentThisFrame(6); // HUD_VEHICLE_NAME
-   mp.game.ui.hideHudComponentThisFrame(2); // HUD_WEAPON_ICON
-   mp.game.ui.hideHudComponentThisFrame(3); // HUD_CASH
-   mp.game.ui.hideHudComponentThisFrame(4); // HUD_MP_CASH
-   mp.game.ui.hideHudComponentThisFrame(14); // CROSSHAIR
-   mp.game.ui.hideHudComponentThisFrame(19); // HUD_WEAPON_WHEEL
-   mp.game.ui.hideHudComponentThisFrame(20); // HUD_WEAPON_WHEEL_STATS
-
-   mp.game.invoke('0x9E4CFFF989258472');
-   mp.game.invoke('0xF4F2C0D4EE209E20');
-
-   // mp.game.controls.disableControlAction(1, 263, true);
-   mp.game.controls.disableControlAction(1, 140, true);
-   // mp.game.controls.disableControlAction(1, 141, true); // Q Heavy Attack mele
+// function getHeading () { 
+//    let H = Player.getHeading(), Heading;
+//    switch (true) {
+//       case (H < 30): Heading = 'N'; break;
+//       case (H < 90): Heading = 'NW'; break;
+//       case (H < 135): Heading = 'W'; break;
+//       case (H < 180): Heading = 'SW'; break;
+//       case (H < 225): Heading = 'S'; break;
+//       case (H < 270): Heading = 'SE'; break;
+//       case (H < 315): Heading = 'E'; break;
+//       case (H < 360): Heading = 'NE'; break;
+//       default: Heading = 'N'; break;
+//    }
+//    return Heading;
+// }
 
 
-   // disable tab weapon wheel
-   mp.game.controls.disableControlAction(32, 37, true); 
+// function LocationUpdate () { 
 
-   // show Crosshair if player is aiming with AWP
-   let playerWeapon = Player.weapon;
-   if (playerWeapon == '0x05FC3C11' || playerWeapon == '0x0C472FE2' || playerWeapon == '0xA914799' || playerWeapon == '0xC734385A' || playerWeapon == '0x6A6C02E0') {
-      mp.game.ui.showHudComponentThisFrame(14);
-   }
-}
+//       Heading = getHeading();
+
+//    browser.execute('hud.location.street = \"' + Street + '\";');
+//    browser.execute('hud.location.zone = \"' + Zone + '\";');
+//    browser.execute('hud.location.heading = \"' + Heading + '\";');
+// }
+
+
+// mp.game.gxt.set('PM_PAUSE_HDR', 'Focus Roleplay'); 
+
+
+// function HideDefault () {
+
+
+//    // mp.game.controls.disableControlAction(1, 263, true);
+//    mp.game.controls.disableControlAction(1, 140, true);
+//    // mp.game.controls.disableControlAction(1, 141, true); // Q Heavy Attack mele
+
+
+//    // disable tab weapon wheel
+//    mp.game.controls.disableControlAction(32, 37, true); 
+
+//    // show Crosshair if player is aiming with AWP
+//    let playerWeapon = Player.weapon;
+//    if (playerWeapon == '0x05FC3C11' || playerWeapon == '0x0C472FE2' || playerWeapon == '0xA914799' || playerWeapon == '0xC734385A' || playerWeapon == '0x6A6C02E0') {
+//       mp.game.ui.showHudComponentThisFrame(14);
+//    }
+// }
 
 
 
@@ -8533,7 +8640,7 @@ mp.keys.bind(Controls.keyP, false, function() {
 
 
 const player = mp.players.local;
-let browser = mp.browsers.new('package://player/phone-interface/phone.html'), opened = false;
+// let browser = mp.browsers.new('package://player/phone-interface/phone.html'), opened = false;
 
 
 mp.events.add({
@@ -9352,7 +9459,7 @@ const natives = {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -9392,6 +9499,9 @@ const natives = {
 /******/ 	__webpack_require__(8680);
 /******/ 	__webpack_require__(6064);
 /******/ 	__webpack_require__(7193);
+/******/ 	__webpack_require__(1828);
+/******/ 	__webpack_require__(7845);
+/******/ 	__webpack_require__(8412);
 /******/ 	__webpack_require__(8319);
 /******/ 	__webpack_require__(1406);
 /******/ 	__webpack_require__(805);
@@ -9412,7 +9522,6 @@ const natives = {
 /******/ 	__webpack_require__(3886);
 /******/ 	__webpack_require__(1877);
 /******/ 	__webpack_require__(3045);
-/******/ 	__webpack_require__(4534);
 /******/ 	__webpack_require__(6573);
 /******/ 	__webpack_require__(555);
 /******/ 	__webpack_require__(9133);
@@ -9428,7 +9537,7 @@ const natives = {
 /******/ 	__webpack_require__(8083);
 /******/ 	__webpack_require__(5639);
 /******/ 	__webpack_require__(5568);
-/******/ 	__webpack_require__(2591);
+/******/ 	__webpack_require__(8675);
 /******/ 	__webpack_require__(8178);
 /******/ 	__webpack_require__(6687);
 /******/ 	var __webpack_exports__ = __webpack_require__(8878);

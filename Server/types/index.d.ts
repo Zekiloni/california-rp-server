@@ -1,6 +1,6 @@
-import Accounts from "../src/Models/Account";
-import Characters from "../src/Models/Character";
 
+import Accounts from '../src/Models/Account';
+import Characters from '../src/Models/Character';
 
 
 declare global { 
@@ -23,12 +23,10 @@ declare global {
    }
 
    interface PlayerMp { 
-      CHARACTER_ID: number;
-      ACCOUNT_ID: number;
       RespawnTimer: any;
-      
-      Character (): Promise<Characters>;
-      Account (): Promise<Accounts>;
+      Character: Characters;
+      Account: Accounts;
+
       SendMessage (Message: string, Color: string): void;
       Notification (Message: string, Type: number, Time: number): void;
       Properties (): any;

@@ -30,8 +30,17 @@ Database.authenticate()
 });
 
 
+(async () => { 
+   // const Acc = await Accounts.create({ Username: 'Zekiloni', Password: 'test' });
+   // const char = new Characters({ Name: 'Zachary Parker', Account_id: Acc.id });
+   // char.save();
+   const aca = await Characters.findAll({ include: [Accounts] })
+   aca[0].Account.Username = 'Dzafur';
+   aca[0].save();
 
-// Accounts.create({ Username: 'Zekiloni', Password: 'test' });
-Characters.create({ Name: 'Zachary Parker', Account: 1 });
+   //Characters.create({ Name: 'Zachary Parker', Account: 1 });
+})();
+
+
 
 export default Database;

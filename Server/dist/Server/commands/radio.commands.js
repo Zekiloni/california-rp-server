@@ -7,7 +7,7 @@ module.exports = {
             params: ['tekst'],
             item: 'Handheld Radio',
             call: async (player, args) => {
-                const Character = await player.Character();
+                const Character = player.Character;
                 console.log('Frekvencija /r Karaktera ' + Character.Frequency);
                 if (Character.Frequency == 0)
                     return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.Globals.Notification.Error, 4);

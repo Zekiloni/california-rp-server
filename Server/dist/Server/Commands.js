@@ -34,8 +34,8 @@ mp.events.add('playerCommand', async (Player, Command) => {
     const Name = args.splice(0, 1)[0];
     let cmd = Commands[Name];
     if (cmd) {
-        const Account = await Player.Account();
-        const Character = await Player.Character();
+        const Account = Player.Account;
+        const Character = Player.Character;
         if (cmd.admin && Account.Administrator < cmd.admin)
             return Player.Notification('Nije vam dozvoljeno !', Globals_1.Globals.Notification.Error, 4);
         if (cmd.job && Character.Job != cmd.job)

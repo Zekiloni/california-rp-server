@@ -1,6 +1,7 @@
 
 // const Weapons = require('../data/Weapons.json');
 
+
 export class Items {
 
    Name: string;
@@ -16,6 +17,8 @@ export class Items {
    Hunger?: number;
    Thirst?: number;
    Use?(): void;
+
+   static List: { [key:string] : Items } = {};
    
    constructor (Name: string, Type: Items.Type[], Model: string, Weight: number = 0.1, Desc: string = '', Data: object = {}) { // Data: Items
       this.Name = Name;
@@ -37,8 +40,6 @@ export class Items {
 
 
 export namespace Items {
-
-   export const List: { [key:string] : Items } = {};
 
    export enum Type {
       Equipable, Consumable, Openable, 

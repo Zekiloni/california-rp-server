@@ -23,8 +23,8 @@ let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
     static async New(player, target, reason, date, expiring) {
         const IP = Main_1.Main.ValidateIP(target);
         if (IP) {
-            const UserAcc = await Account_1.default.findOne({ where: { id: player.CHARACTER_ID } });
-            const Banned = await Bans_1.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+            const UserAcc = player.Account;
+            const Banned = await Bans_1.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.Account.id });
             if (UserAcc) {
                 Banned.Account = UserAcc.id;
                 Banned.HardwareId = UserAcc.Hardwer;
@@ -35,14 +35,14 @@ let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
         else {
             let Online = mp.players.find(target);
             if (Online) {
-                const Account = await Online.Account();
-                Bans_1.create({ Account: Online.ACCOUNT_ID, Character: Online.CHARACTER_ID, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+                const Account = await Online.Account;
+                Bans_1.create({ Account: Online.Account.id, Character: Online.Character.id, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
                 Online.kick(reason);
             }
             else {
                 const OfflineAcc = await Account_1.default.findOne({ where: { Name: target } });
                 if (OfflineAcc) {
-                    Bans_1.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+                    Bans_1.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
                 }
                 else {
                     // That user is not found

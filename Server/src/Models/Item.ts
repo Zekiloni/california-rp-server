@@ -79,7 +79,7 @@ export default class Item extends Model {
    }
 
    async Use (Player: PlayerMp) { 
-      const Character = await Player.Character();
+      const Character = Player.Character;
       
       const rItem = Items.List[this.Name];
 

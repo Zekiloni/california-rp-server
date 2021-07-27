@@ -16,8 +16,9 @@ mp.events.add({
             Player.kick('Bannedovan');
     },
     'SERVER::CHARACTER:PLAY': async (Player, CHARACTER_ID) => {
+        console.log('Selected character is ' + CHARACTER_ID);
         const Selected = await Character_1.default.findOne({ where: { id: CHARACTER_ID } });
-        console.log('Valele gey');
+        console.log(Selected);
         Selected?.Spawn(Player);
     }
 });
@@ -26,17 +27,18 @@ mp.events.addProc({
         Player.dimension = Player.id;
         return Settings_1.Settings.Lobby;
     },
+    'SERVER::CREATOR:INFO': (Player) => {
+        return Settings_1.Settings.Creator;
+    },
     'SERVER::AUTHORIZATION:VERIFY': async (Player, Username, Password) => {
         return new Promise((resolve) => {
-            Account_1.default.findOne({ where: { Username: Username } }).then((Account) => {
+            Account_1.default.findOne({ where: { Username: Username }, include: [Character_1.default] }).then((Account) => {
                 if (Account) {
                     const Logged = Account.Login(Password);
                     if (Logged) {
-                        Character_1.default.findAll({ where: { Account: Account.id } }).then((Characters) => {
-                            Account.Logged(Player, true);
-                            console.log(Characters);
-                            resolve({ Account: Account, Characters: Characters });
-                        });
+                        Account.Logged(Player, true);
+                        console.log(Account.Characters);
+                        resolve({ Account: Account, Characters: Account.Characters });
                     }
                     else {
                         Player.Notification(Messages_1.Messages.INCCORRECT_PASSWORD, Globals_1.Globals.Notification.Error, 5);

@@ -23,7 +23,7 @@ module.exports = {
             call: async (player, args) => {
                 const spawns = ['Default spawn', 'Zadnja pozicija', 'Fakcija'];
                 const [point] = args;
-                let Character = await player.Character();
+                let Character = player.Character;
                 Character.SetSpawn(point);
                 player.SendMessage('Promenili ste mesto spawna na ' + spawns[point], frp.Globals.Colors.info);
             }

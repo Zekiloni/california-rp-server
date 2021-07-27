@@ -17,14 +17,18 @@ input {
    letter-spacing: 1.2px;
    width: 100%;
    border: 1px solid rgb(121 121 121 / 13%);
-   color: #cdcdcd;
-   background: rgb(21 21 21 / 75%);
+   color: #f1f1f1;
+   background: rgb(255 255 255 / 20%);
    position: relative;
    padding: 10px 20px;
    font-size: 15px;
+   border-radius: 5px;
    font-weight: 300;
-   box-shadow: 0 5px 10px rgb(12 12 12 / 10%);
    transition: all 0.45s ease;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+   color: rgb(27, 27, 27);
 }
 
 input:focus { border-color: #fbc60c; outline: none; }
@@ -53,25 +57,25 @@ button {
 
 button.frp-1 { 
    color: #2b2b2b;
-   background: #fbc60c;
-   box-shadow: 0 4px 10px rgb(251 198 12 / 30%);
+   background: linear-gradient(45deg, #fab80a, #fed52e);
+   box-shadow: 0 4px 10px rgb(251 198 12 / 5%);
    transition: all 0.3s ease;
 }
 
 button.frp-1:hover { 
    color: white;
-   box-shadow: 0 4px 10px rgb(251 198 12 / 50%);
+   box-shadow: 0 4px 10px rgb(251 198 12 / 25%);
 }
 
 button.frp-2 { 
-   background: #473a88;
+   background: linear-gradient(45deg, #473a88, #7c5bf1);
    color: #f5f5f5;
-   box-shadow: 0 4px 15px rgb(104 69 234 / 30%);
+   box-shadow: 0 4px 15px rgb(104 69 234 / 5%);
 }
 
 button.frp-2:hover { 
    color: white;
-   box-shadow: 0 4px 15px rgb(104 69 234 / 60%);
+   box-shadow: 0 4px 15px rgb(104 69 234 / 25%);
 }
 
 button.frp-3  {
@@ -116,6 +120,13 @@ button.frp-green:hover {
 
 button:focus { 
    outline: none;
+}
+
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+   display: none;
+   -webkit-appearance: none;
 }
 
 ::-webkit-scrollbar { width: 6px; }

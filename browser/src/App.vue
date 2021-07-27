@@ -3,6 +3,7 @@
    <div id="app">
       <GameInterface v-if="interfaces.GameInterface" />
       <Chat v-if="interfaces.Chat" />
+      <Creator v-if="interfaces.Creator" />
       <transition name="bounce">
          <Authorization v-if="interfaces.Authorization" />
       </transition>
@@ -28,6 +29,7 @@
    import './assets/styles/font-awesome.css';
 
    import Authorization from './components/Authorization.vue';
+   import Creator from './components/Creator.vue';
    import Notifications from './components/Notifications.vue';
    import GameInterface from './components/Game.Interface.vue';
    import Chat from './components/Chat';
@@ -35,7 +37,7 @@
    export default { 
 
       components: { 
-         Authorization, Notifications, GameInterface, Chat
+         Authorization, Creator, Notifications, GameInterface, Chat
       },
 
       data () { 
@@ -45,16 +47,23 @@
       },
 
       mounted () { 
-         // mp.events.add('Browser.ShowInterface', data => { 
-         //    this.show(data);
-         // });  
+         mp.events.add('BROWSER::SHOW', data => { 
+            this.show(data);
+         });
+
+         mp.events.add('BROWSER::HIDE', data => { 
+            console.log('Datta is ' + data);
+            this.hide(data);
+         }); 
+
          console.log('Focus Roleplay - Game Interface');
          // this.show('Authorization');
       },
 
       methods: {
          ...mapMutations('interfaces', [
-            'show'
+            'show', 
+            'hide'
          ])     
       },
 
@@ -62,6 +71,8 @@
          ...mapState(['interfaces'])
       }
    }
+   
+
    
 
 </script>

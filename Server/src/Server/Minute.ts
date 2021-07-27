@@ -4,7 +4,7 @@ import { Settings } from "./Settings";
 const interval = 60 * 1000;
 
 async function Update (Player: PlayerMp) {
-   const Character = await Player.Character(), account = await Player.Account();
+   const Character = Player.Character, account = Player.Account;
    
    Character.increment('Minutes', { by: Settings.HappyHours == true ? 2 : 1 });
 

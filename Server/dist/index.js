@@ -9,6 +9,8 @@ require("./Player/Player");
 require("./Player/Account");
 const Account_1 = __importDefault(require("./Models/Account"));
 const Character_1 = __importDefault(require("./Models/Character"));
+const Items_1 = require("./Items/Items");
+console.log(Items_1.Items.List);
 // !!! TEST //
 // DATA
 // let Globals = require('./configs/Globals');

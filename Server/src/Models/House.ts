@@ -114,7 +114,7 @@ export default class House extends Model {
    async Buy(Player: PlayerMp) {
       if (this.Owner != 0) return Player.Notification(Messages.HOUSE_ALREADY_OWNER, Globals.Notification.Error, 5);
 
-      const Character = await Player.Character();
+      const Character = Player.Character;
       const Houses = await Player.Properties().Houses;
 
 
@@ -130,8 +130,8 @@ export default class House extends Model {
    }
 
    async Lock(Player: PlayerMp) {
-      if (this.Owner != Player.CHARACTER_ID) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals.Notification.Error, 5);
-      if (!this.Tenants.includes(Player.CHARACTER_ID)) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals.Notification.Error, 5);
+      if (this.Owner != Player.Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals.Notification.Error, 5);
+      if (!this.Tenants.includes(Player.Character.id)) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals.Notification.Error, 5);
 
       this.Locked = !this.Locked;
       await this.save();

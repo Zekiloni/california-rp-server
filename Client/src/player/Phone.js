@@ -1,7 +1,7 @@
 
 
 const player = mp.players.local;
-let browser = mp.browsers.new('package://player/phone-interface/phone.html'), opened = false;
+// let browser = mp.browsers.new('package://player/phone-interface/phone.html'), opened = false;
 
 
 mp.events.add({

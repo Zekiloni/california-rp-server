@@ -57,8 +57,8 @@ export default class Bans extends Model {
    static async New(player: PlayerMp, target: any, reason: string, date: Date, expiring: Date) {
       const IP = Main.ValidateIP(target);
       if (IP) {
-         const UserAcc = await Accounts.findOne({ where: { id: player.CHARACTER_ID } })
-         const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+         const UserAcc = player.Account;
+         const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.Account.id });
          if (UserAcc) {
             Banned.Account = UserAcc.id;
             Banned.HardwareId = UserAcc.Hardwer;
@@ -69,14 +69,14 @@ export default class Bans extends Model {
       else {
          let Online = mp.players.find(target);
          if (Online) {
-            const Account = await Online.Account();
+            const Account = await Online.Account;
 
-            Bans.create({ Account: Online.ACCOUNT_ID, Character: Online.CHARACTER_ID, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+            Bans.create({ Account: Online.Account.id, Character: Online.Character.id, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
             Online.kick(reason);
          } else {
             const OfflineAcc = await Accounts.findOne({ where: { Name: target } })
             if (OfflineAcc) {
-               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.ACCOUNT_ID });
+               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
             } else {
                // That user is not found
                player.Notification(Messages.USER_NOT_FOUND, Globals.Notification.Error, 5);

@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 let Channel = Channel_1 = class Channel extends sequelize_typescript_1.Model {
     static async New(Player, NewFreq, NewPass) {
-        const NewChannel = await Channel_1.create({ Frequency: NewFreq, Password: NewPass, Owner: Player.CHARACTER_ID });
+        const NewChannel = await Channel_1.create({ Frequency: NewFreq, Password: NewPass, Owner: Player.Character.id });
     }
     static async Exists(FreqForCheck) {
         const Exist = await Channel_1.count({ where: { Frequency: FreqForCheck } });

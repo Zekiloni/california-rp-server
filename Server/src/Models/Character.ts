@@ -1,9 +1,10 @@
 
 
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
+import Accounts from './Account';
 import Appearances from './Appearance';
 import { Injury } from './Injury';
 import { License } from './License';
@@ -16,8 +17,12 @@ export default class Characters extends Model {
    @Column
    id: number
 
+   @ForeignKey(() => Accounts)
    @Column
-   Account: number
+   Account_id: number
+
+   @BelongsTo(() => Accounts)
+   Account: Accounts
 
    @Unique
    @Length({ min: 6, max: 48 })
@@ -144,7 +149,6 @@ export default class Characters extends Model {
    @Column
    Cuffed: boolean
 
-
    @CreatedAt
    Created_At: Date;
 
@@ -152,71 +156,84 @@ export default class Characters extends Model {
    Updated_At: Date;
 
    async Spawn (Player: PlayerMp) { 
-      const Account = await Player.Account();
 
-      await Account.Logged(Player, true);
+      try { 
+         console.log('Spawn', 0.5);
 
-      Player.CHARACTER_ID = this.id;
-      Player.name = this.Name;
-      Player.setVariable('Spawned', true);
+         Player.Account.Last_Character = this.id;
 
-      // Loading money & health
-      this.SetHealth(Player, this.Health);
-      this.SetMoney(Player, this.Money);
+         console.log('Spawn', 0);
+         Player.Character = this;
+         Player.name = this.Name;
+         Player.setVariable('Spawned', true);
+   
+         // Loading money & health
+         this.SetHealth(Player, this.Health);
+         this.SetMoney(Player, this.Money);
+   
+         Player.setVariable('Job', this.Job);
+         console.log('Spawn', 1);
 
-      Player.setVariable('Job', this.Job);
+         // Temporary Variables
+         Player.setVariable('Duty', false);
+         Player.setVariable('Job_Duty', false);
+         Player.setVariable('Job_Vehicle', null);
+         Player.setVariable('Working_Uniform', false);
+         Player.setVariable('Admin_Duty', false);
+         Player.setVariable('Attachment', null);
+         Player.setVariable('Phone_Ringing', false);
+         Player.setVariable('Freezed', false);
+         Player.setVariable('Ragdoll', false);
 
-      // Temporary Variables
-      Player.setVariable('Duty', false);
-      Player.setVariable('Job_Duty', false);
-      Player.setVariable('Job_Vehicle', null);
-      Player.setVariable('Working_Uniform', false);
-      Player.setVariable('Admin_Duty', false);
-      Player.setVariable('Attachment', null);
-      Player.setVariable('Phone_Ringing', false);
-      Player.setVariable('Freezed', false);
-      Player.setVariable('Ragdoll', false);
+         console.log('Spawn', 2);
 
-      // this.SetWalkingStyle(player, this.Walking_Style);
-      // this.SetMood(player, this.Mood);
-      // this.Cuff(player, this.Cuffed);
-
-
-      Player.setVariable('Injuries', this.Injuries);
-      Player.RespawnTimer = null;
-      Player.setVariable('Wounded', this.Wounded);
-      if (this.Wounded) { 
-         // ciba na pod...
-      }
-      
-      Player.setVariable('Bubble', null);
-      Player.setVariable('Seatbelt', false);
-
-      Player.Notification(Messages.WELCOME, Globals.Notification.Info, 4);
-
-      // Applying appearance & clothing
-      const Appearance = await Appearances.findOne({ where: { Character: this.id } });
-      if (Appearance) Appearance.Apply(Player, this.Gender);
-
-      // frp.Items.Equipment(Player, this.Gender);
-      
-      // spawning player on desired point
-      switch (this.Spawn_Point) {
-         case 0: {
-            Player.position = Settings.Default.spawn
-            Player.heading = Settings.Default.heading;
-            Player.dimension = Settings.Default.dimension;
-            break;
+         // this.SetWalkingStyle(player, this.Walking_Style);
+         // this.SetMood(player, this.Mood);
+         // this.Cuff(player, this.Cuffed);
+   
+   
+         Player.setVariable('Injuries', this.Injuries);
+         Player.RespawnTimer = null;
+         Player.setVariable('Wounded', this.Wounded);
+         if (this.Wounded) { 
+            // ciba na pod...
          }
-         case 1: {
-               Player.position = this.Last_Position;
+         
+         Player.setVariable('Bubble', null);
+         Player.setVariable('Seatbelt', false);
+   
+         Player.Notification(Messages.WELCOME, Globals.Notification.Info, 4);
+   
+         // Applying appearance & clothing
+         // const Appearance = await Appearances.findOne({ where: { Character: this.id } });
+         // if (Appearance) Appearance.Apply(Player, this.Gender);
+   
+         // frp.Items.Equipment(Player, this.Gender);
+                  console.log('Spawn', 3);
+
+         // spawning player on desired point
+         switch (this.Spawn_Point) {
+            case 0: {
+               console.log('Spawn', 4);
+               Player.position = Settings.Default.spawn
+               Player.heading = Settings.Default.heading;
                Player.dimension = Settings.Default.dimension;
-            break;
+               break;
+            }
+            case 1: {
+                  Player.position = this.Last_Position;
+                  Player.dimension = Settings.Default.dimension;
+               break;
+            }
+            case 2: {
+               break;
+            }
          }
-         case 2: {
-            break;
-         }
+   
+      } catch (e) { 
+         console.log(e)
       }
+
    }
 
    SetHealth (Player: PlayerMp, value: number) { 

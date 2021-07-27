@@ -16,61 +16,70 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const Globals_1 = require("../Global/Globals");
 const Messages_1 = require("../Global/Messages");
 const Settings_1 = require("../Server/Settings");
-const Appearance_1 = __importDefault(require("./Appearance"));
+const Account_1 = __importDefault(require("./Account"));
 let Characters = class Characters extends sequelize_typescript_1.Model {
     async Spawn(Player) {
-        const Account = await Player.Account();
-        await Account.Logged(Player, true);
-        Player.CHARACTER_ID = this.id;
-        Player.name = this.Name;
-        Player.setVariable('Spawned', true);
-        // Loading money & health
-        this.SetHealth(Player, this.Health);
-        this.SetMoney(Player, this.Money);
-        Player.setVariable('Job', this.Job);
-        // Temporary Variables
-        Player.setVariable('Duty', false);
-        Player.setVariable('Job_Duty', false);
-        Player.setVariable('Job_Vehicle', null);
-        Player.setVariable('Working_Uniform', false);
-        Player.setVariable('Admin_Duty', false);
-        Player.setVariable('Attachment', null);
-        Player.setVariable('Phone_Ringing', false);
-        Player.setVariable('Freezed', false);
-        Player.setVariable('Ragdoll', false);
-        // this.SetWalkingStyle(player, this.Walking_Style);
-        // this.SetMood(player, this.Mood);
-        // this.Cuff(player, this.Cuffed);
-        Player.setVariable('Injuries', this.Injuries);
-        Player.RespawnTimer = null;
-        Player.setVariable('Wounded', this.Wounded);
-        if (this.Wounded) {
-            // ciba na pod...
+        try {
+            console.log('Spawn', 0.5);
+            Player.Account.Last_Character = this.id;
+            console.log('Spawn', 0);
+            Player.Character = this;
+            Player.name = this.Name;
+            Player.setVariable('Spawned', true);
+            // Loading money & health
+            this.SetHealth(Player, this.Health);
+            this.SetMoney(Player, this.Money);
+            Player.setVariable('Job', this.Job);
+            console.log('Spawn', 1);
+            // Temporary Variables
+            Player.setVariable('Duty', false);
+            Player.setVariable('Job_Duty', false);
+            Player.setVariable('Job_Vehicle', null);
+            Player.setVariable('Working_Uniform', false);
+            Player.setVariable('Admin_Duty', false);
+            Player.setVariable('Attachment', null);
+            Player.setVariable('Phone_Ringing', false);
+            Player.setVariable('Freezed', false);
+            Player.setVariable('Ragdoll', false);
+            console.log('Spawn', 2);
+            // this.SetWalkingStyle(player, this.Walking_Style);
+            // this.SetMood(player, this.Mood);
+            // this.Cuff(player, this.Cuffed);
+            Player.setVariable('Injuries', this.Injuries);
+            Player.RespawnTimer = null;
+            Player.setVariable('Wounded', this.Wounded);
+            if (this.Wounded) {
+                // ciba na pod...
+            }
+            Player.setVariable('Bubble', null);
+            Player.setVariable('Seatbelt', false);
+            Player.Notification(Messages_1.Messages.WELCOME, Globals_1.Globals.Notification.Info, 4);
+            // Applying appearance & clothing
+            // const Appearance = await Appearances.findOne({ where: { Character: this.id } });
+            // if (Appearance) Appearance.Apply(Player, this.Gender);
+            // frp.Items.Equipment(Player, this.Gender);
+            console.log('Spawn', 3);
+            // spawning player on desired point
+            switch (this.Spawn_Point) {
+                case 0: {
+                    console.log('Spawn', 4);
+                    Player.position = Settings_1.Settings.Default.spawn;
+                    Player.heading = Settings_1.Settings.Default.heading;
+                    Player.dimension = Settings_1.Settings.Default.dimension;
+                    break;
+                }
+                case 1: {
+                    Player.position = this.Last_Position;
+                    Player.dimension = Settings_1.Settings.Default.dimension;
+                    break;
+                }
+                case 2: {
+                    break;
+                }
+            }
         }
-        Player.setVariable('Bubble', null);
-        Player.setVariable('Seatbelt', false);
-        Player.Notification(Messages_1.Messages.WELCOME, Globals_1.Globals.Notification.Info, 4);
-        // Applying appearance & clothing
-        const Appearance = await Appearance_1.default.findOne({ where: { Character: this.id } });
-        if (Appearance)
-            Appearance.Apply(Player, this.Gender);
-        // frp.Items.Equipment(Player, this.Gender);
-        // spawning player on desired point
-        switch (this.Spawn_Point) {
-            case 0: {
-                Player.position = Settings_1.Settings.Default.spawn;
-                Player.heading = Settings_1.Settings.Default.heading;
-                Player.dimension = Settings_1.Settings.Default.dimension;
-                break;
-            }
-            case 1: {
-                Player.position = this.Last_Position;
-                Player.dimension = Settings_1.Settings.Default.dimension;
-                break;
-            }
-            case 2: {
-                break;
-            }
+        catch (e) {
+            console.log(e);
         }
     }
     SetHealth(Player, value) {
@@ -96,8 +105,13 @@ __decorate([
     __metadata("design:type", Number)
 ], Characters.prototype, "id", void 0);
 __decorate([
+    sequelize_typescript_1.ForeignKey(() => Account_1.default),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
+], Characters.prototype, "Account_id", void 0);
+__decorate([
+    sequelize_typescript_1.BelongsTo(() => Account_1.default),
+    __metadata("design:type", Account_1.default)
 ], Characters.prototype, "Account", void 0);
 __decorate([
     sequelize_typescript_1.Unique,

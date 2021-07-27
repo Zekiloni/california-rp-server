@@ -1,6 +1,7 @@
+import { Browser } from "./Browser";
 
 
-const Player:PlayerMp = mp.players.local;
+const Player = mp.players.local;
 
 
 mp.events.add(
@@ -10,8 +11,10 @@ mp.events.add(
          Lobby(true, Info.Position, Info.LookAt);
       },
 
-      'CLIENT::AUTHORIZATION:PLAY': async (Character: number) => { 
-         const Response = await mp.events.callRemoteProc('SERVER::CHARACTER:PLAY', Character);
+      'CLIENT::AUTHORIZATION:PLAY': (Character: number) => { 
+         Lobby(false);
+         mp.events.callRemote('SERVER::CHARACTER:PLAY', Character);
+         Browser.call('BROWSER::SHOW', 'Chat');
       }
    }
 );
@@ -29,8 +32,8 @@ mp.events.addProc(
 
 let Camera: CameraMp;
 
-export function Lobby (Toggle: boolean, Position: Vector3Mp, LookAt: Vector3Mp) { 
-   if (Toggle) { 
+export function Lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp) { 
+   if (Toggle && Position && LookAt) { 
       Player.position = new mp.Vector3(Position.x, Position.y + 1, Position.z);
       Player.freezePosition(true);
       Camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
@@ -41,6 +44,7 @@ export function Lobby (Toggle: boolean, Position: Vector3Mp, LookAt: Vector3Mp) 
       mp.game.ui.displayRadar(false);
       mp.game.graphics.transitionToBlurred(1000)
    } else { 
+      Browser.call('BROWSER::HIDE', 'Authorization');
       if (Camera) Camera.destroy();
       Player.freezePosition(false);
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
