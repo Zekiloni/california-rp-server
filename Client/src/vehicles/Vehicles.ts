@@ -1,3 +1,5 @@
+import { Controls } from "../Utils";
+
 
 const Player = mp.players.local;
 const blockedClasses = [13, 14, 15, 16, 21]; 
@@ -86,7 +88,7 @@ mp.events.addDataHandler({
 
 
 // Left Indicator
-mp.keys.bind(Controls.LeftArrow, false, () => {
+mp.keys.bind(Controls.LEFT_ARROW, false, () => {
    if (!Player.Logged) return;
    if (mp.players.local.isTypingInTextChat) return;
    let vehicle = mp.players.local.vehicle;
@@ -95,7 +97,7 @@ mp.keys.bind(Controls.LeftArrow, false, () => {
 
 
 // Right Indicator
-mp.keys.bind(Controls.RightArrow, false, () => {
+mp.keys.bind(Controls.RIGHT_ARROW, false, () => {
    if (!Player.Logged) return;
    if (mp.players.local.isTypingInTextChat) return;
    let vehicle = mp.players.local.vehicle;

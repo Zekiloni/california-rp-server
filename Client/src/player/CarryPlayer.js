@@ -58,7 +58,7 @@ class CarryManager {
        });
 
        mp.events.add('client:animation.apply', (remoteId, name, dictionary, flag) => { 
-         var Player = mp.players.atRemoteId(remoteId);
+         const Player = mp.players.atRemoteId(remoteId);
          if (Player != null) {
             //Player.playAnim(name, dictionary, 1, flag)
             Player.taskPlayAnim(dictionary, name, 8.0, 1.0, -1, flag, 0.0, true, true, true);
@@ -98,8 +98,8 @@ class CarryManager {
                        if (mp.peds.exists(element.ped))
                            return false;
 
-                       var player = mp.players.atRemoteId(element.remoteId);
-                       var carried = mp.players.atRemoteId(element.carryRemoteId);
+                       const player = mp.players.atRemoteId(element.remoteId);
+                       const carried = mp.players.atRemoteId(element.carryRemoteId);
 
                        mp.events.call("client:animation.apply", player.remoteId, "missfinale_c2mcs_1", "fin_c2_mcs_1_camman", 49);
                        mp.events.call("client:animation.apply", carried.remoteId, "nm", "firemans_carry", 33);

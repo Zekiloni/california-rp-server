@@ -3,11 +3,18 @@
 
 const Player = mp.players.local;
 
-
-const Server = {
-   Color: {
-      R: 104, G: 69, B: 234, A: 255
-   }
+export const Controls = {
+   KEY_X: 0x58,
+   KEY_L: 0x4C,
+   KEY_Y: 0x59,
+   LEFT_ARROW: 0x25,
+   RIGHT_ARROW: 0x27,
+   ENTER: 0x0D,
+   KEY_P: 0x50,
+   KEY_I: 0x49,
+   TAB: 0x09,
+   NUMBER_1: 0x31,
+   NUMBER_2: 0x32
 }
 
 export function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 

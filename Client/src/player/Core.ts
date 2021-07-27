@@ -1,4 +1,4 @@
-import { WaitEntity, LoadMovementClipset } from "../Utils";
+import { WaitEntity, LoadMovementClipset, Controls } from "../Utils";
 
 
 const Player = mp.players.local;
@@ -8,15 +8,6 @@ mp.nametags.enabled = false;
 const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
 
 let AntiKeySpam = false;
-
-const Controls = { 
-   keyX: 0x58,
-   keyL: 0x4C,
-   keyY: 0x59,
-   LeftArrow: 0x25,
-   RightArrow: 0x27,
-   Enter: 0x0D
-};
 
 
 // BLACK SCREEN AFTER DEATH
@@ -205,7 +196,7 @@ mp.events.add({
 
 
 // INTERACTIONS :: REMOVE ATTACHMENT
-mp.keys.bind(Controls.keyX, false, async function () {
+mp.keys.bind(Controls.KEY_X, false, async function () {
    if (Player.Logged && Player.Spawned) { 
       if (Player.isTypingInTextChat) return;
       if (Player.getVariable('Attachment') != null) {
@@ -218,7 +209,7 @@ mp.keys.bind(Controls.keyX, false, async function () {
 
 
 // INTERACTIONS :: LOCK
-mp.keys.bind(Controls.keyL, false, async function () {
+mp.keys.bind(Controls.KEY_L, false, async function () {
    if (Player.Logged && Player.Spawned && Player.isTypingInTextChat == false) { 
      if (AntiKeySpam) return;
 
@@ -230,7 +221,7 @@ mp.keys.bind(Controls.keyL, false, async function () {
 });
 
 
-mp.keys.bind(Controls.keyY, false, () => {
+mp.keys.bind(Controls.KEY_Y, false, () => {
    let Vehicle: any; // PITATI ZAŠTO NE MOŽE VehicleMp 
    if (!Player.Logged || !Player.Spawned || Player.isTypingInTextChat || Player.Cuffed) return;
    if (AntiKeySpam) return;
