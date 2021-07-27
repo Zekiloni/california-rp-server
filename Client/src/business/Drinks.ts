@@ -8,7 +8,7 @@ let BusinessDrinkMenu = false;
 mp.events.add({
    'CLIENT::BUSINESS:DRINK:MENU': (Info: string) => { 
       BusinessDrinkMenu = !BusinessDrinkMenu;
-      Browser.call(BusinessDrinkMenu ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'BusinessDrinkMenu')
+      Browser.call(BusinessDrinkMenu ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'BusinessDrinkMenu');
    },
 
    'CLIENT::BUSINESS:DRINK:BUY': (Price: number, Item: string, Business: number) => { 

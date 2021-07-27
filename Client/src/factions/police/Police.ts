@@ -1,14 +1,14 @@
+export {};
+
 
 const Player = mp.players.local;
 
-let browser = null, opened = false;
-
-
+let Active = false;
 let PatrolsMap = false;
 
 
 mp.events.add({
-   'entityStreamIn': (entity) => {
+   'entityStreamIn': (Entity: EntityMp) => {
 
    },
 
@@ -39,7 +39,7 @@ mp.events.add({
 
 
 mp.events.addDataHandler({
-   'callsign': (entity, newValue, oldValue) => {
+   'callsign': (Entity: EntityMp, NewValue: any, OldValue: any) => {
 
    }
 });
