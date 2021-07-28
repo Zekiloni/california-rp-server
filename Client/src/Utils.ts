@@ -2,7 +2,6 @@ import { Clothing_Components, Genders } from "./Data/Player";
 
 
 
-const Player = mp.players.local;
 
 export const Controls = {
    KEY_X: 0x58,
