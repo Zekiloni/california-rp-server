@@ -30,13 +30,17 @@ export const Messages = {
       Title: 'Pregled Karaktera',
       Content: 'Držeći <b> Desni Klik Miša </b> i pomeranjem možete rotirati karaktera i ugao kamere. Pomeranjem <b> Točka na mišu </b> možete zumirati i odzumirati.'
    },
+   DETAILS_HELP: {
+      Title: 'Detalji Karaktera',
+      Content: 'Detalje karaktera morate prvo uključiti na kutiji koja se nalazi pored imena komponente da bi aktivirali sam detalj.'
+   },
    IDENTITY_RULES: { 
       Title: 'Pravopis i provera unosa',
       Content: 'Morate ispuniti sva polja. Pri unosu imena, prezimena i porekla morate poštovati pravopis i koristiti veliko početno slovo.'
    },
    YEAR_RULES: {
       Title: 'Datum Rodjenja',
-      Content: 'Vaš karakter ne sme biti mladji od 18 ili stariji od 80 godina.'
+      Content: 'Vaš karakter ne sme biti mladji od 18 ili stariji od 80 godina, tj. polje za datum rodjenja, godina mora biti izmedju 1941 - 2001. '
    },
    CLOTHING_RULES: { 
       Title: 'Odeća',

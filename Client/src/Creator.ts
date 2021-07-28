@@ -59,6 +59,10 @@ mp.events.add(
          Player.setHairColor(Color, Highlights);
       },
 
+      'CLIENT::CREATOR:OVERLAY': (i: number, e: number, x: number) => {
+         Player.setHeadOverlay(i, e, 1.0, 0, 0);
+      },
+
       'CLIENT::CREATOR:CLOTHING': (Component: number, Drawable: number) => { 
          Player.setComponentVariation(Component, Drawable, 0, 2);
          if (Component == Clothing_Components.Top) { 
@@ -91,10 +95,6 @@ mp.events.add(
       'client:player.character.creator:beard': (x: string) => {
          x = JSON.parse(x);
          Player.setHeadOverlay(1, parseInt(x[0]), 1.0, parseInt(x[1]), 0);
-      },
-
-      'client:player.character.creator:overlay': (i: number, e: number, x: number) => {
-         Player.setHeadOverlay(i, e, 1.0, x, 0);
       },
 
       'client:player.character.creator:blend': (x: string) => {

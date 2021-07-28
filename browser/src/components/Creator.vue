@@ -122,14 +122,18 @@
          <div class="page" v-if="Page == 4" key=Overlays @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <div class="slider" v-for="(Overlay, i) in Appearance.Overlays" :key=i>
                <label> {{ Head_Overlays.Names[i] }} </label>
+               <input type="checkbox" id="checkbox" v-model="Appearance.Overlays_Toggle[i]" v-on:change="ChangeOverlay(i, $event.target.checked)">
                <vue-slider 
                   v-model=Appearance.Overlays[i] 
                   :max=Head_Overlays.Maximums[i]
                   :min=0
+                  class="component-slider"
+                  :disabled="Appearance.Overlays_Toggle[i] == false"
                   :railStyle=Slider.Rail 
                   :processStyle=Slider.Process
                   :dotStyle=Slider.Dot
-                  @dragging="val => FaceFeature(i, val)"
+                  :class="{ disabled: Appearance.Overlays[i] == 255 }"
+                  @dragging="val => ChangeOverlay(i, val)"
                   :dotOptions=Slider.DotOptions
                />
             </div>
@@ -193,6 +197,7 @@
                Face: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                Blend_Data: [0, 0, 0, 0, 0, 0],
                Overlays: [255, 255, 255, 255, 255, 255, 255, 255],
+               Overlays_Toggle: [false, false, false, false, false, false, false, false],
                Hair: [0, 0, 0],
                Beard: [0, 0],
                Eyes: 0,
@@ -206,6 +211,7 @@
 
             Info: [
                { Task: false, Title: Messages.CREATOR_VIEW.Title, Content: Messages.CREATOR_VIEW.Content },
+               { Task: false, Title: Messages.DETAILS_HELP.Title, Content: Messages.DETAILS_HELP.Content },
                { 
                   Task: true, Title: Messages.IDENTITY_RULES.Title, Content: Messages.IDENTITY_RULES.Content,
                   Completed: () => { 
@@ -279,8 +285,22 @@
             mp.trigger('CLIENT::CREATOR:HAIR', this.Appearance.Hair[0], this.Appearance.Hair[1], this.Appearance.Hair[2])
          },
 
-         Overlay: function (i, v) {
-            mp.trigger('CLIENT::CREATOR:OVERLAY', i, v);
+         ChangeOverlay: function (i, value) {
+            console.log(i, value)
+            switch (value) {
+               case true: {
+                  this.Appearance.Overlays_Toggle[i] = true;
+                  this.Appearance.Overlays[i] = 0; 
+                  break;
+               }
+               case false: {
+                  this.Appearance.Overlays_Toggle[i] = false;
+                  this.Appearance.Overlays[i] = 255; 
+                  break;
+               }
+               default: this.Appearance.Overlays[i] = value;
+            }
+            //mp.trigger('CLIENT::CREATOR:OVERLAY', i, v);
          },
 
          Gender: function (i) { 
@@ -372,7 +392,8 @@
 
    .page { padding-top: 40px; position: absolute; right: 30px; width: 350px; top: 120px; max-height: 600px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
-   .slider { padding: 20px; width: 300px; }
+   .slider { padding: 20px; width: 300px; position: relative; }
+   .slider input[type=checkbox] { position: absolute; top: 20px; right: 20px; }
 
    ul.info { width: 350px; padding: 0; list-style: none; height: 400px; position: absolute; top: 200px; left: 30px; }
    ul.info li { padding: 10px 0; transition: all 0.35s ease; }
@@ -404,5 +425,9 @@
    button.play-button:hover { filter: brightness(1.1); opacity: 1; }
    button.play-button:hover ~ h2 { opacity: 1; }
   
+  .component-slider { position: relative; }
+  .component-slider.disabled { opacitY: 0.3; }
+  
+  input[type=checkbox] { width: 30px; }
 
 </style>
