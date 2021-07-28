@@ -1,28 +1,21 @@
-import { Clothing_Components } from "./Data/Player";
+import { Clothing_Components, Genders } from "./Data/Player";
+
+
 
 const Player = mp.players.local;
 
-
-export function RemoveClothing (Entity: PlayerMp) { 
-   switch (true) { 
-      case Entity.model == 0x705E61F2: { 
-         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Legs, 61, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Shoes, 34, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Undershirt, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
-         break;
-      }
-
-      case Entity.model == 0x9C9EFFD8: { 
-         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Legs, 17, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Shoes, 35, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Undershirt, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
-         break;
-      }
-   }
+export const Controls = {
+   KEY_X: 0x58,
+   KEY_L: 0x4C,
+   KEY_Y: 0x59,
+   LEFT_ARROW: 0x25,
+   RIGHT_ARROW: 0x27,
+   ENTER: 0x0D,
+   KEY_P: 0x50,
+   KEY_I: 0x49,
+   TAB: 0x09,
+   NUMBER_1: 0x31,
+   NUMBER_2: 0x32
 }
 
 
@@ -35,15 +28,40 @@ export function DisableMoving () {
    mp.game.controls.disableControlAction(0, 35, true);
 }
 
-function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 
+export function RemoveClothing (Entity: PlayerMp) {
+   const Gender = Genders[Entity.model];
+   switch (Gender) { 
+      case '0': {
+         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Legs, 61, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Shoes, 34, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Undershirt, 15, 0, 2);
+         break;
+      }
+
+      case '1': {
+         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Legs, 17, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Shoes, 35, 0, 2);
+         Entity.setComponentVariation(Clothing_Components.Undershirt, 14, 0, 2);
+         break;
+      }
+   }
+
+
+};
+
+export function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 
    return i.x == x.x && i.y == x.y && i.z == x.z;
 };
 
-function DistanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
+export function DistanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
    return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
 }
 
-function LoadAnimationDictionary (i: string): Promise<boolean> { 
+export function LoadAnimationDictionary (i: string): Promise<boolean> { 
    if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve(true);
    return new Promise(async resolve => { 
       mp.game.streaming.requestAnimDict(i);
@@ -54,8 +72,7 @@ function LoadAnimationDictionary (i: string): Promise<boolean> {
    })
 };
 
-
-function LoadMovementClipset (Clipset: string): Promise<boolean> { 
+export function LoadMovementClipset (Clipset: string): Promise<boolean> { 
    if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve(true);
    return new Promise(async resolve => { 
       mp.game.streaming.requestClipSet(Clipset);
@@ -66,9 +83,7 @@ function LoadMovementClipset (Clipset: string): Promise<boolean> {
    })
 }
 
-
-
-function WaitEntity (Entity: EntityMp) {
+export function WaitEntity (Entity: EntityMp) {
    return new Promise(resolve => {
       let wait = setInterval(() => {
          if (mp.game.entity.isAnEntity(Entity.handle)) {
@@ -79,14 +94,12 @@ function WaitEntity (Entity: EntityMp) {
    });
 }
 
-function WeaponString (Weapon: number) {
+export function WeaponString (Weapon: number) {
 	if (typeof Weapon !== 'undefined')
 		return '0x' + Weapon.toString(16).toUpperCase()
 	else 
 		return '0xA2719263'
 }
-
-
 
 export function OnlinePlayers () {
    let List: any = [];
@@ -95,7 +108,6 @@ export function OnlinePlayers () {
    }); 
    return List;
 }
-
 
 export function GetAdress (Position: Vector3Mp) { 
    const path = mp.game.pathfind.getStreetNameAtCoord(Position.x, Position.y, Position.z, 0, 0),
@@ -160,7 +172,7 @@ export function MoveCamera () {
    Player.setHeading(newHeading);
 
    let { x: camPosX, y: camPosY, z: camPosZ } = MovableCamera.getCoord();
-   let { x: camPointX, y: camPointY, z: camPointZ } = MovableCamera.getDirection();
+   //let { X: camPointX, Y: camPointY, Z: camPointZ } = MovableCamera.getDirection();
 
    camPosZ = camPosZ + Data.DeltaY * 0.001;
    const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
@@ -171,10 +183,8 @@ export function MoveCamera () {
    }
 }
 
-
 export function CreateInteractionSpot (Name: string, Position: Vector3Mp) { 
    const checkpoint = mp.checkpoints.new(48, Position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
    const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
-   return { checkpoint: checkpoint, blip: blip };
+   return { Checkpoint: checkpoint, Blip: blip };
 };
-

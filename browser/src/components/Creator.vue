@@ -279,6 +279,10 @@
             mp.trigger('CLIENT::CREATOR:HAIR', this.Appearance.Hair[0], this.Appearance.Hair[1], this.Appearance.Hair[2])
          },
 
+         Overlay: function (i, v) {
+            mp.trigger('CLIENT::CREATOR:OVERLAY', i, v);
+         },
+
          Gender: function (i) { 
             this.Character.Gender = i;
             mp.trigger('CLIENT::CREATOR:GENDER', i);

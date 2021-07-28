@@ -8,6 +8,7 @@ const Messages_1 = require("../Global/Messages");
 const Account_1 = __importDefault(require("../Models/Account"));
 const Ban_1 = __importDefault(require("../Models/Ban"));
 const Character_1 = __importDefault(require("../Models/Character"));
+const Appearance_1 = __importDefault(require("../Models/Appearance"));
 const Settings_1 = require("../Server/Settings");
 mp.events.add({
     'playerJoin': async (Player) => {
@@ -49,6 +50,18 @@ mp.events.addProc({
                 }
             });
         });
+    },
+    'SERVER::CREATOR:FINISH': async (Player, Character, Appearance) => {
+        Character = JSON.parse(Character);
+        Appearance = JSON.parse(Appearance);
+        const Exist = await Character_1.default.findOne({ where: { Name: Character.First_Name } });
+        if (Exist)
+            return Player.Notification(Messages_1.Messages.CHARACTER_ALREADY_EXIST, Globals_1.Globals.Notification.Error, 5);
+        Character_1.default.create({
+            Name: Character.First_Name + ' ' + Character.Last_Name,
+            Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
+        });
+        Appearance_1.default.create({});
     },
     'server:player.character:delete': async (Player, Char_ID) => {
         Character_1.default.findOne({ where: { id: Char_ID } }).then((Character) => {

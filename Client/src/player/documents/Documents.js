@@ -6,11 +6,6 @@ let browsers = { licenses: null, identity: null };
 let opened = { licenses: false, identity: false };
 
 
-const Controls = { 
-   Enter: 0x0D
-};
-
-
 mp.events.add({
    'client:player.documents:show': (Document, Info) => { 
       switch (Document) { 

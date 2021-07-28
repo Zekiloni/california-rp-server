@@ -11,10 +11,7 @@ const Keys = {
 
 const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
 
-const Controls = { 
-   keyY: 0x59,
-   keyI: 0x49
-};
+
 
 mp.events.add({
 

@@ -3,7 +3,7 @@
 import { Browser } from './Browser';
 import { Clothing_Components, Genders, Player_Models } from './Data/Player';
 import { Lobby } from './Lobby';
-import { DisableMoving, PlayerPreviewCamera, RemoveClothing } from './Utils';
+import {  DisableMoving, PlayerPreviewCamera, RemoveClothing } from './Utils';
 import Female_Torsos from './Data/Female_Torsos.json';
 import Male_Torsos from './Data/Male_Torsos.json';
 
@@ -31,9 +31,9 @@ mp.events.add(
       },
 
       'CLIENT::CREATOR:FINISH': async (Character: object, Appearance: JSON, Clothing: JSON) => {
-         Active = false;
          const Created:boolean = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance, Clothing);
          if (Created) { 
+            Active = false;
             mp.events.remove('render', DisableMoving);
             Player.freezePosition(false);
             PlayerPreviewCamera(false);

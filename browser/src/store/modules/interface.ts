@@ -9,8 +9,8 @@ Vue.use(Vuex);
 
 const InitialState = {
    Notifications: true,
-   Authorization: false,
-   Creator: true,
+   Authorization: true,
+   Creator: false,
    GameInterface: true,
    Inventory: false,
    Playerlist: false,
