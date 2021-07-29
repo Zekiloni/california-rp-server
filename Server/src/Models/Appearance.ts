@@ -21,16 +21,16 @@ export default class Appearances extends Model {
    Blend_Data: number[];
 
    @AllowNull(false)
-   @Column
-   Hair: string;
+   @Column(DataType.ARRAY)
+   Hair: number[];
 
    @AllowNull(false)
    @Column
-   Beard: string;
+   Beard: number[];
 
    @AllowNull(false)
    @Column
-   Eyes: string;
+   Eyes: number;
 
    @AllowNull(false)
    @Column(DataType.ARRAY)
@@ -60,10 +60,10 @@ export default class Appearances extends Model {
          this.Blend_Data[5], 0
       );
    
-      Player.eyeColor = parseInt(this.Eyes);   
-      Player.setClothes(2, parseInt(this.Hair[0]), 0, 2);
+      Player.eyeColor = this.Eyes;   
+      Player.setClothes(2, this.Hair[0], 0, 2);
       Player.setHairColor(
-         parseInt(this.Hair[1]), parseInt(this.Hair[2])
+         this.Hair[1], this.Hair[2]
       );
    
       for (let i = 0; i < 20; i ++) { 
