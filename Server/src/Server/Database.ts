@@ -4,7 +4,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { Config } from '../Server/Config';
 import { Main, LogType } from './Main';
 import Characters from '../Models/Character';
-import Accounts from '../Models/Account';
+import Accounts from '../Models/Account.model';
 import Bans from '../Models/Ban';
 
 console.log(__dirname)
@@ -15,7 +15,7 @@ const Database = new Sequelize({
    username: Config.Database.User,
    password: Config.Database.Password,
    storage: ':memory:',
-   models: [ Characters, Accounts, Bans ] 
+   models: [ __dirname + '/**/*.model.ts' ] 
 });
 
 Database.authenticate()
@@ -30,7 +30,24 @@ Database.authenticate()
 });
 
 
+
+
 (async () => { 
+
+   const Admins = [
+      { Username: 'Zekiloni', Password: 'kapakapa' },
+      { Username: 'Mile', Password: 'micko123' }
+   ];
+
+   for (const Admin of Admins) { 
+      const Exist = await Accounts.findOne({ where: { Username: Admin.Username } });
+      if (Exist == null) { 
+         Accounts.create({ Username: Admin.Username, Password: Admin.Password });
+      }
+   }
+
+
+
    // const Acc = await Accounts.create({ Username: 'Zekiloni', Password: 'test' });
    // const char = new Characters({ Name: 'Zachary Parker', Account_id: Acc.id });
    // char.save();

@@ -1,5 +1,4 @@
 import { Browser } from "../Browser";
-export {};
 
 
 const Player = mp.players.local;
@@ -16,3 +15,4 @@ mp.events.add({
    }
 })
 
+export {};

@@ -4,7 +4,7 @@ import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Defau
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
-import Accounts from './Account';
+import Accounts from './Account.model';
 import Appearances from './Appearance';
 import { Injury } from './Injury';
 import { License } from './License';

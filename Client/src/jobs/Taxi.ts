@@ -1,6 +1,5 @@
 
 
-const Player = mp.players.local;
 
 
 mp.events.add({

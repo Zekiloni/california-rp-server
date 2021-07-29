@@ -25,6 +25,12 @@ export const Messages = {
    HEAD_OVERLAYS: 'Detalji',
    LAST_NAME: 'Prezime',
    CLOTHING: 'Odeća',
+   HAIR_MODEL: 'Stil Kose',
+   HAIR_COLOR: 'Boja Kose',
+   BEARD_MODEL: 'Stil Brade',
+   BEARD_COLOR: 'Boja Brade',
+   HAIR_HIGHLIGHT: 'Presijavanje kose',
+   EYES_COLOR: 'Boja Očiju',
    BLEND_DATA: ['Oblik glave majke', 'Oblik glave oca', 'Boja kože majke', 'Boja kože oca', 'Miks oblika glave', 'Miks boje kože'],
    CREATOR_VIEW: {
       Title: 'Pregled Karaktera',
@@ -80,6 +86,9 @@ export const Hair_Colors = [
    '#291b16', '#0e0e10', '#e6bb84', '#d8ac74'
 ];
 
+export const Eyes_Colors = [0, 40, 41, 4, 3, 6, 37, 36, 39];
+
+export const Beard_Colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29, 55, 56, 57, 58, 59, 60, 61, 62, 63];
 
 export const Notification = { 
    Succes: 0, Error: 1, Info: 2

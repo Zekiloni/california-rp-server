@@ -17,7 +17,7 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const Globals_1 = require("../Global/Globals");
 const Messages_1 = require("../Global/Messages");
 const Main_1 = require("../Server/Main");
-const Account_1 = __importDefault(require("./Account"));
+const Account_model_1 = __importDefault(require("./Account.model"));
 let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
     // Target can be IP/Exact_Character_Name
     static async New(player, target, reason, date, expiring) {
@@ -40,7 +40,7 @@ let Bans = Bans_1 = class Bans extends sequelize_typescript_1.Model {
                 Online.kick(reason);
             }
             else {
-                const OfflineAcc = await Account_1.default.findOne({ where: { Name: target } });
+                const OfflineAcc = await Account_model_1.default.findOne({ where: { Name: target } });
                 if (OfflineAcc) {
                     Bans_1.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
                 }

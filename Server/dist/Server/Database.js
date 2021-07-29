@@ -7,8 +7,7 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const Config_1 = require("../Server/Config");
 const Main_1 = require("./Main");
 const Character_1 = __importDefault(require("../Models/Character"));
-const Account_1 = __importDefault(require("../Models/Account"));
-const Ban_1 = __importDefault(require("../Models/Ban"));
+const Account_model_1 = __importDefault(require("../Models/Account.model"));
 console.log(__dirname);
 const Database = new sequelize_typescript_1.Sequelize({
     database: Config_1.Config.Database.Name,
@@ -16,7 +15,7 @@ const Database = new sequelize_typescript_1.Sequelize({
     username: Config_1.Config.Database.User,
     password: Config_1.Config.Database.Password,
     storage: ':memory:',
-    models: [Character_1.default, Account_1.default, Ban_1.default]
+    models: [__dirname + '/**/*.model.ts']
 });
 Database.authenticate()
     .then(() => {
@@ -29,10 +28,20 @@ Database.authenticate()
     Main_1.Main.Terminal(Main_1.LogType.Error, Error);
 });
 (async () => {
+    const Admins = [
+        { Username: 'Zekiloni', Password: 'kapakapa' },
+        { Username: 'Mile', Password: 'micko123' }
+    ];
+    for (const Admin of Admins) {
+        const Exist = await Account_model_1.default.findOne({ where: { Username: Admin.Username } });
+        if (Exist == null) {
+            Account_model_1.default.create({ Username: Admin.Username, Password: Admin.Password });
+        }
+    }
     // const Acc = await Accounts.create({ Username: 'Zekiloni', Password: 'test' });
     // const char = new Characters({ Name: 'Zachary Parker', Account_id: Acc.id });
     // char.save();
-    const aca = await Character_1.default.findAll({ include: [Account_1.default] });
+    const aca = await Character_1.default.findAll({ include: [Account_model_1.default] });
     aca[0].Account.Username = 'Dzafur';
     aca[0].save();
     //Characters.create({ Name: 'Zachary Parker', Account: 1 });

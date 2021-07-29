@@ -7,7 +7,7 @@ require("./Server/Database");
 const Main_1 = require("./Server/Main");
 require("./Player/Player");
 require("./Player/Account");
-const Account_1 = __importDefault(require("./Models/Account"));
+const Account_model_1 = __importDefault(require("./Models/Account.model"));
 const Character_1 = __importDefault(require("./Models/Character"));
 const Items_1 = require("./Items/Items");
 console.log(Items_1.Items.List);
@@ -28,7 +28,7 @@ console.log(Items_1.Items.List);
 // console.log('Finished in ' + ((End - Start) / 1000));
 (async () => {
     const Chars = await Character_1.default.count();
-    const Users = await Account_1.default.count();
+    const Users = await Account_model_1.default.count();
     Main_1.Main.Terminal(Main_1.LogType.Info, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 })();
 const Exit = async () => {

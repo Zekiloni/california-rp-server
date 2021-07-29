@@ -1,6 +1,5 @@
 import { Browser } from "../Browser";
 
-export {};
 
 const Player = mp.players.local;
 let Active = false;
@@ -12,3 +11,5 @@ mp.events.add({
       Browser.call(Active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', MenuName);
    }
 });
+
+export {};

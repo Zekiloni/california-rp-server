@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Globals_1 = require("../Global/Globals");
 const Messages_1 = require("../Global/Messages");
-const Account_1 = __importDefault(require("../Models/Account"));
+const Account_model_1 = __importDefault(require("../Models/Account.model"));
 const Ban_1 = __importDefault(require("../Models/Ban"));
 const Character_1 = __importDefault(require("../Models/Character"));
 const Appearance_1 = __importDefault(require("../Models/Appearance"));
@@ -33,7 +33,7 @@ mp.events.addProc({
     },
     'SERVER::AUTHORIZATION:VERIFY': async (Player, Username, Password) => {
         return new Promise((resolve) => {
-            Account_1.default.findOne({ where: { Username: Username }, include: [Character_1.default] }).then((Account) => {
+            Account_model_1.default.findOne({ where: { Username: Username }, include: [Character_1.default] }).then((Account) => {
                 if (Account) {
                     const Logged = Account.Login(Password);
                     if (Logged) {
@@ -51,17 +51,19 @@ mp.events.addProc({
             });
         });
     },
-    'SERVER::CREATOR:FINISH': async (Player, Character, Appearance) => {
-        Character = JSON.parse(Character);
-        Appearance = JSON.parse(Appearance);
-        const Exist = await Character_1.default.findOne({ where: { Name: Character.First_Name } });
+    'SERVER::CREATOR:FINISH': async (Player, Char_Info, Char_Appearance) => {
+        console.log('Usao');
+        const Character = JSON.parse(Char_Info);
+        const Appearance = JSON.parse(Char_Appearance);
+        const Exist = await Character_1.default.findOne({ where: { Name: Character.First_Name + ' ' + Character.Last_Name } });
         if (Exist)
             return Player.Notification(Messages_1.Messages.CHARACTER_ALREADY_EXIST, Globals_1.Globals.Notification.Error, 5);
         Character_1.default.create({
-            Name: Character.First_Name + ' ' + Character.Last_Name,
+            Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: Player.Account.id,
             Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
         });
         Appearance_1.default.create({});
+        Player.Notification(Messages_1.Messages.CHARACTER_CREATED, Globals_1.Globals.Notification.Succes, 4);
     },
     'server:player.character:delete': async (Player, Char_ID) => {
         Character_1.default.findOne({ where: { id: Char_ID } }).then((Character) => {

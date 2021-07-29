@@ -1,8 +1,6 @@
 import { Clothing_Components, Genders } from "./Data/Player";
 
 
-
-
 export const Controls = {
    KEY_X: 0x58,
    KEY_L: 0x4C,
@@ -119,6 +117,7 @@ let MovableCamera: CameraMp;
 
 export function PlayerPreviewCamera (Toggle: boolean) { 
    if (Toggle) { 
+      const Player = mp.players.local;
       MovableCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
       const CameraPositon = new mp.Vector3(Player.position.x + Player.getForwardX() * 1.5, Player.position.y + Player.getForwardY() * 1.5, Player.position.z + 0.3);
       MovableCamera.setCoord(CameraPositon.x, CameraPositon.y, CameraPositon.z);
@@ -137,6 +136,7 @@ export function PlayerPreviewCamera (Toggle: boolean) {
 }
 
 function ZoomCamera (Delta: number) {
+   const Player = mp.players.local;
    let { x, y, z } = MovableCamera.getCoord();
 
    if (Delta < 0) { 
@@ -164,6 +164,7 @@ export function CursorData () {
 }
 
 export function MoveCamera () { 
+   const Player = mp.players.local;
    const Data = CursorData();
 
    if (!mp.keys.isDown(0x02)) return;
@@ -183,7 +184,9 @@ export function MoveCamera () {
 }
 
 export function CreateInteractionSpot (Name: string, Position: Vector3Mp) { 
+   const Player = mp.players.local;
    const checkpoint = mp.checkpoints.new(48, Position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
    const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
    return { Checkpoint: checkpoint, Blip: blip };
 };
+

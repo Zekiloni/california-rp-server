@@ -1,3 +1,4 @@
+const { Controls } = require("../../Utils");
 
 
 const Player = mp.players.local;
@@ -35,7 +36,7 @@ mp.events.add({
 })
 
 
-mp.keys.bind(Controls.Enter, false, function(e) {
+mp.keys.bind(Controls.ENTER, false, function(e) {
    if (Player.logged && Player.spawned) { 
       if (Player.isTypingInTextChat) return;
       if (opened.identity) mp.events.call('client:player.documents:show', 'identity');

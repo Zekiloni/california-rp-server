@@ -1,10 +1,8 @@
-export {};
 
-const Player = mp.players.local;
 let BusinessGasMenu: boolean = false;
 
 const Pumps = [1339433404, 1694452750, 1933174915, 2287735495];
-
+const Player = mp.players.local;
 
 mp.events.add({
    'client:business.gas:menu': (Info: any) => {
@@ -30,3 +28,4 @@ mp.events.addProc({
 });
 
 
+export {};

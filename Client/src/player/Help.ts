@@ -1,8 +1,6 @@
-export {};
 
-const Player = mp.players.local;
 
-let Active = false;
+let Active:boolean = false;
 
 mp.events.add({
    'CLIENT::HELP:SHOW': (Text: string) => { 

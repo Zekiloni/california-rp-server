@@ -40,7 +40,7 @@
 
       <transition name="fade">
 
-         <div class="page" v-if="Page == 0" key=Identity @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
+         <div class="page flex-page" v-if="Page == 0" key=Identity @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <label> {{ Messages.FIRST_NAME }} </label>
             <input type="text" v-model="Character.First_Name">
 
@@ -75,6 +75,13 @@
                   :dotOptions=Slider.DotOptions
                />
             </div>
+
+            <div class="slider">
+               <label> {{ Messages.EYES_COLOR }} </label>
+               <ul class="colors"> 
+                  <li class="color" v-for="(Color) in Eyes_Colors" :key=Color :class="{ selected: Selected.Eyes_Color == Color }" :style="{ backgroundColor: Hair_Colors[Color] }" v-on:click="Appearance.Eyes = Color, Selected.Eyes_Color = Color">  </li> 
+               </ul>
+            </div>
          </div>
 
          <div class="page" v-if="Page == 2" key=Face @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
@@ -88,14 +95,15 @@
                   :railStyle=Slider.Rail 
                   :processStyle=Slider.Process
                   :dotStyle=Slider.Dot
-                  @dragging="val => FaceFeature(i, val)"
+                  v-on:change="val => FaceFeature(i, val)"
                   :dotOptions=Slider.DotOptions
                />
             </div>
          </div>
 
          <div class="page" v-if="Page == 3" key=Hair_Beard @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
-            <div class="component">
+            <div class="slider">
+               <label> {{ Messages.HAIR_MODEL }} </label>
                <vue-slider 
                   v-model=Appearance.Hair[0] 
                   :max=Hair_Styles[Character.Gender]
@@ -103,20 +111,46 @@
                   :railStyle=Slider.Rail 
                   :processStyle=Slider.Process
                   :dotStyle=Slider.Dot
-                  @dragging="val => Hair(0, val)"
+                  v-on:change="val => Hair(0, val)"
                   :dotOptions=Slider.DotOptions
                />
+            </div>
+            <div class="slider">
+               <label> {{ Messages.HAIR_COLOR }} </label>
                <ul class="colors"> 
-                  <li class="color" 
-                     v-for="(Color, i) in Hair_Colors" 
-                     :key=Color 
-                     :class="{ selected: Selected.Hair_Color == i }"
-                     :style="{ backgroundColor: Color }" 
-                     v-on:click="Hair(1, i)"
-                  > 
-                  </li> 
+                  <li class="color" v-for="(Color, i) in Hair_Colors" :key=Color :class="{ selected: Selected.Hair_Color == i }" :style="{ backgroundColor: Color }" v-on:click="Hair(1, i)">  </li> 
                </ul>
             </div>
+
+            <div class="slider">
+               <label> {{ Messages.HAIR_HIGHLIGHT }} </label>
+               <ul class="colors"> 
+                  <li class="color" v-for="(Color, i) in Hair_Colors" :key=Color :class="{ selected: Selected.Hair_Highlight == i }" :style="{ backgroundColor: Color }" v-on:click="Hair(2, i)">  </li> 
+               </ul>
+            </div>
+
+            <div class="slider" v-if="Character.Gender == 0">
+               <label> {{ Messages.BEARD_MODEL }} </label>
+               <vue-slider 
+                  v-model=Appearance.Beard[0] 
+                  :max=28
+                  :min=-1
+                  value=-1
+                  :railStyle=Slider.Rail 
+                  :processStyle=Slider.Process
+                  :dotStyle=Slider.Dot
+                  v-on:change="val => Beard(0, val)"
+                  :dotOptions=Slider.DotOptions
+               />
+            </div>
+
+             <div class="slider" v-if="Character.Gender == 0">
+               <label> {{ Messages.BEARD_COLOR }} </label>
+               <ul class="colors"> 
+                  <li class="color" v-for="(Color) in Beard_Colors" :key=Color :class="{ selected: Selected.Beard_Color == Color }" :style="{ backgroundColor: Hair_Colors[Color] }" v-on:click="Beard(1, Color)">  </li> 
+               </ul>
+            </div>
+            
          </div>
 
          <div class="page" v-if="Page == 4" key=Overlays @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
@@ -133,14 +167,14 @@
                   :processStyle=Slider.Process
                   :dotStyle=Slider.Dot
                   :class="{ disabled: Appearance.Overlays[i] == 255 }"
-                  @dragging="val => ChangeOverlay(i, val)"
+                  v-on:change="val => ChangeOverlay(i, val)"
                   :dotOptions=Slider.DotOptions
                />
             </div>
          </div>
 
          <div class="page" v-if="Page == 5" key=Clothing @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
-            <div class="slider" v-for="(Cloth, i) in Appearance.Clothing" :key=i>
+            <!-- <div class="slider" v-for="(Cloth, i) in Appearance.Clothing" :key=i>
                <label> {{ Clothing_Components.Names[i] }} </label>
                <vue-slider 
                   v-model=Appearance.Clothing[i] 
@@ -149,7 +183,60 @@
                   :railStyle=Slider.Rail 
                   :processStyle=Slider.Process
                   :dotStyle=Slider.Dot
-                  @dragging="val => Clothing(Clothing_Components.Components[i], val)"
+                  v-on:change="val => Clothing(Clothing_Components.Components[i], val)"
+                  :dotOptions=Slider.DotOptions
+               />
+            </div> -->
+            <div class="slider">
+               <label> {{ Clothing_Components.Names[0] }} </label>
+               <vue-slider 
+                  v-model=Appearance.Clothing[0] 
+                  :data=CLOTHING_COMBINATIONS.Tops
+                  :railStyle=Slider.Rail 
+                  :processStyle=Slider.Process
+                  :dotStyle=Slider.Dot
+                  v-on:change="val => Clothing(Clothing_Components.Components[0], val)"
+                  :dotOptions=Slider.DotOptions
+               />
+            </div>
+
+            <div class="slider">
+               <label> {{ Clothing_Components.Names[1] }} </label>
+               <vue-slider 
+                  v-model=Appearance.Clothing[1] 
+                  :data=CLOTHING_COMBINATIONS.Current_Combination
+                  :railStyle=Slider.Rail 
+                  :processStyle=Slider.Process
+                  :dotStyle=Slider.Dot
+                  v-on:change="val => Clothing(Clothing_Components.Components[1], val)"
+                  :dotOptions=Slider.DotOptions
+               />
+            </div>
+
+            <div class="slider">
+               <label> {{ Clothing_Components.Names[2] }} </label>
+               <vue-slider 
+                  v-model=Appearance.Clothing[2] 
+                  :max=Clothing_Components.Maximums[Character.Gender][2]
+                  :min=0
+                  :railStyle=Slider.Rail 
+                  :processStyle=Slider.Process
+                  :dotStyle=Slider.Dot
+                  v-on:change="val => Clothing(Clothing_Components.Components[2], val)"
+                  :dotOptions=Slider.DotOptions
+               />
+            </div>
+
+            <div class="slider">
+               <label> {{ Clothing_Components.Names[3] }} </label>
+               <vue-slider 
+                  v-model=Appearance.Clothing[3] 
+                  :max=Clothing_Components.Maximums[Character.Gender][3]
+                  :min=0
+                  :railStyle=Slider.Rail 
+                  :processStyle=Slider.Process
+                  :dotStyle=Slider.Dot
+                  v-on:change="val => Clothing(Clothing_Components.Components[3], val)"
                   :dotOptions=Slider.DotOptions
                />
             </div>
@@ -158,7 +245,7 @@
       </transition>
 
       <div class="finish">
-         <button class="play-button" v-on:click="Play"> </button>
+         <button class="play-button" v-on:click="Play()"> </button>
          <h2> {{ Messages.START_GAME_NEW_CHARACTER }} </h2>
       </div>
 
@@ -169,7 +256,7 @@
 
 
 <script>
-   import { Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components } from '@/Globals';
+   import { Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components, Eyes_Colors, Beard_Colors } from '@/Globals';
    import VueSlider from 'vue-slider-component'
    import 'vue-slider-component/theme/antd.css'
    import Helpers from '@/Helpers';
@@ -199,14 +286,21 @@
                Overlays: [255, 255, 255, 255, 255, 255, 255, 255],
                Overlays_Toggle: [false, false, false, false, false, false, false, false],
                Hair: [0, 0, 0],
-               Beard: [0, 0],
+               Beard: [-1, 0],
                Eyes: 0,
                Clothing: [0, 0, 0, 0]
             },
 
             Selected: { 
                Hair_Color: 0,
-               Hair_Highlight: 0
+               Hair_Highlight: 0,
+               Beard_Color: 0,
+               Eyes_Color: 0
+            },
+
+            CLOTHING_COMBINATIONS: { 
+               Tops: [],
+               Current_Combination: []
             },
 
             Info: [
@@ -243,7 +337,7 @@
                }
             ],
 
-            Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components,
+            Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components, Eyes_Colors, Beard_Colors,
 
             Slider: { 
                Rail: { backgroundColor: 'rgb(245 245 245 / 40%)', borderRadius: '15px' },
@@ -266,6 +360,9 @@
                
                const Blend = Value.Blend_Data;
                mp.events.call('CLIENT::CREATOR:BLEND', Blend[0], Blend[1], Blend[2], Blend[3], Blend[4], Blend[5]);
+
+               const EyeColors = Value.Eyes;
+               mp.events.call('CLIENT::CREATOR:EYES_COLOR', EyeColors);
                
             },
             deep: true
@@ -277,12 +374,26 @@
          isActive: function (i)  { return i == this.Page ? true : false; },
          
          FaceFeature: (i, value) => { mp.trigger('CLIENT::CREATOR:FACE', i, value); },
-         Clothing: (i, value) => { mp.trigger('CLIENT::CREATOR:CLOTHING', i, value); },
+         Clothing: async (i, value) => { 
+            if (i == 11) { 
+               const Combinations = await mp.events.callProc('CLIENT::TOP:COMBINATIONS', this.Character.Gender, value);
+               this.CLOTHING_COMBINATIONS.Current_Combination = Combinations;
+            }
+            mp.trigger('CLIENT::CREATOR:CLOTHING', i, value); 
+         },
          Hair: function (i, value) { 
             if (i == 0 && value == 24) value = 25;
             if (i == 1) this.Selected.Hair_Color = value;
+            else if (i == 2)  this.Selected.Hair_Highlight = value;
             this.Appearance.Hair[i] = value; 
-            mp.trigger('CLIENT::CREATOR:HAIR', this.Appearance.Hair[0], this.Appearance.Hair[1], this.Appearance.Hair[2])
+            mp.trigger('CLIENT::CREATOR:HAIR', this.Appearance.Hair[0], this.Appearance.Hair[1], this.Appearance.Hair[2]);
+         },
+
+         Beard: function (i, value) { 
+            if (i == 0 && value == -1) { this.Appearance.Beard[0] = 255; }
+            else if (i == 1) { this.Appearance.Beard[1] = value; this.Selected.Beard_Color = value; }
+            mp.trigger('CLIENT::CREATOR:BEARD', this.Appearance.Beard[0], this.Appearance.Beard[1]);
+
          },
 
          ChangeOverlay: function (i, value) {
@@ -293,14 +404,16 @@
                   this.Appearance.Overlays[i] = 0; 
                   break;
                }
-               case false: {
+               case false: { 
                   this.Appearance.Overlays_Toggle[i] = false;
                   this.Appearance.Overlays[i] = 255; 
                   break;
                }
-               default: this.Appearance.Overlays[i] = value;
+               default: {
+                  this.Appearance.Overlays[i] = value;
+               }
             }
-            //mp.trigger('CLIENT::CREATOR:OVERLAY', i, v);
+            mp.trigger('CLIENT::CREATOR:OVERLAY', Head_Overlays.Indexes[i], this.Appearance.Overlays[i]);
          },
 
          Gender: function (i) { 
@@ -313,20 +426,26 @@
             this.Appearance = {
                Face: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                Blend_Data: [0, 0, 0, 0, 0, 0],
-               Overlays: [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+               Overlays: [255, 255, 255, 255, 255, 255, 255, 255],
+               Overlays_Toggle: [false, false, false, false, false, false, false, false],
                Hair: [0, 0, 0],
-               Beard: [0, 0],
+               Beard: [-1, 0],
                Eyes: 0,
                Clothing: [0, 0, 0, 0]
             };
+
+            this.Beard(0, -1);
+            this.Beard(1, 0);
             
-            for (let i = 0; i < 20; i ++) { mp.trigger('CLIENT::CREATOR:FACE', i, 0); }
+            // for (let i = 0; i < 20; i ++) { mp.trigger('CLIENT::CREATOR:FACE', i, 0); }
          },
 
          Play: function () { 
             const Taksks = this.Info.filter(Task => Task.Task == true);
             let Completed = this.Info.filter(Help => Help.Task === true && Help.Completed());
-            if (Completed.length  != Taksks.lengt) return; 
+            console.log('pre play');
+            // if (Completed.length != Taksks.lengt) return; 
+            console.log('after play');
             mp.trigger('CLIENT::CREATOR:FINISH', JSON.stringify(this.Character), JSON.stringify(this.Appearance));
          },
 
@@ -338,6 +457,10 @@
 
          window.addEventListener('wheel', (e) => { 
             if (this.Scroll_Disabled == false) mp.trigger('CLIENT::PLAYER_CAMERA:ZOOM', e.deltaY);
+         });
+
+         mp.events.add('BROWSER::CREATOR:TOPS', (Tops) => { 
+            this.CLOTHING_COMBINATIONS = Tops;
          });
          
       }, 
@@ -390,7 +513,7 @@
    .icon.female-gender { -webkit-mask: url('../assets/images/icons/female-gender.svg') no-repeat center; mask: url('../assets/images/icons/female-gender.svg') no-repeat center; mask-size: cover; }
    .icon.face-scan { -webkit-mask: url('../assets/images/icons/face-scan.svg') no-repeat center; mask: url('../assets/images/icons/face-scan.svg') no-repeat center; mask-size: cover; }
 
-   .page { padding-top: 40px; position: absolute; right: 30px; width: 350px; top: 120px; max-height: 600px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+   .page { padding-top: 40px; position: absolute; right: 30px; width: 350px; top: 120px; max-height: 600px; overflow-y: auto; flex-direction: column; justify-content: center; align-items: center; }
 
    .slider { padding: 20px; width: 300px; position: relative; }
    .slider input[type=checkbox] { position: absolute; top: 20px; right: 20px; }
@@ -411,11 +534,13 @@
    ul.genders label { width: 100%; text-align: center; }
    ul.genders li.icon.selected { background: linear-gradient(45deg, #fab80a, #fed52e); opacity: 1; }
 
-   ul.colors {  padding: 0; list-style: none; display: grid; grid-gap: 1.15rem; grid-template-columns: repeat(8, 25px); grid-template-rows: repeat(8, 25px); justify-content: center; }
+   .flex-page { display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
-   ul.colors li.color { width: 25px; height: 25px; border-radius: 100%; transition: all 0.35s ease; opacity: 0.7; border: 3px solid transparent; }
+   ul.colors { padding: 10px 0; list-style: none; display: grid; grid-gap: 0.7rem; grid-template-columns: repeat(8, 25px); grid-template-rows: repeat(8, 25px); justify-content: center; height: auto; overflow-y: auto; padding: 5px; }
+
+   ul.colors li.color { width: 20px; height: 20px; border-radius: 100%; transition: all 0.35s ease; opacity: 0.7; border: 3px solid transparent; }
    ul.colors li.color:hover, ul.colors li.color.selected { opacity: 1; border-color: rgb(255 255 255 / 70%); box-shadow: 0 0 0 5px rgb(255 255 255 / 25%); }
-
+   
    .finish { position: absolute; bottom: 100px; width: 100%; height: auto; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
    .finish h2 { margin: 0; margin-top: 15px; font-weight: 100; text-transform: uppercase; color: rgb(231, 231, 231); letter-spacing: 2px; transition: all 0.3s ease; opacity: 0.5; }
    button.play-button { 

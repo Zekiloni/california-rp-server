@@ -2,7 +2,7 @@ import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Defau
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Main } from '../Server/Main';
-import Accounts from './Account';
+import Accounts from './Account.model';
 import Characters from './Character';
 
 @Table

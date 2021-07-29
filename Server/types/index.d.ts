@@ -1,5 +1,5 @@
 
-import Accounts from '../src/Models/Account';
+import Accounts from '../src/Models/Account.model';
 import Characters from '../src/Models/Character';
 
 
@@ -15,6 +15,7 @@ declare global {
       OnPlayerEnter (Player: PlayerMp): void;    
       OnPlayerLeave (Player: PlayerMp): void; 
    }
+   
 
    interface VehicleMp { 
       Job: number;

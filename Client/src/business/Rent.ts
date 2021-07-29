@@ -9,4 +9,4 @@ mp.events.add({
       BusinessRentMenu = ! BusinessRentMenu;
       Browser.call(BusinessRentMenu ? 'BROWSER::SHOW' : `BROWSER::HIDE`, 'HouseManagement');
    }
-})
+});

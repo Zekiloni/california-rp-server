@@ -1,6 +1,5 @@
 
 
-const Player = mp.players.local;
 
 
 let camdir: boolean = false;
@@ -31,7 +30,7 @@ mp.events.add({
    },
 
    'client:spectate': (Target: PlayerMp, Toggle: boolean) => {
-      localplayer.freezePosition(Toggle);
+      Player.freezePosition(Toggle);
       if (Toggle) {
          if (Target && mp.players.exists(Target)) {
             SpecTarget = Target;
@@ -60,23 +59,23 @@ mp.events.add({
       }
       if (charpos) {
          const pos = Player.position;
-         mp.game.graphics.drawText(`X:${pos.x}    Y:${pos.y}    Z:${pos.z}`, [0.5, 0.005],
-            {
-               font: 4,
-               color: [255, 255, 255, 255],
-               scale: [1.0, 1.0],
-               outline: true,
-            });
+         // mp.game.graphics.drawText(`X:${pos.x}    Y:${pos.y}    Z:${pos.z}`, [0.5, 0.005],
+         //    {
+         //       font: 4,
+         //       color: [255, 255, 255, 255],
+         //       scale: [1.0, 1.0],
+         //       outline: true,
+         //    });
       }
       if (camdir) {
          const dir = getCameraDirection();
-         mp.game.graphics.drawText(`X:${dir.x}    Y:${dir.y}    Z:${dir.z}`, [0.5, 0.05],
-            {
-               font: 4,
-               color: [255, 255, 255, 255],
-               scale: [1.0, 1.0],
-               outline: true,
-            });
+         // mp.game.graphics.drawText(`X:${dir.x}    Y:${dir.y}    Z:${dir.z}`, [0.5, 0.05],
+         //    {
+         //       font: 4,
+         //       color: [255, 255, 255, 255],
+         //       scale: [1.0, 1.0],
+         //       outline: true,
+         //    });
       }
    }
 });

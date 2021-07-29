@@ -1,18 +1,17 @@
+import { Browser } from "../Browser";
 
 
-const Player = mp.players.local;
-let browser = null, opened = false;
+
+let Active:boolean = false;
+
 
 mp.events.add({
    'client:business.market:menu': (business) => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://business/business-interfaces/market.html');
-         browser.execute('market.business = ' + JSON.stringify(business));
-         Player.BrowserControls(true, true);
+      Active = !Active;
+      if (Active) { 
+         Browser.call('BROWSER::SHOW', 'Market');
       } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
+         Browser.call('BROWSER::HIDE', 'Market');
       }
    },
 

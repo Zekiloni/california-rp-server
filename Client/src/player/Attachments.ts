@@ -36,3 +36,4 @@ function Attach (Entity: EntityMp, Attachment: any) {
    mp.gui.chat.push(JSON.stringify(Attachment));
 }
 
+export {};

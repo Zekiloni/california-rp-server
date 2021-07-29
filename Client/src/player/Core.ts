@@ -132,12 +132,12 @@ mp.events.add({
                         const BubblePosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.6);
                         if (BubblePosition) { 
                            const Bubble = Target.getVariable('Bubble');
-                           mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
-                              font: 4,
-                              color: Bubble.Color,
-                              scale: [0.325, 0.325],
-                              outline: false
-                           });
+                           // mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
+                           //    font: 4,
+                           //    color: Bubble.Color,
+                           //    scale: [0.325, 0.325],
+                           //    outline: false
+                           // });
                         }
                      }
 
@@ -145,23 +145,23 @@ mp.events.add({
                         const WoundedPosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.75);
                         if (WoundedPosition) { 
                            const Wound = Target.getVariable('Wounded');
-                           mp.game.graphics.drawText('(( ' + Wound.Text + ' ))', [WoundedPosition.x, WoundedPosition.y], {
-                              font: 4,
-                              color: Wound.Color,
-                              scale: [0.315, 0.315],
-                              outline: false
-                           });
+                           // mp.game.graphics.drawText('(( ' + Wound.Text + ' ))', [WoundedPosition.x, WoundedPosition.y], {
+                           //    font: 4,
+                           //    color: Wound.Color,
+                           //    scale: [0.315, 0.315],
+                           //    outline: false
+                           // });
                         }
                      }
 
                      const Content = Target.name + ' [' + Target.remoteId + ']';
    
-                     mp.game.graphics.drawText(Content, [x, y], {
-                        font: 4,
-                        color: [255, 255, 255, 255],
-                        scale: [0.325, 0.325],
-                        outline: false
-                     });
+                     // mp.game.graphics.drawText(Content, [x, y], {
+                     //    font: 4,
+                     //    color: [255, 255, 255, 255],
+                     //    scale: [0.325, 0.325],
+                     //    outline: false
+                     // });
                   }
 
                }

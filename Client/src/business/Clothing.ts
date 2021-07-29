@@ -1,6 +1,5 @@
 import { Browser } from "../Browser";
 
-export {};
 
 const Player = mp.players.local;
 let Active = false;

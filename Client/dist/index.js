@@ -54,8 +54,9 @@ const Browser_1 = __webpack_require__(2910);
 const Player_1 = __webpack_require__(8412);
 const Lobby_1 = __webpack_require__(551);
 const Utils_1 = __webpack_require__(8675);
-const Female_Torsos_json_1 = __importDefault(__webpack_require__(7886));
-const Male_Torsos_json_1 = __importDefault(__webpack_require__(3649));
+const FEMALE_TORSOS_json_1 = __importDefault(__webpack_require__(3678));
+const MALE_TORSOS_json_1 = __importDefault(__webpack_require__(9293));
+const Clothing_Combinations_1 = __webpack_require__(8934);
 const Player = mp.players.local;
 let Active = false;
 mp.events.add({
@@ -65,6 +66,7 @@ mp.events.add({
             Lobby_1.Lobby(false);
             Browser_1.Browser.call('BROWSER::SHOW', 'Creator');
             Player.position = Info.Position;
+            Browser_1.Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations_1.Clothing_Combinations[0]));
             Player.setHeading(0);
             mp.game.time.setClockTime(Info.Time, 0, 0);
             Player.freezePosition(true);
@@ -74,13 +76,14 @@ mp.events.add({
             Utils_1.PlayerPreviewCamera(true);
         });
     },
-    'CLIENT::CREATOR:FINISH': async (Character, Appearance, Clothing) => {
-        Active = false;
-        const Created = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance, Clothing);
+    'CLIENT::CREATOR:FINISH': async (Character, Appearance) => {
+        const Created = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance);
         if (Created) {
+            Active = false;
             mp.events.remove('render', Utils_1.DisableMoving);
             Player.freezePosition(false);
             Utils_1.PlayerPreviewCamera(false);
+            Browser_1.Browser.call('BROWSER::HIDE', 'Creator');
         }
     },
     'CLIENT::CREATOR:BLEND': (shapeM, shapeF, skinM, skinF, shapeMix, skinMix) => {
@@ -92,10 +95,14 @@ mp.events.add({
     'CLIENT::CREATOR:GENDER': (x) => {
         Player.model = Player_1.Player_Models[x];
         Utils_1.RemoveClothing(Player);
+        // Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations[0]));
     },
     'CLIENT::CREATOR:HAIR': (Style, Color, Highlights) => {
         Player.setComponentVariation(2, Style, 0, 0);
         Player.setHairColor(Color, Highlights);
+    },
+    'CLIENT::CREATOR:OVERLAY': (i, e, x) => {
+        Player.setHeadOverlay(i, e, 1.0, 0, 0);
     },
     'CLIENT::CREATOR:CLOTHING': (Component, Drawable) => {
         Player.setComponentVariation(Component, Drawable, 0, 2);
@@ -103,16 +110,16 @@ mp.events.add({
             const Gender = Player_1.Genders[Player.model];
             switch (Gender) {
                 case '0': {
-                    if (Male_Torsos_json_1.default[String(Drawable)] != undefined || Male_Torsos_json_1.default[String(Drawable)][0] != undefined) {
-                        const Torso = Male_Torsos_json_1.default[String(Drawable)][0].BestTorsoDrawable;
+                    if (MALE_TORSOS_json_1.default[String(Drawable)] != undefined || MALE_TORSOS_json_1.default[String(Drawable)][0] != undefined) {
+                        const Torso = MALE_TORSOS_json_1.default[String(Drawable)][0].BestTorsoDrawable;
                         if (Torso != -1)
                             Player.setComponentVariation(Player_1.Clothing_Components.Torso, Torso, 0, 2);
                     }
                     break;
                 }
                 case '1': {
-                    if (Female_Torsos_json_1.default[String(Drawable)] != undefined || Female_Torsos_json_1.default[String(Drawable)][0] != undefined) {
-                        const Torso = Female_Torsos_json_1.default[String(Drawable)][0].BestTorsoDrawable;
+                    if (FEMALE_TORSOS_json_1.default[String(Drawable)] != undefined || FEMALE_TORSOS_json_1.default[String(Drawable)][0] != undefined) {
+                        const Torso = FEMALE_TORSOS_json_1.default[String(Drawable)][0].BestTorsoDrawable;
                         if (Torso != -1)
                             Player.setComponentVariation(Player_1.Clothing_Components.Torso, Torso, 0, 2);
                     }
@@ -122,23 +129,343 @@ mp.events.add({
         }
     },
     'CLIENT::CREATOR:EYES_COLOR': (Color) => {
-        Player.eyeColour = Color;
+        Player.setEyeColor(Color);
     },
-    'client:player.character.creator:beard': (x) => {
-        x = JSON.parse(x);
-        Player.setHeadOverlay(1, parseInt(x[0]), 1.0, parseInt(x[1]), 0);
-    },
-    'client:player.character.creator:overlay': (i, e, x) => {
-        Player.setHeadOverlay(i, e, 1.0, x, 0);
-    },
-    'client:player.character.creator:blend': (x) => {
-        x = JSON.parse(x);
-        Player.setHeadBlendData(parseInt(x[0]), parseInt(x[1]), 0, parseInt(x[2]), parseInt(x[3]), 0, parseFloat(x[4]), parseFloat(x[5]), 0, true);
-    },
-    'client:player.character.creator:clothing': (i, d) => {
-        Player.setComponentVariation(i, d, 0, 2);
+    'CLIENT::CREATOR:BEARD': (Style, Color) => {
+        Player.setHeadOverlay(1, Style, 1.0, Color, 0);
     }
 });
+mp.events.addProc({
+    'CLIENT::TOP:COMBINATIONS': (Gender, Top) => {
+        return Clothing_Combinations_1.Clothing_Combinations[Gender][Top];
+    }
+});
+
+
+/***/ }),
+
+/***/ 8934:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Clothing_Combinations = void 0;
+exports.Clothing_Combinations = {
+    "0": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [0, 1, 3, 4, 8, 9, 10, 11, 12, 13, 16, 21, 23, 25, 26, 27, 28, 29, 37, 38, 41, 42, 43, 44, 45, 46, 47, 53, 60, 63, 64, 65, 67, 69, 72, 75, 76, 79, 90, 95, 96, 101, 103, 106, 109, 110, 115, 135, 141, 146, 148, 150, 168, 176, 178, 179],
+        "5": [],
+        "6": [2, 9, 10, 11, 13, 14, 18, 21, 22, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 36, 39, 44, 45, 48, 54, 60, 66, 68, 71, 74, 77, 80, 86, 89, 90, 93, 94, 100, 102, 105, 107, 110, 116, 121, 134, 140, 142, 146, 147, 148, 149, 150, 167, 175, 178],
+        "7": [0, 1],
+        "8": [],
+        "9": [],
+        "10": ["URADITI KOMBINACIJE"],
+        "12": [],
+        "13": [],
+        "14": [],
+        "16": [],
+        "17": [],
+        "19": ["URADITI KOMBINACIJE"],
+        "20": ["URADITI KOMBINACIJE"],
+        "21": ["URADITI KOMBINACIJE"],
+        "22": [],
+        "23": ["URADITI KOMBINACIJE"],
+        "24": ["URADITI KOMBINACIJE"],
+        "25": ["URADITI KOMBINACIJE"],
+        "26": [],
+        "27": ["URADITI KOMBINACIJE"],
+        "28": ["URADITI KOMBINACIJE"],
+        "29": ["URADITI KOMBINACIJE"],
+        "30": ["URADITI KOMBINACIJE"],
+        "31": ["URADITI KOMBINACIJE"],
+        "32": ["URADITI KOMBINACIJE"],
+        "33": [],
+        "34": [],
+        "35": ["URADITI KOMBINACIJE"],
+        "36": [],
+        "37": ["URADITI KOMBINACIJE"],
+        "38": [],
+        "39": [],
+        "40": ["URADITI KOMBINACIJE"],
+        "41": [],
+        "42": [],
+        "43": [],
+        "46": ["URADITI KOMBINACIJE"],
+        "47": [],
+        "49": [],
+        "50": [],
+        "51": [],
+        "52": [],
+        "53": [],
+        "56": [],
+        "57": [],
+        "58": ["URADITI KOMBINACIJE"],
+        "59": ["URADITI KOMBINACIJE"],
+        "60": ["URADITI KOMBINACIJE"],
+        "61": [],
+        "62": ["URADITI KOMBINACIJE"],
+        "63": [],
+        "64": ["URADITI KOMBINACIJE"],
+        "67": [],
+        "68": ["URADITI KOMBINACIJE"],
+        "69": ["URADITI KOMBINACIJE"],
+        "70": ["URADITI KOMBINACIJE"],
+        "71": [],
+        "72": ["URADITI KOMBINACIJE"],
+        "73": [],
+        "74": ["URADITI KOMBINACIJE"],
+        "75": [],
+        "76": ["URADITI KOMBINACIJE"],
+        "77": ["URADITI KOMBINACIJE"],
+        "78": [],
+        "79": [],
+        "80": [],
+        "81": [],
+        "82": [],
+        "83": [],
+        "84": [],
+        "85": [],
+        "86": [],
+        "87": [],
+        "88": ["URADITI KOMBINACIJE"],
+        "89": [],
+        "90": [],
+        "92": [],
+        "93": [],
+        "94": [],
+        "95": [],
+        "96": [],
+        "97": [],
+        "98": [],
+        "99": ["URADITI KOMBINACIJE"],
+        "100": ["URADITI KOMBINACIJE"],
+        "101": ["URADITI KOMBINACIJE"],
+        "102": ["URADITI KOMBINACIJE"],
+        "103": ["URADITI KOMBINACIJE"],
+        "104": ["URADITI KOMBINACIJE"],
+        "105": [],
+        "106": ["URADITI KOMBINACIJE"],
+        "107": [],
+        "108": ["URADITI KOMBINACIJE"],
+        "109": ["URADITI KOMBINACIJE"],
+        "110": [],
+        "111": [],
+        "112": ["URADITI KOMBINACIJE"],
+        "113": [],
+        "115": ["URADITI KOMBINACIJE"],
+        "117": [],
+        "118": ["URADITI KOMBINACIJE"],
+        "119": ["URADITI KOMBINACIJE"],
+        "121": [],
+        "122": ["URADITI KOMBINACIJE"],
+        "123": [],
+        "124": ["URADITI KOMBINACIJE"],
+        "125": [],
+        "126": [],
+        "127": ["URADITI KOMBINACIJE"],
+        "128": [],
+        "131": [],
+        "132": [],
+        "133": [],
+        "134": [],
+        "135": [],
+        "136": ["URADITI KOMBINACIJE"],
+        "137": ["URADITI KOMBINACIJE"],
+        "138": [],
+        "139": [],
+        "140": ["URADITI KOMBINACIJE"],
+        "141": [],
+        "142": ["URADITI KOMBINACIJE"],
+        "143": [],
+        "144": [],
+        "145": ["URADITI KOMBINACIJE"],
+        "146": [],
+        "147": [],
+        "150": [],
+        "151": ["URADITI KOMBINACIJE"],
+        "152": [],
+        "153": [],
+        "154": [],
+        "156": ["URADITI KOMBINACIJE"],
+        "157": ["URADITI KOMBINACIJE"],
+        "158": ["URADITI KOMBINACIJE"],
+        "159": ["URADITI KOMBINACIJE"],
+        "160": ["URADITI KOMBINACIJE"],
+        "161": ["URADITI KOMBINACIJE"],
+        "162": ["URADITI KOMBINACIJE"],
+        "163": ["URADITI KOMBINACIJE"],
+        "164": [],
+        "165": [],
+        "166": ["URADITI KOMBINACIJE"],
+        "167": ["URADITI KOMBINACIJE"],
+        "168": [],
+        "169": ["URADITI KOMBINACIJE"],
+        "170": ["URADITI KOMBINACIJE"],
+        "171": [],
+        "172": ["URADITI KOMBINACIJE"],
+        "173": ["URADITI KOMBINACIJE"],
+        "174": ["URADITI KOMBINACIJE"],
+        "175": ["URADITI KOMBINACIJE"],
+        "176": ["URADITI KOMBINACIJE"],
+        "177": ["URADITI KOMBINACIJE"],
+        "180": ["URADITI KOMBINACIJE"],
+        "181": ["URADITI KOMBINACIJE"],
+        "182": [],
+        "183": ["URADITI KOMBINACIJE"],
+        "184": [],
+        "185": ["URADITI KOMBINACIJE"],
+        "187": [],
+        "188": [],
+        "189": ["URADITI KOMBINACIJE"],
+        "190": [],
+        "191": ["URADITI KOMBINACIJE"],
+        "192": ["URADITI KOMBINACIJE"],
+        "193": [],
+        "194": [],
+        "195": [],
+        "196": [],
+        "197": [],
+        "198": [],
+        "199": ["URADITI KOMBINACIJE"],
+        "200": [],
+        "202": ["URADITI KOMBINACIJE"],
+        "203": [],
+        "204": [],
+        "205": ["URADITI KOMBINACIJE"],
+        "206": ["URADITI KOMBINACIJE"],
+        "207": ["URADITI KOMBINACIJE"],
+        "208": [],
+        "209": [],
+        "210": [],
+        "211": [],
+        "212": ["URADITI KOMBINACIJE"],
+        "214": [],
+        "215": ["URADITI KOMBINACIJE"],
+        "216": ["URADITI KOMBINACIJE"],
+        "217": [],
+        "218": [],
+        "219": ["URADITI KOMBINACIJE"],
+        "220": [],
+        "221": [],
+        "222": [],
+        "223": ["URADITI KOMBINACIJE"],
+        "224": [],
+        "225": [],
+        "226": [],
+        "227": [],
+        "229": [],
+        "230": ["URADITI KOMBINACIJE"],
+        "232": ["URADITI KOMBINACIJE"],
+        "233": ["URADITI KOMBINACIJE"],
+        "234": [],
+        "235": [],
+        "237": [],
+        "238": [],
+        "239": [],
+        "240": ["URADITI KOMBINACIJE"],
+        "241": [],
+        "242": [],
+        "243": [],
+        "244": ["URADITI KOMBINACIJE"],
+        "245": [],
+        "247": ["URADITI KOMBINACIJE"],
+        "248": [],
+        "249": ["URADITI KOMBINACIJE"],
+        "250": ["URADITI KOMBINACIJE"],
+        "251": [],
+        "253": [],
+        "254": [],
+        "255": [],
+        "256": [],
+        "257": [],
+        "258": ["URADITI KOMBINACIJE"],
+        "259": [],
+        "260": [],
+        "261": ["URADITI KOMBINACIJE"],
+        "262": [],
+        "263": [],
+        "264": ["URADITI KOMBINACIJE"],
+        "265": [],
+        "266": ["URADITI KOMBINACIJE"],
+        "267": ["URADITI KOMBINACIJE"],
+        "268": ["URADITI KOMBINACIJE"],
+        "269": ["URADITI KOMBINACIJE"],
+        "271": [],
+        "272": [],
+        "273": [],
+        "279": [],
+        "280": [],
+        "281": [],
+        "282": [],
+        "288": [],
+        "292": ["URADITI KOMBINACIJE"],
+        "293": ["URADITI KOMBINACIJE"],
+        "294": ["URADITI KOMBINACIJE"],
+        "295": ["URADITI KOMBINACIJE"],
+        "296": [],
+        "297": [],
+        "298": [],
+        "300": [],
+        "301": [],
+        "302": [],
+        "303": ["URADITI KOMBINACIJE"],
+        "304": ["URADITI KOMBINACIJE"],
+        "305": [],
+        "306": [],
+        "307": [],
+        "308": [],
+        "309": ["URADITI KOMBINACIJE"],
+        "310": ["URADITI KOMBINACIJE"],
+        "311": ["URADITI KOMBINACIJE"],
+        "312": ["URADITI KOMBINACIJE"],
+        "313": [],
+        "316": [],
+        "317": [],
+        "319": [],
+        "321": [],
+        "322": [],
+        "323": [],
+        "325": [],
+        "326": [],
+        "328": [],
+        "329": [],
+        "330": [],
+        "331": [],
+        "332": [],
+        "334": [],
+        "335": [],
+        "336": [],
+        "337": ["URADITI KOMBINACIJE"],
+        "338": ["URADITI KOMBINACIJE"],
+        "339": ["URADITI KOMBINACIJE"],
+        "340": ["URADITI KOMBINACIJE"],
+        "341": [],
+        "342": [],
+        "343": [],
+        "344": ["URADITI KOMBINACIJE"],
+        "345": [],
+        "346": ["URADITI KOMBINACIJE"],
+        "347": ["URADITI KOMBINACIJE"],
+        "348": [],
+        "349": [],
+        "350": [],
+        "351": [],
+        "352": [],
+        "353": [],
+        "354": [],
+        "355": ["URADITI KOMBINACIJE"],
+        "356": [],
+        "357": [],
+        "358": [],
+        "359": [],
+        "360": ["URADITI KOMBINACIJE"],
+        "361": []
+    }
+};
 
 
 /***/ }),
@@ -319,30 +646,21 @@ exports.Lobby = Lobby;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CreateInteractionSpot = exports.MoveCamera = exports.CursorData = exports.PlayerPreviewCamera = exports.GetAdress = exports.OnlinePlayers = exports.DisableMoving = exports.RemoveClothing = void 0;
+exports.CreateInteractionSpot = exports.MoveCamera = exports.CursorData = exports.PlayerPreviewCamera = exports.GetAdress = exports.OnlinePlayers = exports.WeaponString = exports.WaitEntity = exports.LoadMovementClipset = exports.LoadAnimationDictionary = exports.DistanceBetweenVectors = exports.CompareVectors = exports.RemoveClothing = exports.DisableMoving = exports.Controls = void 0;
 const Player_1 = __webpack_require__(8412);
-const Player = mp.players.local;
-function RemoveClothing(Entity) {
-    switch (true) {
-        case Entity.model == 0x705E61F2: {
-            Entity.setComponentVariation(Player_1.Clothing_Components.Torso, 15, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Legs, 61, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Shoes, 34, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Undershirt, 15, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Top, 15, 0, 2);
-            break;
-        }
-        case Entity.model == 0x9C9EFFD8: {
-            Entity.setComponentVariation(Player_1.Clothing_Components.Torso, 15, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Legs, 17, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Shoes, 35, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Undershirt, 15, 0, 2);
-            Entity.setComponentVariation(Player_1.Clothing_Components.Top, 15, 0, 2);
-            break;
-        }
-    }
-}
-exports.RemoveClothing = RemoveClothing;
+exports.Controls = {
+    KEY_X: 0x58,
+    KEY_L: 0x4C,
+    KEY_Y: 0x59,
+    LEFT_ARROW: 0x25,
+    RIGHT_ARROW: 0x27,
+    ENTER: 0x0D,
+    KEY_P: 0x50,
+    KEY_I: 0x49,
+    TAB: 0x09,
+    NUMBER_1: 0x31,
+    NUMBER_2: 0x32
+};
 function DisableMoving() {
     mp.game.controls.disableControlAction(0, 30, true);
     mp.game.controls.disableControlAction(0, 31, true);
@@ -352,13 +670,38 @@ function DisableMoving() {
     mp.game.controls.disableControlAction(0, 35, true);
 }
 exports.DisableMoving = DisableMoving;
+function RemoveClothing(Entity) {
+    const Gender = Player_1.Genders[Entity.model];
+    switch (Gender) {
+        case '0': {
+            Entity.setComponentVariation(Player_1.Clothing_Components.Top, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Torso, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Legs, 61, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Shoes, 34, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Undershirt, 15, 0, 2);
+            break;
+        }
+        case '1': {
+            Entity.setComponentVariation(Player_1.Clothing_Components.Top, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Torso, 15, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Legs, 17, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Shoes, 35, 0, 2);
+            Entity.setComponentVariation(Player_1.Clothing_Components.Undershirt, 14, 0, 2);
+            break;
+        }
+    }
+}
+exports.RemoveClothing = RemoveClothing;
+;
 function CompareVectors(i, x) {
     return i.x == x.x && i.y == x.y && i.z == x.z;
 }
+exports.CompareVectors = CompareVectors;
 ;
 function DistanceBetweenVectors(First, Second) {
     return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
 }
+exports.DistanceBetweenVectors = DistanceBetweenVectors;
 function LoadAnimationDictionary(i) {
     if (mp.game.streaming.hasAnimDictLoaded(i))
         return Promise.resolve(true);
@@ -370,6 +713,7 @@ function LoadAnimationDictionary(i) {
         resolve(true);
     });
 }
+exports.LoadAnimationDictionary = LoadAnimationDictionary;
 ;
 function LoadMovementClipset(Clipset) {
     if (mp.game.streaming.hasClipSetLoaded(Clipset))
@@ -382,6 +726,7 @@ function LoadMovementClipset(Clipset) {
         resolve(true);
     });
 }
+exports.LoadMovementClipset = LoadMovementClipset;
 function WaitEntity(Entity) {
     return new Promise(resolve => {
         let wait = setInterval(() => {
@@ -392,12 +737,14 @@ function WaitEntity(Entity) {
         }, 1);
     });
 }
+exports.WaitEntity = WaitEntity;
 function WeaponString(Weapon) {
     if (typeof Weapon !== 'undefined')
         return '0x' + Weapon.toString(16).toUpperCase();
     else
         return '0xA2719263';
 }
+exports.WeaponString = WeaponString;
 function OnlinePlayers() {
     let List = [];
     mp.players.forEach(_Player => {
@@ -414,6 +761,7 @@ exports.GetAdress = GetAdress;
 let MovableCamera;
 function PlayerPreviewCamera(Toggle) {
     if (Toggle) {
+        const Player = mp.players.local;
         MovableCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
         const CameraPositon = new mp.Vector3(Player.position.x + Player.getForwardX() * 1.5, Player.position.y + Player.getForwardY() * 1.5, Player.position.z + 0.3);
         MovableCamera.setCoord(CameraPositon.x, CameraPositon.y, CameraPositon.z);
@@ -433,6 +781,7 @@ function PlayerPreviewCamera(Toggle) {
 }
 exports.PlayerPreviewCamera = PlayerPreviewCamera;
 function ZoomCamera(Delta) {
+    const Player = mp.players.local;
     let { x, y, z } = MovableCamera.getCoord();
     if (Delta < 0) {
         x += MovableCamera.getDirection().x * 0.1;
@@ -456,13 +805,14 @@ function CursorData() {
 }
 exports.CursorData = CursorData;
 function MoveCamera() {
+    const Player = mp.players.local;
     const Data = CursorData();
     if (!mp.keys.isDown(0x02))
         return;
     const newHeading = Player.getHeading() + Data.DeltaX * 0.15;
     Player.setHeading(newHeading);
     let { x: camPosX, y: camPosY, z: camPosZ } = MovableCamera.getCoord();
-    let { x: camPointX, y: camPointY, z: camPointZ } = MovableCamera.getDirection();
+    //let { X: camPointX, Y: camPointY, Z: camPointZ } = MovableCamera.getDirection();
     camPosZ = camPosZ + Data.DeltaY * 0.001;
     const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
     if (camPosZ < charPosZ + 0.7 && camPosZ > charPosZ - 0.8) {
@@ -472,9 +822,10 @@ function MoveCamera() {
 }
 exports.MoveCamera = MoveCamera;
 function CreateInteractionSpot(Name, Position) {
+    const Player = mp.players.local;
     const checkpoint = mp.checkpoints.new(48, Position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
     const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
-    return { checkpoint: checkpoint, blip: blip };
+    return { Checkpoint: checkpoint, Blip: blip };
 }
 exports.CreateInteractionSpot = CreateInteractionSpot;
 ;
@@ -482,7 +833,2610 @@ exports.CreateInteractionSpot = CreateInteractionSpot;
 
 /***/ }),
 
-/***/ 7886:
+/***/ 5102:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Player = mp.players.local;
+let Active = false;
+mp.events.add({
+    'CLIENT::BUSINESS:MENU': (MenuName, BusinessId) => {
+        Active = !Active;
+        Browser_1.Browser.call(Active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', MenuName);
+    }
+});
+
+
+/***/ }),
+
+/***/ 8460:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Player = mp.players.local;
+let Active = false;
+mp.events.add({
+    'CLIENT::BUSINESS:CLOTHING:MENU': () => {
+        Active = !Active;
+        if (Active) {
+            Browser_1.Browser.call('BROWSER::SHOW', 'ClothingMenu');
+        }
+        else {
+            Browser_1.Browser.call('BROWSER::HIDE', 'ClothingMenu');
+            mp.events.callRemote('server:character.clothing:restart');
+        }
+    },
+    'CLIENT::BUSINESS:CLOTHING:MODEL:PREVIEW': (x, Component, Variation) => {
+        Player.setComponentVariation(Component, Variation, 0, 2);
+    },
+    'CLIENT::BUSINESS:CLOTHING:PREVIEW': (x, Component, Texture) => {
+        const Variation = Player.getDrawableVariation(Component);
+        Player.setComponentVariation(Component, Variation, Texture, 2);
+    },
+    'CLIENT::BUSINESS:CLOTHING:BUY': (Total, Items, Biz) => {
+        mp.events.call('client:business.clothing:menu');
+        mp.events.callRemote('server:business.clothing:buy', Total, Items, Biz);
+    }
+});
+
+
+/***/ }),
+
+/***/ 8413:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Player = mp.players.local;
+let Active = false;
+let Vehicle = null;
+let Camera = null;
+let Point = null;
+mp.events.add({
+    'client:business.dealership:menu': (Info) => {
+        Active = !Active;
+        if (Active) {
+            Point = new mp.Vector3(Info.Point.x, Info.Point.y, Info.Point.z);
+            camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
+            camera.setActive(true);
+            camera.setCoord(Point.x + 6, Point.y, Point.z);
+            camera.pointAtCoord(Point.x, Point.y, Point.z);
+            mp.game.cam.renderScriptCams(true, false, 0, true, false);
+            mp.events.add('render', MoveCamera);
+            Preview(Info.Products[0].Model);
+        }
+        else {
+            if (Camera)
+                Camera.destroy();
+            Camera = null;
+            mp.game.cam.renderScriptCams(false, false, 0, false, false);
+            if (Vehicle)
+                Vehicle.destroy();
+            mp.events.remove('render', MoveCamera);
+        }
+    },
+    'client:vehicle.dealership:zoom': (delta) => {
+        if (!Camera || !Vehicle)
+            return;
+        let { x, y, z } = Camera.getCoord();
+        if (delta < 0) {
+            x += Camera.getDirection().x * 0.2;
+            y += Camera.getDirection().y * 0.2;
+        }
+        else {
+            x -= Camera.getDirection().x * 0.2;
+            y -= Camera.getDirection().y * 0.2;
+        }
+        const dist = mp.game.gameplay.getDistanceBetweenCoords(Vehicle.position.x, Vehicle.position.y, Vehicle.position.z, x, y, z, false);
+        if (dist > 12.5 || dist < 0.8)
+            return;
+        Camera.setPosition(x, y, z);
+    },
+    'client:business.dealership:preview': Preview,
+    'client:business.dealership:customization': (primary, secondary) => {
+        if (!Vehicle)
+            return;
+        Vehicle.setColours(parseInt(primary), parseInt(secondary));
+    },
+    'client:business.dealership.vehicle:buy': (total, model, color, biz) => {
+        mp.events.callRemote('server:business.dealership.vehicle:buy', total, model, color, biz);
+    }
+});
+async function Preview(Model) {
+    if (!Vehicle || !Point)
+        return;
+    if (mp.vehicles.exists(Vehicle)) {
+        if (Vehicle.handle === 0)
+            await mp.game.waitAsync(0);
+        Vehicle.model = mp.game.joaat(Model);
+    }
+    else {
+        Vehicle = mp.vehicles.new(mp.game.joaat(Model), Point, { numberPlate: 'Dealership', alpha: 255, engine: false, heading: 90, dimension: Player.dimension });
+    }
+}
+;
+let [PrevX, PrevY] = mp.gui.cursor.position;
+function CursorData() {
+    const x = PrevX, y = PrevY;
+    PrevX = mp.gui.cursor.position[0];
+    PrevY = mp.gui.cursor.position[1];
+    return { DeltaX: mp.gui.cursor.position[0] - x, DeltaY: mp.gui.cursor.position[1] - y };
+}
+function MoveCamera() {
+    if (!Vehicle || !Camera)
+        return;
+    const Data = CursorData();
+    if (!mp.keys.isDown(0x02))
+        return;
+    const newHeading = Vehicle.getHeading() + Data.DeltaX * 0.15;
+    Vehicle.setHeading(newHeading);
+    let { x: camPosX, y: camPosY, z: camPosZ } = Camera.getCoord();
+    //let { pointX: camPointX, pointY: camPointY, pointZ: camPointZ } = Camera.getDirection();
+    camPosZ = camPosZ + Data.DeltaY * 0.001;
+    const { x: vehPosX, y: vehPosY, z: vehPosZ } = Vehicle.getCoords(true);
+    if (camPosZ < vehPosZ + 1.0 && camPosZ > vehPosZ - 0.3) {
+        Camera.setPosition(camPosX, camPosY, camPosZ);
+        Camera.pointAtCoord(vehPosX, vehPosY, camPosZ);
+    }
+}
+
+
+/***/ }),
+
+/***/ 5098:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Player = mp.players.local;
+let BusinessDrinkMenu = false;
+mp.events.add({
+    'CLIENT::BUSINESS:DRINK:MENU': (Info) => {
+        BusinessDrinkMenu = !BusinessDrinkMenu;
+        Browser_1.Browser.call(BusinessDrinkMenu ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'BusinessDrinkMenu');
+    },
+    'CLIENT::BUSINESS:DRINK:BUY': (Price, Item, Business) => {
+        mp.events.callRemote('SERVER::BUSINESS:DRINK:BUY', Price, Item, Business);
+    }
+});
+
+
+/***/ }),
+
+/***/ 7137:
+/***/ (() => {
+
+"use strict";
+
+
+
+/***/ }),
+
+/***/ 3240:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+let BusinessGasMenu = false;
+const Pumps = [1339433404, 1694452750, 1933174915, 2287735495];
+const Player = mp.players.local;
+mp.events.add({
+    'client:business.gas:menu': (Info) => {
+        BusinessGasMenu = !BusinessGasMenu;
+    }
+});
+mp.events.addProc({
+    'client:business.gas:nearpump': () => {
+        const Position = Player.position;
+        return new Promise((resolve) => {
+            for (const Pump of Pumps) {
+                let object = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 3.0, Pump, false, true, true);
+                if (object) {
+                    resolve(true);
+                    break;
+                }
+            }
+        });
+    }
+});
+
+
+/***/ }),
+
+/***/ 6047:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+let Active = false;
+mp.events.add({
+    'client:business.market:menu': (business) => {
+        Active = !Active;
+        if (Active) {
+            Browser_1.Browser.call('BROWSER::SHOW', 'Market');
+        }
+        else {
+            Browser_1.Browser.call('BROWSER::HIDE', 'Market');
+        }
+    },
+    'client:business.market:buy': (bill, items, business) => {
+        mp.events.call('client:business.market:menu');
+        mp.events.callRemote('server:bussines.market:buy', bill, items, business);
+    }
+});
+
+
+/***/ }),
+
+/***/ 8569:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Player = mp.players.local;
+let BusinessRentMenu = false;
+mp.events.add({
+    'CLIENT::BUSINESS:RENT:MENU': (Business) => {
+        BusinessRentMenu = !BusinessRentMenu;
+        Browser_1.Browser.call(BusinessRentMenu ? 'BROWSER::SHOW' : `BROWSER::HIDE`, 'HouseManagement');
+    }
+});
+
+
+/***/ }),
+
+/***/ 2132:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+let Active = false;
+let PatrolsMap = false;
+mp.events.add({
+    'entityStreamIn': (Entity) => {
+    },
+    'render': () => {
+        // if (PatrolsMap) { 
+        //    mp.players.forEach((player) => { 
+        //       if (player.getVariable('Faction') == police) { 
+        //          browser.execute() // push ime igraca i x i y;
+        //       }
+        //    })
+        // }
+    }
+});
+// function Patrol (callsign, x, y) { 
+//    const { x, y } = Player.position;
+//    let N = 0, M = 0;
+//    // 400 / 500 = N / x;
+// };
+mp.events.addDataHandler({
+    'callsign': (Entity, NewValue, OldValue) => {
+    }
+});
+
+
+/***/ }),
+
+/***/ 6477:
+/***/ (() => {
+
+"use strict";
+
+// // uraditi provere da li je chat otvoren
+// var moving_speeds = [0.01, 0.1, 1.0, 5.0, 10.0];
+// var moving_speed_idx = 0;
+// var editing_types = ["X position", "Y position", "Height", "X Rot", "Y Rot", "Rotation"];
+// var editing_type_idx = 0;
+// const localplayer = mp.players.local;
+// let Editing = false;
+// let Object: ObjectMp | null = null;
+// var sc = mp.game.graphics.requestScaleformMovie("instructional_buttons");
+// var scInst = 0;
+// function AddInstructionalStart() {
+//     scInst = 0;
+//     mp.game.graphics.drawScaleformMovieFullscreen(sc, 255, 255, 255, 0, false);
+//     mp.game.graphics.pushScaleformMovieFunction(sc, "CLEAR_ALL");
+//     mp.game.graphics.popScaleformMovieFunctionVoid();
+//     mp.game.graphics.pushScaleformMovieFunction(sc, "SET_CLEAR_SPACE");
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(200);
+//     mp.game.graphics.popScaleformMovieFunctionVoid();
+// }
+// function AddInstructionalButton(text: string, button: number)
+// {
+//     mp.game.graphics.pushScaleformMovieFunction(sc, "SET_DATA_SLOT");
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(scInst);
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(button);
+//     mp.game.graphics.pushScaleformMovieFunctionParameterString(text);
+//     mp.game.graphics.popScaleformMovieFunctionVoid();
+//     scInst++;
+// }
+// function AddInstructionalButtonCustom(text: string, button: string) {
+//     mp.game.graphics.pushScaleformMovieFunction(sc, "SET_DATA_SLOT");
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(scInst);
+//     mp.game.graphics.pushScaleformMovieFunctionParameterString(button);
+//     mp.game.graphics.pushScaleformMovieFunctionParameterString(text);
+//     mp.game.graphics.popScaleformMovieFunctionVoid();
+//     scInst++;
+// }
+// function AddInstructionalEnd(type: number) {
+//     mp.game.graphics.pushScaleformMovieFunction(sc, "DRAW_INSTRUCTIONAL_BUTTONS");
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(type);
+//     mp.game.graphics.popScaleformMovieFunctionVoid();
+//     mp.game.graphics.pushScaleformMovieFunction(sc, "SET_BACKGROUND_COLOUR");
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+//     mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+//     mp.game.graphics.popScaleformMovieFunctionVoid();
+// }
+// mp.events.add("client:startFurnitureEditor", function (model) {
+//    Object = mp.objects.new(mp.game.joaat(model), new mp.Vector3(localplayer.position.x+1, localplayer.position.y+1, localplayer.position.z-0.5), 
+//    {
+// 	   rotation: new mp.Vector3(0, 0, 0),
+// 	   alpha: 255,
+// 	   dimension: localplayer.dimension
+//    });
+//    Editing = true;
+// });
+// mp.events.add("client:stopFurnitureEditor", function () {
+//    Object?.destroy();
+//    Object = null;
+//    Editing = false;
+// });
+// function UpdateObject() {
+//    if (Object == null) return;
+//    let model = Object.model;
+//    let position = Object.position;
+//    let rot = Object.getRotation(2);
+//    let pitch = Object.getPitch();
+//    Object.destroy();
+//    Object = mp.objects.new(model, position,
+//    {
+// 	   rotation: new mp.Vector3(rot.x, rot.y, rot.z),
+// 	   alpha: 255,
+// 	   dimension: localplayer.dimension
+//    });
+//    Object.setRotation(pitch, rot.y, rot.z, 2, true);
+// }
+// mp.keys.bind(0x26, false, function () { // UP Arrow
+//    if (!Editing || Object === null) return; // uraditi proveru i da li je chat otvoren
+//    switch (editing_type_idx) {
+//        // pos x
+//        case 0:
+//            var pos = Object.position;
+//            Object.position = new mp.Vector3(pos.x + moving_speeds[moving_speed_idx], pos.y, pos.z);
+//            break;
+//        // pos y
+//        case 1:
+//            var pos = Object.position;
+//            Object.position = new mp.Vector3(pos.x, pos.y + moving_speeds[moving_speed_idx], pos.z);
+//            break;
+//        // pos z
+//        case 2:
+//            var pos = Object.position;
+//            Object.position = new mp.Vector3(pos.x, pos.y, pos.z + moving_speeds[moving_speed_idx]);
+//            break;
+//        // rot x
+//        case 3:
+//            var rot = Object.getRotation(2);
+//            var pitch = Object.getPitch();
+//            Object.setRotation(pitch + moving_speeds[moving_speed_idx], rot.y, rot.z, 2, true);
+//            mp.gui.chat.push("rot X" + rot);
+//            break;
+//        // rot y
+//        case 4:
+//            var rot = Object.getRotation(2);
+//            var pitch = Object.getPitch();
+//            Object.setRotation(pitch, rot.y + moving_speeds[moving_speed_idx], rot.z, 2, true);
+//            mp.gui.chat.push("rot Y" + rot);
+//            break;
+//        // rot z
+//        case 5:
+//            var rot = Object.getRotation(2);
+//            var pitch = Object.getPitch();
+//            Object.setRotation(pitch, rot.y, rot.z + moving_speeds[moving_speed_idx], 2, true);
+//            mp.gui.chat.push("rot Z" + rot);
+//            break;
+//    }
+//    UpdateObject();
+// });
+// mp.keys.bind(0x28, false, function () { // DOWN Arrow
+//    if (!Editing || Object === null) return; // uraditi proveru i da li je chat otvoren
+//    switch (editing_type_idx) {
+//        // pos x
+//        case 0:
+//            var pos = Object.position;
+//            Object.position = new mp.Vector3(pos.x - moving_speeds[moving_speed_idx], pos.y, pos.z);
+//            break;
+//        // pos y
+//        case 1:
+//            var pos = Object.position;
+//            Object.position = new mp.Vector3(pos.x, pos.y - moving_speeds[moving_speed_idx], pos.z);
+//            break;
+//        // pos z
+//        case 2:
+//            var pos = Object.position;
+//            Object.position = new mp.Vector3(pos.x, pos.y, pos.z - moving_speeds[moving_speed_idx]);
+//            break;
+//        // rot x
+//        case 3:
+//            var rot = Object.getRotation(2);
+//            var pitch = Object.getPitch();
+//            Object.setRotation(pitch - moving_speeds[moving_speed_idx], rot.y, rot.z, 2, true);
+//            break;
+//        // rot y
+//        case 4:
+//            var rot = Object.getRotation(2);
+//            var pitch = Object.getPitch();
+//            Object.setRotation(pitch, rot.y - moving_speeds[moving_speed_idx], rot.z, 2, true);
+//            break;
+//        // rot z
+//        case 5:
+//            var rot = Object.getRotation(2);
+//            var pitch = Object.getPitch();
+//            Object.setRotation(pitch, rot.y, rot.z - moving_speeds[moving_speed_idx], 2, true);
+//            break;
+//    }
+//    UpdateObject();
+// });
+// mp.keys.bind(0x25, false, function () { // LEFT Arrow
+//    if (!Editing) return;
+//    editing_type_idx--;
+//    if (editing_type_idx < 0) editing_type_idx = editing_types.length - 1;
+//    mp.gui.chat.push(`[DEBUG] Edit type: ${editing_types[editing_type_idx]}`);
+// });
+// mp.keys.bind(0x27, false, function () { // RIGHT Arrow
+//    if (!Editing) return;
+//    editing_type_idx++;
+//    if (editing_type_idx >= editing_types.length) editing_type_idx = 0;
+//    mp.gui.chat.push(`[DEBUG] Edit type: ${editing_types[editing_type_idx]}`);
+// });
+// mp.keys.bind(0x59, false, function () { // Y key
+//    if (!Editing || Object === null) return;
+//    let rot = Object.getRotation(2);
+//    mp.events.callRemote("server:acceptEditFurniture", Object.model, Object.position.x, Object.position.y, Object.position.z, rot.x, rot.y, rot.z);
+//    Object.destroy();
+//    Object = null;
+//    Editing = false;
+//    mp.gui.chat.push("[DEBUG] Edit finished, furniture placed");
+// });
+// mp.keys.bind(0x4E, false, function () { // N key
+//    if (!Editing) return;
+//    Object?.destroy();
+//    Object = null;
+//    Editing = false;
+//    //mp.events.callRemote("server:cancelEditFurniture");
+//    mp.gui.chat.push("[DEBUG] Edit canceled");
+// });
+// mp.keys.bind(0x5A, false, function () { // Z key
+//    if (!Editing || Object === null) return;
+//    Object.placeOnGroundProperly();
+//    UpdateObject();
+//    mp.gui.chat.push("[DEBUG] Object placed on ground properly.");
+// });
+// mp.keys.bind(0x6B, false, function () { // Add key
+//    if (!Editing) return;
+//    moving_speed_idx++;
+//    if (moving_speed_idx >= moving_speeds.length) moving_speed_idx = 0;
+//    mp.gui.chat.push(`[DEBUG] Speed added ${moving_speed_idx}`);
+// });
+// mp.keys.bind(0x6D, false, function () { // Subtract key
+//    if (!Editing) return;
+//    moving_speed_idx--;
+//    if (moving_speed_idx < 0) moving_speed_idx = moving_speeds.length - 1;
+//    mp.gui.chat.push(`[DEBUG] Speed lowered ${moving_speed_idx}`);
+// });
+// mp.events.add('render', () => {
+//     if (Object === null) return;
+//     AddInstructionalStart();
+//     AddInstructionalButton("Next mode", 197);
+//     AddInstructionalButton("Previous mode", 196);
+//     AddInstructionalButton("Moving an object", 194);
+//     AddInstructionalButton("Moving an object", 195);
+//     AddInstructionalButtonCustom("Increase speed", "t_+");
+//     AddInstructionalButtonCustom("Decrease speed", "t_-");
+// 	AddInstructionalButtonCustom("Place on ground", "t_Z");
+//     AddInstructionalButtonCustom("Finish furniture", "t_Y");
+//     AddInstructionalButtonCustom("Cancel", "t_N");
+//     AddInstructionalEnd(1);
+//    //  mp.game.graphics.drawText(`Editing mode: ${editing_types[editing_type_idx]}\nSpeed: ${moving_speeds[moving_speed_idx]}`, [0.5, 0.9], {
+//    //      font: 0,
+//    //      color: [255, 255, 255, 255],
+//    //      scale: [0.5, 0.5],
+//    //      outline: false
+//    //  });
+// });
+// export {};
+
+
+/***/ }),
+
+/***/ 3632:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Player = mp.players.local;
+let HouseManagment = false;
+mp.events.add({
+    'CLIENT::HOUSE:MANAGEMENT': () => {
+        HouseManagment = !HouseManagment;
+        Browser_1.Browser.call(HouseManagment ? 'BROWSER::SHOW' : `BROWSER::HIDE`, 'HouseManagement');
+    },
+});
+
+
+/***/ }),
+
+/***/ 6338:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local;
+let browser = null, opened = false;
+let Delivering = false;
+mp.events.add({
+    'client:job.food:orders': (Orders) => {
+        if (Delivering)
+            return;
+        opened = !opened;
+        if (opened) {
+            browser = mp.browsers.new('package://jobs/jobs-interfaces/food.html');
+            browser.execute('food.Orders = ' + JSON.stringify(Orders));
+        }
+        else {
+            // Else
+        }
+    },
+    'client:job.food.order:accept': async (i) => {
+        const response = await mp.events.callRemoteProc('server:job.food.order:accept', i);
+        if (response) {
+            mp.events.call('client:job.food:orders');
+            Delivering = true;
+            const Position = new mp.Vector3(response.Position.x, response.Position.y, response.Position.z - 0.9);
+            const { Checkpoint, Blip } = Utils_1.CreateInteractionSpot('Food Order', Position);
+            mp.events.add('playerEnterCheckpoint', ReachOrderPoint);
+            function ReachOrderPoint(Point) {
+                if (Point == Checkpoint) {
+                    if (Player.vehicle)
+                        return;
+                    Delivering = false;
+                    Checkpoint.destroy();
+                    Blip.destroy();
+                    mp.events.callRemote('server:job.food.order:deliver', i);
+                    mp.events.remove('playerEnterCheckpoint', ReachOrderPoint);
+                }
+            }
+        }
+        else {
+            mp.events.call('client:job.food:orders');
+            Delivering = false;
+        }
+    }
+});
+
+
+/***/ }),
+
+/***/ 9925:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local, MAX = 25;
+let DeliveredMails = 0;
+mp.events.add({
+    'client:job.postal:start': (deliverPos) => {
+        HouseInteraction(deliverPos);
+    },
+});
+function HouseInteraction(Position) {
+    const { Checkpoint, Blip } = Utils_1.CreateInteractionSpot(`Mail Deliver No${DeliveredMails}`, Position);
+    mp.events.add('playerEnterCheckpoint', OnPlayerDeliverMail);
+    function OnPlayerDeliverMail(Point) {
+        if (DeliveredMails == MAX) {
+            //mp.events.callRemote('server:job:finish', 6); // jobId
+        }
+        if (Point == Checkpoint) {
+            DeliveredMails++;
+            Checkpoint.destroy();
+            Blip.destroy();
+            mp.events.remove('playerEnterCheckpoint', OnPlayerDeliverMail);
+        }
+    }
+}
+function BehindTruckInteraction() {
+    const Truck = player.getVariable('Job_Veh');
+    if (Truck) {
+        const PosBehind = Truck.getOffsetFromInWorldCoords(0.0, -3.8, 0.0);
+        const { Checkpoint, Blip } = Utils_1.CreateInteractionSpot('GoPostal Van', PosBehind);
+        mp.events.add('playerEnterCheckpoint', OnPlayerTakeMail);
+        function OnPlayerTakeMail(Point) {
+            if (Point == Checkpoint) {
+                if (Utils_1.DistanceBetweenVectors(Player.position, PosBehind) <= 0.5) {
+                    Player.heading = Truck.heading;
+                    Checkpoint.destroy();
+                    Blip.destroy();
+                    mp.events.remove('playerEnterCheckpoint', OnPlayerTakeMail);
+                    // Uzima postu iz kamiona
+                    // NACI ANIMACIJU
+                    // Dobija objekat paketa ili pisma u ruci ( random )
+                }
+            }
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ 4644:
+/***/ (() => {
+
+"use strict";
+
+// const player = mp.players.local;
+// let marker = null;
+// mp.events.addDataHandler('container', (entity, newValue, oldValue) => {
+//    if (entity.type === 'vehicle' && entity.model == 444583674) {
+//       if (newValue !== oldValue) { 
+//          container(entity, newValue);
+//       }
+//    }
+// });
+// mp.events.add({
+//    'entityStreamIn': (entity) => {
+//       if (entity.type === 'vehicle' && entity.model == 444583674) { 
+//          if (entity.getVariable('container')) container(entity, entity.getVariable('container'));
+//       }
+//    },
+//    'render': () => { 
+//       if (player.vehicle && player.vehicle.model == 444583674) { 
+//          if (player.vehicle.getVariable('container') != false) { 
+//             // mp.game.controls.disableControlAction(0, 110, true); // DISABLEATI NUM 8 i 5 da kad ima =>
+//             // mp.game.controls.disableControlAction(27, 111, true); // > kontenjer ne moze da podize i spusta
+//          }
+//       }
+//    }
+// })
+// mp.keys.bind(0x59, false, function() {
+//    if (player.logged && player.spawned) {
+//       if (player.vehicle && player.vehicle.model == 444583674) { 
+//          let vehicle = player.vehicle;
+//          if (vehicle.container) { 
+//             let frontOffset = vehicle.getOffsetFromInWorldCoords(0.0, 6.5, 0.0);
+//             mp.events.callRemote('server:vehicle.detach.container', frontOffset); 
+//             if (marker) marker.destroy();
+//          } else { 
+//             mp.events.callRemote('server:vehicle.attach.container'); 
+//             marker = mp.blips.new(1, new mp.Vector3(1111.625, -3139.361, 0), { name: 'Zona za dostavu kontenjera', color: 49, shortRange: false });
+//          }
+//       }
+//    }
+// });
+// function container (vehicle, value) { 
+//    if (value) { 
+//       vehicle.container = value;
+//       vehicle.containerObject = mp.objects.new('prop_container_03a', vehicle.position, { rotation: vehicle.rotation, alpha: 255, dimension: vehicle.dimension });
+//       vehicle.containerObject.notifyStreaming = true;
+//       vehicle.containerObject.setNoCollision(vehicle.handle, false);
+//       waitEntity(vehicle.containerObject).then(() => {
+//          let position = new mp.Vector3(0.05, -0.02, 0.01);
+//          vehicle.containerObject.attachTo(vehicle.handle, 0, position.x - 0.05, position.y + 6, position.z, 0, 0, 90, true, false, true, false, 2, true);
+//       })
+//    } else { 
+//       vehicle.container = false;
+//       if (vehicle.containerObject) { 
+//          if (vehicle.containerObject.doesExist()) { 
+//             vehicle.containerObject.destroy();
+//          }
+//       }
+//    }
+// }
+// function waitEntity (entity) {
+//    return new Promise(resolve => {
+//       let wait = setInterval(() => {
+//          if (mp.game.entity.isAnEntity(entity.handle)) {
+//             clearInterval(wait);
+//             resolve();
+//          }
+//       }, 1);
+//    });
+// }
+
+
+/***/ }),
+
+/***/ 1183:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Player = mp.players.local;
+let Offer = false;
+mp.events.add({
+    'CLIENT::JOB:OFFER': (Info) => {
+        mp.gui.chat.push(JSON.stringify(Info));
+        Offer = !Offer;
+        Browser_1.Browser.call(Offer ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'JobOffer');
+    },
+    'CLIENT::JOB:ACCEPT': (Job) => {
+        mp.events.call('CLIENT::JOB:OFFER');
+        mp.events.callRemote('SERVER::JOB:ACCEPT', Job);
+    },
+    'CLIENT::JOB:WAYPOINT': (Position) => {
+        mp.game.ui.setNewWaypoint(Position.x, Position.y);
+    }
+});
+
+
+/***/ }),
+
+/***/ 8890:
+/***/ (() => {
+
+"use strict";
+
+// const Player = mp.players.local;
+// let Spots = [], current = null;
+// let browser = null;
+// mp.events.add({
+//    'client:player.miner.start': Start,
+//    'client:player.miner.next': Next,
+//    'playerEnterCheckpoint': (checkpoint) => {
+//       if (Player.Job == 2 && Spots.length > 0 && current != null) { 
+//          mp.gui.chat.push('Going to next')
+//          Mine();
+//       } 
+//    },
+//    'client:player.miner:mine': () => {
+//       mp.game.streaming.requestAnimDict('amb@world_human_const_drill@male@drill@base');
+//       Player.taskPlayAnim('amb@world_human_const_drill@male@drill@base', 'base', 8.0, -8, -1, 48, 0, false, false, false);
+//       let timer = setInterval(() => {
+//          if (Player.getAnimCurrentTime('amb@world_human_const_drill@male@drill@base', 'base') > 0.95) {
+//             Player.stopAnimTask('amb@world_human_const_drill@male@drill@base', 'base', 3.0);
+//             clearInterval(timer);
+//             timer = null;
+//             if (!timer) browser.execute('mining.clicked = false')
+//          }
+//       }, 50);
+//    }
+// })
+// function Start (places) { 
+//    places.forEach(place => {
+//       Spots.push({position: place});
+//    });
+//    current = 0;
+//    browser = mp.browsers.new('package://jobs/jobs-interfaces/mining.html');
+//    let spot = Spots[current];
+//    let position = new mp.Vector3(spot.position[0], spot.position[1], spot.position[2] - 2.15)
+//    spot.checkpoint = mp.checkpoints.new(47, position, 2.5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension });
+// }
+// function Mine () { 
+//    mp.gui.cursor.show(true, true);
+//    browser.execute('mining.toggle = true');
+//    Player.taskStartScenarioInPlace('WORLD_HUMAN_CONST_DRILL', 0, true);
+// }
+// function Next () {    
+//    Player.clearTasks();
+//    let spot = Spots[current];
+//    spot.checkpoint.destroy();
+//    mp.gui.cursor.show(false, false);
+//    browser.execute('mining.toggle = false');
+//    current ++;
+//    let next = Spots[current], position = new mp.Vector3(next.position[0], next.position[1], next.position[2] - 2.15);
+//    current >= Spots.length ? ( Finish() ) : (
+//       next.checkpoint = mp.checkpoints.new(47, position, 2.5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension })
+//    )
+// }
+// function Finish () { 
+//    current = null;
+//    Spots = null;
+//    if (mp.browsers.at(browser.id)) browser.destroy();
+//    mp.gui.chat.push('Finished !')
+// }
+
+
+/***/ }),
+
+/***/ 4391:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local;
+const Max = 25;
+const Depony = new mp.Vector3(-435.5779, -1704.9042, 18.06115);
+let Visited = [];
+let Picked = false;
+const GarbageObjects = [
+    'prop_dumpster_01a',
+    'prop_dumpster_02b',
+    'prop_dumpster_4a',
+    'prop_rub_binbag_sd_01',
+    'prop_cs_bin_03',
+    'prop_cs_bin_01_skinned',
+    'prop_cs_bin_02',
+    'prop_ld_rub_binbag_01',
+    'prop_cs_bin_01',
+    'prop_rub_binbag_sd_02',
+    'prop_ld_binbag_01',
+    'prop_fbibombbin',
+    'prop_cs_rub_binbag_01',
+    'prop_bin_07bprop_bin_beach_01d',
+    'prop_bin_beach_01d',
+    'prop_bin_01a',
+    'prop_recyclebin_04_a',
+    'prop_bin_beach_01a',
+    'prop_recyclebin_02_c',
+    'prop_bin_delpiero_b',
+    'zprop_bin_01a_old',
+    'prop_recyclebin_03_a',
+    'prop_bin_11a',
+    'prop_bin_06a',
+    'prop_bin_07d',
+    'prop_bin_11',
+    'bprop_bin_04a',
+    'prop_recyclebin_02b',
+    'prop_bin_delpiero',
+    'prop_bin_09a',
+    'prop_bin_08a',
+    'prop_recyclebin_04_b',
+    'prop_bin_02a',
+    'prop_bin_03a',
+    'prop_bin_08open',
+    'prop_bin_12a',
+    'prop_bin_05a',
+    'prop_bin_07a',
+    'prop_recyclebin_01a',
+    'v_serv_tc_bin2_',
+    'v_serv_tc_bin1_',
+    'prop_rub_binbag_03b',
+    'prop_rub_binbag_04',
+    'prop_rub_binbag_08',
+    'prop_rub_binbag_01',
+    'prop_rub_binbag_05',
+    'p_rub_binbag_test',
+    'prop_rub_binbag_06',
+    'prop_rub_binbag_03',
+    'prop_rub_binbag_01b',
+    'hei_prop_heist_binbag',
+    'ng_proc_binbag_01a',
+    'ng_proc_binbag_02a',
+    'p_binbag_01_s',
+    'prop_forsale_lrg_04'
+];
+mp.keys.bind(0x59, false, async function () {
+    if (Player.Logged && Player.Spawned && Player.getVariable('Job') == 4 && Player.getVariable('Job_Duty') == true) {
+        if (Player.vehicle || Player.Cuffed || Player.isTypingInTextChat)
+            return;
+        if (Visited.length == Max)
+            return;
+        if (Visited.length == Max - 1) {
+            const { Checkpoint, Blip } = Utils_1.CreateInteractionSpot('Depony', Depony);
+            mp.events.add('playerEnterCheckpoint', PlayerEnterDepony);
+            function PlayerEnterDepony(Point) {
+                if (Point == Checkpoint) {
+                    let Truck = mp.vehicles.atRemoteId(Player.getVariable('Job_Vehicle'));
+                    if (Player.vehicle == Truck) {
+                        Truck.setDoorOpen(5, false, false);
+                        Player.freezePosition(true);
+                        Truck.freezePosition(true);
+                        setTimeout(() => {
+                            Player.freezePosition(false);
+                            Truck.freezePosition(false);
+                            Truck.setDoorShut(5, false);
+                            mp.events.callRemote('server:job.garbage:finish');
+                        }, 15000);
+                        Checkpoint.destroy();
+                        Blip.destroy();
+                        mp.events.remove('playerEnterCheckpoint', PlayerEnterDepony);
+                    }
+                }
+            }
+        }
+        const Garbage = await ClosestGarbage();
+        if (Garbage) {
+            const aPicked = AlreadyPicked();
+            if (aPicked)
+                return;
+            Picked = true;
+            mp.events.callRemote('server:character.attachment', 'prop_cs_street_binbag_01', 6286);
+            Visited.push(Player.position);
+            const Truck = mp.vehicles.atRemoteId(Player.getVariable('Job_Vehicle'));
+            if (Truck) {
+                const BehindOffset = Truck.getOffsetFromInWorldCoords(0.0, -5.15, 0.0);
+                const [colshape, marker] = LittleMarker(BehindOffset);
+                Truck.freezePosition(true);
+                mp.events.add('playerEnterColshape', BehindGarbageTruck);
+                function BehindGarbageTruck(Shape) {
+                    if (Shape == colshape) {
+                        if (Player.vehicle)
+                            return;
+                        Player.setHeading(Truck.getHeading());
+                        Picked = false;
+                        colshape.destroy();
+                        marker.destroy();
+                        Truck.freezePosition(false);
+                        Truck.setDoorOpen(5, false, false);
+                        mp.game.wait(500);
+                        mp.events.callRemote('server:character.animation', 'anim@heists@narcotics@trash', 'throw_ranged_a_bin_bag', 49);
+                        mp.game.wait(750);
+                        mp.events.callRemote('server:character.attachment', false);
+                        mp.game.wait(850);
+                        Truck.setDoorShut(5, false);
+                        mp.events.remove('playerEnterColshape', BehindGarbageTruck);
+                    }
+                }
+            }
+        }
+        ;
+    }
+});
+function ClosestGarbage() {
+    const Position = Player.position;
+    return new Promise((resolve) => {
+        for (const Garbage of GarbageObjects) {
+            const object = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 1.8, mp.game.joaat(Garbage), false, true, true);
+            if (object) {
+                resolve({ Object: Garbage, Position: Position });
+                break;
+            }
+        }
+    });
+}
+;
+function AlreadyPicked() {
+    if (Visited.length > 0) {
+        for (const Position of Visited) {
+            const Distance = mp.game.gameplay.getDistanceBetweenCoords(Player.position.x, Player.position.y, Player.position.z, Position.x, Position.y, Position.z, true);
+            if (Distance < 3.5) {
+                return true;
+            }
+        }
+    }
+}
+;
+function LittleMarker(Position) {
+    const Marker = mp.markers.new(0, new mp.Vector3(Position.x, Position.y, Position.z - 0.35), 0.4, { rotation: new mp.Vector3(0, 0, 0), color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
+    const Colshape = mp.colshapes.newSphere(Position.x, Position.y, Position.z, 0.75, Player.dimension);
+    return [Colshape, Marker];
+}
+;
+mp.events.addProc('client:job.garbage.trash:get', () => {
+    return Visited.length;
+});
+
+
+/***/ }),
+
+/***/ 131:
+/***/ (() => {
+
+"use strict";
+
+mp.events.add({
+    'playerEnterVehicle': (Vehicle, Seat) => {
+        if (Vehicle.getVariable('Job') == 7) {
+            if (Seat == -1)
+                return;
+            const DriverHandle = Vehicle.getPedInSeat(-1);
+            if (DriverHandle) {
+                const Driver = mp.players.atHandle(DriverHandle);
+                mp.gui.chat.push(JSON.stringify(Driver === null || Driver === void 0 ? void 0 : Driver.id));
+            }
+        }
+    },
+    'playerLeaveVehicle': (Vehicle, Seat) => {
+        if (Seat == -1)
+            return;
+    }
+});
+
+
+/***/ }),
+
+/***/ 1763:
+/***/ (() => {
+
+"use strict";
+
+// const Player = mp.players.local;
+// let Route: any = []
+// let Current: boolean = false;
+// let Max: number = 0
+// let Distance: number = 0;
+// let Browser = null
+// let Finishing = false
+// let Wrong = false;
+// let cancel = null;
+// let garage = new mp.Vector3(447.428, -591.51739, 28.0754);
+// class Station { 
+//    ID: number;
+//    Name: string;
+//    Position: Vector3Mp;
+//    Checkpoint: CheckpointMp;
+//    Blip: BlipMp;
+//    constructor (Id: number, Name: string, Pos: Vector3Mp) { 
+//       this.ID = Id;
+//       this.Name = Name;
+//       this.Position = new mp.Vector3(Pos.x, Pos.y, Pos.z - 1.07);
+//       this.Checkpoint = mp.checkpoints.new(47, this.Position, 5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension });
+//       this.Checkpoint.Station = this.ID;
+//       let number = this.ID + 1;
+//       this.Blip = mp.blips.new(1, new mp.Vector3(this.Position.x, this.Position.y, 0), { name: number + '. ' + this.Name, color: 5, shortRange: false, alpha: 0 });
+//       Route.push(this)
+//    }
+//    delete () { 
+//       this.Checkpoint.destroy();
+//       this.Blip.destroy();
+//       let i = Route.indexOf(this);
+//       Route.splice(i, 1)
+//    }
+//    visible () { 
+//       this.Checkpoint.setAlpha(255);
+//       this.Blip.setAlpha(255);
+//    }
+// }
+// mp.events.add({
+//    'client:player.transit.start': (checkpoints) => { 
+//       let stations = {};
+//       for (let i in checkpoints) { 
+//          let station = checkpoints[i];
+//          new Station(parseInt(i), station.name, station.position);
+//          stations[i] = { name: station.name, active: true, wrong: false };
+//       }
+//       max = route.length - 1;
+//       current = 0;
+//       route[current].visible();
+//       browser = mp.browsers.new('package://jobs/jobs-interfaces/transit.html');
+//       browser.execute('transit.toggle = true, transit.stations = ' + JSON.stringify(stations) + ';');
+//    },
+//    'playerEnterCheckpoint': (checkpoint) => {
+//       if (player.Job == 3 && route.length > 0) { 
+//          mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 1')
+//          let vehicle = player.vehicle;
+//          if (vehicle && vehicle.getClass() == 17 && checkpoint.station >= 0) { 
+//             player.stopped = true;
+//             setTimeout(() => { 
+//                player.stopped = false; 
+//                checkpoint.station == max && current == max ? ( Finish(checkpoint.station, true) ) : ( Next(checkpoint.station) );
+//             }, 10000)
+//             mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 2, Station ' + checkpoint.station)
+//          }
+//       }
+//       if (finishing && checkpoint.finish) { 
+//          checkpoint.finish.destroy();
+//          checkpoint.destroy();
+//          mp.events.callRemote('server:player.transit.stop', true, max, distance);
+//          distance = 0, route = [], max = 0;
+//       }
+//    },
+//    'playerExitCheckpoint': (checkpoint) => {
+//       if (player.Job == 3 && player.vehicle && player.vehicle.getClass() == 17 && checkpoint.station >= 0) { 
+//          if (player.stopped) { 
+//             wrong = true;
+//             player.stopped = false;
+//          }
+//       }
+//    }
+// })
+//    // 'playerLeaveVehicle': (vehicle, seat) => {
+//    //    if (player.Job == 3 && checkpoint.station) { 
+//    //       if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
+//    //          browser.execute('transit.toggle = false'); 
+//    //          cancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
+//    //       }
+//    //    }
+//    // },
+//    // 'playerEnterVehicle': (vehicle, seat) => {
+//    //    if (player.Job == 3 && checkpoint.station) { 
+//    //       if (vehicle.getClass() == 17) { 
+//    //          browser.execute('transit.toggle = true'); 
+//    //          clearTimeout(cancel)
+//    //       }
+//    //    }
+//    // }
+// function Next (i) { 
+//    if (i == current) { 
+//       let station = route.find( ({ id }) => id === i );
+//       current ++;
+//       let next = route.find( ({ id }) => id === current );
+//       next.visible();
+//       Distance(station.position, next.position).then((dist) => { 
+//          station.delete();
+//          distance += dist;
+//          mp.gui.chat.push('[DEBUG] Next Station ' + current + ', Distance now ' + distance);
+//          if (wrong) { 
+//             browser.execute(`transit.wrong(${i})`)
+//          } else { 
+//             browser.execute(`transit.disable(${i})`)
+//          }
+//          wrong = false;
+//       })
+//    } else { 
+//       mp.gui.chat.push('[DEBUG] Wrong Station')
+//    }
+// }
+// async function Distance (station, next) {
+//    return new mp.Vector3(station.x, station.y, station.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();
+// }
+// function Finish (i) { 
+//    let station = route.find( ({ id }) => id === i );
+//    station.delete();
+//    if (mp.browsers.at(browser.id)) browser.destroy();
+//    let checkpoint = mp.checkpoints.new(47, garage, 5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension });
+//    let blip = mp.blips.new(1, new mp.Vector3(garage.x, garage.y, 0), { name: 'Los Santos Transit Garaža', color: 5, shortRange: false });
+//    checkpoint.finish = blip;
+//    finishing = true;
+// }
+
+
+/***/ }),
+
+/***/ 7189:
+/***/ (() => {
+
+"use strict";
+
+let camdir = false;
+let noclip = false;
+let charpos = false;
+let Spectating = false;
+let SpecTarget;
+let Waypoint;
+mp.events.add({
+    'client:player.administrator:fly': () => {
+        noclip = !noclip;
+        Player.setInvincible(noclip);
+        Player.freezePosition(false);
+        Player.setVisible(!noclip, !noclip);
+        Player.setCollision(!noclip, !noclip);
+        Player.setHasGravity(!noclip);
+        noclip ? Player.setMaxSpeed(0.0001) : Player.setMaxSpeed(10);
+    },
+    'playerCreateWaypoint': (Position) => {
+        Waypoint = { x: Position.x, y: Position.y, z: Position.z };
+    },
+    'playerRemoveWaypoint': () => {
+        if (Waypoint)
+            Waypoint.destroy();
+    },
+    'client:spectate': (Target, Toggle) => {
+        Player.freezePosition(Toggle);
+        if (Toggle) {
+            if (Target && mp.players.exists(Target)) {
+                SpecTarget = Target;
+                Spectating = true;
+                Player.attachTo(Target.handle, -1, -1.5, -1.5, 2, 0, 0, 0, true, false, false, false, 0, false);
+            }
+            else {
+                mp.events.call("client:spectate", -1, false);
+            }
+        }
+        else {
+            SpecTarget = null;
+            Player.detach(true, true);
+            Spectating = false;
+        }
+    },
+    'render': () => {
+        if (noclip) {
+            if (mp.keys.isDown(87) === true) {
+                const pos = Player.position;
+                const dir = getCameraDirection();
+                Player.setCoordsNoOffset(pos.x + dir.x, pos.y + dir.y, pos.z + dir.z, false, false, false);
+            }
+            if (mp.keys.isDown(83) === true) {
+                const pos = Player.position;
+                const dir = getCameraDirection();
+                Player.setCoordsNoOffset(pos.x - dir.x, pos.y - dir.y, pos.z - dir.z, false, false, false);
+            }
+        }
+        if (charpos) {
+            const pos = Player.position;
+            // mp.game.graphics.drawText(`X:${pos.x}    Y:${pos.y}    Z:${pos.z}`, [0.5, 0.005],
+            //    {
+            //       font: 4,
+            //       color: [255, 255, 255, 255],
+            //       scale: [1.0, 1.0],
+            //       outline: true,
+            //    });
+        }
+        if (camdir) {
+            const dir = getCameraDirection();
+            // mp.game.graphics.drawText(`X:${dir.x}    Y:${dir.y}    Z:${dir.z}`, [0.5, 0.05],
+            //    {
+            //       font: 4,
+            //       color: [255, 255, 255, 255],
+            //       scale: [1.0, 1.0],
+            //       outline: true,
+            //    });
+        }
+    }
+});
+mp.events.addProc('client:player.administrator:marker', () => {
+    if (Waypoint)
+        return Waypoint;
+    else
+        return false;
+});
+function getCameraDirection() {
+    const heading = mp.game.cam.getGameplayCamRelativeHeading() + Player.getHeading();
+    const pitch = mp.game.cam.getGameplayCamRot(0).x;
+    let x = -Math.sin(heading * Math.PI / 180.0);
+    let y = Math.cos(heading * Math.PI / 180.0);
+    let z = Math.sin(pitch * Math.PI / 180.0);
+    let len = Math.sqrt(x * x + y * y + z * z);
+    if (len != 0) {
+        x = x / len;
+        y = y / len;
+        z = z / len;
+    }
+    return new mp.Vector3(x, y, z);
+}
+;
+
+
+/***/ }),
+
+/***/ 9449:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Player = mp.players.local;
+const Bones = {
+    'RIGHT_HAND': 6286,
+    'LEFT_HAND': 36029
+};
+mp.events.addDataHandler({
+    'Attachments': (Entity, Value) => {
+        if (Entity.type === 'player')
+            Attach(Entity, Value);
+    }
+});
+mp.events.add({
+    'entityStreamIn': (entity) => {
+        if (entity.type === 'player') {
+            if (entity.getVariable('Attachments')) {
+                let attachments = entity.getVariable('Attachments');
+                attachments.forEach((attachment) => {
+                    Attach(entity, attachment);
+                });
+            }
+        }
+    }
+});
+function Attach(Entity, Attachment) {
+    let boneIndex = Entity.getBoneIndex(Bones[Attachment.bone]);
+    mp.gui.chat.push('Model ' + JSON.stringify(Attachment.model));
+    mp.gui.chat.push('Bone ' + JSON.stringify(Attachment.bone));
+    mp.gui.chat.push('Bone Index ' + JSON.stringify(boneIndex));
+    mp.gui.chat.push(JSON.stringify(Attachment));
+}
+
+
+/***/ }),
+
+/***/ 1547:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Browser_1 = __webpack_require__(2910);
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local;
+let Active = false;
+let Bank = null;
+const banks = {
+    506770882: 'fleeca', 3424098598: 'fleeca',
+    3168729781: 'maze', 2930269768: 'maze'
+};
+var BankingOperation;
+(function (BankingOperation) {
+    BankingOperation[BankingOperation["Withdraw"] = 0] = "Withdraw";
+    BankingOperation[BankingOperation["Deposit"] = 1] = "Deposit";
+    BankingOperation[BankingOperation["Transfer"] = 2] = "Transfer";
+    BankingOperation[BankingOperation["PayCheck"] = 3] = "PayCheck";
+})(BankingOperation || (BankingOperation = {}));
+mp.events.add({
+    'CLIENT::BANKING': async () => {
+        Active = !Active;
+        Browser_1.Browser.call(Active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'Banking');
+        // if (opened) { 
+        //    browser.destroy();
+        //    opened = false;
+        //    setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
+        // } else { 
+        //    let account = await mp.events.callRemoteProc('server:player.banking');
+        //    account = JSON.parse(account)
+        //    browser = mp.browsers.new('package://player/banking-interface/atm.html');
+        //    browser.execute(`atm.bank = \"${banks[bank]}\", atm.player.money = ${player.money}, atm.player.balance = ${account.balance}, atm.player.name = \"${player.name}\";`);
+        //    browser.execute(`atm.player.paycheck = ${account.paycheck}, atm.player.savings = ${account.savings};`)
+        //    browser.execute(`atm.player.pin = ${account.pin}, atm.player.number = \"${account.number}\";`)
+        //    opened = true;
+        //    setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
+        // }
+    },
+    'CLIENT::BANKING:ACTION': (Bank, Value, Action, Target = null) => {
+        Target == null ? mp.events.callRemote('SERVER::BANKING:ACTION', Bank, Value, Action) : mp.events.callRemote('SERVER::BANKING:ACTION', Bank, Value, Action, Target);
+    },
+    // 'client:player.banking.transfer': async (bank, target, value) => {
+    //    let transfer = await mp.events.callRemoteProc('server:player.banking.transfer', bank, target, value);
+    //    transfer == true ? browser.execute(`atm.notify('Transakcija uspešna !')`) : browser.execute(`atm.notify('Transakcija nije uspešna, korisnik nije pronadjen !')`)
+    // }
+});
+mp.keys.bind(Utils_1.Controls.KEY_Y, false, function () {
+    if (!Player.Logged || Player.vehicle || Player.Cuffed || mp.players.local.isTypingInTextChat)
+        return;
+    if (IsNearBank()) {
+        mp.events.call('CLIENT::BANKING');
+    }
+});
+function IsNearBank() {
+    let atm_1 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 3424098598, false, true, true);
+    let atm_2 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 3168729781, false, true, true);
+    let atm_3 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 2930269768, false, true, true);
+    let atm_4 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 506770882, false, true, true);
+    if (atm_1) {
+        Bank = 3424098598;
+        return true;
+    }
+    else if (atm_2) {
+        Bank = 3168729781;
+        return true;
+    }
+    else if (atm_3) {
+        Bank = 2930269768;
+        return true;
+    }
+    else if (atm_4) {
+        Bank = 506770882;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+/***/ }),
+
+/***/ 3540:
+/***/ (() => {
+
+"use strict";
+
+class CarryPlayer {
+    constructor(remoteId, carryRemoteId) {
+        this.remoteId = -1;
+        this.carryRemoteId = -1;
+        this.remoteId = remoteId;
+        this.carryRemoteId = carryRemoteId;
+    }
+}
+class CarryManager {
+    constructor() {
+        this.carryPlayers = [];
+        mp.events.addDataHandler("carry", (entity, value) => {
+            if (entity.type != "player")
+                return false;
+            mp.players.forEachInStreamRange((element) => {
+                if (element != entity)
+                    return false;
+                if (value != undefined) {
+                    var carry = this.getCarry(value);
+                    if (!carry)
+                        this.addCarry(entity.remoteId, value);
+                }
+                else {
+                    var carry = this.getCarry(entity.remoteId);
+                    if (carry)
+                        this.removeCarry(entity.remoteId);
+                }
+            });
+        });
+        mp.events.add("entityStreamIn" /* ENTITY_STREAM_IN */, (entity) => {
+            if (entity.type != "player")
+                return false;
+            var value = entity.getVariable("carry");
+            if (value != undefined) {
+                var carry = this.getCarry(value);
+                if (!carry)
+                    this.addCarry(entity.remoteId, value);
+            }
+        });
+        mp.events.add("entityStreamOut" /* ENTITY_STREAM_OUT */, (entity) => {
+            if (entity.type != "player")
+                return false;
+            var value = entity.getVariable("carry");
+            if (value != undefined) {
+                var carry = this.getCarry(entity.remoteId);
+                if (carry)
+                    this.removeCarry(entity.remoteId);
+            }
+        });
+        setInterval(() => {
+            this.carryPlayers.forEach((element) => {
+                mp.players.forEachInStreamRange((target) => {
+                    if (target.remoteId == element.carryRemoteId) {
+                        if (mp.peds.exists(element.ped))
+                            return false;
+                        var player = mp.players.atRemoteId(element.remoteId);
+                        var carried = mp.players.atRemoteId(element.carryRemoteId);
+                        mp.events.call("client:animation:apply", player.remoteId, "missfinale_c2mcs_1", "fin_c2_mcs_1_camman", 49);
+                        mp.events.call("client:animation:apply", carried.remoteId, "nm", "firemans_carry", 33);
+                        carried.attachTo(player.handle, 0, 0.15, 0.27, 0.63, 0.5, 0.5, 0.0, false, false, false, false, 2, false);
+                        element.ped = mp.peds.new(carried.model, player.position, 0);
+                        mp.game.invoke("0xE952D6431689AD9A" /* CLONE_PED_TO_TARGET */, carried.handle, element.ped.handle);
+                        element.ped.taskPlayAnim("nm", "firemans_carry", 8.0, 1.0, -1, 33, 0.0, true, true, true);
+                        element.ped.attachTo(player.handle, 0, 0.25, 0.07, 0.63, 0.5, 0.5, 0.0, false, false, false, false, 2, false);
+                    }
+                });
+            });
+        }, 500);
+    }
+    addCarry(remoteId, carryRemoteId) {
+        this.carryPlayers.push(new CarryPlayer(remoteId, carryRemoteId));
+    }
+    getCarry(remoteId) {
+        var found = this.carryPlayers.find((element => element.remoteId == remoteId));
+        if (found)
+            return found;
+        else
+            return undefined;
+    }
+    removeCarry(remoteId) {
+        var found = this.carryPlayers.find(element => element.remoteId == remoteId);
+        if (found) {
+            if (mp.peds.exists(found.ped))
+                found.ped.destroy();
+            var carry = mp.players.atRemoteId(found.carryRemoteId);
+            if (carry)
+                carry.detach(true, false);
+        }
+        var findIndex = this.carryPlayers.findIndex(element => element.remoteId == remoteId);
+        if (findIndex != -1)
+            this.carryPlayers.splice(findIndex, 1);
+    }
+}
+var Carry = new CarryManager();
+
+
+/***/ }),
+
+/***/ 1951:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local;
+mp.nametags.enabled = false;
+const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
+let AntiKeySpam = false;
+// BLACK SCREEN AFTER DEATH
+mp.game.gameplay.setFadeOutAfterDeath(false);
+// DONT REMOVE WEAPON WHEN OUT OF AMMO
+mp.game.weapon.unequipEmptyWeapons = false;
+Player.setCanSwitchWeapon(false);
+mp.events.addDataHandler({
+    'logged': (Entity, NewValue, OldValue) => {
+        if (Entity && Entity.remoteId === Player.remoteId) {
+            Player.Logged = NewValue;
+        }
+    },
+    'spawned': (Entity, NewValue, OldValue) => {
+        if (Entity && Entity.remoteId === Player.remoteId) {
+            Player.Spawned = NewValue;
+        }
+    },
+    'Money': (Entity, NewValue, OldValue) => {
+        if (Entity && Entity.remoteId === Player.remoteId) {
+            Player.Money = NewValue;
+        }
+    },
+    'Job': (Entity, NewValue, OldValue) => {
+        if (Entity && Entity.remoteId === Player.remoteId) {
+            Player.Job = NewValue;
+        }
+    },
+    'Wounded': (Entity, NewValue, OldValue) => {
+        if (Entity.type == 'player') {
+            Entity.Wounded = NewValue;
+        }
+    },
+    'Seatbelt': (Entity, NewValue, OldValue) => {
+        if (Entity && Entity.remoteId === Player.remoteId) {
+            Player.Seatbelt = NewValue;
+        }
+    },
+    'Ragdoll': (Entity, NewValue, OldValue) => {
+        if (Entity.type == 'player' && NewValue != OldValue) {
+            Interactions.Ragdoll(Entity, NewValue);
+        }
+    },
+    'Bubble': (Entity, NewValue, OldValue) => {
+        if (Entity.type == 'player' && NewValue != OldValue) {
+            Player.Bubble = NewValue;
+        }
+    },
+    'Walking_Style': (Entity, NewValue, OldValue) => {
+        if (Entity.type == 'player') {
+            Interactions.WalkingStyle(Entity, NewValue);
+        }
+    },
+    'Mood': (Entity, NewValue, OldValue) => {
+        if (Entity.type == 'player') {
+            Interactions.FacialMood(Entity, NewValue);
+        }
+    },
+    'Attachment': (Entity, NewValue, OldValue) => {
+        if (NewValue !== OldValue) {
+            if (NewValue) {
+                Attachments.Add(Entity, NewValue);
+            }
+            else {
+                Attachments.Remove(Entity);
+            }
+        }
+    }
+});
+mp.events.add({
+    'entityStreamIn': (Entity) => {
+        if (Entity.Attachment) {
+            Attachments.StreamIn(Entity, Entity.getVariable('Attachment'));
+        }
+        if (Entity.type == 'player' && Entity.hasVariable('Walking_Style'))
+            Interactions.WalkingStyle(Entity, Entity.getVariable('Walking_Style'));
+        if (Entity.type == 'player' && Entity.hasVariable('Ragdoll'))
+            Interactions.Ragdoll(Entity, Entity.getVariable('Ragdoll'));
+        if (Entity.type == 'player' && Entity.hasVariable('Wounded'))
+            Interactions.Ragdoll(Entity, Entity.getVariable('Wounded'));
+    },
+    'render': () => {
+        if (Player.Logged && Player.Spawned) {
+            mp.players.forEach((Target) => {
+                const TargetPosition = Target.position;
+                const PlayerPosition = Player.position;
+                const Distance = new mp.Vector3(PlayerPosition.x, PlayerPosition.y, PlayerPosition.z).subtract(new mp.Vector3(TargetPosition.x, TargetPosition.y, TargetPosition.z)).length();
+                if (Distance < 8 && Player.id != Target.id && Player.hasClearLosTo(Target.handle, 17)) {
+                    if (Target.getAlpha() != 0) {
+                        const Index = Target.getBoneIndex(12844);
+                        const NameTag = Target.getWorldPositionOfBone(Index);
+                        const Position = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.4);
+                        if (Position) {
+                            let x = Position.x;
+                            let y = Position.y;
+                            let scale = (Distance / 25);
+                            if (scale < 0.6)
+                                scale = 0.6;
+                            y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
+                            if (Target.hasVariable('Bubble') && Target.getVariable('Bubble')) {
+                                const BubblePosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.6);
+                                if (BubblePosition) {
+                                    const Bubble = Target.getVariable('Bubble');
+                                    // mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
+                                    //    font: 4,
+                                    //    color: Bubble.Color,
+                                    //    scale: [0.325, 0.325],
+                                    //    outline: false
+                                    // });
+                                }
+                            }
+                            if (Target.hasVariable('Wounded') && Target.getVariable('Wounded')) {
+                                const WoundedPosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.75);
+                                if (WoundedPosition) {
+                                    const Wound = Target.getVariable('Wounded');
+                                    // mp.game.graphics.drawText('(( ' + Wound.Text + ' ))', [WoundedPosition.x, WoundedPosition.y], {
+                                    //    font: 4,
+                                    //    color: Wound.Color,
+                                    //    scale: [0.315, 0.315],
+                                    //    outline: false
+                                    // });
+                                }
+                            }
+                            const Content = Target.name + ' [' + Target.remoteId + ']';
+                            // mp.game.graphics.drawText(Content, [x, y], {
+                            //    font: 4,
+                            //    color: [255, 255, 255, 255],
+                            //    scale: [0.325, 0.325],
+                            //    outline: false
+                            // });
+                        }
+                    }
+                }
+            });
+        }
+    },
+    'entityModelChange': (Entity, OldModel) => {
+    },
+    'entityStreamOut': (Entity) => {
+        if (Entity.Attachment) {
+            Attachments.StreamOut(Entity);
+        }
+    },
+    'client:player:freeze': (Toggle) => {
+        Player.freezePosition(Toggle);
+    },
+    'client:player:rotate': (Value) => {
+        Player.setHeading(Value);
+    },
+    'client:request:ipl': (Ipl) => {
+        mp.game.streaming.requestIpl(Ipl);
+    }
+});
+// INTERACTIONS :: REMOVE ATTACHMENT
+mp.keys.bind(Utils_1.Controls.KEY_X, false, async function () {
+    if (Player.Logged && Player.Spawned) {
+        if (Player.isTypingInTextChat)
+            return;
+        if (Player.getVariable('Attachment') != null) {
+            const response = await mp.events.callRemoteProc('server:character.attachment:remove');
+            Player.Attachment = response;
+        }
+    }
+});
+// INTERACTIONS :: LOCK
+mp.keys.bind(Utils_1.Controls.KEY_L, false, async function () {
+    if (Player.Logged && Player.Spawned && Player.isTypingInTextChat == false) {
+        if (AntiKeySpam)
+            return;
+        mp.events.callRemote('server:interactions:lock');
+        AntiKeySpam = true;
+        setTimeout(() => { AntiKeySpam = false; }, 4000);
+    }
+});
+mp.keys.bind(Utils_1.Controls.KEY_Y, false, () => {
+    let Vehicle; // PITATI ZAŠTO NE MOŽE VehicleMp 
+    if (!Player.Logged || !Player.Spawned || Player.isTypingInTextChat || Player.Cuffed)
+        return;
+    if (AntiKeySpam)
+        return;
+    if (Player.vehicle) {
+        mp.events.callRemote('server:vehicle:windows', Player.vehicle);
+        AntiKeySpam = true;
+        setTimeout(() => { AntiKeySpam = false; }, 2000);
+    }
+    else {
+        mp.vehicles.forEachInRange(Player.position, 4.5, (NearbyVehicle) => {
+            Vehicle = NearbyVehicle;
+        });
+        if (Vehicle.doesExist()) {
+            const Bones = { 'boot': -1.35, 'bonnet': 2.0 };
+            const Position = Player.position;
+            for (const Bone in Bones) {
+                const Offset = Bones[Bone];
+                const { x, y, z } = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
+                const Distance = mp.game.gameplay.getDistanceBetweenCoords(Position.x, Position.y, Position.z, x, y + Offset, z, true);
+                if (Distance < 1.35) {
+                    mp.events.callRemote('server:vehicle:interaction', Vehicle, Bone);
+                    AntiKeySpam = true;
+                    setTimeout(() => { AntiKeySpam = false; }, 2000);
+                }
+            }
+        }
+    }
+});
+mp.events.addProc({
+    'client:player.vehicle:class': () => {
+        return Player.vehicle ? Player.vehicle.getClass() : null;
+    }
+});
+const Attachments = {
+    StreamIn: function (Entity, Attachment) {
+        if (Attachment) {
+            Attachments.Add(Entity, Attachment);
+        }
+    },
+    StreamOut: function (Entity) {
+        Attachments.Remove(Entity);
+    },
+    Add: function (Entity, Value) {
+        Entity.Attachment = mp.objects.new(mp.game.joaat(Value.Model), Entity.position, {
+            rotation: new mp.Vector3(0, 0, Entity.heading),
+            alpha: 255,
+            dimension: Entity.dimension
+        });
+        Utils_1.WaitEntity(Entity.Attachment).then(() => {
+            const Bone = Entity.getBoneIndex(Value.Bone);
+            Entity.Attachment.attachTo(Entity.handle, Bone, Value.Offset.X, Value.Offset.Y, Value.Offset.Z, Value.Offset.rX, Value.Offset.rY, Value.Offset.rZ, true, true, false, false, 0, Value.Rotation || false);
+        });
+    },
+    Remove: function (Entity) {
+        let Object = Entity.Attachment;
+        if (Object && mp.objects.exists(Object)) {
+            Object.destroy();
+        }
+    }
+};
+const Interactions = {
+    WalkingStyle: async function (Entity, Style) {
+        if (Style == null) {
+            Entity.resetMovementClipset(0.0);
+        }
+        else {
+            Utils_1.LoadMovementClipset(Style).then(() => {
+                Entity.setMovementClipset(Style, 1.0);
+            });
+        }
+    },
+    Ragdoll: function (Entity, Value) {
+        if (Value) {
+            mp.gui.chat.push(JSON.stringify(Value));
+            Entity.setToRagdoll(Value.Time || 5000, Value.Time || 5000, 0, true, true, true);
+        }
+    },
+    FacialMood: function (Entity, Mood) {
+        Mood == 'normal' ? Entity.clearFacialIdleAnimOverride() : mp.game.invoke('0xFFC24B988B938B38', Entity.handle, Mood, 0);
+    }
+};
+
+
+/***/ }),
+
+/***/ 1394:
+/***/ (() => {
+
+"use strict";
+
+const Player = mp.players.local;
+let SendToServer = true;
+mp.events.add({
+    'outgoingDamage': (SourceEntity, TargetEntity, SourcePlayer, Weapon, BoneIndex, Damage) => {
+        // if (targetEntity.type === 'player') {
+        //    if (targetEntity.getHealth() - damage < damage) { 
+        //       mp.events.callRemoteProc('server:character.wounded', mp.players.at(targetEntity.id)).then((Response) => { 
+        //          mp.gui.chat.push(JSON.stringify(Response));
+        //          return true;
+        //       });
+        //    }
+        // }
+    },
+    'incomingDamage': (SourceEntity, TargetEntity, SourcePlayer, Weapon, BoneIndex, Damage) => {
+        if (TargetEntity.id == Player.id) {
+            if (Player.getVariable('Wounded')) {
+                mp.gui.chat.push('wounded');
+            }
+            else {
+                let Injury = { Weapon: Weapon, Bone: BoneIndex };
+                PlayerDamage.Effect(BoneIndex);
+                mp.gui.chat.push('Nije wounded');
+                if (SendToServer) {
+                    mp.events.callRemote('server:character.injuries:add', JSON.stringify(Injury));
+                    SendToServer = false;
+                    setTimeout(() => { SendToServer = true; }, 1000);
+                }
+                //    if (Player.getHealth() - damage < damage) {
+                //       mp.gui.chat.push('Zadnji hitac')
+                //       return true;
+                //    }
+            }
+        }
+    }
+});
+class PlayerDamage {
+    static Check() {
+        if (Player.Logged && Player.Spawned) {
+            const Injuries = Player.getVariable('Injuries');
+            if (Injuries.length > 0 && Player.getSpeed() > 5) {
+                if (Injuries.find(Element => Element.Bone == 4 || Element.Bone == 2)) {
+                    if (SendToServer)
+                        mp.events.callRemote('server:character.wounded:fall');
+                }
+            }
+        }
+        setTimeout(() => { PlayerDamage.Check(); }, 1000);
+    }
+    static Effect(Bone) {
+        switch (Bone) {
+            case 20: {
+                mp.game.graphics.startScreenEffect('DefaultFlash', 1500, false);
+                break;
+            }
+            default: {
+            }
+        }
+    }
+}
+//Damage.Check();
+
+
+/***/ }),
+
+/***/ 599:
+/***/ (() => {
+
+"use strict";
+
+let Active = false;
+mp.events.add({
+    'CLIENT::HELP:SHOW': (Text) => {
+        Active = !Active;
+    }
+});
+
+
+/***/ }),
+
+/***/ 385:
+/***/ (() => {
+
+"use strict";
+
+// import { LoadAnimationDictionary } from "../../Utils";
+// const player = mp.players.local;
+// mp.events.add({
+// 	'entityStreamIn': (Entity: EntityMp) => {
+// 		if (Entity.type == 'player') {
+// 			if (Entity.hasVariable("animData")) {
+// 				const value = Entity.getVariable("animData");
+// 				if (null != value) {
+// 					const anim = value.split("%");
+// 					LoadAnimationDictionary(anim[0]).then(() => {
+// 						mp.players.exists(<PlayerMp>Entity) && 0 !== Entity.handle && (<PlayerMp>Entity).taskPlayAnim(anim[0], anim[1], 1, 0, -1, parseInt(anim[2]), 1, !1, !1, !1)
+// 					})
+// 				}
+// 			}
+// 		}
+// 	},
+// });
+// mp.events.addDataHandler("animData", function (Entity: EntityMp, Value: any) {
+// 	if (0 !== Entity.handle)
+// 		if (null != Value) {
+// 			const c = Value.split("%");
+// 			LoadAnimationDictionary(c[0]).then(() => {
+// 				mp.players.exists(<PlayerMp>Entity) && 0 !== (<PlayerMp>Entity).handle && ((<PlayerMp>Entity).clearTasksImmediately(), (<PlayerMp>Entity).taskPlayAnim(c[0], c[1], 1, 0, -1, parseInt(c[2]), 1, !1, !1, !1))
+// 			})
+// 		} //else a.clearTasksImmediately()
+// });
+// mp.keys.bind(0x20, true, function () {
+// 	if (player.Logged && player.Spawned) {
+// 		if (Player.hasVariable("animData")) {
+// 			const value = Player.getVariable("animData");
+// 			if (null != value) {
+// 				const anim = value.split("%");
+// 				let playing = player.isPlayingAnim(anim[0], anim[1]);
+// 				if (playing) {
+// 					player.stopAnimTask(anim[0], anim[1], 3.0);
+// 				}
+// 			}
+// 		}
+// 	}
+// });
+
+
+/***/ }),
+
+/***/ 8769:
+/***/ (() => {
+
+"use strict";
+
+// const movementClipSet = 'move_ped_crouched';
+// const strafeClipSet = 'move_ped_crouched_strafing';
+// const clipSetSwitchTime = 0.25;
+// const Player = mp.players.local;
+// function LoadClipSet (SetName: string) {
+//     mp.game.streaming.requestClipSet(SetName);
+//     while (!mp.game.streaming.hasClipSetLoaded(SetName)) mp.game.waitAsync(1);
+// };
+// LoadClipSet(movementClipSet);
+// LoadClipSet(strafeClipSet);
+// mp.events.addDataHandler('crouching', (Entity: PlayerMp, Value: number) => {
+//     if (Entity.type === 'player') {
+//         if (Value) {
+//             Entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
+//             Entity.setStrafeClipset(strafeClipSet);
+//         } else {
+//             Entity.resetMovementClipset(clipSetSwitchTime);
+//             Entity.resetStrafeClipset();
+//         }
+//     }
+// });
+// mp.events.add('entityStreamIn', (Entity: EntityMp) => {
+//     if (Entity.type === 'player' && (<PlayerMp>Entity).Crouching) {
+//         (<PlayerMp>Entity).setMovementClipset(movementClipSet, clipSetSwitchTime);
+//         (<PlayerMp>Entity).setStrafeClipset(strafeClipSet);
+//     }
+// });
+// mp.keys.bind(0x12, false, () => {
+//     if (Player.Logged && Player.Spawned) { 
+//         mp.events.callRemote('server:player.crouch');
+//     }
+// });
+
+
+/***/ }),
+
+/***/ 5877:
+/***/ (() => {
+
+"use strict";
+
+// const Player = mp.players.local;
+// //Fingerpointing
+// let pointing: any = {
+//     active: false,
+//     interval: null,
+//     lastSent: 0,
+//     start: function () {
+//         if (!this.active) {
+//             if (Player.Cuffed) return;
+//             this.active = true;
+//             mp.game.streaming.requestAnimDict("anim@mp_point");
+//             while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
+//                 mp.game.wait(0);
+//             }
+//             mp.game.invoke("0x0725a4ccfded9a70", mp.players.local.handle, 0, 1, 1, 1);
+//             mp.players.local.setConfigFlag(36, true)
+//             mp.players.local.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
+//             mp.game.streaming.removeAnimDict("anim@mp_point");
+//             this.interval = setInterval(this.process.bind(this), 0);
+//         }
+//     },
+//     stop: function () {
+//         if (this.active) {
+//             clearInterval(this.interval);
+//             this.interval = null;
+//             this.active = false;
+//             mp.game.invoke("0xd01015c7316ae176", mp.players.local.handle, "Stop");
+//             if (!mp.players.local.isInjured()) {
+//                 mp.players.local.clearSecondaryTask();
+//             }
+//             if (!mp.players.local.isInAnyVehicle(true)) {
+//                 mp.game.invoke("0x0725a4ccfded9a70", mp.players.local.handle, 1, 1, 1, 1);
+//             }
+//             mp.players.local.setConfigFlag(36, false);
+//             mp.players.local.clearSecondaryTask();
+//             setTimeout(() => {
+//                 mp.events.callRemote('server:player.finger.pointing.stop');
+//             }, 2000);
+//         }
+//     },
+//     gameplayCam: mp.cameras.new("gameplay"),
+//     lastSync: 0,
+//     getRelativePitch: function () {
+//         let camRot = this.gameplayCam.getRot(2);
+//         return camRot.x - mp.players.local.getPitch();
+//     },
+//     process: function () {
+//         if (this.active) {
+//             mp.game.invoke("0x921ce12c489c4c41", mp.players.local.handle);
+//             let camPitch = this.getRelativePitch();
+//             if (camPitch < -70.0) {
+//                 camPitch = -70.0;
+//             } else if (camPitch > 42.0) {
+//                 camPitch = 42.0;
+//             }
+//             camPitch = (camPitch + 70.0) / 112.0;
+//             let camHeading = mp.game.cam.getGameplayCamRelativeHeading();
+//             let cosCamHeading = mp.game.system.cos(camHeading);
+//             let sinCamHeading = mp.game.system.sin(camHeading);
+//             if (camHeading < -180.0) {
+//                 camHeading = -180.0;
+//             } else if (camHeading > 180.0) {
+//                 camHeading = 180.0;
+//             }
+//             camHeading = (camHeading + 180.0) / 360.0;
+//             let coords = mp.players.local.getOffsetFromGivenWorldCoords((cosCamHeading * -0.2) - (sinCamHeading * (0.4 * camHeading + 0.3)), (sinCamHeading * -0.2) + (cosCamHeading * (0.4 * camHeading + 0.3)), 0.6);
+//             let BlockedVector: Vector3Mp = new mp.Vector3(coords.x, coords.y, coords.z - 0.2);
+//             let BlockedVector2: Vector3Mp = new mp.Vector3(coords.x, coords.y, coords.z + 0.2);
+//             let blocked = (typeof mp.raycasting.testPointToPoint(BlockedVector, BlockedVector2, mp.players.local.handle, 7) !== 'undefined');
+//             mp.game.invoke('0xd5bb4025ae449a4e', mp.players.local.handle, "Pitch", camPitch)
+//             mp.game.invoke('0xd5bb4025ae449a4e', mp.players.local.handle, "Heading", camHeading * -1.0 + 1.0)
+//             mp.game.invoke('0xb0a6cfd2c69c1088', mp.players.local.handle, "isBlocked", blocked)
+//             mp.game.invoke('0xb0a6cfd2c69c1088', mp.players.local.handle, "isFirstPerson", mp.game.invoke('0xee778f8c7e1142e2', mp.game.invoke('0x19cafa3c87f7c2ff')) == 4)
+//             if ((Date.now() - this.lastSent) > 100) {
+//                 this.lastSent = Date.now();
+//                 mp.events.callRemote('server:player.finger.pointing.update', camPitch, camHeading);
+//             }
+//         }
+//     }
+// }
+// mp.events.add("client:finger.pointing.update", (Id: number, CamPitch: number, CamHeading: number) => {
+//     let netPlayer = getPlayerByRemoteId(Id);
+//     if (netPlayer != null) {
+//         if (netPlayer != mp.players.local && mp.players.exists(netPlayer)) {
+//             netPlayer.LastReceivedPointing = Date.now();
+//             if (!netPlayer.PointingInterval) {
+//                 netPlayer.PointingInterval = setInterval((function () {
+//                     if ((Date.now() - netPlayer?.LastReceivedPointing) > 1000) {
+//                         clearInterval(netPlayer?.PointingInterval);
+//                         if (!netPlayer) return;
+//                         netPlayer.LastReceivedPointing = null;
+//                         netPlayer.PointingInterval = null;
+//                         mp.game.invoke("0xd01015c7316ae176", netPlayer.handle, "Stop");
+//                         if (!netPlayer.isInAnyVehicle(true)) {
+//                             mp.game.invoke("0x0725a4ccfded9a70", netPlayer.handle, 1, 1, 1, 1);
+//                         }
+//                         netPlayer.setConfigFlag(36, false);
+//                     }
+//                 }).bind(netPlayer), 500);
+//                 mp.game.streaming.requestAnimDict("anim@mp_point");
+//                 while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
+//                     mp.game.wait(0);
+//                 }
+//                 mp.game.invoke("0x0725a4ccfded9a70", netPlayer.handle, 0, 1, 1, 1);
+//                 netPlayer.setConfigFlag(36, true)
+//                 netPlayer.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
+//                 mp.game.streaming.removeAnimDict("anim@mp_point");
+//             }
+//             mp.game.invoke('0xd5bb4025ae449a4e', netPlayer.handle, "Pitch", CamPitch)
+//             mp.game.invoke('0xd5bb4025ae449a4e', netPlayer.handle, "Heading", CamHeading * -1.0 + 1.0)
+//             mp.game.invoke('0xb0a6cfd2c69c1088', netPlayer.handle, "isBlocked", 0);
+//             mp.game.invoke('0xb0a6cfd2c69c1088', netPlayer.handle, "isFirstPerson", 0);
+//         }
+//     }
+// });
+// mp.keys.bind(0x42, true, () => {
+//     if (mp.gui.cursor.visible || Player.isTypingInTextChat || mp.players.local.vehicle) return;
+//     pointing.start();
+// });
+// mp.keys.bind(0x42, false, () => {
+//     pointing.stop();
+// });
+// function getPlayerByRemoteId(RemoteID: number) {
+//     let pla = mp.players.atRemoteId(RemoteID);
+//     if (pla == undefined || pla == null) {
+//         return null;
+//     }
+//     return pla;
+// }
+
+
+/***/ }),
+
+/***/ 6:
+/***/ (() => {
+
+"use strict";
+
+// const Player = mp.players.local;
+// let Browser = null, Opened = false;
+// const Controls = { 
+//    keyP: 0x50
+// };
+// mp.events.add({
+//    'client:players:online': () => {
+//       Opened = !Opened;
+//       if (Opened) { 
+//          Browser = mp.browsers.new('package://player/game-interface/onlines.html');
+//          let List = utils.OnlinePlayers();
+//          Browser.execute('onlines.players = ' + JSON.stringify(List));
+//          Player.BrowserControls(true, true);
+//       } else { 
+//          if (Browser) Browser.destroy();
+//          Player.BrowserControls(false, false);
+//       }
+//    }
+// })
+// mp.keys.bind(Controls.keyP, false, function() {
+//    if (Player.logged && Player.spawned) {    
+//       if (Player.isTypingInTextChat) return;
+//       mp.events.call('client:players:online');
+//    }
+// });
+
+
+/***/ }),
+
+/***/ 9534:
+/***/ (() => {
+
+"use strict";
+
+const Player = mp.players.local;
+var PhoneContactActions;
+(function (PhoneContactActions) {
+    PhoneContactActions[PhoneContactActions["Add"] = 0] = "Add";
+    PhoneContactActions[PhoneContactActions["Remove"] = 1] = "Remove";
+    PhoneContactActions[PhoneContactActions["Update"] = 2] = "Update";
+})(PhoneContactActions || (PhoneContactActions = {}));
+mp.events.add({
+    'CLIENT::PLAYER:PHONE': (Phone) => {
+    },
+    'CLIENT::PLAYER:PHONE:CONTACTS': (Action, Info) => {
+        Info = JSON.parse(Info);
+        switch (Action) {
+            case PhoneContactActions.Add: {
+                mp.events.callRemote('server:player.phone.contacts.add', Info.Name, Info.Number);
+                break;
+            }
+            case PhoneContactActions.Remove: {
+                mp.events.callRemote('server:player.phone.contacts.remove', Info.Id);
+                break;
+            }
+        }
+    }
+});
+
+
+/***/ }),
+
+/***/ 8671:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local, CuffsModel = 'p_cs_cuffs_02_s';
+mp.events.addDataHandler({
+    'Cuffed': (Entity, NewValue, OldValue) => {
+        if (Entity.type === 'player') {
+            if (NewValue !== OldValue) {
+                Cuff(Entity, NewValue);
+            }
+        }
+    }
+});
+mp.events.add({
+    'entityStreamIn': (Entity) => {
+        if (Entity.type === 'player')
+            Cuff(Entity, Entity.getVariable('Cuffed'));
+    },
+    'render': () => {
+        if (Player.Cuffed) {
+            // DISABLE SPRINT, ATTACK, AIM, JUMP
+            mp.game.controls.disableControlAction(0, 24, true);
+            mp.game.controls.disableControlAction(0, 25, true);
+            mp.game.controls.disableControlAction(0, 21, true);
+            mp.game.controls.disableControlAction(0, 55, true);
+        }
+    },
+    'client:player:cuff': (Entity, Toggle) => {
+        Cuff(Entity, Toggle);
+    }
+});
+function Cuff(Entity, Toggle) {
+    if (Toggle && Entity) {
+        Entity.setEnableHandcuffs(true);
+        Entity.Cuffed = true;
+        Entity.Cuffs = mp.objects.new(mp.game.joaat(CuffsModel), Entity.position, {
+            rotation: new mp.Vector3(0, 0, 0),
+            alpha: 255,
+            dimension: Entity.dimension
+        });
+        Entity.Cuffs.notifyStreaming = true;
+        Utils_1.WaitEntity(Entity.Cuffs).then(() => {
+            let bone = mp.players.local.getBoneIndex(6286);
+            Entity.Cuffs.attachTo(Entity.handle, bone, -0.02, 0.06, 0.0, 75.0, 0.0, 76.0, true, true, false, false, 0, true);
+        });
+    }
+    else {
+        Entity.setEnableHandcuffs(false);
+        Entity.Cuffed = false;
+        if (Entity.Cuffs) {
+            if (Entity.Cuffs.doesExist()) {
+                Entity.Cuffs.destroy();
+            }
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ 9368:
+/***/ (() => {
+
+"use strict";
+
+// const Player = mp.players.local;
+// interface ALPR { 
+//    Enabled: boolean | false,
+//    Vehicle: VehicleMp | null
+// }
+// let Vehicles = { Front: 0, Back: 0 },
+//    FMarker: MarkerMp,
+//    BMarker: MarkerMp,
+//    Enabled: boolean;
+// mp.events.add({
+//    'CLIENT::VEHICLE:ALPR': () => {
+//       /*
+//       FMarker = mp.markers.new(1, ForwardVehicle.position, 10,
+//       {
+//             direction: ForwardVehicle.position,
+//             rotation: ForwardVehicle.position,
+//             color: 0,
+//             visible: true,
+//             dimension: Player.dimension
+//       });
+//       BMarker = mp.markers.new(1, BackwardVehicle, 10,
+//       {
+//             direction: BackwardVehicle.position,
+//             rotation: BackwardVehicle.position,
+//             color: 0,
+//             visible: true,
+//             dimension: Player.dimension
+//       });*/
+//    },
+//    'render': () => {
+//       if (!Enabled || !Player.vehicle) return;
+//       const Vehicle = Player.vehicle;
+//       const ForwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, 10, 0.0),
+//          BackwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, -10, 0.0);
+//       /*
+//       const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition), 
+//             BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition);*/
+//       const ForwardVehicle = mp.raycasting.testCapsule(Vehicle.position, ForwardPosition, 2, Player, 2),
+//          BackwardVehicle = mp.raycasting.testCapsule(Vehicle.position, BackwardPosition, 2, Player, 2);
+//       // Returna: object: position (Entity Coordinates) , surfaceNormal, material (Entity Model) , entity (Handle)
+//       if (ForwardVehicle && ForwardVehicle.entity.type == 'vehicle') {
+//          Vehicles.Front = ForwardVehicle.entity;
+//          const Speed = Math.round(Vehicles.Front.getSpeed() * 3.6);
+//          mp.gui.chat.push(JSON.stringify(Speed));
+//       }
+//       if (BackwardVehicle && BackwardVehicle.entity.type == 'vehicle') {
+//          Vehicles.Back = BackwardVehicle.entity;
+//          const Speed = Math.round(Vehicles.Back.getSpeed() * 3.6);
+//          mp.gui.chat.push(JSON.stringify(Speed));
+//       }
+//       if (FMarker != null) {
+//          FMarker.position = ForwardVehicle.entity.position;
+//       }
+//       if (BMarker != null) {
+//          BMarker.position = BackwardVehicle.entity.position
+//       }
+//    },
+// })
+// /* function GetVehicleInfrontOfEntity(entity)
+//    local coords = GetOffsetFromEntityInWorldCoords(entity,0.0,1.0,0.3)
+//    local coords2 = GetOffsetFromEntityInWorldCoords(entity, 0.0, ScanningDistance,0.0)
+//    local rayhandle = CastRayPointToPoint(coords, coords2, 10, entity, 0)
+//    local _, _, _, _, entityHit = GetRaycastResult(rayhandle)
+//    if entityHit>0 and IsEntityAVehicle(entityHit) then
+//       return entityHit
+//    else
+//       return nil
+//    end
+// end*/
+// /*  let
+//          mp.vehicles.forEachInRange(ForwardPosition, 5,
+//             (vehicle) => {
+//                DetectedVehicles.push(vehicle);
+//                break;
+//             }
+//          );
+//          mp.vehicles.forEachInRange(BackwardPosition, 5,
+//             (vehicle) => {
+//                DetectedVehicles.push(vehicle);
+//                break;
+//             }
+//          );
+// */
+
+
+/***/ }),
+
+/***/ 2875:
+/***/ (() => {
+
+"use strict";
+
+// const Player = mp.players.local;
+// const Instructor = mp.peds.new(
+//    mp.game.joaat('a_m_y_bevhills_01'), 
+//    new mp.Vector3(-761.8135, -1308.1590, 5.150),
+//    -36,
+//    0
+// );
+// Instructor.freezePosition(true);
+// Instructor.setInvincible(true);
+// let Test = {
+//    Category: null,
+//    Route: null,
+//    Vehicle: null,
+//    Progress: null,
+//    Speedlimit: null,
+//    Warns: null,
+//    Point: null
+// };
+// mp.events.add({
+//    'client:vehicle.department:menu' (player, department) { 
+//       if (Test.Route != null) return;
+//       opened = !opened;
+//       if (opened) { 
+//          browser = mp.browsers.new('package://vehicles/vehicles-interfaces/department.html');
+//          browser.execute('department.Player = ' + JSON.stringify(player));
+//          browser.execute('department.Quiz.Questions = ' + JSON.stringify(department.Quiz));
+//          browser.execute('department.Licenses = ' + JSON.stringify(department.Licenses));
+//          Player.BrowserControls(true, true);
+//       } else { 
+//          if (browser) browser.destroy();
+//          Player.BrowserControls(false, false);
+//       }
+//    },
+//    'client:vehicle.department.driving:start': (category) => { 
+//       DrivingTest(category);
+//    },
+//    'playerEnterVehicle': (vehicle, seat) => { 
+//       if (vehicle == Test.Vehicle && seat == -1) { 
+//          StartRoute();
+//       }
+//    }
+// })
+// async function DrivingTest (category) { 
+//    const [Vehicle, Route] = await mp.events.callRemoteProc('server:vehicle.department.driving:start', category);
+//    Test.Vehicle = mp.vehicles.atRemoteId(Vehicle);
+//    Test.Route = Route;
+//    Test.Warns = 0;
+//    Instructor.freezePosition(false);
+//    mp.game.wait(5);
+//    Instructor.taskEnterVehicle(Test.Vehicle.handle, 5000, 0, 1, 1, 0);
+// };
+// function Check () { 
+//    const Time = mp.game.invoke('0x25223CA6B4D20B7F');
+//    if (Time < 6 || Time > 20) { 
+//       Instructor.setAlpha(0, false);
+//       Instructor.setCollision(false, false);
+//    } else { 
+//       Instructor.setAlpha(255, false);
+//       Instructor.setCollision(true, true);
+//    }
+//    setTimeout(() => { Check(); }, 30 * 1000);
+// }
+// Check();
+// async function StartRoute () { 
+//    const Point = Player.CreateInteractionSpot('Polaganje', new mp.Vector3(Test.Route[0].position.x, Test.Route[0].position.y, Test.Route[0].position.z));
+//    Test.Point = Point;
+//    mp.events.add('playerEnterCheckpoint', NextPoint);
+// }
+// function NextPoint (point) { 
+//    if (Player.vehicle && Player.vehicle == Test.Vehicle && Test.Point.checkpoint == point) { 
+//       Test.Point.checkpoint.destroy();
+//       Test.Point.blip.destroy();
+//       mp.game.wait(50);
+//       if (Test.Progress == Test.Route.length - 1) {
+//          mp.events.remove('playerEnterCheckpoint', NextPoint);
+//          mp.gui.chat.push(JSON.stringify(Test.Vehicle.remoteId));
+//          Test.Route = null, Test.Progress = null;
+//          mp.events.add('playerLeaveVehicle', (vehicle, seat) => { 
+//             if (vehicle == Test.Vehicle) { 
+//                Instructor.taskGoStraightToCoord(-761.8135, -1308.1590, 5.150, 1, 5000, -36, 2);
+//                mp.events.callRemote('server:vehicle.department.license:give', Test.Category, Test.Vehicle.remoteId);
+//             }
+//          });
+//          // izbrisati vozilo
+//          return;
+//       };
+//       Test.Progress ++;
+//       const Position = new mp.Vector3(Test.Route[Test.Progress].position.x, Test.Route[Test.Progress].position.y, Test.Route[Test.Progress].position.z - 0.5);
+//       const Point = Player.CreateInteractionSpot('Polaganje', Position);
+//       Test.Point = Point;
+//    }
+// };
+
+
+/***/ }),
+
+/***/ 1425:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local;
+const blockedClasses = [13, 14, 15, 16, 21];
+let DistanceNow;
+let DistanceTemporary;
+mp.game.controls.useDefaultVehicleEntering = true;
+// AUTO HELMET
+Player.setConfigFlag(35, false);
+mp.events.add({
+    'entityStreamIn': (Entity) => {
+        if (Entity.type === 'vehicle') {
+            if (Entity.hasVariable('IndicatorRight'))
+                Entity.setIndicatorLights(0, Entity.getVariable('IndicatorRight'));
+            if (Entity.hasVariable('IndicatorLeft'))
+                Entity.setIndicatorLights(1, Entity.getVariable('IndicatorLeft'));
+            if (Entity.hasVariable('Windows'))
+                Windows(Entity, Entity.getVariable('Windows'));
+            if (Entity.hasVariable('Fuel'))
+                Entity.Fuel = Entity.getVariable('IndicatorLeft');
+            if (Entity.hasVariable('Mileage'))
+                Entity.Mileage = Entity.getVariable('Mileage');
+            if (Entity.hasVariable('Hood'))
+                Doors(Entity, VehicleDoors.Hood, Entity.getVariable('Hood'));
+            if (Entity.hasVariable('Trunk'))
+                Doors(Entity, VehicleDoors.Trunk, Entity.getVariable('Trunk'));
+            if (Entity.hasVariable('Back'))
+                Doors(Entity, VehicleDoors.Back, Entity.getVariable('Back'));
+            if (Entity.hasVariable('Back2'))
+                Doors(Entity, VehicleDoors.Back2, Entity.getVariable('Back2'));
+        }
+    },
+    'playerEnterVehicle': (Vehicle, Seat) => {
+        mp.game.vehicle.defaultEngineBehaviour = false;
+        Player.setConfigFlag(429, true);
+        if (Vehicle.Fuel && Seat == -1) {
+            DistanceNow = Date.now();
+            DistanceTemporary = 0;
+            mp.events.add('render', Driving);
+        }
+    },
+    'playerLeaveVehicle': (Vehicle, Seat) => {
+        if (Seat == -1) {
+            mp.events.remove('render', Driving);
+            if (Vehicle)
+                mp.events.callRemote('server:vehicle:update', Vehicle, Vehicle.Mileage, Vehicle.Fuel);
+        }
+    }
+});
+mp.events.addDataHandler({
+    'IndicatorRight': (Entity, Value) => {
+        var _a;
+        if (Entity.type === 'vehicle')
+            (_a = Entity) === null || _a === void 0 ? void 0 : _a.setIndicatorLights(0, (Value == null) ? false : Value);
+    },
+    'IndicatorLeft': (Entity, Value) => {
+        var _a;
+        if (Entity.type === 'vehicle')
+            (_a = Entity) === null || _a === void 0 ? void 0 : _a.setIndicatorLights(1, (Value == null) ? false : Value);
+    },
+    'Windows': (Entity, Value) => {
+        if (Entity.type === 'vehicle')
+            Windows(Entity, Value);
+    },
+    'Trunk': (Entity, Value) => {
+        if (Entity.type === 'vehicle')
+            Doors(Entity, VehicleDoors.Trunk, Value);
+    },
+    'Hood': (Entity, Value) => {
+        if (Entity.type === 'vehicle')
+            Doors(Entity, VehicleDoors.Hood, Value);
+    },
+    'Back': (Entity, Value) => {
+        if (Entity.type === 'vehicle')
+            Doors(Entity, VehicleDoors.Back, Value);
+    },
+    'Back2': (Entity, Value) => {
+        if (Entity.type === 'vehicle')
+            Doors(Entity, VehicleDoors.Back2, Value);
+    },
+    'Fuel': (Entity, Value) => {
+        if (Entity.type === 'vehicle')
+            Entity.Fuel = Value;
+    },
+    'Mileage': (Entity, Value) => {
+        if (Entity.type === 'vehicle')
+            Entity.Mileage = Value;
+    }
+});
+// Left Indicator
+mp.keys.bind(Utils_1.Controls.LEFT_ARROW, false, () => {
+    if (!Player.Logged)
+        return;
+    if (mp.players.local.isTypingInTextChat)
+        return;
+    let vehicle = mp.players.local.vehicle;
+    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1)
+        mp.events.callRemote('server:vehicle:indicators', 1);
+});
+// Right Indicator
+mp.keys.bind(Utils_1.Controls.RIGHT_ARROW, false, () => {
+    if (!Player.Logged)
+        return;
+    if (mp.players.local.isTypingInTextChat)
+        return;
+    let vehicle = mp.players.local.vehicle;
+    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1)
+        mp.events.callRemote('server:vehicle:indicators', 0);
+});
+function Driving() {
+    if (Player.vehicle && Player.vehicle.getPedInSeat(-1) === Player.handle) {
+        let vehicle = Player.vehicle;
+        let Speed = vehicle.getSpeed() * 3.6;
+        if (Date.now() >= DistanceNow + 1 && Speed > 1) {
+            let Calculating = Speed * ((Date.now() - DistanceNow) / 1000);
+            let Trip = Calculating / 3600;
+            DistanceTemporary += Trip;
+            vehicle.Mileage += (DistanceTemporary / 1000);
+            DistanceNow = Date.now();
+        }
+        // Updating Vehicle.Mileage in GameInterface 
+        //GameInterface.execute('hud.Mileage(' + vehicle.Mileage.toFixed(3) + ')');
+        //GameInterface.execute('hud.Speed(' + Speed + ')');
+    }
+}
+// SYNCING WINDOWS // PROBABLY TROUBE
+function Windows(Vehicle, Value) {
+    const Doors = mp.game.invoke('0x92922A607497B14D', Vehicle.handle);
+    for (let i = 0; i < Doors - 2; i++) {
+        let Window = Value[i];
+        Window ? Vehicle.rollDownWindow(i) : Vehicle.rollUpWindow(i);
+    }
+}
+var VehicleDoors;
+(function (VehicleDoors) {
+    VehicleDoors[VehicleDoors["Hood"] = 0] = "Hood";
+    VehicleDoors[VehicleDoors["Trunk"] = 1] = "Trunk";
+    VehicleDoors[VehicleDoors["Back"] = 2] = "Back";
+    VehicleDoors[VehicleDoors["Back2"] = 3] = "Back2";
+})(VehicleDoors || (VehicleDoors = {}));
+function Doors(Vehicle, Index, Value) {
+    let Number = 4;
+    switch (Index) {
+        case VehicleDoors.Hood:
+            Number = 4;
+            break;
+        case VehicleDoors.Trunk:
+            Number = 5;
+            break;
+        case VehicleDoors.Back:
+            Number = 6;
+            break;
+        case VehicleDoors.Back2:
+            Number = 7;
+            break;
+    }
+    Value ? Vehicle.setDoorOpen(Number, false, false) : Vehicle.setDoorShut(Number, false);
+}
+;
+const natives = {
+    MAX_PASSENGERS: '0x2AD93716F184EDA4',
+    MAX_SPEED: '0xF417C2502FFFED43',
+    MAX_BRAKING: '0xDC53FD41B4ED944C',
+    MAX_TRACTION: '0x539DE94D44FDFD0D',
+    MAX_ACCELERATION: '0x8C044C5C84505B6A',
+    MANUFACTEUR: '0xF7AF4F159FF99F97',
+};
+
+
+/***/ }),
+
+/***/ 3678:
 /***/ ((module) => {
 
 "use strict";
@@ -490,7 +3444,7 @@ module.exports = JSON.parse('{"0":{"0":{"BestTorsoDrawable":-1,"BestTorsoTexture
 
 /***/ }),
 
-/***/ 3649:
+/***/ 9293:
 /***/ ((module) => {
 
 "use strict";
@@ -504,7 +3458,7 @@ module.exports = JSON.parse('{"0":{"0":{"BestTorsoDrawable":0,"BestTorsoTexture"
 
 
 
-const Vehicles = [
+const VehiclesList = [
 "chimera","carbonrs","faggio2","youga","glendale","bf400","kalahari","trophytruck","coquette","boxville","elegy","speedo4","gburrito2","hexer","stafford","surano","cliffhanger","lynx","fusilade","khamelion","romero","fcr","lectro","comet5","bruiser","boxville5","drafter","surfer","cog552","ruston","speedo2","buffalo2","gargoyle","sovereign","alpha","sanchez","defiler","monster4","pariah","oppressor","intruder","burrito","cog55","rrocket","pony","sultan","sandking2","youga2","ninef","blista2","bobcatxl","specter2","verlierer2","sentinel3","hotring","superd","bfinjection","rumpo","technical2","marshall","caracara","hakuchou","bestiagts","technical3","warrener","paragon2","rumpo3","paradise","schafter4","sanctus","comet4","rancherxl","akuma","monster3","stratum","rapidgt","bison","streiter","enduro","dloader","washington","diablous2","thrust","issi7","ratbike","camper","specter","tropos","dune3","fugitive","gb200","schafter6","taco","daemon","futo","esskey","brutus3","menacer","oppressor2","insurgent2","carbonizzare","brutus","bagger","blazer","avarus","technical","rebel2","bruiser3","primo2","cognoscenti","comet3","feltzer2","stretch","insurgent3","asterope","surge","brutus2","premier","emperor","insurgent","neon","faggio","deathbike2","asea","seven70","gburrito","bruiser2","double","dune","neo","nightblade","blazer5","riata","raiden","manchez","schafter3","brawler","zr3803","stanier","ninef2","sanchez2","bodhi2","daemon2","deathbike3","kuruma","vindicator","caracara2","surfer2","jester","ingot","faggio3","blazer3","flashgt","schafter2","dubsta3","rebel","sandking","primo","minivan2","jester2","zr3802","furoregt","tampa2","comet2","banshee","zombiea","tailgater","locust","pcj","ruffian","bati2","schafter5","monster","dune4","speedo","omnis","fcr2","schwarzer","monster5","raptor","trophytruck2","nemesis","massacro2","wolfsbane","vortex","cognoscenti2","blista3","zombieb","elegy2","schlagen","paragon","blazer4","revolter","shotaro","penumbra","hellion","bifta","italigto","dune5","minivan","buffalo","rcbandito","hakuchou2","diablous","jester3","jugular","innovation","massacro","vader","kamacho","journey","limo2","bati","freecrawler","blazer2","deathbike","regina"
 ];
 
@@ -517,7 +3471,7 @@ const Positions = {
    CameraLook: new mp.Vector3(-1573.966796875, -365.6707763671875, 202.30532836914062)
 }
 
-
+const Player = mp.players.local;
 
 mp.events.add({
 
@@ -559,12 +3513,12 @@ mp.events.add({
 
       do {
          if (Vehicle) { 
-            Vehicle.model = mp.game.joaat(Vehicles[Current]);
+            Vehicle.model = mp.game.joaat(VehiclesList[Current]);
             Vehicle.setColours(132, 132);
             Vehicle.freezePosition(true);
             Vehicle.numberPlateType = 1;
          } else { 
-            Vehicle = mp.vehicles.new(mp.game.joaat(Vehicles[Current]), Positions.Vehicle, {
+            Vehicle = mp.vehicles.new(mp.game.joaat(VehiclesList[Current]), Positions.Vehicle, {
                numberPlate: 'focus', heading: 138,
             });
             Vehicle.freezePosition(true);
@@ -572,10 +3526,10 @@ mp.events.add({
             Vehicle.setColours(132, 132);
          }
          mp.game.wait(50);
-         mp.gui.takeScreenshot(Vehicles[Current] + '.png', 1, 100, 0);
+         mp.gui.takeScreenshot(VehiclesList[Current] + '.png', 1, 100, 0);
          mp.game.wait(40);
          Current ++;
-      } while (Current != Vehicles.length -1);
+      } while (Current != VehiclesList.length -1);
 
 
       if (Camera) Camera.destroy();
@@ -1843,329 +4797,6 @@ mp.events.add("barbershop::checkPriceResponse", (result) => {
 		checkPriceResolver.resolve(false);
 	}
 });*/
-
-/***/ }),
-
-/***/ 2983:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-
-mp.events.add({
-   'client:business:menu': (type, business) => { 
-      opened = !opened;
-      if (opened) { 
-
-      } else { 
-
-      }
-   }
-});
-
-
-/***/ }),
-
-/***/ 9853:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-mp.events.add({
-   'client:business.clothing:menu': (info) => {
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://business/business-interfaces/clothing.html');
-         browser.execute('clothing.Business = ' + JSON.stringify(info));
-         Player.BrowserControls(true, true);
-         utils.PlayerPreviewCamera(true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-         utils.PlayerPreviewCamera(false);
-         mp.events.callRemote('server:character.clothing:restart');
-      }
-   },
-      
-   'client:business.clothing:model:preview': (x, component, variation) => { 
-      Player.setComponentVariation(component, variation, 0, 2);
-   },
-
-   'client:business.clothing:texture:preview': (x, component, texture) => { 
-      const Variation = Player.getDrawableVariation(component);
-      Player.setComponentVariation(component, Variation, texture, 2);
-   },
-   
-   'client:business.clothing:buy': (total, items, biz) => { 
-      mp.events.call('client:business.clothing:menu');
-      mp.events.callRemote('server:business.clothing:buy', total, items, biz);
-   }
-})
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ 3582:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false, Vehicle = null, camera = null;
-
-let Point = null;
-
-mp.events.add({
-   'client:business.dealership:menu': (info) => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://business/business-interfaces/dealership.html');
-         browser.execute('dealership.Business = ' + JSON.stringify(info));
-         Player.BrowserControls(true, true);
-
-         Point = new mp.Vector3(info.Point.x, info.Point.y, info.Point.z);
-
-         camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
-         camera.setActive(true);
-         camera.setCoord(Point.x + 6, Point.y, Point.z);
-         camera.pointAtCoord(Point.x, Point.y, Point.z);
-         mp.game.cam.renderScriptCams(true, false, 0, true, false);
-         mp.events.add('render', MoveCamera);
-
-         Preview(info.Products[0].Model);
-
-      } else { 
-         if (browser) browser.destroy();
-         if (camera) camera.destroy();
-         camera = null;
-         mp.game.cam.renderScriptCams(false, false, 0, false, false);
-         Vehicle.destroy();
-         Player.BrowserControls(false, false);
-         mp.events.remove('render', MoveCamera);
-      }
-   },
-
-   'client:vehicle.dealership:zoom': (delta) => { 
-
-      let { x, y, z } = camera.getCoord();
-
-      if (delta < 0) { 
-         x += camera.getDirection().x * 0.2;
-         y += camera.getDirection().y * 0.2;
-         
-      } else { 
-         x -= camera.getDirection().x * 0.2;
-         y -= camera.getDirection().y * 0.2;
-      }
-
-      const dist = mp.game.gameplay.getDistanceBetweenCoords(Vehicle.position.x, Vehicle.position.y, Vehicle.position.z, x, y, z, false);
-      if (dist > 12.5 || dist < 0.8) return;
-
-      camera.setPosition(x, y, z);
-   },
-
-   'client:business.dealership:preview': Preview,
-
-   'client:business.dealership:customization': (primary, secondary) => { 
-      Vehicle.setColours(parseInt(primary), parseInt(secondary));
-   },
-
-   'client:business.dealership.vehicle:buy': (total, model, color, biz) => { 
-      mp.events.callRemote('server:business.dealership.vehicle:buy', total, model, color, biz);
-   }
-
-})
-
-async function Preview (model) { 
-   if (mp.vehicles.exists(Vehicle)) { 
-      if (Vehicle.handle === 0) await mp.game.waitAsync(0);
-      Vehicle.model = mp.game.joaat(model);
-   } else { 
-      Vehicle = mp.vehicles.new(mp.game.joaat(model), Point, { numberPlate: 'Dealership', alpha: 255, engine: false, heading: 90, dimension: Player.dimension });
-   }
-};
-
-
-let [PrevX, PrevY] = mp.gui.cursor.position;
-
-function CursorData () { 
-   const x = PrevX, y = PrevY;
-   PrevX = mp.gui.cursor.position[0];
-   PrevY = mp.gui.cursor.position[1];
-   return { DeltaX: mp.gui.cursor.position[0] - x, DeltaY: mp.gui.cursor.position[1] - y };
-}
-
-function MoveCamera () { 
-   const Data = CursorData();
-
-   if (!mp.keys.isDown(0x02)) return;
-   const newHeading = Vehicle.getHeading() + Data.DeltaX * 0.15;
-   Vehicle.setHeading(newHeading);
-
-   let { x: camPosX, y: camPosY, z: camPosZ } = camera.getCoord();
-   let { pointX: camPointX, pointY: camPointY, pointZ: camPointZ } = camera.getDirection();
-
-   camPosZ = camPosZ + Data.DeltaY * 0.001;
-   const { x: vehPosX, y: vehPosY, z: vehPosZ } = Vehicle.getCoords(true);
-
-   if (camPosZ < vehPosZ + 1.0 && camPosZ > vehPosZ - 0.3) { 
-      camera.setPosition(camPosX, camPosY, camPosZ);
-      camera.pointAtCoord(vehPosX, vehPosY, camPosZ);
-   }
-}
-
-
-
-
-/***/ }),
-
-/***/ 3080:
-/***/ (() => {
-
-
-
-
-const Player = mp.players.local;
-
-let browser = null, opened = false;
-
-mp.events.add({
-   'client:business.drinks:menu': (info) => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://business/business-interfaces/drinks.html');
-         browser.execute('drinks.Business = ' + JSON.stringify(info));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   },
-
-   'client:business.drinks:buy': (price, item, business) => { 
-      mp.events.callRemote('server:business.drinks:buy', price, item, business);
-   }
-})
-
-/***/ }),
-
-/***/ 4403:
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ 9050:
-/***/ (() => {
-
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-const Pumps = [ 1339433404, 1694452750, 1933174915, 2287735495 ];
-
-
-mp.events.add({
-   'client:business.gas:menu': (info) => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://business/business-interfaces/fuel.html');
-         browser.execute('station.Business = ' + JSON.stringify(info.Business));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   }
-})
-
-
-mp.events.addProc({
-   'client:business.gas:nearpump': async () => { 
-      const Position = Player.position;
-      return new Promise((resolve) => { 
-         for (const Pump of Pumps) { 
-            let object = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 3.0, Pump, false, true, true);
-            if (object) {
-               resolve(true)
-               break;
-            }
-         }
-      });
-   }
-});
-
-
-/***/ }),
-
-/***/ 9445:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-mp.events.add({
-   'client:business.market:menu': (business) => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://business/business-interfaces/market.html');
-         browser.execute('market.business = ' + JSON.stringify(business));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   },
-
-   'client:business.market:buy': (bill, items, business) => { 
-      mp.events.call('client:business.market:menu');
-      mp.events.callRemote('server:bussines.market:buy', bill, items, business);
-   }
-});
-
-
-
-/***/ }),
-
-/***/ 4508:
-/***/ (() => {
-
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-mp.events.add({
-   'client:business.rent:menu': (business) => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://business/business-interfaces/rent.html');
-         browser.execute('');
-         Player.BrowserControls(true, true);
-
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   }
-})
 
 /***/ }),
 
@@ -5732,361 +8363,6 @@ mp.keys.bind(0x09, false, function () { // change bet
 
 /***/ }),
 
-/***/ 8319:
-/***/ (() => {
-
-
-const Player = mp.players.local;
-
-let browser = null, opened = false;
-
-
-let PatrolsMap = false;
-
-
-mp.events.add({
-   'entityStreamIn': (entity) => {
-
-   },
-
-   'render': () => { 
-      // if (PatrolsMap) { 
-      //    mp.players.forEach((player) => { 
-      //       if (player.getVariable('Faction') == police) { 
-      //          browser.execute() // push ime igraca i x i y;
-      //       }
-      //    })
-      // }
-   }
-})
-
-
-
-// function Patrol (callsign, x, y) { 
-
-//    const { x, y } = Player.position;
-   
-//    let N = 0, M = 0;
-   
-//    // 400 / 500 = N / x;
-
-
-// };
-
-
-
-mp.events.addDataHandler({
-   'callsign': (entity, newValue, oldValue) => {
-
-   }
-});
-
-
-
-
-
-
-/***/ }),
-
-/***/ 1406:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-
-// uraditi provere da li je chat otvoren
-
-var moving_speeds = [0.01, 0.1, 1.0, 5.0, 10.0];
-var moving_speed_idx = 0;
-
-var editing_types = ["X position", "Y position", "Height", "X Rot", "Y Rot", "Rotation"];
-var editing_type_idx = 0;
-
-const localplayer = mp.players.local;
-
-__webpack_require__.g.editing = false;
-var object = null;
-
-var sc = mp.game.graphics.requestScaleformMovie("instructional_buttons");
-var scInst = 0;
-
-function AddInstructionalStart() {
-    scInst = 0;
-    mp.game.graphics.drawScaleformMovieFullscreen(sc, 255, 255, 255, 0, false);
-    mp.game.graphics.pushScaleformMovieFunction(sc, "CLEAR_ALL");
-    mp.game.graphics.popScaleformMovieFunctionVoid();
-    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_CLEAR_SPACE");
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(200);
-    mp.game.graphics.popScaleformMovieFunctionVoid();
-}
-
-function AddInstructionalButton(text, button)
-{
-    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_DATA_SLOT");
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(scInst);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(button);
-    mp.game.graphics.pushScaleformMovieFunctionParameterString(text);
-    mp.game.graphics.popScaleformMovieFunctionVoid();
-    scInst++;
-}
-
-function AddInstructionalButtonCustom(text, button) {
-    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_DATA_SLOT");
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(scInst);
-    mp.game.graphics.pushScaleformMovieFunctionParameterString(button);
-    mp.game.graphics.pushScaleformMovieFunctionParameterString(text);
-    mp.game.graphics.popScaleformMovieFunctionVoid();
-    scInst++;
-}
-
-function AddInstructionalEnd(type) {
-    mp.game.graphics.pushScaleformMovieFunction(sc, "DRAW_INSTRUCTIONAL_BUTTONS");
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(type);
-    mp.game.graphics.popScaleformMovieFunctionVoid();
-    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_BACKGROUND_COLOUR");
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
-    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
-    mp.game.graphics.popScaleformMovieFunctionVoid();
-}
-
-mp.events.add("client:startFurnitureEditor", function (model) {
-   object = mp.objects.new(mp.game.joaat(model), new mp.Vector3(localplayer.position.x+1, localplayer.position.y+1, localplayer.position.z-0.5), 
-   {
-	   rotation: new mp.Vector3(0, 0, 0),
-	   alpha: 255,
-	   dimension: localplayer.dimension
-   });
-   editing = true;
-});
-
-mp.events.add("client:stopFurnitureEditor", function () {
-   object.destroy();
-   object = null;
-   editing = false;
-});
-
-function UpdateObject() {
-   if (object == null) return;
-   
-   let model = object.model;
-   let position = object.position;
-   let rot = object.getRotation(2);
-   let pitch = object.getPitch();
-   
-   object.destroy();
-   object = mp.objects.new(model, position,
-   {
-	   rotation: new mp.Vector3(rot.x, rot.y, rot.z),
-	   alpha: 255,
-	   dimension: localplayer.dimension
-   });
-   object.setRotation(pitch, rot.y, rot.z, 2, true);
-}
-
-mp.keys.bind(0x26, false, function () { // UP Arrow
-   if (!editing || object === null) return; // uraditi proveru i da li je chat otvoren
-   switch (editing_type_idx) {
-       // pos x
-       case 0:
-           var pos = object.position;
-           object.position = new mp.Vector3(pos.x + moving_speeds[moving_speed_idx], pos.y, pos.z);
-           break;
-       // pos y
-       case 1:
-           var pos = object.position;
-           object.position = new mp.Vector3(pos.x, pos.y + moving_speeds[moving_speed_idx], pos.z);
-           break;
-       // pos z
-       case 2:
-           var pos = object.position;
-           object.position = new mp.Vector3(pos.x, pos.y, pos.z + moving_speeds[moving_speed_idx]);
-           break;
-       // rot x
-       case 3:
-           var rot = object.getRotation(2);
-           var pitch = object.getPitch();
-		   
-           object.setRotation(pitch + moving_speeds[moving_speed_idx], rot.y, rot.z, 2, true);
-           mp.gui.chat.push("rot X" + rot);
-           break;
-       // rot y
-       case 4:
-           var rot = object.getRotation(2);
-           var pitch = object.getPitch();
-		   
-           object.setRotation(pitch, rot.y + moving_speeds[moving_speed_idx], rot.z, 2, true);
-           mp.gui.chat.push("rot Y" + rot);
-           break;
-       // rot z
-       case 5:
-           var rot = object.getRotation(2);
-           var pitch = object.getPitch();
-		   
-           object.setRotation(pitch, rot.y, rot.z + moving_speeds[moving_speed_idx], 2, true);
-
-           mp.gui.chat.push("rot Z" + rot);
-           break;
-   }
-   UpdateObject();
-});
-
-mp.keys.bind(0x28, false, function () { // DOWN Arrow
-   if (!editing || object === null) return; // uraditi proveru i da li je chat otvoren
-   switch (editing_type_idx) {
-       // pos x
-       case 0:
-           var pos = object.position;
-           object.position = new mp.Vector3(pos.x - moving_speeds[moving_speed_idx], pos.y, pos.z);
-           break;
-       // pos y
-       case 1:
-           var pos = object.position;
-           object.position = new mp.Vector3(pos.x, pos.y - moving_speeds[moving_speed_idx], pos.z);
-           break;
-       // pos z
-       case 2:
-           var pos = object.position;
-           object.position = new mp.Vector3(pos.x, pos.y, pos.z - moving_speeds[moving_speed_idx]);
-           break;
-       // rot x
-       case 3:
-           var rot = object.getRotation(2);
-           var pitch = object.getPitch();
-		   
-           object.setRotation(pitch - moving_speeds[moving_speed_idx], rot.y, rot.z, 2, true);
-           break;
-       // rot y
-       case 4:
-           var rot = object.getRotation(2);
-           var pitch = object.getPitch();
-		   
-           object.setRotation(pitch, rot.y - moving_speeds[moving_speed_idx], rot.z, 2, true);
-           break;
-       // rot z
-       case 5:
-           var rot = object.getRotation(2);
-           var pitch = object.getPitch();
-		   
-           object.setRotation(pitch, rot.y, rot.z - moving_speeds[moving_speed_idx], 2, true);
-           break;
-   }
-   UpdateObject();
-});
-
-mp.keys.bind(0x25, false, function () { // LEFT Arrow
-   if (!editing) return;
-   
-   editing_type_idx--;
-   if (editing_type_idx < 0) editing_type_idx = editing_types.length - 1;
-   mp.gui.chat.push(`[DEBUG] Edit type: ${editing_types[editing_type_idx]}`);
-});
-
-mp.keys.bind(0x27, false, function () { // RIGHT Arrow
-   if (!editing) return;
-   
-   editing_type_idx++;
-   if (editing_type_idx >= editing_types.length) editing_type_idx = 0;
-   mp.gui.chat.push(`[DEBUG] Edit type: ${editing_types[editing_type_idx]}`);
-});
-
-mp.keys.bind(0x59, false, function () { // Y key
-   if (!editing || object === null) return;
-   
-   let rot = object.getRotation(2);
-
-   mp.events.callRemote("server:acceptEditFurniture", object.model, object.position.x, object.position.y, object.position.z, rot.x, rot.y, rot.z);
-   
-   object.destroy();
-   object = null;
-   editing = false;
-   mp.gui.chat.push("[DEBUG] Edit finished, furniture placed");
-});
-
-mp.keys.bind(0x4E, false, function () { // N key
-   if (!editing) return;
-   object.destroy();
-   object = null;
-   editing = false;
-   //mp.events.callRemote("server:cancelEditFurniture");
-   mp.gui.chat.push("[DEBUG] Edit canceled");
-});
-
-mp.keys.bind(0x5A, false, function () { // Z key
-   if (!editing || object === null) return;
-   object.placeOnGroundProperly();
-   UpdateObject();
-   mp.gui.chat.push("[DEBUG] Object placed on ground properly.");
-});
-
-mp.keys.bind(0x6B, false, function () { // Add key
-   if (!editing) return;
-   moving_speed_idx++;
-   if (moving_speed_idx >= moving_speeds.length) moving_speed_idx = 0;
-   mp.gui.chat.push(`[DEBUG] Speed added ${moving_speed_idx}`);
-});
-
-mp.keys.bind(0x6D, false, function () { // Subtract key
-   if (!editing) return;
-   moving_speed_idx--;
-   if (moving_speed_idx < 0) moving_speed_idx = moving_speeds.length - 1;
-   mp.gui.chat.push(`[DEBUG] Speed lowered ${moving_speed_idx}`);
-});
-
-mp.events.add('render', () => {
-    if (object === null) return;
-
-    AddInstructionalStart();
-    AddInstructionalButton("Next mode", 197);
-    AddInstructionalButton("Previous mode", 196);
-    AddInstructionalButton("Moving an object", 194);
-    AddInstructionalButton("Moving an object", 195);
-    AddInstructionalButtonCustom("Increase speed", "t_+");
-    AddInstructionalButtonCustom("Decrease speed", "t_-");
-	AddInstructionalButtonCustom("Place on ground", "t_Z");
-    AddInstructionalButtonCustom("Finish furniture", "t_Y");
-    AddInstructionalButtonCustom("Cancel", "t_N");
-    AddInstructionalEnd(1);
-
-    mp.game.graphics.drawText(`Editing mode: ${editing_types[editing_type_idx]}\nSpeed: ${moving_speeds[moving_speed_idx]}`, [0.5, 0.9], {
-        font: 0,
-        color: [255, 255, 255, 255],
-        scale: [0.5, 0.5],
-        outline: false
-    });
-});
-
-/***/ }),
-
-/***/ 2687:
-/***/ (() => {
-
-
-const player = mp.players.local;
-
-let browser = null, opened = false, house = null;
-
-mp.events.add({
-   'client:house.management': () => { 
-      opened = !opened;
-      if (opened) { 
-         setTimeout(() => { mp.gui.cursor.show(true, true); }, 300);
-         browser = mp.browsers.new('package://houses/houses-interfaces/house.html');
-         player.BrowserControls(true, true);
-         // let info = await mp.events.callRemoteProc('server:house.management.info', house);
-         // info = JSON.stringify(info);
-         // browser.execute('house.player.money = ' + player.money);
-         // browser.execute('house.player.money = ' + player.money);
-      } else { 
-         browser.destroy();
-         player.BrowserControls(false, false);
-         setTimeout(() => { mp.gui.cursor.show(false, false); }, 300);
-
-      }
-   },
-})
-
-/***/ }),
-
 /***/ 9179:
 /***/ (() => {
 
@@ -6132,934 +8408,6 @@ function getCameraHitCoord () {
 	}
 	return null;
 }
-
-
-/***/ }),
-
-/***/ 2816:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-let browser = null, opened = false;
-let Delivering = false;
-
-mp.events.add({
-
-   'client:job.food:orders': (orders) => { 
-      if (Delivering) return;
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://jobs/jobs-interfaces/food.html');
-         browser.execute('food.Orders = ' + JSON.stringify(orders));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   },
-
-   'client:job.food.order:accept': async (index) => { 
-      const response = await mp.events.callRemoteProc('server:job.food.order:accept', index);
-      if (response) { 
-         
-         mp.events.call('client:job.food:orders');
-
-         Delivering = true;
-
-         const Position = new mp.Vector3(response.Position.x, response.Position.y, response.Position.z - 0.9)
-         const {checkpoint, blip} = Player.CreateInteractionSpot('Food Order', Position);
-
-         mp.events.add('playerEnterCheckpoint', ReachOrderPoint);
-         
-         function ReachOrderPoint (point) { 
-            if (point == checkpoint) { 
-               if (Player.vehicle) return;
-               Delivering = false;
-               checkpoint.destroy();
-               blip.destroy();
-               mp.events.callRemote('server:job.food.order:deliver', index);
-               mp.events.remove('playerEnterCheckpoint', ReachOrderPoint);
-            }
-         }
-      } else {
-         mp.events.call('client:job.food:orders');
-         Delivering = false;
-      }
-   }
-});
-
-
-
-
-
-
-/***/ }),
-
-/***/ 2387:
-/***/ (() => {
-
-
-
-
-const Player = mp.players.local, MAX = 25;
-let DeliveredMails = 0;
-
-mp.events.add({
-
-   'client:job.postal:start': (deliverPos) => {
-      HouseInteraction(deliverPos);
-   },  
-});
-
-function HouseInteraction (position) {
-   const { Checkpoint, Blip } = Player.CreateInteractionSpot(`Mail Deliver No${DeliveredMails}`, deliverPos);
-
-   mp.events.add('playerEnterCheckpoint', OnPlayerDeliverMail);
-
-   function OnPlayerDeliverMail (point) { 
-      if (DeliveredMails == MAX) {
-         //mp.events.callRemote('server:job:finish', 6); // jobId
-      }
-      if (point == Checkpoint) { 
-         DeliveredMails++;
-         Checkpoint.destroy();
-         Blip.destroy();
-         mp.events.remove('playerEnterCheckpoint', OnPlayerDeliverMail);
-         
-      }
-   }
-}
-
-function BehindTruckInteraction () {
-   const Truck = player.getVariable('Job_Veh');
-   if (Truck) {
-      const PosBehind = Truck.getOffsetFromInWorldCoords(0.0, -3.8, 0.0);
-      const { Checkpoint, Blip } = Player.CreateInteractionSpot('GoPostal Van', PosBehind);
-
-      mp.events.add('playerEnterCheckpoint', OnPlayerTakeMail);
-      function OnPlayerTakeMail (point) { 
-         if (point == Checkpoint) {
-            if (Utils.Distance(Player.position, PosBehind) <= 0.5) {
-               Player.heading = Truck.heading;
-               Checkpoint.destroy();
-               Blip.destroy();
-               mp.events.remove('playerEnterCheckpoint', OnPlayerTakeMail);
-               // Uzima postu iz kamiona
-               // NACI ANIMACIJU
-               // Dobija objekat paketa ili pisma u ruci ( random )
-            }
-         }
-      }
-   }
-}
-
-
-
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ 9408:
-/***/ (() => {
-
-
-const player = mp.players.local;
-let marker = null;
-
-mp.events.addDataHandler('container', (entity, newValue, oldValue) => {
-   if (entity.type === 'vehicle' && entity.model == 444583674) {
-      if (newValue !== oldValue) { 
-         container(entity, newValue);
-      }
-   }
-});
-
-mp.events.add({
-   'entityStreamIn': (entity) => {
-      if (entity.type === 'vehicle' && entity.model == 444583674) { 
-         if (entity.getVariable('container')) container(entity, entity.getVariable('container'));
-      }
-   },
-
-   'render': () => { 
-      if (player.vehicle && player.vehicle.model == 444583674) { 
-         if (player.vehicle.getVariable('container') != false) { 
-            // mp.game.controls.disableControlAction(0, 110, true); // DISABLEATI NUM 8 i 5 da kad ima =>
-            // mp.game.controls.disableControlAction(27, 111, true); // > kontenjer ne moze da podize i spusta
-         }
-      }
-   }
-})
-
-mp.keys.bind(0x59, false, function() {
-   if (player.logged && player.spawned) {
-      if (player.vehicle && player.vehicle.model == 444583674) { 
-         let vehicle = player.vehicle;
-         if (vehicle.container) { 
-            let frontOffset = vehicle.getOffsetFromInWorldCoords(0.0, 6.5, 0.0);
-            mp.events.callRemote('server:vehicle.detach.container', frontOffset); 
-            if (marker) marker.destroy();
-         } else { 
-            mp.events.callRemote('server:vehicle.attach.container'); 
-            marker = mp.blips.new(1, new mp.Vector3(1111.625, -3139.361, 0), { name: 'Zona za dostavu kontenjera', color: 49, shortRange: false });
-         }
-      }
-   }
-});
-
-function container (vehicle, value) { 
-   if (value) { 
-      vehicle.container = value;
-      vehicle.containerObject = mp.objects.new('prop_container_03a', vehicle.position, { rotation: vehicle.rotation, alpha: 255, dimension: vehicle.dimension });
-      vehicle.containerObject.notifyStreaming = true;
-      vehicle.containerObject.setNoCollision(vehicle.handle, false);
-      waitEntity(vehicle.containerObject).then(() => {
-         let position = new mp.Vector3(0.05, -0.02, 0.01);
-         vehicle.containerObject.attachTo(vehicle.handle, 0, position.x - 0.05, position.y + 6, position.z, 0, 0, 90, true, false, true, false, 2, true);
-      })
-   } else { 
-      vehicle.container = false;
-      if (vehicle.containerObject) { 
-         if (vehicle.containerObject.doesExist()) { 
-            vehicle.containerObject.destroy();
-         }
-      }
-   }
-}
-
-function waitEntity (entity) {
-   return new Promise(resolve => {
-      let wait = setInterval(() => {
-         if (mp.game.entity.isAnEntity(entity.handle)) {
-            clearInterval(wait);
-            resolve();
-         }
-      }, 1);
-   });
-}
-
-
-/***/ }),
-
-/***/ 4032:
-/***/ (() => {
-
-
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-let Direction = null;
-
-mp.events.add({
-
-   'client:job:offer': (info) => {
-      mp.gui.chat.push(JSON.stringify(info))
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://jobs/jobs-interfaces/job.html');
-         browser.execute('offer.Job = ' + JSON.stringify(info));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   },
-
-   'client:job:accept': (job) => { 
-      mp.events.call('client:job:offer')
-      mp.events.callRemote('server:job:accept', job);
-   },
-
-   'client:job:direction': (position) => { // data = position ( i možda ime posla )
-      Direction.Checkpoint != null ? RemoveDirections () : Direction.Checkpoint = mp.checkpoints.new(1, position, 3, {
-            color: [ 255, 255, 255, 255 ],
-            visible: true,
-            dimension: player.dimension
-      });
-      Direction.Blip != null ? RemoveDirections () : Direction.Blip = mp.blips.new(1, new mp.Vector3(position.x, position.y, 0), {
-          name: "Job",
-          color: 84,
-          alpha: 255,
-          shortRange: true,
-          dimension: player.dimension
-      });
-   },
-
-   'client:job:waypoint': (position) => {
-      mp.game.ui.setNewWaypoint(position.x, position.y);
-   }
-   
-});
-
-function RemoveDirections () {
-   if (Direction == null) return;
-
-   if (Direction.Blip != null) {
-      Direction.Blip.destroy();
-      Direction.Blip = null;
-   }
-   if (Direction.Checkpoint != null) {
-      Direction.Checkpoint.destroy();
-      Direction.Checkpoint = null;
-   }
-}
-
-/* 
-         mp.checkpoints.new(1, new mp.Vector3(position.x, position.y, position.z), 4,
-            { 
-                color: [ 255, 255, 255, 255 ],
-                visible: true,
-                dimension: player.dimension
-            });
-            jobCp[index].jobName = jobName;
-            mp.events.call('client:set.waypoint', position);
-        }
-        else {
-            jobBlip[index] = mp.blips.new(1, new mp.Vector3(position.x, position.y, 0),
-            {
-                name: jobName,
-                color: 84,
-                alpha: 255,
-                shortRange: false,
-                dimension: player.dimension
-            });
-
-*/
-
-
-/***/ }),
-
-/***/ 9247:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-let Spots = [], current = null;
-let browser = null;
-
-
-mp.events.add({
-   'client:player.miner.start': Start,
-   
-   'client:player.miner.next': Next,
-
-   'playerEnterCheckpoint': (checkpoint) => {
-      if (Player.Job == 2 && Spots.length > 0 && current != null) { 
-         mp.gui.chat.push('Going to next')
-         Mine();
-      } 
-   },
-
-   'client:player.miner:mine': () => {
-      mp.game.streaming.requestAnimDict('amb@world_human_const_drill@male@drill@base');
-      Player.taskPlayAnim('amb@world_human_const_drill@male@drill@base', 'base', 8.0, -8, -1, 48, 0, false, false, false);
-
-      let timer = setInterval(() => {
-         if (Player.getAnimCurrentTime('amb@world_human_const_drill@male@drill@base', 'base') > 0.95) {
-            Player.stopAnimTask('amb@world_human_const_drill@male@drill@base', 'base', 3.0);
-            clearInterval(timer);
-            timer = null;
-            if (!timer) browser.execute('mining.clicked = false')
-         }
-      }, 50);
-   }
-})
-
-
-function Start (places) { 
-
-   places.forEach(place => {
-      Spots.push({position: place});
-   });
-
-   current = 0;
-   browser = mp.browsers.new('package://jobs/jobs-interfaces/mining.html');
-
-   let spot = Spots[current];
-   let position = new mp.Vector3(spot.position[0], spot.position[1], spot.position[2] - 2.15)
-   spot.checkpoint = mp.checkpoints.new(47, position, 2.5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension });
-}
-
-
-function Mine () { 
-   mp.gui.cursor.show(true, true);
-   browser.execute('mining.toggle = true');
-
-   Player.taskStartScenarioInPlace('WORLD_HUMAN_CONST_DRILL', 0, true);
-}
-
-function Next () {    
-
-   Player.clearTasks();
-
-   let spot = Spots[current];
-   spot.checkpoint.destroy();
-
-   mp.gui.cursor.show(false, false);
-   browser.execute('mining.toggle = false');
-
-   current ++;
-   let next = Spots[current], position = new mp.Vector3(next.position[0], next.position[1], next.position[2] - 2.15);
-   
-   current >= Spots.length ? ( Finish() ) : (
-      next.checkpoint = mp.checkpoints.new(47, position, 2.5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension })
-   )
-}
-
-
-function Finish () { 
-   current = null;
-   Spots = null;
-
-   if (mp.browsers.at(browser.id)) browser.destroy();
-
-   mp.gui.chat.push('Finished !')
-}
-
-/***/ }),
-
-/***/ 2399:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-const Max = 25;
-const Depony = new mp.Vector3(-435.5779, -1704.9042, 18.06115);
-
-let Visited = [], Picked = false;
-
-
-const GarbageObjects = [
-   'prop_dumpster_01a',
-   'prop_dumpster_02b',
-   'prop_dumpster_4a',
-   'prop_rub_binbag_sd_01',
-   'prop_cs_bin_03',
-   'prop_cs_bin_01_skinned',
-   'prop_cs_bin_02',
-   'prop_ld_rub_binbag_01',
-   'prop_cs_bin_01',
-   'prop_rub_binbag_sd_02',
-   'prop_ld_binbag_01',
-   'prop_fbibombbin',
-   'prop_cs_rub_binbag_01',
-   'prop_bin_07bprop_bin_beach_01d',
-   'prop_bin_beach_01d',
-   'prop_bin_01a',
-   'prop_recyclebin_04_a',
-   'prop_bin_beach_01a',
-   'prop_recyclebin_02_c',
-   'prop_bin_delpiero_b',
-   'zprop_bin_01a_old',
-   'prop_recyclebin_03_a',
-   'prop_bin_11a',
-   'prop_bin_06a',
-   'prop_bin_07d',
-   'prop_bin_11',
-   'bprop_bin_04a',
-   'prop_recyclebin_02b',
-   'prop_bin_delpiero',
-   'prop_bin_09a',
-   'prop_bin_08a',
-   'prop_recyclebin_04_b',
-   'prop_bin_02a',
-   'prop_bin_03a',
-   'prop_bin_08open',
-   'prop_bin_12a',
-   'prop_bin_05a',
-   'prop_bin_07a',
-   'prop_recyclebin_01a',
-   'v_serv_tc_bin2_',
-   'v_serv_tc_bin1_',
-   'prop_rub_binbag_03b',
-   'prop_rub_binbag_04',
-   'prop_rub_binbag_08',
-   'prop_rub_binbag_01',
-   'prop_rub_binbag_05',
-   'p_rub_binbag_test',
-   'prop_rub_binbag_06',
-   'prop_rub_binbag_03',
-   'prop_rub_binbag_01b',
-   'hei_prop_heist_binbag',
-   'ng_proc_binbag_01a',
-   'ng_proc_binbag_02a',
-   'p_binbag_01_s',
-   'prop_forsale_lrg_04'
-];
-  
-
-mp.keys.bind(0x59, false, async function () {
-   if (Player.logged && Player.spawned && Player.getVariable('Job') == 4 && Player.getVariable('Job_Duty') == true) { 
-      if (Player.vehicle || Player.Cuffed || Player.isTypingInTextChat) return;
-      
-      if (Visited.length == Max) return;
-
-      if (Visited.length == Max - 1) { 
-         const {checkpoint, blip} = Player.CreateInteractionSpot('Depony', Depony);
-
-         mp.events.add('playerEnterCheckpoint', PlayerEnterDepony);
-
-         function PlayerEnterDepony (point) { 
-            if (point == checkpoint) { 
-
-               let Truck = mp.vehicles.atRemoteId(Player.getVariable('Job_Vehicle'));
-               if (Player.vehicle == Truck) { 
-
-                  Truck.setDoorOpen(5, false, false);
-                  Player.freezePosition(true);
-                  Truck.freezePosition(true);
-
-                  setTimeout(() => {
-                     Player.freezePosition(false);
-                     Truck.freezePosition(false);
-                     Truck.setDoorShut(5, false);
-                     mp.events.callRemote('server:job.garbage:finish');
-                  }, 15000);
-
-                  checkpoint.destroy();
-                  blip.destroy();
-                  mp.events.remove('playerEnterCheckpoint', PlayerEnterDepony);
-               }
-            }
-         }
-      }
-
-      const Garbage = await ClosestGarbage();
-      if (Garbage) { 
-         const aPicked = AlreadyPicked();
-         if (aPicked) return;
-
-         Picked = true;
-         mp.events.callRemote('server:character.attachment', 'prop_cs_street_binbag_01', 6286)
-         Visited.push(Player.position);
-
-         const Truck = mp.vehicles.atRemoteId(Player.getVariable('Job_Vehicle'));
-
-         if (Truck) { 
-            const BehindOffset = Truck.getOffsetFromInWorldCoords(0.0, -5.15, 0.0);
-            const [colshape, marker] = LittleMarker(BehindOffset);
-
-            Truck.freezePosition(true);
-   
-            mp.events.add('playerEnterColshape', BehindGarbageTruck);
-   
-            function BehindGarbageTruck (shape) { 
-               if (shape == colshape) {        
-                  
-                  if (Player.vehicle) return;
-
-                  Player.setHeading(Truck.heading);
-                  Picked = false;
-
-                  colshape.destroy();
-                  marker.destroy();
-
-                  Truck.freezePosition(false);
-
-                  Truck.setDoorOpen(5, false, false);
-                  mp.game.wait(500);
-                  mp.events.callRemote('server:character.animation', 'anim@heists@narcotics@trash', 'throw_ranged_a_bin_bag', 49);
-                  mp.game.wait(750);
-                  mp.events.callRemote('server:character.attachment', false);
-                  mp.game.wait(850);
-                  Truck.setDoorShut(5, false);
-      
-                  mp.events.remove('playerEnterColshape', BehindGarbageTruck);
-               }
-            } 
-         }
-      };
-   }
-});
-
-
-
-function ClosestGarbage () { 
-   const Position = Player.position;
-      return new Promise((resolve) => { 
-         for (const Garbage of GarbageObjects) { 
-         const object = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 1.8, mp.game.joaat(Garbage), false, true, true);
-         if (object) {
-            resolve({ Object: Garbage, Position: Position });
-            break;
-         }
-      }
-   });
-};
-
-
-function AlreadyPicked () { 
-   if (Visited.length > 0) { 
-      for (const Position of Visited) { 
-         const Distance = mp.game.gameplay.getDistanceBetweenCoords(Player.position.x, Player.position.y, Player.position.z, Position.x, Position.y, Position.z, true);
-         if (Distance < 3.5) { 
-            return true;
-         }
-      }
-   }
-};
-
-
-function LittleMarker (position) { 
-   const Marker = mp.markers.new(0, new mp.Vector3(position.x, position.y, position.z - 0.35), 0.4, { rotation: new mp.Vector3(0, 0, 0), color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
-   const Colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 0.75, Player.dimension);
-   return [Colshape, Marker]
-};
-
-
-mp.events.addProc('client:job.garbage.trash:get', () => {
-   return Visited.length;
-});
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ 1846:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-
-mp.events.add({
-   'playerEnterVehicle': (Vehicle, Seat) => { 
-      if (Vehicle.getVariable('Job') == 7) { 
-         if (Seat == -1) return;
-         const Driver = Vehicle.getPedInSeat(-1);
-   
-         mp.gui.chat.push(JSON.stringify(Driver));
-         mp.gui.chat.push(JSON.stringify(Driver.id))
-      }
-   },
-
-   'playerLeaveVehicle': (Vehicle, Seat) => { 
-      if (Seat == -1) return;
-   }
-})
-
-
-/***/ }),
-
-/***/ 4116:
-/***/ (() => {
-
-
-
-const player = mp.players.local;
-let route = [], current = false, max = 0, distance = 0;
-let browser = null, finishing = false, wrong = false;
-
-let cancel = null;
-let garage = new mp.Vector3(447.428, -591.51739, 28.0754);
-
-
-class Station { 
-   constructor (id, name, position) { 
-      this.id = id;
-      this.name = name;
-      this.position = new mp.Vector3(parseFloat(position.x), parseFloat(position.y), parseFloat(position.z - 1.07));
-      this.checkpoint = mp.checkpoints.new(47, this.position, 5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension, visible: false });
-      this.checkpoint.station = this.id;
-      let number = this.id + 1;
-      this.blip = mp.blips.new(1, new mp.Vector3(this.position.x, this.position.y, 0), { name: number + '. ' + this.name, color: 5, shortRange: false, alpha: 0 });
-      
-      route.push(this)
-   }
-
-   delete () { 
-      this.checkpoint.destroy();
-      this.blip.destroy();
-      let i = route.indexOf(this);
-      route.splice(i, 1)
-   }
-   
-
-   visible () { 
-      this.checkpoint.visible = true;
-      this.blip.setAlpha(255);
-   }
-}
-
-mp.events.add({
-   'client:player.transit.start': (checkpoints) => { 
-      let stations = {};
-      for (let i in checkpoints) { 
-         let station = checkpoints[i];
-         new Station(parseInt(i), station.name, station.position);
-         stations[i] = { name: station.name, active: true, wrong: false };
-      }
-
-      max = route.length - 1;
-      current = 0;
-      route[current].visible();
-      browser = mp.browsers.new('package://jobs/jobs-interfaces/transit.html');
-      browser.execute('transit.toggle = true, transit.stations = ' + JSON.stringify(stations) + ';');
-   },
-
-   'playerEnterCheckpoint': (checkpoint) => {
-      if (player.Job == 3 && route.length > 0) { 
-         mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 1')
-         let vehicle = player.vehicle;
-         if (vehicle && vehicle.getClass() == 17 && checkpoint.station >= 0) { 
-            player.stopped = true;
-            setTimeout(() => { 
-               player.stopped = false; 
-               checkpoint.station == max && current == max ? ( Finish(checkpoint.station, true) ) : ( Next(checkpoint.station) );
-            }, 10000)
-            mp.gui.chat.push('[DEBUG] playerEnterCheckpoint - 2, Station ' + checkpoint.station)
-         }
-      }
-
-      if (finishing && checkpoint.finish) { 
-         checkpoint.finish.destroy();
-         checkpoint.destroy();
-         mp.events.callRemote('server:player.transit.stop', true, max, distance);
-
-         distance = 0, route = [], max = 0;
-      }
-   },
-
-   'playerExitCheckpoint': (checkpoint) => {
-      if (player.Job == 3 && player.vehicle && player.vehicle.getClass() == 17 && checkpoint.station >= 0) { 
-         if (player.stopped) { 
-            wrong = true;
-            player.stopped = false;
-         }
-      }
-   }
-})
-
-
-   // 'playerLeaveVehicle': (vehicle, seat) => {
-   //    if (player.Job == 3 && checkpoint.station) { 
-   //       if (browser && station >= 0 && station != false && mp.browsers.at(browser.id)) { 
-   //          browser.execute('transit.toggle = false'); 
-   //          cancel = setTimeout(() => { end(false); }, (5 * 60) * 1000)
-   //       }
-   //    }
-   // },
-
-   // 'playerEnterVehicle': (vehicle, seat) => {
-   //    if (player.Job == 3 && checkpoint.station) { 
-   //       if (vehicle.getClass() == 17) { 
-   //          browser.execute('transit.toggle = true'); 
-   //          clearTimeout(cancel)
-   //       }
-   //    }
-   // }
-
-function Next (i) { 
-   if (i == current) { 
-      let station = route.find( ({ id }) => id === i );
-      current ++;
-      let next = route.find( ({ id }) => id === current );
-
-      next.visible();
-
-      Distance(station.position, next.position).then((dist) => { 
-         station.delete();
-         distance += dist;
-         mp.gui.chat.push('[DEBUG] Next Station ' + current + ', Distance now ' + distance);
-         if (wrong) { 
-            browser.execute(`transit.wrong(${i})`)
-         } else { 
-            browser.execute(`transit.disable(${i})`)
-         }
-         wrong = false;
-      })
-
-   } else { 
-      mp.gui.chat.push('[DEBUG] Wrong Station')
-   }
-}
-
-async function Distance (station, next) {
-   return new mp.Vector3(station.x, station.y, station.z).subtract(new mp.Vector3(next.x, next.y, next.z)).length();
-}
-
-function Finish (i) { 
-   let station = route.find( ({ id }) => id === i );
-   station.delete();
-   if (mp.browsers.at(browser.id)) browser.destroy();
-
-   let checkpoint = mp.checkpoints.new(47, garage, 5, { color: [ 241, 224, 90, 250 ], visible: true, dimension: player.dimension });
-   let blip = mp.blips.new(1, new mp.Vector3(garage.x, garage.y, 0), { name: 'Los Santos Transit Garaža', color: 5, shortRange: false });
-   checkpoint.finish = blip;
-
-   finishing = true;
-}
-
-
-/***/ }),
-
-/***/ 5626:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-
-let camdir = false,
-   noclip = false,
-   charpos = false,
-   Spectating = false,
-   SpecTarget = null,
-   Waypoint = null;
-
-
-mp.events.add({
-   'client:player.administrator:fly': () => { 
-      noclip = !noclip;
-      Player.setInvincible(noclip);
-      Player.freezePosition(false);
-      Player.setVisible(!noclip, !noclip);
-      Player.setCollision(!noclip, !noclip);
-      Player.setHasGravity(!noclip);
-      noclip ? Player.setMaxSpeed(0.0001) : Player.setMaxSpeed(10)
-   },
-
-   'playerCreateWaypoint': (position) => {
-      Waypoint = { x: position.x, y: position.y, z: position.z };
-   },
-
-   'playerRemoveWaypoint': () => { 
-      Waypoint = null;
-   },
-
-   'client:spectate': (target, toggle) => {
-      localplayer.freezePosition(toggle);
-      if(toggle) {
-         if (target && mp.players.exists(target)) {
-            SpecTarget = target;
-            Spectating = true;
-            Player.attachTo(target.handle,  -1, -1.5, -1.5, 2, 0, 0, 0, true, false, false, false, 0, false);
-         } else { mp.events.call("client:spectate", -1, false); }
-      } else {
-         SpecTarget = null;
-         Player.detach(true, true);
-         Spectating = false;
-      }
-   },
-
-   'render': () => { 
-      if (noclip) {
-         if (mp.keys.isDown(87) === true) {
-            const pos = Player.position;
-            const dir = getCameraDirection();
-            Player.setCoordsNoOffset(pos.x + dir.x, pos.y + dir.y, pos.z + dir.z, false, false, false);
-         }
-         if (mp.keys.isDown(83) === true) {
-            const pos = Player.position;
-            const dir = getCameraDirection();
-            Player.setCoordsNoOffset(pos.x - dir.x, pos.y - dir.y, pos.z - dir.z, false, false, false);
-         }
-      }
-      if (charpos) {
-         const pos = Player.position;
-         mp.game.graphics.drawText(`X:${pos.x}    Y:${pos.y}    Z:${pos.z}`, [0.5, 0.005],
-         {
-            font: 4,
-            color: [255, 255, 255, 255],
-            scale: [1.0, 1.0],
-            outline: true,
-         });
-      }
-      if (camdir) {
-         const dir = getCameraDirection();
-         mp.game.graphics.drawText(`X:${dir.x}    Y:${dir.y}    Z:${dir.z}`, [0.5, 0.05],
-         {
-            font: 4,
-            color: [255, 255, 255, 255],
-            scale: [1.0, 1.0],
-            outline: true,
-         });
-      }
-   }
-});
-
-
-mp.events.addProc('client:player.administrator:marker', () => { 
-   if (Waypoint)
-      return Waypoint;
-   else
-      return false;
-})
-
-function getCameraDirection () {
-   const heading = mp.game.cam.getGameplayCamRelativeHeading() + Player.getHeading();
-   const pitch = mp.game.cam.getGameplayCamRot(0).x;
-   let x = -Math.sin(heading * Math.PI / 180.0);
-   let y = Math.cos(heading * Math.PI / 180.0);
-   let z = Math.sin(pitch * Math.PI / 180.0);
-   let len = Math.sqrt(x *x+y*y+z*z);
-   if (len != 0) { x = x / len; y = y / len; z = z / len; }
-   return new mp.Vector3(x, y, z);
-};
-
-/***/ }),
-
-/***/ 7373:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-const bones = {
-   'RIGHT_HAND': 6286,
-   'LEFT_HAND': 36029
-}
-
-mp.events.addDataHandler({
-   'Attachments': (entity, value) => {
-       if (entity.type === 'player') Attach(entity, value);
-   }
-});
-
-mp.events.add({
-   'entityStreamIn': (entity) => {
-      if (entity.type === 'player') { 
-         if (entity.getVariable('Attachments')) {
-            let attachments = entity.getVariable('Attachments');
-            attachments.forEach((attachment) => { 
-               Attach (entity, attachment);
-            })
-         }
-      }
-   }
-});
-
-
-function Attach (entity, attachment) { 
-   let boneIndex = entity.getBoneIndex(bones[attachment.bone]);
-   mp.gui.chat.push('Model ' + JSON.stringify(attachment.model));
-   mp.gui.chat.push('Bone ' + JSON.stringify(attachment.bone));
-   mp.gui.chat.push('Bone Index ' + JSON.stringify(boneIndex));
-
-   mp.gui.chat.push(JSON.stringify(attachment));
-}
-
 
 
 /***/ }),
@@ -7147,698 +8495,6 @@ function Discord (status, string) {
 
 Player.Discord = Discord;
 Player.LoginCamera = LoginCamera;
-
-/***/ }),
-
-/***/ 3886:
-/***/ (() => {
-
-
-
-const player = mp.players.local;
-let browser = null, opened = false, bank = null;
-
-const banks = { 
-   506770882: 'fleeca', 3424098598: 'fleeca',
-   3168729781: 'maze', 2930269768: 'maze'
-}
-
-mp.events.add({
-   'client:player.banking': async () => { 
-      if (opened) { 
-         browser.destroy();
-         opened = false;
-         setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
-      } else { 
-         let account = await mp.events.callRemoteProc('server:player.banking');
-         account = JSON.parse(account)
-         browser = mp.browsers.new('package://player/banking-interface/atm.html');
-         browser.execute(`atm.bank = \"${banks[bank]}\", atm.player.money = ${player.money}, atm.player.balance = ${account.balance}, atm.player.name = \"${player.name}\";`);
-         browser.execute(`atm.player.paycheck = ${account.paycheck}, atm.player.savings = ${account.savings};`)
-         browser.execute(`atm.player.pin = ${account.pin}, atm.player.number = \"${account.number}\";`)
-         opened = true;
-         setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
-      }
-   },
-
-   'client:player.banking.withdraw': (bank, value) => { mp.events.callRemote('server:player.banking.withdraw', bank, value); },
-
-   'client:player.banking.deposit': (bank, value) => { mp.events.callRemote('server:player.banking.deposit', bank, value); },
-
-   'client:player.banking.payday': (bank, value) => { mp.events.callRemote('server:player.banking.payday', bank, value); },
-
-   'client:player.banking.transfer': async (bank, target, value) => { 
-      let transfer = await mp.events.callRemoteProc('server:player.banking.transfer', bank, target, value);
-      transfer == true ? browser.execute(`atm.notify('Transakcija uspešna !')`) : browser.execute(`atm.notify('Transakcija nije uspešna, korisnik nije pronadjen !')`) 
-   } 
-})
-
-
-mp.keys.bind(0x59, false, function() {
-   if (player.logged && player.spawned) { 
-      if (player.vehicle || player.cuffed || mp.players.local.isTypingInTextChat) return;
-      if (isNearBank()) { mp.events.call('client:player.banking') }
-   }
-});
-
-function isNearBank () { 
-   let atm_1 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 3424098598, false, true, true);
-   let atm_2 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 3168729781, false, true, true);
-   let atm_3 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 2930269768, false, true, true);
-   let atm_4 = mp.game.object.getClosestObjectOfType(player.position.x, player.position.y, player.position.z, 1, 506770882, false, true, true);
-   if (atm_1) { bank = 3424098598; return true; }
-   else if (atm_2) { bank = 3168729781; return true; } 
-   else if (atm_3) { bank = 2930269768; return true; } 
-   else if (atm_4) { bank = 506770882; return true; }
-   else { return false; }
-}
-
-/***/ }),
-
-/***/ 1877:
-/***/ (() => {
-
-class CarryPlayer {
-   constructor(remoteId, carryRemoteId) {
-       this.remoteId = remoteId;
-       this.carryRemoteId = carryRemoteId;
-   }
-}
-
-class CarryManager {
-
-   carryPlayers = [];
-
-   constructor() {
-
-       mp.events.addDataHandler("carry", (entity, value) => {
-
-           if (entity.type != "player")
-               return false;
-
-           mp.players.forEachInStreamRange((element) => {
-
-               if (element != entity)
-                   return false;
-
-               if (value != undefined) {
-
-                   var carry = this.getCarry(value);
-
-                   if (!carry)
-                       this.addCarry(entity.remoteId, value);
-               }
-               else {
-                   var carry = this.getCarry(entity.remoteId);
-
-                   if (carry)
-                       this.removeCarry(entity.remoteId);
-               }
-
-           });
-
-
-       });
-
-       mp.events.add('entityStreamIn', (entity) => {
-
-           if (entity.type != "player")
-               return false;
-
-           var value = entity.getVariable("carry");
-
-           if (value != undefined) {
-
-               var carry = this.getCarry(value);
-
-               if (!carry)
-                   this.addCarry(entity.remoteId, value);
-           }
-
-       });
-
-       mp.events.add('client:animation.apply', (remoteId, name, dictionary, flag) => { 
-         const Player = mp.players.atRemoteId(remoteId);
-         if (Player != null) {
-            //Player.playAnim(name, dictionary, 1, flag)
-            Player.taskPlayAnim(dictionary, name, 8.0, 1.0, -1, flag, 0.0, true, true, true);
-         }
-     });
-
-       
-
-       mp.events.add('entityStreamOut', (entity) => {
-
-           if (entity.type != "player")
-               return false;
-
-           var value = entity.getVariable("carry");
-
-           if (value != undefined) {
-
-               var carry = this.getCarry(entity.remoteId);
-
-               if (carry)
-                   this.removeCarry(entity.remoteId);
-           }
-
-       });
-
-       mp.game.streaming.requestAnimDict('missfinale_c2mcs_1');
-       mp.game.streaming.requestAnimDict('nm');
-
-       setInterval(() => {
-
-           this.carryPlayers.forEach((element) => {
-
-               mp.players.forEachInStreamRange((target) => {
-
-                   if (target.remoteId == element.carryRemoteId) {
-
-                       if (mp.peds.exists(element.ped))
-                           return false;
-
-                       const player = mp.players.atRemoteId(element.remoteId);
-                       const carried = mp.players.atRemoteId(element.carryRemoteId);
-
-                       mp.events.call("client:animation.apply", player.remoteId, "missfinale_c2mcs_1", "fin_c2_mcs_1_camman", 49);
-                       mp.events.call("client:animation.apply", carried.remoteId, "nm", "firemans_carry", 33);
-                       carried.attachTo(player.handle, 0, 0.15, 0.27, 0.63, 0.5, 0.5, 0.0, false, false, false, false, 2, false);
-
-                       element.ped = mp.peds.new(carried.model, player.position, 0);
-                       mp.game.invoke('0xE952D6431689AD9A', carried.handle, element.ped.handle);
-                       element.ped.taskPlayAnim("nm", "firemans_carry", 8.0, 1.0, -1, 33, 0.0, true, true, true);
-                       element.ped.attachTo(player.handle, 0, 0.25, 0.07, 0.63, 0.5, 0.5, 0.0, false, false, false, false, 2, false);
-                   }
-
-               });
-
-           });
-
-       }, 500);
-
-   }
-
-   addCarry(remoteId, carryRemoteId) {
-       this.carryPlayers.push(new CarryPlayer(remoteId, carryRemoteId));
-   }
-
-   getCarry(remoteId) {
-       var found = this.carryPlayers.find((element => element.remoteId == remoteId));
-
-       if (found)
-           return found;
-       else
-           return undefined;
-   }
-
-   removeCarry(remoteId) {
-       var found = this.carryPlayers.find(element => element.remoteId == remoteId);
-
-       if (found) {
-           if (mp.peds.exists(found.ped))
-               found.ped.destroy();
-
-           var carry = mp.players.atRemoteId(found.carryRemoteId);
-
-           if (carry)
-               carry.detach(true, false);
-       }
-
-       var findIndex = this.carryPlayers.findIndex(element => element.remoteId == remoteId);
-
-       if (findIndex != -1)
-           this.carryPlayers.splice(findIndex, 1);
-   }
-
-}
-
-var Carry = new CarryManager();
-
-/***/ }),
-
-/***/ 3045:
-/***/ (() => {
-
-
-const Player = mp.players.local;
-
-Player.Attachment = null;
-
-mp.nametags.enabled = false;
-
-const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
-
-let AntiKeySpam = false;
-
-const Controls = { 
-   keyX: 0x58,
-   keyL: 0x4C,
-   keyY: 0x59
-};
-
-
-// BLACK SCREEN AFTER DEATH
-mp.game.gameplay.setFadeOutAfterDeath(false); 
-
-
-// DONT REMOVE WEAPON WHEN OUT OF AMMO
-mp.game.weapon.unequipEmptyWeapons = false;
-Player.setCanSwitchWeapon(false);
-
-
-mp.events.addDataHandler({
-   'logged': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.logged = newValue;
-      }
-   },
-
-   'spawned': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.spawned = newValue;
-      }
-   },
-
-   'Money': (entity, newCash, oldCash) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.Money = newCash;
-      }
-   },
-
-   'Job': (entity, newValue, oldValue) => {
-      if (entity && entity.remoteId === Player.remoteId) {
-         Player.Job = newValue;
-      }
-   },
-
-   'Wounded': (Entity, newValue, oldValue) => {
-      if (Entity.type == 'player') {
-         Entity.Wounded = newValue;
-      }
-   },
-
-   'Seatbelt': (entity, newValue, oldValue) => { 
-      if (entity && entity.remoteId === Player.remoteId) { 
-         Player.Seatbelt = newValue;
-      }
-   },
-   
-   'Ragdoll': (entity, newValue, oldValue) => { 
-      if (entity.type == 'player' && newValue != oldValue) { 
-         Interactions.Ragdoll(entity, newValue);
-      }
-   },
-
-   'Bubble': (entity, newValue, oldValue) => {
-      if (entity.type == 'player' && newValue != oldValue) {
-         Player.Bubble = newValue;
-      }
-   },
-
-   'Walking_Style': (Entity, Value, oldValue) => {
-      if (Entity.type == 'player') {
-         Interactions.WalkingStyle(Entity, Value);
-      }
-   },
-
-   'Mood': (Entity, Value, oldValue) => {
-      if (Entity.type == 'player') {
-         Interactions.FacialMood(Entity, Value);
-      }
-   },
-
-   'Attachment': (entity, valueNew, valueOld) => {
-      if (valueNew !== valueOld) { 
-         if (valueNew) { 
-            Attachments.Add(entity, valueNew);
-         } else { 
-            Attachments.Remove(entity);
-         }
-      }
-   }
-});
-
-
-
-mp.events.add({
-
-   'entityStreamIn': (Entity) => { 
-      if (Entity.Attachment) { Attachments.StreamIn(Entity, Entity.getVariable('Attachment')); }
-      if (Entity.type == 'player' && Entity.hasVariable('Walking_Style')) Interactions.WalkingStyle(Entity, Entity.getVariable('Walking_Style'));
-      if (Entity.type == 'player' && Entity.hasVariable('Ragdoll')) Interactions.Ragdoll(Entity, Entity.getVariable('Ragdoll'));
-      if (Entity.type == 'player' && Entity.hasVariable('Wounded')) Interactions.Ragdoll(Entity, Entity.getVariable('Wounded')); 
-   },
-
-   'render': () => { 
-      if (Player.logged && Player.spawned) { 
-         mp.players.forEach((Target) => { 
-
-            const TargetPosition = Target.position;
-            const PlayerPosition = Player.position;
-
-            const Distance = new mp.Vector3(PlayerPosition.x, PlayerPosition.y, PlayerPosition.z).subtract(new mp.Vector3(TargetPosition.x, TargetPosition.y, TargetPosition.z)).length();
-            
-            if (Distance < 8 && Player.id != Target.id && Player.hasClearLosTo(Target.handle, 17)) {
-               if (Target.getAlpha() != 0) { 
-                  
-                  const Index = Target.getBoneIndex(12844)
-                  const NameTag = Target.getWorldPositionOfBone(Index);
-
-                  const Position = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.4));
-
-                  if (Position) { 
-                     let x = Position.x;
-                     let y = Position.y;
-
-                     let scale = (Distance / 25);
-                     if (scale < 0.6) scale = 0.6;
-                     
-                     y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
-
-                     if (Target.hasVariable('Bubble') && Target.getVariable('Bubble')) { 
-                        const BubblePosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.6));
-                        if (BubblePosition) { 
-                           const Bubble = Target.getVariable('Bubble');
-                           mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
-                              font: 4,
-                              color: Bubble.Color,
-                              scale: [0.325, 0.325],
-                              outline: false
-                           });
-                        }
-                     }
-
-                     if (Target.hasVariable('Wounded') && Target.getVariable('Wounded')) {
-                        const WoundedPosition = mp.game.graphics.world3dToScreen2d(new mp.Vector3(NameTag.x, NameTag.y, NameTag.z + 0.75));
-                        if (WoundedPosition) { 
-                           const Wound = Target.getVariable('Wounded');
-                           mp.game.graphics.drawText('(( ' + Wound.Text + ' ))', [WoundedPosition.x, WoundedPosition.y], {
-                              font: 4,
-                              color: Wound.Color,
-                              scale: [0.315, 0.315],
-                              outline: false
-                           });
-                        }
-                     }
-
-                     const Content = Target.name + ' [' + Target.remoteId + ']';
-   
-                     mp.game.graphics.drawText(Content, [x, y], {
-                        font: 4,
-                        color: [255, 255, 255, 255],
-                        scale: [0.325, 0.325],
-                        outline: false
-                     });
-                  }
-
-               }
-            }
-
-         });
-
-      }
-   },
-
-   'entityModelChange': (entity, oldModel) => { 
-   },
-
-   'entityStreamOut': (entity) => { 
-      if (entity.Attachment) { 
-         Attachments.StreamOut(entity);
-      }
-   },
-
-   'client:player:freeze': (toggle) => {
-      Player.freezePosition(toggle);
-   },
-
-   'client:player:rotate': (value) => {
-      Player.setHeading(value);
-   },
-
-   'client:request:ipl': (ipl) => { 
-      mp.game.streaming.requestIpl(ipl);
-   }
-});
-
-
-// INTERACTIONS :: REMOVE ATTACHMENT
-mp.keys.bind(Controls.keyX, false, async function () {
-   if (Player.logged && Player.spawned) { 
-      if (Player.isTypingInTextChat) return;
-      if (Player.getVariable('Attachment') != null) {
-         const response = await mp.events.callRemoteProc('server:character.attachment:remove');
-         Player.Attachment = response;
-      }
-   }
-});
-
-
-
-// INTERACTIONS :: LOCK
-mp.keys.bind(Controls.keyL, false, async function () {
-   if (Player.logged && Player.spawned && Player.isTypingInTextChat == false) { 
-     if (AntiKeySpam) return;
-
-      mp.events.callRemote('server:interactions:lock');
-
-      AntiKeySpam = true;
-      setTimeout(() => { AntiKeySpam = false; }, 4000);
-   }
-});
-
-
-mp.keys.bind(Controls.keyY, false, () => {
-   if (!Player.logged || !Player.spawned || Player.isTypingInTextChat || Player.Cuffed) return;
-   if (AntiKeySpam) return;
-
-   if (Player.vehicle) { 
-
-      mp.events.callRemote('server:vehicle:windows', Player.vehicle);
-
-
-      AntiKeySpam = true;
-      setTimeout(() => { AntiKeySpam = false; }, 2000);
-
-   } else { 
-      let Vehicle = null;
-
-      mp.vehicles.forEachInRange(Player.position, 4.5, (NearbyVehicle) => { 
-         Vehicle = NearbyVehicle;
-      });
-   
-      if (Vehicle) { 
-   
-         const Bones = { 'boot': -1.35, 'bonnet': 2.0 };
-   
-         const Position = Player.position;
-         
-         for (const Bone in Bones) { 
-            const Offset = Bones[Bone];
-   
-            const {x, y, z} = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
-      
-            const Distance = mp.game.gameplay.getDistanceBetweenCoords(Position.x, Position.y, Position.z, x, y + Offset, z, true);
-            
-            if (Distance < 1.35) { 
-               mp.events.callRemote('server:vehicle:interaction', Vehicle, Bone);
-         
-               AntiKeySpam = true;
-               setTimeout(() => { AntiKeySpam = false; }, 2000);
-            } 
-         }
-      }
-   }
-});
-
-
-mp.events.addProc({
-   'client:player.vehicle:class': () => { 
-      return Player.vehicle ? Player.vehicle.getClass() : null;
-   }
-});
-
-
-const Attachments = { 
-
-   StreamIn: function (entity, attachment) { 
-      if (attachment) { 
-         Attachments.Add(entity, attachment);
-      }
-   },
-
-   StreamOut: function (entity) { 
-      Attachments.Remove(entity);
-   },
-
-   Add: function (entity, value) { 
-
-      entity.Attachment = mp.objects.new(mp.game.joaat(value.Model), entity.position, {
-         rotation: entity.rotation,
-         alpha: 255,
-         dimension: entity.dimension
-      });
-
-      utils.WaitEntity(entity.Attachment).then(() => {
-         const Bone = entity.getBoneIndex(value.Bone);
-         entity.Attachment.attachTo(entity.handle, Bone, value.Offset.X, value.Offset.Y, value.Offset.Z, value.Offset.rX, value.Offset.rY, value.Offset.rZ, true, true, false, false, 0, value.Rotation || false);
-      })
-
-   },
-
-   Remove: function (entity) { 
-      let Object = entity.Attachment;
-      if (Object && mp.objects.exists(Object)) { 
-         Object.destroy();
-      }
-   }
-};
-
-
-const Interactions = { 
-   WalkingStyle: async function (Entity, Style) {
-      if (Style == null) { 
-         Entity.resetMovementClipset(0.0);
-      } else { 
-         utils.LoadMovementClipset(Style).then(() => {
-            Entity.setMovementClipset(Style, 1.0);
-         })
-      }
-   },
-
-   Ragdoll: function (Entity, Value) {
-      if (Value) { 
-         mp.gui.chat.push(JSON.stringify(Value))
-         Entity.setToRagdoll(Value.Time || 5000, Value.Time || 5000, 0, true, true, true);
-      }
-   },
-
-   FacialMood: function (Entity, Mood) { 
-      Mood == 'normal' ? Entity.clearFacialIdleAnimOverride() : mp.game.invoke('0xFFC24B988B938B38', Entity.handle, Mood, 0);
-   }
-}
-
-
-
-
-/***/ }),
-
-/***/ 6573:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-
-let SendToServer = true;
-
-
-mp.events.add({
-
-   'outgoingDamage': (sourceEntity, targetEntity, sourcePlayer, weapon, boneIndex, damage) => {
-      // if (targetEntity.type === 'player') {
-      //    if (targetEntity.getHealth() - damage < damage) { 
-      //       mp.events.callRemoteProc('server:character.wounded', mp.players.at(targetEntity.id)).then((Response) => { 
-      //          mp.gui.chat.push(JSON.stringify(Response));
-      //          return true;
-      //       });
-      //    }
-      // }
-   },
-
-   'incomingDamage': (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
-      if (targetEntity.id == Player.id) { 
-         
-         if (Player.getVariable('Wounded')) {
-            mp.gui.chat.push('wounded');
-
-         } else { 
-            let Injury = { Weapon: weapon, Bone: boneIndex };
-   
-            Damage.Effect(boneIndex);
-
-            mp.gui.chat.push('Nije wounded');
-
-            if (SendToServer) {
-               mp.events.callRemote('server:character.injuries:add', JSON.stringify(Injury));
-               SendToServer = false;
-               setTimeout(() => { SendToServer = true; }, 1000);
-            }
-   
-         //    if (Player.getHealth() - damage < damage) {
-         //       mp.gui.chat.push('Zadnji hitac')
-         //       return true;
-         //    }
-         }
-      }
-   }
-
-});
-
-
-const Damage = { 
-   Check: function () { 
-      if (Player.logged && Player.spawned) { 
-         const Injuries = Player.getVariable('Injuries');
-         if (Injuries.length > 0 && Player.getSpeed() > 5) { 
-            if (Injuries.find(Element => Element.Bone == 4 || Element.Bone == 2)) {
-               if (SendToServer) mp.events.callRemote('server:character.wounded:fall');
-            }
-         }
-      }
-   
-      setTimeout(() => { Damage.Check(); }, 1000);
-   },
-
-   Effect: function (Bone) { 
-
-      switch (Bone) { 
-         case 20: { 
-            mp.game.graphics.startScreenEffect('DefaultFlash', 1500, false);
-            break;
-         }
-
-         default: {
-
-         }
-      }
-
-   }
-};
-
-Damage.Check();
-
-
-
-
-
-/***/ }),
-
-/***/ 9133:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-let browser = null, opened = false;
-
-mp.events.add({
-   'client:help:show': (help) => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://player/game-interface/help.html');
-         const response = 
-         Player.BrowserControls(true, true);
-         
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   }
-})
 
 /***/ }),
 
@@ -8012,370 +8668,6 @@ mp.events.add({
 
 
 
-
-
-/***/ }),
-
-/***/ 1189:
-/***/ (() => {
-
-
-
-const player = mp.players.local;
-
-
-mp.events.add({
-	'entityStreamIn' : (entity) =>  {
-		 if(entity.type == 'player')
-		 {
-			if (entity.hasVariable("animData")) {
-			  const value = entity.getVariable("animData");
-			  if (null != value) {
-					const anim = value.split("%");
-					loadAnimDict(anim[0], function() {
-						 mp.players.exists(entity) && 0 !== entity.handle && entity.taskPlayAnim(anim[0], anim[1], 1, 0, -1, parseInt(anim[2]), 1, !1, !1, !1)
-					})
-			  }
-			}          
-		 }
-	},
-});
-
-
-mp.events.addDataHandler("animData", function(a, b) {
-	if (0 !== a.handle)
-		 if (null != b) {
-			  const c = b.split("%");
-			  loadAnimDict(c[0], function() {
-					mp.players.exists(a) && 0 !== a.handle && (a.clearTasksImmediately(), a.taskPlayAnim(c[0], c[1], 1, 0, -1, parseInt(c[2]), 1, !1, !1, !1))
-			  })
-		 } //else a.clearTasksImmediately()
-});
-
-mp.keys.bind(0x20, true, function() {
-	if (player.logged && player.spawned) { 
-		if (entity.hasVariable("animData")) {
-			const value = entity.getVariable("animData");
-			if (null != value) {
-				const anim = value.split("%");
-				let playing = player.isPlayingAnim(anim[0], anim[1]);
-				if (playing) { 
-					player.stopAnimTask(anim[0], anim[1], 3.0);
-				}
-			}
-		}
-	}
-});
-
-/***/ }),
-
-/***/ 8201:
-/***/ (() => {
-
-const movementClipSet = 'move_ped_crouched';
-const strafeClipSet = 'move_ped_crouched_strafing';
-const clipSetSwitchTime = 0.25;
-const localPlayer = mp.players.local;
-
-const loadClipSet = (clipSetName) => {
-    mp.game.streaming.requestClipSet(clipSetName);
-    while (!mp.game.streaming.hasClipSetLoaded(clipSetName)) mp.game.wait(0);
-};
-
-loadClipSet(movementClipSet);
-loadClipSet(strafeClipSet);
-
-mp.events.addDataHandler('crouching', (entity, value) => {
-    if (entity.type === 'player') {
-        if (value) {
-            entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
-            entity.setStrafeClipset(strafeClipSet);
-
-        } else {
-            entity.resetMovementClipset(clipSetSwitchTime);
-            entity.resetStrafeClipset();
-        }
-    }
-});
-
-mp.events.add('entityStreamIn', (entity) => {
-    if (entity.type === 'player' && entity.crouching) {
-        entity.setMovementClipset(movementClipSet, clipSetSwitchTime);
-        entity.setStrafeClipset(strafeClipSet);
-    }
-});
-
-
-mp.keys.bind(0x12, false, () => {
-    if (player.logged && player.spawned) { 
-        mp.events.callRemote('server:player.crouch');
-    }
-});
-
-/***/ }),
-
-/***/ 5531:
-/***/ (() => {
-
-  //Fingerpointing
-  let pointing = {
-   active: false,
-   interval: null,
-   lastSent: 0,
-   start: function() {
-       if (!this.active) {
-
-            if (mp.players.local.cuffed) return; 
-            
-            this.active = true;
-
-            mp.game.streaming.requestAnimDict("anim@mp_point");
-
-            while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
-                mp.game.wait(0);
-            }
-            mp.game.invoke("0x0725a4ccfded9a70", mp.players.local.handle, 0, 1, 1, 1);
-            mp.players.local.setConfigFlag(36, true)
-            mp.players.local.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
-            mp.game.streaming.removeAnimDict("anim@mp_point");
-
-            this.interval = setInterval(this.process.bind(this), 0);
-       }
-   },
-
-   stop: function() {
-       if (this.active) {
-           clearInterval(this.interval);
-           this.interval = null;
-
-           this.active = false;
-
-
-
-           mp.game.invoke("0xd01015c7316ae176", mp.players.local.handle, "Stop");
-
-           if (!mp.players.local.isInjured()) {
-               mp.players.local.clearSecondaryTask();
-           }
-           if (!mp.players.local.isInAnyVehicle(true)) {
-               mp.game.invoke("0x0725a4ccfded9a70", mp.players.local.handle, 1, 1, 1, 1);
-           }
-           mp.players.local.setConfigFlag(36, false);
-           mp.players.local.clearSecondaryTask();
-
-           setTimeout(() => {
-               mp.events.callRemote('server:player.finger.pointing.stop');
-
-           }, 2000);
-       }
-   },
-
-   gameplayCam: mp.cameras.new("gameplay"),
-   lastSync: 0,
-
-   getRelativePitch: function() {
-       let camRot = this.gameplayCam.getRot(2);
-
-       return camRot.x - mp.players.local.getPitch();
-   },
-
-   process: function() {
-       if (this.active) {
-           mp.game.invoke("0x921ce12c489c4c41", mp.players.local.handle);
-
-           let camPitch = this.getRelativePitch();
-
-           if (camPitch < -70.0) {
-               camPitch = -70.0;
-           } else if (camPitch > 42.0) {
-               camPitch = 42.0;
-           }
-           camPitch = (camPitch + 70.0) / 112.0;
-
-           let camHeading = mp.game.cam.getGameplayCamRelativeHeading();
-
-           let cosCamHeading = mp.game.system.cos(camHeading);
-           let sinCamHeading = mp.game.system.sin(camHeading);
-
-           if (camHeading < -180.0) {
-               camHeading = -180.0;
-           } else if (camHeading > 180.0) {
-               camHeading = 180.0;
-           }
-           camHeading = (camHeading + 180.0) / 360.0;
-
-           let coords = mp.players.local.getOffsetFromGivenWorldCoords((cosCamHeading * -0.2) - (sinCamHeading * (0.4 * camHeading + 0.3)), (sinCamHeading * -0.2) + (cosCamHeading * (0.4 * camHeading + 0.3)), 0.6);
-           let blocked = (typeof mp.raycasting.testPointToPoint([coords.x, coords.y, coords.z - 0.2], [coords.x, coords.y, coords.z + 0.2], mp.players.local.handle, 7) !== 'undefined');
-
-           mp.game.invoke('0xd5bb4025ae449a4e', mp.players.local.handle, "Pitch", camPitch)
-           mp.game.invoke('0xd5bb4025ae449a4e', mp.players.local.handle, "Heading", camHeading * -1.0 + 1.0)
-           mp.game.invoke('0xb0a6cfd2c69c1088', mp.players.local.handle, "isBlocked", blocked)
-           mp.game.invoke('0xb0a6cfd2c69c1088', mp.players.local.handle, "isFirstPerson", mp.game.invoke('0xee778f8c7e1142e2', mp.game.invoke('0x19cafa3c87f7c2ff')) == 4)
-
-           if ((Date.now() - this.lastSent) > 100) {
-               this.lastSent = Date.now();
-               mp.events.callRemote('server:player.finger.pointing.update', camPitch, camHeading);
-           }
-       }
-   }
-}
-
-mp.events.add("client:finger.pointing.update", (id, camPitch, camHeading) => {
-   let netPlayer = getPlayerByRemoteId(parseInt(id));
-   if (netPlayer != null) {
-       if (netPlayer != mp.players.local && mp.players.exists(netPlayer)) {
-           netPlayer.lastReceivedPointing = Date.now();
-
-           if (!netPlayer.pointingInterval) {
-               netPlayer.pointingInterval = setInterval((function() {
-                   if ((Date.now() - netPlayer.lastReceivedPointing) > 1000) {
-                       clearInterval(netPlayer.pointingInterval);
-
-                       netPlayer.lastReceivedPointing = undefined;
-                       netPlayer.pointingInterval = undefined;
-
-                       mp.game.invoke("0xd01015c7316ae176", netPlayer.handle, "Stop");
-
-
-                       if (!netPlayer.isInAnyVehicle(true)) {
-                           mp.game.invoke("0x0725a4ccfded9a70", netPlayer.handle, 1, 1, 1, 1);
-                       }
-                       netPlayer.setConfigFlag(36, false);
-
-                   }
-               }).bind(netPlayer), 500);
-
-               mp.game.streaming.requestAnimDict("anim@mp_point");
-
-               while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
-                   mp.game.wait(0);
-               }
-
-
-
-               mp.game.invoke("0x0725a4ccfded9a70", netPlayer.handle, 0, 1, 1, 1);
-               netPlayer.setConfigFlag(36, true)
-               netPlayer.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
-               mp.game.streaming.removeAnimDict("anim@mp_point");
-           }
-
-           mp.game.invoke('0xd5bb4025ae449a4e', netPlayer.handle, "Pitch", camPitch)
-           mp.game.invoke('0xd5bb4025ae449a4e', netPlayer.handle, "Heading", camHeading * -1.0 + 1.0)
-           mp.game.invoke('0xb0a6cfd2c69c1088', netPlayer.handle, "isBlocked", 0);
-           mp.game.invoke('0xb0a6cfd2c69c1088', netPlayer.handle, "isFirstPerson", 0);
-       }
-   }
-});
-
-mp.keys.bind(0x42, true, () => {
-   if (mp.gui.cursor.visible || mp.chatActive || mp.consoleActive || mp.players.local.vehicle) return;
-   pointing.start();
-
-});
-
-mp.keys.bind(0x42, false, () => {
-   pointing.stop();
-});
-
-function getPlayerByRemoteId (remoteId) {
-   let pla = mp.players.atRemoteId(remoteId);
-   if (pla == undefined || pla == null) {
-      return null;
-   }
-   return pla;
-}
-
-/***/ }),
-
-/***/ 1917:
-/***/ (() => {
-
-
-
-const player = mp.players.local;
-let interactionMenu, opened = false;
-
-
- 
-
-mp.events.addDataHandler({
-
-    'ragdoll': (entity, newValue, oldValue) => { 
-        if (entity.type === 'player') { 
-            if (newValue != oldValue) { 
-                ragdoll(entity, newValue);
-            }
-        }
-    }
-});
-
-mp.events.add({
-    'entityStreamIn': (entity) => {
-        if (entity.type === 'player') { 
-            setMood(entity, entity.getVariable('Mood')); 
-            setWalkingStyle(entity, entity.getVariable('Walking_Style'))
-        }
-    },
-
-    'client:player.interactions.menu': (toggle) => { 
-        if (toggle) { 
-            interactionMenu = mp.browsers.new('package://player/Interactions/interactions-interface/interactions.html');
-            interactionMenu.execute(`interactions.moods = ${JSON.stringify(moods)}`);
-            opened = true;
-            setTimeout(() => { mp.gui.cursor.show(true, true); }, 100);
-        } else { 
-            opened = false;
-            setTimeout(() => { mp.gui.cursor.show(false, false); }, 100);
-            interactionMenu.destroy();
-            
-        }
-    },
-
-    'client:player.mood': (mood) => { 
-        mp.events.callRemote('server:player.mood', mood);
-    },
-
-    'client:player.scenario': Scenario,
-
-    'client:player.walking_style': (style) => {
-        mp.events.callRemote('server:player.walking_style', style);
-        setMovementClipset(player, style);
-     }
-});
-
-
-mp.keys.bind(0x4D, false, function() {
-    if (mp.players.local.isTypingInTextChat) return;
-    if (player.logged && player.spawned) { 
-        if (opened) { 
-            mp.events.call('client:player.interactions.menu', false);
-        } else { 
-            mp.events.call('client:player.interactions.menu', true);
-        }
-    }
-});
-
-
-function setWalkingStyle(entity, walkstyle) {
-    try {
-       if (walkstyle == null) entity.resetMovementClipset(0.0);
-       else entity.setMovementClipset(walkstyle, 0.0);
-    } catch (e) { }
-}
-
-function ragdoll (entity, status) { 
-    if (status) { 
-       entity.setToRagdoll(500, 500, 0, true, true, true); 
-    } else { 
-        entity.resetRagdollTimer();
-    }
-}
-
-function Scenario (name, delay, enterAnim, time) { 
-   player.taskStartScenarioInPlace(name, delay, enterAnim);
-   if (time) setTimeout(() => { player.clearTasks(); }, time * 1000);
-}
- 
 
 
 /***/ }),
@@ -8588,47 +8880,6 @@ function Scenario (name, delay, enterAnim, time) {
 
 /***/ }),
 
-/***/ 1500:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-let Browser = null, Opened = false;
-
-const Controls = { 
-   keyP: 0x50
-};
-
-
-mp.events.add({
-   'client:players:online': () => {
-      Opened = !Opened;
-      if (Opened) { 
-         Browser = mp.browsers.new('package://player/game-interface/onlines.html');
-         let List = utils.OnlinePlayers();
-         Browser.execute('onlines.players = ' + JSON.stringify(List));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (Browser) Browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   }
-})
-
-
-mp.keys.bind(Controls.keyP, false, function() {
-   if (Player.logged && Player.spawned) {    
-      if (Player.isTypingInTextChat) return;
-      mp.events.call('client:players:online');
-   }
-});
-
-
-
-/***/ }),
-
 /***/ 141:
 /***/ (() => {
 
@@ -8665,94 +8916,16 @@ mp.events.add({
 
 /***/ }),
 
-/***/ 8083:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-
-
-mp.events.addDataHandler({
-   'Cuffed': (entity, newValue, oldValue) => {
-      if (entity.type === 'player') {
-         if (newValue !== oldValue) { 
-            Cuff(entity, newValue);
-         }
-      }
-   }
-});
-
-
-mp.events.add({
-   'entityStreamIn': (entity) => {
-      if (entity.type === 'player') Cuff(entity, entity.getVariable('Cuffed'));
-   },
-
-   'render': () => { 
-      if (Player.Cuffed) { 
-         // DISABLE SPRINT, ATTACK, AIM, JUMP
-         mp.game.controls.disableControlAction(0, 24, true);
-         mp.game.controls.disableControlAction(0, 25, true);
-         mp.game.controls.disableControlAction(0, 21, true);
-         mp.game.controls.disableControlAction(0, 55, true);
-      }
-   },
-
-   'client:player:cuff': (entity, toggle) => { 
-      Cuff(entity, toggle);
-   }
-
-});
-
-
-function Cuff (entity, toggle) { 
-   if (toggle) { 
-      entity.setEnableHandcuffs(true);
-      entity.Cuffed = true;
-
-      entity.cuffs = mp.objects.new(mp.game.joaat('p_cs_cuffs_02_s'), entity.position, {
-         rotation: new mp.Vector3(0, 0, 0),
-         alpha: 255,
-         dimension: entity.dimension
-      });
-
-      entity.cuffs.notifyStreaming = true;
-      utils.WaitEntity(entity.cuffs).then(() => {
-         let bone = mp.players.local.getBoneIndex(6286);
-         entity.cuffs.attachTo(entity.handle, bone, -0.02, 0.06, 0.0, 75.0, 0.0, 76.0, true, true, false, false, 0, true);
-      })
-   }
-   else {
-      entity.setEnableHandcuffs(false);
-      entity.Cuffed = false;
-      if (entity.cuffs) { 
-         if (entity.cuffs.doesExist()) { 
-            entity.cuffs.destroy();
-         }
-      }
-   }
-}
-
-
-
-
-/***/ }),
-
 /***/ 555:
-/***/ (() => {
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
+const { Controls } = __webpack_require__(8675);
 
 
 const Player = mp.players.local;
 
 let browsers = { licenses: null, identity: null };
 let opened = { licenses: false, identity: false };
-
-
-const Controls = { 
-   Enter: 0x0D
-};
 
 
 mp.events.add({
@@ -8784,7 +8957,7 @@ mp.events.add({
 })
 
 
-mp.keys.bind(Controls.Enter, false, function(e) {
+mp.keys.bind(Controls.ENTER, false, function(e) {
    if (Player.logged && Player.spawned) { 
       if (Player.isTypingInTextChat) return;
       if (opened.identity) mp.events.call('client:player.documents:show', 'identity');
@@ -8795,8 +8968,9 @@ mp.keys.bind(Controls.Enter, false, function(e) {
 /***/ }),
 
 /***/ 7304:
-/***/ (() => {
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
+const { Controls } = __webpack_require__(8675);
 
 
 
@@ -8810,10 +8984,7 @@ const Keys = {
 
 const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
 
-const Controls = { 
-   keyY: 0x59,
-   keyI: 0x49
-};
+
 
 mp.events.add({
 
@@ -8923,7 +9094,7 @@ mp.events.add({
 });
 
 
-mp.keys.bind(Controls.keyI, false, function() {
+mp.keys.bind(Controls.KEY_I, false, function() {
    if ( Player.logged && Player.spawned ) { 
       if ( Player.isTypingInTextChat || Player.Cuffed ) return;
       mp.events.call('client:inventory.toggle');
@@ -8945,7 +9116,7 @@ function WeaponSelector () {
 
 WeaponSelector();
 
-mp.keys.bind(Controls.keyY, false, function() {
+mp.keys.bind(Controls.KEY_Y, false, function() {
    if (Player.logged && Player.spawned) { 
       if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:player.inventory.item:pickup');
@@ -9021,417 +9192,6 @@ async function Drop (item, hash, quantity = 1) {
 
 
 
-/***/ }),
-
-/***/ 8178:
-/***/ (() => {
-
-
-
-const Player = mp.players.local;
-let Vehicles = { Front: null, Back: null }, browser = null, opened = false;
-
-mp.events.add({
-
-   'client:vehicle.alpr': () => {      
-      opened = true;
-      FMarker = mp.markers.new(1, ForwardVehicle.position, 10,
-      {
-            direction: ForwardVehicle.position,
-            rotation: ForwardVehicle.position,
-            color: 0,
-            visible: true,
-            dimension: Player.dimension
-      });
-      BMarker = mp.markers.new(1, BackwardVehicle, 10,
-      {
-            direction: BackwardVehicle.position,
-            rotation: BackwardVehicle.position,
-            color: 0,
-            visible: true,
-            dimension: Player.dimension
-      });
-   },
-
-   'render': () => {
-      if (opened && Player.vehicle) {
-         ALPR();
-      }
-      
-   },
-})
-
-
-/* function GetVehicleInfrontOfEntity(entity)
-	local coords = GetOffsetFromEntityInWorldCoords(entity,0.0,1.0,0.3)
-	local coords2 = GetOffsetFromEntityInWorldCoords(entity, 0.0, ScanningDistance,0.0)
-	local rayhandle = CastRayPointToPoint(coords, coords2, 10, entity, 0)
-	local _, _, _, _, entityHit = GetRaycastResult(rayhandle)
-	if entityHit>0 and IsEntityAVehicle(entityHit) then
-		return entityHit
-	else
-		return nil
-	end
-end*/
-
-
-function ALPR () {
-   let FMarker = null,
-       BMarker = null;
-   const Vehicle = Player.vehicle;
-   const ForwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, 10, 0.0),
-         BackwardPosition = Vehicle.getOffsetFromInWorldCoords(0.0, -10, 0.0);
-   /*
-   const ForwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, ForwardPosition), 
-         BackwardVehicle = mp.raycasting.testPointToPoint(Vehicle.position, BackwardPosition);*/
-
-   const ForwardVehicle = mp.raycasting.testCapsule(Vehicle.position, ForwardPosition, 2, Player, 2), 
-         BackwardVehicle = mp.raycasting.testCapsule(Vehicle.position, BackwardPosition, 2, Player, 2);
-
-   // Returna: object: position (Entity Coordinates) , surfaceNormal, material (Entity Model) , entity (Handle)
-
-   if (ForwardVehicle && ForwardVehicle.entity.type == 'vehicle' ) { 
-      Vehicles.Front = ForwardVehicle.entity;
-      const Speed = Math.round(Vehicles.Front.getSpeed() * 3.6);
-      mp.gui.chat.push(JSON.stringify(Speed));
-   } 
-   if (BackwardVehicle && BackwardVehicle.entity.type == 'vehicle' ) { 
-      Vehicles.Back = BackwardVehicle.entity; 
-      const Speed = Math.round(Vehicles.Back.getSpeed() * 3.6);
-      mp.gui.chat.push(JSON.stringify(Speed));
-   }
-
-   if (FMarker != null) {
-      FMarker.position = ForwardVehicle.entity.position;
-   }
-
-   if (BMarker != null) {
-      BMarker.position = BackwardVehicle.entity.position
-   }
-   
-   
-
-}
-
-/*  let 
-
-         mp.vehicles.forEachInRange(ForwardPosition, 5,
-            (vehicle) => {
-               DetectedVehicles.push(vehicle);
-               break;
-            }
-         );
-         mp.vehicles.forEachInRange(BackwardPosition, 5,
-            (vehicle) => {
-               DetectedVehicles.push(vehicle);
-               break;
-            }
-         );
-*/
-
-
-/***/ }),
-
-/***/ 6687:
-/***/ (() => {
-
-
-
-
-const Player = mp.players.local;
-let browser = null, opened = false;
-
-const Instructor = mp.peds.new(
-   mp.game.joaat('a_m_y_bevhills_01'), 
-   new mp.Vector3(-761.8135, -1308.1590, 5.150),
-   -36,
-   0
-);
-
-Instructor.freezePosition(true);
-Instructor.setInvincible(true);
-
-
-let Test = {
-   Category: null,
-   Route: null,
-   Vehicle: null,
-   Progress: null,
-   Speedlimit: null,
-   Warns: null,
-   Point: null
-};
-
-
-mp.events.add({
-   'client:vehicle.department:menu' (player, department) { 
-      if (Test.Route != null) return;
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://vehicles/vehicles-interfaces/department.html');
-         browser.execute('department.Player = ' + JSON.stringify(player));
-         browser.execute('department.Quiz.Questions = ' + JSON.stringify(department.Quiz));
-         browser.execute('department.Licenses = ' + JSON.stringify(department.Licenses));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   },
-
-   'client:vehicle.department.driving:start': (category) => { 
-      DrivingTest(category);
-   },
-
-   'playerEnterVehicle': (vehicle, seat) => { 
-      if (vehicle == Test.Vehicle && seat == -1) { 
-         StartRoute();
-      }
-   }
-})
-
-
-async function DrivingTest (category) { 
-   const [Vehicle, Route] = await mp.events.callRemoteProc('server:vehicle.department.driving:start', category);
-   Test.Vehicle = mp.vehicles.atRemoteId(Vehicle);
-   Test.Route = Route;
-   Test.Warns = 0;
-
-   Instructor.freezePosition(false);
-   mp.game.wait(5);
-   Instructor.taskEnterVehicle(Test.Vehicle.handle, 5000, 0, 1, 1, 0);
-};
-
-
-function Check () { 
-
-   const Time = mp.game.invoke('0x25223CA6B4D20B7F');
-
-   if (Time < 6 || Time > 20) { 
-      Instructor.setAlpha(0, false);
-      Instructor.setCollision(false, false);
-   } else { 
-      Instructor.setAlpha(255, false);
-      Instructor.setCollision(true, true);
-   }
-   setTimeout(() => { Check(); }, 30 * 1000);
-}
-
-Check();
-
-async function StartRoute () { 
-
-   const Point = Player.CreateInteractionSpot('Polaganje', new mp.Vector3(Test.Route[0].position.x, Test.Route[0].position.y, Test.Route[0].position.z));
-   Test.Point = Point;
-
-   mp.events.add('playerEnterCheckpoint', NextPoint);
-}
-
-function NextPoint (point) { 
-   if (Player.vehicle && Player.vehicle == Test.Vehicle && Test.Point.checkpoint == point) { 
-
-      Test.Point.checkpoint.destroy();
-      Test.Point.blip.destroy();
-
-      mp.game.wait(50);
-
-      if (Test.Progress == Test.Route.length - 1) {
-         mp.events.remove('playerEnterCheckpoint', NextPoint);
-         mp.gui.chat.push(JSON.stringify(Test.Vehicle.remoteId));
-         Test.Route = null, Test.Progress = null;
-
-         mp.events.add('playerLeaveVehicle', (vehicle, seat) => { 
-            if (vehicle == Test.Vehicle) { 
-               Instructor.taskGoStraightToCoord(-761.8135, -1308.1590, 5.150, 1, 5000, -36, 2);
-               mp.events.callRemote('server:vehicle.department.license:give', Test.Category, Test.Vehicle.remoteId);
-            }
-         });
-         // izbrisati vozilo
-         return;
-      };
-
-      Test.Progress ++;
-
-      const Position = new mp.Vector3(Test.Route[Test.Progress].position.x, Test.Route[Test.Progress].position.y, Test.Route[Test.Progress].position.z - 0.5);
-      const Point = Player.CreateInteractionSpot('Polaganje', Position);
-      Test.Point = Point;
-   }
-};
-
-/***/ }),
-
-/***/ 8878:
-/***/ (() => {
-
-
-const Player = mp.players.local;
-const blockedClasses = [13, 14, 15, 16, 21]; 
-
-let DistanceNow = null;
-let DistanceTemporary;
-
-mp.game.controls.useDefaultVehicleEntering = true;
-
-// AUTO HELMET
-Player.setConfigFlag(35, false);
-
-
-const Controls = {
-   arrowLeft: 3,
-   arrowRight: 3,
-   keyY: 0x59
-};
-
-
-mp.events.add({
-   'entityStreamIn': (entity) => {
-      if (entity.type === 'vehicle') {
-         if (entity.hasVariable('IndicatorRight')) entity.setIndicatorLights(0, entity.getVariable('IndicatorRight'));
-         if (entity.hasVariable('IndicatorLeft')) entity.setIndicatorLights(1, entity.getVariable('IndicatorLeft')); 
-         if (entity.hasVariable('Windows')) Windows(entity, entity.getVariable('Windows'));
-         if (entity.hasVariable('Fuel')) entity.Fuel = entity.getVariable('IndicatorLeft');
-         if (entity.hasVariable('Mileage')) entity.Mileage = entity.getVariable('Mileage');
-         if (entity.hasVariable('Hood')) Doors(entity, 'hood', entity.getVariable('Hood'));
-         if (entity.hasVariable('Trunk')) Doors(entity, 'trunk', entity.getVariable('Trunk'));
-         if (entity.hasVariable('Back')) Doors(entity, 'back', entity.getVariable('Back'));
-         if (entity.hasVariable('Back2')) Doors(entity, 'back2', entity.getVariable('Back2'));
-      }
-   },
-
-   'playerEnterVehicle': (vehicle, seat) => { 
-      mp.game.vehicle.defaultEngineBehaviour = false;
-      Player.setConfigFlag(429, true);
-
-      if (vehicle.Fuel && seat == -1) { 
-         DistanceNow = Date.now();
-         DistanceTemporary = 0;
-         mp.events.add('render', Driving);
-      }
-   },
-
-   'playerLeaveVehicle': (Vehicle, seat) => { 
-      if (seat == -1) { 
-         mp.events.remove('render', Driving);
-         if (Vehicle) mp.events.callRemote('server:vehicle:update', Vehicle, Vehicle.Mileage, Vehicle.Fuel);
-      }
-   }
-});
-
-
-mp.events.addDataHandler({
-   'IndicatorRight': (entity, value) => {
-      if (entity.type === 'vehicle') entity.setIndicatorLights(0, (value == null) ? false : value);
-   },
-
-   'IndicatorLeft': (entity, value) => {
-      if (entity.type === 'vehicle') entity.setIndicatorLights(1, (value == null) ? false : value);
-   },
-
-   'Windows': (entity, value) => { 
-      if (entity.type === 'vehicle') Windows(entity, value);
-   },
-
-   'Trunk': (entity, value) => { 
-      if (entity.type === 'vehicle') Doors(entity, 'trunk', value);
-   },
-
-   'Hood': (entity, value) => { 
-      if (entity.type === 'vehicle') Doors(entity, 'hood', value);
-   },
-
-   'Back': (entity, value) => { 
-      if (entity.type === 'vehicle') Doors(entity, 'back', value);
-   },
-
-   'Back2': (entity, value) => { 
-      if (entity.type === 'vehicle') Doors(entity, 'back2', value);
-   },
-
-   'Fuel': (entity, value) => { 
-      if (entity.type === 'vehicle') entity.Fuel = value;
-   },
-
-   'Mileage': (entity, value) => { 
-      if (entity.type === 'vehicle') entity.Mileage = value;
-   }
-});
-
-
-// Left Indicator
-mp.keys.bind(Controls.arrowLeft, false, () => {
-   if (!Player.logged) return;
-   if (mp.players.local.isTypingInTextChat) return;
-   let vehicle = mp.players.local.vehicle;
-   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 1);
-});
-
-
-// Right Indicator
-mp.keys.bind(Controls.arrowRight, false, () => {
-   if (!Player.logged) return;
-   if (mp.players.local.isTypingInTextChat) return;
-   let vehicle = mp.players.local.vehicle;
-   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 0);
-});
-
-
-
-function Driving () { 
-   if (Player.vehicle && Player.vehicle.getPedInSeat(-1) === Player.handle) { 
-      let vehicle = Player.vehicle;
-      let Speed = vehicle.getSpeed() * 3.6;
-
-      if (Date.now() >= DistanceNow + 1 && Speed > 1) { 
-         let Calculating = Speed * ((Date.now() - DistanceNow) / 1000);
-         let Trip = parseFloat(Calculating / 3600);
-
-         DistanceTemporary += Trip; 
-
-         vehicle.Mileage += (DistanceTemporary / 1000);
-         DistanceNow = Date.now();
-      }   
-
-      // Updating Vehicle.Mileage in GameInterface 
-      GameInterface.execute('hud.Mileage(' + vehicle.Mileage.toFixed(3) + ')');
-      GameInterface.execute('hud.Speed(' + Speed + ')');
-
-   }
-}
-
-
-// SYNCING WINDOWS // PROBABLY TROUBE
-function Windows (vehicle, value) { 
-   const Doors = mp.game.invoke('0x92922A607497B14D', vehicle.handle);
-   for (let i = 0; i < Doors - 2; i ++) { 
-      let Window = value[i];
-      Window ? vehicle.rollDownWindow(i) : vehicle.rollUpWindow(i);
-   }
-}
-
-
-function Doors (vehicle, index, value) { 
-   let Number = 4;
-   switch (index) {
-      case 'hood': Number = 4; break;
-      case 'trunk': Number = 5; break;
-      case 'back': Number = 6; break;
-      case 'back2': Number = 7; break;
-   }
-   value ? vehicle.setDoorOpen(Number, false, false) : vehicle.setDoorShut(Number, false);
-};
-
-
-
-const natives = { 
-   MAX_PASSENGERS: '0x2AD93716F184EDA4',
-   MAX_SPEED: '0xF417C2502FFFED43',
-   MAX_BRAKING: '0xDC53FD41B4ED944C',
-   MAX_TRACTION: '0x539DE94D44FDFD0D',
-   MAX_ACCELERATION: '0x8C044C5C84505B6A',
-   MANUFACTEUR: '0xF7AF4F159FF99F97',
-};
-
-
 /***/ })
 
 /******/ 	});
@@ -9461,33 +9221,20 @@ const natives = {
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
-/************************************************************************/
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__(2910);
 /******/ 	__webpack_require__(994);
-/******/ 	__webpack_require__(2983);
-/******/ 	__webpack_require__(9853);
-/******/ 	__webpack_require__(3582);
-/******/ 	__webpack_require__(3080);
-/******/ 	__webpack_require__(4403);
-/******/ 	__webpack_require__(9050);
-/******/ 	__webpack_require__(9445);
-/******/ 	__webpack_require__(4508);
+/******/ 	__webpack_require__(5102);
+/******/ 	__webpack_require__(8460);
+/******/ 	__webpack_require__(8413);
+/******/ 	__webpack_require__(5098);
+/******/ 	__webpack_require__(7137);
+/******/ 	__webpack_require__(3240);
+/******/ 	__webpack_require__(6047);
+/******/ 	__webpack_require__(8569);
 /******/ 	__webpack_require__(4345);
 /******/ 	__webpack_require__(921);
 /******/ 	__webpack_require__(9417);
@@ -9496,46 +9243,47 @@ const natives = {
 /******/ 	__webpack_require__(7193);
 /******/ 	__webpack_require__(1828);
 /******/ 	__webpack_require__(7845);
+/******/ 	__webpack_require__(8934);
 /******/ 	__webpack_require__(8412);
-/******/ 	__webpack_require__(8319);
-/******/ 	__webpack_require__(1406);
+/******/ 	__webpack_require__(2132);
+/******/ 	__webpack_require__(6477);
 /******/ 	__webpack_require__(805);
-/******/ 	__webpack_require__(2687);
+/******/ 	__webpack_require__(3632);
 /******/ 	__webpack_require__(9179);
-/******/ 	__webpack_require__(2816);
-/******/ 	__webpack_require__(2387);
-/******/ 	__webpack_require__(9408);
-/******/ 	__webpack_require__(4032);
-/******/ 	__webpack_require__(9247);
-/******/ 	__webpack_require__(2399);
-/******/ 	__webpack_require__(1846);
-/******/ 	__webpack_require__(4116);
+/******/ 	__webpack_require__(6338);
+/******/ 	__webpack_require__(9925);
+/******/ 	__webpack_require__(4644);
+/******/ 	__webpack_require__(1183);
+/******/ 	__webpack_require__(8890);
+/******/ 	__webpack_require__(4391);
+/******/ 	__webpack_require__(131);
+/******/ 	__webpack_require__(1763);
 /******/ 	__webpack_require__(551);
-/******/ 	__webpack_require__(5626);
-/******/ 	__webpack_require__(7373);
+/******/ 	__webpack_require__(7189);
+/******/ 	__webpack_require__(9449);
 /******/ 	__webpack_require__(4687);
-/******/ 	__webpack_require__(3886);
-/******/ 	__webpack_require__(1877);
-/******/ 	__webpack_require__(3045);
-/******/ 	__webpack_require__(6573);
+/******/ 	__webpack_require__(1547);
+/******/ 	__webpack_require__(3540);
+/******/ 	__webpack_require__(1951);
+/******/ 	__webpack_require__(1394);
 /******/ 	__webpack_require__(555);
-/******/ 	__webpack_require__(9133);
+/******/ 	__webpack_require__(599);
 /******/ 	__webpack_require__(872);
-/******/ 	__webpack_require__(1189);
-/******/ 	__webpack_require__(8201);
-/******/ 	__webpack_require__(5531);
-/******/ 	__webpack_require__(1917);
+/******/ 	__webpack_require__(385);
+/******/ 	__webpack_require__(8769);
+/******/ 	__webpack_require__(5877);
 /******/ 	__webpack_require__(9158);
 /******/ 	__webpack_require__(7304);
-/******/ 	__webpack_require__(1500);
+/******/ 	__webpack_require__(6);
 /******/ 	__webpack_require__(141);
-/******/ 	__webpack_require__(8083);
+/******/ 	__webpack_require__(9534);
+/******/ 	__webpack_require__(8671);
 /******/ 	__webpack_require__(5639);
 /******/ 	__webpack_require__(5568);
 /******/ 	__webpack_require__(8675);
-/******/ 	__webpack_require__(8178);
-/******/ 	__webpack_require__(6687);
-/******/ 	var __webpack_exports__ = __webpack_require__(8878);
+/******/ 	__webpack_require__(9368);
+/******/ 	__webpack_require__(2875);
+/******/ 	var __webpack_exports__ = __webpack_require__(1425);
 /******/ 	
 /******/ })()
 ;

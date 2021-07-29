@@ -16,7 +16,7 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const Globals_1 = require("../Global/Globals");
 const Messages_1 = require("../Global/Messages");
 const Settings_1 = require("../Server/Settings");
-const Account_1 = __importDefault(require("./Account"));
+const Account_model_1 = __importDefault(require("./Account.model"));
 let Characters = class Characters extends sequelize_typescript_1.Model {
     async Spawn(Player) {
         try {
@@ -105,13 +105,13 @@ __decorate([
     __metadata("design:type", Number)
 ], Characters.prototype, "id", void 0);
 __decorate([
-    sequelize_typescript_1.ForeignKey(() => Account_1.default),
+    sequelize_typescript_1.ForeignKey(() => Account_model_1.default),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Characters.prototype, "Account_id", void 0);
 __decorate([
-    sequelize_typescript_1.BelongsTo(() => Account_1.default),
-    __metadata("design:type", Account_1.default)
+    sequelize_typescript_1.BelongsTo(() => Account_model_1.default),
+    __metadata("design:type", Account_model_1.default)
 ], Characters.prototype, "Account", void 0);
 __decorate([
     sequelize_typescript_1.Unique,

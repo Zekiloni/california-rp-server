@@ -2,7 +2,7 @@
 
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
-import Accounts from '../Models/Account';
+import Accounts from '../Models/Account.model';
 import Bans from '../Models/Ban';
 import Characters from '../Models/Character';
 import Appearances from  '../Models/Appearance';
@@ -60,22 +60,25 @@ mp.events.addProc(
       },
 
 
-      'SERVER::CREATOR:FINISH': async (Player: PlayerMp, Character: any, Appearance: any) => { 
+      'SERVER::CREATOR:FINISH': async (Player: PlayerMp, Char_Info: string, Char_Appearance: string) => { 
 
-         Character = JSON.parse(Character);
-         Appearance = JSON.parse(Appearance);
+         console.log('Usao');
+         const Character = JSON.parse(Char_Info);
+         const Appearance = JSON.parse(Char_Appearance);
 
-         const Exist = await Characters.findOne({ where: { Name: Character.First_Name } });
+         const Exist = await Characters.findOne({ where: { Name: Character.First_Name + ' ' + Character.Last_Name } });
          if (Exist) return Player.Notification(Messages.CHARACTER_ALREADY_EXIST, Globals.Notification.Error, 5);
 
          Characters.create({ 
-            Name: Character.First_Name + ' ' + Character.Last_Name, 
+            Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: Player.Account.id,
             Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
          });
 
          Appearances.create({
             
          });
+
+         Player.Notification(Messages.CHARACTER_CREATED, Globals.Notification.Succes, 4);
       },
 
 

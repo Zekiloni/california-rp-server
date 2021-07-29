@@ -1,3 +1,4 @@
+const { Controls } = require("../../Utils");
 
 
 
@@ -121,7 +122,7 @@ mp.events.add({
 });
 
 
-mp.keys.bind(Controls.keyI, false, function() {
+mp.keys.bind(Controls.KEY_I, false, function() {
    if ( Player.logged && Player.spawned ) { 
       if ( Player.isTypingInTextChat || Player.Cuffed ) return;
       mp.events.call('client:inventory.toggle');
@@ -143,7 +144,7 @@ function WeaponSelector () {
 
 WeaponSelector();
 
-mp.keys.bind(Controls.keyY, false, function() {
+mp.keys.bind(Controls.KEY_Y, false, function() {
    if (Player.logged && Player.spawned) { 
       if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:player.inventory.item:pickup');

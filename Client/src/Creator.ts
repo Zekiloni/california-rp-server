@@ -4,8 +4,10 @@ import { Browser } from './Browser';
 import { Clothing_Components, Genders, Player_Models } from './Data/Player';
 import { Lobby } from './Lobby';
 import {  DisableMoving, PlayerPreviewCamera, RemoveClothing } from './Utils';
-import Female_Torsos from './Data/Female_Torsos.json';
-import Male_Torsos from './Data/Male_Torsos.json';
+import Female_Torsos from './Data/FEMALE_TORSOS.json';
+import Male_Torsos from './Data/MALE_TORSOS.json';
+import { Clothing_Combinations } from './Data/Clothing_Combinations';
+
 
 const Player = mp.players.local;
 
@@ -20,6 +22,7 @@ mp.events.add(
             Lobby(false);
             Browser.call('BROWSER::SHOW', 'Creator');
             Player.position = Info.Position;
+            Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations[0]));
             Player.setHeading(0);
             mp.game.time.setClockTime(Info.Time, 0, 0);
             Player.freezePosition(true);
@@ -30,13 +33,14 @@ mp.events.add(
          });
       },
 
-      'CLIENT::CREATOR:FINISH': async (Character: object, Appearance: JSON, Clothing: JSON) => {
-         const Created:boolean = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance, Clothing);
+      'CLIENT::CREATOR:FINISH': async (Character: string, Appearance: string) => {
+         const Created:boolean = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance);
          if (Created) { 
             Active = false;
             mp.events.remove('render', DisableMoving);
             Player.freezePosition(false);
             PlayerPreviewCamera(false);
+            Browser.call('BROWSER::HIDE', 'Creator');
          } 
 
       },
@@ -52,6 +56,7 @@ mp.events.add(
       'CLIENT::CREATOR:GENDER': (x: number) => {
          Player.model = Player_Models[x];
          RemoveClothing(Player);
+         // Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations[0]));
       },
 
       'CLIENT::CREATOR:HAIR': (Style: number, Color: number, Highlights: number) => {
@@ -89,21 +94,18 @@ mp.events.add(
       },
 
       'CLIENT::CREATOR:EYES_COLOR': (Color: number) => {
-         Player.eyeColour = Color;
+         Player.setEyeColor(Color);
       },
 
-      'client:player.character.creator:beard': (x: string) => {
-         x = JSON.parse(x);
-         Player.setHeadOverlay(1, parseInt(x[0]), 1.0, parseInt(x[1]), 0);
-      },
-
-      'client:player.character.creator:blend': (x: string) => {
-         x = JSON.parse(x);
-         Player.setHeadBlendData(parseInt(x[0]), parseInt(x[1]), 0, parseInt(x[2]), parseInt(x[3]), 0, parseFloat(x[4]), parseFloat(x[5]), 0, true);
-      },
-
-      'client:player.character.creator:clothing': (i: number, d: number) => {
-         Player.setComponentVariation(i, d, 0, 2);
+      'CLIENT::CREATOR:BEARD': (Style: number, Color: number) => {
+         Player.setHeadOverlay(1, Style, 1.0, Color, 0);
       }
-   })
+   }
+);
+
+mp.events.addProc({
+   'CLIENT::TOP:COMBINATIONS': (Gender: number, Top: number) => { 
+      return Clothing_Combinations[Gender][Top];
+   }
+})
 

@@ -14,7 +14,7 @@ const Positions = {
    CameraLook: new mp.Vector3(-1573.966796875, -365.6707763671875, 202.30532836914062)
 }
 
-
+const Player = mp.players.local;
 
 mp.events.add({
 

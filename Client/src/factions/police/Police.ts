@@ -1,9 +1,7 @@
-export {};
 
 
-const Player = mp.players.local;
 
-let Active = false;
+let Active:boolean = false;
 let PatrolsMap = false;
 
 
@@ -47,3 +45,4 @@ mp.events.addDataHandler({
 
 
 
+export {};
