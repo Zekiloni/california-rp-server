@@ -75,7 +75,9 @@ mp.events.addProc(
          });
 
          Appearances.create({
-            
+            Face: Appearance.Face, Blend_Data: Appearance.Blend_Data, Overlays: Appearance.Overlays, 
+            Overlays_Toggle: Appearance.Overlays_Toggle, Hair: Appearance.Hair, Beard: Appearance.Beard,
+            Eyes: Appearance.Eyes
          });
 
          Player.Notification(Messages.CHARACTER_CREATED, Globals.Notification.Succes, 4);
