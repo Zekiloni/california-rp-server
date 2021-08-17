@@ -52,8 +52,8 @@ class GAME_UI {
       mp.game.ui.hideHudComponentThisFrame(19); // HUD_WEAPON_WHEEL
       mp.game.ui.hideHudComponentThisFrame(20); // HUD_WEAPON_WHEEL_STATS
 
-      mp.game.invoke('0x9E4CFFF989258472');
-      mp.game.invoke('0xF4F2C0D4EE209E20');
+      mp.game.invoke('0x9E4CFFF989258472'); // Anti AFK CAM
+      mp.game.invoke('0xF4F2C0D4EE209E20'); // Anti shake cam
       
       GameInterface.HIDE_CORSSAIR();
    }
