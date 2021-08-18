@@ -3,7 +3,7 @@
 <template>
    
    <div class="job-offer">
-
+      
    </div>
 
 </template>
