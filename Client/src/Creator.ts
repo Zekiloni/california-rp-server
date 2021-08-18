@@ -34,7 +34,7 @@ mp.events.add(
       },
 
       'CLIENT::CREATOR:FINISH': async (Character: string, Appearance: string) => {
-         const Created:boolean = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance);
+         const Created: boolean = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance);
          if (Created) { 
             Active = false;
             mp.events.remove('render', DisableMoving);
