@@ -23,6 +23,9 @@ let Plant = class Plant extends sequelize_typescript_1.Model {
     GetTotalGrowTime() {
         // IZ SEED ITEMA
     }
+    Die() {
+        this.destroy();
+    }
 };
 __decorate([
     sequelize_typescript_1.PrimaryKey,
@@ -35,7 +38,7 @@ __decorate([
 ], Plant.prototype, "Model", void 0);
 __decorate([
     sequelize_typescript_1.Column,
-    sequelize_typescript_1.Default(GrowStage.Seed),
+    sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
 ], Plant.prototype, "Stage", void 0);
 __decorate([
@@ -51,6 +54,11 @@ __decorate([
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
 ], Plant.prototype, "Fertilized", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    sequelize_typescript_1.Default(50),
+    __metadata("design:type", Number)
+], Plant.prototype, "Water", void 0);
 Plant = __decorate([
     sequelize_typescript_1.Table
 ], Plant);
@@ -60,8 +68,9 @@ const PlantTimer = setInterval(async () => {
     const AllPlants = await Plant.findAll();
     for (const i in AllPlants) {
         const Plant = AllPlants[i];
+        Plant.Water--;
         if (Plant.Stage != GrowStage.Harvest_Ready) {
-            AllPlants[i].Stage;
+            AllPlants[i].Stage += 0.1;
         }
     }
 }, 60000 * 60);

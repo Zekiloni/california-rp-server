@@ -11,7 +11,9 @@
       <Chat v-if="interfaces.Chat" />
 
       <Inventory v-if="interfaces.Inventory" />
-      <Banking v-if="interfaces.Banking" />
+      <transition name="slide-fade"> 
+         <Banking v-if="interfaces.Banking" />
+      </transition>
 
 
          <!-- FOCUS ROLEPLAY BUTTON LOL 

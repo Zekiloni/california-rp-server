@@ -19,6 +19,7 @@
             <li class="withdraw-page" :class="{ 'active': Page == 'withdraw' }" v-on:click="Navigate('withdraw')" v-tooltip="Messages.WITHDRAW_PAGE"> </li>
             <li class="deposit-page" :class="{ 'active': Page == 'deposit' }" v-on:click="Navigate('deposit')" v-tooltip="Messages.DEPOSIT_PAGE"> </li>
             <li class="transfer-page" :class="{ 'active': Page == 'transfer' }" v-on:click="Navigate('transfer')" v-tooltip="Messages.TRANSFER_PAGE"> </li>
+            <li class="savings-page" :class="{ 'active': Page == 'savings' }" v-on:click="Navigate('savings')" v-tooltip="Messages.SAVINGS_PAGE"> </li>
          </ul>
 
          <transition name="slide-fade" mode="out-in"> 
@@ -45,7 +46,7 @@
             <div class="page" v-if="Page == 'withdraw'" key=Withdraw>
                <div class="withdraw"> 
                   <h2 class="title"> {{ Messages.WITHDRAW_PAGE }} </h2>
-                  <input type="number" v-model="Inputs.Withdraw" />
+                  <input type="number" :placeholder="Messages.MONEY_AMOUNT" v-model="Inputs.Withdraw" />
                   <button class="money"> {{ Messages.WITHDRAW_THE_MONEY }} </button>
                </div>
             </div>
@@ -53,7 +54,7 @@
             <div class="page" v-if="Page =='deposit'" key=Deposit>
                <div class="deposit"> 
                   <h2 class="title"> {{ Messages.DEPOSIT_PAGE }} </h2>
-                  <input type="number" v-model="Inputs.Deposit" />
+                  <input type="number" :placeholder="Messages.MONEY_AMOUNT" v-model="Inputs.Deposit" />
                   <button class="money"> {{ Messages.DEPOSIT_THE_MONEY }} </button>
                </div>
             </div>
@@ -61,8 +62,9 @@
             <div class="page" v-if="Page == 'transfer'"> 
                <div class="transfer"> 
                   <h2 class="title"> {{ Messages.TRANSFER_PAGE }} </h2>
-                  <input type="text" >
-
+                  <input type="text" :placeholder="Messages.MONEY_TARGET" v-model="Inputs.Transfer_Target">
+                  <input type="number" :placeholder="Messages.MONEY_AMOUNT" v-model="Inputs.Transfer_Amount">
+                  <button class="money"> {{ Messages.TRANSFER_THE_MONEY }} </button>
                </div>
             </div>
 
@@ -186,6 +188,7 @@
    ul.navigation li.withdraw-page { mask: url('../assets/images/icons/withdraw-money.svg') no-repeat center; }
    ul.navigation li.deposit-page { mask: url('../assets/images/icons/deposit-money.svg') no-repeat center; }
    ul.navigation li.transfer-page { mask: url('../assets/images/icons/transfer-money.svg') no-repeat center; }
+   ul.navigation li.savings-page { mask: url('../assets/images/icons/savings.svg') no-repeat center; }
    ul.navigation li.active { opacity: 1; }
 
    .logout { position: absolute; top: 10px; right: 5px; width: 30px; height: 30px; background: whitesmoke; opacity: 0.5; transition: all .35s ease; mask-size: cover; mask: url('../assets/images/icons/logout.svg') no-repeat center;  }
@@ -199,7 +202,7 @@
    }
    
    ul.transactions li h4 { margin: 0; }
-   ul.transactions li h4.date { font-size: 9px; color: #cdcdcd; font-weight: 400; margin: 0 10px; }
+   ul.transactions li h4.date { font-size: 9px; color: #cdcdcd; font-weight: 300; margin: 0 10px; }
    ul.transactions li h4.amount { margin: 0 10px; }
    ul.transactions li h4.description { font-size: 12px; font-weight: 300; width: 225px; }
 
@@ -208,7 +211,7 @@
    .get-payment { font-size: 13px; padding: 5px 10px; width: 70px; }
 
    .withdraw, .deposit { margin: 0 auto; width: 320px; margin-top: 40px; height: 220px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
-   .transfer { margin: 0 auto; width: 300px; margin-top: 40px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+   .transfer { margin: 0 auto; width: 300px; height: 220px; margin-top: 40px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
    .withdraw input[type=number], .deposit input[type=number], .transfer input { width: 200px; }
 
    button.money { background: linear-gradient(141deg, rgba(104,69,234,1) 0%, rgba(66,54,128,1) 100%); color: whitesmoke; font-weight: 400; transition: all .35s ease; }
@@ -216,6 +219,11 @@
 
    input { background: #252b38; -webkit-appearance: none; }
    input:focus { outline: none; border-color: transparent; }
+
+   ::-webkit-input-placeholder { 
+      color: #b8b8b8;
+      font-size: 12px;
+   }
 
    h2.title { color: rgb(211, 211, 211); font-weight: 200; font-size: 18px; margin: 0; }
    
