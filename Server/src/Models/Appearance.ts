@@ -25,7 +25,7 @@ export default class Appearances extends Model {
    Hair: number[];
 
    @AllowNull(false)
-   @Column
+   @Column(DataType.JSON)
    Beard: number[];
 
    @AllowNull(false)
