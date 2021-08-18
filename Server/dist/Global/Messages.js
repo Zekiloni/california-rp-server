@@ -98,6 +98,8 @@ exports.Messages = {
     CAR_BOUGHT: 'Uspešno ste kupili vozilo',
     CAR_ALREADY_OWNED: 'Ovo vozilo je već u nečijem vlasništvu',
     CAR_PARKED: 'Uspešno ste parkirali vozilo',
+    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
+    WAITING_FOR_PAYMENT: ' aeka za isplatu.',
     MONEY_WITHDRAW: 'Podizanje',
     MONEY_DEPOSIT: 'Depozit',
 };

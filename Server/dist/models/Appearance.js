@@ -53,7 +53,7 @@ __decorate([
 ], Appearances.prototype, "Hair", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),
-    sequelize_typescript_1.Column,
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
     __metadata("design:type", Array)
 ], Appearances.prototype, "Beard", void 0);
 __decorate([
