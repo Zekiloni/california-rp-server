@@ -16,8 +16,8 @@ export default class Plant extends Model {
     Model: string;
 
     @Column
-    @Default(GrowStage.Seed)
-    Stage: GrowStage;
+    @Default(0)
+    Stage: number;
 
     @Column
     Grow_Time: number;
@@ -29,8 +29,16 @@ export default class Plant extends Model {
     @Default(0)
     Fertilized: number;
 
+    @Column
+    @Default(50)
+    Water: number;
+
     GetTotalGrowTime() {
         // IZ SEED ITEMA
+    }
+
+    Die() {
+        this.destroy();
     }
     
 }
@@ -42,8 +50,9 @@ const PlantTimer = setInterval( async () => {
 
     for (const i in AllPlants) {
         const Plant = AllPlants[i];
+        Plant.Water--;
         if (Plant.Stage != GrowStage.Harvest_Ready) {
-            AllPlants[i].Stage
+            AllPlants[i].Stage += 0.1;
         }
     }
 }, 60000 * 60);
