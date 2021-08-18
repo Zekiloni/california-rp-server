@@ -63,12 +63,12 @@ __decorate([
 ], Appearances.prototype, "Eyes", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),
-    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.ARRAY),
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
     __metadata("design:type", Array)
 ], Appearances.prototype, "Overlays", void 0);
 __decorate([
-    sequelize_typescript_1.AllowNull(false),
-    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.ARRAY),
+    sequelize_typescript_1.AllowNull(true),
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
     __metadata("design:type", Array)
 ], Appearances.prototype, "Overlays_Colors", void 0);
 __decorate([
