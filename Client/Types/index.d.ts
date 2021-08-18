@@ -43,6 +43,7 @@ declare global {
   interface VehicleMp {
     Fuel: number;
     Mileage: number;
+    doNotChangeAlpha: boolean;
   }
 
   interface EventMpPool {
