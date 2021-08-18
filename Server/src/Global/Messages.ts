@@ -96,5 +96,8 @@ export const Messages = {
    HOUSE_ALREADY_OWNER: 'Ova kuća / stan već poseduje vlasnika.',
    CAR_BOUGHT: 'Uspešno ste kupili vozilo',
    CAR_ALREADY_OWNED: 'Ovo vozilo je već u nečijem vlasništvu',
-   CAR_PARKED: 'Uspešno ste parkirali vozilo'
+   CAR_PARKED: 'Uspešno ste parkirali vozilo',
+
+   MONEY_WITHDRAW: 'Podizanje',
+   MONEY_DEPOSIT: 'Depozit',
 };

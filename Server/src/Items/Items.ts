@@ -45,20 +45,17 @@ export namespace Items {
       Equipable, Consumable, Openable, 
       Drink, Food, Alcohol, Drug, Weapon, 
       Ammo, Ilegal, Legal, Misc, Clothing,
-      Prop, Heavy, Stackable, Usable
+      Prop, Heavy, Stackable, Usable, Storage
    }
 
    export enum Entity { 
-      Ground, Player, Equiped,
-      Left_Hand, Right_Hand, Bag,
+      Ground, Player, Storage,
       Vehicle, tempVehicle, House,
       Business
    }
 
-   export const Status = { 
-      Food: {
-         Raw: 0, Cooked: 1
-      }
+   export enum Status { 
+      None, Equiped, Right_Hand, Left_Hand,
    }
 }
 

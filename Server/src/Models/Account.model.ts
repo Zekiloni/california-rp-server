@@ -99,14 +99,14 @@ export default class Accounts extends Model {
          this.Social_Club = Player.socialClub;
       }
 
-      await this.Save();
+      await this.save();
    }
 
    
    MakeAdministrator (Player: PlayerMp, Level: number) {
       this.Administrator = Level;
       Player.setVariable('Admin', Level); 
-      this.Save();
+      this.save();
    }
 }
 

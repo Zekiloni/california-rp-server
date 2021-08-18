@@ -15,7 +15,7 @@ const Database = new sequelize_typescript_1.Sequelize({
     username: Config_1.Config.Database.User,
     password: Config_1.Config.Database.Password,
     storage: ':memory:',
-    models: [__dirname + '/**/*.model.ts']
+    models: [Account_model_1.default, Character_1.default]
 });
 Database.authenticate()
     .then(() => {

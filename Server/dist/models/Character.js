@@ -203,7 +203,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Characters.prototype, "Wounded", void 0);
 __decorate([
-    sequelize_typescript_1.Default('[]'),
+    sequelize_typescript_1.Default([]),
     sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
     __metadata("design:type", Array)
 ], Characters.prototype, "Injuries", void 0);
@@ -245,6 +245,11 @@ __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Characters.prototype, "Facial_Mood", void 0);
+__decorate([
+    sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Inventory_Weight),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Characters.prototype, "Max_Inventory_Weight", void 0);
 __decorate([
     sequelize_typescript_1.Default(Settings_1.Settings.Limitations.Max_Houses),
     sequelize_typescript_1.Column,

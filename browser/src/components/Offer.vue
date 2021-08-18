@@ -5,6 +5,7 @@
    <div class="offer-holder">
       <transition name="offer">
          <div class="offer" v-if="Offer" >
+            <i class="icon-offer"> </i>
             <h2> {{ Offer.Title }} </h2>
             <p v-html="Offer.Message"> </p>
 
@@ -39,7 +40,7 @@
             if (this.Offer != null) return;
             this.Make(Title, Message, Event, Time);
          }); 
-
+         
          window.addEventListener('keyup', (e) => { 
             switch (e.key) {
                case 'y': { if (this.Offer) this.Accept(); break; }
@@ -64,14 +65,14 @@
          },
 
          Accept: function () { 
+            this.$refs.Offer_Accept.classList.add('clicked');
             mp.trigger('CLIENT::OFFER:ACCEPT', this.Offer.Event);
-            this.$refs.Offer_Accept.classList.add('clicked')            
             setTimeout(() => { this.Offer = null; }, 500);         
          },
 
          Decline: function () { 
-            mp.trigger('CLIENT::OFFER:DECLINE', this.Offer.Event);
             this.$refs.Offer_Decline.classList.add('clicked');
+            mp.trigger('CLIENT::OFFER:DECLINE', this.Offer.Event);
             setTimeout(() => { this.Offer = null; }, 500);         
             ;
          }
@@ -86,7 +87,8 @@
       width: 100%;
       position: absolute;
       min-height: 150px;
-      bottom: 20px;
+      z-index: 98;
+      top: 20px;
       height: auto;
       display: flex;
       justify-content: center;
@@ -95,11 +97,9 @@
 
    .offer { 
       height: auto;
-      width: 300px;
+      width: 225px;
       min-height: 200px;
       padding: 0 15px;
-      box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;
-      background: linear-gradient(0deg, rgb(21 21 21 / 40%), transparent);
       position: relative;
       display: flex;
       justify-content: center;
@@ -111,35 +111,21 @@
    .offer p { margin: 5px 0; color: whitesmoke; text-shadow: 0 0 0.75px rgb(0 0 0 / 45%); font-size: 16px; font-weight: 300; text-align: center; }
 
    ul.actions { padding: 0; list-style: none; display: flex; justify-content: space-between; width: 140px; margin-top: 10px; }
-   ul.actions li { width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; color: white; font-weight: 400; border-radius: 5px; transition: all 0.35s ease; opacity: 0.7; }
+   ul.actions li { width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; color: white; font-weight: 400; border-radius: 5px; transition: all 0.35s ease; border-radius: 100%; }
 
    li.accept { background: rgb(68, 191, 103); }
    li.decline { background: #ff4422; }
 
-   ul.actions li.clicked { opacity: 1; }
+   ul.actions li.accept.clicked { color:rgb(68, 191, 103); background: white; }
+   ul.actions li.decline.clicked { color:#ff4422; background: white; }
 
-   ul.actions li:focus { 
-      background: black !important;
-   }
+   ul.actions li:focus { background: black !important; }
 
-   .progress { 
-      position: absolute;
-      bottom: 0;
-      lefT: 0;
-      width: 100%;
-      height: 10px;
-      background: rgb(0 0 0 / 50%);
-   }
+   .icon-offer { width: 45px; height: 45px; mask: url('../assets/images/icons/offer.svg') no-repeat center; background: white; }
 
-   .bar { 
-      position: absolute;
-      bottom: 0; 
-      left: 0;
-      width: 0%;
-      height: 10px;
-      animation: progress ease;
-      background: #fab80a;
-   }
+   .progress { position: relative; bottom: 0; width: 200px; height: 5px; background: rgb(0 0 0 / 50%); }
+
+   .bar { position: absolute; bottom: 0;  left: 0; width: 0%; height: 5px; animation: progress ease; background: white; }
 
    @keyframes progress {
       from { width: 100%; }
@@ -150,7 +136,7 @@
    .offer-leave-active { animation: offer-in 0.55s reverse; }
 
    @keyframes offer-in {
-      0% { transform: translateY(200px); }
+      0% { transform: translateY(-200px); }
       100% { transform: translateY(0px); }
    }
 

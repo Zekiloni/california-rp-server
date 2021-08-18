@@ -8,6 +8,9 @@ import store from './store';
 Vue.config.productionTip = false;
 // Vue.config.devtools = false;
 
+//@ts-ignore
+// import VueEllipseProgress from 'vue-ellipse-progress';
+// Vue.use(VueEllipseProgress);
 
 const Focus = new Vue({
    router,

@@ -2,7 +2,11 @@
 
 export const Messages = {
    WEBSITE: 'www.focus-rp.com',
+   FOCUS: 'Focus',
+   ROLEPLAY: 'Roleplay',
    USERNAME: 'Korisničko ime',
+   HOME_PAGE: 'Početna',
+   YOUR_BALANCE: 'Vaše Stanje',
    PASSWORD: 'Korisnička Šifra',
    NOT_DONATOR: 'Potreban vam je donator level.',
    CREATE_CHARACTER: 'Kreiraj Karaktera',
@@ -18,8 +22,16 @@ export const Messages = {
    BANK: 'Banka',
    IDENTITY: 'Identitet',
    BLENDINGS: 'Genetika',
+   WITHDRAW_PAGE: 'Podizanje Novca',
+   DEPOSIT_PAGE: 'Depozit Novca',
+   TRANSFER_PAGE: 'Transfer Novca',
+   TRANSACTION_HISTORY: 'Istorija Transakcija',
    FACE_SHAPE: 'Konture Lica',
    HAIR: 'Maljavost',
+   WEIGHT_OF_ITEM: 'Težina predmeta',
+   TOTAL_WEIGHT: 'Ukupna težina ',
+   WEIGHT_KG: 'kg',
+   ITEM_WEIGHT: 'težina predmeta ',
    FIRST_NAME: 'Ime',
    START_GAME_NEW_CHARACTER: 'Započni igru sa novim karakterom',
    HEAD_OVERLAYS: 'Detalji',
@@ -29,6 +41,9 @@ export const Messages = {
    HAIR_COLOR: 'Boja Kose',
    BEARD_MODEL: 'Stil Brade',
    BEARD_COLOR: 'Boja Brade',
+   PLAYER_ITEMS: 'Predmeti',
+   NOT_AVAILABLE: 'Nije dostupno',
+   STORAGE_ITEMS: 'Torba',
    HAIR_HIGHLIGHT: 'Presijavanje kose',
    EYES_COLOR: 'Boja Očiju',
    BLEND_DATA: ['Oblik glave majke', 'Oblik glave oca', 'Boja kože majke', 'Boja kože oca', 'Miks oblika glave', 'Miks boje kože'],
@@ -57,7 +72,6 @@ export const Messages = {
       'Jagodična kost širina', 'Obrazi širina', 'Oči', 'Usne', 'Dužina vilice', 'Visina vilice', 'Dužina brade', 'Pozicija brade', 'Širina brade', 'Oblik brade',  'Širina vrata' 
    ],
 }
-
 
 export const Blend_Data = { 
    Maximums: [45, 45, 45, 45, 1, 1], 
@@ -94,6 +108,28 @@ export const Notification = {
    Succes: 0, Error: 1, Info: 2
 }
 
+
+export const ENVIRONMENT_TYPES = { 
+   '0': 'Zemlja', '6': 'Vozilo', '7': 'Vozilo', '8': 'Kuća - Apartman', '9': 'Biznis'
+}
+
+export enum Item_Type {
+   Equipable, Consumable, Openable, 
+   Drink, Food, Alcohol, Drug, Weapon, 
+   Ammo, Ilegal, Legal, Misc, Clothing,
+   Prop, Heavy, Stackable, Usable, Storage
+}
+
+export enum Item_Entity { 
+   Ground, Player, Equiped,
+   Left_Hand, Right_Hand, Storage,
+   Vehicle, tempVehicle, House,
+   Business
+}
+
+export enum Item_Status { 
+   None, Equiped, Right_Hand, Left_Hand,
+}
 
 export const Clothing_Components = { 
    Names: ['Gornjak', 'Majca', 'Donji deo', 'Obuća'],

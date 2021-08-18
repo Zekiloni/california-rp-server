@@ -20,7 +20,7 @@ mp.events.add(
          mp.events.callRemote('SERVER::OFFER:ACCEPT', Info);
       },
 
-      'CLIENT::OFFER:DECLINe': (Info: object) => { 
+      'CLIENT::OFFER:DECLINE': (Info: object) => { 
          mp.events.callRemote('SERVER::OFFER:DECLINE', Info);
       }
    }

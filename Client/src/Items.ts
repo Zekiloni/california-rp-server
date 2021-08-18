@@ -1,33 +1,25 @@
-const { Controls } = require("../../Utils");
+import { Browser } from "./Browser";
+import { Controls } from "./Utils";
 
 
 
 const Player = mp.players.local;
 
-let browser = null, opened = false, nearbyPlayers = [];
+let Active:boolean = false;
 
-const Keys = {
-   0: 0x31, 1: 0x32, 2: 0x33, 3:0x34, 666: 0x09
-};
+const ScreenResolution = mp.game.graphics.getScreenActiveResolution(100, 100);
 
-const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
+
+mp.events.add({
+   'CLIENT::INVENTORY:TOGGLE': () => { 
+      Active = !Active;
+      Browser.call('BROWSER::INVENTORY:TOGGLE', Active);
+   }
+});
 
 
 
 mp.events.add({
-
-   'client:inventory.toggle': async () => { 
-      opened = !opened;
-      if (opened) { 
-         browser = mp.browsers.new('package://player/inventory/inventory-interface/Inventory.html');
-         const Inventory = await mp.events.callRemoteProc('server:player.inventory:get');
-         browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-         Player.BrowserControls(true, true);
-      } else { 
-         if (browser) browser.destroy();
-         Player.BrowserControls(false, false);
-      }
-   },
 
    'client:inventory.item:drop': Drop,
 
@@ -92,7 +84,7 @@ mp.events.add({
                if (Object.getVariable('Item')) { 
                   const Distance = new mp.Vector3(PlayerPosition.x, PlayerPosition.y, PlayerPosition.z).subtract(new mp.Vector3(ObjectPosition.x, ObjectPosition.y, ObjectPosition.z)).length();
      
-                  const position = mp.game.graphics.world3dToScreen2d(new mp.Vector3(ObjectPosition.x, ObjectPosition.y, ObjectPosition.z + 0.15));
+                  const position = mp.game.graphics.world3dToScreen2d(ObjectPosition.x, ObjectPosition.y, ObjectPosition.z + 0.15);
 
                   if (position) {
                      let x = position.x;
@@ -102,7 +94,7 @@ mp.events.add({
                         let scale = (Distance / 25);
                         if (scale < 0.6) scale = 0.6;
                         
-                        y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
+                        y -= (scale * (0.005 * (ScreenResolution.y / 1080))) - parseInt('0.010');
                         
                         const Item = Object.getVariable('Item');
    
@@ -123,38 +115,24 @@ mp.events.add({
 
 
 mp.keys.bind(Controls.KEY_I, false, function() {
-   if ( Player.logged && Player.spawned ) { 
+   if (Player.getVariable('Logged') && Player.getVariable('Spawned')) { 
       if ( Player.isTypingInTextChat || Player.Cuffed ) return;
       mp.events.call('client:inventory.toggle');
    }
 });
 
 
-function WeaponSelector () { 
-   for (let i in Keys) {
-      const key = Keys[i];
-      mp.keys.bind(key, false, function() {
-         if (Player.logged && Player.spawned) { 
-            if (Player.cuffed || Player.vehicle || mp.players.local.isTypingInTextChat) return;
-            mp.events.callRemote('server:player.inventory.item.weapon:take', i);
-         }
-      });
-   }
-}
-
-WeaponSelector();
-
 mp.keys.bind(Controls.KEY_Y, false, function() {
-   if (Player.logged && Player.spawned) { 
-      if (Player.vehicle || Player.cuffed || mp.players.local.isTypingInTextChat) return;
+   if (Player.getVariable('Logged') && Player.getVariable('Spawned')) { 
+      if (Player.vehicle || Player.getVariable('Cuffed') || mp.players.local.isTypingInTextChat) return;
       mp.events.callRemote('server:player.inventory.item:pickup');
    }
 });
 
 
-
-async function Give (target, item, quantity) {
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:give', target, item, quantity);
+async function Give (Target: PlayerMp, ITEM_ID: number, Quantity: number) {
+   const Response = await mp.events.callRemoteProc('server:player.inventory.item:give', Target, ITEM_ID, Quantity);
+   if (Response) Browser.call('');
    if (Inventory) {
       browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
    }
@@ -176,7 +154,7 @@ async function Unequip (item) {
    if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
 };
 
-async function Drop (item, hash, quantity = 1) { 
+async function Drop (Item: number, hash, quantity = 1) { 
 
    let { position } = Player;
    let heading = Player.getHeading();
@@ -218,3 +196,5 @@ async function Drop (item, hash, quantity = 1) {
    Player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
 }
 
+
+export {};

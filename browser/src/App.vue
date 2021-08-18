@@ -1,13 +1,17 @@
 <template>
 
    <div id="app">
-      <GameInterface v-if="interfaces.GameInterface" />
-      <Chat v-if="interfaces.Chat" />
-      <Creator v-if="interfaces.Creator" />
       <transition name="bounce">
          <Authorization v-if="interfaces.Authorization" />
-      </transition>
+      </transition>      
+      <Creator v-if="interfaces.Creator" />
+
+      <GameInterface v-if="interfaces.GameInterface" />
       <Notifications v-if="interfaces.Notifications" />
+      <Chat v-if="interfaces.Chat" />
+
+      <Inventory v-if="interfaces.Inventory" />
+      <Banking v-if="interfaces.Banking" />
 
 
          <!-- FOCUS ROLEPLAY BUTTON LOL 
@@ -33,11 +37,13 @@
    import Notifications from './components/Notifications.vue';
    import GameInterface from './components/Game.Interface.vue';
    import Chat from './components/Chat';
+   import Inventory from './components/Inventory/Inventory.vue';
+   import Banking from './components/Banking.vue';
 
    export default { 
 
       components: { 
-         Authorization, Creator, Notifications, GameInterface, Chat
+         Authorization, Creator, Notifications, GameInterface, Inventory, Chat, Banking
       },
 
       data () { 

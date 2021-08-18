@@ -40,25 +40,25 @@ Items.List = {};
         Type[Type["Heavy"] = 14] = "Heavy";
         Type[Type["Stackable"] = 15] = "Stackable";
         Type[Type["Usable"] = 16] = "Usable";
+        Type[Type["Storage"] = 17] = "Storage";
     })(Type = Items.Type || (Items.Type = {}));
     let Entity;
     (function (Entity) {
         Entity[Entity["Ground"] = 0] = "Ground";
         Entity[Entity["Player"] = 1] = "Player";
-        Entity[Entity["Equiped"] = 2] = "Equiped";
-        Entity[Entity["Left_Hand"] = 3] = "Left_Hand";
-        Entity[Entity["Right_Hand"] = 4] = "Right_Hand";
-        Entity[Entity["Bag"] = 5] = "Bag";
-        Entity[Entity["Vehicle"] = 6] = "Vehicle";
-        Entity[Entity["tempVehicle"] = 7] = "tempVehicle";
-        Entity[Entity["House"] = 8] = "House";
-        Entity[Entity["Business"] = 9] = "Business";
+        Entity[Entity["Storage"] = 2] = "Storage";
+        Entity[Entity["Vehicle"] = 3] = "Vehicle";
+        Entity[Entity["tempVehicle"] = 4] = "tempVehicle";
+        Entity[Entity["House"] = 5] = "House";
+        Entity[Entity["Business"] = 6] = "Business";
     })(Entity = Items.Entity || (Items.Entity = {}));
-    Items.Status = {
-        Food: {
-            Raw: 0, Cooked: 1
-        }
-    };
+    let Status;
+    (function (Status) {
+        Status[Status["None"] = 0] = "None";
+        Status[Status["Equiped"] = 1] = "Equiped";
+        Status[Status["Right_Hand"] = 2] = "Right_Hand";
+        Status[Status["Left_Hand"] = 3] = "Left_Hand";
+    })(Status = Items.Status || (Items.Status = {}));
 })(Items = exports.Items || (exports.Items = {}));
 /* CLOTHING */
 new Items('Mask', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_balaclava', 0.3, 'Mask for Head');

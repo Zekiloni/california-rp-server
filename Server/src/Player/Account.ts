@@ -73,11 +73,10 @@ mp.events.addProc(
             Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: Player.Account.id,
             Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
          });
-         // <3
+
          Appearances.create({
-            Face: Appearance.Face, Blend_Data: Appearance.Blend_Data, Overlays: Appearance.Overlays, 
-            Overlays_Toggle: Appearance.Overlays_Toggle, Hair: Appearance.Hair, Beard: Appearance.Beard,
-            Eyes: Appearance.Eyes
+            Face_Features: Appearance.Face, Blend_Data: Appearance.Blend_Data, Overlays: Appearance.Overlays, 
+            Hair: Appearance.Hair, Beard: Appearance.Beard, Eyes: Appearance.Eyes
          });
 
          Player.Notification(Messages.CHARACTER_CREATED, Globals.Notification.Succes, 4);

@@ -1,5 +1,18 @@
 import { Clothing_Components, Genders } from "./Data/Player";
 
+const ATMS = [ 
+   3424098598, 3168729781, 2930269768, 506770882
+];
+
+
+export function IsNearATM (Position: Vector3Mp) { 
+   for (const ATM of ATMS) { 
+      const Nearby = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 1.8, ATM, false, true, true);
+      if (Nearby) {
+         return true;
+      }
+   }
+};
 
 export const Controls = {
    KEY_X: 0x58,
@@ -154,7 +167,10 @@ function ZoomCamera (Delta: number) {
    MovableCamera.setCoord(x, y, z);
 }
 
+
+
 let [PrevX, PrevY] = mp.gui.cursor.position;
+
 
 export function CursorData () { 
    const x = PrevX, y = PrevY;
@@ -162,6 +178,7 @@ export function CursorData () {
    PrevY = mp.gui.cursor.position[1];
    return { DeltaX: mp.gui.cursor.position[0] - x, DeltaY: mp.gui.cursor.position[1] - y };
 }
+
 
 export function MoveCamera () { 
    const Player = mp.players.local;

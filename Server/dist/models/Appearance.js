@@ -15,9 +15,9 @@ let Appearances = class Appearances extends sequelize_typescript_1.Model {
         const Genders = [mp.joaat('mp_m_freemode_01'), mp.joaat('mp_f_freemode_01')];
         Player.model = Genders[Gender];
         Player.setHeadBlend(this.Blend_Data[0], this.Blend_Data[1], 0, this.Blend_Data[2], this.Blend_Data[3], 0, this.Blend_Data[4], this.Blend_Data[5], 0);
-        Player.eyeColor = parseInt(this.Eyes);
-        Player.setClothes(2, parseInt(this.Hair[0]), 0, 2);
-        Player.setHairColor(parseInt(this.Hair[1]), parseInt(this.Hair[2]));
+        Player.eyeColor = this.Eyes;
+        Player.setClothes(2, this.Hair[0], 0, 2);
+        Player.setHairColor(this.Hair[1], this.Hair[2]);
         for (let i = 0; i < 20; i++) {
             Player.setFaceFeature(i, this.Face_Features[i]);
         }
@@ -38,28 +38,28 @@ __decorate([
 ], Appearances.prototype, "Character", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),
-    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.ARRAY),
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
     __metadata("design:type", Array)
 ], Appearances.prototype, "Face_Features", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),
-    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.ARRAY),
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
     __metadata("design:type", Array)
 ], Appearances.prototype, "Blend_Data", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.JSON),
+    __metadata("design:type", Array)
 ], Appearances.prototype, "Hair", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
+    __metadata("design:type", Array)
 ], Appearances.prototype, "Beard", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Appearances.prototype, "Eyes", void 0);
 __decorate([
     sequelize_typescript_1.AllowNull(false),

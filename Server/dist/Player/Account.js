@@ -62,7 +62,12 @@ mp.events.addProc({
             Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: Player.Account.id,
             Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
         });
-        Appearance_1.default.create({});
+        // <3
+        Appearance_1.default.create({
+            Face: Appearance.Face, Blend_Data: Appearance.Blend_Data, Overlays: Appearance.Overlays,
+            Overlays_Toggle: Appearance.Overlays_Toggle, Hair: Appearance.Hair, Beard: Appearance.Beard,
+            Eyes: Appearance.Eyes
+        });
         Player.Notification(Messages_1.Messages.CHARACTER_CREATED, Globals_1.Globals.Notification.Succes, 4);
     },
     'server:player.character:delete': async (Player, Char_ID) => {

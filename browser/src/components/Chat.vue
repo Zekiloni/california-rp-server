@@ -193,6 +193,7 @@
       height: 300px;
       position: absolute;
       top: 20px;
+      z-index: 99;
       left: 20px;
       padding: 0;
       transition: all 0.35s ease;

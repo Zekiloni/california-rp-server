@@ -95,7 +95,7 @@ export default class Characters extends Model {
    @Column
    Wounded: boolean
 
-   @Default('[]')
+   @Default([])
    @Column(DataType.JSON)
    Injuries: Injury[]
 
@@ -128,6 +128,10 @@ export default class Characters extends Model {
    @Default('normal')
    @Column
    Facial_Mood: string
+
+   @Default(Settings.Limitations.Max_Inventory_Weight)
+   @Column
+   Max_Inventory_Weight: number
 
    @Default(Settings.Limitations.Max_Houses)
    @Column

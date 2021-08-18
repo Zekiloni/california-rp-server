@@ -13,15 +13,15 @@ export default class Appearances extends Model {
    Character: number;
 
    @AllowNull(false)
-   @Column(DataType.ARRAY)
+   @Column(DataType.JSON)
    Face_Features: number[];
 
    @AllowNull(false)
-   @Column(DataType.ARRAY)
+   @Column(DataType.JSON)
    Blend_Data: number[];
 
    @AllowNull(false)
-   @Column(DataType.ARRAY)
+   @Column(DataType.JSON)
    Hair: number[];
 
    @AllowNull(false)
@@ -33,11 +33,11 @@ export default class Appearances extends Model {
    Eyes: number;
 
    @AllowNull(false)
-   @Column(DataType.ARRAY)
+   @Column(DataType.JSON)
    Overlays: number[];
 
-   @AllowNull(false)
-   @Column(DataType.ARRAY)
+   @AllowNull(true)
+   @Column(DataType.JSON)
    Overlays_Colors: number[];
 
    @CreatedAt

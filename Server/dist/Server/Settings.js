@@ -21,6 +21,7 @@ exports.Settings = {
         Time: 20
     },
     Limitations: {
+        Max_Inventory_Weight: 5,
         Max_Houses: 3,
         Max_Business: 2,
         Max_Vehicles: 5,

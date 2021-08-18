@@ -66,7 +66,7 @@
       width: 325px;
       min-height: 100px;
       padding: 0;
-      z-index: 99;
+      z-index: 101;
       height: 275px;
       overflow: hidden;
    }
