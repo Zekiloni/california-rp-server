@@ -27,7 +27,6 @@ mp.events.add({
 
    'client:inventory.item:give': Give,
 
-   'client:inventory.item:unequip': Unequip,
 
    'client:inventory.process.clothing': (index) => { 
       mp.events.callRemote('server:item.clothing', index);

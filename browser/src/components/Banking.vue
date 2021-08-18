@@ -28,6 +28,7 @@
                <ul class="transactions"> 
                   <li v-for="Transaction in Transactions" :key="Transaction"> 
                      <h4 class="date"> {{ Transaction.Date }} </h4>
+                     <h4 class="description" v-html="Transaction.Description"> </h4>
                      <h4 class="amount"> {{ Helpers.Dollars(Transaction.Amount) }} </h4>
                   </li>
                </ul>
@@ -60,9 +61,9 @@
             Paycheck: 33,
             Savings: 0,
             Transactions: [
-               { Date: '11.06.2001 - 20:23', Amount: 300, Type: 0, Description: 'aaa' },
-               { Date: '11.06.2001 - 20:23', Amount: 300, Type: 0, Description: 'aaa' },
-               { Date: '11.06.2001 - 20:23', Amount: 300, Type: 0, Description: 'aaa' }
+               { Date: '11.06.2001 - 20:23', Amount: 300, Type: 1, Description: 'Depozit Novca' },
+               { Date: '11.06.2001 - 20:23', Amount: 300, Type: 2, Description: 'Transfer Novca na <b>34534534534</b>' },
+               { Date: '11.06.2001 - 20:23', Amount: 300, Type: 0, Description: 'Podizanje Novca' }
             ],
 
             Inputs: { 
@@ -159,18 +160,20 @@
    .logout { position: absolute; top: 10px; right: 5px; width: 30px; height: 30px; background: whitesmoke; opacity: 0.5; transition: all .35s ease; mask-size: cover; mask: url('../assets/images/icons/logout.svg') no-repeat center;  }
    .logout:hover { background: white; opacity: 0.8; }
 
-   .transaction-history { width: 370px; margin: 0 auto; }
-   .transaction-history ul.transactions { padding: 0; list-style: none; }
+   .transaction-history { width: 370px; margin: 0 auto; margin-top: 20px; }
+   .transaction-history ul.transactions { padding: 0; list-style: none; max-height: 200px; overflow-y: auto; margin: 5px 0;}
    ul.transactions li { 
       width: 100%; padding: 5px 0; background: #212733; margin: 5px 0; border-radius: 5px;
       color: rgb(211, 211, 211); display: flex; justify-content: space-between; align-items: center;
    }
    
    ul.transactions li h4 { margin: 0; }
-   ul.transactions li h4.date { font-size: 11px; color: #cdcdcd; font-weight: 400; margin: 0 10px; }
+   ul.transactions li h4.date { font-size: 9px; color: #cdcdcd; font-weight: 400; margin: 0 10px; }
+   ul.transactions li h4.amount { margin: 0 10px; }
+   ul.transactions li h4.description { font-size: 12px; font-weight: 300; width: 225px; }
 
 
-   h2.title { color: rgb(211, 211, 211); font-weight: 200; font-size: 18px; }
+   h2.title { color: rgb(211, 211, 211); font-weight: 200; font-size: 18px; margin: 0; }
    
 
 </style>
