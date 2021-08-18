@@ -23,8 +23,6 @@ mp.events.add({
 
    'client:inventory.item:drop': Drop,
 
-   'client:inventory.item.weapon:put': Put,
-
    'client:inventory.item:use': Use,
 
    'client:inventory.item:give': Give,
@@ -98,12 +96,12 @@ mp.events.add({
                         
                         const Item = Object.getVariable('Item');
    
-                        mp.game.graphics.drawText(Item, [x, y], {
-                           font: 4,
-                           color: [255, 255, 255, 255],
-                           scale: [0.325, 0.325],
-                           outline: false
-                        });
+                        // mp.game.graphics.drawText(Item, [x, y], {
+                        //    font: 4,
+                        //    color: [255, 255, 255, 255],
+                        //    scale: [0.325, 0.325],
+                        //    outline: false
+                        // });
                      }
                   }
                }
@@ -131,30 +129,15 @@ mp.keys.bind(Controls.KEY_Y, false, function() {
 
 
 async function Give (Target: PlayerMp, ITEM_ID: number, Quantity: number) {
-   const Response = await mp.events.callRemoteProc('server:player.inventory.item:give', Target, ITEM_ID, Quantity);
-   if (Response) Browser.call('');
-   if (Inventory) {
-      browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-   }
+   const Response = await mp.events.callRemoteProc('SERVER::ITEM:GIVE', Target, ITEM_ID, Quantity);
 }
 
-async function Use (item) { 
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:use', item);
-   if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-}
-
-async function Put (weapon) { 
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.weapon:put', weapon);
-   if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+async function Use (ITEM_ID: number) { 
+   const Inventory = await mp.events.callRemoteProc('SERVER::ITEM:USE', ITEM_ID);
 }
 
 
-async function Unequip (item) {
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:unequip', item);
-   if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-};
-
-async function Drop (Item: number, hash, quantity = 1) { 
+async function Drop (Item: number, Hash: string, quantity = 1) { 
 
    let { position } = Player;
    let heading = Player.getHeading();
@@ -167,7 +150,7 @@ async function Drop (Item: number, hash, quantity = 1) {
    );
 
    let object = mp.objects.new(
-      mp.game.joaat(hash),
+      mp.game.joaat(Hash),
       new mp.Vector3(newPos.x, newPos.y, newPos.z),
       {
          alpha: 255,
@@ -189,8 +172,7 @@ async function Drop (Item: number, hash, quantity = 1) {
 
    object.destroy();
 
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:drop', item, JSON.stringify(fixedPosition), quantity);
-   browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:drop', Item, JSON.stringify(fixedPosition), quantity);
 
    mp.game.streaming.requestAnimDict('random@domestic');
    Player.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
