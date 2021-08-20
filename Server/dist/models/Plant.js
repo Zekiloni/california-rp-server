@@ -13,18 +13,42 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 var GrowStage;
 (function (GrowStage) {
     GrowStage[GrowStage["Seed"] = 0] = "Seed";
-    GrowStage[GrowStage["Seedling"] = 1] = "Seedling";
-    GrowStage[GrowStage["Small_Plant"] = 2] = "Small_Plant";
-    GrowStage[GrowStage["Medium_Plant"] = 3] = "Medium_Plant";
-    GrowStage[GrowStage["Big_Plant"] = 4] = "Big_Plant";
-    GrowStage[GrowStage["Harvest_Ready"] = 5] = "Harvest_Ready";
+    GrowStage[GrowStage["Small_Plant"] = 1] = "Small_Plant";
+    GrowStage[GrowStage["Medium_Plant"] = 2] = "Medium_Plant";
+    GrowStage[GrowStage["Big_Plant"] = 3] = "Big_Plant";
+    GrowStage[GrowStage["Harvest_Ready"] = 4] = "Harvest_Ready";
 })(GrowStage || (GrowStage = {}));
 let Plant = class Plant extends sequelize_typescript_1.Model {
     GetTotalGrowTime() {
         // IZ SEED ITEMA
     }
     Die() {
+        this.GameObject.destroy();
         this.destroy();
+    }
+    Refresh() {
+        if (this.GameObject != null)
+            this.GameObject.destroy();
+        switch (this.CurrentStage) {
+            case GrowStage.Small_Plant:
+                this.GameObject = mp.objects.new(mp.joaat(this.ObjectModels[0]), this.Position, {
+                    alpha: 255,
+                    dimension: 0
+                });
+                break;
+            case GrowStage.Medium_Plant:
+                this.GameObject = mp.objects.new(mp.joaat(this.ObjectModels[1]), this.Position, {
+                    alpha: 255,
+                    dimension: 0
+                });
+                break;
+            case GrowStage.Big_Plant:
+                this.GameObject = mp.objects.new(mp.joaat(this.ObjectModels[2]), this.Position, {
+                    alpha: 255,
+                    dimension: 0
+                });
+                break;
+        }
     }
 };
 __decorate([
@@ -40,7 +64,7 @@ __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
     __metadata("design:type", Number)
-], Plant.prototype, "Stage", void 0);
+], Plant.prototype, "StagePoint", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
@@ -49,6 +73,10 @@ __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
 ], Plant.prototype, "Owner", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Object)
+], Plant.prototype, "Position", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     sequelize_typescript_1.Default(0),
@@ -69,8 +97,29 @@ const PlantTimer = setInterval(async () => {
     for (const i in AllPlants) {
         const Plant = AllPlants[i];
         Plant.Water--;
-        if (Plant.Stage != GrowStage.Harvest_Ready) {
-            AllPlants[i].Stage += 0.1;
+        if (Plant.Water <= 0) {
+            Plant.Die();
         }
+        if (Plant.StagePoint != GrowStage.Harvest_Ready) {
+            Plant.StagePoint += 0.1;
+        }
+        switch (true) {
+            case Plant.StagePoint > 0 && Plant.StagePoint <= 1:
+                Plant.CurrentStage = GrowStage.Seed;
+                break;
+            case Plant.StagePoint > 1 && Plant.StagePoint <= 2:
+                Plant.CurrentStage = GrowStage.Small_Plant;
+                break;
+            case Plant.StagePoint > 2 && Plant.StagePoint <= 3:
+                Plant.CurrentStage = GrowStage.Medium_Plant;
+                break;
+            case Plant.StagePoint > 3 && Plant.StagePoint <= 4:
+                Plant.CurrentStage = GrowStage.Big_Plant;
+                break;
+            case Plant.StagePoint > 4 && Plant.StagePoint <= 5:
+                Plant.CurrentStage = GrowStage.Harvest_Ready;
+                break;
+        }
+        Plant.Refresh();
     }
 }, 60000 * 60);
