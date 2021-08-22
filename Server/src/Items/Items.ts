@@ -45,7 +45,8 @@ export namespace Items {
       Equipable, Consumable, Openable, 
       Drink, Food, Alcohol, Drug, Weapon, 
       Ammo, Ilegal, Legal, Misc, Clothing,
-      Prop, Heavy, Stackable, Usable, Storage
+      Prop, Heavy, Stackable, Usable, Storage, 
+      Seed
    }
 
    export enum Entity { 
@@ -60,7 +61,7 @@ export namespace Items {
 }
 
 
-/* CLOTHING */
+/* Clothing */
 new Items('Mask', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_balaclava', 0.3, 'Mask for Head');
 new Items('Pants', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_jeans_01', 0.2, 'Pants for legs');
 new Items('Bag', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_backpack', 0.45, '');
@@ -71,7 +72,7 @@ new Items('Armour', [Items.Type.Equipable, Items.Type.Clothing], 'prop_bodyarmou
 new Items('Tops', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_shirt_01', 0.2); 
 
 
-/* PROPS */
+/* Props */
 new Items('Hat', [Items.Type.Equipable, Items.Type.Prop], 'prop_ld_hat_01', 0.05);
 new Items('Glasses', [Items.Type.Equipable, Items.Type.Prop], 'xm_prop_x17_b_glasses_01', 0.05);
 new Items('Ears', [Items.Type.Equipable, Items.Type.Prop], 'v_ret_gc_ear01', 0.05);
@@ -79,7 +80,7 @@ new Items('Watch', [Items.Type.Equipable, Items.Type.Prop], 'p_watch_01', 0.1);
 new Items('Bracelet', [Items.Type.Equipable, Items.Type.Prop], 'h4_prop_h4_bracelet_01a', 0.2);
 
 
-/* FOOD */
+/* Food */
 new Items('Cheeseburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
 new Items('Hamburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
 new Items('Fries', [Items.Type.Food, Items.Type.Consumable], 'prop_food_chips', 0.15);
@@ -91,7 +92,7 @@ new Items('Sandwich', [Items.Type.Food, Items.Type.Consumable], 'prop_sandwich_0
 new Items('Taco', [Items.Type.Food, Items.Type.Consumable], 'prop_taco_01', 0.2);
 
 
-/* DRINKS */
+/* Drinks */
 new Items('Coffe', [Items.Type.Drink, Items.Type.Consumable], 'prop_fib_coffee', 0.1);
 new Items('Soda Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01b', 0.3);
 new Items('Cola Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01a', 0.3);
@@ -108,6 +109,19 @@ new Items('Rum Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_rum_bot
 new Items('Cognac Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_cognac', 0.6);
 new Items('Wine Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_richard', 0.7);
 new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 0.6);
+
+/* Seeds */
+new Items('Cannabis Seed', [Items.Type.Seed], '', 0.01,);
+new Items('10 Cannabis Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+new Items('Poppy Seed', [Items.Type.Seed], '', 0.01, '');
+new Items('10 Poppy Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+new Items('Tomato Seed', [Items.Type.Seed], '', 0.01, '');
+new Items('10 Tomato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+new Items('Potato Seed', [Items.Type.Seed], '', 0.01, '');
+new Items('10 Potato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+
+/* Plants */
+new Items('Plant Fertilizer', [Items.Type.Misc], 'prop_cs_script_bottle_01', 0.8);
 
 
 // // MISCELLANEOUS
