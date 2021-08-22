@@ -98,7 +98,8 @@ export const Messages = {
    CAR_ALREADY_OWNED: 'Ovo vozilo je već u nečijem vlasništvu',
    CAR_PARKED: 'Uspešno ste parkirali vozilo',
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
-   WAITING_FOR_PAYMENT: ' aeka za isplatu.',
+   WAITING_FOR_PAYMENT: ' čeka za isplatu.',
+   NOT_READY_FOR_HARVEST: 'Još nije vreme za branje.',
 
    MONEY_WITHDRAW: 'Podizanje',
    MONEY_DEPOSIT: 'Depozit',
