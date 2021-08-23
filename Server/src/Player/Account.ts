@@ -59,7 +59,7 @@ mp.events.addProc(
                   const Logged = Account.Login(Password);
                   if (Logged) { 
                      Account.Logged(Player, true);
-                     console.log(Account.Characters)
+                     //console.log(Account.Characters)
                      resolve({ Account: Account, Characters: Account.Characters });
                   } else { 
                      Player.Notification(Messages.INCCORRECT_PASSWORD, Globals.Notification.Error, 5);
@@ -74,7 +74,7 @@ mp.events.addProc(
 
       'SERVER::CREATOR:FINISH': async (Player: PlayerMp, Char_Info: string, Char_Appearance: string) => { 
 
-         console.log('Usao');
+         //console.log('Usao');
          const Character = JSON.parse(Char_Info);
          const Appearance = JSON.parse(Char_Appearance);
 
