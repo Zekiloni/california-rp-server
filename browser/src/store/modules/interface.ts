@@ -9,13 +9,13 @@ Vue.use(Vuex);
 
 const InitialState = {
    Notifications: true,
-   Authorization: false,
+   Authorization: true,
    Creator: false,
    GameInterface: false,
    Inventory: false,
    Playerlist: false,
    Chat: false,
-   Banking: true,
+   Banking: false,
    Job_Offer: false,
    Miner: false,
    Food: false,
