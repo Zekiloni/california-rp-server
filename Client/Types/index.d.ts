@@ -49,6 +49,10 @@ declare global {
   interface EventMpPool {
     addDataHandler(param: any): void;
   }
+
+  interface ObjectMp {
+    Hits: number;
+  }
 }
 
 export {};
