@@ -62,12 +62,12 @@ function LoggingRender () {
                     }
 
                     if (TreeState == 4 && TreeObject.Hits >= TreeHP) {
-                        mp.gui.chat.push(`IF ${TreeState} == 4 && ${TreeObject.Hits} >= ${TreeHP}`);                                
+                        //mp.gui.chat.push(`IF ${TreeState} == 4 && ${TreeObject.Hits} >= ${TreeHP}`);                                
                         mp.game.invoke(Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY, TreeObject.handle);
                         mp.game.wait(5);
                         mp.events.callRemote('server:job.logging.tree:chopped', TreeID);
                         mp.gui.chat.push(`[DEBUG] You chopped up tree ID: ${TreeID} Hits: ${TreeObject.Hits}`);                   
-                        TreeObject.Hits = 0;  
+                        TreeObject.Hits = 0;
                     } 
                 }
             }
