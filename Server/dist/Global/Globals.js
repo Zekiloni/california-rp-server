@@ -22,4 +22,5 @@ exports.Globals = {
         Taxi: 7,
         Food_Delivery: 6,
     },
+    Dimension: 0
 };

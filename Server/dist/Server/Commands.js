@@ -19,17 +19,15 @@ const commandFiles = [
     'law.commands',
     'lock.command'
 ];
-(async () => {
-    for (const file of commandFiles) {
-        const cmdFile = require('../commands/' + file);
-        for (const Command of cmdFile) {
-            Commands[Command.name] = Command;
-        }
+for (const file of commandFiles) {
+    const cmdFile = require('../commands/' + file);
+    for (const Command of cmdFile) {
+        Commands[Command.name] = Command;
     }
-})();
+}
 mp.events.add('playerCommand', async (Player, Command) => {
-    if (!Player.data.logged)
-        return;
+    //if (!Player.data.logged) return;
+    //Player.notify('pozvano');
     let args = Command.split(/ +/);
     const Name = args.splice(0, 1)[0];
     let cmd = Commands[Name];

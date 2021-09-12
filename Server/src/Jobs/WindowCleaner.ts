@@ -1,5 +1,5 @@
 import { Globals } from "../Global/Globals";
-
+import { DistanceBetweenVectors, RandomInt } from "../Global/Utils";
 
 let LiftCollection: ObjectMp[] = [];
 
@@ -30,17 +30,17 @@ Left = {
     X: -5.153435230255127, Y: -719.0043334960938
 };
 
-
-function RandomNumber(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 export class WindowCleaning {
 
-    static RandomNumber(Min: number, Max: number) {
-        return Math.random() * (Max - Min) + Min;
+    static Init() {
+        for (const Lift of LiftPositions) {
+            let LiftObject = mp.objects.new(Objects.Lift, Lift.Position, {
+                rotation: Lift.Rotation,
+                alpha: 255,
+                dimension: 0
+            });
+            LiftCollection.push(LiftObject);
+        }
     }
 
     static MoveLift(ID: number, Direction: Directions) { // 0 - UP | 1 - DOWN
@@ -69,17 +69,6 @@ export class WindowCleaning {
         }
     }
 
-    static Init() {
-        for (const Lift of LiftPositions) {
-            let LiftObject = mp.objects.new(Objects.Lift, Lift.Position, {
-                rotation: Lift.Rotation,
-                alpha: 255,
-                dimension: 0
-            });
-            LiftCollection.push(LiftObject);
-        }
-    }
-
     static StartShift(Player: PlayerMp) {
         const Lift = WindowCleaning.GetNearestLift(Player);
         if (Lift != undefined) {
@@ -102,18 +91,18 @@ export class WindowCleaning {
 
     static GetNearestLift(Player: PlayerMp) {
         for (const Lift of LiftCollection) {
-            if (Distance(Player.position, Lift.position) <= 3) {
+            if (DistanceBetweenVectors(Player.position, Lift.position) <= 3) {
                 return Lift;
             }
         }
     }
 
     static CreateRandomMarker(Player: PlayerMp, Route: number) {
-        const Height = RandomNumber(96, 220);
+        const Height = RandomInt(96, 220);
         const PlayerHeight = Player.position.z;
         const DiffHeight = Height - PlayerHeight;
         const Message = DiffHeight > 0 ? 'Podignite lift ' : 'Spustite lift ';
-        const LeftOrRight = RandomNumber(0, 1);
+        const LeftOrRight = RandomInt(0, 1);
         const Position = LeftOrRight == 0 ? new mp.Vector3(Right.X, Right.Y, Height) : new mp.Vector3(Left.X, Left.Y, Height);
 
         const Checkpoint = mp.markers.new(0, Position, 2, {
@@ -128,10 +117,6 @@ export class WindowCleaning {
 }
 
 WindowCleaning.Init();
-
-function Distance(First: Vector3Mp, Second: Vector3Mp) {
-    return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
-}
 
 mp.events.addCommand(
     {

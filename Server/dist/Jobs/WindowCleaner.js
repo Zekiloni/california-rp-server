@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WindowCleaning = void 0;
+const Globals_1 = require("../Global/Globals");
 let LiftCollection = [];
 var Directions;
 (function (Directions) {
@@ -11,10 +12,11 @@ const Objects = {
     Lift: mp.joaat('prop_bmu_02_ld'),
     Wiping_Rag: mp.joaat('prop_rag_01')
 };
-let LiftPositions = [
-    { Position: new mp.Vector3(8.303692817687988, 11.242047309875488, 70.70639038085938), Rotation: new mp.Vector3(0, 0, 180) },
-    { Position: new mp.Vector3(124.35614013671875, -773.352783203125, 114.15603637695312), Rotation: new mp.Vector3(0, 0, -20.34836769104004) }
+const LiftPositions = [
+    { Position: new mp.Vector3(-1.0624277591705322, -717.603271484375, 222.39064025878906), Rotation: new mp.Vector3(2.6680336162598906e-8, 1.78813579054804e-7, 25.09992027282715) }
 ];
+/* { Position: new mp.Vector3(8.303692817687988, 11.242047309875488, 70.70639038085938), Rotation: new mp.Vector3(0, 0, 180) }, // 166.86375427246094, -762.6183471679688, 74.15531921386719
+    { Position: new mp.Vector3(124.35614013671875, -773.352783203125, 114.15603637695312), Rotation: new mp.Vector3(0, 0, -20.34836769104004) }*/
 let Right, Left;
 Right = {
     X: 2.65021014213562, Y: -715.3552856445312
@@ -101,9 +103,9 @@ class WindowCleaning {
         const Position = LeftOrRight == 0 ? new mp.Vector3(Right.X, Right.Y, Height) : new mp.Vector3(Left.X, Left.Y, Height);
         const Checkpoint = mp.markers.new(0, Position, 2, {
             direction: new mp.Vector3(2.66803361625989, 1.7881357905480, 25.09992027282715),
-            color: [255, 255, 255, 255],
+            color: [242, 226, 2, 225],
             visible: true,
-            dimension: 0
+            dimension: Globals_1.Globals.Dimension
         });
         Player.notify(Message + 'do sledeceg prozora.');
     }
