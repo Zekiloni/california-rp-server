@@ -1295,10 +1295,50 @@ exports.Clothing_Combinations = {
 /***/ }),
 
 /***/ 2082:
-/***/ (() => {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EntityData = void 0;
+exports.EntityData = {
+    // PlayerMp
+    PLAYER_LOGGED_IN: "PLAYER_LOGGED_IN",
+    // ObjectMp
+    TREE_IN_PROCESS: "TREE_IN_PROCESS",
+    TREE_ID: "TREE_ID",
+    TREE_HP: "TREE_HP",
+    TREE_STATE: "TREE_STATE",
+};
+
+
+/***/ }),
+
+/***/ 6044:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+__webpack_unused_export__ = __webpack_unused_export__ = void 0;
+__webpack_unused_export__ = {};
+__webpack_unused_export__ = {};
+
+
+/***/ }),
+
+/***/ 9059:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Natives = void 0;
+exports.Natives = {
+    CLEAR_ENTITY_LAST_DAMAGE_ENTITY: "0xA72CD9CA74A5ECBA",
+    REQUEST_COLLISION_FOR_MODEL: "0x923CB32A3B874FCB"
+};
 
 
 /***/ }),
@@ -1684,6 +1724,42 @@ class GAME_UI {
 }
 const GameInterface = new GAME_UI();
 __webpack_unused_export__ = GameInterface;
+
+
+/***/ }),
+
+/***/ 4177:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Player = mp.players.local;
+mp.events.add({
+    'CLIENT::SCENARIO:REMOVE:PROP': (Model) => {
+        RemoveScenarioProp(Model);
+    },
+    'CLIENT::CREATE:ROPE': () => {
+        CreateAttachedRope();
+    }
+});
+function RemoveScenarioProp(Model) {
+    const Handle = mp.game.object.getClosestObjectOfType(Player.position.x, Player.position.y, Player.position.z, 5, Model, false, true, true);
+    if (Handle) {
+        const Object = mp.objects.newWeak(Handle);
+        if (Object) {
+            Object.destroy();
+        }
+    }
+}
+function CreateAttachedRope() {
+    mp.game.invoke('0x9B9039DBF2D258C1'); // LOAD_ROPE_TEXTURES
+    mp.game.waitAsync(100);
+    const Rope = mp.game.rope.addRope(Player.position.x, Player.position.y, Player.position.z, 0, 0, 0, 5.0, 3, 5.0, 10.0, 0.5, false, false, false, 5.0, false, 0);
+    mp.game.rope.attachRopeToEntity(Rope, Player.handle, 0, 0, 0, true);
+    //mp.game.rope.attachEntitiesToRope(parseInt(Rope), handle, Player.handle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, false, false, 0, 0);
+}
 
 
 /***/ }),
@@ -2465,6 +2541,97 @@ mp.events.add({
 //    checkpoint.finish = blip;
 //    finishing = true;
 // }
+
+
+/***/ }),
+
+/***/ 3434:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Natives_1 = __webpack_require__(9059);
+const EntityData_1 = __webpack_require__(2082);
+let TreeID = (/* unused pure expression or super */ null && (-1)), CurrentTreeObject = null, Working = true, Hits = 0;
+mp.game.invoke(Natives_1.Natives.REQUEST_COLLISION_FOR_MODEL, mp.game.joaat('test_tree_forest_trunk_fall_01')); // 	REQUEST_COLLISION_FOR_MODEL
+mp.game.invoke(Natives_1.Natives.REQUEST_COLLISION_FOR_MODEL, mp.game.joaat('test_tree_cedar_trunk_001'));
+mp.game.invoke(Natives_1.Natives.REQUEST_COLLISION_FOR_MODEL, mp.game.joaat('test_tree_forest_trunk_01'));
+function EnableTreeDamage() {
+    mp.objects.forEach(object => {
+        const TreeObject = mp.objects.at(object.id), Exists = mp.objects.exists(object.id);
+        if (TreeObject && Exists) {
+            if (TreeObject.hasVariable(EntityData_1.EntityData.TREE_IN_PROCESS))
+                return;
+            if (TreeObject.hasVariable(EntityData_1.EntityData.TREE_ID)) {
+                TreeID = object.getVariable(EntityData_1.EntityData.TREE_ID);
+                TreeObject.setCanBeDamaged(true);
+                TreeObject.Hits = 0;
+            }
+        }
+    });
+}
+function LoggingRender() {
+    if (!player.hasVariable(EntityData_1.EntityData.PLAYER_LOGGED_IN) || !player.getVariable(EntityData_1.EntityData.PLAYER_LOGGED_IN))
+        return;
+    //if (LastCheck != null && (Date.now() - LastCheck) < 1000) return; // Limit checks to 1 per second
+    if (Working) {
+        mp.objects.forEach(object => {
+            const TreeObject = mp.objects.at(object.id), Exists = mp.objects.exists(object.id);
+            if (TreeObject && Exists) {
+                if (!TreeObject.hasVariable(EntityData_1.EntityData.TREE_ID) || !TreeObject.hasVariable(EntityData_1.EntityData.TREE_HP) || !TreeObject.hasVariable(EntityData_1.EntityData.TREE_STATE))
+                    return;
+                const TreeID = TreeObject.getVariable(EntityData_1.EntityData.TREE_ID), TreeHP = TreeObject.getVariable(EntityData_1.EntityData.TREE_HP), TreeState = TreeObject.getVariable(EntityData_1.EntityData.TREE_STATE);
+                if (TreeObject.hasBeenDamagedByAnyPed()) {
+                    if (TreeObject.Hits < TreeHP && TreeState < 4) {
+                        mp.game.invoke(Natives_1.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY, TreeObject.handle);
+                        mp.game.wait(5);
+                        mp.events.callRemote('server:job.logging.tree:cutting', TreeID); // server:job.logging.tree:cutting
+                        mp.game.wait(5);
+                        TreeObject.Hits++;
+                        mp.gui.chat.push(`[DEBUG] You are cutting tree ID: ${TreeID} Hits: ${TreeObject.Hits}`);
+                    }
+                    if (TreeObject.Hits >= TreeHP) {
+                        mp.gui.chat.push(`[DEBUG] You cutted tree ID: ${TreeID} Hits: ${TreeObject.Hits}`);
+                        TreeObject.Hits = 0;
+                        mp.game.invoke(Natives_1.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY, TreeObject.handle);
+                        mp.game.wait(5);
+                        mp.events.callRemote('server:job.logging.tree:harvested', TreeID);
+                    }
+                    if (TreeState == 4) {
+                        mp.game.invoke(Natives_1.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY, TreeObject.handle);
+                        mp.game.wait(5);
+                        //mp.events.callRemote('server:job.logging.tree:chopping', TreeID);
+                        TreeObject.Hits++;
+                        mp.gui.chat.push(`[DEBUG] You are chopping tree ID: ${TreeID} Hits: ${TreeObject.Hits}`);
+                        //mp.events.remove('render', LoggingRender);    
+                    }
+                    if (TreeState == 4 && TreeObject.Hits >= TreeHP) {
+                        //mp.gui.chat.push(`IF ${TreeState} == 4 && ${TreeObject.Hits} >= ${TreeHP}`);                                
+                        mp.game.invoke(Natives_1.Natives.CLEAR_ENTITY_LAST_DAMAGE_ENTITY, TreeObject.handle);
+                        mp.game.wait(5);
+                        mp.events.callRemote('server:job.logging.tree:chopped', TreeID);
+                        mp.gui.chat.push(`[DEBUG] You chopped up tree ID: ${TreeID} Hits: ${TreeObject.Hits}`);
+                        TreeObject.Hits = 0;
+                    }
+                }
+            }
+        });
+    }
+}
+mp.events.add('client:job.logging:start', () => {
+    Working = true;
+    mp.events.add('render', LoggingRender);
+    EnableTreeDamage();
+});
+mp.events.add('client:job.logging:stop', () => {
+    Working = false;
+    mp.events.remove('render', LoggingRender);
+});
+mp.events.add('client:job.logging.trees.damage:enable', () => {
+    EnableTreeDamage();
+});
 
 
 /***/ }),
@@ -8747,10 +8914,13 @@ mp.events.add({
 /******/ 	__webpack_require__(7845);
 /******/ 	__webpack_require__(8934);
 /******/ 	__webpack_require__(2082);
+/******/ 	__webpack_require__(6044);
+/******/ 	__webpack_require__(9059);
 /******/ 	__webpack_require__(8412);
 /******/ 	__webpack_require__(7908);
 /******/ 	__webpack_require__(3953);
 /******/ 	__webpack_require__(805);
+/******/ 	__webpack_require__(4177);
 /******/ 	__webpack_require__(8181);
 /******/ 	__webpack_require__(2198);
 /******/ 	__webpack_require__(537);
@@ -8762,6 +8932,7 @@ mp.events.add({
 /******/ 	__webpack_require__(2666);
 /******/ 	__webpack_require__(7364);
 /******/ 	__webpack_require__(9749);
+/******/ 	__webpack_require__(3434);
 /******/ 	__webpack_require__(551);
 /******/ 	__webpack_require__(5161);
 /******/ 	__webpack_require__(7502);
