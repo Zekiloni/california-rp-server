@@ -106,6 +106,7 @@ export class WindowCleaning {
         const DiffHeight = Height - PlayerHeight;
         const Message = DiffHeight > 0 ? 'Podignite lift ' : 'Spustite lift ';
         const LeftOrRight = RandomInt(0, 1);
+        // Dodati rutu
         const Position = LeftOrRight == 0 ? new mp.Vector3(Right.X, Right.Y, Height) : new mp.Vector3(Left.X, Left.Y, Height);
 
         Player.call('CLIENT::WINDOW:CLEANER:MARKER:SET', [Position]);
