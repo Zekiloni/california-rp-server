@@ -1,3 +1,5 @@
+import { RandomInt, DistanceBetweenVectors } from "../Global/Utils";
+
 const AnimalSpawnPoints: Vector3Mp[] = [
    new mp.Vector3(-1725.521, 4699.659, 33.80555),
    new mp.Vector3(-1690.836, 4682.494, 24.47228),
@@ -54,13 +56,97 @@ export class HuntingAnimal {
    public UpdateState: boolean;
    public FleeingPed: PlayerMp;
 
-   constructor (SpawnPos: Vector3Mp, Type: AnimalType, ) { 
-      const Model = HuntingAnimal.GetAnimalModelFromType(Type);
+   constructor(SpawnPos: Vector3Mp, Type: AnimalType) {
+      const Model = HuntingAnimal.GetAnimalModelFromType(Type), Scenario = HuntingAnimal.GetAnimalScenarioFromType(Type);
       this.Handle = mp.peds.new(Model, SpawnPos, {
          dynamic: true,
          frozen: false,
          invincible: false
       });
+      this.Handle.playScenario(Scenario);
+      this.State = AnimalState.Grazing;
+
+      this.StateTimer = setInterval(() => {
+         HuntingAnimal.AnimalAi(this);
+      }, 1000);
+
+      AnimalCollection.push(this);
+   }
+
+   static Init () {
+      for (const Position of AnimalSpawnPoints) {
+         const Type = RandomInt(0, 1);
+         const Animal = new HuntingAnimal(Position, Type);
+         Animal.UpdateState = true;
+      }
+   }
+
+   static AnimalAi(Animal: HuntingAnimal) {
+      let PlayersInRadius: PlayerMp[] = [];
+
+      mp.players.forEachInRange(Animal?.Handle?.position, 100, (Player: PlayerMp) => {
+         PlayersInRadius.push(Player);
+      });
+
+      const PlayerCount = PlayersInRadius.length;
+      if (PlayerCount <= 0) { return; }
+
+      if (PlayerCount > 0 && Animal?.State != AnimalState.Fleeing) {
+         Animal.State = AnimalState.Fleeing;
+         Animal.FleeingPed = PlayersInRadius[0]; // Prvi igrač, po logici i najbliži (proveriti)
+         Animal.UpdateState = true;
+
+         Animal.FleeingPed.call('CLIENT::PED:SMART:FLEE:FROM:PED', [Animal.Handle, Animal.FleeingPed]);
+      }
+
+      Animal.StateChangeTick++;
+      const RandomFarDestination = AnimalSpawnPoints.find(Position => DistanceBetweenVectors(Animal.Handle.position, Position) > 7);
+
+      if (Animal.State != AnimalState.Fleeing) {
+         if (Animal.StateChangeTick > 15) {
+            const StateChance = RandomInt(0, 100);
+
+            if (RandomFarDestination == undefined) return; // AnimalSpawnPoints.find(Position => DistanceBetweenVectors(Animal.Handle.position, Position) > 7);
+            if (StateChance < 30) {
+               const Scenario = HuntingAnimal.GetAnimalScenarioFromType(Animal.Type);
+               Animal.State = AnimalState.Grazing;
+               Animal.Handle.playScenario(Scenario);
+            } else {
+               Animal.State = AnimalState.Wandering;
+               Animal.Destination = RandomFarDestination;
+               Animal.UpdateState = true;
+               Animal.FleeingPed.call('CLIENT::PED:SMART:FLEE:COORD', [Animal.Handle, Animal.Destination]);
+            }
+
+            Animal.StateChangeTick = 0;
+         } else {
+            if (Animal.StateChangeTick > 20) {
+               Animal.State = AnimalState.Grazing;
+               Animal.Handle.playScenario(HuntingAnimal.GetAnimalScenarioFromType(Animal.Type));
+            }
+         }
+
+         if (!Animal.UpdateState) return;
+
+         switch (Animal.State) {
+            case AnimalState.Grazing:
+               Animal.Handle.playScenario(HuntingAnimal.GetAnimalScenarioFromType(Animal.Type));
+               break;
+            case AnimalState.Wandering:
+               PlayersInRadius.forEach((Player) => {
+                  Player.call('CLIENT::TASK:WANDER:IN:AREA', [Animal.Handle, RandomFarDestination]);
+               });
+
+               break;
+            default:
+               PlayersInRadius.forEach((Player) => {
+                  Player.call('CLIENT::PED:SMART:FLEE:FROM:PED', [Animal.Handle, Player]);
+               })
+               break;
+         }
+         
+         Animal.UpdateState = false;
+      }
    }
 
    static GetAnimalModelFromType(Type: AnimalType) {
@@ -72,7 +158,14 @@ export class HuntingAnimal {
       }
    }
 
-
+   static GetAnimalScenarioFromType(Type: AnimalType) {
+      switch (Type) {
+         case AnimalType.Boar:
+            return "WORLD_PIG_GRAZING";
+         case AnimalType.Deer:
+            return "WORLD_DEER_GRAZING";
+      }
+   }
 
 }
 

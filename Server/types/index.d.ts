@@ -10,6 +10,9 @@ declare global {
       Player: any
    }
 
+   interface PedMp {
+      playScenario (Name: string): void;
+   }
 
    interface ColshapeMp { 
       OnPlayerEnter (Player: PlayerMp): void;    
