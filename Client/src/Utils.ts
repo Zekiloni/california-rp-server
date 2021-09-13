@@ -208,6 +208,6 @@ export function CreateInteractionSpot (Name: string, Position: Vector3Mp, WithBl
       const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
       return { Checkpoint: checkpoint, Blip: blip };
    }
-   return checkpoint;
+   return { checkpoint };
 };
 

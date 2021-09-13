@@ -24,10 +24,19 @@ for (const file of commandFiles) {
     for (const Command of cmdFile) {
         Commands[Command.name] = Command;
     }
+    console.log('Komande:');
+    console.log(Commands);
 }
+// function SendChatMessage(Player: PlayerMp, Text: string) {
+// 	mp.players.forEachInRange(Player.position, 10, (Target: PlayerMp) => {
+//       Target.outputChatBox(Text);
+//       Player.outputChatBox(Text);
+//    });
+// };
+// mp.events.add("playerChat", SendChatMessage);
 mp.events.add('playerCommand', async (Player, Command) => {
     //if (!Player.data.logged) return;
-    //Player.notify('pozvano');
+    Player.notify('pozvano');
     let args = Command.split(/ +/);
     const Name = args.splice(0, 1)[0];
     let cmd = Commands[Name];

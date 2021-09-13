@@ -17,14 +17,14 @@ mp.events.add({
     },
 
     'CLIENT::WINDOW:CLEANER:MARKER:SET': (Position: Vector3Mp) => {
-        const Checkpoint = CreateInteractionSpot('Window', Position, false);
+    const { Checkpoint } = CreateInteractionSpot('Window', Position, false);
 
         mp.events.add(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, PlayerAtCleaningSpot);
 
         function PlayerAtCleaningSpot(Point: CheckpointMp) {
             if (Checkpoint == Point) {
                 Player.setVariable("CLEANING_ALLOWED", true); // Kada ocisti, vratiti na false
-                Checkpoint.destroy();
+                if (Checkpoint) Checkpoint.destroy();
                 mp.events.remove(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, PlayerAtCleaningSpot);
             }
         }

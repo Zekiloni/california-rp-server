@@ -23,7 +23,7 @@ function HouseInteraction (Position: Vector3Mp) {
       if (Point == Checkpoint) { 
          DeliveredMails++;
          Checkpoint.destroy();
-         Blip.destroy();
+         if (Blip) Blip.destroy();
          mp.events.remove('playerEnterCheckpoint', OnPlayerDeliverMail);
          
       }
@@ -42,7 +42,7 @@ function BehindTruckInteraction () {
             if (DistanceBetweenVectors(Player.position, PosBehind) <= 0.5) {
                Player.heading = Truck.heading;
                Checkpoint.destroy();
-               Blip.destroy();
+               if (Blip) Blip.destroy();
                mp.events.remove('playerEnterCheckpoint', OnPlayerTakeMail);
                // Uzima postu iz kamiona
                // NACI ANIMACIJU

@@ -35,8 +35,8 @@ mp.events.add({
             if (Point == Checkpoint) {
                if (Player.vehicle) return;
                Delivering = false;
-               Checkpoint.destroy();
-               Blip.destroy();
+               if (Checkpoint) Checkpoint.destroy();
+               if (Blip) Blip.destroy();
                mp.events.callRemote('server:job.food.order:deliver', i);
                mp.events.remove('playerEnterCheckpoint', ReachOrderPoint);
             }

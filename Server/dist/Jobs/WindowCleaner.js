@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WindowCleaning = void 0;
-const Globals_1 = require("../Global/Globals");
+const Utils_1 = require("../Global/Utils");
 let LiftCollection = [];
 var Directions;
 (function (Directions) {
@@ -24,14 +24,16 @@ Right = {
 Left = {
     X: -5.153435230255127, Y: -719.0043334960938
 };
-function RandomNumber(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 class WindowCleaning {
-    static RandomNumber(Min, Max) {
-        return Math.random() * (Max - Min) + Min;
+    static Init() {
+        for (const Lift of LiftPositions) {
+            let LiftObject = mp.objects.new(Objects.Lift, Lift.Position, {
+                rotation: Lift.Rotation,
+                alpha: 255,
+                dimension: 0
+            });
+            LiftCollection.push(LiftObject);
+        }
     }
     static MoveLift(ID, Direction) {
         const LiftObject = mp.objects.at(ID);
@@ -58,16 +60,6 @@ class WindowCleaning {
             }
         }
     }
-    static Init() {
-        for (const Lift of LiftPositions) {
-            let LiftObject = mp.objects.new(Objects.Lift, Lift.Position, {
-                rotation: Lift.Rotation,
-                alpha: 255,
-                dimension: 0
-            });
-            LiftCollection.push(LiftObject);
-        }
-    }
     static StartShift(Player) {
         const Lift = WindowCleaning.GetNearestLift(Player);
         if (Lift != undefined) {
@@ -75,46 +67,50 @@ class WindowCleaning {
             Player.setProp(0, 145, 0); // yellow helmet
             Player.setClothes(8, 181, 0, 2); // orange vest
             Player.setVariable('WINDOW_SHIFT', true);
-            WindowCleaning.CreateRandomMarker(Player, 0);
+            WindowCleaning.GetCleaningDestination(Player, 0);
         }
         else
             Player.notify('Nisi kod mesta za konopac.');
     }
     static CleanWindow(Player) {
-        Player.playScenario('WORLD_HUMAN_MAID_CLEAN');
-        setTimeout(() => {
-            Player.stopAnimation();
-            Player.call('CLIENT::SCENARIO:REMOVE:PROP', [Objects.Wiping_Rag]);
-        }, 5000);
+        if (Player.getVariable('CLEANING_ALLOWED')) {
+            Player.setVariable('CLEANING_ALLOWED', false);
+            Player.playScenario('WORLD_HUMAN_MAID_CLEAN');
+            setTimeout(() => {
+                Player.stopAnimation();
+                Player.call('CLIENT::SCENARIO:REMOVE:PROP', [Objects.Wiping_Rag]);
+            }, 5000);
+        }
+        else { /* Ne moze */ }
     }
     static GetNearestLift(Player) {
         for (const Lift of LiftCollection) {
-            if (Distance(Player.position, Lift.position) <= 3) {
+            if (Utils_1.DistanceBetweenVectors(Player.position, Lift.position) <= 3) {
                 return Lift;
             }
         }
     }
-    static CreateRandomMarker(Player, Route) {
-        const Height = RandomNumber(96, 220);
+    static GetCleaningDestination(Player, Route) {
+        const Height = Utils_1.RandomInt(96, 220);
         const PlayerHeight = Player.position.z;
         const DiffHeight = Height - PlayerHeight;
         const Message = DiffHeight > 0 ? 'Podignite lift ' : 'Spustite lift ';
-        const LeftOrRight = RandomNumber(0, 1);
+        const LeftOrRight = Utils_1.RandomInt(0, 1);
+        // Dodati rutu
         const Position = LeftOrRight == 0 ? new mp.Vector3(Right.X, Right.Y, Height) : new mp.Vector3(Left.X, Left.Y, Height);
-        const Checkpoint = mp.markers.new(0, Position, 2, {
-            direction: new mp.Vector3(2.66803361625989, 1.7881357905480, 25.09992027282715),
-            color: [242, 226, 2, 225],
-            visible: true,
-            dimension: Globals_1.Globals.Dimension
-        });
+        Player.call('CLIENT::WINDOW:CLEANER:MARKER:SET', [Position]);
         Player.notify(Message + 'do sledeceg prozora.');
     }
 }
 exports.WindowCleaning = WindowCleaning;
+/* const Checkpoint = mp.markers.new(0, Position, 2, {
+            direction: new mp.Vector3(2.66803361625989, 1.7881357905480, 25.09992027282715),
+            color: [242, 226, 2, 225],
+            visible: true,
+            dimension: Globals.Dimension
+        });
+*/
 WindowCleaning.Init();
-function Distance(First, Second) {
-    return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
-}
 mp.events.addCommand({
     "lifts": (Player, _) => {
         const Lift = WindowCleaning.GetNearestLift(Player);

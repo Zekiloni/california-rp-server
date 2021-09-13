@@ -20,9 +20,8 @@ type Command = {
    job?: number;
    position?: Vector3Mp;
    admin?: any;
-   call (Player: PlayerMp, args: string[]): void;
+   call(Player: PlayerMp, args: string[]): void;
 }
-
 
 const commandFiles = [
    'basic.commands',
@@ -40,19 +39,25 @@ const commandFiles = [
    'lock.command'
 ];
 
-(async () => { 
-   for (const file of commandFiles) {
-      const cmdFile = require('../commands/' + file);
-      for (const Command of cmdFile) { 
-         Commands[Command.name] = Command;
-      }
+for (const file of commandFiles) {
+   const cmdFile = require('../commands/' + file);
+   for (const Command of cmdFile) {
+      Commands[Command.name] = Command;
    }
-})();
+}
 
+// function SendChatMessage(Player: PlayerMp, Text: string) {
+// 	mp.players.forEachInRange(Player.position, 10, (Target: PlayerMp) => {
+//       Target.outputChatBox(Text);
+//       Player.outputChatBox(Text);
+//    });
+// };
+
+// mp.events.add("playerChat", SendChatMessage);
 
 mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
    //if (!Player.data.logged) return;
-   //Player.notify('pozvano');
+   Player.notify('pozvano');
    let args = Command.split(/ +/);
    const Name = args.splice(0, 1)[0];
    let cmd = Commands[Name];
@@ -60,14 +65,14 @@ mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
    if (cmd) {
       const Account = Player.Account;
       const Character = Player.Character;
-      
+
       if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', Globals.Notification.Error, 4);
-      
+
       if (cmd.job && Character.Job != cmd.job) return Player.Notification(Messages.NOT_SPECIFIC_JOB, Globals.Notification.Error, 4);
 
       if (cmd.position && Player.dist(cmd.position) > 1.85) return Player.Notification(Messages.NOT_ON_POSITION, Globals.Notification.Error, 4);
 
-      if (cmd.faction) { 
+      if (cmd.faction) {
          //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
          if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       }
@@ -75,7 +80,7 @@ mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
       if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, Globals.Notification.Error, 5);
 
       // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', Globals.Notification.Error, 4);
-      
+
       if (cmd.params && cmd.params.length > args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + cmd.params.join('] [') + '] ', Colors.help);
 
       cmd.call(Player, args);

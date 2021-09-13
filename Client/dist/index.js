@@ -8,9 +8,9 @@
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Browser = void 0;
-mp.gui.chat.show(false);
+mp.gui.chat.show(true);
 exports.Browser = mp.browsers.new('localhost:8080');
-exports.Browser.markAsChat();
+//Browser.markAsChat();
 
 
 /***/ }),
@@ -1337,7 +1337,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Natives = void 0;
 exports.Natives = {
     CLEAR_ENTITY_LAST_DAMAGE_ENTITY: "0xA72CD9CA74A5ECBA",
-    REQUEST_COLLISION_FOR_MODEL: "0x923CB32A3B874FCB"
+    REQUEST_COLLISION_FOR_MODEL: "0x923CB32A3B874FCB",
+    ROPE_LOAD_TEXTURES: "0x9B9039DBF2D258C1",
+    ROPE_ARE_TEXTURES_LOADED: "0xF2D0E6A75CC05597",
+    ROPE_UNLOAD_TEXTURES: "0x6CE36C35C1AC8163"
 };
 
 
@@ -1729,12 +1732,13 @@ __webpack_unused_export__ = GameInterface;
 /***/ }),
 
 /***/ 4177:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 var __webpack_unused_export__;
 
 __webpack_unused_export__ = ({ value: true });
+const Natives_1 = __webpack_require__(9059);
 const Player = mp.players.local;
 mp.events.add({
     'CLIENT::SCENARIO:REMOVE:PROP': (Model) => {
@@ -1753,9 +1757,22 @@ function RemoveScenarioProp(Model) {
         }
     }
 }
+// True = Load | False = Unload
+function LoadRopeTextures(Load) {
+    if (Load) {
+        mp.game.invoke(Natives_1.Natives.ROPE_LOAD_TEXTURES);
+        while (!mp.game.invoke(Natives_1.Natives.ROPE_ARE_TEXTURES_LOADED)) {
+            mp.game.waitAsync(1);
+        }
+    }
+    else {
+        if (mp.game.invoke(Natives_1.Natives.ROPE_ARE_TEXTURES_LOADED)) {
+            mp.game.invoke(Natives_1.Natives.ROPE_UNLOAD_TEXTURES);
+        }
+    }
+}
 function CreateAttachedRope() {
-    mp.game.invoke('0x9B9039DBF2D258C1'); // LOAD_ROPE_TEXTURES
-    mp.game.waitAsync(100);
+    LoadRopeTextures(true);
     const Rope = mp.game.rope.addRope(Player.position.x, Player.position.y, Player.position.z, 0, 0, 0, 5.0, 3, 5.0, 10.0, 0.5, false, false, false, 5.0, false, 0);
     mp.game.rope.attachRopeToEntity(Rope, Player.handle, 0, 0, 0, true);
     //mp.game.rope.attachEntitiesToRope(parseInt(Rope), handle, Player.handle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, false, false, 0, 0);
@@ -1779,6 +1796,26 @@ mp.events.add({
         HouseManagment = !HouseManagment;
         Browser_1.Browser.call(HouseManagment ? 'BROWSER::SHOW' : `BROWSER::HIDE`, 'HouseManagement');
     },
+});
+
+
+/***/ }),
+
+/***/ 4748:
+/***/ (() => {
+
+"use strict";
+
+mp.events.add({
+    'CLIENT::PED:SMART:FLEE:FROM:PED': (Ped, FleeingPed) => {
+        mp.game.invoke('0x22B0D0E37CCB840D', [Ped, FleeingPed.handle, 75, 5000, false, false]); // TASK_SMART_FLEE_PED ( Ped ped, Ped fleeTarget, float distance, Any fleeTime, BOOL p4, BOOL p5 )
+    },
+    'CLIENT::PED:SMART:FLEE:COORD': (Ped, TargetDest) => {
+        mp.game.invoke('0x94587F17E9C365D5', [Ped, TargetDest.x, TargetDest.y, TargetDest.z, 25, 5000, false, false]);
+    },
+    'CLIENT::TASK:WANDER:IN:AREA': (Ped, TargetArea) => {
+        mp.game.invoke('0xE054346CA3A0F315', [Ped, TargetArea.x, TargetArea.y, TargetArea.z, 25, 0, 0]);
+    }
 });
 
 
@@ -1963,8 +2000,10 @@ mp.events.add({
                     if (Player.vehicle)
                         return;
                     Delivering = false;
-                    Checkpoint.destroy();
-                    Blip.destroy();
+                    if (Checkpoint)
+                        Checkpoint.destroy();
+                    if (Blip)
+                        Blip.destroy();
                     mp.events.callRemote('server:job.food.order:deliver', i);
                     mp.events.remove('playerEnterCheckpoint', ReachOrderPoint);
                 }
@@ -2005,7 +2044,8 @@ function HouseInteraction(Position) {
         if (Point == Checkpoint) {
             DeliveredMails++;
             Checkpoint.destroy();
-            Blip.destroy();
+            if (Blip)
+                Blip.destroy();
             mp.events.remove('playerEnterCheckpoint', OnPlayerDeliverMail);
         }
     }
@@ -2021,7 +2061,8 @@ function BehindTruckInteraction() {
                 if (Utils_1.DistanceBetweenVectors(Player.position, PosBehind) <= 0.5) {
                     Player.heading = Truck.heading;
                     Checkpoint.destroy();
-                    Blip.destroy();
+                    if (Blip)
+                        Blip.destroy();
                     mp.events.remove('playerEnterCheckpoint', OnPlayerTakeMail);
                     // Uzima postu iz kamiona
                     // NACI ANIMACIJU
@@ -2300,7 +2341,8 @@ mp.keys.bind(0x59, false, async function () {
                             mp.events.callRemote('server:job.garbage:finish');
                         }, 15000);
                         Checkpoint.destroy();
-                        Blip.destroy();
+                        if (Blip)
+                            Blip.destroy();
                         mp.events.remove('playerEnterCheckpoint', PlayerEnterDepony);
                     }
                 }
@@ -2541,6 +2583,83 @@ mp.events.add({
 //    checkpoint.finish = blip;
 //    finishing = true;
 // }
+
+
+/***/ }),
+
+/***/ 2724:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+const Utils_1 = __webpack_require__(8675);
+const Player = mp.players.local;
+let CleaningActive = false;
+mp.events.add({
+    'CLIENT::WINDOW:CLEANER:INSTRUCTIONS:TOGGLE': () => {
+        CleaningActive = !CleaningActive;
+    },
+    'render': () => {
+        if (!CleaningActive)
+            return;
+        AddInstructionalStart();
+        AddInstructionalButton("Spustanje lifta", 195);
+        AddInstructionalButton("Podizanje lifta", 194);
+        AddInstructionalEnd(1);
+    },
+    'CLIENT::WINDOW:CLEANER:MARKER:SET': (Position) => {
+        const { Checkpoint } = Utils_1.CreateInteractionSpot('Window', Position, false);
+        mp.events.add("playerEnterCheckpoint" /* PLAYER_ENTER_CHECKPOINT */, PlayerAtCleaningSpot);
+        function PlayerAtCleaningSpot(Point) {
+            if (Checkpoint == Point) {
+                Player.setVariable("CLEANING_ALLOWED", true); // Kada ocisti, vratiti na false
+                if (Checkpoint)
+                    Checkpoint.destroy();
+                mp.events.remove("playerEnterCheckpoint" /* PLAYER_ENTER_CHECKPOINT */, PlayerAtCleaningSpot);
+            }
+        }
+    }
+});
+var sc = mp.game.graphics.requestScaleformMovie("instructional_buttons");
+var scInst = 0;
+function AddInstructionalStart() {
+    scInst = 0;
+    mp.game.graphics.drawScaleformMovieFullscreen(sc, 255, 255, 255, 0, false);
+    mp.game.graphics.pushScaleformMovieFunction(sc, "CLEAR_ALL");
+    mp.game.graphics.popScaleformMovieFunctionVoid();
+    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_CLEAR_SPACE");
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(200);
+    mp.game.graphics.popScaleformMovieFunctionVoid();
+}
+function AddInstructionalButton(text, button) {
+    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_DATA_SLOT");
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(scInst);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(button);
+    mp.game.graphics.pushScaleformMovieFunctionParameterString(text);
+    mp.game.graphics.popScaleformMovieFunctionVoid();
+    scInst++;
+}
+function AddInstructionalButtonCustom(text, button) {
+    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_DATA_SLOT");
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(scInst);
+    mp.game.graphics.pushScaleformMovieFunctionParameterString(button);
+    mp.game.graphics.pushScaleformMovieFunctionParameterString(text);
+    mp.game.graphics.popScaleformMovieFunctionVoid();
+    scInst++;
+}
+function AddInstructionalEnd(type) {
+    mp.game.graphics.pushScaleformMovieFunction(sc, "DRAW_INSTRUCTIONAL_BUTTONS");
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(type);
+    mp.game.graphics.popScaleformMovieFunctionVoid();
+    mp.game.graphics.pushScaleformMovieFunction(sc, "SET_BACKGROUND_COLOUR");
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.pushScaleformMovieFunctionParameterInt(0);
+    mp.game.graphics.popScaleformMovieFunctionVoid();
+}
 
 
 /***/ }),
@@ -4060,11 +4179,14 @@ function MoveCamera() {
     }
 }
 exports.MoveCamera = MoveCamera;
-function CreateInteractionSpot(Name, Position) {
+function CreateInteractionSpot(Name, Position, WithBlip = true) {
     const Player = mp.players.local;
     const checkpoint = mp.checkpoints.new(48, Position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
-    const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
-    return { Checkpoint: checkpoint, Blip: blip };
+    if (WithBlip) {
+        const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
+        return { Checkpoint: checkpoint, Blip: blip };
+    }
+    return { checkpoint };
 }
 exports.CreateInteractionSpot = CreateInteractionSpot;
 ;
@@ -8922,6 +9044,7 @@ mp.events.add({
 /******/ 	__webpack_require__(805);
 /******/ 	__webpack_require__(4177);
 /******/ 	__webpack_require__(8181);
+/******/ 	__webpack_require__(4748);
 /******/ 	__webpack_require__(2198);
 /******/ 	__webpack_require__(537);
 /******/ 	__webpack_require__(1021);
@@ -8932,6 +9055,7 @@ mp.events.add({
 /******/ 	__webpack_require__(2666);
 /******/ 	__webpack_require__(7364);
 /******/ 	__webpack_require__(9749);
+/******/ 	__webpack_require__(2724);
 /******/ 	__webpack_require__(3434);
 /******/ 	__webpack_require__(551);
 /******/ 	__webpack_require__(5161);
