@@ -1,4 +1,3 @@
-import { Globals } from "../Global/Globals";
 import { DistanceBetweenVectors, RandomInt } from "../Global/Utils";
 
 let LiftCollection: ObjectMp[] = [];
@@ -76,17 +75,21 @@ export class WindowCleaning {
             Player.setProp(0, 145, 0); // yellow helmet
             Player.setClothes(8, 181, 0, 2); // orange vest
             Player.setVariable('WINDOW_SHIFT', true);
-            WindowCleaning.CreateRandomMarker(Player, 0);
+            WindowCleaning.GetCleaningDestination(Player, 0);
         } else Player.notify('Nisi kod mesta za konopac.');
 
     }
 
     static CleanWindow(Player: PlayerMp) {
-        Player.playScenario('WORLD_HUMAN_MAID_CLEAN');
-        setTimeout(() => {
-            Player.stopAnimation();
-            Player.call('CLIENT::SCENARIO:REMOVE:PROP', [Objects.Wiping_Rag]);
-        }, 5000);
+        if (Player.getVariable('CLEANING_ALLOWED')) {
+            Player.setVariable('CLEANING_ALLOWED', false);
+            Player.playScenario('WORLD_HUMAN_MAID_CLEAN');
+            setTimeout(() => {
+                Player.stopAnimation();
+                Player.call('CLIENT::SCENARIO:REMOVE:PROP', [Objects.Wiping_Rag]);
+            }, 5000);
+        } else { /* Ne moze */ }
+        
     }
 
     static GetNearestLift(Player: PlayerMp) {
@@ -97,7 +100,7 @@ export class WindowCleaning {
         }
     }
 
-    static CreateRandomMarker(Player: PlayerMp, Route: number) {
+    static GetCleaningDestination(Player: PlayerMp, Route: number) {
         const Height = RandomInt(96, 220);
         const PlayerHeight = Player.position.z;
         const DiffHeight = Height - PlayerHeight;
@@ -105,16 +108,18 @@ export class WindowCleaning {
         const LeftOrRight = RandomInt(0, 1);
         const Position = LeftOrRight == 0 ? new mp.Vector3(Right.X, Right.Y, Height) : new mp.Vector3(Left.X, Left.Y, Height);
 
-        const Checkpoint = mp.markers.new(0, Position, 2, {
+        Player.call('CLIENT::WINDOW:CLEANER:MARKER:SET', [Position]);
+        Player.notify(Message + 'do sledeceg prozora.');
+    }
+}
+
+/* const Checkpoint = mp.markers.new(0, Position, 2, {
             direction: new mp.Vector3(2.66803361625989, 1.7881357905480, 25.09992027282715),
             color: [242, 226, 2, 225],
             visible: true,
             dimension: Globals.Dimension
         });
-
-        Player.notify(Message + 'do sledeceg prozora.');
-    }
-}
+*/
 
 WindowCleaning.Init();
 

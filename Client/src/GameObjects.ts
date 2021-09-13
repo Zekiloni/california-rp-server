@@ -1,4 +1,6 @@
-const Player:PlayerMp = mp.players.local;
+import { Natives } from "./Data/Natives";
+
+const Player: PlayerMp = mp.players.local;
 
 mp.events.add({
     'CLIENT::SCENARIO:REMOVE:PROP': (Model: number) => { // 'prop_rag_01'
@@ -8,7 +10,7 @@ mp.events.add({
     'CLIENT::CREATE:ROPE': () => {
         CreateAttachedRope();
     }
- });
+});
 
 function RemoveScenarioProp(Model: number) {
     const Handle = mp.game.object.getClosestObjectOfType(Player.position.x, Player.position.y, Player.position.z, 5, Model, false, true, true);
@@ -17,12 +19,25 @@ function RemoveScenarioProp(Model: number) {
         if (Object) {
             Object.destroy();
         }
-    } 
+    }
+}
+
+// True = Load | False = Unload
+function LoadRopeTextures(Load: boolean) {
+    if (Load) {
+        mp.game.invoke(Natives.ROPE_LOAD_TEXTURES);
+        while (!mp.game.invoke(Natives.ROPE_ARE_TEXTURES_LOADED)) {
+            mp.game.waitAsync(1);
+        }
+    } else {
+        if (mp.game.invoke(Natives.ROPE_ARE_TEXTURES_LOADED)) {
+            mp.game.invoke(Natives.ROPE_UNLOAD_TEXTURES)
+        }
+    }
 }
 
 function CreateAttachedRope() {
-    mp.game.invoke('0x9B9039DBF2D258C1'); // LOAD_ROPE_TEXTURES
-    mp.game.waitAsync(100);
+    LoadRopeTextures(true);
     
     const Rope = mp.game.rope.addRope(Player.position.x,
         Player.position.y,
@@ -40,9 +55,9 @@ function CreateAttachedRope() {
         false,
         5.0,
         false,
-    0);
+        0);
     mp.game.rope.attachRopeToEntity(Rope, Player.handle, 0, 0, 0, true);
     //mp.game.rope.attachEntitiesToRope(parseInt(Rope), handle, Player.handle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, false, false, 0, 0);
 }
 
-export {};
+export { };
