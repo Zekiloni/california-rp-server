@@ -9,7 +9,7 @@ const Main_1 = require("./Main");
 const Character_1 = __importDefault(require("../Models/Character"));
 const Account_model_1 = __importDefault(require("../Models/Account.model"));
 //import Bans from '../Models/Ban';
-console.log(__dirname);
+//console.log(__dirname)
 const Database = new sequelize_typescript_1.Sequelize({
     database: Config_1.Config.Database.Name,
     dialect: 'mysql',

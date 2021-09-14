@@ -13,7 +13,7 @@ class Deliveries {
     static Init() {
         for (const i in Deliveries.Warehouses) {
             const Warehouse = Deliveries.Warehouses[i];
-            console.log(Warehouse);
+            //console.log(Warehouse);
         }
     }
     ;

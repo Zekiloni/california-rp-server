@@ -96,7 +96,7 @@ export default class Business extends Model {
             }
         }
 
-        console.log(Products)
+        //console.log(Products)
 
         const NewBiz = await Business.create({ Name: Default.name, Type: Type, Price: Price, Walk_in: Walk_in, Products: Products, Position: Position, Dimension: Dimension });
         if (NewBiz) {

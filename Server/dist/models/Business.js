@@ -34,7 +34,7 @@ class Business extends sequelize_typescript_1.Model {
                 Products[i] = { multiplier: multiplier, supplies: Settings_1.Settings.Business.Default.Supplies }; // '\"' + i + '\"'
             }
         }
-        console.log(Products);
+        //console.log(Products)
         const NewBiz = await Business.create({ Name: Default.name, Type: Type, Price: Price, Walk_in: Walk_in, Products: Products, Position: Position, Dimension: Dimension });
         if (NewBiz) {
             // Log

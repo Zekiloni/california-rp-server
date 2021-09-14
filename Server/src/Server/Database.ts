@@ -7,7 +7,7 @@ import Characters from '../Models/Character';
 import Accounts from '../Models/Account.model';
 //import Bans from '../Models/Ban';
 
-console.log(__dirname)
+//console.log(__dirname)
 
 const Database = new Sequelize({
    database: Config.Database.Name,
