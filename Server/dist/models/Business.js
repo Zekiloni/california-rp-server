@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Main_1 = require("../Server/Main");
 const Items_1 = require("../Items/Items");
-const Businesses_json_1 = __importDefault(require("../data/Businesses.json"));
+const Businesses_json_1 = __importDefault(require("../Server/Businesses.json"));
 const Settings_1 = require("../Server/Settings");
 const Colors_1 = require("../Global/Colors");
 const Globals_1 = require("../Global/Globals");

@@ -6,7 +6,7 @@ import './Player/Account';
 import Accounts from './Models/Account.model';
 import Characters from './Models/Character';
 import { Items } from './Items/Items';
-
+import './Server/Commands';
 
 
 //console.log(Items.List);

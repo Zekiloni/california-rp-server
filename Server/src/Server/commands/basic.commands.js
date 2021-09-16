@@ -1,9 +1,9 @@
 
 
 
-const Animations = require('../data/Animations');
+//const Animations = require('../data/Animations');
 
-const { Department } = require('../modules/Department');
+//const { Department } = require('../modules/Department');
 
 module.exports = {
    commands: [
@@ -40,29 +40,29 @@ module.exports = {
          }
       },
 
-      {
-         name: 'dmv',
-         desc: 'Departman Motornih Vozila',
-         position: Department.Position,
-         call: (player, args) => {
-            if (mp.world.time.hour < 6 || mp.world.time.hour > 20) return;
-            mp.events.call('server:vehicle.department:menu', player);
-         }
-      },
+      // {
+      //    name: 'dmv',
+      //    desc: 'Departman Motornih Vozila',
+      //    position: Department.Position,
+      //    call: (player, args) => {
+      //       if (mp.world.time.hour < 6 || mp.world.time.hour > 20) return;
+      //       mp.events.call('server:vehicle.department:menu', player);
+      //    }
+      // },
 
-      {
-         name: 'anim',
-         desc: 'Povez preko ociju',
-         call: (player, args) => {
-            const [name, flag] = args;
-            if (Animations[name]) { 
-               const Animation = Animations[name];
-               player.playAnimation(Animation[0], Animation[1], -1, parseInt(flag) || 0)
-            } else { 
-               player.Notification(frp.Globals.messages.ANIM_DOESNT_EXIST, frp.Globals.Notification.Error, 5);
-            }
-         }
-      },
+      // {
+      //    name: 'anim',
+      //    desc: 'Povez preko ociju',
+      //    call: (player, args) => {
+      //       const [name, flag] = args;
+      //       if (Animations[name]) { 
+      //          const Animation = Animations[name];
+      //          player.playAnimation(Animation[0], Animation[1], -1, parseInt(flag) || 0)
+      //       } else { 
+      //          player.Notification(frp.Globals.messages.ANIM_DOESNT_EXIST, frp.Globals.Notification.Error, 5);
+      //       }
+      //    }
+      // },
 
       {
          name: 'report',

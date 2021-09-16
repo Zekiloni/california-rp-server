@@ -141,7 +141,7 @@ export class HuntingAnimal {
             default:
                PlayersInRadius.forEach((Player) => {
                   Player.call('CLIENT::PED:SMART:FLEE:FROM:PED', [Animal.Handle, Player]);
-               })
+               });
                break;
          }
          
@@ -166,7 +166,6 @@ export class HuntingAnimal {
             return "WORLD_DEER_GRAZING";
       }
    }
-
 }
 
 

@@ -9,6 +9,7 @@ require("./Player/Player");
 require("./Player/Account");
 const Account_model_1 = __importDefault(require("./Models/Account.model"));
 const Character_1 = __importDefault(require("./Models/Character"));
+require("./Server/Commands");
 //console.log(Items.List);
 // !!! TEST //
 // DATA

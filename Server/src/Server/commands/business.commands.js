@@ -1,5 +1,5 @@
 
-const BussinesTypes = require('../data/Businesses.json');
+const BussinesTypes = require('../Businesses.json');
 
 module.exports = {
    commands: [

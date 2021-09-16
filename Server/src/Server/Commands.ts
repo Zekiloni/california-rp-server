@@ -38,15 +38,15 @@ const commandFiles = [
    'lock.command'
 ];
 
-console.log('Pocetak');
+
 for (const file of commandFiles) {
-   const cmdFile = require('../commands/' + file);
-   console.log('Fajl: ' + JSON.stringify(cmdFile));
-   for (const Command of cmdFile) {
+   const cmdFile = require('./commands/' + file);
+   
+   for (const i in cmdFile) { // Ovo nije iterable
+      let Command = cmdFile[i];
       Commands[Command.name] = Command;
    }
 }
-console.log('Kraj');
 
 // function SendChatMessage(Player: PlayerMp, Text: string) {
 // 	mp.players.forEachInRange(Player.position, 10, (Target: PlayerMp) => {
@@ -54,7 +54,6 @@ console.log('Kraj');
 //       Player.outputChatBox(Text);
 //    });
 // };
-
 // mp.events.add("playerChat", SendChatMessage);
 
 mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {

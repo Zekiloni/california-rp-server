@@ -2,7 +2,7 @@ import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Defau
 import { Messages } from '../Global/Messages';
 import { Main } from '../Server/Main';
 import { Items } from '../Items/Items';
-import BusinessTypes from '../data/Businesses.json';
+import BusinessTypes from '../Server/Businesses.json';
 import VehiclesList from '../data/Vehicles.json';
 import { Settings } from '../Server/Settings';
 import { Colors } from '../Global/Colors';
