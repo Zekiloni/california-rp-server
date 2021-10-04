@@ -6,8 +6,8 @@
 export const Config = {
    Database: {
       Host: 'localhost',
-      User: 'root',
-      Name: 'frp',
-      Password: ''
+      User: 'focus_rp',
+      Name: 'focus_roleplay',
+      Password: 'SX6VRUQVPN4SpZ4A'
    }
 }

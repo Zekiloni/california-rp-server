@@ -38,7 +38,6 @@ const commandFiles = [
    'lock.command'
 ];
 
-
 for (const file of commandFiles) {
    const cmdFile = require('./commands/' + file);
    

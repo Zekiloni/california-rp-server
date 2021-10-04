@@ -15,7 +15,7 @@ const InitialState = {
    Inventory: false,
    Playerlist: false,
    Chat: false,
-   Banking: false,
+   Banking: true,
    Job_Offer: false,
    Miner: false,
    Food: false,
