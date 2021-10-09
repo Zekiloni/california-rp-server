@@ -30,6 +30,7 @@ export default class Channel extends Model {
 
    static async New(Player: PlayerMp, NewFreq: number, NewPass: string) {
       const NewChannel = await Channel.create({ Frequency: NewFreq, Password: NewPass, Owner: Player.Character.id });
+      return NewChannel;
    }
 
    static async Exists(FreqForCheck: number) {

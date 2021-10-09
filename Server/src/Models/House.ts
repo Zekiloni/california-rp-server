@@ -13,8 +13,8 @@ export default class House extends Model {
    ID: number;
 
    @Column
-   @Unique(true)
    @AllowNull(false)
+   @Default(-1)
    Owner: number;
 
    @Column
@@ -72,7 +72,7 @@ export default class House extends Model {
    GameObject: any;
 
    @AfterCreate
-   static async AfterCreating(HouseObj: House) { await HouseObj.Refresh(); }
+   static async AfterCreating(HouseObj: House) { await HouseObj.Refresh(); } // ToDo Namestiti da seta IPL i Interior_Position prema Type
 
    @AfterDestroy
    static async AfterDestroying(HouseObj: House, Options: any) {
@@ -153,6 +153,14 @@ export default class House extends Model {
          IPL: DefaultType.IPL ? DefaultType.IPL : null,
       });
    }
+
+   static async Nearest(player: PlayerMp) {
+      const Houses = await House.findAll();
+      for (const House of Houses) {
+          const Position = new mp.Vector3(House.Position.x, House.Position.y, House.Position.z);
+          if (player.dist(Position) < 2.5) return House;
+      }
+  };
 
 }
 

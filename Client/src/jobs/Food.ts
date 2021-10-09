@@ -7,7 +7,7 @@ let Delivering = false;
 
 mp.events.add({
 
-   'client:job.food:orders': (Orders: string) => {
+   'CLIENT::JOB:FOOD:ORDERS': (Orders: string) => {
       if (Delivering) return;
       opened = !opened;
       if (opened) {
@@ -22,7 +22,7 @@ mp.events.add({
       const response = await mp.events.callRemoteProc('server:job.food.order:accept', i);
       if (response) {
 
-         mp.events.call('client:job.food:orders');
+         mp.events.call('CLIENT::JOB:FOOD:ORDERSs');
 
          Delivering = true;
 
@@ -37,12 +37,12 @@ mp.events.add({
                Delivering = false;
                if (Checkpoint) Checkpoint.destroy();
                if (Blip) Blip.destroy();
-               mp.events.callRemote('server:job.food.order:deliver', i);
+               mp.events.callRemote('SERVER::JOB:FOOD:ORDER:DELIVER', i);
                mp.events.remove('playerEnterCheckpoint', ReachOrderPoint);
             }
          }
       } else {
-         mp.events.call('client:job.food:orders');
+         mp.events.call('CLIENT::JOB:FOOD:ORDERS');
          Delivering = false;
       }
    }
