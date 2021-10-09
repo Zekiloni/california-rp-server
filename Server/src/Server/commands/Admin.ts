@@ -1,7 +1,7 @@
 import { Colors } from "../../Global/Colors";
 import { EntityData } from "../../Global/EntityData";
 import { Globals } from "../../Global/Globals";
-import { KickEx, GetPlayerFromArgument } from "../../Global/Utils";
+import { KickEx } from "../../Global/Utils";
 import Accounts from "../../Models/Account.model";
 import Characters from "../../Models/Character";
 import { Admin, Administrators } from "../../Player/Admin";
@@ -12,19 +12,22 @@ const fs = require("fs");
 const savedPosition = 'saved_position.txt';
 
 
-Commands["adminhelp"] = {
-   Desc: 'Admin pomoc',
-   Admin: 1,
-   Call: (Player: PlayerMp, Args: string[]) => {
-      let AllowedCommands = [];
-      for (const i in Commands) {
-         const Command = Commands[i];
-         if (Command.Admin > 0 && Command.Admin <= Player.Account.Administrator) {
-            AllowedCommands.push(Command);
-         }
-      }
-   }
-};
+// Commands["adminhelp"] = {
+//    Desc: 'Admin pomoc',
+//    Admin: 1,
+//    Call: (Player: PlayerMp, Args: string[]) => {
+//       let AllowedCommands = [];
+//       for (const i in Commands) {
+//          const Command = Commands[i];
+//          if (Command) {
+//             if (Command.Admin > 0 && Command.Admin <= Player.Account.Administrator) {
+//                AllowedCommands.push(Command);
+//             }
+//          }
+
+//       }
+//    }
+// };
 
 Commands["createaccount"] = {
    Desc: 'Kreiranje korisničkog računa',
@@ -178,7 +181,7 @@ Commands["kick"] = {
    Desc: 'Izbacite igrača sa servera.',
    Params: ['igrač', 'razlog'],
    Call: (Player: PlayerMp, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]);
+      const TargetPlayer = mp.players.find(Args[0]);
       const Reason = Args[1];
 
       if (TargetPlayer) {
@@ -222,7 +225,7 @@ Commands["sethp"] = {
    Desc: '',
    Params: ['igrač', 'hp'],
    Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Health = parseInt(Args[1]);
+      const TargetPlayer = mp.players.find(Args[0]), Health = parseInt(Args[1]);
       if (TargetPlayer && Health) {
          // Helth varijabla i setanje helti
          Admin.AdminActionNotify(Player, `je namestio helte igraču ${TargetPlayer.name} na ${Health}.`);
@@ -235,7 +238,7 @@ Commands["setarmor"] = {
    Desc: '',
    Params: ['igrač', 'armor'],
    Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Health = parseInt(Args[1]);
+      const TargetPlayer = mp.players.find(Args[0]), Health = parseInt(Args[1]);
       if (TargetPlayer && Health) {
          // Helth varijabla i setanje helti
          Admin.AdminActionNotify(Player, `je namestio armor igraču ${TargetPlayer.name} na ${Health}.`);
@@ -248,7 +251,7 @@ Commands["setvw"] = {
    Desc: '',
    Params: ['igrač', 'dimenzija'],
    Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Dimension = parseInt(Args[1]);
+      const TargetPlayer = mp.players.find(Args[0]), Dimension = parseInt(Args[1]);
       if (TargetPlayer && Dimension) {
          TargetPlayer.dimension = Dimension;
          Admin.AdminActionNotify(Player, `je namestio dimenziju igraču ${TargetPlayer.name} na ${Dimension}.`);
@@ -261,7 +264,7 @@ Commands["setskin"] = {
    Desc: '',
    Params: ['igrač', 'model'],
    Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), PedModel = mp.joaat(Args[1]);
+      const TargetPlayer = mp.players.find(Args[0]), PedModel = mp.joaat(Args[1]);
       if (TargetPlayer && PedModel) {
          TargetPlayer.model = PedModel;
          Admin.AdminActionNotify(Player, `je promenio skin igraču ${TargetPlayer.name} na ${Args[1]}.`);
@@ -274,10 +277,10 @@ Commands["setmoney"] = {
    Params: ['igrac', 'vrednost'],
    Desc: 'Postavite novac u džepu igraču na određenu vrednost',
    Call: async (Player: PlayerMp, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Value = parseInt(Args[1]);
+      const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
 
       if (TargetPlayer && Value) {
-         const Character = await Characters.findOne({ where: { id: Player.Character.id }});
+         const Character = await Characters.findOne({ where: { id: Player.Character.id } });
          if (Character) {
             Character.Money = Value;
             Character.save();
@@ -293,7 +296,7 @@ Commands["givemoney"] = {
    Desc: 'Dodajte novac igraču u džep',
    Params: ['igrac', 'vrednost'],
    Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Value = parseInt(Args[1]);
+      const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
 
       if (TargetPlayer && Value) {
          Player.Character.GiveMoney(Player, Value);
@@ -372,7 +375,7 @@ Commands["goto"] = {
    Admin: 2,
    Params: ['igrač'],
    Call: (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]);
+      const TargetPlayer = mp.players.find(Args[0]);
       if (TargetPlayer && TargetPlayer.id != Player.id) {
          if (Player.vehicle) {
             const Seat = Player.seat, Vehicle = Player.vehicle;
@@ -394,7 +397,7 @@ Commands["gethere"] = {
    Admin: 3,
    Params: ['igrač'],
    Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]);
+      const TargetPlayer = mp.players.find(Args[0]);
       if (TargetPlayer) {
          if (TargetPlayer.vehicle) {
             const Seat = TargetPlayer.seat, Vehicle = TargetPlayer.vehicle;
@@ -416,8 +419,8 @@ Commands["revive"] = {
    Admin: 4,
    Desc: '',
    Params: ['igrač', 'razlog'],
-   Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Reason = Args[1];
+   Call: async (Player: PlayerMp, Args: string[]) => {
+      const TargetPlayer = mp.players.find(Args[0]), Reason = Args[1];
       if (TargetPlayer && Reason) {
          Player.Character.Wounded = false;
          Player.Character.Health = 100;
@@ -431,8 +434,8 @@ Commands["givegun"] = {
    Admin: 6,
    Desc: 'Davanje oružja',
    Params: ['igrač', 'oružje', 'municija'],
-   Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), GunName = Args[1], Ammo = parseInt(Args[2]);
+   Call: async (Player: PlayerMp, Args: string[]) => {
+      const TargetPlayer = mp.players.find(Args[0]), GunName = Args[1], Ammo = parseInt(Args[2]);
       if (TargetPlayer && GunName.length > 0 && Ammo > 0) {
          TargetPlayer.giveWeapon(mp.joaat(GunName), Ammo);
          TargetPlayer.SendMessage('[OOC] Admin Vam je dao oružje ' + GunName + `(${Ammo})`, Colors.info);
@@ -445,8 +448,8 @@ Commands["makeadmin"] = {
    Admin: 6,
    Desc: '',
    Params: ['igrač', 'level'],
-   Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), AdminLevel = parseInt(Args[1]);
+   Call: async (Player: PlayerMp, Args: string[]) => {
+      const TargetPlayer = mp.players.find(Args[0]), AdminLevel = parseInt(Args[1]);
       if (TargetPlayer) {
          if (AdminLevel > 0) {
             Player.Account.Administrator = AdminLevel;
@@ -464,8 +467,8 @@ Commands["makeleader"] = {
    Admin: 5,
    Desc: 'Postavljanje/skidanje lidera.',
    Params: ['igrač', 'level'],
-   Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), PedModel = mp.joaat(Args[1]);
+   Call: async (Player: PlayerMp, Args: string[]) => {
+      const TargetPlayer = mp.players.find(Args[0]), PedModel = mp.joaat(Args[1]);
       if (TargetPlayer && PedModel) {
          TargetPlayer.model = PedModel;
          Admin.AdminActionNotify(Player, `je promenio skin igraču ${TargetPlayer.name} na ${Args[1]}.`);
@@ -477,8 +480,8 @@ Commands["freeze"] = {
    Admin: 3,
    Desc: 'Zaledite igrača u mestu..',
    Params: ['igrač', 'razlog'],
-   Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Reason = Args[1];
+   Call: async (Player: PlayerMp, Args: string[]) => {
+      const TargetPlayer = mp.players.find(Args[0]), Reason = Args[1];
       if (TargetPlayer && Reason.length > 0) {
          TargetPlayer.call('CLIENT::FREEZE');
          TargetPlayer.SendMessage('[OOC] Admin Vas je zaledio. Razlog: ' + Reason, Colors.info);
@@ -491,8 +494,8 @@ Commands["unfreeze"] = {
    Admin: 3,
    Desc: 'Odledite igrača',
    Params: ['igrač'],
-   Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]);
+   Call: async (Player: PlayerMp, Args: string[]) => {
+      const TargetPlayer = mp.players.find(Args[0]);
       if (TargetPlayer) {
          TargetPlayer.call('CLIENT::UNFREEZE');
          TargetPlayer.SendMessage('[OOC] Admin Vas je odledio.', Colors.info);
@@ -505,8 +508,8 @@ Commands["disarm"] = {
    Admin: 4,
    Desc: 'Oduzmite oružje igraču iz ruku.',
    Params: ['igrač', 'razlog'],
-   Call: async (Player, Args: string[]) => {
-      const TargetPlayer = GetPlayerFromArgument(Args[0]), Reason = Args[0];
+   Call: async (Player: PlayerMp, Args: string[]) => {
+      const TargetPlayer = mp.players.find(Args[0]), Reason = Args[0];
       if (TargetPlayer) {
          TargetPlayer.removeAllWeapons();
          TargetPlayer.SendMessage('[OOC] Admin Vam je oduzeo oružje iz ruke.', Colors.info);
@@ -563,7 +566,7 @@ Commands["fixveh"] = {
 
 //       {
 //          Name: 'givemoney',
-         
+
 //       },
 //    ]
 // };

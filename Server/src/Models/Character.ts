@@ -250,6 +250,11 @@ export default class Characters extends Model {
       this.Money = value;
    }
 
+   async SetJob(Value: number) {
+      this.Job = Value;
+      await this.save();
+   }
+
    async GiveMoney (Player: PlayerMp, value: number) {
       let Money = await this.increment('Money', { by: value });
       if (Money) {

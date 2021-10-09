@@ -13,6 +13,10 @@ export const Messages = {
    YOU_NEED_MINIMUM_2_HOURS_OF_PLAYING: 'Potrebno vam je minimum dva sata igre.',
    NOT_IN_VEHICLE: 'Niste se u vozilu.',
    NOT_IN_SPEC_FACTION: 'Niste član odredjene fakcije.',
+   NOT_IN_ANY_FACTION: 'Niste član ni jedne fakcije.',
+   NOT_IN_YOUR_FACTION: 'Igrač nije član Vaše fakcije.',
+   YOU_ARE_KICKED_FROM_FACTION: 'Izbačeni ste iz fakcije',
+   YOU_HAVE_KICKED_PLAYER_FROM_FACTION: 'Izbacili ste igrača iz fakcije',
    DMV_INSTRUCTOR_GO_VEHICLE: 'Instruktor Vožnje: Okej, dobro ste prošli usmeni test, sada sledi vožnja, pratite me do vozila.',
    USER_DOESNT_EXIST: 'Korisničko ime nije pronadjeno.',
    INCCORRECT_PASSWORD: 'Korisnička šifra nije tačna.',
@@ -23,6 +27,7 @@ export const Messages = {
    GARBAGE_JOB_STARTED: 'Započeli ste posao Smećara, vaš zadatak je da idete od kontenjera do kontenjera i interaktirate sa njima na slovo Y.',
    GARBAGE_HOW_TO_STOP: 'Završili ste rutu. Vratite vaše zaduženo vozilo na parkingu gde ste ga i uzeli, zatim /garbage stop na mestu gde ste i započeli kako bi ste bili isplaćeni.',
    ALREADY_EMPLOYED: 'Već ste zaposleni.',
+   NOT_EMPLOYED: 'Niste zaposleni.',
    NO_TX_IN_NUMBERPLATE: 'Vaše vozilo nema prefiks TX u registarskim tablicama.',
    JOB_NOT_STARTED: 'Niste započeli posao.',
    TAXIMETRE_PRICE_RANGE: 'Cena je u rangu ',
@@ -100,7 +105,18 @@ export const Messages = {
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    WAITING_FOR_PAYMENT: ' čeka za isplatu.',
    NOT_READY_FOR_HARVEST: 'Još nije vreme za branje.',
+   MINIMUM_PAY_AMOUNT: 'Minimum 1$.',
+   NOT_FACTION_LEADER: 'Niste lider ove fakcije.',
+   INVITED_TO_FACTION: 'Pozvani ste da se pridružite fakciji ',
 
    MONEY_WITHDRAW: 'Podizanje',
    MONEY_DEPOSIT: 'Depozit',
 };
+
+export const CommandNames = {
+   
+}
+
+export const Arguments = {
+   
+}

@@ -12,12 +12,13 @@ type Commands = {
 type Command = {
    Desc: string;
    Params?: string[];
-   Faction?: any;
+   Faction?: number;
    Item?: any;
    Vehicle?: VehicleMp;
    Job?: number;
    Position?: Vector3Mp;
-   Admin?: any;
+   Admin?: number;
+   Leader?: boolean;
    Call(Player: PlayerMp, Args: string[]): void;
 }
 
