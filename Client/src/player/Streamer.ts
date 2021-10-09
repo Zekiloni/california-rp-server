@@ -30,7 +30,7 @@ mp.events.add({
       }
    },
 
-   'client:player:cuff': (Entity: PlayerMp, Toggle: boolean) => {
+   'CLIENT::STREAMER:CUFF': (Entity: PlayerMp, Toggle: boolean) => {
       Cuff(Entity, Toggle);
    },
 

@@ -15,8 +15,10 @@ export class Interior {
         this.Dimensions = Dimensions;
         if (Message) this.Message = Message;
 
-        this.ColShapes.EnterShape = mp.colshapes.newSphere(this.Positions.Entrance.x, this.Positions.Entrance.y, this.Positions.Entrance.z, 2);
-        this.ColShapes.ExitShape = mp.colshapes.newSphere(this.Positions.Exit.x, this.Positions.Exit.y, this.Positions.Exit.z, 2);
+        this.ColShapes.EnterShape = mp.colshapes.newSphere(this.Positions.Entrance.x, this.Positions.Entrance.y, this.Positions.Entrance.z, 2, this.Dimensions.EntranceDim);
+        this.ColShapes.ExitShape = mp.colshapes.newSphere(this.Positions.Exit.x, this.Positions.Exit.y, this.Positions.Exit.z, 2, this.Dimensions.InsideDim);
+
+        // Markeri?
 
         this.ColShapes.EnterShape.OnPlayerEnter = (Player: PlayerMp) => {
             if (this.IPL.length > 1) {
