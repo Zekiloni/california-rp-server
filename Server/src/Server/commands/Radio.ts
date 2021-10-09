@@ -21,10 +21,19 @@ Commands["channel"] = {
       const Action = Args[0], Freq = Number(Args[1])
       switch (Action.toUpperCase()) {
          case 'JOIN':
-            
-            break;
+            if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, Globals.Notification.Error, 5);
+            const JoinChannel = await Channel.findOne({ where: { Frequency: Freq }});
+            if (JoinChannel?.Password == Args[2]) {
+               JoinChannel.AddMember(Player);
+               Player.Notification(Messages.SUCCESSFULY_JOINED_CHANNEL, Globals.Notification.Succes, 5);
+            }
+            break; 
          case 'LEAVE':
-            
+            const LeaveChannel = await Channel.findOne({ where: { Frequency: Freq }});
+            if (LeaveChannel?.Password == Args[2]) {
+               LeaveChannel.RemoveMember(Player);
+               Player.Notification(Messages.CHANNEL_SUCCESFULLY_LEAVED, Globals.Notification.Succes, 5);
+            }
             break;
          case 'CREATE':
             if (await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_ALREADY_EXISTS, Globals.Notification.Error, 5);
@@ -40,11 +49,10 @@ Commands["channel"] = {
             break;
          case 'PASSWORD':
             if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, Globals.Notification.Error, 5);
-            const Password = Args[2];
-            if (Password.length < 4) return Player.Notification(Messages.CHANNEL_TOO_SHORT_PASSWORD, Globals.Notification.Error, 5);
+            if (Args[2].length < 4) return Player.Notification(Messages.CHANNEL_TOO_SHORT_PASSWORD, Globals.Notification.Error, 5);
             const PwChannel = await Channel.findOne({ where: { Frequency: Freq }});
             if (PwChannel) {
-               PwChannel.Password = Password;
+               PwChannel.Password = Args[2];
                Player.Notification(Messages.CHANNEL_SUCCESFULLY_EDITED, Globals.Notification.Succes, 5);
             }
             break;

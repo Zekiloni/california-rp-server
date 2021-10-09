@@ -145,6 +145,10 @@ export default class Characters extends Model {
    @Column
    Max_Vehicles: number
 
+   @Default(0)
+   @Column
+   Frequency: number;
+
    @Default([])
    @Column(DataType.JSON)
    Licenses: License[]
