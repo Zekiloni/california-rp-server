@@ -2,7 +2,7 @@
 
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
-import Accounts from '../Models/Account.model';
+import Accounts from '../Models/Database/Account';
 //import Bans from '../Models/Ban';
 import Characters from '../Models/Character';
 import Appearances from  '../Models/Appearance';

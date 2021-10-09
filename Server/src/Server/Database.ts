@@ -4,7 +4,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { Config } from '../Server/Config';
 import { Main, LogType } from './Main';
 import Characters from '../Models/Character';
-import Accounts from '../Models/Account.model';
+import Accounts from '../Models/Database/Account';
 //import Bans from '../Models/Ban';
 
 //console.log(__dirname)

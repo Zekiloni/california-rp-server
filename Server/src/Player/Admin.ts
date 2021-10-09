@@ -3,7 +3,7 @@
 // const Ban = require('../models/Ban');
 
 import { Colors } from "../Global/Colors";
-import Accounts from "../Models/Account.model";
+import Accounts from "../Models/Database/Account";
 
 export const Administrators = [
    'None',
@@ -90,7 +90,7 @@ export class Admin {
       },
 
       Remove: (i: number) => {
-         this.Reports.splice(i, 1);
+         Admin.Reports.splice(i, 1);
       }
 
    }
