@@ -90,7 +90,7 @@ Commands["tpm"] = {
 };
 
 Commands["slap"] = {
-   Desc: 'Upozorenje/skretanje pažnje igrača na određenu stvar',
+   Desc: 'Upozorenje/skretanje pažnje igraču na određenu stvar',
    Admin: 2,
    Params: ['igrač', 'razlog'],
    Call: (Player: PlayerMp, Args: string[]) => {
