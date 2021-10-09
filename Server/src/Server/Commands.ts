@@ -3,87 +3,54 @@ import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 
 
-const Commands: Commands = {};
+export let Commands: Commands = {};
 
 type Commands = {
    [key: string]: Command
 }
 
 type Command = {
-   name: string;
-   desc: string;
-   params: string[];
-   faction?: any;
-   item?: any;
-   vehicle?: VehicleMp;
-   job?: number;
-   position?: Vector3Mp;
-   admin?: any;
-   call(Player: PlayerMp, args: string[]): void;
+   Desc: string;
+   Params?: string[];
+   Faction?: any;
+   Item?: any;
+   Vehicle?: VehicleMp;
+   Job?: number;
+   Position?: Vector3Mp;
+   Admin?: any;
+   Call(Player: PlayerMp, Args: string[]): void;
 }
 
-const commandFiles = [
-   'basic.commands',
-   'admin.commands',
-   'house.commands',
-   'business.commands',
-   'item.commands',
-   'vehicle.commands',
-   'interior.commands',
-   'job.commands',
-   'message.commands',
-   'radio.commands',
-   'faction.commands',
-   'law.commands',
-   'lock.command'
-];
-
-for (const file of commandFiles) {
-   const cmdFile = require('./commands/' + file);
-   
-   for (const i in cmdFile) { // Ovo nije iterable
-      let Command = cmdFile[i];
-      Commands[Command.name] = Command;
-   }
-}
-
-// function SendChatMessage(Player: PlayerMp, Text: string) {
-// 	mp.players.forEachInRange(Player.position, 10, (Target: PlayerMp) => {
-//       Target.outputChatBox(Text);
-//       Player.outputChatBox(Text);
-//    });
-// };
-// mp.events.add("playerChat", SendChatMessage);
 
 mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
-   //if (!Player.data.logged) return;
-   Player.notify('pozvano');
-   let args = Command.split(/ +/);
-   const Name = args.splice(0, 1)[0];
-   let cmd = Commands[Name];
+   if (!Player.data.LOGGED_IN) return;
+   const Args = Command.split(/ +/);
+   const Name = Args.splice(0, 1)[0];
+   const Cmd = Commands[Name];
+   Player.outputChatBox('Cmd ' + Cmd);
+   if (Cmd) {
+      Player.outputChatBox('Cmd true');
+      // const Account = Player.Account;
+      // const Character = Player.Character;
 
-   if (cmd) {
-      const Account = Player.Account;
-      const Character = Player.Character;
+      // if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', Globals.Notification.Error, 4);
 
-      if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', Globals.Notification.Error, 4);
+      // if (cmd.job && Character.Job != cmd.job) return Player.Notification(Messages.NOT_SPECIFIC_JOB, Globals.Notification.Error, 4);
 
-      if (cmd.job && Character.Job != cmd.job) return Player.Notification(Messages.NOT_SPECIFIC_JOB, Globals.Notification.Error, 4);
+      // if (cmd.position && Player.dist(cmd.position) > 1.85) return Player.Notification(Messages.NOT_ON_POSITION, Globals.Notification.Error, 4);
 
-      if (cmd.position && Player.dist(cmd.position) > 1.85) return Player.Notification(Messages.NOT_ON_POSITION, Globals.Notification.Error, 4);
+      // if (cmd.faction) {
+      //    //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
+      //    if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
+      // }
 
-      if (cmd.faction) {
-         //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
-         if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
-      }
+      // if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, Globals.Notification.Error, 5);
 
-      if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, Globals.Notification.Error, 5);
+      // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', Globals.Notification.Error, 4);
 
-      // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', Globals.Notification.Error, 4);
+      if (Cmd.Params && Cmd.Params.length > Args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + Cmd.Params.join('] [') + '] ', Colors.help);
 
-      if (cmd.params && cmd.params.length > args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + cmd.params.join('] [') + '] ', Colors.help);
-
-      cmd.call(Player, args);
+      Cmd.Call(Player, Args);
    } else {
       Player.Notification(Messages.CMD_DOESNT_EXIST, Globals.Notification.Error, 4);
    }
