@@ -15,20 +15,19 @@ const Database = new Sequelize({
    username: Config.Database.User,
    password: Config.Database.Password,
    storage: ':memory:',
-   models: [ Accounts, Characters ] 
+   models: [ '/Models/**/*.model.ts' ] 
 });
 
 Database.authenticate()
-.then(() => { 
-   Main.Terminal(LogType.Succes, 'Connected');
-})
-.then(() => { 
-   return Database.sync()
-})
-.catch((Error: any) => { 
-   Main.Terminal(LogType.Error, Error);
-});
-
+   .then(() => { 
+      Main.Terminal(LogType.Succes, 'Connected');
+   })
+   .then(() => { 
+      return Database.sync()
+   })
+   .catch((Error: any) => { 
+      Main.Terminal(LogType.Error, Error);
+   });
 
 
 
@@ -41,11 +40,11 @@ Database.authenticate()
 
    for (const Admin of Admins) { 
       const Exist = await Accounts.findOne({ where: { Username: Admin.Username } });
+      console.log(Admin);
       if (Exist == null) { 
          Accounts.create({ Username: Admin.Username, Password: Admin.Password });
       }
    }
-
 
 
    // const Acc = await Accounts.create({ Username: 'Zekiloni', Password: 'test' });

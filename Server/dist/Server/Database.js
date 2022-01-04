@@ -15,7 +15,7 @@ const Database = new sequelize_typescript_1.Sequelize({
     username: Config_1.Config.Database.User,
     password: Config_1.Config.Database.Password,
     storage: ':memory:',
-    models: [Account_model_1.default, Character_1.default]
+    models: ['/Models/**/*.model.ts']
 });
 Database.authenticate()
     .then(() => {
@@ -27,6 +27,7 @@ Database.authenticate()
     .catch((Error) => {
     Main_1.Main.Terminal(Main_1.LogType.Error, Error);
 });
+Database.addModels([__dirname + '/**/*.model.ts']);
 (async () => {
     const Admins = [
         { Username: 'Zekiloni', Password: 'kapakapa' },
@@ -34,6 +35,7 @@ Database.authenticate()
     ];
     for (const Admin of Admins) {
         const Exist = await Account_model_1.default.findOne({ where: { Username: Admin.Username } });
+        console.log(Admin);
         if (Exist == null) {
             Account_model_1.default.create({ Username: Admin.Username, Password: Admin.Password });
         }

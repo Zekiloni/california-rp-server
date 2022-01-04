@@ -6,13 +6,15 @@ let Offer: boolean = false;
 mp.events.add(
    {
       'CLIENT::JOB:OFFER': (Info: string) => {
-         mp.gui.chat.push(JSON.stringify(Info))
          Offer = !Offer;
-         Browser.call(Offer ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'JobOffer');
+         Browser.call(Offer ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'Job_Offer');
+         if (Offer) {
+            Browser.call('BROWSER::JOB_OFFER', Info);
+         }
       },
 
       'CLIENT::JOB:ACCEPT': (Job: number) => {
-         mp.events.call('CLIENT::JOB:OFFER')
+         mp.events.call('CLIENT::JOB:OFFER');
          mp.events.callRemote('SERVER::JOB:ACCEPT', Job);
       },
 

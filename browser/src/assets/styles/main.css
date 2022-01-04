@@ -16,9 +16,9 @@ body {
 input {
    letter-spacing: 1.2px;
    width: 100%;
-   border: 1px solid rgb(121 121 121 / 13%);
-   color: #f1f1f1;
-   background: rgb(255 255 255 / 20%);
+   border: none;
+   color: #eaecef;
+   background: linear-gradient(45deg, #343a46, #2a303c);
    position: relative;
    padding: 10px 20px;
    font-size: 15px;
@@ -64,7 +64,7 @@ button.frp-1 {
 
 button.frp-1:hover { 
    color: white;
-   box-shadow: 0 4px 10px rgb(251 198 12 / 25%);
+   box-shadow: 0 4px 10px rgb(251 198 12 / 35%);
 }
 
 button.frp-2 { 
@@ -75,7 +75,8 @@ button.frp-2 {
 
 button.frp-2:hover { 
    color: white;
-   box-shadow: 0 4px 15px rgb(104 69 234 / 25%);
+   filter: brightness(1.15);
+   box-shadow: 0 4px 15px rgb(104 69 234 / 35%);
 }
 
 button.frp-3  {

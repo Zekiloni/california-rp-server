@@ -15,6 +15,13 @@
          <Banking v-if="interfaces.Banking" />
       </transition>
 
+      <transition name="bounce"> 
+         <JobOffer v-if="interfaces.Job_Offer" />
+      </transition>
+
+      <!-- [BUSINESSES] -->
+      <Market v-if="interfaces.Market" />
+
 
          <!-- FOCUS ROLEPLAY BUTTON LOL 
          <button class="frp-1"> Test </button>
@@ -41,11 +48,14 @@
    import Chat from './components/Chat';
    import Inventory from './components/Inventory/Inventory.vue';
    import Banking from './components/Banking.vue';
+   import JobOffer from './components/Jobs/Job_Offer.vue';
+   import Market from './components/Business/Market.vue';
 
    export default { 
 
       components: { 
-         Authorization, Creator, Notifications, GameInterface, Inventory, Chat, Banking
+         Authorization, Creator, Notifications, GameInterface, Inventory, Chat, Banking, JobOffer,
+         Market
       },
 
       data () { 

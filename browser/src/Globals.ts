@@ -1,5 +1,6 @@
 
 
+
 export const Messages = {
    WEBSITE: 'www.focus-rp.com',
    FOCUS: 'Focus',
@@ -21,18 +22,26 @@ export const Messages = {
    BIRTH: 'Datum Rodjenja',
    BANK: 'Banka',
    IDENTITY: 'Identitet',
+   IN: 'u',
    BLENDINGS: 'Genetika',
    WITHDRAW_PAGE: 'Podizanje Novca',
    DEPOSIT_PAGE: 'Depozit Novca',
    SAVINGS_PAGE: 'Štedna knjižica',
    PAYCHECK: 'Plata',
+   ACCEPT: 'Prihvati',
+   CANCEL: 'Odustani',
    TRANSFER_PAGE: 'Transfer Novca',
+   JOB_OFFER: 'Ponuda za Posao',
+   JOB_OFFER_CONFIRM: 'Da li želite da se zaposlite kao ',
    TRANSACTION_HISTORY: 'Istorija Transakcija',
    FACE_SHAPE: 'Konture Lica',
    HAIR: 'Maljavost',
    WEIGHT_OF_ITEM: 'Težina predmeta',
    TOTAL_WEIGHT: 'Ukupna težina ',
    WEIGHT_KG: 'kg',
+   ARTICLE: 'Artikal',
+   QUANTITY: 'Količina',
+   PRICE: 'Cena',
    ITEM_WEIGHT: 'težina predmeta ',
    FIRST_NAME: 'Ime',
    START_GAME_NEW_CHARACTER: 'Započni igru sa novim karakterom',

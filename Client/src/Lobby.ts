@@ -32,6 +32,7 @@ mp.events.addProc(
 
 let Camera: CameraMp;
 
+
 export function Lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp) { 
    if (Toggle && Position && LookAt) { 
       Player.position = new mp.Vector3(Position.x, Position.y + 1, Position.z);

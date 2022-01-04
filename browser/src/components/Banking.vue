@@ -147,7 +147,7 @@
 <style scoped>
 
    .banking { 
-      background: radial-gradient(circle, rgb(45 53 72 / 75%) 0%, rgb(19 22 29 / 85%) 90%); top: 0; left: 0; 
+      background: radial-gradient(circle, rgb(52 58 70 / 75%) 0%, rgb(25 29 36 / 85%) 90%); top: 0; left: 0; 
       position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
    }
 
@@ -155,7 +155,7 @@
       width: 450px;
       height: 525px;
       border-radius: 15px;
-      background: linear-gradient(90deg, rgba(29,34,45,1) 0%, rgba(19,22,29,1) 100%);
+      background: linear-gradient(90deg, #21252f 0%, #13161c 100%);
       box-shadow: rgb(0 0 0 / 15%) 0px 1px 20px 0px;
       overflow: hidden;
    }
@@ -179,7 +179,7 @@
    ul.navigation { 
       list-style: none; display: flex; width: 255px; justify-content: space-between; align-items: center;
       margin: 0 auto; position: relative; padding: 10px 20px; margin-top: -15px; border-radius: 15px; z-index: 10;
-      background: #1d222d; box-shadow: rgb(0 0 0 / 10%) 0px 1px 20px 0px;
+      background: #21252f; box-shadow: rgb(0 0 0 / 10%) 0px 1px 20px 0px;
    }
 
    ul.navigation li { transition: all 0.35s ease; width: 30px; height: 30px; background: whitesmoke; opacity: 0.5; mask-size: cover; }
@@ -197,7 +197,7 @@
    .transaction-history { width: 370px; margin: 0 auto; margin-top: 20px; }
    .transaction-history ul.transactions { padding: 0; list-style: none; max-height: 165px; overflow-y: auto; margin: 5px 0; padding: 0 5px; }
    ul.transactions li { 
-      width: 100%; padding: 5px 0; background: #212733; margin: 5px 0; border-radius: 5px;
+      width: 100%; padding: 5px 0; background: #2a303c; margin: 5px 0; border-radius: 5px;
       color: rgb(211, 211, 211); display: flex; justify-content: space-between; align-items: center;
    }
    

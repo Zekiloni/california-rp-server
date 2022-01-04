@@ -13,7 +13,6 @@ const Player = mp.players.local;
 
 let Active: boolean = false;
 
-
 mp.events.add(
    {
       'CLIENT::CREATOR:START': () => {
@@ -60,6 +59,7 @@ mp.events.add(
       },
 
       'CLIENT::CREATOR:HAIR': (Style: number, Color: number, Highlights: number) => {
+         if (Style == 23) Style = 24;
          Player.setComponentVariation(2, Style, 0, 0)
          Player.setHairColor(Color, Highlights);
       },
@@ -103,9 +103,11 @@ mp.events.add(
    }
 );
 
-mp.events.addProc({
-   'CLIENT::TOP:COMBINATIONS': (Gender: number, Top: number) => { 
-      return Clothing_Combinations[Gender][Top];
+mp.events.addProc(
+   {
+      'CLIENT::TOP:COMBINATIONS': (Gender: number, Top: number) => { 
+         return Clothing_Combinations[Gender][Top];
+      }
    }
-})
+);
 
