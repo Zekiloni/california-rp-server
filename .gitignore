@@ -1,7 +1,8 @@
 node_modules/
 dist/
 public/
-Server/dist/
-Client/dist/
+Server/dist/ 
+Client/dist/ 
+Browser/dist/ 
 .ps1
 .cmd
