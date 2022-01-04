@@ -3,13 +3,13 @@ import './Server/Database';
 import { LogType, Main } from './Server/Main';
 import './Player/Player';
 import './Player/Account';
-import Accounts from './Models/Account.model';
+import Accounts from './Models/Database/Account';
 import Characters from './Models/Character';
 import { Items } from './Items/Items';
+import './Server/Commands';
 
 
-
-console.log(Items.List);
+//console.log(Items.List);
 
 
 

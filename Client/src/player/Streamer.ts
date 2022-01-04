@@ -1,13 +1,13 @@
 import { WaitEntity } from '../Utils';
 
 const Player = mp.players.local,
-      CuffsModel: string = 'p_cs_cuffs_02_s';
+   CuffsModel: string = 'p_cs_cuffs_02_s';
 
 
 mp.events.addDataHandler({
    'Cuffed': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => {
       if (Entity.type === 'player') {
-         if (NewValue !== OldValue) { 
+         if (NewValue !== OldValue) {
             Cuff(<PlayerMp>Entity, NewValue);
          }
       }
@@ -20,8 +20,8 @@ mp.events.add({
       if (Entity.type === 'player') Cuff(<PlayerMp>Entity, Entity.getVariable('Cuffed'));
    },
 
-   'render': () => { 
-      if (Player.Cuffed) { 
+   'render': () => {
+      if (Player.Cuffed) {
          // DISABLE SPRINT, ATTACK, AIM, JUMP
          mp.game.controls.disableControlAction(0, 24, true);
          mp.game.controls.disableControlAction(0, 25, true);
@@ -30,15 +30,25 @@ mp.events.add({
       }
    },
 
-   'client:player:cuff': (Entity: PlayerMp, Toggle: boolean) => { 
+   'CLIENT::STREAMER:CUFF': (Entity: PlayerMp, Toggle: boolean) => {
       Cuff(Entity, Toggle);
+   },
+
+   'CLIENT::STREAMER:LOAD:IPL': (Ipl: string) => {
+      mp.game.streaming.requestIpl(Ipl);
+      mp.game.waitAsync(5);
+   },
+
+   'CLIENT::STREAMER:UNLOAD:IPL': (Ipl: string) => {
+      if (mp.game.streaming.isIplActive(Ipl))
+         mp.game.streaming.removeIpl(Ipl);
    }
 
 });
 
 
-function Cuff (Entity: PlayerMp, Toggle: boolean) { 
-   if (Toggle && Entity) { 
+function Cuff(Entity: PlayerMp, Toggle: boolean) {
+   if (Toggle && Entity) {
       Entity.setEnableHandcuffs(true);
       Entity.Cuffed = true;
 
@@ -57,8 +67,8 @@ function Cuff (Entity: PlayerMp, Toggle: boolean) {
    else {
       Entity.setEnableHandcuffs(false);
       Entity.Cuffed = false;
-      if (Entity.Cuffs) { 
-         if (Entity.Cuffs.doesExist()) { 
+      if (Entity.Cuffs) {
+         if (Entity.Cuffs.doesExist()) {
             Entity.Cuffs.destroy();
          }
       }

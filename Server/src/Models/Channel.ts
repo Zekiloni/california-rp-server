@@ -30,6 +30,7 @@ export default class Channel extends Model {
 
    static async New(Player: PlayerMp, NewFreq: number, NewPass: string) {
       const NewChannel = await Channel.create({ Frequency: NewFreq, Password: NewPass, Owner: Player.Character.id });
+      return NewChannel;
    }
 
    static async Exists(FreqForCheck: number) {
@@ -45,6 +46,20 @@ export default class Channel extends Model {
       await this.save();
    }
 
+   AddMember (Player: PlayerMp) {
+      if (Player.Character) {
+         Player.Character.Frequency = this.Frequency;
+         Player.Character.save();
+      }
+   }
+
+   RemoveMember (Player: PlayerMp) {
+      if (Player.Character) {
+         Player.Character.Frequency = 0;
+         Player.Character.save();
+      }
+   }
+ 
 }
 
 (async () => {

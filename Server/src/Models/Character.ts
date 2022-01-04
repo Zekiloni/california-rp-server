@@ -4,7 +4,7 @@ import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Defau
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
-import Accounts from './Account.model';
+import Accounts from './Database/Account';
 import Appearances from './Appearance';
 import { Injury } from './Injury';
 import { License } from './License';
@@ -145,6 +145,10 @@ export default class Characters extends Model {
    @Column
    Max_Vehicles: number
 
+   @Default(0)
+   @Column
+   Frequency: number;
+
    @Default([])
    @Column(DataType.JSON)
    Licenses: License[]
@@ -248,6 +252,11 @@ export default class Characters extends Model {
    SetMoney (Player: PlayerMp, value: number) { 
       Player.setVariable('Money', value);
       this.Money = value;
+   }
+
+   async SetJob(Value: number) {
+      this.Job = Value;
+      await this.save();
    }
 
    async GiveMoney (Player: PlayerMp, value: number) {

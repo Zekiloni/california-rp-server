@@ -97,7 +97,7 @@ mp.keys.bind(0x59, false, async function () {
                   }, 15000);
 
                   Checkpoint.destroy();
-                  Blip.destroy();
+                  if (Blip) Blip.destroy();
                   mp.events.remove('playerEnterCheckpoint', PlayerEnterDepony);
                }
             }

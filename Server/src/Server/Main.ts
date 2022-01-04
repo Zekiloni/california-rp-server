@@ -9,7 +9,7 @@ export enum LogType {
 }
 
 export enum ExceptionType {
-   Null
+   Null, Sequelize
 }
 
 export class Main {
@@ -79,12 +79,11 @@ export class Main {
       return result;
    }
 
-   /* NIJE OVO TAJ KOJ SI TI KORISTIO :(
    static GenerateNumber(Min: number, Max: number) {
       Min = Math.ceil(Min);
       Max = Math.floor(Max);
       return Math.floor(Math.random() * (Max - Min + 1)) + Min;
-   }*/
+   }
 
    static Dollars(i: number) {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i);

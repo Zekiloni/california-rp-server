@@ -160,26 +160,7 @@
             'chat:activate': this.Activate, 'chat:show': this.Activate
          }
 
-         for (let i in events) { mp.events.add(i, events[i]); }
-
-         document.addEventListener('keyup', (e) => { 
-            switch (e.keyCode) {
-               case 84: { 
-                  if (this.Typing) return;
-                  if (this.Active) { 
-                     this.Toggle(this.Typing = !this.Typing);
-                  }
-                  break;
-               }
-
-               case 13: {
-                  if (this.Active && this.Typing) {
-                     this.Send();
-                  }
-                  break;
-               }
-            }
-         });
+         
       }
    }
 

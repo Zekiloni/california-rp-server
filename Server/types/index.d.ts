@@ -1,5 +1,5 @@
 
-import Accounts from '../src/Models/Account.model';
+import Accounts from '../src/Models/Database/Account';
 import Characters from '../src/Models/Character';
 
 
@@ -10,6 +10,9 @@ declare global {
       Player: any
    }
 
+   interface PedMp {
+      playScenario (Name: string): void;
+   }
 
    interface ColshapeMp { 
       OnPlayerEnter (Player: PlayerMp): void;    

@@ -11,7 +11,7 @@ let Waypoint: any | null;
 
 
 mp.events.add({
-   'client:player.administrator:fly': () => {
+   'CLIENT::ADMIN:FLY': () => {
       noclip = !noclip;
       Player.setInvincible(noclip);
       Player.freezePosition(false);

@@ -200,10 +200,14 @@ export function MoveCamera () {
    }
 }
 
-export function CreateInteractionSpot (Name: string, Position: Vector3Mp) { 
+export function CreateInteractionSpot (Name: string, Position: Vector3Mp, WithBlip: boolean = true) { 
    const Player = mp.players.local;
    const checkpoint = mp.checkpoints.new(48, Position, 2.5, { color: [196, 12, 28, 195], visible: true, dimension: Player.dimension });
-   const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
-   return { Checkpoint: checkpoint, Blip: blip };
+
+   if (WithBlip) {
+      const blip = mp.blips.new(1, new mp.Vector3(Position.x, Position.y, 0), { name: Name, color: 1, shortRange: false });
+      return { Checkpoint: checkpoint, Blip: blip };
+   }
+   return { checkpoint };
 };
 
