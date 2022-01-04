@@ -4,7 +4,7 @@
 declare global { 
    
   interface CameraMp {
-    setPosition(x: number, y: number, z: number): void;
+    setPosition (x: number, y: number, z: number): void;
   }
 
    type StringIndex = {
@@ -13,7 +13,7 @@ declare global {
 
 
   interface EntityMp {
-    hasVariable(Key: string): boolean;  
+    hasVariable (Key: string): boolean;  
   }
 
   interface PlayerMp {
@@ -47,7 +47,7 @@ declare global {
   }
 
   interface EventMpPool {
-    addDataHandler(param: any): void;
+    addDataHandler (param: any): void;
   }
 
   interface ObjectMp {
