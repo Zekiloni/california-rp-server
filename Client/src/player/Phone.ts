@@ -1,6 +1,5 @@
 
 
-const Player = mp.players.local;
 
 enum PhoneContactActions {
    Add, Remove, Update

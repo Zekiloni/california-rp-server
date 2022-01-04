@@ -1,3 +1,4 @@
+import { helpingFunction } from "../../Shared/Helpers";
 
 
 mp.events.add({
@@ -13,5 +14,4 @@ mp.events.add({
         mp.game.invoke('0xE054346CA3A0F315', [Ped, TargetArea.x, TargetArea.y, TargetArea.z, 25, 0, 0]); 
     }
 });
-
 

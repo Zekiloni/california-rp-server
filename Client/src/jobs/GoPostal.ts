@@ -31,7 +31,7 @@ function HouseInteraction (Position: Vector3Mp) {
 }
 
 function BehindTruckInteraction () {
-   const Truck = player.getVariable('Job_Veh');
+   const Truck = Player.getVariable('Job_Veh');
    if (Truck) {
       const PosBehind = Truck.getOffsetFromInWorldCoords(0.0, -3.8, 0.0);
       const { Checkpoint, Blip } = CreateInteractionSpot('GoPostal Van', PosBehind);
