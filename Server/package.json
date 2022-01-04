@@ -13,7 +13,7 @@
    },
    "scripts": {
       "start": "cd.. && cd.. && ragemp-server.exe",
-      "build": "tsc && cd.. && cd.. && ragemp-server.exe"
+      "build": "tsc"
    },
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
