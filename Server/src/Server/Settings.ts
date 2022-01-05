@@ -20,13 +20,6 @@ export const Settings = {
       Heading: 0,
       Time: 20
    },
-
-   Limitations: {
-      Max_Inventory_Weight: 5,
-      Max_Houses: 3,
-      Max_Business: 2,
-      Max_Vehicles: 5,
-   },
    
    Lobby: { 
       Position: new mp.Vector3(-1765.12, -1111.37, 24.83),
@@ -39,10 +32,10 @@ export const Settings = {
    },
 
    Taxes: {
-      Salary: 5, House: 0.25, Vehicle: 0.1, Business: 2
+      
    },
 
-   Licenses: { 'Driving': 1000, 'Trucking': 2000, 'Boating': 3800, 'Flying': 15000, 'Taxi': 2200 },
+   Licenses: { 'Driving':  },
 
    Frequency: { 
       Price: 350

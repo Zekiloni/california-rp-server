@@ -17,3 +17,19 @@ export function isPlayerNearPlayer (Player: PlayerMp, Target: PlayerMp, Distance
 export function isPlayerNearPoint (Player: PlayerMp, Position: Vector3Mp, Distance: number = 1.5) {
    return distanceBetweenVectors(Player.position, Position) <= Distance ? true : false;
 }
+
+mp.events.add(
+   {
+      'playerEnterColshape': (Player: PlayerMp, Colshape: ColshapeMp) => { 
+         if (Player.vehicle) return;
+         if (Colshape.OnPlayerEnter) Colshape.OnPlayerEnter(Player); 
+         
+      },
+
+      'playerExitColshape': (Player: PlayerMp, Colshape: ColshapeMp) => { 
+         if (Player.vehicle) return;
+         if (Colshape.OnPlayerLeave) Colshape.OnPlayerLeave(Player); 
+      }
+   }
+);
+

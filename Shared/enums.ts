@@ -14,6 +14,11 @@ export enum Distances {
 };
 
 export namespace Business { 
+
+   export enum Default { 
+      SUPPLIES = 125
+   }
+
    export enum Types { 
       MARKET = 0, 
       GAS_STATION = 1,
@@ -42,6 +47,8 @@ export enum Jobs {
    FOOD_DELIVERY = 6, 
 }
 
-export enum PlayerData {
-   ADMIN = 'ADMIN',
+export enum EntityData {
+   MONEY = 'MONEY',
+   LOGGED = 'LOGGED_IN',
+   ADMIN = 'ADMIN_LEVEL',
 }
