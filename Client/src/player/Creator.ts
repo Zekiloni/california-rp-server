@@ -1,12 +1,12 @@
 
 
-import { Browser } from './Browser';
-import { Clothing_Components, Genders, Player_Models } from './Data/Player';
+import { Browser } from '../Browser';
+import { Clothing_Components, Genders, Player_Models } from '../Data/Player';
 import { Lobby } from './Lobby';
-import {  DisableMoving, PlayerPreviewCamera, RemoveClothing } from './Utils';
-import Female_Torsos from './Data/FEMALE_TORSOS.json';
-import Male_Torsos from './Data/MALE_TORSOS.json';
-import { Clothing_Combinations } from './Data/Clothing_Combinations';
+import {  DisableMoving, PlayerPreviewCamera, RemoveClothing } from '../Utils';
+import Female_Torsos from '../Data/FEMALE_TORSOS.json';
+import Male_Torsos from '../Data/MALE_TORSOS.json';
+import { Clothing_Combinations } from '../Data/Clothing_Combinations';
 
 
 const Player = mp.players.local;
@@ -34,7 +34,9 @@ mp.events.add(
 
       'CLIENT::CREATOR:FINISH': async (Character: string, Appearance: string) => {
          const Created: boolean = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', Character, Appearance);
+         mp.console.logInfo("nije proso", true, true); // When pressing F11, you should now see a message saying "example"
          if (Created) { 
+            mp.console.logInfo("kreiran", true, true); // When pressing F11, you should now see a message saying "example"
             Active = false;
             mp.events.remove('render', DisableMoving);
             Player.freezePosition(false);

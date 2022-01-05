@@ -1,15 +1,15 @@
 {
-  "name": "focus-roleplay",
+  "name": "midnight-roleplay",
   "version": "1.0.0",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zekiloni/focus-roleplay.git"
+    "url": "git+https://github.com/Zekiloni/midnight-roleplay.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Zekiloni/focus-roleplay/issues"
+    "url": "https://github.com/Zekiloni/midnight-roleplay/issues"
   },
-  "homepage": "https://github.com/Zekiloni/focus-roleplay#readme"
+  "homepage": "https://github.com/Zekiloni/midnight-roleplay#readme"
 }

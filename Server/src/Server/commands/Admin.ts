@@ -2,7 +2,7 @@ import { Colors } from "../../Global/Colors";
 import { EntityData } from "../../Global/EntityData";
 import { Globals } from "../../Global/Globals";
 import { KickEx } from "../../Global/Utils";
-import Accounts from "../../Models/Database/Account";
+import Accounts from "../../Models/Account";
 import Characters from "../../Models/Character";
 import { Admin, Administrators } from "../../Player/Admin";
 import { Commands } from "../Commands";

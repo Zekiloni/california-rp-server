@@ -14,10 +14,10 @@ mp.events.add({
 
          Point = new mp.Vector3(Info.Point.x, Info.Point.y, Info.Point.z);
 
-         camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
-         camera.setActive(true);
-         camera.setCoord(Point.x + 6, Point.y, Point.z);
-         camera.pointAtCoord(Point.x, Point.y, Point.z);
+         Camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
+         Camera.setActive(true);
+         Camera.setCoord(Point.x + 6, Point.y, Point.z);
+         Camera.pointAtCoord(Point.x, Point.y, Point.z);
          mp.game.cam.renderScriptCams(true, false, 0, true, false);
          mp.events.add('render', MoveCamera);
 

@@ -1,5 +1,5 @@
 
-import Accounts from '../src/Models/Database/Account';
+import Accounts from '../src/Models/Account';
 import Characters from '../src/Models/Character';
 
 

@@ -29,8 +29,9 @@ export const Settings = {
    },
    
    Lobby: { 
-      Position: new mp.Vector3(-9.04086685180664, 617.648681640625, 223.2291564),
-      LookAt: new mp.Vector3(-12.960082054138184, 574.8402099609375, 223.19261)
+      Position: new mp.Vector3(-1765.12, -1111.37, 24.83),
+      LookAt: new mp.Vector3(-1690.09, -1081.34, 31.31),
+      Time: 23
    },
 
    database: {

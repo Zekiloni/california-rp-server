@@ -1,11 +1,11 @@
 
 
 import { Sequelize } from 'sequelize-typescript';
-import { Config } from '../Server/Config';
 import { Main, LogType } from './Main';
 import Characters from '../Models/Character';
-import Accounts from '../Models/Database/Account';
-//import Bans from '../Models/Ban';
+import Accounts from '../Models/Account';
+import { Config } from '../constants';
+import Appearances from '../Models/Appearance';
 
 //console.log(__dirname)
 
@@ -15,7 +15,7 @@ const Database = new Sequelize({
    username: Config.Database.User,
    password: Config.Database.Password,
    storage: ':memory:',
-   models: [ Accounts, Characters ],
+   models: [ Accounts, Characters, Appearances ],
    logging: false
 });
 
@@ -33,13 +33,7 @@ Database.authenticate()
 (async () => { 
 
    const Admins = [
-      { Username: 'Zekiloni', Password: 'kapakapa' },
-      { Username: 'Mile', Password: 'micko123' },
-      { Username: 'Kopra', Password: 'vodavoda' },
-      { Username: 'Pazzi', Password: '321123' },
-      // Test accs
-      { Username: 'Test', Password: '321123' },
-      { Username: 'Test2', Password: '321123' }
+      { Username: 'Zekiloni', Password: 'kapakapa' }
    ];
 
    for (const Admin of Admins) { 

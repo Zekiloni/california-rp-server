@@ -2,7 +2,7 @@
 
    <div id="app">
       <transition name="bounce">
-         <Authorization v-if="interfaces.Authorization" />
+         <Lobby v-if="interfaces.Lobby" />
       </transition>      
       <Creator v-if="interfaces.Creator" />
 
@@ -38,10 +38,9 @@
 <script>
    import { mapMutations, mapState } from 'vuex';
    import './assets/styles/main.css';
-   import './assets/styles/fonts.css';
    import './assets/styles/font-awesome.css';
 
-   import Authorization from './components/Authorization.vue';
+   import Lobby from './components/Lobby.vue';
    import Creator from './components/Creator.vue';
    import Notifications from './components/Notifications.vue';
    import GameInterface from './components/Game.Interface.vue';
@@ -54,7 +53,7 @@
    export default { 
 
       components: { 
-         Authorization, Creator, Notifications, GameInterface, Inventory, Chat, Banking, JobOffer,
+         Lobby, Creator, Notifications, GameInterface, Inventory, Chat, Banking, JobOffer,
          Market
       },
 
@@ -70,11 +69,9 @@
          });
 
          mp.events.add('BROWSER::HIDE', data => { 
-            console.log('Datta is ' + data);
             this.hide(data);
          }); 
 
-         console.log('Focus Roleplay - Game Interface');
          // this.show('Authorization');
       },
 

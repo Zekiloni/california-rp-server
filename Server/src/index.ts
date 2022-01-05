@@ -1,11 +1,11 @@
 
 import './Server/Database';
 import { LogType, Main } from './Server/Main';
+import './Player/Core';
 import './Player/Player';
 import './Player/Account';
-import Accounts from './Models/Database/Account';
+import Accounts from './Models/Account';
 import Characters from './Models/Character';
-import { Items } from './Items/Items';
 import './Server/Commands';
 
 
@@ -44,8 +44,6 @@ import './Server/Commands';
    Main.Terminal(LogType.Info, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
 
 })();
-
-
 
 
 const Exit = async () => {

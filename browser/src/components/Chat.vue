@@ -18,9 +18,10 @@
                v-model="Input"
                type="text"
                class="chat-input form-control rounded-0"
-               ref="InputChat"
+               ref="chatInput"
                maxlength="200"
                @keyup.esc="Close"
+               @keydown.enter="Send"
                @blur="Close"
                @keyup.up="GoHistory(1)"
                @keyup.down="GoHistory(0)"
@@ -81,7 +82,7 @@
             if (toggle) { 
                mp.invoke('setTypingInChatState', true);
                this.Inactive = false;
-               this.$nextTick(function() { this.$refs.InputChat.focus(); }.bind(this));
+               this.$nextTick(function() { this.$refs.chatInput.focus(); }).bind(this);
             } else { 
                mp.invoke('setTypingInChatState', false);
                this.$refs.InputChat.blur();
@@ -120,7 +121,10 @@
                } else if (content.includes('timestamp')) { 
                   this.Settings.Timestamp = !this.Settings.Timestamp;
                } else {
+                  console.log(0)
                   mp.invoke('chatMessage', content);
+                  console.log(0, 9)
+
                }
 
                this.Current = -1
@@ -152,7 +156,7 @@
 
       mounted () {
 
-         this.Push('Focus Roleplay - www.focus-rp.com');
+         this.Push('Midnight Roleplay - www.mn-rp.com');
          this.Check();
 
          const events = {
@@ -160,7 +164,17 @@
             'chat:activate': this.Activate, 'chat:show': this.Activate
          }
 
-         
+         for (let i in events) {
+            mp.events.add(i, events[i]);
+         }
+
+         document.addEventListener("keydown", event => {
+            if (event.keyCode === 84 && this.Active && this.Input == '') {
+               this.Toggle(true);
+               event.preventDefault();
+            }
+         });
+
       }
    }
 

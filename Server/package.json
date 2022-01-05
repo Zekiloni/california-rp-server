@@ -4,6 +4,7 @@
       "fs": "0.0.1-security",
       "https": "^1.0.0",
       "mysql2": "^2.2.5",
+      "reflect-metadata": "^0.1.13",
       "request": "^2.88.2",
       "request-promise": "^4.2.6",
       "sequelize": "^6.6.5",
@@ -12,7 +13,7 @@
       "uuid": "^3.4.0"
    },
    "scripts": {
-      "start": "cd.. && cd.. && ragemp-server.exe",
+      "start": "cd.. && cd.. && cd midnigh-rp-local-server && ragemp-server.exe",
       "build": "tsc"
    },
    "devDependencies": {

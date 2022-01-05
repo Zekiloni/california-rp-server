@@ -4,7 +4,7 @@ import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Defau
 import { Globals } from '../Global/Globals';
 import { Messages } from '../Global/Messages';
 import { Settings } from '../Server/Settings';
-import Accounts from './Database/Account';
+import Accounts from './Account';
 import Appearances from './Appearance';
 import { Injury } from './Injury';
 import { License } from './License';
@@ -721,42 +721,6 @@ export default class Characters extends Model {
 //       if (Player) Player.setVariable('Bubble', null);
 //    }, 4000);
 // };
-
-// mp.events.add({
-//    'playerChat': async (Player, Content) => {
-//       if (Player.data.logged && Player.data.spawned) {
-
-//          if (Player.getVariable('Muted')) return;
-
-//          const Character = await Player.Character();
-
-//          const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
-
-//          if (Player.vehicle) { 
-
-//             const vClass = await Player.callProc('client:player.vehicle:class');
-//             if (vClass == 14 || vClass == 13 || vClass == 8) { 
-//                Player.ProximityMessage(frp.Globals.distances.ic, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
-//             } else { 
-
-//                const Seat = Player.seat;
-//                let Windows = Player.vehicle.getVariable('Windows');
-
-//                if (Windows[Seat]) { 
-//                   Player.ProximityMessage(frp.Globals.distances.vehicle, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
-
-//                } else { 
-//                   Player.VehicleMessage(Name + frp.Globals.messages.PERSON_SAYS_IN_VEHICLE + Content, frp.Globals.Colors.vehicle);
-//                }
-//             }
-
-//          } else { 
-//             Player.ProximityMessage(frp.Globals.distances.ic, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
-//          }
-
-//       }
-//    }
-// });
 
 
 // mp.players.find = (playerName) => {
