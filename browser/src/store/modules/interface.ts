@@ -23,7 +23,7 @@ const InitialState = {
    CharacterLicenses: false,
    CharacterIdentity: false,
    Clothing: false,
-   Market: true,
+   Market: false,
    Drinks: false,
    Rent: false,
    Fuel: false,

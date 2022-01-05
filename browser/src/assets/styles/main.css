@@ -6,7 +6,7 @@ body {
    height: 100vh;
    overflow: hidden;
    margin: 0;
-   font-family: 'Akrobat', sans-serif;
+   font-family: 'Roboto', sans-serif;
    font-size: 13px;
    font-style: normal;
    line-height: 1.5;
@@ -15,114 +15,22 @@ body {
 
 input {
    letter-spacing: 1.2px;
-   width: 100%;
    border: none;
    color: #eaecef;
-   background: linear-gradient(45deg, #343a46, #2a303c);
    position: relative;
-   padding: 10px 20px;
-   font-size: 15px;
    border-radius: 5px;
    font-weight: 300;
    transition: all 0.45s ease;
 }
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+::-webkit-input-placeholder {
    color: rgb(27, 27, 27);
 }
 
-input:focus { border-color: #fbc60c; outline: none; }
 
-.frp-purple { 
-   text-shadow: 0 1px 2px rgb(72 39 198 / 40%);
-   color: #6f4cee;
-}
+button { outline: none; border: none; }
 
-.frp-orange { 
-   color: #fbc60c;
-   text-shadow: 0 1px 5px rgb(250 184 10 / 40%);
-}
-
-button { 
-   font-family: 'Akrobat', sans-serif; 
-   font-size: 18px;
-   text-transform: uppercase;
-   margin: 5px; 
-   font-weight: 700;
-   letter-spacing: 1.15px;
-   transition: all 0.35s ease; 
-   padding: 10px 25px; 
-   border: none; border-radius: 5px; 
-}
-
-button.frp-1 { 
-   color: #2b2b2b;
-   background: linear-gradient(45deg, #fab80a, #fed52e);
-   box-shadow: 0 4px 10px rgb(251 198 12 / 5%);
-   transition: all 0.3s ease;
-}
-
-button.frp-1:hover { 
-   color: white;
-   box-shadow: 0 4px 10px rgb(251 198 12 / 35%);
-}
-
-button.frp-2 { 
-   background: linear-gradient(45deg, #473a88, #7c5bf1);
-   color: #f5f5f5;
-   box-shadow: 0 4px 15px rgb(104 69 234 / 5%);
-}
-
-button.frp-2:hover { 
-   color: white;
-   filter: brightness(1.15);
-   box-shadow: 0 4px 15px rgb(104 69 234 / 35%);
-}
-
-button.frp-3  {
-   letter-spacing: 1.15px;
-   background: #7c5bf1;
-   color: #f5f5f5;
-}
-
-button.frp-3:hover { background: #6845ea; }
-
-button.frp-4  {
-   text-transform: uppercase;
-   text-shadow: 0 0 1px rgb(0 0 0 / 15%);
-   color: #e4e4e4;
-   background: rgb(205 205 205 / 20%);
-}
-
-button.frp-4:hover { 
-   background: rgb(205 205 205 / 5%);
-}
-
-button.frp-red { 
-   color: #e7e7e7;
-   background: tomato;
-   box-shadow: 0 4px 15px rgb(255 99 71 / 30%);
-}
-
-button.frp-red:hover { 
-   color: white;
-   background: #ff4422;
-}
-
-button.frp-green { 
-   color: whitesmoke;
-   background: rgb(68, 191, 103);
-   box-shadow: 0 2px 7px rgb(68 191 103 / 15%);
-}
-
-button.frp-green:hover { 
-   background: rgb(83 204 118);
-}
-
-button:focus { 
-   outline: none;
-}
-
+input:focus { outline: none; }
 
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {

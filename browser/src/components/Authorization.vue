@@ -1,27 +1,20 @@
 
 <template>
 
-
    <div class="authorization">
 
       <transition name="fade" v-if="!Logged">
          <div class="login">
-            <div class="header">
-               <h2 class="frp-orange"> Focus Roleplay </h2>
-               <h4> {{ Messages.WEBSITE }} </h4>
-            </div>
-            <div class="form">               
-               <div class="input-control">
-                  <label> {{ Messages.USERNAME }} </label>
-                  <input type="text" v-model="Inputs.Username" ref="iUsername">
-               </div>
-               <div class="input-control">
-                  <label> {{ Messages.PASSWORD }} </label>
-                  <input type="password" v-model="Inputs.Password" >
-               </div>
+            <img class="logo" src="@/assets/images/logo.png" />
+            <h1 class="title"> {{ Messages.AUTHORIZATION }} </h1>
+            <p v-html="Messages.NEED_TO_LOGIN">  </p>
 
-               <button class="login frp-1" v-on:click="Authorization(Inputs.Username, Inputs.Password)"> Prijavi se </button>
+            <div class="form">
+               <input type="text" v-model="Inputs.Username" spellcheck="false" >
+               <input type="password" v-model="Inputs.Password" spellcheck="false" >
             </div>
+
+            <button class="play" v-on:click="Authorization(Inputs.Username, Inputs.Password)"> {{ Messages.PLAY }} </button>
          </div>
       </transition>
 
@@ -77,7 +70,7 @@
 
    import Loading from './Loading.vue';
    import Helpers from '../Helpers';
-   import { Notification, Messages, Genders } from '../Globals';
+   import { Notification, Messages, Genders, Consts } from '../Globals';
 
 
    export default { 
@@ -198,166 +191,83 @@
 </script>
 
 <style scoped>
-   .authorization { 
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%; display: flex;
-      justify-content: center; align-items: center;
-      background: linear-gradient(45deg, rgb(10 10 10 / 95%) 0%, rgba(8, 8, 8 , 0.80) 100%);
-   }
 
-   div.login { 
-      width: 275px; height: 400px; display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-   }
-
-   .header { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin: 25px 0; }
-
-   .header h2 { font-size: 40px; text-transform: uppercase; margin: 0; letter-spacing: 1.2px; }
-   .header h4 { font-size: 18px; margin: 0; color: rgb(209, 209, 209); text-transform: uppercase; letter-spacing: 5px; font-weight: 100; }
-
-   img.logo { width: 170px; height: 170px; padding: 25px; }
-
-   button.login { margin-top: 25px; }
-
-   .input-control { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 15px 0; }
-   .input-control label { color: rgb(156, 156, 156); font-weight: 100; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 5px;}
-   
-
-   button.frp-1 { padding: 10px 70px; }
-
-   .lobby { 
-      width: 800px;
-      height: 550px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;   
-   }
-
-   .lobby .account { 
-      width: 275px;
-      height: 100%;
-   }
-
-   .account .info { 
-      width: 100%;
-      height: 350px;
-      border-radius: 10px;
-      background: url('/images/backgrounds/account-info.png');
-      box-shadow: 0 3px 17px rgb(124 91 241 / 35%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.35s ease;
-   }
-
-   .account .info h3.username { 
-      color: white;
-      font-size: 30px;
-      text-shadow: 0 1px 2px rgb(250 184 10 / 5%);
-      margin: 0;
-      margin-top: 20px;
-      text-transform: uppercase;
-   }
-
-   .account .info h4.rank { 
-      margin: 0;
-      color: #c5c5c5;
-      letter-spacing: 3px;
-      font-size: 16px;
-      text-transform: uppercase;
-      font-weight: 200;
-   }
-
-   .account .info ul.other { 
-      padding: 20px;
-      width: 255px;
-      list-style: none;
-   }
-
-   ul.other li { 
-      font-size: 14px;
-      color: #e4e4e4;
-      margin: 5px 0;
-      font-weight: 100;
-      padding: 5px 10px;
-      backdrop-filter: brightness(1.1);
-      border-radius: 5px;
-   }
-
-   ul.other li b { 
-      float: right;
-      letter-spacing: 0.65px;
-      color: rgb(235, 235, 235);
-   }
-
-   .character-name { font-size: 22px; margin: 0; padding: 10px 20px; color: #fab80a; }
-
-   ul.char-info { 
-      list-style: none;
-      padding: 0 20px;
-   }
-
-   ul.char-info li { margin: 10px 0; text-transform: uppercase; font-weight: 400; color: #cdcdcd; }
-
-   .lobby ul.characters { 
-      padding: 0; list-style: none; width: 500px; height: 100%; display: flex;
-      flex-direction: column; align-items: center; justify-content: space-between; margin: 0; margin-top: 20px; 
-   }
-
-   .characters .character { width: 100%; height: 165px;  margin-top: -10px; }
-
-   .characters .character .info {
-    height: 100%;
-    margin: 0;
-    border-radius: 5px;
-    background: linear-gradient(45deg, rgb(255 255 255 / 20%), transparent);
-    border: none;
-    position: relative;
-   }
-
-   h2.playing-hours { 
+   .authorization {
       position: absolute;
-      bottom: -12px;
-      margin: 0;
-      font-size: 50px;
-      right: 10px;
-      color: white;
-      opacity: 0.1;
-      transition: all 0.35s ease;
+      top: 0;
+      left: 0;
+      background: linear-gradient(45deg,rgb(60 39 112 / 30%), rgb(0 0 0 / 58%)), url('../assets/images/backgrounds/mn-bg-1.png');
+      background-size: cover;
+      width: 100%;
+      height: 100%;      
+      display: grid;
    }
 
-   .character .info:hover { 
-      filter: brightness(1.05);
-      
-   }
-
-   .character .info:hover legend { color: white; /* background: #fab80a; box-shadow: 0 1px 4px rgb(250 184 10 / 22%); */ }
-
-   .character .info legend { 
-      padding: 0 15px;
-      color: #eaeaea;
-      font-size: 25px;
-      font-weight: 600;
-      transition: all 0.35s ease;
-      border-radius: 5px;
-      text-transform: uppercase;
-   }
-
-   .character .create { 
+   .login { 
+      margin: auto;
+      width: 370px;
+      height: auto;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100%;
-      opacity: 0.45;
-      background: linear-gradient(45deg, rgb(255 255 255 / 15%), transparent);
-      transition: all 0.35s ease;
-      border-radius: 5px;
+      flex-direction: column;
    }
-   .create h2 { text-transform: uppercase; color: whitesmoke; font-weight: 300; letter-spacing: 5px; }
-   .create:hover { opacity: 0.9; }
-   .create .fa-plus { font-size: 45px; color: whitesmoke; }
 
+   .login img.logo { 
+      width: 215px;
+   }
+
+   .login h1.title { 
+      color: whitesmoke;
+      font-size: 1.86rem;
+      margin: 10px 0;
+      font-weight: 400;
+      letter-spacing: 0.1rem;
+   }
+   
+   .login p { 
+      font-size: 0.8rem; letter-spacing: 0.05rem;
+      color: #999999; text-align: center;
+   }
+
+   .login .form { text-align: center; margin: 15px 0;}
+
+   .login .form input { 
+      width: 270px;
+      padding: 15px 10px;
+      border: 2px solid transparent;
+      transition: all .3s ease;
+      color: whitesmoke;
+      margin: 10px 0;
+      box-shadow: rgb(20 21 26 / 16%) 0px 8px 16px, rgb(71 77 87 / 16%) 0px 16px 32px, rgb(20 21 26 / 10%) 0px 0px 1px;
+      background: rgb(255 255 255 / 15%);
+   }
+
+   .login .form input:focus { 
+      color: white;
+      transform: scale(1.05);
+      border-color: rgb(255 255 255 / 25%);
+
+   }
+
+   button.play { 
+      margin: 5px 0;
+      font-weight: 200;
+      width: 320px;
+      padding: 20px 10px;
+      background: linear-gradient(45deg, #7c5bf1, #20143f);
+      box-shadow: 25px 15px 25px -5px rgb(37 24 71 / 48%), 0 15px 25px -5px rgb(117 85 226 / 25%);
+      border-radius: 5px;
+      transition: all .3s ease;
+      font-weight: 500;
+      color: whitesmoke;
+   }
+
+   button.play:hover { 
+      color: white;
+      box-shadow: 25px 15px 35px -5px rgb(37 24 71 / 75%), 0 15px 25px -5px rgb(117 85 226 / 25%);
+      filter: brightness(1.2);
+   }
 
 </style>
 

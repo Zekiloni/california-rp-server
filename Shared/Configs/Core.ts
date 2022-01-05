@@ -19,3 +19,7 @@ namespace Database {
       Database: ''
    }
 }
+
+export const Config  = {
+   Server: 'Zeki'
+}

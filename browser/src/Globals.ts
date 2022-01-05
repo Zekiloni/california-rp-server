@@ -1,15 +1,18 @@
 
 
 
+
 export const Messages = {
-   WEBSITE: 'www.focus-rp.com',
-   FOCUS: 'Focus',
-   ROLEPLAY: 'Roleplay',
+   WEBSITE: 'www.mn-rp.com',
+   NAME: 'Midnight Roleplay',
    USERNAME: 'Korisničko ime',
    HOME_PAGE: 'Početna',
    YOUR_BALANCE: 'Vaše Stanje',
    PASSWORD: 'Korisnička Šifra',
    NOT_DONATOR: 'Potreban vam je donator level.',
+   AUTHORIZATION: 'Autorizacija',
+   NEED_TO_LOGIN: 'Da bi započeli igru potrebno je da se prijavite. Registracija je moguća samo preko sajta.',
+   PLAY: 'Započni Igru',
    CREATE_CHARACTER: 'Kreiraj Karaktera',
    E_MAIL: 'E-Adresa',
    REGISTER_DATE: 'Datum Registracije',
