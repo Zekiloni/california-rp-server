@@ -1,52 +1,53 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, UpdatedAt, AllowNull } from 'sequelize-typescript';
 
 
 @Table
-export default class Contact extends Model {
+export default class Contacts extends Model {
    @Column
    @PrimaryKey
    @AutoIncrement
-   ID: number;
+   id: number;
 
    @Column
    @Unique(true)
    @AllowNull(false)
-   Number: number;
+   Phone: number;
 
    @Column
    @AllowNull(false)
-   Name: string;
+   Contact_Name: string;
+
+   @Column
+   @AllowNull(false)
+   Contact_Phone: number;
 
    @Column
    @UpdatedAt
-   Created_At: Date;
+   Created_at: Date;
 
    @Column
    @UpdatedAt
-   Updated_At: Date;
+   Updated_at: Date;
 
-   static async New(PhoneNumber: number, TargetName: string) {
-      const NewContact = await Contact.create({ Number: PhoneNumber, Name: TargetName });
+   static async new (phone: number, cPhone: number, cName: string) {
+      const newContact = await Contacts.create({ Phone: phone, Contact_Phone: cPhone, Contact_Name: cName });
    }
 
-   static async Exists(PhoneNumber: number, TargetName: string) {
-      const Exist = await Contact.findOne({ where: { Number: PhoneNumber, Name: TargetName } });
-      if (Exist)
-         return true;
-      else
-         return false;
+   static async doesExist (phoneNum: number, contact: string) {
+      const exist = await Contacts.findOne({ where: { Contact_Phone: phoneNum, Contact_Name: contact } });
+      return exist ? true : false;
    }
 
-   async Update(NewNumber: number, NewName: string) {
-      this.Number = NewNumber;
-      this.Name = NewName;
+   async edit (newNumber: number, newName: string) {
+      this.Contact_Phone = newNumber;
+      this.Contact_Name = newName;
       await this.save();
    }
 
 }
 
 (async () => {
-   await Contact.sync();
+   await Contacts.sync();
 })();
 
 

@@ -4,7 +4,7 @@ import { Globals } from "../../Global/Globals";
 import { KickEx } from "../../Global/Utils";
 import Accounts from "../../models/account.model";
 import Characters from "../../models/character.model";
-import { Admin, Administrators } from "../../Player/Admin";
+import { Admin, Administrators } from "../admin";
 import { Commands } from "../commands";
 import { Main } from "../Main";
 

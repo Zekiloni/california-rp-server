@@ -1,7 +1,7 @@
 import { Globals } from "../../Global/Globals";
 import { Messages } from "../../Global/Messages";
 import House from "../../models/house.model";
-import { Admin } from "../../Player/Admin";
+import { Admin } from "../admin";
 import { Commands } from "../commands";
 
 Commands["createhouse"] = {

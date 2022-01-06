@@ -1,7 +1,7 @@
 
 import './Server/Database';
-import './Player/Core';
-import './Player/Player';
+import './modules/main';
+import './modules/player';
 import './Player/Account';
 import Accounts from './models/account.model';
 import Characters from './models/character.model';
