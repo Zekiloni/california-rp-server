@@ -42,25 +42,36 @@ export namespace Business {
       PAWN_SHOP = 11, 
       TATTO = 12
    }
-}
+};
 
 export enum NotifyType {
    SUCCESS, ERROR, INFO
-}
+};
 
 export enum Jobs { 
    UNEMPLOYED = 0,
    SANITATION = 4,
    TAXI_DRIVER = 7,
    FOOD_DELIVERY = 6, 
-}
+};
 
 export enum EntityData {
    MONEY = 'MONEY',
    LOGGED = 'LOGGED_IN',
    ADMIN = 'ADMIN_LEVEL',
-}
+};
 
 export enum LogType {
    ERROR, SUCCESS, INFO
-}
+};
+
+
+export enum itemNames {
+   drivingLicense = 'Vozačka dozvola',
+   flyingLicense = 'Dozvola za letenje',
+   fishingLicense = 'Dozvola za pecanje',
+   huntingLicense = 'Dozvola za lov',
+   weaponLicense = 'Dozvola za oružije',
+   truckLicense = 'Dozvola za kamion',
+   boatingLicense = 'Dozvola za plovidbu'
+};
