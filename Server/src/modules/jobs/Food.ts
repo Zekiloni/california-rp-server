@@ -6,7 +6,7 @@
 // model dostave se sastoji od lokacije, sta je poruceno, kontakta (N/A ukoliko je server, broj telefona ukoliko je igrac)
 
 import  House  from "../../models/house.model";
-import { Items } from "../Items/Items";
+import { Items } from "../../models/items/Items";
 import { Main } from "../Server/Main";
 import { Globals } from "../Global/Globals";
 import { Messages } from "../Global/Messages";

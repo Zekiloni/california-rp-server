@@ -1,5 +1,5 @@
 import { Colors } from "@Shared/constants";
-import { NotifyType } from "@Shared/enums";
+import { EntityData, NotifyType } from "@Shared/enums";
 import { Messages } from "@Shared/messages";
 
 
@@ -8,6 +8,7 @@ export let Commands: Commands = {};
 type Commands = {
    [key: string]: Command
 };
+
 
 type Command = {
    Desc: string;
@@ -20,17 +21,20 @@ type Command = {
    Admin?: number;
    Leader?: boolean;
    Call(Player: PlayerMp, Args: string[]): void;
-}
+};
 
 
-mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
-   if (!Player.data.LOGGED_IN) return;
-   const Args = Command.split(/ +/);
-   const Name = Args.splice(0, 1)[0];
-   const Cmd = Commands[Name];
-   Player.outputChatBox('Cmd ' + Cmd);
-   if (Cmd) {
-      Player.outputChatBox('Cmd true');
+mp.events.add('playerCommand', async (player: PlayerMp, command: string) => {
+  
+   if (!player.getVariable(EntityData.LOGGED)) return;
+
+   const params = command.split(/ +/);
+   const commandName = params.splice(0, 1)[0];
+   const fCommand = Commands[commandName];
+
+   
+   if (fCommand) {
+      player.outputChatBox('Cmd true');
       // const Account = Player.Account;
       // const Character = Player.Character;
 
@@ -49,10 +53,10 @@ mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
 
       // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', NotifyType.ERROR, 4);
 
-      if (Cmd.Params && Cmd.Params.length > Args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + Cmd.Params.join('] [') + '] ', Colors.Help);
+      if (fCommand.Params && fCommand.Params.length > params.length) return player.SendMessage('Komanda: /' + commandName + ' [' + fCommand.Params.join('] [') + '] ', Colors.Help);
 
-      Cmd.Call(Player, Args);
+      fCommand.Call(player, params);
    } else {
-      Player.Notification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
+      player.Notification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
    }
 });

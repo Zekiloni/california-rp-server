@@ -1,6 +1,6 @@
 'use strict';
 
-import { Items } from "../Items/Items";
+import { Items } from "../../models/items/Items";
 import Business from "../../models/Business";
 
 export class Deliveries { 

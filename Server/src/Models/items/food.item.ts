@@ -1,4 +1,4 @@
-import { Item, noDesc } from '../item';
+import { Item, noDesc } from '../item.model';
 
 
 export class FoodItem extends Item {
