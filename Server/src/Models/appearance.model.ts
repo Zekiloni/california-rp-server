@@ -1,4 +1,5 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
+import { Peds } from '@Shared/enums';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, CreatedAt, UpdatedAt, AllowNull, DataType } from 'sequelize-typescript';
 
 @Table
 export default class Appearances extends Model {
@@ -48,8 +49,8 @@ export default class Appearances extends Model {
 
    Apply (Player: PlayerMp, Gender: number) {
 
-      const Genders = [ mp.joaat('mp_m_freemode_01'), mp.joaat('mp_f_freemode_01') ];
-      Player.model = Genders[Gender];
+      const genders = [ mp.joaat(Peds.Models.MALE), mp.joaat(Peds.Models.FEMALE) ];
+      Player.model = genders[Gender];
    
       Player.setHeadBlend(
          this.Blend_Data[0], 
@@ -73,7 +74,7 @@ export default class Appearances extends Model {
 }
 
 (async () => {
-   // await Appearances.sync();
+   await Appearances.sync();
 })();
 
 

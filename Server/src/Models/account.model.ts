@@ -2,7 +2,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
-import Characters from './Character';
+import Characters from './character.model';
 import { EntityData } from '@Shared/enums';
 import { Messages } from '@Shared/messages';
 
@@ -84,29 +84,29 @@ export default class Accounts extends Model {
       return bcrypt.compareSync(Password, this.Password);
    }
 
-   async Logged (Player: PlayerMp, Toggle: boolean) {
-      this.Online = Toggle;
-      Player.Account = this;
+   async Logged (player: PlayerMp, toggle: boolean) {
+      this.Online = toggle;
+      player.Account = this;
       this.Login_Date = new Date();
-      this.IP_Adress = Player.ip;
+      this.IP_Adress = player.ip;
       
-      Player.setVariable(EntityData.LOGGED, true);
-      Player.setVariable(EntityData.ADMIN, this.Administrator);
+      player.setVariable(EntityData.LOGGED, true);
+      player.setVariable(EntityData.ADMIN, this.Administrator);
 
       if (this.Hardwer == null || this.Social_Club == null) {
-         const Already = await Accounts.findOne({ where: { Social_Club: Player.socialClub, Hardwer: Player.serial } });
-         if (Already) Player.kick(Messages.USER_ALREADY_EXIST);
-         this.Hardwer = Player.serial;
-         this.Social_Club = Player.socialClub;
+         const Already = await Accounts.findOne({ where: { Social_Club: player.socialClub, Hardwer: player.serial } });
+         if (Already) player.kick(Messages.USER_ALREADY_EXIST);
+         this.Hardwer = player.serial;
+         this.Social_Club = player.socialClub;
       }
 
       await this.save();
    }
 
    
-   MakeAdministrator (Player: PlayerMp, Level: number) {
-      this.Administrator = Level;
-      Player.setVariable('Admin', Level); 
+   setAdministrator (player: PlayerMp, level: number) {
+      this.Administrator = level;
+      player.setVariable(EntityData.ADMIN, level); 
       this.save();
    }
 }

@@ -7,7 +7,14 @@ export namespace Config {
       Host: 'localhost',
       Name: 'mn-rp'
    }
+
+   export const Default = {
+      Money: 3000,
+      Spawn: new mp.Vector3(-1355.6395, -519.5300, 23.4648),
+      Heading: 120
+   }
 }
+
 
 type MarkerColors = {
    [key: string]: RGBA

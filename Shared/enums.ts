@@ -3,6 +3,14 @@
 
 export const Global_Dimension = 0;
 
+export namespace Peds { 
+   export enum Models { 
+      MALE = 'mp_m_freemode_01',
+      FEMALE = 'mp_f_freemode_01'
+   }
+}
+
+
 export enum Distances { 
    OOC = 8.0,
    IC = 7.5,

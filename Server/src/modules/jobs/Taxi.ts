@@ -1,7 +1,7 @@
 
 import { Globals } from "../Global/Globals";
 import { Messages } from "../Global/Messages";
-import { Vehicles } from "../../models/Vehicles";
+import { Vehicles } from "../../models/vehicle.model";
 import { ExceptionType, Main } from "../Server/Main";
 import { Settings } from "../../Server/Settings";
 

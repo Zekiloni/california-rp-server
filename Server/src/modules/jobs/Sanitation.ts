@@ -1,6 +1,6 @@
 import { Globals } from "../Global/Globals";
 import { Messages } from "../Global/Messages";
-import { Vehicles } from "../../models/Vehicles";
+import { Vehicles } from "../../models/vehicle.model";
 import { Main } from "../Server/Main";
 
 

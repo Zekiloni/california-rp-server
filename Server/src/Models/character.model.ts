@@ -1,13 +1,15 @@
 
 
+import { Settings } from '@Shared/constants';
+import { Global_Dimension, NotifyType } from '@Shared/enums';
+import { Messages } from '@Shared/messages';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import { Globals } from '../Global/Globals';
-import { Messages } from '../Global/Messages';
-import { Settings } from '../Server/Settings';
-import Accounts from './Account';
-import Appearances from './Appearance';
-import { Injury } from './Injury';
-import { License } from './License';
+import { Config } from '../constants';
+
+import Accounts from './account.model';
+import Appearances from './appearance.model';
+import { Injury } from './other/injury.model';
+import { License } from './other/license.model';
 
 
 @Table
@@ -38,7 +40,7 @@ export default class Characters extends Model {
    @Column
    Origin: string
 
-   @Default(Settings.Default.Money)
+   @Default(Config.Default.Money)
    @Column
    Money: number
 
@@ -129,19 +131,19 @@ export default class Characters extends Model {
    @Column
    Facial_Mood: string
 
-   @Default(Settings.Limitations.Max_Inventory_Weight)
+   @Default(Settings.Max.INVENTORY_WEIGHT)
    @Column
    Max_Inventory_Weight: number
 
-   @Default(Settings.Limitations.Max_Houses)
+   @Default(Settings.Max.HOUSES)
    @Column
    Max_Houses: number
 
-   @Default(Settings.Limitations.Max_Business)
+   @Default(Settings.Max.BUSINESSES)
    @Column
    Max_Business: number
 
-   @Default(Settings.Limitations.Max_Vehicles)
+   @Default(Settings.Max.VEHICLES)
    @Column
    Max_Vehicles: number
 
@@ -210,7 +212,7 @@ export default class Characters extends Model {
          Player.setVariable('Bubble', null);
          Player.setVariable('Seatbelt', false);
    
-         Player.Notification(Messages.WELCOME, Globals.Notification.Info, 4);
+         Player.Notification(Messages.WELCOME, NotifyType.INFO, 4);
    
          // Applying appearance & clothing
          // const Appearance = await Appearances.findOne({ where: { Character: this.id } });
@@ -223,14 +225,14 @@ export default class Characters extends Model {
          switch (this.Spawn_Point) {
             case 0: {
                console.log('Spawn', 4);
-               Player.position = Settings.Default.spawn
-               Player.heading = Settings.Default.heading;
-               Player.dimension = Settings.Default.dimension;
+               Player.position = Config.Default.Spawn;
+               Player.heading = Config.Default.Heading;
+               Player.dimension = Global_Dimension;
                break;
             }
             case 1: {
                   Player.position = this.Last_Position;
-                  Player.dimension = Settings.Default.dimension;
+                  Player.dimension = Global_Dimension;
                break;
             }
             case 2: {

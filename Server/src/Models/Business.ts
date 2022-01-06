@@ -6,7 +6,7 @@ import BusinessTypes from '../Server/Businesses.json';
 import VehiclesList from '../data/Vehicles.json';
 import { Settings } from '../Server/Settings';
 import { Colors } from '../Global/Colors';
-import Characters from './Character';
+import Characters from './character.model';
 import { Globals } from '../Global/Globals';
 
 

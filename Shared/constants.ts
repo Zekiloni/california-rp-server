@@ -48,6 +48,7 @@ export const Colors = {
 };
 
 export namespace Settings { 
+
    export enum Max { 
       INVENTORY_WEIGHT = 5,
       HOUSES = 3,

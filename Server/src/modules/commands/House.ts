@@ -1,6 +1,6 @@
 import { Globals } from "../../Global/Globals";
 import { Messages } from "../../Global/Messages";
-import House from "../../models/House";
+import House from "../../models/house.model";
 import { Admin } from "../../Player/Admin";
 import { Commands } from "../commands";
 
