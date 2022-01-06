@@ -1,4 +1,5 @@
-import { Peds } from '@Shared/enums';
+
+import { Peds } from '../enums';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, CreatedAt, UpdatedAt, AllowNull, DataType } from 'sequelize-typescript';
 
 @Table

@@ -7,8 +7,8 @@ import Accounts from './models/account.model';
 import Characters from './models/character.model';
 import './modules/commands';
 import { Logger, Sleep } from './utils';
-import { LogType } from '@Shared/enums';
-import { Messages } from '@Shared/messages';
+import { LogType } from './enums';
+import { Messages } from '@/src/messages';
 
 
 //console.log(Items.List);

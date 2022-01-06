@@ -1,6 +1,6 @@
-import { NotifyType } from '@Shared/enums';
-import { Messages } from '@Shared/messages';
-import { validateIP } from '@Shared/utils';
+import { NotifyType } from '../enums';
+import { Messages } from '../constants';
+import { validateIP } from '../utils';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import Accounts from './account.model';
 

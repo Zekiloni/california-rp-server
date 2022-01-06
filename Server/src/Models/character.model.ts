@@ -1,15 +1,12 @@
 
 
-import { Settings } from '@Shared/constants';
-import { Global_Dimension, NotifyType } from '@Shared/enums';
-import { Messages } from '@Shared/messages';
+import { Global_Dimension, NotifyType } from '../enums';
+import { Messages } from '../constants';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import { Config } from '../constants';
+import { Config } from '../config';
 
 import Accounts from './account.model';
-import Appearances from './appearance.model';
-import { Injury } from './other/injury.model';
-import { License } from './other/license.model';
+import { Injury } from './misc/injury.model';
 
 
 @Table
@@ -130,20 +127,20 @@ export default class Characters extends Model {
    @Default('normal')
    @Column
    Facial_Mood: string
-
-   @Default(Settings.Max.INVENTORY_WEIGHT)
+   
+   @Default(Config.Max.INVENTORY_WEIGHT)
    @Column
    Max_Inventory_Weight: number
 
-   @Default(Settings.Max.HOUSES)
+   @Default(Config.Max.HOUSES)
    @Column
    Max_Houses: number
 
-   @Default(Settings.Max.BUSINESSES)
+   @Default(Config.Max.BUSINESSES)
    @Column
    Max_Business: number
 
-   @Default(Settings.Max.VEHICLES)
+   @Default(Config.Max.VEHICLES)
    @Column
    Max_Vehicles: number
 
@@ -151,9 +148,6 @@ export default class Characters extends Model {
    @Column
    Frequency: number;
 
-   @Default([])
-   @Column(DataType.JSON)
-   Licenses: License[]
 
    @Default(false)
    @Column

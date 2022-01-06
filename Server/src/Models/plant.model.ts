@@ -1,6 +1,7 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import { Messages } from '../Global/Messages';
-import { Globals } from '../Global/Globals';
+
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default } from 'sequelize-typescript';
+import { Messages } from '../constants';
+import { NotifyType } from '../enums';
 
 enum GrowStage {
     Seed, Small_Plant,

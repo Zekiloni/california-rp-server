@@ -1,4 +1,4 @@
-import { Messages } from '@Shared/messages';
+import { Messages } from '../constants';
 
 export const noDesc = Messages.ITEM_NO_DESCRIPTION;
 

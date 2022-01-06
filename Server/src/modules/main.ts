@@ -4,10 +4,9 @@
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
-import { Distances, NotifyType } from '@Shared/enums';
-import { Messages } from '@Shared/messages';
-import { Colors } from '@Shared/constants';
-import { Config } from '../constants';
+import { Distances, NotifyType } from '../enums';
+import { Messages, Colors } from '../constants';
+import { Config } from '../config';
 
 
 mp.events.add(

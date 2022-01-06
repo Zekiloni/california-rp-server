@@ -1,6 +1,5 @@
-import { Colors } from "@Shared/constants";
-import { EntityData, NotifyType } from "@Shared/enums";
-import { Messages } from "@Shared/messages";
+import { EntityData, NotifyType } from '../enums';
+import { Colors, Messages } from '../constants';
 
 
 export let Commands: Commands = {};

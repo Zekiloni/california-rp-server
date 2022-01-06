@@ -3,10 +3,10 @@
 import { Sequelize } from 'sequelize-typescript';
 import Characters from '../models/character.model';
 import Accounts from '../models/account.model';
-import { Config } from '../constants';
 import Appearances from '../models/appearance.model';
 import { Logger } from '../utils';
-import { LogType } from '@Shared/enums';
+import { LogType } from '../enums';
+import { Config } from '../config';
 
 
 const Database = new Sequelize({
