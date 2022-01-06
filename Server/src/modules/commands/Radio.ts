@@ -2,7 +2,7 @@ import { Colors } from "../../Global/Colors";
 import { Globals } from "../../Global/Globals";
 import { Messages } from "../../Global/Messages";
 import Channel from "../../Models/Channel";
-import { Commands } from "../Commands";
+import { Commands } from "../commands";
 
 Commands["r"] = {
    Desc: 'Radio komunikacija',

@@ -1,13 +1,13 @@
-import { Colors } from '../Global/Colors';
-import { Globals } from '../Global/Globals';
-import { Messages } from '../Global/Messages';
+import { Colors } from "@Shared/constants";
+import { NotifyType } from "@Shared/enums";
+import { Messages } from "@Shared/messages";
 
 
 export let Commands: Commands = {};
 
 type Commands = {
    [key: string]: Command
-}
+};
 
 type Command = {
    Desc: string;
@@ -49,7 +49,7 @@ mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
 
       // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', NotifyType.ERROR, 4);
 
-      if (Cmd.Params && Cmd.Params.length > Args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + Cmd.Params.join('] [') + '] ', Colors.help);
+      if (Cmd.Params && Cmd.Params.length > Args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + Cmd.Params.join('] [') + '] ', Colors.Help);
 
       Cmd.Call(Player, Args);
    } else {

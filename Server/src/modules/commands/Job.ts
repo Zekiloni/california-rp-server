@@ -3,7 +3,7 @@ import { Messages } from "../../Global/Messages";
 import Food from "../../Jobs/Food";
 import { Sanitation } from "../../Jobs/Sanitation";
 import { Taxi } from "../../Jobs/Taxi";
-import { Commands } from "../Commands";
+import { Commands } from "../commands";
 
 // name: 'takejob',
 // desc: 'Zapošljavanje.',

@@ -1,11 +1,11 @@
 
 
-import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, Default, Model, PrimaryKey, Table, UpdatedAt } from "sequelize-typescript";
-import { Items } from "../Items/Items";
+import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { Item } from '../modules/item';
 
 
 @Table
-export default class Item extends Model { 
+export default class Items extends Model { 
 
    @Column
    @PrimaryKey
@@ -16,7 +16,7 @@ export default class Item extends Model {
    Name: string;
 
    @Column
-   Entity: Items.Entity;
+   Entity: Item.Entity;
 
    @Column
    Owner: number;
@@ -51,19 +51,19 @@ export default class Item extends Model {
    Object: ObjectMp;
 
    @AfterCreate
-   static Creating (Item: Item) { 
+   static Creating (Item: Items) { 
       
       Item.Refresh();
 
    }
 
    @AfterDestroy
-   static Destroying (Item: Item) { 
+   static Destroying (Item: Items) { 
       if (Item.Object) Item.Object.destroy();
    }
 
    Refresh () { 
-      if (this.Entity == Items.Entity.Ground) { 
+      if (this.Entity == Item.Entity.Ground) { 
          this.Object = mp.objects.new('zeki', this.Position, { alpha: 255, rotation: this.Rotation, dimension: this.Dimension });
          this.Object.setVariable('Item', this.Name);
       } else { 
@@ -81,7 +81,7 @@ export default class Item extends Model {
    async Use (Player: PlayerMp) { 
       const Character = Player.Character;
       
-      const rItem = Items.List[this.Name];
+      const rItem = Item.List[this.Name];
 
    
 

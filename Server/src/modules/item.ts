@@ -1,45 +1,45 @@
+import { Messages } from '@Shared/messages';
 
-// const Weapons = require('../data/Weapons.json');
+export const noDesc = Messages.ITEM_NO_DESCRIPTION;
 
-
-export class Items {
+export class Item {
 
    Name: string;
-   Type: Items.Type[];
+   Type: Item.Type[];
    Model: string;
    Weight: number;
    Description?: string;
    Carry_Model?: string;
-   Weapon_Hash?: string;
-   Caliber?: string;
-   Component?: number;
-   Consist?: string;
-   Hunger?: number;
-   Thirst?: number;
-   Use?(): void;
 
-   static List: { [key:string] : Items } = {};
+   Use?(Player: PlayerMp, ...params: any): void | any;
+
+   static List: { [key:string] : Item } = {};
    
-   constructor (Name: string, Type: Items.Type[], Model: string, Weight: number = 0.1, Desc: string = '', Data: object = {}) { // Data: Items
+   constructor (Name: string, Type: Item.Type[], Model: string, Weight: number = 0.1, Desc: string = noDesc) { 
       this.Name = Name;
       this.Type = Type;
       this.Model = Model;
       this.Weight = Weight;     
       this.Description = Desc;
-      // this.Carry_Model = Data.Carry_Model;
-      // this.Weapon_Hash = Data.Weapon_Hash;
-      // this.Caliber = Data.Caliber;
-      // this.Component = Data.Component;
-      // this.Hunger = Data.Hunger;
-      // this.Thirst = Data.Thirst;
       
-      Items.List[this.Name] = this;
+      Item.List[this.Name] = this;
    }
 
 }
 
 
-export namespace Items {
+// Component?: number;
+// Consist?: string;
+// Hunger?: number;
+// Thirst?: number;
+// this.Carry_Model = Data.Carry_Model;
+// this.Weapon_Hash = Data.Weapon_Hash;
+// this.Caliber = Data.Caliber;
+// this.Component = Data.Component;
+// this.Hunger = Data.Hunger;
+// this.Thirst = Data.Thirst;
+
+export namespace Item {
 
    export enum Type {
       Equipable, Consumable, Openable, 
@@ -60,68 +60,67 @@ export namespace Items {
    }
 }
 
-
-/* Clothing */
-new Items('Mask', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_balaclava', 0.3, 'Mask for Head');
-new Items('Pants', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_jeans_01', 0.2, 'Pants for legs');
-new Items('Bag', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_backpack', 0.45, '');
-new Items('Shoes', [Items.Type.Equipable, Items.Type.Clothing], 'v_ret_ps_shoe_01', 0.15);
-new Items('Accesories', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_box_clothes', 0.3);
-new Items('Undershirt', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_tshirt_ball_01', 0.1);
-new Items('Armour', [Items.Type.Equipable, Items.Type.Clothing], 'prop_bodyarmour_03', 1.25);
-new Items('Tops', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_shirt_01', 0.2); 
-
-
-/* Props */
-new Items('Hat', [Items.Type.Equipable, Items.Type.Prop], 'prop_ld_hat_01', 0.05);
-new Items('Glasses', [Items.Type.Equipable, Items.Type.Prop], 'xm_prop_x17_b_glasses_01', 0.05);
-new Items('Ears', [Items.Type.Equipable, Items.Type.Prop], 'v_ret_gc_ear01', 0.05);
-new Items('Watch', [Items.Type.Equipable, Items.Type.Prop], 'p_watch_01', 0.1);
-new Items('Bracelet', [Items.Type.Equipable, Items.Type.Prop], 'h4_prop_h4_bracelet_01a', 0.2);
+// /* Clothing */
+// new Items('Mask', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_balaclava', 0.3, 'Mask for Head');
+// new Items('Pants', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_jeans_01', 0.2, 'Pants for legs');
+// new Items('Bag', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_backpack', 0.45, '');
+// new Items('Shoes', [Items.Type.Equipable, Items.Type.Clothing], 'v_ret_ps_shoe_01', 0.15);
+// new Items('Accesories', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_box_clothes', 0.3);
+// new Items('Undershirt', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_tshirt_ball_01', 0.1);
+// new Items('Armour', [Items.Type.Equipable, Items.Type.Clothing], 'prop_bodyarmour_03', 1.25);
+// new Items('Tops', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_shirt_01', 0.2); 
 
 
-/* Food */
-new Items('Cheeseburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
-new Items('Hamburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
-new Items('Fries', [Items.Type.Food, Items.Type.Consumable], 'prop_food_chips', 0.15);
-new Items('Pizza', [Items.Type.Food, Items.Type.Consumable], 'prop_pizza_box_02', 0.3);
-new Items('Chicken Burger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
-new Items('Chips', [Items.Type.Food, Items.Type.Consumable], 'v_ret_ml_chips4', 0.1);
-new Items('Donut', [Items.Type.Food, Items.Type.Consumable], 'prop_donut_02', 0.1);
-new Items('Sandwich', [Items.Type.Food, Items.Type.Consumable], 'prop_sandwich_01');
-new Items('Taco', [Items.Type.Food, Items.Type.Consumable], 'prop_taco_01', 0.2);
+// /* Props */
+// new Items('Hat', [Items.Type.Equipable, Items.Type.Prop], 'prop_ld_hat_01', 0.05);
+// new Items('Glasses', [Items.Type.Equipable, Items.Type.Prop], 'xm_prop_x17_b_glasses_01', 0.05);
+// new Items('Ears', [Items.Type.Equipable, Items.Type.Prop], 'v_ret_gc_ear01', 0.05);
+// new Items('Watch', [Items.Type.Equipable, Items.Type.Prop], 'p_watch_01', 0.1);
+// new Items('Bracelet', [Items.Type.Equipable, Items.Type.Prop], 'h4_prop_h4_bracelet_01a', 0.2);
 
 
-/* Drinks */
-new Items('Coffe', [Items.Type.Drink, Items.Type.Consumable], 'prop_fib_coffee', 0.1);
-new Items('Soda Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01b', 0.3);
-new Items('Cola Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01a', 0.3);
-new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);
-new Items('Energy Drink', [Items.Type.Drink, Items.Type.Consumable], 'prop_energy_drink', 0.2);
-new Items('Juice Cup', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacup_01c', 0.15);
-new Items('Beer Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_beer_bot_02', 0.3);
-new Items('Whiskey Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_whiskey_bottle', 0.6);
-new Items('Vodka Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_vodka_bottle', 0.5);
-new Items('Tequila Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_tequila_bottle', 0.45);
-new Items('Gin Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_macbeth', 0.4);
-new Items('Brandy Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_brandy', 0.5);
-new Items('Rum Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_rum_bottle', 0.4);
-new Items('Cognac Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_cognac', 0.6);
-new Items('Wine Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_richard', 0.7);
-new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 0.6);
+// /* Food */
+// new Items('Cheeseburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
+// new Items('Hamburger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
+// new Items('Fries', [Items.Type.Food, Items.Type.Consumable], 'prop_food_chips', 0.15);
+// new Items('Pizza', [Items.Type.Food, Items.Type.Consumable], 'prop_pizza_box_02', 0.3);
+// new Items('Chicken Burger', [Items.Type.Food, Items.Type.Consumable], 'prop_cs_burger_01', 0.2);
+// new Items('Chips', [Items.Type.Food, Items.Type.Consumable], 'v_ret_ml_chips4', 0.1);
+// new Items('Donut', [Items.Type.Food, Items.Type.Consumable], 'prop_donut_02', 0.1);
+// new Items('Sandwich', [Items.Type.Food, Items.Type.Consumable], 'prop_sandwich_01');
+// new Items('Taco', [Items.Type.Food, Items.Type.Consumable], 'prop_taco_01', 0.2);
 
-/* Seeds */
-new Items('Cannabis Seed', [Items.Type.Seed], '', 0.01,);
-new Items('10 Cannabis Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
-new Items('Poppy Seed', [Items.Type.Seed], '', 0.01, '');
-new Items('10 Poppy Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
-new Items('Tomato Seed', [Items.Type.Seed], '', 0.01, '');
-new Items('10 Tomato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
-new Items('Potato Seed', [Items.Type.Seed], '', 0.01, '');
-new Items('10 Potato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
 
-/* Plants */
-new Items('Plant Fertilizer', [Items.Type.Misc], 'prop_cs_script_bottle_01', 0.8);
+// /* Drinks */
+// new Items('Coffe', [Items.Type.Drink, Items.Type.Consumable], 'prop_fib_coffee', 0.1);
+// new Items('Soda Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01b', 0.3);
+// new Items('Cola Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01a', 0.3);
+// new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);
+// new Items('Energy Drink', [Items.Type.Drink, Items.Type.Consumable], 'prop_energy_drink', 0.2);
+// new Items('Juice Cup', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacup_01c', 0.15);
+// new Items('Beer Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_beer_bot_02', 0.3);
+// new Items('Whiskey Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_whiskey_bottle', 0.6);
+// new Items('Vodka Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_vodka_bottle', 0.5);
+// new Items('Tequila Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_tequila_bottle', 0.45);
+// new Items('Gin Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_macbeth', 0.4);
+// new Items('Brandy Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_brandy', 0.5);
+// new Items('Rum Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_rum_bottle', 0.4);
+// new Items('Cognac Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_cognac', 0.6);
+// new Items('Wine Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_richard', 0.7);
+// new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 0.6);
+
+// /* Seeds */
+// new Items('Cannabis Seed', [Items.Type.Seed], '', 0.01,);
+// new Items('10 Cannabis Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+// new Items('Poppy Seed', [Items.Type.Seed], '', 0.01, '');
+// new Items('10 Poppy Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+// new Items('Tomato Seed', [Items.Type.Seed], '', 0.01, '');
+// new Items('10 Tomato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+// new Items('Potato Seed', [Items.Type.Seed], '', 0.01, '');
+// new Items('10 Potato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
+
+// /* Plants */
+// new Items('Plant Fertilizer', [Items.Type.Misc], 'prop_cs_script_bottle_01', 0.8);
 
 
 // // MISCELLANEOUS

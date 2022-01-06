@@ -57,7 +57,7 @@ export function createInfoColshape (Position: Vector3Mp, Name: string, Info: str
       mp.blips.new(Blip, new mp.Vector3(Position.x, Position.y, 0), { shortRange: true, scale: 0.85, name: Name, dimension: Dimension });
 }
 
-export function sleep (Seconds: number) {
+export function Sleep (Seconds: number) {
    return new Promise(resolve => setTimeout(resolve, Seconds * 1000));
 }
 

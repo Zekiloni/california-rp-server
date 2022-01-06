@@ -1,7 +1,7 @@
 import { Globals } from "../../Global/Globals";
 import Business from "../../Models/Business";
 import { Admin } from "../../Player/Admin";
-import { Commands } from "../Commands";
+import { Commands } from "../commands";
 import { ExceptionType, Main } from "../Main";
 
 const BussinesTypes = require('../Businesses.json');

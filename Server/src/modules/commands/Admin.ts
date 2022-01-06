@@ -5,7 +5,7 @@ import { KickEx } from "../../Global/Utils";
 import Accounts from "../../Models/Account";
 import Characters from "../../Models/Character";
 import { Admin, Administrators } from "../../Player/Admin";
-import { Commands } from "../Commands";
+import { Commands } from "../commands";
 import { Main } from "../Main";
 
 const fs = require("fs");

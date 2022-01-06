@@ -1,12 +1,14 @@
 
 import './Server/Database';
-import { LogType, Main } from './Server/Main';
 import './Player/Core';
 import './Player/Player';
 import './Player/Account';
 import Accounts from './Models/Account';
 import Characters from './Models/Character';
-import './Server/Commands';
+import './modules/commands';
+import { Logger, Sleep } from './utils';
+import { LogType } from '@Shared/enums';
+import { Messages } from '@Shared/messages';
 
 
 //console.log(Items.List);
@@ -41,20 +43,21 @@ import './Server/Commands';
 (async () => {
    const Chars = await Characters.count()
    const Users = await Accounts.count();
-   Main.Terminal(LogType.Info, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.');
+   Logger(LogType.INFO, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.')
 
 })();
 
 
 const Exit = async () => {
-   Main.Terminal(LogType.Succes, 'Clossing Connection, Bye-bye !')
+   Logger(LogType.SUCCESS, 'Clossing Connection, Bye-bye !');
    mp.players.broadcast('Server se gasi. Rekonektujte se na F1.');
 
    mp.players.forEach((player) =>  {
-      player.kick('Server se gasi !')
+      player.kick(Messages.SERVER_RESTART);
    });
 
-   Main.Sleep(2.5).then(() => { 
+   
+   Sleep(2.5).then(() => { 
       process.exit();
    })
 };
