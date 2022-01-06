@@ -61,7 +61,7 @@ Commands["editbiz"] = {
                   break;
                case 'VPOINT':
                   NearBiz.Vehicle_Point = Player.position;
-                  Player.Notification('Uredili ste mesto za vozila biznisu [' + NearBiz.id + '] ' + NearBiz.Name + '.', Globals.Notification.Succes, 5);
+                  Player.Notification('Uredili ste mesto za vozila biznisu [' + NearBiz.id + '] ' + NearBiz.Name + '.', NotifyType.SUCCESS, 5);
                   break;
                default:
                   break;

@@ -107,10 +107,10 @@ export default class Food {
       if (Counter == this.Items.length) { 
          const Earned = Globals.Jobs.Multiplier * Main.Between(4, 8);
          Character.GiveMoney(Player, Earned);
-         Player.Notification(Messages.ORDER_SUCCESS + Main.Dollars(Earned) + '.', Globals.Notification.Succes, 5);
+         Player.Notification(Messages.ORDER_SUCCESS + Main.Dollars(Earned) + '.', NotifyType.SUCCESS, 5);
          
       } else { 
-        Player.Notification(Messages.ORDER_NOT_COMPLETED, Globals.Notification.Error, 5);
+        Player.Notification(Messages.ORDER_NOT_COMPLETED, NotifyType.ERROR, 5);
       }
    };
 };
@@ -160,7 +160,7 @@ mp.events.addProc({
 
          return Order;
       } else { 
-         player.Notification(Messages.ORDER_ALREADY_PROCESSING, Globals.Notification.Error, 5);
+         player.Notification(Messages.ORDER_ALREADY_PROCESSING, NotifyType.ERROR, 5);
          return false;
       }
    }

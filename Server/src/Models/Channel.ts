@@ -83,12 +83,12 @@ frp.Channels = frp.Database.define('channel', {
 
 frp.Channels.New = async function (player, frequency, password = null) {
 
-   if (!frp.Items.HasItem(player.character, 'Handheld Radio')) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + ' Handheld Radio.', frp.Globals.Notification.Error, 4);
+   if (!frp.Items.HasItem(player.character, 'Handheld Radio')) return player.Notification(frp.Globals.messages.YOU_DONT_HAVE + ' Handheld Radio.', frp.NotifyType.ERROR, 4);
    const exist = await frp.Channels.count({ where: { Frequency: frequency } });
-   if (exist) return player.Notification(frp.Globals.messages.CHANNEL_ALREADY_EXISTS, frp.Globals.Notification.Error, 4);
+   if (exist) return player.Notification(frp.Globals.messages.CHANNEL_ALREADY_EXISTS, frp.NotifyType.ERROR, 4);
 
    const Character = await player.Character();
-   if (Character.Frequency != 0) return player.Notification(frp.Globals.messages.ALREADY_IN_CHANNEL, frp.Globals.Notification.Error, 4);
+   if (Character.Frequency != 0) return player.Notification(frp.Globals.messages.ALREADY_IN_CHANNEL, frp.NotifyType.ERROR, 4);
 
    frp.Channels.create({ Frequency: frequency, Password: password, Owner: Character.id });
 
@@ -97,7 +97,7 @@ frp.Channels.New = async function (player, frequency, password = null) {
 
    Character.GiveMoney(player, -frp.Settings.Frequency.Price);
 
-   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_CREATED, frp.Globals.Notification.Succes, 5);
+   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_CREATED, frp.NotifyType.SUCCESS, 5);
 };
 
 
@@ -116,7 +116,7 @@ frp.Channels.prototype.Delete = async function (player) {
    });
 
    await this.destroy();
-   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_DELETED, frp.Globals.Notification.Succes, 5);
+   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_DELETED, frp.NotifyType.SUCCESS, 5);
 };
 
 
@@ -139,39 +139,39 @@ frp.Channels.Edit = async function (player, password) {
 
    const Channel = frp.Channels.findOne({ where: { Frequency: Character.Frequency } });
 
-   if (Channel.Owner != player.character) return player.Notification(frp.Globals.messages.NOT_ALLOWED, frp.Globals.Notification.Error, 5);
+   if (Channel.Owner != player.character) return player.Notification(frp.Globals.messages.NOT_ALLOWED, frp.NotifyType.ERROR, 5);
 
    Channel.Password = password;
    await Channel.save();
 
-   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_EDITED, frp.Globals.Notification.Succes, 5);
+   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_EDITED, frp.NotifyType.SUCCESS, 5);
 };
 
 
 frp.Channels.Join = async function (player, frequency, password = null) {
    const exist = await frp.Channels.count({ where: { Frequency: frequency } });
-   if (!exist) return player.Notification(frp.Globals.messages.CHANNEL_NOT_FOUND, frp.Globals.Notification.Error, 4);
+   if (!exist) return player.Notification(frp.Globals.messages.CHANNEL_NOT_FOUND, frp.NotifyType.ERROR, 4);
 
-   if (this.Password != null && this.Password != password) return player.Notification(frp.Globals.messages.CHANNEL_WRONG_PASSWORD, frp.Globals.Notification.Error, 4);
+   if (this.Password != null && this.Password != password) return player.Notification(frp.Globals.messages.CHANNEL_WRONG_PASSWORD, frp.NotifyType.ERROR, 4);
 
    const Character = await player.Character();
    Character.Frequency = frequency;
    await Character.save();
 
-   player.Notification(frp.Globals.messages.SUCCESSFULY_JOINED_CHANNEL, frp.Globals.Notification.Succes, 4);
+   player.Notification(frp.Globals.messages.SUCCESSFULY_JOINED_CHANNEL, frp.NotifyType.SUCCESS, 4);
 };
 
 frp.Channels.Leave = async function (player) {
    const Character = await player.Character();
-   if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.Globals.Notification.Error, 4);
+   if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.NotifyType.ERROR, 4);
 
    const Frequency = await frp.Channels.findOne({ where: { Frequency: Character.Frequency } });
-   if (Frequency.Owner == player.character) return player.Notification(frp.Globals.messages.NOT_ALLOWED, frp.Globals.Notification.Error, 4);
+   if (Frequency.Owner == player.character) return player.Notification(frp.Globals.messages.NOT_ALLOWED, frp.NotifyType.ERROR, 4);
 
    Character.Frequency = 0;
    await Character.save();
 
-   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_LEAVED, frp.Globals.Notification.Succes, 4);
+   player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_LEAVED, frp.NotifyType.SUCCESS, 4);
 };
 
 

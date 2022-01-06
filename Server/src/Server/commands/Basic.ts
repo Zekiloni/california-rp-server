@@ -115,21 +115,21 @@ Commands["pay"] = {
    Params: ['igrač', 'količina'],
    Call: async (Player: PlayerMp, Args: string[]) => {
       const Character = Player.Character;
-      if (Character.Hours < 2) return Player.Notification(Messages.YOU_NEED_MINIMUM_2_HOURS_OF_PLAYING, Globals.Notification.Error, 5);
+      if (Character.Hours < 2) return Player.Notification(Messages.YOU_NEED_MINIMUM_2_HOURS_OF_PLAYING, NotifyType.ERROR, 5);
 
       const Target = mp.players.find(Args[0]);
       if (Target) {
          if (IsPlayerNearPlayer(Player, Target)) {
             const Amount = parseInt(Args[1]);
 
-            if (Amount > Character.Money) return Player.Notification(Messages.NOT_ENOUGH_MONEY, Globals.Notification.Error, 5); // PORUKA: Nemate dovoljno novca
-            if (Amount < 1) return Player.Notification(Messages.MINIMUM_PAY_AMOUNT, Globals.Notification.Error, 5);; // PORUKA: Ne mozes dati minus
+            if (Amount > Character.Money) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5); // PORUKA: Nemate dovoljno novca
+            if (Amount < 1) return Player.Notification(Messages.MINIMUM_PAY_AMOUNT, NotifyType.ERROR, 5);; // PORUKA: Ne mozes dati minus
 
             Target.Character.GiveMoney(Target, Amount);
             Character.GiveMoney(Player, -Amount);
             //Player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} daje nešto novca ${Target.Character.name}. (( Pay ))`, frp.Globals.Colors.purple);
          } else {
-            Player.Notification(Messages.PLAYER_NOT_NEAR, Globals.Notification.Error, 5);
+            Player.Notification(Messages.PLAYER_NOT_NEAR, NotifyType.ERROR, 5);
          }
       }
    }

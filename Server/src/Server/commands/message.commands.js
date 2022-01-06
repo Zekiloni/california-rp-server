@@ -83,7 +83,7 @@
 //                if (Player.id == Target.id) return;
 //                const Message = args.splice(1).join(' ');
 //                if (!Message.trim()) return;
-//                if (Player.dist(Target.position) > frp.Globals.distances.whisper) return Player.Notification(frp.Globals.messages.PLAYER_NOT_NEAR, frp.Globals.Notification.Error, 5);
+//                if (Player.dist(Target.position) > frp.Globals.distances.whisper) return Player.Notification(frp.Globals.messages.PLAYER_NOT_NEAR, frp.NotifyType.ERROR, 5);
 
 //                Target.SendMessage(Player.name + ' vam šapuće: ' + Message + '.', frp.Globals.Colors.white[3]);
 //                Player.SendMessage('Šapnuli ste ' + Target.name + ': ' + Message + '.', frp.Globals.Colors.white[3]);

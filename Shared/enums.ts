@@ -52,3 +52,7 @@ export enum EntityData {
    LOGGED = 'LOGGED_IN',
    ADMIN = 'ADMIN_LEVEL',
 }
+
+export enum LogType {
+   ERROR, SUCCESS, INFO
+}

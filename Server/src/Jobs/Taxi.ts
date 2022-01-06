@@ -61,7 +61,7 @@ export class Taxi {
             }
          }
 
-         if (AvailablePosition == null) return Player.Notification(Messages.THERE_IS_NO_PLACE_FOR_VEHICLE, Globals.Notification.Error, 5);
+         if (AvailablePosition == null) return Player.Notification(Messages.THERE_IS_NO_PLACE_FOR_VEHICLE, NotifyType.ERROR, 5);
 
          Vehicle = Vehicles.CreateTemporary(
             Configuration.Vehicle.Model, 
@@ -79,7 +79,7 @@ export class Taxi {
 
          Vehicle = Player.vehicle;
 
-         if (!Vehicle.numberPlate.includes('TX')) return Player.Notification(Messages.NO_TX_IN_NUMBERPLATE, Globals.Notification.Error, 5);
+         if (!Vehicle.numberPlate.includes('TX')) return Player.Notification(Messages.NO_TX_IN_NUMBERPLATE, NotifyType.ERROR, 5);
 
          
       }
@@ -112,7 +112,7 @@ export class Taxi {
 
    static async Stop (Player: PlayerMp) { 
 
-      if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, Globals.Notification.Error, 5);
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, NotifyType.ERROR, 5);
 
       const Character = Player.Character;
 
@@ -133,7 +133,7 @@ export class Taxi {
 
    static Fare (Player: PlayerMp, Price: number) { 
 
-      if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, Globals.Notification.Error, 5);
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, NotifyType.ERROR, 5);
 
       const Shift = Taxi.Drivers[Player.Character.id];
 
@@ -141,11 +141,11 @@ export class Taxi {
 
          const Max = Settings.Default.Taximeter + 5, Min = Settings.Default.Taximeter;
 
-         if (Price > Max || Price < Min) return Player.Notification(Messages.TAXIMETRE_PRICE_RANGE + Min + ' - ' + Max + '.', Globals.Notification.Error, 6);
+         if (Price > Max || Price < Min) return Player.Notification(Messages.TAXIMETRE_PRICE_RANGE + Min + ' - ' + Max + '.', NotifyType.ERROR, 6);
 
          Shift.Fare = Price;
 
-         Player.Notification(Messages.TAXIMETRE_SETTED_ON + Main.Dollars(Price) + '.', Globals.Notification.Error, 6);
+         Player.Notification(Messages.TAXIMETRE_SETTED_ON + Main.Dollars(Price) + '.', NotifyType.ERROR, 6);
 
       }
 

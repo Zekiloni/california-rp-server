@@ -28,7 +28,7 @@
 //          call: (Player) => {
 //             const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
 //             console.log(Vehicle);
-//             if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
+//             if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.NotifyType.ERROR, 6);
 //             if (Vehicle) Vehicle.data.Trunk = !Vehicle.data.Trunk;
 //          }
 //       },
@@ -38,7 +38,7 @@
 //          desc: 'Opcije haube vozila.',
 //          call: (Player) => {
 //             const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
-//             if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.Globals.Notification.Error, 6);
+//             if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.NotifyType.ERROR, 6);
 //             if (Vehicle) Vehicle.data.Hood = !Vehicle.data.Hood;
 //          }
 //       },
@@ -55,10 +55,10 @@
 //                   };
 //                   Player.call('client:business.gas:menu', [Info]);
 //                }).catch(() => { 
-//                   Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_PUMP, frp.Globals.Notification.Error, 5);
+//                   Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_PUMP, frp.NotifyType.ERROR, 5);
 //                });
 //             } else { 
-//                Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_STATION, frp.Globals.Notification.Error, 5);
+//                Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_STATION, frp.NotifyType.ERROR, 5);
 //             }
 //          }
 //       },

@@ -84,7 +84,7 @@ Commands["tpm"] = {
          Player.position = new mp.Vector3(Waypoint.x, Waypoint.y, Waypoint.z);
          Admin.AdminActionNotify(Player, `se teleportovao na waypoint. ${Waypoint.x} ${Waypoint.y} ${Waypoint.z}`);
       }).catch(() => {
-         Player.Notification('Nema markera', Globals.Notification.Error, 4);
+         Player.Notification('Nema markera', NotifyType.ERROR, 4);
       });
    }
 };

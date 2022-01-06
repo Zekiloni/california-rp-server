@@ -120,7 +120,7 @@
 //                   // PlayerEnterGarage(player)
                   
 //                } else {
-//                   player.Notification(Messages.IS_LOCKED, Globals.Notification.Error, 4);
+//                   player.Notification(Messages.IS_LOCKED, NotifyType.ERROR, 4);
 //                }
 //             }
    

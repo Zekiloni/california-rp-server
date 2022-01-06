@@ -79,7 +79,7 @@
 //                Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
 //             } else {
 //                // That user is not found
-//                player.Notification(Messages.USER_NOT_FOUND, Globals.Notification.Error, 5);
+//                player.Notification(Messages.USER_NOT_FOUND, NotifyType.ERROR, 5);
 //             }
 //          }
 //       }

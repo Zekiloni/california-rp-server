@@ -18,7 +18,7 @@
 //    'server:bussines.market:buy': async (Player: PlayerMp, Total: number, ItemsList: string, Biz) => { // ItemsList:Items[] ? 
 //       const Character = await Player.Character();
    
-//       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, Globals.Notification.Error, 5);
+//       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 
 //       const ItemsObj = JSON.parse(ItemsList);
 
@@ -33,7 +33,7 @@
       
 
 //       ItemsObj.forEach(Item => {
-//          if (Products[Item.name].Supplies < Item.quantity) return Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, Globals.Notification.Error, 5);
+//          if (Products[Item.name].Supplies < Item.quantity) return Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, NotifyType.ERROR, 5);
 
 //          Item.New(Item.name, Item.quantity, ItemEntities.Player, Player.CHARACTER_ID);
 //          Products[Item.name].Supplies -= Item.quantity;
@@ -48,13 +48,13 @@
 //    'server:business.drinks:buy': async (Player, Total, Item, Biz) => { 
 //       const Character = await Player.Character();
 
-//       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, Globals.Notification.Error, 5);
+//       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 
 //       const InBusiness = await Business.findOne({ where: { id: Biz } });
 //       if (!InBusiness) return Main.Terminal(3, '[ERROR][SERVER:BUSINESS.DRINKS:BUY] Business not found in database. | ' + `ID: ${Biz} CharId: ${Player.CHARACTER_ID}`);
 //       let Products = InBusiness.Products;
 
-//       if (Products[Item].Supplies < 1) return Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, Globals.Notification.Error, 5);
+//       if (Products[Item].Supplies < 1) return Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, NotifyType.ERROR, 5);
       
 //       Products[Item].Supplies --;
 //       // Items.New(Item, 1, ItemEntities.Player, Player.character);
@@ -69,12 +69,12 @@
 //    'server:business.clothing:buy': async (player, Total, Items, Biz) => { 
 //       const Character = await player.Character();
 
-//       if (Character.Money < Total) return player.Notification(Messages.NOT_ENOUGH_MONEY, Globals.Notification.Error, 5);
+//       if (Character.Money < Total) return player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 //       const InBusiness = await Business.findOne({ where: { id: Biz } });
 //       if (!InBusiness) return Main.Terminal(3, '[ERROR][SERVER:BUSINESS.CLOTHING:BUY] Business not found in database. | ' + `ID: ${Biz} CharId: ${player.CHARACTER_ID}`);
 //       let Products = InBusiness.Products;
 
-//       if (Products['Clothing'].Supplies < 1) return player.Notification(Messages.NOT_ENOUGH_PRODUCTS, Globals.Notification.Error, 5);
+//       if (Products['Clothing'].Supplies < 1) return player.Notification(Messages.NOT_ENOUGH_PRODUCTS, NotifyType.ERROR, 5);
 
 
 //       Items = JSON.parse(Items);
@@ -102,29 +102,29 @@
 
 //       const Character = await Player.Character();
 
-//       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, Globals.Notification.Error, 4);
+//       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 4);
 //       const InBusiness = await Business.findOne({ where: { id: Biz } });
 //       if (!InBusiness) return;
 
 //       let Products = InBusiness.Products;
 //       const VehiclePoint = InBusiness.Vehicle_Point;
-//       if (Main.IsAnyVehAtPos(new mp.Vector3(VehiclePoint.x, VehiclePoint.y, VehiclePoint.z), 1.5).length > 0) return; Player.Notification(Messages.VEHICLE_POINT_IS_NOT_FREE, Globals.Notification.Error, 4);
+//       if (Main.IsAnyVehAtPos(new mp.Vector3(VehiclePoint.x, VehiclePoint.y, VehiclePoint.z), 1.5).length > 0) return; Player.Notification(Messages.VEHICLE_POINT_IS_NOT_FREE, NotifyType.ERROR, 4);
 
       
 
 //       console.log(Products[Model]);
 
-//       if (Products[Model].Supplies < 1) return Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, Globals.Notification.Error, 4);
+//       if (Products[Model].Supplies < 1) return Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, NotifyType.ERROR, 4);
 
 //       Products[Model].Supplies --;
 
 //       Character.GiveMoney(Player, -Total);
 
-//       Player.Notification(Messages.SUCCESSFULLY_BUYED_VEHICLE, Globals.Notification.Succes, 6);
+//       Player.Notification(Messages.SUCCESSFULLY_BUYED_VEHICLE, NotifyType.SUCCESS, 6);
 
 //       Player.call('client:business.dealership:menu');
 
-//       Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, Globals.Notification.Error, 5);
+//       Player.Notification(Messages.NOT_ENOUGH_PRODUCTS, NotifyType.ERROR, 5);
    
 
 //       Vehicles.New(

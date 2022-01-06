@@ -32,7 +32,7 @@
 //          const Character = await Player.Character();
 //          Character.GiveLicense(Category);
 
-//          Player.Notification(Messages.SUCCEFULLY_GET_LICENSE + Category + '.', Globals.Notification.Succes, 6);
+//          Player.Notification(Messages.SUCCEFULLY_GET_LICENSE + Category + '.', NotifyType.SUCCESS, 6);
 
 //       });
 //    },

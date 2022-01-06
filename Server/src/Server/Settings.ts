@@ -35,7 +35,6 @@ export const Settings = {
       
    },
 
-   Licenses: { 'Driving':  },
 
    Frequency: { 
       Price: 350

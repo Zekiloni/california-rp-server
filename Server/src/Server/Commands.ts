@@ -34,25 +34,25 @@ mp.events.add('playerCommand', async (Player: PlayerMp, Command: string) => {
       // const Account = Player.Account;
       // const Character = Player.Character;
 
-      // if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', Globals.Notification.Error, 4);
+      // if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
 
-      // if (cmd.job && Character.Job != cmd.job) return Player.Notification(Messages.NOT_SPECIFIC_JOB, Globals.Notification.Error, 4);
+      // if (cmd.job && Character.Job != cmd.job) return Player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
 
-      // if (cmd.position && Player.dist(cmd.position) > 1.85) return Player.Notification(Messages.NOT_ON_POSITION, Globals.Notification.Error, 4);
+      // if (cmd.position && Player.dist(cmd.position) > 1.85) return Player.Notification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
 
       // if (cmd.faction) {
       //    //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
       //    if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
       // }
 
-      // if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, Globals.Notification.Error, 5);
+      // if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, NotifyType.ERROR, 5);
 
-      // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', Globals.Notification.Error, 4);
+      // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', NotifyType.ERROR, 4);
 
       if (Cmd.Params && Cmd.Params.length > Args.length) return Player.SendMessage('Komanda: /' + Name + ' [' + Cmd.Params.join('] [') + '] ', Colors.help);
 
       Cmd.Call(Player, Args);
    } else {
-      Player.Notification(Messages.CMD_DOESNT_EXIST, Globals.Notification.Error, 4);
+      Player.Notification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
    }
 });

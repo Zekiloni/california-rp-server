@@ -21,39 +21,39 @@ Commands["channel"] = {
       const Action = Args[0], Freq = Number(Args[1])
       switch (Action.toUpperCase()) {
          case 'JOIN':
-            if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, Globals.Notification.Error, 5);
+            if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, NotifyType.ERROR, 5);
             const JoinChannel = await Channel.findOne({ where: { Frequency: Freq }});
             if (JoinChannel?.Password == Args[2]) {
                JoinChannel.AddMember(Player);
-               Player.Notification(Messages.SUCCESSFULY_JOINED_CHANNEL, Globals.Notification.Succes, 5);
+               Player.Notification(Messages.SUCCESSFULY_JOINED_CHANNEL, NotifyType.SUCCESS, 5);
             }
             break; 
          case 'LEAVE':
             const LeaveChannel = await Channel.findOne({ where: { Frequency: Freq }});
             if (LeaveChannel?.Password == Args[2]) {
                LeaveChannel.RemoveMember(Player);
-               Player.Notification(Messages.CHANNEL_SUCCESFULLY_LEAVED, Globals.Notification.Succes, 5);
+               Player.Notification(Messages.CHANNEL_SUCCESFULLY_LEAVED, NotifyType.SUCCESS, 5);
             }
             break;
          case 'CREATE':
-            if (await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_ALREADY_EXISTS, Globals.Notification.Error, 5);
+            if (await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_ALREADY_EXISTS, NotifyType.ERROR, 5);
             const NewChannel = await Channel.New(Player, Freq, Args[2]);
-            if (NewChannel) Player.Notification(Messages.CHANNEL_SUCCESFULLY_CREATED, Globals.Notification.Succes, 5);
+            if (NewChannel) Player.Notification(Messages.CHANNEL_SUCCESFULLY_CREATED, NotifyType.SUCCESS, 5);
             break;
          case 'DELETE':
-            if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, Globals.Notification.Error, 5);
+            if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, NotifyType.ERROR, 5);
             const DelChannel = await Channel.findOne({ where: { Frequency: Freq }});
             if (DelChannel) {
                DelChannel.destroy();
-            } else Player.Notification(Messages.CHANNEL_NOT_FOUND, Globals.Notification.Error, 5);
+            } else Player.Notification(Messages.CHANNEL_NOT_FOUND, NotifyType.ERROR, 5);
             break;
          case 'PASSWORD':
-            if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, Globals.Notification.Error, 5);
-            if (Args[2].length < 4) return Player.Notification(Messages.CHANNEL_TOO_SHORT_PASSWORD, Globals.Notification.Error, 5);
+            if (!await Channel.Exists(Freq)) return Player.Notification(Messages.CHANNEL_NOT_FOUND, NotifyType.ERROR, 5);
+            if (Args[2].length < 4) return Player.Notification(Messages.CHANNEL_TOO_SHORT_PASSWORD, NotifyType.ERROR, 5);
             const PwChannel = await Channel.findOne({ where: { Frequency: Freq }});
             if (PwChannel) {
                PwChannel.Password = Args[2];
-               Player.Notification(Messages.CHANNEL_SUCCESFULLY_EDITED, Globals.Notification.Succes, 5);
+               Player.Notification(Messages.CHANNEL_SUCCESFULLY_EDITED, NotifyType.SUCCESS, 5);
             }
             break;
       
@@ -71,7 +71,7 @@ Commands["channel"] = {
          // call: async (player, args) => {
          //    const Character = player.Character;
          //    console.log('Frekvencija /r Karaktera ' + Character.Frequency);
-         //    if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.Globals.Notification.Error, 4);
+         //    if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.NotifyType.ERROR, 4);
 
          //    const Message = args.splice(0).join(' ');
          //    if (!Message.trim()) return;

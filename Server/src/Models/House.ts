@@ -112,17 +112,17 @@ export default class House extends Model {
    }
 
    async Buy(Player: PlayerMp) {
-      if (this.Owner != 0) return Player.Notification(Messages.HOUSE_ALREADY_OWNER, Globals.Notification.Error, 5);
+      if (this.Owner != 0) return Player.Notification(Messages.HOUSE_ALREADY_OWNER, NotifyType.ERROR, 5);
 
       const Character = Player.Character;
       const Houses = await Player.Properties().Houses;
 
 
       if (Houses.length == Character.Max_Houses) return; // PORUKA: Imate maksimalno kuca;
-      if (this.Price > Character.Money) return Player.Notification(Messages.NOT_ENOUGH_MONEY, Globals.Notification.Error, 5);
+      if (this.Price > Character.Money) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 
       Character.GiveMoney(Player, -this.Price);
-      Player.Notification(Messages.SUCCCESSFULLY_BUYED_HOUSE, Globals.Notification.Succes, 7);
+      Player.Notification(Messages.SUCCCESSFULLY_BUYED_HOUSE, NotifyType.SUCCESS, 7);
 
       this.Owner = Character.id;
 
@@ -130,15 +130,15 @@ export default class House extends Model {
    }
 
    async Lock(Player: PlayerMp) {
-      if (this.Owner != Player.Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals.Notification.Error, 5);
-      if (!this.Tenants.includes(Player.Character.id)) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, Globals.Notification.Error, 5);
+      if (this.Owner != Player.Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, NotifyType.ERROR, 5);
+      if (!this.Tenants.includes(Player.Character.id)) return Player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, NotifyType.ERROR, 5);
 
       this.Locked = !this.Locked;
       await this.save();
    }
 
    async Create(Player: PlayerMp, HouseType: number, Price: number) {
-      if (HouseTypes[HouseType] == undefined) return Player.Notification(Messages.TYPES_ARE_IN_RANGE + '0 - ' + HouseTypes.length + '.', Globals.Notification.Error, 5);
+      if (HouseTypes[HouseType] == undefined) return Player.Notification(Messages.TYPES_ARE_IN_RANGE + '0 - ' + HouseTypes.length + '.', NotifyType.ERROR, 5);
 
       this.Type = HouseType;
       const DefaultType = HouseTypes[HouseType];

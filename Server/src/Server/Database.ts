@@ -1,13 +1,13 @@
 
 
 import { Sequelize } from 'sequelize-typescript';
-import { Main, LogType } from './Main';
 import Characters from '../Models/Character';
 import Accounts from '../Models/Account';
 import { Config } from '../constants';
 import Appearances from '../Models/Appearance';
+import { Logger } from '../utils';
+import { LogType } from '@Shared/enums';
 
-//console.log(__dirname)
 
 const Database = new Sequelize({
    database: Config.Database.Name,
@@ -21,14 +21,15 @@ const Database = new Sequelize({
 
 Database.authenticate()
 .then(() => { 
-   Main.Terminal(LogType.Succes, 'Connected');
+   Logger(LogType.SUCCESS, 'Connected');
 })
 .then(() => { 
    return Database.sync()
 })
 .catch((Error: any) => { 
-   Main.Terminal(LogType.Error, Error);
+   Logger(LogType.ERROR, Error);
 });
+
 
 (async () => { 
 
@@ -45,7 +46,6 @@ Database.authenticate()
    }
 
 })();
-
 
 
 export default Database;

@@ -37,12 +37,12 @@ export class Sanitation {
 
    static async Stop (Player: PlayerMp) { 
 
-      if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, Globals.Notification.Error, 5);
+      if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, NotifyType.ERROR, 5);
 
       if (Player.getVariable('Job_Vehicle')) { 
          const Vehicle = mp.vehicles.at(Player.getVariable('Job_Vehicle'));
 
-         //if (Vehicle.dist(Jobs.Job[Globals.Jobs.Sanitation].Position) > 25) return Player.Notification(Messages.JOB_VEHICLE_RETURN_BACK, Globals.Notification.Error, 5);
+         //if (Vehicle.dist(Jobs.Job[Globals.Jobs.Sanitation].Position) > 25) return Player.Notification(Messages.JOB_VEHICLE_RETURN_BACK, NotifyType.ERROR, 5);
 
          Player.setVariable('Job_Vehicle', null);
          Vehicle.destroy();
@@ -61,7 +61,7 @@ export class Sanitation {
 
    static async Start (Player: PlayerMp) { 
 
-      if (Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_ALREADY_STARTED, Globals.Notification.Error, 5);
+      if (Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_ALREADY_STARTED, NotifyType.ERROR, 5);
 
       let AvailablePosition = null;
 
@@ -72,7 +72,7 @@ export class Sanitation {
          }
       }
 
-      if (AvailablePosition == null) return Player.Notification(Messages.THERE_IS_NO_PLACE_FOR_VEHICLE, Globals.Notification.Error, 5);
+      if (AvailablePosition == null) return Player.Notification(Messages.THERE_IS_NO_PLACE_FOR_VEHICLE, NotifyType.ERROR, 5);
 
       const Vehicle = Vehicles.CreateTemporary(
          Configuration.Vehicle.Model, 

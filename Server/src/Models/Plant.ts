@@ -95,7 +95,7 @@ export default class Plant extends Model {
     }
 
     Harvest(Player: PlayerMp) {
-        if (this.CurrentStage != GrowStage.Harvest_Ready) return Player.Notification(Messages.NOT_READY_FOR_HARVEST, Globals.Notification.Error, 6);
+        if (this.CurrentStage != GrowStage.Harvest_Ready) return Player.Notification(Messages.NOT_READY_FOR_HARVEST, NotifyType.ERROR, 6);
 
         switch (this.Type) {
             case Specie.Cannabis:

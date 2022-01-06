@@ -1,9 +1,8 @@
+import { NotifyType } from '@Shared/enums';
+import { Messages } from '@Shared/messages';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, ForeignKey, AfterCreate, AfterDestroy } from 'sequelize-typescript';
 import { Settings } from '../Server/Settings';
 import Business from './Business';
-import { Main } from '../Server/Main';
-import { Messages } from '../Global/Messages';
-import { Globals } from '../Global/Globals';
 /*
 const VehicleEntities = {
    Player: 0, Business: 1, Faction: 2, Job: 3
@@ -27,6 +26,7 @@ export enum VehicleEntities {
 }
 
 
+@Table
 export class Vehicles extends Model {
    @Column
    @PrimaryKey
@@ -213,7 +213,7 @@ export class Vehicles extends Model {
 
       switch (true) {
          case this.Entity == VehicleEntities.Player: {
-            // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+            // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, NotifyType.ERROR, 6);
 
             this.Vehicle.locked = !this.Vehicle.locked;
             this.Locked = this.Vehicle.locked;
@@ -225,7 +225,7 @@ export class Vehicles extends Model {
          case this.Entity == VehicleEntities.Business: {
             const Biz = await Business.findOne(({ where: { Owner: this.Owner } }));
             if (Biz == null) return;
-            if (Biz.Workers.includes(Character.id) == false) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+            if (Biz.Workers.includes(Character.id) == false) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, NotifyType.ERROR, 6);
 
             this.Vehicle.locked = !this.Vehicle.locked;
             this.Locked = this.Vehicle.locked;
@@ -235,7 +235,7 @@ export class Vehicles extends Model {
          }
 
          case this.Entity == VehicleEntities.Faction: {
-            // if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, Globals.Notification.Error, 6);
+            // if (this.Owner != Character.Faction) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, NotifyType.ERROR, 6);
 
             this.Vehicle.locked = !this.Vehicle.locked;
             this.Locked = this.Vehicle.locked;

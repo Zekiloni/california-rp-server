@@ -2,11 +2,12 @@
 'use strict';
 
 import Accounts from '../Models/Account';
-//import Bans from '../Models/Ban';
 import Appearances from  '../Models/Appearance';
 import { Settings } from '../Server/Settings';
 import Characters from '../Models/Character';
-import { Distances } from '@Shared/enums';
+import { Distances, NotifyType } from '@Shared/enums';
+import { Messages } from '@Shared/messages';
+import { Colors } from '@Shared/constants';
 
 
 mp.events.add(
@@ -34,22 +35,22 @@ mp.events.add(
    
                const vClass = await Player.callProc('client:player.vehicle:class');
                if (vClass == 14 || vClass == 13 || vClass == 8) { 
-                  Player.ProximityMessage(Distances.IC, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+                  Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
                } else { 
    
                   const Seat = Player.seat;
                   let Windows = Player.vehicle.getVariable('Windows');
    
                   if (Windows[Seat]) { 
-                     Player.ProximityMessage(Distances.VEHICLE, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+                     Player.ProximityMessage(Distances.VEHICLE, Name + Messages.PERSON_SAYS + Content, Colors.White);
    
                   } else { 
-                     Player.VehicleMessage(Name + frp.Globals.messages.PERSON_SAYS_IN_VEHICLE + Content, frp.Globals.Colors.vehicle);
+                     Player.VehicleMessage(Name + Messages.PERSON_SAYS_IN_VEHICLE + Content, Colors.Vehicle);
                   }
                }
    
             } else { 
-               Player.ProximityMessage(Distances.IC, Name + frp.Globals.messages.PERSON_SAYS + Content, frp.Globals.Colors.white);
+               Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
             }
    
          }
@@ -82,10 +83,10 @@ mp.events.addProc(
                      Account.Logged(Player, true);
                      resolve(Account);
                   } else { 
-                     Player.Notification(Messages.INCCORRECT_PASSWORD, Globals.Notification.Error, 5);
+                     Player.Notification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
                   }
                } else { 
-                  Player.Notification(Messages.USER_DOESNT_EXIST, Globals.Notification.Error, 5);
+                  Player.Notification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
                }
             });
          });
@@ -97,7 +98,7 @@ mp.events.addProc(
          const Appearance = JSON.parse(Char_Appearance);
 
          const Exist = await Characters.findOne({ where: { Name: Character.First_Name + ' ' + Character.Last_Name } });
-         if (Exist) return Player.Notification(Messages.CHARACTER_ALREADY_EXIST, Globals.Notification.Error, 5);
+         if (Exist) return Player.Notification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
 
          const createdCharacter = await Characters.create({ 
             Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: Player.Account.id,
@@ -111,7 +112,7 @@ mp.events.addProc(
 
          createdCharacter.Spawn(Player);
 
-         Player.Notification(Messages.CHARACTER_CREATED, Globals.Notification.Succes, 4);
+         Player.Notification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
       },
 
       'SERVER::CHARACTER:DELETE': async (Player: PlayerMp, Char_ID: number) => {
