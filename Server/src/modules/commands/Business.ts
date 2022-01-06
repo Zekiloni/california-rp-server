@@ -1,5 +1,5 @@
 import { Globals } from "../../Global/Globals";
-import Business from "../../Models/Business";
+import Business from "../../models/Business";
 import { Admin } from "../../Player/Admin";
 import { Commands } from "../commands";
 import { ExceptionType, Main } from "../Main";

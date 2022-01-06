@@ -1,9 +1,9 @@
 
 import { Globals } from "../Global/Globals";
 import { Messages } from "../Global/Messages";
-import { Vehicles } from "../Models/Vehicles";
+import { Vehicles } from "../../models/Vehicles";
 import { ExceptionType, Main } from "../Server/Main";
-import { Settings } from "../Server/Settings";
+import { Settings } from "../../Server/Settings";
 
 
 

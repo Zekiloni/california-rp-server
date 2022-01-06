@@ -3,7 +3,7 @@
 // const Ban = require('../models/Ban');
 
 import { Colors } from '../Global/Colors';
-import Accounts from '../Models/Account';
+import Accounts from '../models/Account';
 
 export const Administrators = [
    'None',

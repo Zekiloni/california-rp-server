@@ -5,12 +5,12 @@
 // igrac odabere dostavu, status dostave je in progress,,
 // model dostave se sastoji od lokacije, sta je poruceno, kontakta (N/A ukoliko je server, broj telefona ukoliko je igrac)
 
-import  House  from "../Models/House";
+import  House  from "../../models/House";
 import { Items } from "../Items/Items";
 import { Main } from "../Server/Main";
 import { Globals } from "../Global/Globals";
 import { Messages } from "../Global/Messages";
-import { Vehicles } from "../Models/Vehicles";
+import { Vehicles } from "../../models/Vehicles";
 import Database from "../Server/Database";
 
 const { ItemEntities } = require("../../classes/Items.Registry");

@@ -1,8 +1,8 @@
 import { Globals } from "../../Global/Globals";
 import { Messages } from "../../Global/Messages";
-import Food from "../../Jobs/Food";
-import { Sanitation } from "../../Jobs/Sanitation";
-import { Taxi } from "../../Jobs/Taxi";
+import Food from "../jobs/Food";
+import { Sanitation } from "../jobs/Sanitation";
+import { Taxi } from "../jobs/Taxi";
 import { Commands } from "../commands";
 
 // name: 'takejob',

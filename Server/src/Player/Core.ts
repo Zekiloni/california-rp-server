@@ -1,10 +1,10 @@
 
 'use strict';
 
-import Accounts from '../Models/Account';
-import Appearances from  '../Models/Appearance';
+import Accounts from '../models/Account';
+import Appearances from  '../models/Appearance';
 import { Settings } from '../Server/Settings';
-import Characters from '../Models/Character';
+import Characters from '../models/Character';
 import { Distances, NotifyType } from '@Shared/enums';
 import { Messages } from '@Shared/messages';
 import { Colors } from '@Shared/constants';

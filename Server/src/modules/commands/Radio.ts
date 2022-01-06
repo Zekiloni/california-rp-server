@@ -1,7 +1,7 @@
 import { Colors } from "../../Global/Colors";
 import { Globals } from "../../Global/Globals";
 import { Messages } from "../../Global/Messages";
-import Channel from "../../Models/Channel";
+import Channel from "../../models/Channel";
 import { Commands } from "../commands";
 
 Commands["r"] = {

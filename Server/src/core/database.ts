@@ -1,10 +1,10 @@
 
 
 import { Sequelize } from 'sequelize-typescript';
-import Characters from '../Models/Character';
-import Accounts from '../Models/Account';
+import Characters from '../models/Character';
+import Accounts from '../models/Account';
 import { Config } from '../constants';
-import Appearances from '../Models/Appearance';
+import Appearances from '../models/Appearance';
 import { Logger } from '../utils';
 import { LogType } from '@Shared/enums';
 

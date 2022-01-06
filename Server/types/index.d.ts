@@ -1,6 +1,6 @@
 
-import Accounts from '../src/Models/Account';
-import Characters from '../src/Models/Character';
+import Accounts from '../src/models/Account';
+import Characters from '../src/models/Character';
 
 
 declare global { 
