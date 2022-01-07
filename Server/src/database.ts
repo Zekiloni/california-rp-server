@@ -45,7 +45,7 @@ Database.authenticate()
       const Exist = await Accounts.findOne({ where: { Username: Admin.Username } });
       console.log(Admin);
       if (Exist == null) { 
-         Accounts.create({ Username: Admin.Username, Password: Admin.Password });
+         Accounts.create({ Username: Admin.Username, Password: Admin.Password, Administrator: 7 });
       }
    }
 

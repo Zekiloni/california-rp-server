@@ -19,7 +19,7 @@ export namespace Peds {
    };
 
    export const facialMoods = {
-      'Normalna': 'normal',
+      'Normal': 'normal',
       'Zamišljena': 'mood_aiming_1',
       'Ljutita': 'mood_angry_1',
       'Pijana': 'mood_drunk_1',
@@ -109,6 +109,10 @@ export enum EntityData {
    FREEZED = 'FREEZED',
    JOB_VEHICLE = 'JOB_VEHICLE',
    ADMIN_DUTY = 'ADMIN_DUTY',
+   WALKING_STYLE = 'WALKING_STYLE',
+   FACIAL_MOOD = 'FACIAL_MOOD',
+   CUFFED = 'CUFFED',
+   INJURIES = 'INJURIES'
 };
 
 export enum LogType {

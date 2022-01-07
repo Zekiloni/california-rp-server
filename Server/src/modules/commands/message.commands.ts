@@ -6,10 +6,10 @@ import { Commands } from '../commands';
 Commands['me'] = {
    Desc: 'Opis situacije, stanja',
    Params: ['radnja'],
-   Call:(Player: PlayerMp, args: any) => {
-      const Text = args.splice(0).join(' ');
+   Call:(player: PlayerMp, ...content) => {
+      const Text = [...content].join(' ');
       if (!Text.trim()) return;
-      Player.sendProximityMessage(Distances.ROLEPLAY, '** ' + Player.name + ' ' + Text, Colors.Purple);
+      player.sendProximityMessage(Distances.ROLEPLAY, '** ' + player.name + ' ' + Text, Colors.Purple);
    }
 }
 

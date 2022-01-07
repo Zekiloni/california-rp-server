@@ -1,4 +1,5 @@
 import { Browser } from '../Browser';
+import { gameInterface, UI_Status } from '../Game.UI';
 
 
 const Player = mp.players.local;
@@ -13,10 +14,9 @@ mp.events.add(
 
       'CLIENT::AUTHORIZATION:PLAY': (Character: number) => { 
          Lobby(false);
-         setTimeout(() => {
-            mp.gui.chat.show(true);
-         }, 3000);
+         mp.gui.chat.show(true);
          mp.events.callRemote('SERVER::CHARACTER:PLAY', Character);
+         gameInterface.Toggle(UI_Status.Full_Visible);
       }
    }
 );

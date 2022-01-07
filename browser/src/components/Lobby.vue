@@ -1,51 +1,49 @@
 
 <template>
    <div class="authorization">
-      <transition name="fade">
 
-         <div class="login" v-if="!Logged">
-            <img class="logo" src="@/assets/images/logo.png" />
-            <h1 class="title"> {{ Messages.AUTHORIZATION }} </h1>
-            <p v-html="Messages.NEED_TO_LOGIN">  </p>
+      <div class="login" v-if="!Logged">
+         <img class="logo" src="@/assets/images/logo.png" />
+         <h1 class="title"> {{ Messages.AUTHORIZATION }} </h1>
+         <p v-html="Messages.NEED_TO_LOGIN">  </p>
 
-            <div class="form">
-               <div class="input-container username"> <input type="text" :placeholder="Messages.USERNAME" v-model="Inputs.Username" spellcheck="false" ref="usernameInput"> </div>
-               <div class="input-container password">  <input type="password" :placeholder="Messages.USERPASSWORD" v-model="Inputs.Password" spellcheck="false"> </div>
-            </div>
-
-            <button class="play" v-on:click="Authorization(Inputs.Username, Inputs.Password)"> {{ Messages.PLAY }} </button>
+         <div class="form">
+            <div class="input-container username"> <input type="text" :placeholder="Messages.USERNAME" v-model="Inputs.Username" spellcheck="false" ref="usernameInput"> </div>
+            <div class="input-container password">  <input type="password" :placeholder="Messages.USERPASSWORD" v-model="Inputs.Password" spellcheck="false"> </div>
          </div>
 
-         <div class="info" v-else-if="Logged && Account">
-            <div class="account">
+         <button class="play" v-on:click="Authorization(Inputs.Username, Inputs.Password)"> {{ Messages.PLAY }} </button>
+      </div>
 
-               <div class="header">
-                  <h2> {{ Account.Username }} </h2>
-                  <h3> {{ Helpers.Group(Account.Administrator) }} </h3>
-               </div>
+      <div class="info" v-else-if="Logged && Account">
+         <div class="account">
 
-               <ul class="data">
-                  <li> <span class="name date"> {{ Messages.REGISTER_DATE }} </span>  <span class="value"> {{ Helpers.Date(Account.Created_At) }} </span> </li>
-                  <li> <span class="name last_login"> {{ Messages.LAST_LOGIN }} </span>  <span class="value"> {{ Helpers.Date(Account.Login_Date) }} </span> </li>
-                  <li> <span class="name hours"> {{ Messages.HOURS_PLAYED }} </span>  <span class="value"> {{ getHoursPlayed }} </span> </li>
-                  <li> <span class="name email"> {{ Messages.E_MAIL }} </span>  <span class="value"> {{ Account.Email ? Account.Email : Messages.NO_NO }} </span> </li>
-                  <li class="warns"> <span class="name warns"> {{ Messages.WARNS }} </span>  <span class="value" v-tooltip="Messages.MAX_WARNS"> {{ getWarns }} </span> </li>
-               </ul>
+            <div class="header">
+               <h2> {{ Account.Username }} </h2>
+               <h3> {{ Helpers.Group(Account.Administrator) }} </h3>
             </div>
 
-            <div class="characters">
-               <div class="character-slot" v-for="i in Max_Characters" :key="i" @mouseenter="hover"> 
-                  <div class="character" v-if="Account.Characters[i]" >
-                     <h2 v-on:click="Play(Account.Characters[i].id)"> IGRAJ </h2>
-                  </div>
-                  <div v-else class="character-create" v-on:click="Create(i)"> 
-                     <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
-                     <div class="create-button"> </div>
-                  </div>
+            <ul class="data">
+               <li> <span class="name date"> {{ Messages.REGISTER_DATE }} </span>  <span class="value"> {{ Helpers.Date(Account.Created_At) }} </span> </li>
+               <li> <span class="name last_login"> {{ Messages.LAST_LOGIN }} </span>  <span class="value"> {{ Helpers.Date(Account.Login_Date) }} </span> </li>
+               <li> <span class="name hours"> {{ Messages.HOURS_PLAYED }} </span>  <span class="value"> {{ getHoursPlayed }} </span> </li>
+               <li> <span class="name email"> {{ Messages.E_MAIL }} </span>  <span class="value"> {{ Account.Email ? Account.Email : Messages.NO_NO }} </span> </li>
+               <li class="warns"> <span class="name warns"> {{ Messages.WARNS }} </span>  <span class="value" v-tooltip="Messages.MAX_WARNS"> {{ getWarns }} </span> </li>
+            </ul>
+         </div>
+
+         <div class="characters">
+            <div class="character-slot" v-for="i in Max_Characters" :key="i" @mouseenter="hover"> 
+               <div class="character" v-if="Account.Characters[i]" >
+                  <h2 v-on:click="Play(Account.Characters[i].id)"> IGRAJ </h2>
+               </div>
+               <div v-else class="character-create" v-on:click="Create(i)"> 
+                  <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
+                  <div class="create-button"> </div>
                </div>
             </div>
          </div>
-      </transition>
+      </div>
    </div>
         
 </template>
@@ -141,9 +139,10 @@
       position: absolute;
       top: 0;
       left: 0;
-      background: radial-gradient(ellipse at center top, rgb(76 49 142 / 45%) 0%, rgb(32 20 63 / 30%) 62%, rgb(0 0 0 / 55%) 100%);
+      background: radial-gradient(ellipse at center top, rgb(76 49 142 / 45%) 0%, rgb(32 20 63 / 30%) 50%, rgb(0 0 0 / 90%) 90%) top right/150% 100%;
       width: 100%;
       height: 100%;      
+      animation: animated-radial 5s infinite alternate;
       display: grid;
    }
 
@@ -159,6 +158,18 @@
       border-radius: 20px;
       align-items: center;
       flex-direction: column;
+      animation: slide-from-top 1.25s ease-in-out;
+   }
+
+   @keyframes slide-from-top {
+      from { transform: translateY(-700px); }
+      to { transform: translateY(0); }
+   }
+
+   @keyframes animated-radial {
+      to { 
+      background-position: top left;
+      }
    }
 
    .login img.logo { width: 215px; margin: 20px 0; }

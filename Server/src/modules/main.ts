@@ -129,6 +129,7 @@ mp.events.addProc(
          createdCharacter.Spawn(Player);
 
          Player.Notification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
+         return true;
       },
 
       'SERVER::CHARACTER:DELETE': async (Player: PlayerMp, Char_ID: number) => {

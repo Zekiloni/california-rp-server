@@ -1,6 +1,6 @@
 
 
-import { EntityData, Global_Dimension, NotifyType } from '../enums';
+import { EntityData, Global_Dimension, NotifyType, Peds } from '../enums';
 import { Messages } from '../constants';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
 import { Config } from '../config';
@@ -8,6 +8,8 @@ import { Config } from '../config';
 import Accounts from './account.model';
 import { Injury } from './misc/injury.model';
 
+
+console.log(Peds.walkingStyles.Normal)
 
 @Table
 export default class Characters extends Model {
@@ -120,13 +122,14 @@ export default class Characters extends Model {
    @Column
    Minutes: number
 
-   @Default('normal')
-   @Column
-   Walking_Style: string
+   @Default(Peds.walkingStyles.Normal)
+   @Column(DataType.STRING)
+   Walking_Style: keyof typeof Peds.walkingStyles
 
-   @Default('normal')
-   @Column
-   Facial_Mood: string
+
+   @Default(Peds.facialMoods.Normal)
+   @Column(DataType.STRING)
+   Facial_Mood: keyof typeof Peds.facialMoods
    
    @Default(Config.Max.INVENTORY_WEIGHT)
    @Column
@@ -161,7 +164,6 @@ export default class Characters extends Model {
 
    async Spawn (player: PlayerMp) { 
 
-
       player.Account.Last_Character = this.id;
       player.Character = this;
 
@@ -194,11 +196,11 @@ export default class Characters extends Model {
 
 
       this.setWalkingStyle(player, this.Walking_Style);
-      this.setMood(player, this.Mood);
+      this.setMood(player, this.Facial_Mood);
       this.setCuffs(player, this.Cuffed);
    
    
-      //    Player.setVariable('Injuries', this.Injuries);
+      player.setVariable(EntityData.INJURIES, this.Injuries);
       //    Player.RespawnTimer = null;
       //    Player.setVariable('Wounded', this.Wounded);
       //    if (this.Wounded) { 
@@ -241,47 +243,48 @@ export default class Characters extends Model {
 
    }
 
-   setHealth (player: PlayerMp, value: number) { 
+   async setHealth (player: PlayerMp, value: number) { 
       player.health = value;
       this.Health = value;
-   }
+   };
 
    setMoney (player: PlayerMp, value: number) { 
       player.setVariable(EntityData.MONEY, value);
       this.Money = value;
-   }
+   };
+
+   async giveMoney (player: PlayerMp, value: number) {
+      let Money = await this.increment('Money', { by: value });
+      if (Money) {
+         player.setVariable(EntityData.MONEY, this.Money + value);
+      }
+   };
 
    async setJob (value: number) {
       this.Job = value;
       await this.save();
-   }
+   };
 
-   async setWalkingStyle (player: PlayerMp, Style) {
-      this.Walking_Style = Style;
-      player.setVariable('Walking_Style', Style);
+   async setWalkingStyle (player: PlayerMp, style: keyof typeof Peds.walkingStyles) {
+      this.Walking_Style = style;
+      player.setVariable(EntityData.WALKING_STYLE, style);
       await this.save();
    };
 
-   async giveMoney (Player: PlayerMp, value: number) {
-      let Money = await this.increment('Money', { by: value });
-      if (Money) {
-         Player.setVariable(EntityData.MONEY, this.Money + value);
-      }
+   setMood (player: PlayerMp, mood: keyof typeof Peds.facialMoods) { 
+      this.Facial_Mood = mood;
+      player.setVariable(EntityData.FACIAL_MOOD, mood);
    };
+
+   setCuffs (player: PlayerMp, toggle: boolean) {
+      this.Cuffed = toggle;
+      player.setVariable(EntityData.CUFFED, toggle);
+   }
+
    
 }
 
 
-// const { ItemEntities } = require('../classes/Items.Registry');
-// const { VehicleEntities } = require('./Vehicle');
-
-// let Appearance = require('./Appearance');
-// const Enums = require('../data/Enums');
-
-
-// frp.Characters.prototype.Spawn = async function (player) {
-
-// };
 
 
 
@@ -294,12 +297,6 @@ export default class Characters extends Model {
 //    }
 // };
 
-
-// frp.Characters.prototype.SetHealth = async function (player, value) {
-//    this.Health = value;
-//    player.health = this.Health;
-//    await this.save();
-// };
 
 
 // frp.Characters.prototype.SetSpawn = async function (point) {
@@ -396,89 +393,6 @@ export default class Characters extends Model {
 // };
 
 
-// frp.Characters.prototype.SetArmour = async function (player, value) {
-//    this.Armour = value;
-//    player.armour = this.Armour;
-//    await this.save();
-// };
-
-
-// frp.Characters.prototype.GiveMoney = async function (player, value) {
-//    let Money = await this.increment('Money', { by: value });
-//    await player.setVariable('Money', this.Money + value);
-// };
-
-
-// frp.Characters.prototype.SetMoney = async function (player, value) {
-//    this.Money = value;
-//    player.setVariable('Money', value);
-//    await this.save();
-// };
-
-
-// frp.Characters.prototype.SetMood = function (player, mood) { 
-//    this.Mood = mood;
-//    player.setVariable('Mood', mood);
-// };
-
-
-
-
-
-// frp.Characters.prototype.Cuff = function (player, toggle) { 
-//    if (toggle) {
-//       this.Cuffed = toggle;
-//    } else { 
-//       this.Cuffed = !this.Cuffed;
-//    }
-//    player.setVariable('Cuffed', this.Cuffed);
-//    return this.Cuffed;
-// };
-
-
-// frp.Characters.prototype.UnRentVehicle = function (player) {
-//    if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
-//       clearTimeout(this.Rented_Vehicle.Timer);
-//       this.Rented_Vehicle.destroy();
-//    }
-// }
-
-
-// frp.Characters.prototype.ExtendRent = function (player, minutes) {
-//    if (this.Rented_Vehicle && this.Rented_Vehicle.Timer) {
-//       clearTimeout(this.Rented_Vehicle.Timer);
-//       this.Rented_Vehicle.Timer = setTimeout(() => {
-//          frp.Characters.prototype.UnRentVehicle(player);
-//       }, 60000 * minutes);
-//    }
-// }
-
-
-// frp.Characters.prototype.RentVehicle = function (player, model, business, minutes = 30) {
-//    if (frp.Main.IsAnyVehAtPos(business.Vehicle_Point)) {
-//       const Vehicle = mp.vehicles.new(model, business.Vehicle_Point,
-//       {
-//             heading: 180,
-//             numberPlate: 'RENT',
-//             alpha: 255,
-//             color: 0,
-//             locked: true,
-//             engine: false,
-//             dimension: player.dimension
-//       });
-//       this.Rented_Vehicle = Vehicle;
-//       this.Rented_Vehicle.Timer = setTimeout(() => {
-//          frp.Characters.prototype.UnRentVehicle(player);
-//       }, 60000 * minutes);
-//    } else { player.notification('Mesto za isporuku vozila je trenutno zauzeto.', NOTIFY_ERROR, 4); }
-// };
-
-
-
-// frp.Characters.prototype.SetAdmin = async function (level) { 
-//    this.Admin = level;
-//    await this.save();
-// };
 
 
 // frp.Characters.prototype.Buy = async function (Player, Nearest, action) { 
@@ -505,12 +419,6 @@ export default class Characters extends Model {
 
 // };
 
-
-// frp.Characters.prototype.SetJob = async function (player, value) {
-//    this.Job = value;
-//    player.setVariable('Job', value);
-//    await this.save();
-// };
 
 
 // frp.Characters.prototype.GiveLicense = async function (license) {
@@ -612,13 +520,6 @@ export default class Characters extends Model {
 // };
 
 
-// mp.Player.prototype.Character = async function () {
-//    if (this.character) { 
-//       const character = await frp.Characters.findOne({ where: { id: this.character } });
-//       return character ? character : null;
-//    }
-// };
-
 
 // mp.Player.prototype.Account = async function () {
 //    const account = await frp.Accounts.findOne({ where: { id: this.account } });
@@ -708,10 +609,6 @@ mp.Player.prototype.sendProximityMessage = function (radius: number, message: st
 //    });
 // };
 
-
-// mp.Player.prototype.message = function (color, message) {
-//    this.outputChatBox(`!{${color}}${message}`);
-// };
 
 
 // mp.Player.prototype.Bubble = function (Content, Color) { 

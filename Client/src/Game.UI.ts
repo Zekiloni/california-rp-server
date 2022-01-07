@@ -3,7 +3,7 @@ import { Browser } from './Browser';
 
 const Player = mp.players.local;
 
-enum UI_Status {
+export enum UI_Status {
    Full_Visible,
    Only_Chat,
    Chat_Hidden,
@@ -36,7 +36,8 @@ class GAME_UI {
 
       switch (true) { 
          case this.Status == UI_Status.Full_Visible: {
-            mp.events.add('render', this.MainInterface);
+            Browser.call('BROWSER::SHOW', 'GameInterface');
+            mp.events.add('render', this.mainInterface);
             break;
          }
       }
@@ -55,17 +56,19 @@ class GAME_UI {
       mp.game.invoke('0x9E4CFFF989258472'); // Anti AFK CAM
       mp.game.invoke('0xF4F2C0D4EE209E20'); // Anti shake cam
       
-      GameInterface.HIDE_CORSSAIR();
+      gameInterface.HIDE_CORSSAIR();
    }
 
-   MainInterface () { 
+   mainInterface () { 
 
       const { x: x, y: y, z: z} = Player.position;
       const path = mp.game.pathfind.getStreetNameAtCoord(x, y, z, 0, 0);
 
-      const Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(x, y, z));
-      const Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
-      const Heading = this.Headed(Player.getHeading());
+      const zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(x, y, z));
+      const street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
+      const heading = gameInterface.whereHeaded(Player.getHeading());
+
+      Browser.call('BROWSER::GAME_UI:UPDATE_LOCATION', street, zone, heading);
       
    }
    
@@ -75,25 +78,24 @@ class GAME_UI {
          (mp.game.ui.showHudComponentThisFrame(14)) : mp.game.ui.hideHudComponentThisFrame(14);
    }
    
-   Headed (H: number) { 
+   whereHeaded (h: number) { 
       switch (true) {
-         case (H < 30): return 'N'; 
-         case (H < 90): return 'NW'; 
-         case (H < 135): return 'W';
-         case (H < 180): return 'SW';
-         case (H < 225): return 'S';
-         case (H < 270): return 'SE';
-         case (H < 315): return 'E'; 
-         case (H < 360): return 'NE';
+         case (h < 30): return 'N'; 
+         case (h < 90): return 'NW'; 
+         case (h < 135): return 'W';
+         case (h < 180): return 'SW';
+         case (h < 225): return 'S';
+         case (h < 270): return 'SE';
+         case (h < 315): return 'E'; 
+         case (h < 360): return 'NE';
          default: return 'N';
       }
    }
 
 }
 
-const GameInterface = new GAME_UI();
+export const gameInterface = new GAME_UI();
 
-export default GameInterface;
 
 
 

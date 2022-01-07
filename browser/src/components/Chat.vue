@@ -37,7 +37,7 @@
          return { 
 
             Settings: { 
-               Active: true,
+               Active: false,
                Fontsize: 15.5,
                Fonweight: 350,
                Width: 300,
@@ -163,9 +163,8 @@
          this.Check();
 
          document.addEventListener('keydown', event => {
-            if (event.keyCode === 84 && this.Settings.Active && this.Input == '') {
+            if (event.keyCode === 84 && this.Settings.Active && !this.Typing) {
                this.Toggle(true);
-               event.preventDefault();
             }
          });
 

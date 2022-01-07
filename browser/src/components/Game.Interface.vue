@@ -190,6 +190,14 @@
          Vehicle_Indicators: function (i) { 
             return this.Driving_Info.Indicators[i] ? 'blinking' : 'off';
          }
+      },
+
+      mounted () { 
+         mp.events.add('BROWSER::GAME_UI:UPDATE_LOCATION', (street, zone, heading) => { 
+            this.Location.Street = street;
+            this.Location.Zone = zone;
+            this.Location.Heading = heading;
+         });
       }
    }
 
