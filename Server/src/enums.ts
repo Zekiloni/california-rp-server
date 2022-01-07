@@ -8,6 +8,47 @@ export namespace Peds {
       MALE = 'mp_m_freemode_01',
       FEMALE = 'mp_f_freemode_01'
    }
+
+   export enum Bones { 
+      HEAD = 20,
+      R_FOOT = 2,
+      L_FOOT = 6,
+      TORSO = 8,
+      LEG = 4,
+      NECK = 18
+   };
+
+   export const facialMoods = {
+      'Normalna': 'normal',
+      'Zamišljena': 'mood_aiming_1',
+      'Ljutita': 'mood_angry_1',
+      'Pijana': 'mood_drunk_1',
+      'Srećna': 'mood_happy_1' ,
+      'Povredjena': 'mood_injured_1',
+      'Stresirana': 'mood_stressed_1' ,
+      'Uvređena': 'mood_sulk_1',
+   }
+
+   export const walkingStyles = { 
+      'Normal': null,
+      'Brave': 'move_m@brave',
+      'Confident': 'move_m@confident',
+      'Drunk': 'move_m@drunk@verydrunk',
+      'Fat': 'move_m@fat@a',
+      'Gangster': 'move_m@shadyped@a',
+      'Hurry': 'move_m@hurry@a',
+      'DeadlyWound': 'move_m@injured',
+      'HeavyWound': 'move_m@drunk@verydrunk',
+      'MediumWound': 'move_m@drunk@moderatedrunk',
+      'Wounded': 'move_injured_generic',
+      'LegsDamage': 'move_m@drunk@verydrunk',
+      'Injured_Ground': 'move_injured_ground',
+      'Strafed': 'move_strafe@injured',
+      'Intimidated': 'move_m@intimidation@1h',
+      'Quick': 'move_m@quick',
+      'Sad': 'move_m@sad@a',
+      'Tough': 'move_m@tool_belt@a',
+   }
 }
 
 
@@ -59,12 +100,32 @@ export enum EntityData {
    MONEY = 'MONEY',
    LOGGED = 'LOGGED_IN',
    ADMIN = 'ADMIN_LEVEL',
+   SPAWNED = 'SPAWNED',
+   MUTED = 'MUTED',
+   JOB = 'JOB',
+   FACTION = 'FACTION',
+   FACTION_DUTY = 'FACTION_DUTY',
+   JOB_DUTY = 'JOB_DUTY',
+   FREEZED = 'FREEZED',
+   JOB_VEHICLE = 'JOB_VEHICLE',
+   ADMIN_DUTY = 'ADMIN_DUTY',
 };
 
 export enum LogType {
    ERROR, SUCCESS, INFO
 };
 
+
+export enum adminLevel {
+   NONE = 0,
+   HELPER = 1,
+   JUNIOR_ADMIN = 2,
+   ADMIN = 3,
+   SENIOR_ADMIN = 4,
+   GENERAL_ADMIN = 5,
+   LEAD_ADMIN = 6,
+   COMMUNITY_OWNER = 7 
+}
 
 export enum itemNames {
    drivingLicense = 'Vozačka dozvola',

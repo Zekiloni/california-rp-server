@@ -9,12 +9,14 @@ Vue.use(Vuex);
 
 const InitialState = {
    Notifications: true,
+   Chat: true,
+
    Lobby: true,
    Creator: false,
+
    GameInterface: false,
    Inventory: false,
    Playerlist: false,
-   Chat: false,
    Banking: false,
    Job_Offer: false,
    Miner: false,

@@ -32,6 +32,7 @@ declare global {
       Account: Accounts;
 
       SendMessage (Message: string, Color: string): void;
+      sendProximityMessage (radius: number, message: string, colors: string[]): void;
       Notification (Message: string, Type: number, Time: number): void;
       Properties (): any;
    }

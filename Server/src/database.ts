@@ -1,13 +1,15 @@
 
 
 import { Sequelize } from 'sequelize-typescript';
-import Characters from '../models/character.model';
-import Accounts from '../models/account.model';
-import Appearances from '../models/appearance.model';
-import { Logger } from '../utils';
-import { LogType } from '../enums';
-import { Config } from '../config';
 
+import { Logger } from './utils';
+import { LogType } from './enums';
+import { Config } from './config';
+
+import Accounts from './models/account.model';
+import Bans from './models/ban.model';
+import Characters from './models/character.model';
+import Appearances from './models/appearance.model';
 
 const Database = new Sequelize({
    database: Config.Database.Name,
@@ -15,7 +17,9 @@ const Database = new Sequelize({
    username: Config.Database.User,
    password: Config.Database.Password,
    storage: ':memory:',
-   models: [ Accounts, Characters, Appearances ],
+   models: [ 
+      Accounts, Bans, Characters, Appearances, 
+   ],
    logging: false
 });
 

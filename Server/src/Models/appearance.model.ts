@@ -73,9 +73,3 @@ export default class Appearances extends Model {
       }
    };
 }
-
-(async () => {
-   await Appearances.sync();
-})();
-
-

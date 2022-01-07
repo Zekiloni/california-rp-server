@@ -1,6 +1,6 @@
 
 
-import { Global_Dimension, NotifyType } from '../enums';
+import { EntityData, Global_Dimension, NotifyType } from '../enums';
 import { Messages } from '../constants';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
 import { Config } from '../config';
@@ -159,106 +159,113 @@ export default class Characters extends Model {
    @UpdatedAt
    Updated_At: Date;
 
-   async Spawn (Player: PlayerMp) { 
+   async Spawn (player: PlayerMp) { 
 
-      try { 
-         console.log('Spawn', 0.5);
 
-         Player.Account.Last_Character = this.id;
+      player.Account.Last_Character = this.id;
+      player.Character = this;
 
-         console.log('Spawn', 0);
-         Player.Character = this;
-         Player.name = this.Name;
-         Player.setVariable('Spawned', true);
+      player.name = this.Name;
+
+      player.position = Config.Default.Spawn;
+
+      player.setVariable(EntityData.SPAWNED, true);
+
+      // loading money and health
+      this.setHealth(player, this.Health);
+      this.setMoney(player, this.Money);
+
+      player.setVariable(EntityData.JOB, this.Job);
+      player.setVariable(EntityData.FACTION, this.Faction);
+
+      // temporary variables
+      player.setVariable(EntityData.FACTION_DUTY, false);
+      player.setVariable(EntityData.JOB_DUTY, false);
+      player.setVariable(EntityData.JOB_VEHICLE, null);
+      player.setVariable('Working_Uniform', false);
+      player.setVariable(EntityData.ADMIN_DUTY, false);
+      player.setVariable('Attachment', null);
+      player.setVariable('Phone_Ringing', false);
+      player.setVariable(EntityData.FREEZED, false);
+      player.setVariable('Ragdoll', false);
+
+
+      player.Notification(Messages.WELCOME, NotifyType.INFO, 4);
+
+
+      this.setWalkingStyle(player, this.Walking_Style);
+      this.setMood(player, this.Mood);
+      this.setCuffs(player, this.Cuffed);
    
-         // Loading money & health
-         this.SetHealth(Player, this.Health);
-         this.SetMoney(Player, this.Money);
    
-         Player.setVariable('Job', this.Job);
-         console.log('Spawn', 1);
-
-         // Temporary Variables
-         Player.setVariable('Duty', false);
-         Player.setVariable('Job_Duty', false);
-         Player.setVariable('Job_Vehicle', null);
-         Player.setVariable('Working_Uniform', false);
-         Player.setVariable('Admin_Duty', false);
-         Player.setVariable('Attachment', null);
-         Player.setVariable('Phone_Ringing', false);
-         Player.setVariable('Freezed', false);
-         Player.setVariable('Ragdoll', false);
-
-         console.log('Spawn', 2);
-
-         // this.SetWalkingStyle(player, this.Walking_Style);
-         // this.SetMood(player, this.Mood);
-         // this.Cuff(player, this.Cuffed);
-   
-   
-         Player.setVariable('Injuries', this.Injuries);
-         Player.RespawnTimer = null;
-         Player.setVariable('Wounded', this.Wounded);
-         if (this.Wounded) { 
-            // ciba na pod...
-         }
+      //    Player.setVariable('Injuries', this.Injuries);
+      //    Player.RespawnTimer = null;
+      //    Player.setVariable('Wounded', this.Wounded);
+      //    if (this.Wounded) { 
+      //       // ciba na pod...
+      //    }
          
-         Player.setVariable('Bubble', null);
-         Player.setVariable('Seatbelt', false);
+      //    Player.setVariable('Bubble', null);
+      //    Player.setVariable('Seatbelt', false);
    
-         Player.Notification(Messages.WELCOME, NotifyType.INFO, 4);
    
-         // Applying appearance & clothing
-         // const Appearance = await Appearances.findOne({ where: { Character: this.id } });
-         // if (Appearance) Appearance.Apply(Player, this.Gender);
+      //    // Applying appearance & clothing
+      //    // const Appearance = await Appearances.findOne({ where: { Character: this.id } });
+      //    // if (Appearance) Appearance.Apply(Player, this.Gender);
    
-         // frp.Items.Equipment(Player, this.Gender);
-                  console.log('Spawn', 3);
+      //    // frp.Items.Equipment(Player, this.Gender);
+      //             console.log('Spawn', 3);
 
-         // spawning player on desired point
-         switch (this.Spawn_Point) {
-            case 0: {
-               console.log('Spawn', 4);
-               Player.position = Config.Default.Spawn;
-               Player.heading = Config.Default.Heading;
-               Player.dimension = Global_Dimension;
-               break;
-            }
-            case 1: {
-                  Player.position = this.Last_Position;
-                  Player.dimension = Global_Dimension;
-               break;
-            }
-            case 2: {
-               break;
-            }
-         }
+      //    // spawning player on desired point
+      //    switch (this.Spawn_Point) {
+      //       case 0: {
+      //          console.log('Spawn', 4);
+      //          Player.position = Config.Default.Spawn;
+      //          Player.heading = Config.Default.Heading;
+      //          Player.dimension = Global_Dimension;
+      //          break;
+      //       }
+      //       case 1: {
+      //             Player.position = this.Last_Position;
+      //             Player.dimension = Global_Dimension;
+      //          break;
+      //       }
+      //       case 2: {
+      //          break;
+      //       }
+      //    }
    
-      } catch (e) { 
-         console.log(e)
-      }
+      // } catch (e) { 
+      //    console.log(e)
+      // }
 
    }
 
-   SetHealth (Player: PlayerMp, value: number) { 
-      Player.health = value;
+   setHealth (player: PlayerMp, value: number) { 
+      player.health = value;
       this.Health = value;
    }
 
-   SetMoney (Player: PlayerMp, value: number) { 
-      Player.setVariable('Money', value);
+   setMoney (player: PlayerMp, value: number) { 
+      player.setVariable(EntityData.MONEY, value);
       this.Money = value;
    }
 
-   async SetJob(Value: number) {
-      this.Job = Value;
+   async setJob (value: number) {
+      this.Job = value;
       await this.save();
    }
 
-   async GiveMoney (Player: PlayerMp, value: number) {
+   async setWalkingStyle (player: PlayerMp, Style) {
+      this.Walking_Style = Style;
+      player.setVariable('Walking_Style', Style);
+      await this.save();
+   };
+
+   async giveMoney (Player: PlayerMp, value: number) {
       let Money = await this.increment('Money', { by: value });
       if (Money) {
-         Player.setVariable('Money', this.Money + value);
+         Player.setVariable(EntityData.MONEY, this.Money + value);
       }
    };
    
@@ -415,11 +422,7 @@ export default class Characters extends Model {
 // };
 
 
-// frp.Characters.prototype.SetWalkingStyle = async function (Player, Style) {
-//    this.Walking_Style = Style;
-//    Player.setVariable('Walking_Style', Style);
-//    await this.save();
-// };
+
 
 
 // frp.Characters.prototype.Cuff = function (player, toggle) { 
@@ -665,23 +668,23 @@ export default class Characters extends Model {
 
 
 
-// mp.Player.prototype.ProximityMessage = function (radius, message, colors) {
-//    mp.players.forEachInRange(this.position, radius, (target) => {
-//       const distanceGap = radius / 5;
-//       const distance = target.dist(this.position)
-//       let color = null;
+mp.Player.prototype.sendProximityMessage = function (radius: number, message: string, colors: string[]) {
+   mp.players.forEachInRange(this.position, radius, (target) => {
+      const distanceGap = radius / 5;
+      const distance = target.dist(this.position)
+      let color = null;
 
-//       switch (true) {
-//          case (distance < distanceGap): color = colors[0]; break;
-//          case (distance < distanceGap * 2): color = colors[1]; break;
-//          case (distance < distanceGap * 3): color = colors[2]; break;
-//          case (distance < distanceGap * 4): color = colors[3]; break;
-//          default: color = colors[0]; break;
-//       }
+      switch (true) {
+         case (distance < distanceGap): color = colors[0]; break;
+         case (distance < distanceGap * 2): color = colors[1]; break;
+         case (distance < distanceGap * 3): color = colors[2]; break;
+         case (distance < distanceGap * 4): color = colors[3]; break;
+         default: color = colors[0]; break;
+      }
       
-//       target.outputChatBox('!{' + color + '}' + message);
-//    });
-// };
+      target.outputChatBox('!{' + color + '}' + message);
+   });
+};
 
 
 // mp.Player.prototype.VehicleMessage = function (message, colors) {

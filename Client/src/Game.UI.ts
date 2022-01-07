@@ -30,9 +30,9 @@ class GAME_UI {
       mp.events.add('render', this.GTA_HUD);
    }
 
-   Toggle () { 
+   Toggle (i: UI_Status) { 
       this.Status ++;
-      if (this.Status > UI_Status.Fully_Hidden) this.Status = 0;
+      if (this.Status > UI_Status.Fully_Hidden) this.Status = UI_Status.Full_Visible;
 
       switch (true) { 
          case this.Status == UI_Status.Full_Visible: {

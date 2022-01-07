@@ -9,7 +9,7 @@
             <p v-html="Messages.NEED_TO_LOGIN">  </p>
 
             <div class="form">
-               <div class="input-container username"> <input type="text" :placeholder="Messages.USERNAME" v-model="Inputs.Username" spellcheck="false" ref="Username"> </div>
+               <div class="input-container username"> <input type="text" :placeholder="Messages.USERNAME" v-model="Inputs.Username" spellcheck="false" ref="usernameInput"> </div>
                <div class="input-container password">  <input type="password" :placeholder="Messages.USERPASSWORD" v-model="Inputs.Password" spellcheck="false"> </div>
             </div>
 
@@ -36,7 +36,7 @@
             <div class="characters">
                <div class="character-slot" v-for="i in Max_Characters" :key="i" @mouseenter="hover"> 
                   <div class="character" v-if="Account.Characters[i]" >
-                     <h2 v-on:click="Play(Account.Characters[i])"> IGRAJ </h2>
+                     <h2 v-on:click="Play(Account.Characters[i].id)"> IGRAJ </h2>
                   </div>
                   <div v-else class="character-create" v-on:click="Create(i)"> 
                      <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
@@ -102,7 +102,6 @@
                if (Response) {
                   this.Account = JSON.parse(Response);
                   this.Logged = true;
-                  console.log(this.Info)
                }
             }
          },
@@ -117,7 +116,7 @@
          },
 
          Create: function (i) { 
-            if (i == 2 && this.Info.Account.Donator == 0) return mp.trigger('CLIENT::NOTIFICATION', this.Messages.NOT_DONATOR, Notification.Error, 5);
+            if (i == 2 && this.Account.Donator == 0) return mp.trigger('CLIENT::NOTIFICATION', this.Messages.NOT_DONATOR, Notification.Error, 5);
             mp.trigger('CLIENT::CREATOR:START');
          }
 
@@ -126,7 +125,7 @@
       mounted () { 
          mp.invoke('focus', true);
 
-         //this.$refs.Username.focus();
+         this.$refs.usernameInput.focus();
       },
 
       beforeDestroy () { 
@@ -142,7 +141,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      background: rgb(15 16 24 / 40%);
+      background: radial-gradient(ellipse at center top, rgb(76 49 142 / 45%) 0%, rgb(32 20 63 / 30%) 62%, rgb(0 0 0 / 55%) 100%);
       width: 100%;
       height: 100%;      
       display: grid;

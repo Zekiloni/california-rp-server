@@ -1,5 +1,6 @@
-import { Config } from '../config';
 
+
+import { Config } from './config';
 
 
 const interval = 60 * 1000;

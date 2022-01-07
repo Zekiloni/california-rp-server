@@ -4,10 +4,9 @@
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
-import { Distances, NotifyType } from '../enums';
+import { Distances, EntityData, NotifyType } from '../enums';
 import { Messages, Colors } from '../constants';
 import { Config } from '../config';
-
 
 mp.events.add(
    {
@@ -17,42 +16,60 @@ mp.events.add(
       },
 
       'SERVER::CHARACTER:PLAY': async (Player: PlayerMp, characterId: number) => {
+         console.log('characterid', characterId)
          const Selected = await Characters.findOne({ where: { id: characterId } });
-         Selected?.Spawn(Player);
+         console.log('spawn', 1);
+         try {
+            Selected?.Spawn(Player);
+
+         }catch (e) {
+            console.log(e)
+         }
+         console.log('spawn', 2);
       },
 
-      'playerChat': async (Player, Content) => {
-         if (Player.data.logged && Player.data.spawned) {
-   
-            if (Player.getVariable('Muted')) return;
-   
-            const Character = await Player.Character();
-   
-            const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
-   
-            if (Player.vehicle) { 
-   
-               const vClass = await Player.callProc('client:player.vehicle:class');
-               if (vClass == 14 || vClass == 13 || vClass == 8) { 
-                  Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
-               } else { 
-   
-                  const Seat = Player.seat;
-                  let Windows = Player.vehicle.getVariable('Windows');
-   
-                  if (Windows[Seat]) { 
-                     Player.ProximityMessage(Distances.VEHICLE, Name + Messages.PERSON_SAYS + Content, Colors.White);
-   
-                  } else { 
-                     Player.VehicleMessage(Name + Messages.PERSON_SAYS_IN_VEHICLE + Content, Colors.Vehicle);
-                  }
-               }
-   
-            } else { 
-               Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
-            }
-   
+      'playerChat': async (player: PlayerMp, Content) => {
+         if (player.getVariable(EntityData.LOGGED) && player.getVariable(EntityData.SPAWNED)) {
+
+            if (player.getVariable(EntityData.MUTED)) return; // u are muted
+
+
+            const character = player.Character;
+
+            console.log(character)
+            
+            player.sendProximityMessage(Distances.IC, character.Name + Messages.PERSON_SAYS + Content, Colors.White);
          }
+   
+         //    if (Player.getVariable('Muted')) return;
+   
+         //    const Character = await Player.Character();
+   
+         //    const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
+   
+         //    if (Player.vehicle) { 
+   
+         //       const vClass = await Player.callProc('client:player.vehicle:class');
+         //       if (vClass == 14 || vClass == 13 || vClass == 8) { 
+         //          Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
+         //       } else { 
+   
+         //          const Seat = Player.seat;
+         //          let Windows = Player.vehicle.getVariable('Windows');
+   
+         //          if (Windows[Seat]) { 
+         //             Player.ProximityMessage(Distances.VEHICLE, Name + Messages.PERSON_SAYS + Content, Colors.White);
+   
+         //          } else { 
+         //             Player.VehicleMessage(Name + Messages.PERSON_SAYS_IN_VEHICLE + Content, Colors.Vehicle);
+         //          }
+         //       }
+   
+         //    } else { 
+         //       Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
+         //    }
+   
+         // }
       }
    }
 );

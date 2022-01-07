@@ -1,8 +1,8 @@
 
 
 
-import { Colors, Ranks } from '@Shared/constants';
-import { EntityData } from '@Shared/enums';
+import { Colors, Ranks } from '../constants';
+import { EntityData } from '../enums';
 
 
 interface Report {

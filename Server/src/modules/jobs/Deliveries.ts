@@ -1,69 +1,69 @@
-'use strict';
+// 'use strict';
 
-import { Items } from "../../models/items/Items";
-import Business from "../../models/Business";
+// import { Items } from "../../models/items/Items";
+// import Business from "../../models/Business";
 
-export class Deliveries { 
+// export class Deliveries { 
 
-   Business: Business;
-   Items: Items[];
-   Character: string;
-   Contact: string;
-   Status: Deliveries.DeliveryStatus
-
-
-   static Delivery: Deliveries[] = [];
-
-   static Warehouses: any = {
-
-   };
-
-   constructor (Business: Business, PersonName: string, Contact: string, Items: Items[]) { 
-      this.Business = Business;
-      this.Items = Items;
-      this.Character = PersonName;
-      this.Contact = Contact;
-      this.Status = Deliveries.DeliveryStatus.Ordered;
-
-      Deliveries.Delivery.push(this);
-   }
+//    Business: Business;
+//    Items: Items[];
+//    Character: string;
+//    Contact: string;
+//    Status: Deliveries.DeliveryStatus
 
 
-   static Init () { 
-      for (const i in Deliveries.Warehouses) { 
-         const Warehouse = Deliveries.Warehouses[i];
+//    static Delivery: Deliveries[] = [];
 
-         //console.log(Warehouse);
-      }
-   };
+//    static Warehouses: any = {
+
+//    };
+
+//    constructor (Business: Business, PersonName: string, Contact: string, Items: Items[]) { 
+//       this.Business = Business;
+//       this.Items = Items;
+//       this.Character = PersonName;
+//       this.Contact = Contact;
+//       this.Status = Deliveries.DeliveryStatus.Ordered;
+
+//       Deliveries.Delivery.push(this);
+//    }
 
 
-   New () { 
+//    static Init () { 
+//       for (const i in Deliveries.Warehouses) { 
+//          const Warehouse = Deliveries.Warehouses[i];
 
-   }
+//          //console.log(Warehouse);
+//       }
+//    };
 
-   static Delete (orderId: number) {
-      delete Deliveries.Delivery[orderId];
-   }
 
-};
+//    New () { 
 
-export namespace Deliveries {
-   export enum DeliveryStatus { 
-      Ordered,
-      Accepted,
-      Delivered,
-   }
-}
+//    }
 
-/*
-frp.Deliveries.prototype.Deliver = function (player, place) { 
-   if (place instanceof frp.Business) { 
+//    static Delete (orderId: number) {
+//       delete Deliveries.Delivery[orderId];
+//    }
+
+// };
+
+// export namespace Deliveries {
+//    export enum DeliveryStatus { 
+//       Ordered,
+//       Accepted,
+//       Delivered,
+//    }
+// }
+
+// /*
+// frp.Deliveries.prototype.Deliver = function (player, place) { 
+//    if (place instanceof frp.Business) { 
       
-   }
-}*/
+//    }
+// }*/
 
-(async () => {
-   Deliveries.Init();
-})();
+// (async () => {
+//    Deliveries.Init();
+// })();
  

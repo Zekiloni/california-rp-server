@@ -1,9 +1,7 @@
 
-
-
 <template>
    
-   <div class="chat">
+   <div class="chat" v-if="Settings.Active">
       <ul class="messages" ref="Entries" id="messages">
          <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="i">
             <b class="timestamp" v-if="Settings.Timestamp" v-html="DateTime(message.timestamp)"> </b>
@@ -37,30 +35,24 @@
    export default { 
       data () { 
          return { 
-            Active: true,
 
-            Typing: false,
-            Input: '',
-
-            Inactive: false,
-            
             Settings: { 
-               Fontsize: 17.5,
-               Fonweight: 700,
+               Active: true,
+               Fontsize: 15.5,
+               Fonweight: 350,
                Width: 300,
                Height: 200,
                Timestamp: false,
             },
 
+            Typing: false,
+            Input: '',
+
+            Inactive: false,
+
             Current: -1,
-
-            History: [
-
-            ],
-           
-            Messages: [
-
-            ]
+            History: [],
+            Messages: []
          }
       },
 
@@ -72,20 +64,24 @@
 
       methods: { 
          Activate: function (toggle) { 
-            if (this.Typing) this.Typing = false, this.Input = '';
-            this.Active = toggle;
+            if (toggle == false && this.Typing) this.Typing = false, this.Input = '';
+            this.Settings.Active = toggle;
+         },
+
+         Show: function (toggle) {
+            this.Settings.Active = toggle;
          },
 
          Toggle: function (toggle) { 
             this.Typing = toggle;
             mp.invoke('focus', toggle);
+            mp.invoke('setTypingInChatState', toggle);
+
             if (toggle) { 
-               mp.invoke('setTypingInChatState', true);
                this.Inactive = false;
-               this.$nextTick(function() { this.$refs.chatInput.focus(); }).bind(this);
+               this.$nextTick(() => { this.$refs.chatInput.focus(); });
             } else { 
-               mp.invoke('setTypingInChatState', false);
-               this.$refs.InputChat.blur();
+               this.$refs.chatInput.blur();
                this.Input = '';
             }
          },
@@ -121,10 +117,7 @@
                } else if (content.includes('timestamp')) { 
                   this.Settings.Timestamp = !this.Settings.Timestamp;
                } else {
-                  console.log(0)
                   mp.invoke('chatMessage', content);
-                  console.log(0, 9)
-
                }
 
                this.Current = -1
@@ -153,23 +146,24 @@
             this.Messages.push(message);
          },
       },
-
+   
       mounted () {
 
          this.Push('Midnight Roleplay - www.mn-rp.com');
-         this.Check();
 
-         const events = {
+	      let events = {
             'chat:push': this.Push, 'chat:clear': this.Clear,
-            'chat:activate': this.Activate, 'chat:show': this.Activate
-         }
-
+            'chat:activate': this.Activate, 'chat:show': this.Show
+         }; 
+   
          for (let i in events) {
             mp.events.add(i, events[i]);
          }
 
-         document.addEventListener("keydown", event => {
-            if (event.keyCode === 84 && this.Active && this.Input == '') {
+         this.Check();
+
+         document.addEventListener('keydown', event => {
+            if (event.keyCode === 84 && this.Settings.Active && this.Input == '') {
                this.Toggle(true);
                event.preventDefault();
             }

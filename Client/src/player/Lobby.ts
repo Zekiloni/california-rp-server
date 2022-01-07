@@ -13,8 +13,10 @@ mp.events.add(
 
       'CLIENT::AUTHORIZATION:PLAY': (Character: number) => { 
          Lobby(false);
+         setTimeout(() => {
+            mp.gui.chat.show(true);
+         }, 3000);
          mp.events.callRemote('SERVER::CHARACTER:PLAY', Character);
-         Browser.call('BROWSER::SHOW', 'Chat');
       }
    }
 );
@@ -47,8 +49,6 @@ export function Lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp
       mp.game.graphics.transitionToBlurred(1000)
    } else { 
       Browser.call('BROWSER::HIDE', 'Lobby');
-      mp.gui.chat.activate(true);
-      mp.gui.chat.show(true);
       if (Camera) Camera.destroy();
       Player.freezePosition(false);
       mp.game.cam.renderScriptCams(false, false, 0, false, false);

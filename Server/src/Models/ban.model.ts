@@ -98,7 +98,3 @@ export default class Bans extends Model {
    };
 }
 
-
-(async () => {
-   Bans.sync();
-})();

@@ -1,14 +1,14 @@
 
-import './Server/Database';
+import './database';
+import './main';
 import './modules/main';
 import './modules/player';
-import './Player/Account';
 import Accounts from './models/account.model';
 import Characters from './models/character.model';
 import './modules/commands';
 import { Logger, Sleep } from './utils';
 import { LogType } from './enums';
-import { Messages } from '@/src/messages';
+import { Messages } from './constants';
 
 
 //console.log(Items.List);

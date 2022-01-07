@@ -1,5 +1,5 @@
 
-import { itemNames } from '@Shared/enums';
+import { itemNames } from '../../enums';
 import Items from '../inventory.item.model';
 import { Item } from '../item.model';
 

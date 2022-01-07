@@ -25,16 +25,6 @@ export const Ranks:string[] = [
    'Community Owner'
 ];
 
-export enum AdminLevels {
-   NONE = 0,
-   HELPER = 1,
-   JUNIOR_ADMIN = 2,
-   ADMIN = 3,
-   SENIOR_ADMIN = 4,
-   GENERAL_ADMIN = 5,
-   LEAD_ADMIN = 6,
-   COMMUNITY_OWNER = 7 
-}
 
 export const Colors = {
    White: ['F8F8F8', 'DEDEDE', 'BDBDBD', 'A3A2A2', '909090'],

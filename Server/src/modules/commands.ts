@@ -9,53 +9,61 @@ type Commands = {
 };
 
 
+type factionTypeCommand = {
+   Type?: number,
+   id?: number
+}
+
 type Command = {
    Desc: string;
-   Params?: string[];
-   Faction?: number;
+   Params?: any[];
+   Faction?: factionTypeCommand;
    Item?: any;
    Vehicle?: VehicleMp;
    Job?: number;
    Position?: Vector3Mp;
    Admin?: number;
    Leader?: boolean;
-   Call(Player: PlayerMp, Args: string[]): void;
+   Call(Player: PlayerMp, ...params: any): void;
 };
 
 
-mp.events.add('playerCommand', async (player: PlayerMp, command: string) => {
-  
+mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
+
    if (!player.getVariable(EntityData.LOGGED)) return;
 
-   const params = command.split(/ +/);
-   const commandName = params.splice(0, 1)[0];
-   const fCommand = Commands[commandName];
-
+   const params = content.split(/ +/);
    
-   if (fCommand) {
-      player.outputChatBox('Cmd true');
-      // const Account = Player.Account;
-      // const Character = Player.Character;
+   const commandName = params.splice(0, 1)[0];
+   const Command = Commands[commandName];
 
-      // if (cmd.admin && Account.Administrator < cmd.admin) return Player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
+   if (Command) {
+      const Account = player.Account;
+      const Character = player.Character;
 
-      // if (cmd.job && Character.Job != cmd.job) return Player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
+      if (Command.Admin && Account.Administrator < Command.Admin) return player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
 
-      // if (cmd.position && Player.dist(cmd.position) > 1.85) return Player.Notification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
+      if (Command.Job && Character.Job != Command.Job) return player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
 
-      // if (cmd.faction) {
-      //    //if (cmd.faction.type && cmd.faction.type != frp.Factions[Character.Faction].type) return;
-      //    if (cmd.faction.id && cmd.faction.id != Character.Faction) return;
-      // }
+      if (Command.Position && player.dist(Command.Position) > 1.85) return player.Notification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
 
-      // if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, NotifyType.ERROR, 5);
+      if (Command.Faction) {
+         //if (Command.Faction.Type && Command.Faction.Type != Factions[Character.Faction].type) return;
+         if (Command.Faction.id && Command.Faction.id != Character.Faction) return;
+      }
+
+      //if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, NotifyType.ERROR, 5);
 
       // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', NotifyType.ERROR, 4);
 
-      if (fCommand.Params && fCommand.Params.length > params.length) return player.SendMessage('Komanda: /' + commandName + ' [' + fCommand.Params.join('] [') + '] ', Colors.Help);
+      if (Command.Params && Command.Params.length > params.length) return player.SendMessage('Komanda: /' + commandName + ' [' + Command.Params.join('] [') + '] ', Colors.Help);
 
-      fCommand.Call(player, params);
+      Command.Call(player, ...params);
    } else {
       player.Notification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
    }
 });
+
+
+import './commands/message.commands';
+import './commands/admin.commands';
