@@ -59,8 +59,6 @@ export function RemoveClothing (Entity: PlayerMp) {
          break;
       }
    }
-
-
 };
 
 export function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 

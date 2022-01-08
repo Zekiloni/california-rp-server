@@ -1,9 +1,8 @@
 <template>
 
    <div id="app">
-      <transition name="bounce">
-         <Lobby v-if="interfaces.Lobby" />
-      </transition>      
+      <Lobby v-if="interfaces.Lobby" />
+
       <Creator v-if="interfaces.Creator" />
 
       <GameInterface v-if="interfaces.GameInterface" />
@@ -22,6 +21,9 @@
       <!-- [BUSINESSES] -->
       <Market v-if="interfaces.Market" />
 
+      <!-- <transition name="bounce">
+         <Lobby v-if="interfaces.Lobby" />
+      </transition>      -->
 
          <!-- FOCUS ROLEPLAY BUTTON LOL 
          <button class="frp-1"> Test </button>
@@ -40,15 +42,15 @@
    import './assets/styles/main.css';
    import './assets/styles/font-awesome.css';
 
-   import Lobby from './components/Lobby.vue';
+   import Lobby from '@/components/lobby.vue';
    import Creator from './components/Creator.vue';
    import Notifications from './components/Notifications.vue';
    import GameInterface from './components/Game.Interface.vue';
    import Chat from './components/Chat';
-   import Inventory from './components/Inventory/Inventory.vue';
+   import Inventory from './components/items/Inventory.vue';
    import Banking from './components/Banking.vue';
-   import JobOffer from './components/Jobs/Job_Offer.vue';
-   import Market from './components/Business/Market.vue';
+   import JobOffer from './components/jobs/Job_Offer.vue';
+   import Market from './components/business/Market.vue';
 
    export default { 
 
@@ -64,15 +66,15 @@
       },
 
       mounted () { 
-         mp.events.add('BROWSER::SHOW', data => { 
-            this.show(data);
-         });
+         if (window.mp) { 
+            mp.events.add('BROWSER::SHOW', data => { 
+               this.show(data);
+            });
 
-         mp.events.add('BROWSER::HIDE', data => { 
-            this.hide(data);
-         }); 
-
-         // this.show('Authorization');
+            mp.events.add('BROWSER::HIDE', data => { 
+               this.hide(data);
+            }); 
+         }
       },
 
       methods: {
@@ -92,6 +94,3 @@
 
 </script>
 
-<style>
-
-</style>

@@ -1,5 +1,5 @@
-import { Colors, Messages } from '../../constants';
-import { Distances, NotifyType } from '../../enums';
+import { Colors, Messages } from '../../globals/constants';
+import { Distances, NotifyType } from '../../globals/enums';
 import { Commands } from '../commands';
 
 
@@ -72,17 +72,17 @@ Commands['w'] = {
    Desc: 'Sapnuti nekome nesto',
    Params: ['igrac', 'tekst'],
    Call:(Player: PlayerMp, args: any) => {
-         const Target = mp.players.find(args[0]);
+         // const Target = mp.players.find(args[0]);
 
-         if (Target) { 
-            if (Player.id == Target.id) return;
-            const Message = args.splice(1).join(' ');
-            if (!Message.trim()) return;
-            if (Player.dist(Target.position) > Distances.WHISPER) return Player.Notification(Messages.PLAYER_NOT_NEAR, NotifyType.ERROR, 5);
+         // if (Target) { 
+         //    if (Player.id == Target.id) return;
+         //    const Message = args.splice(1).join(' ');
+         //    if (!Message.trim()) return;
+         //    if (Player.dist(Target.position) > Distances.WHISPER) return Player.Notification(Messages.PLAYER_NOT_NEAR, NotifyType.ERROR, 5);
 
-            Target.SendMessage(Player.name + ' vam šapuće: ' + Message + '.', Colors.White[3]);
-            Player.SendMessage('Šapnuli ste ' + Target.name + ': ' + Message + '.', Colors.White[3]);
-         }
+         //    Target.SendMessage(Player.name + ' vam šapuće: ' + Message + '.', Colors.White[3]);
+         //    Player.SendMessage('Šapnuli ste ' + Target.name + ': ' + Message + '.', Colors.White[3]);
+         // }
    }
 }
 
@@ -90,14 +90,14 @@ Commands['pm'] = {
    Desc: 'Privatna poruka',
    Params: ['igrac', 'tekst'],
    Call:(Player: PlayerMp, args: any) => {
-      const Target = mp.players.find(args[0]);
-      if (Target) { 
-         if (Player.id == Target.id) return;
-         let Message = args.splice(1).join(' ');
-         if (!Message.trim()) return;
-         Target.SendMessage('(( PM od ' + Player.name + ' [' + Player.id + ']: ' + Message + ' ))', Colors.PM.From);
-         Player.SendMessage('(( PM za ' + Target.name + ' [' + Target.id + ']: ' + Message + ' ))', Colors.PM.To);
-      }
+      // const Target = mp.players.find(args[0]);
+      // if (Target) { 
+      //    if (Player.id == Target.id) return;
+      //    let Message = args.splice(1).join(' ');
+      //    if (!Message.trim()) return;
+      //    Target.SendMessage('(( PM od ' + Player.name + ' [' + Player.id + ']: ' + Message + ' ))', Colors.PM.From);
+      //    Player.SendMessage('(( PM za ' + Target.name + ' [' + Target.id + ']: ' + Message + ' ))', Colors.PM.To);
+      // }
    }
 }
 

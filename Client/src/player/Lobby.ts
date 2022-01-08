@@ -4,6 +4,8 @@ import { gameInterface, UI_Status } from '../Game.UI';
 
 const Player = mp.players.local;
 
+let Camera: CameraMp;
+
 
 mp.events.add(
    {
@@ -12,10 +14,10 @@ mp.events.add(
          Lobby(true, Info.Position, Info.LookAt, Info.Time);
       },
 
-      'CLIENT::AUTHORIZATION:PLAY': (Character: number) => { 
+      'CLIENT::AUTHORIZATION:PLAY': (character: number) => { 
          Lobby(false);
-         mp.gui.chat.show(true);
-         mp.events.callRemote('SERVER::CHARACTER:PLAY', Character);
+         Browser.call('BROWSER::SHOW', 'Chat');
+         mp.events.callRemote('SERVER::CHARACTER:PLAY', character);
          gameInterface.Toggle(UI_Status.Full_Visible);
       }
    }
@@ -24,15 +26,17 @@ mp.events.add(
 
 mp.events.addProc(
    {
-      'CLIENT:AUTHORIZATION:SEND_CREDENTIALS': async (Username: string, Password: string) => { 
-         const Response = await mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', Username, Password);
-         return JSON.stringify(Response);
+      'CLIENT::AUTHORIZATION:SEND': async (username: string, password: string) => { 
+         const accountInfo = await mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', username, password);
+         return JSON.stringify(accountInfo);
+      },
+
+      'CLIENT::CHARACTER:SPAWNS': async (id: number) => { 
+         const spawnPoints = await mp.events.callRemoteProc('SERVER::CHARACTER:SPAWNS', id);
+         return JSON.stringify(spawnPoints);
       }
    }
 );
-
-
-let Camera: CameraMp;
 
 
 export function Lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp, Time?: number) { 

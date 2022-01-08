@@ -21,8 +21,8 @@
                @keyup.esc="Close"
                @keydown.enter="Send"
                @blur="Close"
-               @keyup.up="GoHistory(1)"
-               @keyup.down="GoHistory(0)"
+               @keyup.up="shiftHistory(1)"
+               @keyup.down="shiftHistory(0)"
             >
             <div class="currentLength"> {{ Input.length + ' / 200'}} </div>
          </div>
@@ -37,7 +37,7 @@
          return { 
 
             Settings: { 
-               Active: false,
+               Active: true,
                Fontsize: 15.5,
                Fonweight: 350,
                Width: 300,
@@ -124,6 +124,34 @@
             }
          },
 
+         shiftHistory: function (d) {
+            if (this.History.length == 0) return;
+
+            let Message = null;
+
+            switch (d) {
+               case 0: {
+                  if (this.Current == -1) return;
+                  this.Current --;
+                  if (this.History[this.Current]) { 
+                     Message = this.History[this.Current];
+                  } else { 
+                     Message = '';
+                  }
+                  break;
+               }
+
+               case 1: { 
+                  if (this.Current == this.History.length -1) return;
+                  this.Current ++;
+                  Message = this.History[this.Current];
+                  break;
+               }
+            }
+
+            this.Input = Message;
+         },
+
          Close: function () { 
             if (this.Active && this.Typing) { 
                this.Toggle(false);     
@@ -165,6 +193,7 @@
          document.addEventListener('keydown', event => {
             if (event.keyCode === 84 && this.Settings.Active && !this.Typing) {
                this.Toggle(true);
+               event.preventDefault();
             }
          });
 

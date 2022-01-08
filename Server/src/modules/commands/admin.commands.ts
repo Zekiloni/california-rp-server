@@ -1,5 +1,5 @@
-import { Colors } from '../../constants';
-import { adminLevel } from '../../enums';
+import { Colors } from '../../globals/constants';
+import { adminLevel } from '../../globals/enums';
 import { Admin } from '../admin';
 import { Commands } from '../commands';
 

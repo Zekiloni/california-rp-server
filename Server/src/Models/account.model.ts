@@ -3,8 +3,8 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
 import Characters from './character.model';
-import { EntityData } from '../enums';
-import { Messages } from '../constants';
+import { EntityData } from '../globals/enums';
+import { Messages } from '../globals/constants';
 
 const Salt = bcrypt.genSaltSync(10);
 

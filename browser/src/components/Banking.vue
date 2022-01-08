@@ -76,8 +76,8 @@
 
 <script>
 
-   import { Messages } from '@/Globals';
-   import Helpers from '@/Helpers';
+   import { Messages } from '@/globals';
+   import Helpers from '@/helpers';
 
    export default { 
       data () { 

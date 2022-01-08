@@ -1,14 +1,13 @@
-import { Browser } from "../../Browser";
+import { Browser } from '../../Browser';
 import { Controls } from "../../Utils";
-
-//const { Controls } = require("../../Utils");
-
 
 
 const Player = mp.players.local;
 
-let nearbyPlayers = [],
-    Active = false;
+let Active: boolean = false;
+
+let nearbyPlayers = [];
+
 
 const Keys: any = {
    0: 0x31, 1: 0x32, 2: 0x33, 3:0x34, 666: 0x09
@@ -20,9 +19,13 @@ const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
 
 mp.events.add({
 
-   'client:inventory.toggle': async () => { 
+   'CLIENT::INVENTORY:TOGGLE': async () => { 
       Active = !Active; 
-      Browser.call('BROWSER::INVENTORY');
+      Browser.call(Active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'Inventory');
+      if (Active) {
+         const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
+         Browser.call('BROWSER::INVENTORY:ITEMS', items);
+      }
    },
 
    'client:inventory.item:drop': Drop,
@@ -118,10 +121,12 @@ mp.events.add({
 });
 
 
+
 mp.keys.bind(Controls.KEY_I, false, function() {
-   if ( Player.Logged && Player.Logged ) { 
-      if ( Player.isTypingInTextChat || Player.getVariable('CUFFED') ) return;
-      mp.events.call('client:inventory.toggle');
+   if (Player.getVariable('LOGGED_IN') && Player.getVariable('SPAWNED')) { 
+      if (Player.isTypingInTextChat || Player.getVariable('CUFFED') ) return;
+      mp.console.logInfo('1')
+      mp.events.call('CLIENT::INVENTORY:TOGGLE');
    }
 });
 

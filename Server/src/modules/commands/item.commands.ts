@@ -1,5 +1,43 @@
 
-// let { ItemRegistry, ItemEntities, ItemType } = require('../');
+
+import { adminLevel, cmdDescs, cmdNames } from '../../globals/enums';
+import Items from '../../models/inventory.item.model';
+import { baseItem } from '../../models/item.model';
+import { Commands } from '../commands';
+
+
+Commands[cmdNames.items] = { 
+   Desc: cmdDescs.items,
+   Call: (player: PlayerMp) => { 
+      console.log(baseItem.List);
+   }
+}
+
+
+Commands[cmdNames.giveItem] ={
+   Desc: cmdDescs.giveItem,
+   Admin: adminLevel.SENIOR_ADMIN,
+   Call: (player: PlayerMp, targetSearch: any, itemName: string, quantity: number) => { 
+      if (baseItem.List[itemName]) {
+         const foundItem = baseItem.List[itemName];
+         const target = mp.players.find(targetSearch);
+         if (!target) return; // no target found
+         Items.giveItem(player, target, foundItem, quantity);
+
+      } else { 
+         // that item doesnt exist
+      }
+   }
+}
+
+
+Commands[cmdNames.clearInventory] = { 
+   Desc: cmdDescs.clearInventory,
+   Call: (player: PlayerMp, target: any) => { 
+      
+   }
+}
+
 
 // module.exports = {
 //    commands: [

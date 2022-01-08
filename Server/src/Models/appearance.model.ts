@@ -1,6 +1,7 @@
 
-import { Peds } from '../enums';
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, CreatedAt, UpdatedAt, AllowNull, DataType } from 'sequelize-typescript';
+import { Peds } from '../globals/enums';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import Characters from './character.model';
 
 @Table
 export default class Appearances extends Model {
@@ -9,10 +10,12 @@ export default class Appearances extends Model {
    @Column
    ID: number;
 
-   @Unique(true)
-   @AllowNull(false)
+   @ForeignKey(() => Characters)
    @Column
-   Character: number;
+   Character_id: number;
+
+   @BelongsTo(() => Characters)
+   Character: Characters
 
    @AllowNull(false)
    @Column(DataType.JSON)

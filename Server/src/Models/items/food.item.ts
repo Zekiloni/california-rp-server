@@ -1,23 +1,37 @@
-import { Item, noDesc } from '../item.model';
+import { itemData } from '../../globals/enums';
+import { baseItem } from '../item.model';
 
 
-export class FoodItem extends Item {
-   Hunger: number;
-   Snacks: number;
+const defaultFoodType = [itemData.Type.Food, itemData.Type.Consumable];
+
+export class foodItem extends baseItem {
+   hunger: number;
+   snacks: number;
    
-   constructor (name: string, type: Item.Type[], model: string, hunger: number, snacks: number, weight: number = 0.1, description: string = noDesc) { 
-      super (name, type, model, weight, description);
-      this.Hunger = hunger;
-      this.Snacks = snacks;
+   constructor (name: string, model: string, hunger: number, snacks: number, type?: itemData.Type[], weight?: number, description?: string) { 
+      super (name, type ? defaultFoodType.concat(type) : defaultFoodType, model, weight, description);
+      this.hunger = hunger;
+      this.snacks = snacks;
 
       // .... todo
 
-      this.Use = function (Player: PlayerMp) {
-         Player.Character.Hunger += this.Hunger;
+      this.use = function (player: PlayerMp) {
+         player.Character.Hunger += this.hunger;
       }
 
    }
 }
+
+new foodItem(itemData.Names.cheeseburgerItem, 'prop_cs_burger_01', 2, 3)
+new foodItem(itemData.Names.hamburgerItem, 'prop_cs_burger_01', 2, 3)
+new foodItem(itemData.Names.friesItem, 'prop_food_chips', 1, 2)
+new foodItem(itemData.Names.pizzaItem, 'prop_pizza_box_02', 3, 4)
+new foodItem(itemData.Names.chickenBurgerItem, 'prop_cs_burger_01', 3, 4)
+new foodItem(itemData.Names.chipsItem, 'v_ret_ml_chips4', 1, 2)
+new foodItem(itemData.Names.donutItem, 'prop_donut_02', 1, 2)
+new foodItem(itemData.Names.sandwichItem , 'prop_sandwich_01', 3, 4)
+new foodItem(itemData.Names.tacoItem, 'prop_taco_01', 2, 3)
+
 
 
 // /* Food */

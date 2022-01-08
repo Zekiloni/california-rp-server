@@ -112,7 +112,8 @@ export enum EntityData {
    WALKING_STYLE = 'WALKING_STYLE',
    FACIAL_MOOD = 'FACIAL_MOOD',
    CUFFED = 'CUFFED',
-   INJURIES = 'INJURIES'
+   INJURIES = 'INJURIES',
+   ITEM = 'ITEM'
 };
 
 export enum LogType {
@@ -131,12 +132,56 @@ export enum adminLevel {
    COMMUNITY_OWNER = 7 
 }
 
-export enum itemNames {
-   drivingLicense = 'Vozačka dozvola',
-   flyingLicense = 'Dozvola za letenje',
-   fishingLicense = 'Dozvola za pecanje',
-   huntingLicense = 'Dozvola za lov',
-   weaponLicense = 'Dozvola za oružije',
-   truckLicense = 'Dozvola za kamion',
-   boatingLicense = 'Dozvola za plovidbu'
-};
+export namespace itemData {
+
+   export enum Type {
+      Equipable, Consumable, Openable, 
+      Drink, Food, Alcohol, Drug, Weapon, 
+      Ammo, Ilegal, Legal, Misc, Clothing,
+      Prop, Heavy, Stackable, Usable, Storage, 
+      Seed, Document, License, Cookable
+   }
+
+   export enum Entity { 
+      Ground, Player, Storage,
+      Vehicle, tempVehicle, House,
+      Business
+   }
+
+   export enum Status { 
+      None, Equiped, Right_Hand, Left_Hand,
+   }
+
+   export enum Names { 
+      drivingLicense = 'Driving licence',
+      flyingLicense = 'License for Flying',
+      fishingLicense = 'Fishing permit',
+      huntingLicense = 'Hunting permit',
+      weaponLicense = 'Weapons license',
+      truckLicense = 'Truck license',
+      boatingLicense = 'Boat License',
+      cheeseburgerItem = 'Cheeseburger',
+      hamburgerItem = 'Hamburger',
+      friesItem = 'Fries',
+      pizzaItem = 'Pizza',
+      chickenBurgerItem = 'Chicken Burger',
+      chipsItem = 'Chips',
+      donutItem = 'Donut',
+      sandwichItem = 'Sandwich',
+      tacoItem = 'Taco'
+   }
+}
+
+
+
+export enum cmdNames  {
+   items = 'items',
+   giveItem = 'giveitem',
+   clearInventory = 'clearinventory'
+}
+
+export enum cmdDescs { 
+   items = 'Lista svih predmeta.',
+   giveItem = 'Davanje predmeta.',
+   clearInventory = 'Čišćenje predmeta osobe.'
+}

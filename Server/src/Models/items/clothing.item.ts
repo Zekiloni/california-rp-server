@@ -1,16 +1,17 @@
 
 
-import { Item, noDesc } from '../item.model';
+import { itemData } from '../../globals/enums';
+import { baseItem, noDesc } from '../item.model';
 
 
-export class ClothingItem extends Item {
+export class ClothingItem extends baseItem {
    Compontent: number;
    
-   constructor (name: string, Type: Item.Type[], model: string, component: number, weight: number = 0.1, desc: string = noDesc) { 
+   constructor (name: string, Type: itemData.Type[], model: string, component: number, weight: number = 0.1, desc: string = noDesc) { 
       super (name, Type, model, weight, desc);
       this.Compontent = component;
 
-      this.Use = function (player: PlayerMp, drawable: number, palette: number) {
+      this.use = function (player: PlayerMp, drawable: number, palette: number) {
          // .... todo
       };
    }

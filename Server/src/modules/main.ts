@@ -1,23 +1,27 @@
-
 'use strict';
 
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
-import { Distances, EntityData, NotifyType } from '../enums';
-import { Messages, Colors } from '../constants';
+import { Distances, EntityData, NotifyType } from '../globals/enums';
+import { Messages, Colors } from '../globals/constants';
 import { Config } from '../config';
+import Bans from '../models/ban.model';
+import { spawnPoint } from '../globals/interfaces';
+import { getDefaultSpawn } from '../utils';
+
 
 mp.events.add(
    {
-      'playerJoin': async (Player: PlayerMp) => {
-         //const Banned = await Bans.Check(Player);
-         //if (Banned) Player.kick('Bannedovan');
+      'playerJoin': async (player: PlayerMp) => {
+         const Banned = await Bans.isBanned(player);
+         if (Banned) player.kick('Bannedovan');
       },
+
 
       'SERVER::CHARACTER:PLAY': async (Player: PlayerMp, characterId: number) => {
          console.log('characterid', characterId)
-         const Selected = await Characters.findOne({ where: { id: characterId } });
+         const Selected = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
          console.log('spawn', 1);
          try {
             Selected?.Spawn(Player);
@@ -28,16 +32,14 @@ mp.events.add(
          console.log('spawn', 2);
       },
 
+
       'playerChat': async (player: PlayerMp, Content) => {
          if (player.getVariable(EntityData.LOGGED) && player.getVariable(EntityData.SPAWNED)) {
 
             if (player.getVariable(EntityData.MUTED)) return; // u are muted
 
-
             const character = player.Character;
 
-            console.log(character)
-            
             player.sendProximityMessage(Distances.IC, character.Name + Messages.PERSON_SAYS + Content, Colors.White);
          }
    
@@ -75,7 +77,6 @@ mp.events.add(
 );
 
 
-
 mp.events.addProc(
    {
 
@@ -90,45 +91,74 @@ mp.events.addProc(
       },
 
 
-      'SERVER::AUTHORIZATION:VERIFY': async (Player: PlayerMp, Username: string, Password: string): Promise<Accounts> => {
+      'SERVER::AUTHORIZATION:VERIFY': async (player: PlayerMp, username: string, password: string): Promise<Accounts> => {
          return new Promise((resolve) => {
-            Accounts.findOne({ where: { Username: Username }, include: [Characters] }).then((Account) => { 
-               if (Account) { 
-                  const Logged = Account.Login(Password);
+            Accounts.findOne({ where: { Username: username }, include: [Characters] }).then((account) => { 
+               if (account) { 
+                  const Logged = account.Login(password);
                   if (Logged) { 
-                     Account.Logged(Player, true);
-                     resolve(Account);
+                     account.Logged(player, true);
+                     resolve(account);
                   } else { 
-                     Player.Notification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
+                     player.Notification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
                   }
                } else { 
-                  Player.Notification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
+                  player.Notification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
                }
             });
          });
       },
 
-      'SERVER::CREATOR:FINISH': async (Player: PlayerMp, Char_Info: string, Char_Appearance: string) => { 
+      'SERVER::CHARACTER:SPAWNS': async (player: PlayerMp, id: number): Promise<spawnPoint[]> => { 
+         return new Promise((resolve) => {
 
-         const Character = JSON.parse(Char_Info);
-         const Appearance = JSON.parse(Char_Appearance);
+            let spawnPoints: spawnPoint[] = [];
+
+            Characters.findOne({ where: { id: id } }).then((character) => { 
+               const defaultSpawn: spawnPoint = getDefaultSpawn();
+               spawnPoints.push(defaultSpawn);
+   
+               if (character?.Faction) {
+                  // push factionn spawn
+               }
+               
+               // if (character?.houses) { }
+      
+               if (character?.Last_Position) { 
+                  spawnPoints.push({
+                     name: Messages.LAST_POSITION,
+                     description: Messages.LAST_POSITION_DESC,
+                     position: character.Last_Position,
+                     heading: 0
+                  })
+               }
+
+               resolve(spawnPoints);
+            });
+         });
+      },
+
+      'SERVER::CREATOR:FINISH': async (player: PlayerMp, characterInfo: string, characterAppearance: string) => { 
+
+         const Character = JSON.parse(characterInfo);
+         const Appearance = JSON.parse(characterAppearance);
 
          const Exist = await Characters.findOne({ where: { Name: Character.First_Name + ' ' + Character.Last_Name } });
-         if (Exist) return Player.Notification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
+         if (Exist) return player.Notification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
 
          const createdCharacter = await Characters.create({ 
-            Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: Player.Account.id,
+            Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: player.Account.id,
             Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
          });
 
          Appearances.create({
-            Character: createdCharacter.id, Face_Features: Appearance.Face, Blend_Data: Appearance.Blend_Data, 
+            Character_id: createdCharacter.id, Character: createdCharacter, Face_Features: Appearance.Face, Blend_Data: Appearance.Blend_Data, 
             Overlays: Appearance.Overlays, Hair: Appearance.Hair, Beard: Appearance.Beard, Eyes: Appearance.Eyes
          });
 
-         createdCharacter.Spawn(Player);
+         createdCharacter.Spawn(player);
 
-         Player.Notification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
+         player.Notification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
          return true;
       },
 

@@ -1,31 +1,69 @@
-import { Messages } from '../constants';
+
+import { Messages } from '../globals/constants';
+import { itemData } from '../globals/enums';
+
 
 export const noDesc = Messages.ITEM_NO_DESCRIPTION;
 
-export class Item {
 
-   Name: string;
-   Type: Item.Type[];
-   Model: string;
-   Weight: number;
-   Description?: string;
+export class baseItem {
+
+   name: string;
+   type: itemData.Type[];
+   model: string;
+   weight: number;
+   description?: string;
    Carry_Model?: string;
 
-   Use?(Player: PlayerMp, ...params: any): void | any;
+   use?(Player: PlayerMp, ...params: any): void | any;
 
-   static List: { [key:string] : Item } = {};
+   static List: { [key:string] : baseItem } = {};
    
-   constructor (Name: string, Type: Item.Type[], Model: string, Weight: number = 0.1, Desc: string = noDesc) { 
-      this.Name = Name;
-      this.Type = Type;
-      this.Model = Model;
-      this.Weight = Weight;     
-      this.Description = Desc;
+   constructor (name: string, type: itemData.Type[], model: string, weight: number = 0.1, desc: string = noDesc) { 
+      this.name = name;
+      this.type = type;
+      this.model = model;
+      this.weight = weight;     
+      this.description = desc;
       
-      Item.List[this.Name] = this;
+      baseItem.List[this.name] = this;
    }
 
+   isWeapon () { 
+      return this.type.includes(itemData.Type.Weapon);
+   }
+
+   isCookable () {
+      return this.type.includes(itemData.Type.Cookable);
+   }
+
+   isStackable () { 
+      return this.type.includes(itemData.Type.Stackable);
+   }
+   
 }
+
+import './items/drink.item';
+import './items/food.item';
+
+
+
+
+
+
+// new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);
+// new Items('Energy Drink', [Items.Type.Drink, Items.Type.Consumable], 'prop_energy_drink', 0.2);
+// new Items('Juice Cup', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacup_01c', 0.15);
+// new Items('Beer Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_beer_bot_02', 0.3);
+// new Items('Whiskey Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_whiskey_bottle', 0.6);
+// new Items('Vodka Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_vodka_bottle', 0.5);
+// new Items('Tequila Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_tequila_bottle', 0.45);
+// new Items('Gin Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_macbeth', 0.4);
+// new Items('Brandy Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_brandy', 0.5);
+// new Items('Rum Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_rum_bottle', 0.4);
+// new Items('Cognac Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_cognac', 0.6);
+// new Items('Wine Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_richard', 0.7);
+// new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 0.6);
 
 
 // Component?: number;
@@ -39,26 +77,7 @@ export class Item {
 // this.Hunger = Data.Hunger;
 // this.Thirst = Data.Thirst;
 
-export namespace Item {
 
-   export enum Type {
-      Equipable, Consumable, Openable, 
-      Drink, Food, Alcohol, Drug, Weapon, 
-      Ammo, Ilegal, Legal, Misc, Clothing,
-      Prop, Heavy, Stackable, Usable, Storage, 
-      Seed, Document, License
-   }
-
-   export enum Entity { 
-      Ground, Player, Storage,
-      Vehicle, tempVehicle, House,
-      Business
-   }
-
-   export enum Status { 
-      None, Equiped, Right_Hand, Left_Hand,
-   }
-}
 
 // /* Clothing */
 // new Items('Mask', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_balaclava', 0.3, 'Mask for Head');

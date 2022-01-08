@@ -1,12 +1,13 @@
 
 
-import { EntityData, Global_Dimension, NotifyType, Peds } from '../enums';
-import { Messages } from '../constants';
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { EntityData, Global_Dimension, NotifyType, Peds } from '../globals/enums';
+import { Messages } from '../globals/constants';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne } from 'sequelize-typescript';
 import { Config } from '../config';
 
 import Accounts from './account.model';
 import { Injury } from './misc/injury.model';
+import Appearances from './appearance.model';
 
 
 console.log(Peds.walkingStyles.Normal)
@@ -46,6 +47,9 @@ export default class Characters extends Model {
    @Default(0)
    @Column
    Salary: number
+
+   @HasOne(() => Appearances)
+   Appearance: Appearances
 
    @Default(0)
    @Column

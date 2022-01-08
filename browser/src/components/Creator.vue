@@ -256,10 +256,10 @@
 
 
 <script>
-   import { Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components, Eyes_Colors, Beard_Colors } from '@/Globals';
+   import { Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components, Eyes_Colors, Beard_Colors } from '@/globals';
    import VueSlider from 'vue-slider-component'
    import 'vue-slider-component/theme/antd.css'
-   import Helpers from '@/Helpers';
+   import Helpers from '@/helpers';
 
    export default { 
       components: { 

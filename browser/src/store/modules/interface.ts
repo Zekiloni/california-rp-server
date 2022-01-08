@@ -9,7 +9,7 @@ Vue.use(Vuex);
 
 const InitialState = {
    Notifications: true,
-   Chat: true,
+   Chat: false,
 
    Lobby: true,
    Creator: false,
@@ -24,6 +24,7 @@ const InitialState = {
    Transit: false,
    CharacterLicenses: false,
    CharacterIdentity: false,
+
    Clothing: false,
    Market: false,
    Drinks: false,
@@ -32,6 +33,7 @@ const InitialState = {
    Dealership: false,
    House: false,
    Business: false,
+
    Phone: false,
    DMV: false
 }

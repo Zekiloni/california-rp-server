@@ -1,10 +1,10 @@
 
-import { itemNames } from '../../enums';
+import { itemData } from '../../globals/enums';
 import Items from '../inventory.item.model';
-import { Item } from '../item.model';
+import { baseItem } from '../item.model';
 
 
-const licenseTypes = [Item.Type.Misc, Item.Type.Legal, Item.Type.License];
+const licenseTypes = [itemData.Type.Misc, itemData.Type.Legal, itemData.Type.License];
 
 export enum weapLicenseType { CCV, PF }
 
@@ -15,21 +15,21 @@ interface LicenseData {
 }
 
 
-export class LicenseItem extends Item {
+export class LicenseItem extends baseItem {
    
    constructor (name: string, model: string, description: string) { 
       super (name, licenseTypes, model, 0.15, description);
 
-      this.Use = function (player: PlayerMp, item: Items,target: PlayerMp = player) {
+      this.use = function (player: PlayerMp, item: Items,target: PlayerMp = player) {
          target.call('CLIENT::LICENSE:SHOW', [item]);
       }
    }
 }
 
-new LicenseItem(itemNames.drivingLicense, 'prop_cs_documents_01', 'a');
-new LicenseItem(itemNames.boatingLicense, 'prop_cs_documents_01', 'a');
-new LicenseItem(itemNames.fishingLicense, 'prop_cs_documents_01', 'a');
-new LicenseItem(itemNames.flyingLicense, 'prop_cs_documents_01', 'a');
-new LicenseItem(itemNames.weaponLicense, 'prop_cs_documents_01', 'a');
-new LicenseItem(itemNames.huntingLicense, 'prop_cs_documents_01', 'a');
-new LicenseItem(itemNames.truckLicense, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemData.Names.drivingLicense, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemData.Names.boatingLicense, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemData.Names.fishingLicense, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemData.Names.flyingLicense, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemData.Names.weaponLicense, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemData.Names.huntingLicense, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemData.Names.truckLicense, 'prop_cs_documents_01', 'a');

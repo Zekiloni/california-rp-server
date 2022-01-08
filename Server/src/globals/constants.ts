@@ -52,6 +52,11 @@ export const Colors = {
    Injured: [255, 99, 71, 255],
 };
 
+export const defaultSpawn = {
+   name: 'Vinewood Hills',
+   description: 'Uobičajena (default) pozicija.'
+}
+
 
 export const Messages = {
    WELCOME: 'Dobrodošli na Focus Roleplay ! Uživajte u igri.',
@@ -156,6 +161,8 @@ export const Messages = {
    CAR_SOLD: 'Vozilo uspešno prodato',
    NOT_CAR_OWNER: 'Ne posedujete ovo vozilo',
    HOUSE_ALREADY_OWNER: 'Ova kuća / stan već poseduje vlasnika.',
+   LAST_POSITION: 'Zadnja pozicija',
+   LAST_POSITION_DESC: 'Zadnja pozicija prethodnog napuštanja igre.',
    CAR_BOUGHT: 'Uspešno ste kupili vozilo',
    CAR_ALREADY_OWNED: 'Ovo vozilo je već u nečijem vlasništvu',
    CAR_PARKED: 'Uspešno ste parkirali vozilo',

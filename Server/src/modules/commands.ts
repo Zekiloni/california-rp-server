@@ -1,5 +1,5 @@
-import { EntityData, NotifyType } from '../enums';
-import { Colors, Messages } from '../constants';
+import { EntityData, NotifyType } from '../globals/enums';
+import { Colors, Messages } from '../globals/constants';
 
 
 export let Commands: Commands = {};
@@ -67,3 +67,4 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
 import './commands/message.commands';
 import './commands/admin.commands';
+import './commands/item.commands';

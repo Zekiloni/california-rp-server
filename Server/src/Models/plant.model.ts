@@ -1,7 +1,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default } from 'sequelize-typescript';
-import { Messages } from '../constants';
-import { NotifyType } from '../enums';
+import { Messages } from '../globals/constants';
+import { NotifyType } from '../globals/enums';
 
 enum GrowStage {
     Seed, Small_Plant,

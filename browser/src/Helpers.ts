@@ -1,4 +1,4 @@
-import { Groups } from './Globals';
+import { Groups } from './globals';
 
 
 const Helpers = { 

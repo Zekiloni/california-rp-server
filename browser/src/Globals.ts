@@ -66,6 +66,7 @@ export const Messages = {
    BEARD_MODEL: 'Stil Brade',
    BEARD_COLOR: 'Boja Brade',
    PLAYER_ITEMS: 'Predmeti',
+   PLAYER_EQUIPMENT: 'Odeća',
    MONEY_AMOUNT: 'Količina novca',
    TRANSFER_THE_MONEY: 'Pošalji Novac',
    MONEY_TARGET: 'Primalac',

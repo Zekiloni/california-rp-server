@@ -36,9 +36,11 @@
       },
 
       mounted: function () { 
-         mp.events.add('BROWSER::NOTIFICATION', (Message, Type, Time = 4) => { 
-            this.Push(Message, Type, Time);
-         });     
+         if (window.mp) { 
+            mp.events.add('BROWSER::NOTIFICATION', (Message, Type, Time = 4) => { 
+               this.Push(Message, Type, Time);
+            });  
+         }
       },
 
       methods: { 

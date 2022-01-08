@@ -1,8 +1,8 @@
 
 
 
-import { Colors, Ranks } from '../constants';
-import { EntityData } from '../enums';
+import { Colors, Ranks } from '../globals/constants';
+import { EntityData } from '../globals/enums';
 
 
 interface Report {

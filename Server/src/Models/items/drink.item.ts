@@ -1,25 +1,32 @@
 
 
-import { Item, noDesc } from '../item.model';
+import { itemData } from '../../globals/enums';
+import { baseItem } from '../item.model';
 
 
-export class DrinkItem extends Item {
-   Thirst: number;
-   Alcohol?: number;
+const defaultDrinkType = [itemData.Type.Drink, itemData.Type.Consumable, itemData.Type.Stackable];
+
+export class drinkItem extends baseItem {
+   thirst: number;
+   alcohol?: number;
    
-   constructor (name: string, type: Item.Type[], model: string, thirst: number, alcohol: number = 0, weight: number = 0.1, description: string = noDesc) { 
-      super (name, type, model, weight, description);
-      this.Thirst = thirst;
-      this.Alcohol = alcohol;
+   constructor (name: string, model: string, thirst: number, alcohol: number = 0, type?: itemData.Type[], weight?: number, description?: string) { 
+      super (name, type ? defaultDrinkType.concat(type) : defaultDrinkType, model, weight, description);
+      this.thirst = thirst;
+      this.alcohol = alcohol;
 
-      // .... todo
-
-      this.Use = function (Player: PlayerMp) {
-         Player.Character.Hunger += this.Thirst;
+      this.use = function (player: PlayerMp) {
+         player.Character.Hunger += this.thirst;
       }
 
    }
 }
+
+new drinkItem('Coffe', 'prop_fib_coffee', 0.3, 3);
+const pivo = new drinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3, [itemData.Type.Alcohol]);
+new drinkItem('Cola Can', 'ng_proc_sodacan_01a', 0.3, 3);
+
+
 
 
 // /* Drinks */

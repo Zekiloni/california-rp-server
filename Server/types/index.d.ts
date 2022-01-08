@@ -10,6 +10,7 @@ declare global {
       Player: any
    }
 
+
    interface PedMp {
       playScenario (Name: string): void;
    }
@@ -38,7 +39,7 @@ declare global {
    }
 
    interface PlayerMpPool { 
-      find (Target: any): PlayerMp;
+      find (searchQuery: any): PlayerMp | null;
    }
 
 }

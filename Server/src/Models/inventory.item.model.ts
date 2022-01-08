@@ -1,151 +1,116 @@
 
 
-import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
-import { Item } from './item.model';
+import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { EntityData, itemData, LogType } from '../globals/enums';
+import { Logger } from '../utils';
+import { baseItem } from './item.model';
+
 
 
 @Table
 export default class Items extends Model { 
 
-   @Column
    @PrimaryKey
    @AutoIncrement
-   ID: number;
+   @Column
+   id: number;
+
+   @Column(DataType.STRING)
+   name: string;
+
+   @Column(DataType.INTEGER)
+   entity: itemData.Entity;
 
    @Column
-   Name: string;
+   owner: number;
 
-   @Column
-   Entity: Item.Entity;
-
-   @Column
-   Owner: number;
-
-   @Column
    @Default(1)
-   Quantity: number;
+   @Column(DataType.INTEGER)
+   quantity: number;
    
-   @Column
    @Default(0)
-   Fingerpring: number; 
+   @Column
+   fingerprint: number; 
+
+   @Column(DataType.JSON)
+   position: Vector3Mp;
+
+   @Column(DataType.JSON)
+   rotation: Vector3Mp
 
    @Column
-   Position: Vector3Mp;
+   dimension: number;
 
-   @Column
-   Rotation: Vector3Mp
-
-   @Column
-   Dimension: number;
-
-   @Column
    @Default({})
-   Extra: Object;
+   @Column(DataType.JSON)
+   extra: Object;
 
    @CreatedAt
-   Created_At: Date;
+   created_at: Date;
 
    @UpdatedAt
-   Updated_On: Date;
+   updated_at: Date;
 
-   Object: ObjectMp;
+   object: ObjectMp;
 
    @AfterCreate
-   static Creating (Item: Items) { 
-      
-      Item.Refresh();
-
+   static creating (Item: Items) { 
+      Item.refreshItem();
    }
+
 
    @AfterDestroy
-   static Destroying (Item: Items) { 
-      if (Item.Object) Item.Object.destroy();
+   static destroying (item: Items) { 
+      if (item.object) item.object.destroy();
    }
 
-   Refresh () { 
-      if (this.Entity == Item.Entity.Ground) { 
-         this.Object = mp.objects.new('zeki', this.Position, { alpha: 255, rotation: this.Rotation, dimension: this.Dimension });
-         this.Object.setVariable('Item', this.Name);
+
+   refreshItem () { 
+      if (this.entity == itemData.Entity.Ground) { 
+         this.object = mp.objects.new('zeki', this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
+         this.object.setVariable(EntityData.ITEM, this.name);
       } else { 
-         if (this.Object) { 
-            this.Object.destroy();
+         if (this.object) { 
+            this.object.destroy();
          }
       }
    }
 
 
-   Drop () { 
+   async dropItem () { 
 
    }
 
-   async Use (Player: PlayerMp) { 
+   async useItem (Player: PlayerMp) { 
       const Character = Player.Character;
       
-      const rItem = Item.List[this.Name];
+      const rItem = baseItem.List[this.name];
+   }
 
-   
 
+   static async getItems (entity: itemData.Entity, owner: number)  { 
+      const items = await Items.findAll({where: { owner: owner, entity: entity }}).catch(e => Logger(LogType.ERROR, 'Catching Items ' + e));
+      return items;
+   }
+
+
+   static async giveItem (player: PlayerMp, target: PlayerMp, item: baseItem, quantity: number = 1) { 
+      const alreadyItem = await Items.hasItem(itemData.Entity.Player, target.Character.id, item.name);
+      
+      alreadyItem && item.isStackable() ? 
+         alreadyItem.increment('quantity', { by: quantity }) : Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.Player, owner: target.Character.id });
+   }
+
+
+   static async hasItem (entity: itemData.Entity, owner: number, itemName: string) {
+      const has = await Items.findOne({ where: { entity: entity, owner: owner, name: itemName } });
+      return has == null ? false : has;
    }
 
    
 }
 
-// 'use strict';
 
-// const { DataTypes } = require('sequelize');
-// const { ItemType, ItemEntities, ItemRegistry } = require('../classes/Items.Registry');
-
-// const Torsos = require('../data/Torsos.json');
-// const Clothing = require('../data/Clothing');
-// const Animations = require('../data/Animations');
-
-
-// frp.Items = frp.Database.define('item', {
-//       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-//       Item: { type: DataTypes.STRING },
-//       Quantity: { type: DataTypes.INTEGER, defaultValue: 1 },
-//       Entity: { type: DataTypes.INTEGER, defaultValue: -1 },
-//       Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Number: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Last_Owner: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Position: {
-//          type: DataTypes.TEXT, defaultValue: null,
-//          get: function () { return JSON.parse(this.getDataValue('Position')); },
-//          set: function (value) { this.setDataValue('Position', JSON.stringify(value)); }
-//       },
-//       Rotation: {
-//          type: DataTypes.TEXT, defaultValue: null,
-//          get: function () { return JSON.parse(this.getDataValue('Rotation')); },
-//          set: function (value) { this.setDataValue('Rotation', JSON.stringify(value)); }
-//       },
-//       Dimension: { type: DataTypes.INTEGER, defaultValue: 0 },
-//       Extra: { 
-//          type: DataTypes.TEXT, defaultValue: null,
-//          get: function () { return JSON.parse(this.getDataValue('Extra')); },
-//          set: function (value) { this.setDataValue('Extra', JSON.stringify(value)); }
-//       },
-//       GameObject: { 
-//          type: DataTypes.VIRTUAL,
-//          get () { 
-//             return frp.GameObjects.Items[this.getDataValue('id')];
-//          },
-//          set (x) { 
-//             frp.GameObjects.Items[this.getDataValue('id')] = x;
-//          }
-//       },
-//       PhoneNumber: { 
-//          type: DataTypes.VIRTUAL,
-//          get () { return this.getDataValue('Extra').Number; },
-//          set (x) { this.getDataValue('Extra').Number = x; }
-//       }
-//    }, 
-//    {
-//       timestamps: true,
-//       underscrored: true,
-//       createdAt: "Created_Date",
-//       updatedAt: "Update_Date",
-//    }
-// );
 
 // frp.Items.afterCreate(async (Item, Options) => {
 //    if (Item.Entity == ItemEntities.Player) { 
@@ -168,19 +133,6 @@ export default class Items extends Model {
 // });
 
 
-// frp.Items.New = async function (item, quantity, entity, owner, position = null, rotation = null, dimension = 0, ammo = 0, extra = {}) {
-//    const HasItem = await frp.Items.HasItem(owner, item);
-//    const Info = ItemRegistry[item];
-
-//    if (HasItem && Info.type != ItemType.Equipable && Info.type != ItemType.Weapon) { 
-//       HasItem.increment('Quantity', { by: quantity } );
-//       return HasItem;
-//    } else { 
-//       const Item = await frp.Items.create({ Item: item, Quantity: quantity, Entity: entity, Owner: owner, Position: position, Rotation: rotation, Dimension: dimension, Ammo: ammo, Extra: extra });
-//       await Item.Refresh();
-//       return Item;
-//    }
-// };
 
 
 // frp.Items.Inventory = async function (Player) {
@@ -220,10 +172,6 @@ export default class Items extends Model {
 // };
 
 
-// frp.Items.HasItem = async function (character, item) {
-//    const Item = await frp.Items.findOne({ where: { Owner: character, Item: item } });
-//    return Item == null ? false : Item;
-// };
 
 
 // frp.Items.prototype.Disarm = async function (player) { 

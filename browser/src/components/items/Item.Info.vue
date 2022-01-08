@@ -17,7 +17,7 @@
 </template>
 
 <script>
-   import { Messages } from '@/Globals'
+   import { Messages } from '../../globals';
 
    export default { 
       props: {

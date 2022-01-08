@@ -1,6 +1,8 @@
 'use strict';
 
-import { Global_Dimension, LogType, NotifyType } from './enums';
+import { Config } from './config';
+import { defaultSpawn } from './globals/constants';
+import { Global_Dimension, LogType, NotifyType } from './globals/enums';
 
 
 export function Logger (Status: LogType, Message: any) {
@@ -19,6 +21,15 @@ export function randomInteger (Min: number, Max: number) {
    return Math.random() * (Max - Min) + Min;
 }
 
+
+export function getDefaultSpawn () { 
+   return {
+      name: defaultSpawn.name,
+      description: defaultSpawn.description,
+      position: Config.Default.Spawn,
+      heading: Config.Default.Heading
+   }
+};
 
 export function isPlayerNearPlayer (Player: PlayerMp, Target: PlayerMp, Distance: number = 0.5) {
    return distanceBetweenVectors(Player.position, Target.position) <= Distance ? true : false;

@@ -84,8 +84,8 @@
 <script>
 
    import Offer from './Offer.vue';
-   import { Messages } from '../Globals';
-   import Helpers from '../Helpers';
+   import { Messages } from '../globals';
+   import Helpers from '../helpers';
    import { VueSvgGauge } from 'vue-svg-gauge'
 
 
