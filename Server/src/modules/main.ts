@@ -3,7 +3,7 @@
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
-import { Distances, EntityData, NotifyType } from '../globals/enums';
+import { Distances, entityData, NotifyType, spawnTypes } from '../globals/enums';
 import { Messages, Colors } from '../globals/constants';
 import { Config } from '../config';
 import Bans from '../models/ban.model';
@@ -19,24 +19,33 @@ mp.events.add(
       },
 
 
-      'SERVER::CHARACTER:PLAY': async (Player: PlayerMp, characterId: number) => {
-         console.log('characterid', characterId)
-         const Selected = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
-         console.log('spawn', 1);
-         try {
-            Selected?.Spawn(Player);
+      'playerQuit': async (player: PlayerMp) => { 
+         const leavingPlayer = player;
 
-         }catch (e) {
+         try { 
+            if (leavingPlayer.Character) {
+               leavingPlayer.Character.Last_Position = leavingPlayer.position;
+   
+               await leavingPlayer.Character.save();
+            }
+         } catch (e) { 
             console.log(e)
          }
-         console.log('spawn', 2);
+
+      },
+
+
+      'SERVER::CHARACTER:PLAY': async (player: PlayerMp, characterId: number, point: spawnTypes) => {
+         console.log('characterid', characterId)
+         const Selected = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
+         Selected?.spawnPlayer(player, point);
       },
 
 
       'playerChat': async (player: PlayerMp, Content) => {
-         if (player.getVariable(EntityData.LOGGED) && player.getVariable(EntityData.SPAWNED)) {
+         if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
 
-            if (player.getVariable(EntityData.MUTED)) return; // u are muted
+            if (player.getVariable(entityData.MUTED)) return; // u are muted
 
             const character = player.Character;
 
@@ -125,14 +134,16 @@ mp.events.addProc(
                // if (character?.houses) { }
       
                if (character?.Last_Position) { 
+                  console.log(character.Last_Position);
                   spawnPoints.push({
                      name: Messages.LAST_POSITION,
+                     type: spawnTypes.lastPosition,
                      description: Messages.LAST_POSITION_DESC,
                      position: character.Last_Position,
                      heading: 0
                   })
                }
-
+               console.log(spawnPoints)
                resolve(spawnPoints);
             });
          });
@@ -156,7 +167,7 @@ mp.events.addProc(
             Overlays: Appearance.Overlays, Hair: Appearance.Hair, Beard: Appearance.Beard, Eyes: Appearance.Eyes
          });
 
-         createdCharacter.Spawn(player);
+         createdCharacter.spawnPlayer(player, spawnTypes.default);
 
          player.Notification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
          return true;

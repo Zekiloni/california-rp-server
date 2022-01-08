@@ -117,11 +117,11 @@ export function OnlinePlayers () {
    return List;
 }
 
-export function GetAdress (Position: Vector3Mp) { 
-   const path = mp.game.pathfind.getStreetNameAtCoord(Position.x, Position.y, Position.z, 0, 0),
-      Zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(Position.x, Position.y, Position.z)),
-      Street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
-   return { zone: Zone, street: Street };
+export function getStreetZone (position: Vector3Mp) { 
+   const path = mp.game.pathfind.getStreetNameAtCoord(position.x, position.y, position.z, 0, 0),
+      zoneName = mp.game.gxt.get(mp.game.zone.getNameOfZone(position.x, position.y, position.z)),
+      streetName = mp.game.ui.getStreetNameFromHashKey(path.streetName);
+   return { zone: zoneName, street: streetName };
 }
 
 let MovableCamera: CameraMp;

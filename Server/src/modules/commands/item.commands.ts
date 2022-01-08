@@ -1,21 +1,21 @@
 
 
-import { adminLevel, cmdDescs, cmdNames } from '../../globals/enums';
+import { adminLevel, commandData } from '../../globals/enums';
 import Items from '../../models/inventory.item.model';
 import { baseItem } from '../../models/item.model';
 import { Commands } from '../commands';
 
 
-Commands[cmdNames.items] = { 
-   Desc: cmdDescs.items,
+Commands[commandData.names.items] = { 
+   Desc: commandData.descriptions.items,
    Call: (player: PlayerMp) => { 
       console.log(baseItem.List);
    }
 }
 
 
-Commands[cmdNames.giveItem] ={
-   Desc: cmdDescs.giveItem,
+Commands[commandData.names.giveItem] ={
+   Desc: commandData.descriptions.giveItem,
    Admin: adminLevel.SENIOR_ADMIN,
    Call: (player: PlayerMp, targetSearch: any, itemName: string, quantity: number) => { 
       if (baseItem.List[itemName]) {
@@ -31,8 +31,8 @@ Commands[cmdNames.giveItem] ={
 }
 
 
-Commands[cmdNames.clearInventory] = { 
-   Desc: cmdDescs.clearInventory,
+Commands[commandData.names.clearInventory] = { 
+   Desc: commandData.descriptions.clearInventory,
    Call: (player: PlayerMp, target: any) => { 
       
    }

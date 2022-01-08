@@ -8,7 +8,7 @@ import './modules/items';
 import Accounts from './models/account.model';
 import Characters from './models/character.model';
 import { Logger, Sleep } from './utils';
-import { LogType } from './globals/enums';
+import { logType } from './globals/enums';
 import { Messages } from './globals/constants';
 
 
@@ -44,13 +44,13 @@ import { Messages } from './globals/constants';
 (async () => {
    const Chars = await Characters.count()
    const Users = await Accounts.count();
-   Logger(LogType.INFO, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.')
+   Logger(logType.INFO, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.')
 
 })();
 
 
 const Exit = async () => {
-   Logger(LogType.SUCCESS, 'Clossing Connection, Bye-bye !');
+   Logger(logType.SUCCESS, 'Clossing Connection, Bye-bye !');
    mp.players.broadcast('Server se gasi. Rekonektujte se na F1.');
 
    mp.players.forEach((player) =>  {

@@ -2,7 +2,7 @@
 
 
 import { Colors, Ranks } from '../globals/constants';
-import { EntityData } from '../globals/enums';
+import { entityData } from '../globals/enums';
 
 
 interface Report {
@@ -22,8 +22,8 @@ export class Admin {
       if (!message.trim()) return;
 
       mp.players.forEach((target: PlayerMp) => {
-         if (target.getVariable(EntityData.LOGGED) && target.Account.Administrator > 0) {
-            target.SendMessage('(( ' + Ranks[target.Account.Administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
+         if (target.getVariable(entityData.LOGGED) && target.Account.Administrator > 0) {
+            target.sendMessage('(( ' + Ranks[target.Account.Administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
          }
       });
    }
@@ -32,7 +32,7 @@ export class Admin {
       if (!message.trim()) return;
 
       mp.players.forEach((Target: PlayerMp) => {
-         Target.SendMessage('(( [ ! ] ' + Ranks[player.Account.Administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
+         Target.sendMessage('(( [ ! ] ' + Ranks[player.Account.Administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
       });
    }
 

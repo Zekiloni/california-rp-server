@@ -53,13 +53,13 @@ export const Colors = {
 };
 
 export const defaultSpawn = {
-   name: 'Vinewood Hills',
-   description: 'Uobičajena (default) pozicija.'
+   name: 'Uobičajena pozicija',
+   description: 'Uobičajena (default) pozicija gde se stvarate pri registraciji.'
 }
 
 
 export const Messages = {
-   WELCOME: 'Dobrodošli na Focus Roleplay ! Uživajte u igri.',
+   WELCOME: 'Dobrodošli na Midnight Roleplay ! Uživajte u igri.',
    USER_ALREADY_EXIST: 'Korisnik sa tim serijskim brojem već postoji.',
    CHARACTER_CREATED: 'Uspešno ste kreirali karaktera.',
    CHARACTER_ALREADY_EXIST: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -175,6 +175,12 @@ export const Messages = {
 
    MONEY_WITHDRAW: 'Podizanje',
    MONEY_DEPOSIT: 'Depozit',
+
+   WEATHERS: [
+      '', 'Vedro', 'Oblaćno', 'Smog', 'Maglovito',
+      '', 'Kišno', 'Oluja', 'Provedravanje', 'Neutralno', 
+      'Sneg', 'Mećava', '', '', 'Halowed'
+   ]
 };
 
 

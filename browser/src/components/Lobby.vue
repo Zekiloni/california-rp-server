@@ -30,14 +30,11 @@
 
       data () { 
          return { 
-            logged: true, // false default
+            logged: false, // false default
             account: null, // nul ldefault
-            selectedCharacter: true, // null default
-            spawnPoints: [
-               {"name":"Vinewood Hills","description":"Uobičajena (default) pozicija.","position":{"x":-1355.6395,"y":-519.53,"z":23.4648},"heading":120},
-               {"name": "aaaa", "description": "aaa", "position": {"x": 1176.8226322657, "y": 2657.97314, "z": 37.370682}, "heading": 3 }
-            ], // null default
-            spawnSelector: true, // false default
+            selectedCharacter: null, // null default
+            spawnPoints: null, // null default
+            spawnSelector: false, // false default
 
             Helpers, Messages,
          }

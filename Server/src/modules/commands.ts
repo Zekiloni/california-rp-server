@@ -1,4 +1,4 @@
-import { EntityData, NotifyType } from '../globals/enums';
+import { entityData, NotifyType } from '../globals/enums';
 import { Colors, Messages } from '../globals/constants';
 
 
@@ -19,7 +19,7 @@ type Command = {
    Params?: any[];
    Faction?: factionTypeCommand;
    Item?: any;
-   Vehicle?: VehicleMp;
+   Vehicle?: boolean;
    Job?: number;
    Position?: Vector3Mp;
    Admin?: number;
@@ -30,7 +30,7 @@ type Command = {
 
 mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
-   if (!player.getVariable(EntityData.LOGGED)) return;
+   if (!player.getVariable(entityData.LOGGED)) return;
 
    const params = content.split(/ +/);
    
@@ -56,7 +56,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
       // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', NotifyType.ERROR, 4);
 
-      if (Command.Params && Command.Params.length > params.length) return player.SendMessage('Komanda: /' + commandName + ' [' + Command.Params.join('] [') + '] ', Colors.Help);
+      if (Command.Params && Command.Params.length > params.length) return player.sendMessage('Komanda: /' + commandName + ' [' + Command.Params.join('] [') + '] ', Colors.Help);
 
       Command.Call(player, ...params);
    } else {
@@ -68,3 +68,4 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 import './commands/message.commands';
 import './commands/admin.commands';
 import './commands/item.commands';
+import './commands/vehicle.commands';

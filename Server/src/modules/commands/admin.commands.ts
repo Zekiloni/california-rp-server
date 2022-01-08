@@ -1,5 +1,5 @@
 import { Colors } from '../../globals/constants';
-import { adminLevel } from '../../globals/enums';
+import { adminLevel, commandData, weather } from '../../globals/enums';
 import { Admin } from '../admin';
 import { Commands } from '../commands';
 
@@ -13,6 +13,30 @@ Commands['veh'] = {
       player.putIntoVehicle(vehicle, RageEnums.VehicleSeat.DRIVER);
    } 
 }
+
+Commands[commandData.names.time] = {
+   Admin: adminLevel.SENIOR_ADMIN,
+   Desc: commandData.descriptions.time,
+   Params: ['sat', 'minut', 'sekund'],
+   Call: (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) => {
+      mp.world.time.set(hour, minute, second);
+   }
+};
+
+
+Commands[commandData.names.weather] = {
+   Admin: adminLevel.SENIOR_ADMIN,
+   Desc: commandData.descriptions.weather,
+   Params: ['tip vremena'],
+   Call: (player: PlayerMp, setWeather: string | number) => {
+
+      if (setWeather == Number(setWeather) && setWeather < weather.Names.length - 1 && setWeather >= 0) {
+         mp.world.weather = weather.Names[Number(setWeather)];
+      } else {
+         mp.world.weather = String(setWeather);
+      }
+   }
+};
 
 
 //  Commands['adminhelp'] = {
@@ -194,33 +218,8 @@ Commands['veh'] = {
 //    }
 // };
 
-// Commands['settime'] = {
-//    Admin: 7,
-//    Desc: 'Podesite sat na serveru.',
-//    Params: ['sat', 'minut', 'sekund'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
-//       const Hr = parseInt(Args[0]), Min = parseInt(Args[1]), Sec = parseInt(Args[2]);
-//       if (Min && Hr && Sec)
-//          mp.world.time.set(Hr, Min, Sec);
-//       else { Player.notify('Wrong time format. HR/MIN/SEC') }
-//    }
-// };
 
-// Commands['weather'] = {
-//    Admin: 2,
-//    Desc: 'Podesite vreme na serveru',
-//    Params: ['broj/ime vremena'],
-//    Call: (Player, Args: string[]) => {
-//       const Weathers = ['EXTRASUNNY', 'CLEAR', 'CLOUDS', 'SMOG', 'FOGGY', 'OVERCAST', 'RAIN', 'THUNDER', 'CLEARING', 'NEUTRAL', 'SNOW', 'BLIZZARD', 'SNOWLIGHT', 'XMAS', 'HALLOWEEN'];
-//       const InputNumber = parseInt(Args[0]);
 
-//       if (InputNumber && InputNumber! > Weathers.length) {
-//          mp.world.weather = Weathers[InputNumber];
-//       } else {
-//          mp.world.weather = Args[0];
-//       }
-//    }
-// };
 
 // Commands['sethp'] = {
 //    Admin: 3,

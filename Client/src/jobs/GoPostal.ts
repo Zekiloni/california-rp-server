@@ -1,4 +1,4 @@
-import { CreateInteractionSpot, DistanceBetweenVectors } from "../Utils";
+import { CreateInteractionSpot, DistanceBetweenVectors } from "../utils";
 
 
 const Player = mp.players.local, MAX = 25;

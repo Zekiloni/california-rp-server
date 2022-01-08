@@ -62,6 +62,14 @@ export enum Distances {
    VEHICLE = 5.5
 };
 
+
+export enum spawnTypes {
+   default = 0,
+   lastPosition = 1,
+   faction = 2,
+   house = 3
+}
+
 export namespace Business { 
 
    export enum Default { 
@@ -85,9 +93,11 @@ export namespace Business {
    }
 };
 
+
 export enum NotifyType {
    SUCCESS, ERROR, INFO
 };
+
 
 export enum Jobs { 
    UNEMPLOYED = 0,
@@ -96,7 +106,8 @@ export enum Jobs {
    FOOD_DELIVERY = 6, 
 };
 
-export enum EntityData {
+
+export enum entityData {
    MONEY = 'MONEY',
    LOGGED = 'LOGGED_IN',
    ADMIN = 'ADMIN_LEVEL',
@@ -116,7 +127,8 @@ export enum EntityData {
    ITEM = 'ITEM'
 };
 
-export enum LogType {
+
+export enum logType {
    ERROR, SUCCESS, INFO
 };
 
@@ -131,6 +143,23 @@ export enum adminLevel {
    LEAD_ADMIN = 6,
    COMMUNITY_OWNER = 7 
 }
+
+
+export namespace weather { 
+
+   export const Names = [
+      'EXTRASUNNY', 'CLEAR', 'CLOUDS', 'SMOG', 'FOGGY',
+      'OVERCAST', 'RAIN', 'THUNDER', 'CLEARING', 'NEUTRAL',
+      'SNOW', 'BLIZZARD', 'SNOWLIGHT', 'XMAS', 'HALLOWEEN'
+   ];
+
+   export enum Types {
+      extrasunny,	clear, clouds, smog, foggy,
+      overcast, rain, thunder, clearing, neutral,
+      snow, blizzard, snowlight, xmas, halloween
+   };
+};
+
 
 export namespace itemData {
 
@@ -173,15 +202,22 @@ export namespace itemData {
 }
 
 
+export namespace commandData { 
+   export enum names {
+      items = 'items',
+      giveItem = 'giveitem',
+      clearInventory = 'clearinventory',
+      engine = 'engine',
+      time = 'time',
+      weather = 'weather'
+   }
 
-export enum cmdNames  {
-   items = 'items',
-   giveItem = 'giveitem',
-   clearInventory = 'clearinventory'
+   export enum descriptions { 
+      items = 'Lista svih predmeta.',
+      giveItem = 'Davanje predmeta.',
+      clearInventory = 'Čišćenje predmeta osobe.',
+      time = 'Promena vremena.',
+      weather = 'Vremenske prilike.'
+   }
 }
 
-export enum cmdDescs { 
-   items = 'Lista svih predmeta.',
-   giveItem = 'Davanje predmeta.',
-   clearInventory = 'Čišćenje predmeta osobe.'
-}

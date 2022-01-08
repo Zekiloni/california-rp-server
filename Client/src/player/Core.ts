@@ -1,4 +1,4 @@
-import { WaitEntity, LoadMovementClipset, Controls } from "../Utils";
+import { WaitEntity, LoadMovementClipset, Controls } from "../utils";
 
 
 const Player = mp.players.local;

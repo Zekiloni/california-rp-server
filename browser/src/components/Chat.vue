@@ -4,7 +4,7 @@
    <div class="chat" v-if="Settings.Active">
       <ul class="messages" ref="Entries" id="messages">
          <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="i">
-            <b class="timestamp" v-if="Settings.Timestamp" v-html="DateTime(message.timestamp)"> </b>
+            <b class="timestamp" v-if="Settings.Timestamp" v-html="timeStamp(message.timestamp)"> </b>
             <span v-html="message.content"> </span>
          </li>
       </ul>
@@ -158,6 +158,11 @@
             }
          },
 
+         timeStamp: function (i) { 
+            const date = new Date(i);
+            return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ':' + (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+         },
+
          Clear: function () { 
             this.Messages = [];
          },
@@ -257,6 +262,7 @@
       font-weight: 300;
       font-size: 14px;
       color: white;
+      margin: 4px 0;
       width: 100%;
       text-align: left;
       transition: all 0.35s ease;
@@ -266,11 +272,11 @@
 
    li.message b.timestamp {
       color: white;
-      font-weight: 1000 !important;
+      font-weight: 250 !important;
       margin: 0 5px;
       font-size: 12px !important;
-      background: #fbc60c;
-      padding: 2px 5px 3px 5px;
+      background: rgb(22 22 22 / 70%);
+      padding: 2px 7px 3px 7px;
       letter-spacing: 0.85px;
       border-radius: 2.5px;
       text-shadow: none;

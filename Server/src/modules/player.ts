@@ -13,6 +13,10 @@ mp.Player.prototype.Teleport = function (Position: Vector3Mp, Heading: number = 
    // Safe tp
 }
 
+mp.Player.prototype.sendMessage = function (message: string, color: string) {
+   this.outputChatBox('!{' + color + '}' + message);
+};
+
 mp.players.find = (searchQuery: any) => {
    let foundPlayer = null;
    if (searchQuery == parseInt(searchQuery)) {

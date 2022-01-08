@@ -3,7 +3,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { Logger } from './utils';
-import { LogType } from './globals/enums';
+import { logType } from './globals/enums';
 import { Config } from './config';
 
 import Accounts from './models/account.model';
@@ -26,20 +26,21 @@ const Database = new Sequelize({
 
 Database.authenticate()
 .then(() => { 
-   Logger(LogType.SUCCESS, 'Connected');
+   Logger(logType.SUCCESS, 'Connected');
 })
 .then(() => { 
    return Database.sync()
 })
 .catch((Error: any) => { 
-   Logger(LogType.ERROR, Error);
+   Logger(logType.ERROR, Error);
 });
 
 
 (async () => { 
 
    const Admins = [
-      { Username: 'Zekiloni', Password: 'kapakapa' }
+      { Username: 'Zekiloni', Password: 'kapakapa' },
+      { Username: 'divine', Password: 'divine' }
    ];
 
    for (const Admin of Admins) { 

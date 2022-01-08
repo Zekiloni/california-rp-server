@@ -32,9 +32,9 @@ declare global {
       Character: Characters;
       Account: Accounts;
 
-      SendMessage (Message: string, Color: string): void;
+      sendMessage (message: string, color: string): void;
       sendProximityMessage (radius: number, message: string, colors: string[]): void;
-      Notification (Message: string, Type: number, Time: number): void;
+      Notification (message: string, Type: number, Time: number): void;
       Properties (): any;
    }
 

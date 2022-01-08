@@ -1,7 +1,7 @@
 
 
 import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
-import { EntityData, itemData, LogType } from '../globals/enums';
+import { entityData, itemData, logType } from '../globals/enums';
 import { Logger } from '../utils';
 import { baseItem } from './item.model';
 
@@ -68,7 +68,7 @@ export default class Items extends Model {
    refreshItem () { 
       if (this.entity == itemData.Entity.Ground) { 
          this.object = mp.objects.new('zeki', this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
-         this.object.setVariable(EntityData.ITEM, this.name);
+         this.object.setVariable(entityData.ITEM, this.name);
       } else { 
          if (this.object) { 
             this.object.destroy();
@@ -89,7 +89,7 @@ export default class Items extends Model {
 
 
    static async getItems (entity: itemData.Entity, owner: number)  { 
-      const items = await Items.findAll({where: { owner: owner, entity: entity }}).catch(e => Logger(LogType.ERROR, 'Catching Items ' + e));
+      const items = await Items.findAll({where: { owner: owner, entity: entity }}).catch(e => Logger(logType.ERROR, 'Catching Items ' + e));
       return items;
    }
 

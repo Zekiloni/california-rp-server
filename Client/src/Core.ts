@@ -1,6 +1,7 @@
 
 import { Browser } from './Browser';
 import { Clothing_Components, Genders } from './Data/Player';
+import { getStreetZone } from './utils';
 
 const Player = mp.players.local;
 
@@ -25,4 +26,11 @@ mp.events.add(
       }
    }
 );
+
+
+mp.events.addProc({
+   'CLIENT::GET:STREET_ZONE': (position: Vector3Mp) => { 
+      return getStreetZone(position);
+   }
+})
 

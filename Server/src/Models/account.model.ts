@@ -3,7 +3,7 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
 import Characters from './character.model';
-import { EntityData } from '../globals/enums';
+import { entityData } from '../globals/enums';
 import { Messages } from '../globals/constants';
 
 const Salt = bcrypt.genSaltSync(10);
@@ -90,8 +90,8 @@ export default class Accounts extends Model {
       this.Login_Date = new Date();
       this.IP_Adress = player.ip;
       
-      player.setVariable(EntityData.LOGGED, true);
-      player.setVariable(EntityData.ADMIN, this.Administrator);
+      player.setVariable(entityData.LOGGED, true);
+      player.setVariable(entityData.ADMIN, this.Administrator);
 
       if (this.Hardwer == null || this.Social_Club == null) {
          const Already = await Accounts.findOne({ where: { Social_Club: player.socialClub, Hardwer: player.serial } });
@@ -106,7 +106,7 @@ export default class Accounts extends Model {
    
    setAdministrator (player: PlayerMp, level: number) {
       this.Administrator = level;
-      player.setVariable(EntityData.ADMIN, level); 
+      player.setVariable(entityData.ADMIN, level); 
       this.save();
    }
 }

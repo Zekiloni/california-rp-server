@@ -14,10 +14,10 @@ mp.events.add(
          Lobby(true, Info.Position, Info.LookAt, Info.Time);
       },
 
-      'CLIENT::AUTHORIZATION:PLAY': (character: number) => { 
+      'CLIENT::CHARACTER:PLAY': (character: number, spawnPoint: number) => { 
          Lobby(false);
          Browser.call('BROWSER::SHOW', 'Chat');
-         mp.events.callRemote('SERVER::CHARACTER:PLAY', character);
+         mp.events.callRemote('SERVER::CHARACTER:PLAY', character, spawnPoint);
          gameInterface.Toggle(UI_Status.Full_Visible);
       }
    }

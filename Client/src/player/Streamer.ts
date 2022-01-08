@@ -1,4 +1,4 @@
-import { WaitEntity } from '../Utils';
+import { WaitEntity } from '../utils';
 
 const Player = mp.players.local,
    CuffsModel: string = 'p_cs_cuffs_02_s';

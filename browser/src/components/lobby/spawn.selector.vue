@@ -1,7 +1,16 @@
 
 <template>
   
-   <div class="spawn-selector" id="spawn-selector" >  </div> 
+   <div class="spawn-selector"> 
+      <div class="map-container" id="map-container"> </div> 
+
+      <transition name="fade"> 
+         <div v-if="spawn.name" class="spawn-info" :style="{ left: spawn.left + 'px', top: spawn.top + 'px' }">
+            <h2 class="name"> {{ spawn.name }} </h2>
+            <p class="description"> {{ spawn.description }} </p>
+         </div>
+      </transition>
+   </div> 
 
 </template>
 
@@ -19,7 +28,14 @@
       data () { 
          return { 
             map: null,
-            layer: null
+            layer: null,
+
+            spawn: {
+               name: null,
+               description: null,
+               left: null,
+               top: null
+            }
          }
       },
       
@@ -47,6 +63,10 @@
             this.map.flyTo([Coords.lat, Coords.lng], 0);
          },
 
+         play: function (spawnType) { 
+            mp.events.call('CLIENT::CHARACTER:PLAY', this.$parent.selectedCharacter, spawnType);
+         },
+
          init: function () { 
             this.layer = L.tileLayer('http://020-oglasi.com/gtavmap/normal/minimap_sea_{y}_{x}.png', {
                minZoom: -2,
@@ -58,7 +78,7 @@
                tileDirectory: 'tiles'
             });
                
-            this.map = L.map('spawn-selector', { 
+            this.map = L.map('map-container', { 
                crs: L.CRS.Simple, 
                layers: [this.layer] 
             }).setView([0, 0], 0);
@@ -76,14 +96,33 @@
                // console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
             });
 
-            const Icon = L.icon({
-               iconUrl: 'https://cdn1.iconfinder.com/data/icons/color-bold-style/21/14_2-512.png',
-               iconSize: [15, 15],
+            const smallIcon = L.icon({
+               iconUrl: 'https://i.imgur.com/Tt3Zcvy.png',
+               iconSize: [15, 20],
             });
 
             this.spawnPoints.forEach(point => {
                const coords = this.convertToMap(this.layer, point.position.x, point.position.y);
-               point.marker = L.marker(new L.LatLng(coords.lat, coords.lng), { icon: Icon }).addTo(this.map);
+               point.marker = L.marker(new L.LatLng(coords.lat, coords.lng), { icon: smallIcon }).addTo(this.map)
+                  .on('click', e => { 
+                     this.play(point.type);
+
+                  })
+                  .on('mouseover', async e => {
+                        let mapWidth = this.map._container.offsetWidth;
+                        let mapHeight = this.map._container.offsetHeight;
+
+
+                        this.spawn.name = point.name;
+                        this.spawn.description = point.description;
+                        this.spawn.left = (e.containerPoint.x * window.screen.width / mapWidth) - 145;
+                        this.spawn.top = (e.containerPoint.y * window.screen.height / mapHeight) - 70;
+
+                  })
+                  .on('mouseout', e => {
+                     this.spawn.name = null;
+                     this.spawn.description = null;
+                  })
             });
 
          }
@@ -101,21 +140,54 @@
 
    .spawn-selector { 
       width: 100%;
+      height: 100%;
+      animation: fade-in 2s ease-in;
+   }
+
+   .map-container {
+      width: 100%;
       transform: scale(1.5);
       height: 100%;
    }
 
+   .leaflet-container { background: transparent; }
 
-   img.leaflet-tile { 
-      background: transparent;
-      filter: grayscale(100%);
+   .leaflet-tile-container .leaflet-tile { 
+      filter: grayscale(100%); 
+      opacity: 0.7 !important; 
    }
 
-   .spawn-point { 
-      height: 15px;
-      width: 15px;
-      background: red;
-      border-radius: 100%;
+   .leaflet-marker-icon { filter: none !important; }
+
+   .spawn-info { 
+      width: auto;
+      height: auto;
+      padding: 10px 5px;
+      backdrop-filter: blur(5px);
+      background: linear-gradient(180deg, rgb(46 47 64 / 95%), transparent);
+      border-radius: 10px;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+   }
+
+   h2.name { 
+      color: #7c5bf1;
+      margin: 5px 0;
+   }
+
+   p.description { 
+      color: #cdcdcd;
+      font-weight: 300;
+      font-size: 0.7rem;
+      width: 90%;
+   }
+
+   @keyframes fade-in {
+      from { opacity: 0.2; transform: scale(3);}
+      to { opacity: 1; transform: scale(1.5); }
    }
 
 

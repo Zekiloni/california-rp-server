@@ -1,6 +1,6 @@
 
 
-import { EntityData, Global_Dimension, NotifyType, Peds } from '../globals/enums';
+import { entityData, Global_Dimension, NotifyType, Peds, spawnTypes } from '../globals/enums';
 import { Messages } from '../globals/constants';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne } from 'sequelize-typescript';
 import { Config } from '../config';
@@ -106,10 +106,7 @@ export default class Characters extends Model {
 
    @Column(DataType.JSON)
    Last_Position: Vector3Mp
-
-   @Default(0)
-   @Column
-   Spawn_Point: number
+   
 
    @Column(DataType.JSON)
    Inside: object
@@ -166,33 +163,33 @@ export default class Characters extends Model {
    @UpdatedAt
    Updated_At: Date;
 
-   async Spawn (player: PlayerMp) { 
+   async spawnPlayer (player: PlayerMp, point: spawnTypes) { 
 
       player.Account.Last_Character = this.id;
       player.Character = this;
 
       player.name = this.Name;
 
-      player.position = Config.Default.Spawn;
+      console.log('point is ' + point);
 
-      player.setVariable(EntityData.SPAWNED, true);
+      player.setVariable(entityData.SPAWNED, true);
 
       // loading money and health
       this.setHealth(player, this.Health);
       this.setMoney(player, this.Money);
 
-      player.setVariable(EntityData.JOB, this.Job);
-      player.setVariable(EntityData.FACTION, this.Faction);
+      player.setVariable(entityData.JOB, this.Job);
+      player.setVariable(entityData.FACTION, this.Faction);
 
       // temporary variables
-      player.setVariable(EntityData.FACTION_DUTY, false);
-      player.setVariable(EntityData.JOB_DUTY, false);
-      player.setVariable(EntityData.JOB_VEHICLE, null);
+      player.setVariable(entityData.FACTION_DUTY, false);
+      player.setVariable(entityData.JOB_DUTY, false);
+      player.setVariable(entityData.JOB_VEHICLE, null);
       player.setVariable('Working_Uniform', false);
-      player.setVariable(EntityData.ADMIN_DUTY, false);
+      player.setVariable(entityData.ADMIN_DUTY, false);
       player.setVariable('Attachment', null);
       player.setVariable('Phone_Ringing', false);
-      player.setVariable(EntityData.FREEZED, false);
+      player.setVariable(entityData.FREEZED, false);
       player.setVariable('Ragdoll', false);
 
 
@@ -204,7 +201,18 @@ export default class Characters extends Model {
       this.setCuffs(player, this.Cuffed);
    
    
-      player.setVariable(EntityData.INJURIES, this.Injuries);
+      player.setVariable(entityData.INJURIES, this.Injuries);
+
+      console.log(222)
+      switch (point) { 
+         case spawnTypes.default: { 
+            console.log(353)
+            player.position = Config.Default.Spawn;
+            player.dimension = Global_Dimension;
+            break;
+         }
+
+      }
       //    Player.RespawnTimer = null;
       //    Player.setVariable('Wounded', this.Wounded);
       //    if (this.Wounded) { 
@@ -253,14 +261,14 @@ export default class Characters extends Model {
    };
 
    setMoney (player: PlayerMp, value: number) { 
-      player.setVariable(EntityData.MONEY, value);
+      player.setVariable(entityData.MONEY, value);
       this.Money = value;
    };
 
    async giveMoney (player: PlayerMp, value: number) {
       let Money = await this.increment('Money', { by: value });
       if (Money) {
-         player.setVariable(EntityData.MONEY, this.Money + value);
+         player.setVariable(entityData.MONEY, this.Money + value);
       }
    };
 
@@ -271,18 +279,18 @@ export default class Characters extends Model {
 
    async setWalkingStyle (player: PlayerMp, style: keyof typeof Peds.walkingStyles) {
       this.Walking_Style = style;
-      player.setVariable(EntityData.WALKING_STYLE, style);
+      player.setVariable(entityData.WALKING_STYLE, style);
       await this.save();
    };
 
    setMood (player: PlayerMp, mood: keyof typeof Peds.facialMoods) { 
       this.Facial_Mood = mood;
-      player.setVariable(EntityData.FACIAL_MOOD, mood);
+      player.setVariable(entityData.FACIAL_MOOD, mood);
    };
 
    setCuffs (player: PlayerMp, toggle: boolean) {
       this.Cuffed = toggle;
-      player.setVariable(EntityData.CUFFED, toggle);
+      player.setVariable(entityData.CUFFED, toggle);
    }
 
    
@@ -531,9 +539,7 @@ export default class Characters extends Model {
 // };
 
 
-// mp.Player.prototype.SendMessage = function (message, color) {
-//    this.outputChatBox('!{' + color + '}' + message);
-// };
+
 
 
 // mp.Player.prototype.IsNear = function (target) {

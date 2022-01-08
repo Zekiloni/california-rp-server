@@ -1,5 +1,5 @@
 import { Browser } from '../../Browser';
-import { Controls } from "../../Utils";
+import { Controls } from "../../utils";
 
 
 const Player = mp.players.local;

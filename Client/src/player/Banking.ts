@@ -1,6 +1,6 @@
 
 import { Browser } from '../Browser';
-import { Controls, IsNearATM } from '../Utils';
+import { Controls, IsNearATM } from '../utils';
 
 const Player = mp.players.local;
 

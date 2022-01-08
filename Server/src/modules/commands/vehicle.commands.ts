@@ -1,13 +1,14 @@
-// import { Commands } from '../commands';
+import { commandData } from '../../globals/enums';
+import { Commands } from '../commands';
 
-// Commands['engine'] = { 
-//    Desc: 'Kontrola motora vozila',
-//    Vehicle: true,
-//    Call: (player: PlayerMp, vName: string) => { 
-// 		const Vehicle = player.vehicle, Character = await player.Character();
-// 		Vehicle.engine = !Vehicle.engine;
-//    } 
-// }
+Commands[commandData.names.engine] = { 
+   Desc: 'Kontrola motora vozila',
+   Vehicle: true,
+   Call: (player: PlayerMp, vName: string) => { 
+		const Vehicle = player.vehicle;
+		Vehicle.engine = !Vehicle.engine;
+   } 
+}
 
 // Commands['seatbelt'] = { 
 //    Desc: 'Vezanje pojasa',

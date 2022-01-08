@@ -2,10 +2,10 @@
 
 import { Config } from './config';
 import { defaultSpawn } from './globals/constants';
-import { Global_Dimension, LogType, NotifyType } from './globals/enums';
+import { Global_Dimension, logType, NotifyType, spawnTypes } from './globals/enums';
 
 
-export function Logger (Status: LogType, Message: any) {
+export function Logger (Status: logType, Message: any) {
    const Colors = ['\x1b[31m', '\x1b[32m', '\x1b[33m', '\x1b[0m'];
 
    console.log(Colors[Status] + dateTime() + Colors[3] + ' | ' + Message);
@@ -25,6 +25,7 @@ export function randomInteger (Min: number, Max: number) {
 export function getDefaultSpawn () { 
    return {
       name: defaultSpawn.name,
+      type: spawnTypes.default,
       description: defaultSpawn.description,
       position: Config.Default.Spawn,
       heading: Config.Default.Heading
