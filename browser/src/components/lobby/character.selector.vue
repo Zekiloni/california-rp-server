@@ -19,11 +19,11 @@
          </div>
 
          <div class="characters">
-            <div class="character-slot" v-for="i in maxCharacters" :key="i" @mouseenter="hover"> 
+            <div class="character-slot" v-for="i in maxCharacters" :key="i" v-on:mouseenter="playAudio(hoverAudio)"> 
                <div class="character" v-if="account.Characters[i]" >
                   <h2 v-on:click="selectCharacter(account.Characters[i].id)"> IGRAJ </h2>
                </div>
-               <div v-else class="character-create" v-on:click="Create(i)"> 
+               <div v-else class="character-create" v-on:click="createCharacter(i)"> 
                   <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
                   <div class="create-button"> </div>
                </div>
@@ -35,6 +35,8 @@
 <script>
    import { Messages } from '../../globals';
    import Helpers from '../../helpers';
+   
+   import hoverAudio from '../../assets/sounds/hover.mp3';
 
    export default {
       props: {
@@ -45,7 +47,7 @@
          return { 
             maxCharacters: [0, 1, 2],
 
-            Helpers, Messages
+            Helpers, Messages, hoverAudio
          }
       },
 
@@ -64,6 +66,10 @@
 
          getWarns: function () { 
             return this.account.Warns >= 1 ? this.account.Warns : Messages.NO_NO;
+         },
+
+         character: function (i) { 
+            this.account.Characters[i]
          }
       },
       
@@ -71,8 +77,11 @@
          selectCharacter: async function (id) {
             const spawnPositions = await mp.events.callProc('CLIENT::CHARACTER:SPAWNS', id);
             if (spawnPositions) {
+               console.log(1)
                this.$parent.spawnPoints = JSON.parse(spawnPositions);
                this.$parent.selectedCharacter = id;
+               this.$parent.spawnSelector = true;
+
             }
          },
 

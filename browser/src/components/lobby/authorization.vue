@@ -54,16 +54,16 @@
 <style scoped>
 
    .authorization { 
-      width: 525px;
       height: auto;
+      border-radius: 10px;
       margin: auto;
       display: flex;
       justify-content: center;
       color: whitesmoke;
       align-items: center;
       transition: all .3s ease;
+      background: linear-gradient(0deg, #171827, transparent);
       flex-direction: column;
-      padding: 20px 0;
       animation: slide-from-top 1.3s ease-in-out;
    }
 
@@ -76,7 +76,6 @@
       width: 270px; 
       text-align: center; 
       color: #cdcdcd; 
-      background: rgb(23 24 39 / 70%);
       border-radius: 10px;
       padding: 10px 25px;
    }
@@ -96,9 +95,9 @@
    .form .input-container { position: relative; margin: 10px 0; }
 
    button.play { 
-      margin: 5px 0;
       font-weight: 200;
       width: 320px;
+      margin-top: 15px;
       padding: 20px 10px;
       background: linear-gradient(45deg, #7c5bf1, #20143f);
       box-shadow: 25px 15px 25px -5px rgb(37 24 71 / 10%), 0 15px 25px -5px rgb(117 85 226 / 15%);

@@ -5,9 +5,9 @@
 
       <Authorization v-if="!logged"/>
 
-      <CharacterSelector v-else-if="logged && account" :account="account"/>
+      <CharacterSelector v-if="logged && account" :account="account"/>
 
-      <SpawnSelector v-else-if="logged & selectedCharacter" :spawnPoints="spawnPoints" />
+      <SpawnSelector v-if="spawnSelector && selectCharacter" :spawnPoints="spawnPoints" />
          
    </div>
         
@@ -30,10 +30,11 @@
 
       data () { 
          return { 
-            logged: true,
+            logged: false,
             account: null,
-            selectedCharacter: null,
+            selectedCharacter: true,
             spawnPoints: null,
+            spawnSelector: false,
 
             Helpers, Messages,
          }

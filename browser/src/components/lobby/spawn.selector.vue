@@ -1,8 +1,8 @@
 
 <template>
-   <div class="selector"> 
+   <div class="spawn-selector"> 
       
-
+      {{ spawnPoints }}
    </div>
 </template>
 
