@@ -1,4 +1,4 @@
-import { Natives } from "./Data/Natives";
+import { Natives } from "./data/Natives";
 
 const Player: PlayerMp = mp.players.local;
 

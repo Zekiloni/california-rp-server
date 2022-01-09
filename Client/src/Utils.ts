@@ -1,4 +1,4 @@
-import { Clothing_Components, Genders } from "./Data/Player";
+import { Clothing_Components, Genders } from './data/Player';
 
 const ATMS = [ 
    3424098598, 3168729781, 2930269768, 506770882

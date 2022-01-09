@@ -44,10 +44,10 @@
 
    import Lobby from '@/components/lobby.vue';
    import Creator from './components/Creator.vue';
-   import Notifications from './components/Notifications.vue';
-   import GameInterface from './components/Game.Interface.vue';
-   import Chat from './components/Chat';
-   import Inventory from './components/items/Inventory.vue';
+   import Notifications from './components/notifications.hints.vue';
+   import GameInterface from './components/game.innterface.vue';
+   import Chat from './components/chat';
+   import Inventory from './components/items/inventory.vue';
    import Banking from './components/Banking.vue';
    import JobOffer from './components/jobs/Job_Offer.vue';
    import Market from './components/business/Market.vue';

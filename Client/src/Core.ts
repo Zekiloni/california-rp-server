@@ -1,6 +1,6 @@
 
-import { Browser } from './Browser';
-import { Clothing_Components, Genders } from './Data/Player';
+import { Browser } from './browser';
+import { Clothing_Components, Genders } from './data/Player';
 import { getStreetZone } from './utils';
 
 const Player = mp.players.local;
@@ -8,7 +8,7 @@ const Player = mp.players.local;
 
 mp.nametags.enabled = false;
 
-const ScreenResolution = mp.game.graphics.getScreenActiveResolution(100, 100);
+export const screenResolution = mp.game.graphics.getScreenActiveResolution(100, 100);
 
 mp.events.add(
    {

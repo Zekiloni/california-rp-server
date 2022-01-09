@@ -3,14 +3,20 @@
 
 <template>
    
-   <transition-group name="notification" tag="ul" class="notifications">
-      <li v-for="(Notification, i) in Notifications" v-bind:key="'notfy'-i" class="notification" :class="Types[Notification.Type].Class"> 
-         <div class="type">
-            <i aria-hidden="true" :class="Types[Notification.Type].Icon"> </i>
-         </div>
-         <h4> {{ Notification.Message }} </h4>
-      </li>
-   </transition-group>
+   <div class="notifications-hints"> 
+      <transition name="slide-top">
+         <div class="hint" v-if="hint"> </div>
+      </transition>
+
+      <transition-group name="notification" tag="ul" class="notifications">
+         <li v-for="(notification, i) in notifications" v-bind:key="i" class="notification" :class="notificationTypes[notification.type].Class"> 
+            <div class="type">
+               <i aria-hidden="true" :class="notificationTypes[notification.type].Icon"> </i>
+            </div>
+            <h4> {{ notification.message }} </h4>
+         </li>
+      </transition-group>
+   </div>
 
 </template>
 
@@ -25,31 +31,41 @@
       data () { 
          return { 
 
-            Types: [
+            hint: null,
+
+            notificationTypes: [
                { Icon: 'fa fa-check', Class: 'success', Sound: new Audio(Success_Sound) },
                { Icon: 'fas fa-exclamation', Class: 'error', Sound: new Audio(Error_Sound) },
                { Icon: 'fa fa-info', Class: 'info', Sound: new Audio(Info_Sound) }
             ],
 
-            Notifications: [],
+            notifications: [],
          }
       },
 
       mounted: function () { 
          if (window.mp) { 
-            mp.events.add('BROWSER::NOTIFICATION', (Message, Type, Time = 4) => { 
-               this.Push(Message, Type, Time);
+            mp.events.add('BROWSER::NOTIFICATION', (message, type, time = 4) => { 
+               this.push(message, type, time);
             });  
+
+            mp.events.add('BROWSER::HINT', (message, time = 4) => { 
+               this.hint = { message: message };
+               setTimeout(() => { this.hint = null }, time * 1000);
+            });
          }
       },
 
       methods: { 
-         Push: function (Message, Type, Time) { 
-            this.Types[Type].Sound.play();
-            this.Notifications.push({ Message: Message, Type: Type });
-            setTimeout(() => {
-               this.Notifications.splice(0, 1);
-            }, Time * 1000);
+
+         push: function (message, type, time) { 
+            this.notificationTypes[type].Sound.play();
+            const notification = this.notifications.push({ message: message, type: type });
+
+            setTimeout(() => { 
+               const index = this.notifications.indexOf(notification);
+               this.notifications.splice(index, 1);
+            }, time * 1000);
          },
       }
    }

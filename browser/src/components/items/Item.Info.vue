@@ -2,16 +2,19 @@
 
 <template>
 
-   <div class="item" v-if="isVisible" v-bind:style="{ }">
+   <div class="item-info" 
+      v-if="position.top && position.left" 
+      v-bind:style="{ left: position.left + 'px', top: position.top + 'px' }"
+      @mouseenter="$parent.hoverBox = true" 
+      @mouseleave="$parent.hoverBox = false && $parent.hoveredItem" 
+   >
 
-      <h2> {{ Item.Name }} </h2>
-      
-      <p> {{ Item.Description }} </p>
-      <h4> 
-         {{ Messages.WEIGHT_OF_ITEM }} <b> {{ Item.Weight }} {{ Messages.WEIGHT_KG }} </b>,
-         {{ Messages.TOTAL_WEIGHT }} {{ Item.Quantity * Item.Weight }} {{ Messages.WEIGHT_KG }}  
-      </h4>
+      <h2> {{ item.Name }} </h2>
+      <p v-html="itemInfo"> </p>
 
+      <ul class="actions"> 
+         
+      </ul>
    </div>
 
 </template>
@@ -21,26 +24,38 @@
 
    export default { 
       props: {
-         Item: Object,
-         callback: Function,
+         item: Object,
+         position: Object
       },
       
       data () {
          return { 
-            isVisible: false,
-            Left: 0,
-            Top: 0,
-
+            itemInfo: null,
             Messages
          }
       },
 
-      methods: { 
-         Show: function (event) {
-            this.isVisible = !this.isVisible;
-            this.Top = event.screen.clientX, this.Left.event.screen.clientY;
+      async mounted () { 
+         if (window.mp) { 
+            const itemInfo = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
+            if (itemInfo) {
+               this.itemInfo = JSON.parse(itemInfo);
+            }
          }
       }
    }
 
 </script>
+
+<style scoped>
+
+   .item-info { 
+      position: absolute;
+      width: 300px;
+      height: 200px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(45deg, #171827, transparent);
+   }
+
+</style>

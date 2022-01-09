@@ -39,15 +39,17 @@ Database.authenticate()
 (async () => { 
 
    const Admins = [
+      { Username: 'divine', Password: 'divine' },
       { Username: 'Zekiloni', Password: 'kapakapa' },
-      { Username: 'divine', Password: 'divine' }
+      { Username: 'pitix', Password: 'pitix' },
+      { Username: 'deker', Password: 'deker' }
    ];
 
    for (const Admin of Admins) { 
-      const Exist = await Accounts.findOne({ where: { Username: Admin.Username } });
+      const Exist = await Accounts.findOne({ where: { username: Admin.Username } });
       console.log(Admin);
       if (Exist == null) { 
-         Accounts.create({ Username: Admin.Username, Password: Admin.Password, Administrator: 7 });
+         Accounts.create({ username: Admin.Username, password: Admin.Password, administrator: 7 });
       }
    }
 

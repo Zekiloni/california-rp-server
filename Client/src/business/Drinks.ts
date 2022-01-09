@@ -1,4 +1,4 @@
-import { Browser } from "../Browser";
+import { Browser } from "../browser";
 
 
 const Player = mp.players.local;

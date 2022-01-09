@@ -8,48 +8,48 @@ export default class Appearances extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
-   ID: number;
+   id: number;
 
    @ForeignKey(() => Characters)
    @Column
-   Character_id: number;
+   character_id: number;
 
    @BelongsTo(() => Characters)
-   Character: Characters
+   character: Characters
 
    @AllowNull(false)
    @Column(DataType.JSON)
-   Face_Features: number[];
+   face_features: number[];
 
    @AllowNull(false)
    @Column(DataType.JSON)
-   Blend_Data: number[];
+   blend_data: number[];
 
    @AllowNull(false)
    @Column(DataType.JSON)
-   Hair: number[];
+   hair: number[];
 
    @AllowNull(false)
    @Column(DataType.JSON)
-   Beard: number[];
+   beard: number[];
 
    @AllowNull(false)
    @Column
-   Eyes: number;
+   eyes: number;
 
    @AllowNull(false)
    @Column(DataType.JSON)
-   Overlays: number[];
+   overlays: number[];
 
    @AllowNull(true)
    @Column(DataType.JSON)
-   Overlays_Colors: number[];
+   overlays_colors: number[];
 
    @CreatedAt
-   Created_At: Date;
+   created_at: Date;
 
    @UpdatedAt
-   Updated_At: Date;
+   updated_at: Date;
 
    Apply (Player: PlayerMp, Gender: number) {
 
@@ -57,22 +57,22 @@ export default class Appearances extends Model {
       Player.model = genders[Gender];
    
       Player.setHeadBlend(
-         this.Blend_Data[0], 
-         this.Blend_Data[1], 0,
-         this.Blend_Data[2],
-         this.Blend_Data[3], 0,
-         this.Blend_Data[4],
-         this.Blend_Data[5], 0
+         this.blend_data[0], 
+         this.blend_data[1], 0,
+         this.blend_data[2],
+         this.blend_data[3], 0,
+         this.blend_data[4],
+         this.blend_data[5], 0
       );
    
-      Player.eyeColor = this.Eyes;   
-      Player.setClothes(2, this.Hair[0], 0, 2);
+      Player.eyeColor = this.eyes;   
+      Player.setClothes(2, this.hair[0], 0, 2);
       Player.setHairColor(
-         this.Hair[1], this.Hair[2]
+         this.hair[1], this.hair[2]
       );
    
       for (let i = 0; i < 20; i ++) { 
-         Player.setFaceFeature(i, this.Face_Features[i]);
+         Player.setFaceFeature(i, this.face_features[i]);
       }
    };
 }

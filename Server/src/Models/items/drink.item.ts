@@ -16,7 +16,7 @@ export class drinkItem extends baseItem {
       this.alcohol = alcohol;
 
       this.use = function (player: PlayerMp) {
-         player.Character.Hunger += this.thirst;
+         player.Character.thirst += this.thirst;
       }
 
    }

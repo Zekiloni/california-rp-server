@@ -21,7 +21,7 @@
 
          <div class="player">
 
-            <h2 class="money"> {{ Helpers.Dollars(Money) }} </h2>
+            <h2 class="money"> {{ Helpers.Dollars(money) }} </h2>
          </div>
 
       </div>
@@ -104,7 +104,7 @@
             cTime: '',
             cDate: '',
 
-            Money: 0,
+            money: 0,
             Remote_ID: 0,
             Players: 0,
 
@@ -139,10 +139,10 @@
       },
 
       watch: { 
-         Money: function (newValue, oldValue) { 
+         money: function (value, oldValue) { 
             if (oldValue == 0) return;
-            newValue > oldValue ? this.change = 0 : this.change = 1;
-            this.changeValue = newValue - oldValue;
+            value > oldValue ? this.change = 0 : this.change = 1;
+            this.changeValue = value - oldValue;
             setTimeout(() => { this.change = null; }, 3000);
             this.sounds.money.play();
          },
@@ -193,11 +193,16 @@
       },
 
       mounted () { 
+         if (window.mp) { 
+
+         }
          mp.events.add('BROWSER::GAME_UI:UPDATE_LOCATION', (street, zone, heading) => { 
             this.Location.Street = street;
             this.Location.Zone = zone;
             this.Location.Heading = heading;
          });
+
+         mp.events.add('BROWSER::GAME_UI:UPDATE_MONEY', money => this.money = money);
       }
    }
 

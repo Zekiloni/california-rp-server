@@ -2,8 +2,8 @@
 <template>
    
    <div class="chat" v-if="Settings.Active">
-      <ul class="messages" ref="Entries" id="messages">
-         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.5' : '1' }" v-bind:key="i">
+      <ul class="messages" ref="Entries" id="messages" :style="{ overflow: Typing ? 'auto' : 'hidden' }">
+         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive || !Typing ? '0.5' : '1' }" v-bind:key="i">
             <b class="timestamp" v-if="Settings.Timestamp" v-html="timeStamp(message.timestamp)"> </b>
             <span v-html="message.content"> </span>
          </li>
@@ -58,7 +58,7 @@
 
       watch: {
          Messages: function (value) {
-            // this.Update();
+            this.scroll();
          }
       },
 
@@ -150,6 +150,22 @@
             }
 
             this.Input = Message;
+         },
+
+          scroll: function () {
+               const Element = document.getElementById('messages');
+
+               let height = Element.clientHeight;
+               let scrollHeight = Element.scrollHeight - height;
+               let scrollTop = Element.scrollTop;
+               let percent = Math.floor(scrollTop / scrollHeight * 100);
+
+               this.$nextTick(function() { 
+                  Element.scroll({
+                     top: Element.scrollHeight,
+                     behavior: 'smooth'
+                  });               
+               }.bind(this));
          },
 
          Close: function () { 
@@ -252,6 +268,7 @@
       margin: 0;
       transition: all 0.35s ease;
       height: 100%;
+      padding-left: 15px;
       overflow-y: auto;
       direction: rtl;
       overflow-wrap: break-word;

@@ -49,14 +49,12 @@ export default class Channel extends Model {
 
    AddMember (Player: PlayerMp) {
       if (Player.Character) {
-         Player.Character.Frequency = this.Frequency;
          Player.Character.save();
       }
    }
 
    RemoveMember (Player: PlayerMp) {
       if (Player.Character) {
-         Player.Character.Frequency = 0;
          Player.Character.save();
       }
    }

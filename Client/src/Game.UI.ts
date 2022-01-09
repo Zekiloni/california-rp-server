@@ -1,7 +1,6 @@
 
-import { Browser } from './Browser';
+import { Browser } from './browser';
 
-const Player = mp.players.local;
 
 export enum UI_Status {
    Full_Visible,
@@ -30,8 +29,9 @@ class GAME_UI {
       mp.events.add('render', this.GTA_HUD);
    }
 
-   Toggle (i: UI_Status) { 
+   toggle (i: UI_Status) { 
       this.Status ++;
+
       if (this.Status > UI_Status.Fully_Hidden) this.Status = UI_Status.Full_Visible;
 
       switch (true) { 
@@ -59,21 +59,24 @@ class GAME_UI {
       gameInterface.HIDE_CORSSAIR();
    }
 
-   mainInterface () { 
 
-      const { x: x, y: y, z: z} = Player.position;
+   mainInterface () { 
+      const { x: x, y: y, z: z} = mp.players.local.position;
       const path = mp.game.pathfind.getStreetNameAtCoord(x, y, z, 0, 0);
 
       const zone = mp.game.gxt.get(mp.game.zone.getNameOfZone(x, y, z));
       const street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
-      const heading = gameInterface.whereHeaded(Player.getHeading());
+      const heading = gameInterface.whereHeaded(mp.players.local.getHeading());
 
       Browser.call('BROWSER::GAME_UI:UPDATE_LOCATION', street, zone, heading);
-      
+   }
+
+   updateMoney (i: number) { 
+      Browser.call('BROWSER::GAME_UI:UPDATE_MONEY', i);
    }
    
    HIDE_CORSSAIR () { 
-      const Weapon = Player.weapon;
+      const Weapon = mp.players.local.weapon;
       Weapon == 0x05FC3C11 || Weapon == 0x0C472FE2 || Weapon == 0xA914799 || Weapon == 0xC734385A || Weapon == 0x6A6C02E0 ? 
          (mp.game.ui.showHudComponentThisFrame(14)) : mp.game.ui.hideHudComponentThisFrame(14);
    }

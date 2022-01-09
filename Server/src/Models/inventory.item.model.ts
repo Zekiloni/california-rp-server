@@ -21,6 +21,9 @@ export default class Items extends Model {
    @Column(DataType.INTEGER)
    entity: itemData.Entity;
 
+   @Column(DataType.INTEGER)
+   status: itemData.Status;
+
    @Column
    owner: number;
 
@@ -43,7 +46,7 @@ export default class Items extends Model {
 
    @Default({})
    @Column(DataType.JSON)
-   extra: Object;
+   data: Object;
 
    @CreatedAt
    created_at: Date;
@@ -66,12 +69,12 @@ export default class Items extends Model {
 
 
    refreshItem () { 
-      if (this.entity == itemData.Entity.Ground) { 
-         this.object = mp.objects.new('zeki', this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
+      if (this.status == itemData.Status.GROUBD) {
+         this.object = mp.objects.new(baseItem.List[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
          this.object.setVariable(entityData.ITEM, this.name);
       } else { 
          if (this.object) { 
-            this.object.destroy();
+            this.object.destroy()
          }
       }
    }
@@ -95,10 +98,10 @@ export default class Items extends Model {
 
 
    static async giveItem (player: PlayerMp, target: PlayerMp, item: baseItem, quantity: number = 1) { 
-      const alreadyItem = await Items.hasItem(itemData.Entity.Player, target.Character.id, item.name);
+      const alreadyItem = await Items.hasItem(itemData.Entity.PLAYER, target.Character.id, item.name);
       
       alreadyItem && item.isStackable() ? 
-         alreadyItem.increment('quantity', { by: quantity }) : Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.Player, owner: target.Character.id });
+         alreadyItem.increment('quantity', { by: quantity }) : Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: target.Character.id });
    }
 
 

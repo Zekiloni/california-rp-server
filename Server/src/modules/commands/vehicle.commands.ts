@@ -1,7 +1,7 @@
 import { commandData } from '../../globals/enums';
 import { Commands } from '../commands';
 
-Commands[commandData.names.engine] = { 
+Commands[commandData.Names.ENGINE] = { 
    Desc: 'Kontrola motora vozila',
    Vehicle: true,
    Call: (player: PlayerMp, vName: string) => { 

@@ -11,11 +11,13 @@ mp.Player.prototype.Teleport = function (Position: Vector3Mp, Heading: number = 
    this.Position = Position;
    this.Heading = Heading;
    // Safe tp
-}
+};
+
 
 mp.Player.prototype.sendMessage = function (message: string, color: string) {
    this.outputChatBox('!{' + color + '}' + message);
 };
+
 
 mp.players.find = (searchQuery: any) => {
    let foundPlayer = null;
@@ -34,3 +36,4 @@ mp.players.find = (searchQuery: any) => {
    }
    return foundPlayer;
 };
+

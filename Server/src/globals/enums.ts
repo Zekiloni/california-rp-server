@@ -172,13 +172,13 @@ export namespace itemData {
    }
 
    export enum Entity { 
-      Ground, Player, Storage,
-      Vehicle, tempVehicle, House,
-      Business
+      PLAYER, BACKPACK, STORAGE,
+      VEHICLE, TEMPORARY_VEHICLE,
+      HOUSE, BUSINESS
    }
 
    export enum Status { 
-      None, Equiped, Right_Hand, Left_Hand,
+      NONE, EQUIPED, GROUBD, RAW, COOKED, BROKEN
    }
 
    export enum Names { 
@@ -203,21 +203,23 @@ export namespace itemData {
 
 
 export namespace commandData { 
-   export enum names {
-      items = 'items',
-      giveItem = 'giveitem',
-      clearInventory = 'clearinventory',
-      engine = 'engine',
-      time = 'time',
-      weather = 'weather'
+   export enum Names {
+      ITEMS = 'items',
+      GIVE_ITEM = 'giveitem',
+      CLEAR_INVENTORY = 'clearinventory',
+      ENGINE = 'engine',
+      TIME = 'time',
+      WEATHER = 'weather',
+      FIX_VEH = 'fixveh'
    }
 
-   export enum descriptions { 
+   export enum Descriptions { 
       items = 'Lista svih predmeta.',
       giveItem = 'Davanje predmeta.',
       clearInventory = 'Čišćenje predmeta osobe.',
       time = 'Promena vremena.',
-      weather = 'Vremenske prilike.'
+      weather = 'Vremenske prilike.',
+      FIX_VEH = 'Popravka vozila.'
    }
 }
 

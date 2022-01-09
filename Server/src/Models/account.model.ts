@@ -17,87 +17,87 @@ export default class Accounts extends Model {
 
    @Unique(true)
    @Column
-   Username: string
+   username: string
 
    @Unique(true)
    @Column
-   Email: string
+   email: string
 
    @Column
-   Password: string
+   password: string
 
    @Default(0)
    @Column
-   Administrator: number
+   administrator: number
 
    @Default(null)
    @Column
-   Login_Date: Date
+   login_date: Date
 
    @Default(null)
    @Column
-   IP_Adress: string
+   ip_adress: string
 
    @Default(null)
    @Column
-   Social_Club: string
+   social_club: string
    
    @Default(null)
    @Column
-   Hardwer: string
+   hardwer: string
 
    @Default(0)
    @Column
-   Warns: number
+   warns: number
 
    @Default(0)
    @Column
-   Donator: number
+   donator: number
 
    @Default(0)
    @Column
-   Coins: number
+   coins: number
 
    @Default(false)
    @Column
-   Online: boolean
+   online: boolean
 
    @Default(-1)
    @Column
-   Last_Character: number
+   last_character: number
 
    @CreatedAt
-   Created_At: Date;
+   created_at: Date;
 
    @UpdatedAt
-   Updated_At: Date;
+   updated_at: Date;
 
    @BeforeCreate
    static Creating (Account: Accounts) { 
-      Account.Password = bcrypt.hashSync(Account.Password, Salt);
+      Account.password = bcrypt.hashSync(Account.password, Salt);
    }
 
    @HasMany(() => Characters)
-   Characters: Characters[]
+   characters: Characters[]
    
    Login (Password: string) {     
-      return bcrypt.compareSync(Password, this.Password);
+      return bcrypt.compareSync(Password, this.password);
    }
 
    async Logged (player: PlayerMp, toggle: boolean) {
-      this.Online = toggle;
+      this.online = toggle;
       player.Account = this;
-      this.Login_Date = new Date();
-      this.IP_Adress = player.ip;
+      this.login_date = new Date();
+      this.ip_adress = player.ip;
       
       player.setVariable(entityData.LOGGED, true);
-      player.setVariable(entityData.ADMIN, this.Administrator);
+      player.setVariable(entityData.ADMIN, this.administrator);
 
-      if (this.Hardwer == null || this.Social_Club == null) {
-         const Already = await Accounts.findOne({ where: { Social_Club: player.socialClub, Hardwer: player.serial } });
+      if (this.hardwer == null || this.social_club == null) {
+         const Already = await Accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } });
          if (Already) player.kick(Messages.USER_ALREADY_EXIST);
-         this.Hardwer = player.serial;
-         this.Social_Club = player.socialClub;
+         this.hardwer = player.serial;
+         this.social_club = player.socialClub;
       }
 
       await this.save();
@@ -105,7 +105,7 @@ export default class Accounts extends Model {
 
    
    setAdministrator (player: PlayerMp, level: number) {
-      this.Administrator = level;
+      this.administrator = level;
       player.setVariable(entityData.ADMIN, level); 
       this.save();
    }

@@ -1,5 +1,5 @@
 
-import { Browser } from '../Browser';
+import { Browser } from '../browser';
 import { Controls, IsNearATM } from '../utils';
 
 const Player = mp.players.local;

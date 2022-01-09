@@ -61,8 +61,8 @@ export default class Bans extends Model {
          const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.Account.id });
          if (playerAccount) {
             Banned.Account = playerAccount.id;
-            Banned.HardwareId = playerAccount.Hardwer;
-            Banned.Social = playerAccount.Social_Club;
+            Banned.HardwareId = playerAccount.hardwer;
+            Banned.Social = playerAccount.social_club;
          }
          await Banned.save();
       }
@@ -71,12 +71,12 @@ export default class Bans extends Model {
          if (Online) {
             const Account = await Online.Account;
 
-            Bans.create({ Account: Online.Account.id, Character: Online.Character.id, IP: Account.IP_Adress, Hardwer: Account.Hardwer, Social: Account.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
+            Bans.create({ Account: Online.Account.id, Character: Online.Character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.Account.id });
             Online.kick(reason);
          } else {
             const OfflineAcc = await Accounts.findOne({ where: { Name: target } })
             if (OfflineAcc) {
-               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.IP_Adress, Hardwer: OfflineAcc.Hardwer, Social: OfflineAcc.Social_Club, Date: date, Expiring: expiring, Issuer: player.Account.id });
+               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.Account.id });
             } else {
                player.Notification(Messages.USER_NOT_FOUND, NotifyType.ERROR, 5);
             }

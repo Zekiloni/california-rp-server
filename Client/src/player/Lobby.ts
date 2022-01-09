@@ -1,5 +1,5 @@
-import { Browser } from '../Browser';
-import { gameInterface, UI_Status } from '../Game.UI';
+import { Browser } from '../browser';
+import { gameInterface, UI_Status } from '../game.UI';
 
 
 const Player = mp.players.local;
@@ -18,7 +18,7 @@ mp.events.add(
          Lobby(false);
          Browser.call('BROWSER::SHOW', 'Chat');
          mp.events.callRemote('SERVER::CHARACTER:PLAY', character, spawnPoint);
-         gameInterface.Toggle(UI_Status.Full_Visible);
+         gameInterface.toggle(UI_Status.Full_Visible);
       }
    }
 );

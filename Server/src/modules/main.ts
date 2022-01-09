@@ -24,7 +24,7 @@ mp.events.add(
 
          try { 
             if (leavingPlayer.Character) {
-               leavingPlayer.Character.Last_Position = leavingPlayer.position;
+               leavingPlayer.Character.last_position = leavingPlayer.position;
    
                await leavingPlayer.Character.save();
             }
@@ -49,7 +49,7 @@ mp.events.add(
 
             const character = player.Character;
 
-            player.sendProximityMessage(Distances.IC, character.Name + Messages.PERSON_SAYS + Content, Colors.White);
+            player.sendProximityMessage(Distances.IC, character.name + Messages.PERSON_SAYS + Content, Colors.White);
          }
    
          //    if (Player.getVariable('Muted')) return;
@@ -127,23 +127,22 @@ mp.events.addProc(
                const defaultSpawn: spawnPoint = getDefaultSpawn();
                spawnPoints.push(defaultSpawn);
    
-               if (character?.Faction) {
+               if (character?.faction) {
                   // push factionn spawn
                }
                
                // if (character?.houses) { }
       
-               if (character?.Last_Position) { 
-                  console.log(character.Last_Position);
+               if (character?.last_position) { 
+                  const lastPos = JSON.parse(character.last_position.toString());
                   spawnPoints.push({
                      name: Messages.LAST_POSITION,
                      type: spawnTypes.lastPosition,
                      description: Messages.LAST_POSITION_DESC,
-                     position: character.Last_Position,
+                     position: new mp.Vector3(lastPos.x, lastPos.y, lastPos.z),
                      heading: 0
                   })
                }
-               console.log(spawnPoints)
                resolve(spawnPoints);
             });
          });
@@ -154,17 +153,18 @@ mp.events.addProc(
          const Character = JSON.parse(characterInfo);
          const Appearance = JSON.parse(characterAppearance);
 
-         const Exist = await Characters.findOne({ where: { Name: Character.First_Name + ' ' + Character.Last_Name } });
+         const Exist = await Characters.findOne({ where: { name: Character.First_Name + ' ' + Character.Last_Name } });
          if (Exist) return player.Notification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
 
          const createdCharacter = await Characters.create({ 
-            Name: Character.First_Name + ' ' + Character.Last_Name, Account_id: player.Account.id,
-            Origin: Character.Origin, Birth: Character.Birth, Gender: Character.Gender
+            name: Character.First_Name + ' ' + Character.Last_Name, account_id: player.Account.id,
+            origin: Character.Origin, birth: Character.Birth, gender: Character.Gender
          });
 
+
          Appearances.create({
-            Character_id: createdCharacter.id, Character: createdCharacter, Face_Features: Appearance.Face, Blend_Data: Appearance.Blend_Data, 
-            Overlays: Appearance.Overlays, Hair: Appearance.Hair, Beard: Appearance.Beard, Eyes: Appearance.Eyes
+            character_id: createdCharacter.id, character: createdCharacter, face_features: Appearance.Face, blend_data: Appearance.Blend_Data, 
+            overlays: Appearance.Overlays, hair: Appearance.Hair, beard: Appearance.Beard, eyes: Appearance.Eyes
          });
 
          createdCharacter.spawnPlayer(player, spawnTypes.default);
@@ -180,3 +180,37 @@ mp.events.addProc(
       }
    }
 );
+
+
+const interval = 60 * 1000;
+
+async function updatePlayer (Player: PlayerMp) {
+   const Character = Player.Character, Account = Player.Account;
+   
+   Character.increment('minutes', { by: Config.happyHours == true ? 2 : 1 });
+
+   if (Character.minutes >= 60) { 
+      await Character.increment('hours', { by: 1 });
+      Character.update({ Minutes: 0 });
+   }
+
+   Character.increment('hunger', { by: -0.35 });
+   Character.increment('thirst', { by: -0.70 });
+
+   if (Character.muted > 0) {
+      await Character.increment('muted', { by: -1 });
+   }
+}
+
+
+function minuteCheck() {
+   mp.players.forEach((player: PlayerMp) => {
+      if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
+         updatePlayer(player);
+      }
+   });
+   setTimeout(() => { minuteCheck(); }, interval);
+}
+
+
+minuteCheck();

@@ -6,16 +6,16 @@ import { baseItem } from '../../models/item.model';
 import { Commands } from '../commands';
 
 
-Commands[commandData.names.items] = { 
-   Desc: commandData.descriptions.items,
+Commands[commandData.Names.ITEMS] = { 
+   Desc: commandData.Descriptions.items,
    Call: (player: PlayerMp) => { 
       console.log(baseItem.List);
    }
 }
 
 
-Commands[commandData.names.giveItem] ={
-   Desc: commandData.descriptions.giveItem,
+Commands[commandData.Names.GIVE_ITEM] ={
+   Desc: commandData.Descriptions.giveItem,
    Admin: adminLevel.SENIOR_ADMIN,
    Call: (player: PlayerMp, targetSearch: any, itemName: string, quantity: number) => { 
       if (baseItem.List[itemName]) {
@@ -31,8 +31,8 @@ Commands[commandData.names.giveItem] ={
 }
 
 
-Commands[commandData.names.clearInventory] = { 
-   Desc: commandData.descriptions.clearInventory,
+Commands[commandData.Names.CLEAR_INVENTORY] = { 
+   Desc: commandData.Descriptions.clearInventory,
    Call: (player: PlayerMp, target: any) => { 
       
    }

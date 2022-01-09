@@ -41,15 +41,15 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       const Account = player.Account;
       const Character = player.Character;
 
-      if (Command.Admin && Account.Administrator < Command.Admin) return player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
+      if (Command.Admin && Account.administrator < Command.Admin) return player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
 
-      if (Command.Job && Character.Job != Command.Job) return player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
+      if (Command.Job && Character.job != Command.Job) return player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
 
       if (Command.Position && player.dist(Command.Position) > 1.85) return player.Notification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
 
       if (Command.Faction) {
          //if (Command.Faction.Type && Command.Faction.Type != Factions[Character.Faction].type) return;
-         if (Command.Faction.id && Command.Faction.id != Character.Faction) return;
+         if (Command.Faction.id && Command.Faction.id != Character.faction) return;
       }
 
       //if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, NotifyType.ERROR, 5);

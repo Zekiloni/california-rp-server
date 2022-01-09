@@ -21,165 +21,158 @@ export default class Characters extends Model {
 
    @ForeignKey(() => Accounts)
    @Column
-   Account_id: number
+   account_id: number
 
    @BelongsTo(() => Accounts)
-   Account: Accounts
+   account: Accounts
 
    @Unique
    @Length({ min: 6, max: 48 })
    @Column
-   Name: string
+   name: string
 
    @Column
-   Gender: number
+   gender: number
 
    @Column
-   Birth: string
+   birth: string
 
    @Column
-   Origin: string
+   origin: string
 
    @Default(Config.Default.Money)
    @Column
-   Money: number
+   money: number
 
    @Default(0)
    @Column
-   Salary: number
+   salary: number
 
    @HasOne(() => Appearances)
-   Appearance: Appearances
+   appearance: Appearances
+
 
    @Default(0)
    @Column
-   Bank: number
-
-   @Default(0)
-   @Column
-   Paycheck: number
+   paycheck: number
 
    @IsUUID(4)
    @Default(DataType.UUIDV4)
    @Column
-   Stranger_ID: number
+   stranger_id: number
 
    @Default(0)
    @Column
-   Faction: number
+   faction: number
 
    @Default('none')
    @Column
-   Faction_Rank: string
+   faction_rank: string
 
    @Default(0)
    @Column
-   Faction_Permissions: number
+   faction_perms: number
 
    @Default(0)
    @Column
-   Job: number
+   job: number
 
    @Default(0)
    @Column
-   Working_Hours: number
+   working_hours: number
 
    @Default(100)
    @Column
-   Health: number
+   health: number
 
    @Default(100)
    @Column
-   Hunger: number
+   hunger: number
 
    @Default(100)
    @Column
-   Thirst: number
+   thirst: number
    
    @Default(false)
    @Column
-   Wounded: boolean
+   wounded: boolean
 
    @Default([])
    @Column(DataType.JSON)
-   Injuries: Injury[]
+   injuries: Injury[]
 
    @Column(DataType.JSON)
-   Last_Position: Vector3Mp
+   last_position: Vector3Mp
    
-
    @Column(DataType.JSON)
-   Inside: object
+   inside: object
 
    @Default(0)
    @Column
-   Muted: number
+   muted: number
 
    @Default(0)
    @Column
-   Hours: number
+   hours: number
 
    @Default(0)
    @Column
-   Minutes: number
+   minutes: number
 
    @Default(Peds.walkingStyles.Normal)
    @Column(DataType.STRING)
-   Walking_Style: keyof typeof Peds.walkingStyles
+   walking_style: keyof typeof Peds.walkingStyles
 
 
    @Default(Peds.facialMoods.Normal)
    @Column(DataType.STRING)
-   Facial_Mood: keyof typeof Peds.facialMoods
+   facial_mood: keyof typeof Peds.facialMoods
    
    @Default(Config.Max.INVENTORY_WEIGHT)
    @Column
-   Max_Inventory_Weight: number
+   max_inventory_weight: number
 
    @Default(Config.Max.HOUSES)
    @Column
-   Max_Houses: number
+   max_houses: number
 
    @Default(Config.Max.BUSINESSES)
    @Column
-   Max_Business: number
+   max_business: number
 
    @Default(Config.Max.VEHICLES)
    @Column
-   Max_Vehicles: number
-
-   @Default(0)
-   @Column
-   Frequency: number;
+   max_vehicles: number
 
 
    @Default(false)
    @Column
-   Cuffed: boolean
+   cuffed: boolean
 
    @CreatedAt
-   Created_At: Date;
+   created_at: Date;
 
    @UpdatedAt
-   Updated_At: Date;
+   updated_at: Date;
 
    async spawnPlayer (player: PlayerMp, point: spawnTypes) { 
 
-      player.Account.Last_Character = this.id;
+      player.Account.last_character = this.id;
       player.Character = this;
+      
 
-      player.name = this.Name;
+      player.name = this.name;
 
       console.log('point is ' + point);
 
       player.setVariable(entityData.SPAWNED, true);
 
       // loading money and health
-      this.setHealth(player, this.Health);
-      this.setMoney(player, this.Money);
+      this.setHealth(player, this.health);
+      this.setMoney(player, this.money);
 
-      player.setVariable(entityData.JOB, this.Job);
-      player.setVariable(entityData.FACTION, this.Faction);
+      player.setVariable(entityData.JOB, this.job);
+      player.setVariable(entityData.FACTION, this.faction);
 
       // temporary variables
       player.setVariable(entityData.FACTION_DUTY, false);
@@ -196,12 +189,12 @@ export default class Characters extends Model {
       player.Notification(Messages.WELCOME, NotifyType.INFO, 4);
 
 
-      this.setWalkingStyle(player, this.Walking_Style);
-      this.setMood(player, this.Facial_Mood);
-      this.setCuffs(player, this.Cuffed);
+      this.setWalkingStyle(player, this.walking_style);
+      this.setMood(player, this.facial_mood);
+      this.setCuffs(player, this.cuffed);
    
    
-      player.setVariable(entityData.INJURIES, this.Injuries);
+      player.setVariable(entityData.INJURIES, this.injuries);
 
       console.log(222)
       switch (point) { 
@@ -253,43 +246,45 @@ export default class Characters extends Model {
       //    console.log(e)
       // }
 
+
+      await player.Account.save();
    }
 
    async setHealth (player: PlayerMp, value: number) { 
       player.health = value;
-      this.Health = value;
+      this.health = value;
    };
 
    setMoney (player: PlayerMp, value: number) { 
       player.setVariable(entityData.MONEY, value);
-      this.Money = value;
+      this.money = value;
    };
 
    async giveMoney (player: PlayerMp, value: number) {
-      let Money = await this.increment('Money', { by: value });
+      let Money = await this.increment('money', { by: value });
       if (Money) {
-         player.setVariable(entityData.MONEY, this.Money + value);
+         player.setVariable(entityData.MONEY, this.money + value);
       }
    };
 
    async setJob (value: number) {
-      this.Job = value;
+      this.job = value;
       await this.save();
    };
 
    async setWalkingStyle (player: PlayerMp, style: keyof typeof Peds.walkingStyles) {
-      this.Walking_Style = style;
+      this.walking_style = style;
       player.setVariable(entityData.WALKING_STYLE, style);
       await this.save();
    };
 
    setMood (player: PlayerMp, mood: keyof typeof Peds.facialMoods) { 
-      this.Facial_Mood = mood;
+      this.facial_mood = mood;
       player.setVariable(entityData.FACIAL_MOOD, mood);
    };
 
    setCuffs (player: PlayerMp, toggle: boolean) {
-      this.Cuffed = toggle;
+      this.cuffed = toggle;
       player.setVariable(entityData.CUFFED, toggle);
    }
 

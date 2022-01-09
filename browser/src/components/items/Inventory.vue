@@ -5,10 +5,10 @@
    <div class="wrapper">
 
       <div class="inventory">
-         <div class="item-holder" v-for="Item in Items" :key="Item.id"> 
+         <div class="item-holder" v-for="item in items" :key="item.id" @mouseenter=" e => hoverItem(item, e)" > 
             <div class="item">
-            {{ Item.id }}
-               <h3 class="item-name"> {{ Item.Name }} </h3>
+               <h3 class="quantity"> {{ item.quantity }} </h3>
+               <h3 class="item-name"> {{ item.name }} </h3>
             </div>
          </div>
          <!-- <div class="items">
@@ -32,13 +32,22 @@
 
          </div> -->
       </div>
+
+      
+      <transition name="fade">
+         <ItemInfo 
+            v-if="hoverBox && hoveredItem" 
+            :item="hoveredItem" 
+            :position="hoveredPosition" 
+         />
+      </transition>
    </div>
 </template>
 
 <script>
 
    import { Messages, Item_Entity, Item_Type, ENVIRONMENT_TYPES } from '@/globals';
-   import ItemInfo from './Item.Info.vue';
+   import ItemInfo from './item.info.vue';
 
    export default { 
       
@@ -48,31 +57,25 @@
 
       data () { 
          return {
+            hoverBox: false,
+            hoveredItem: null,
+            hoveredPosition: null,
+
             Page: 0,
 
             Player: { 
                Max_Inventory_Weight: 5 
             },
 
-            Hands: { Left: null, Right: null },
+            items: [
+               { id: 0, model: 'backpack', quantity: 1, name: 'Caffe', entity: Item_Entity.Player, Type: [Item_Type.Storage], Weight: 0.5, Extra: { Max_Weight: 25 } },
+               { id: 1, model: 'cheeseburger', quantity: 1, name: 'Taco', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.4 },
+               { id: 2, model: 'soda_can', quantity: 1, name: 'Soda Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
+               { id: 3, model: 'energy_can', quantity: 1, name: 'Energy Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
+               { id: 5, model: 'cheeseburger', quantity: 1, name: 'Cheeseburger', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.4 },
+               { id: 6, model: 'soda_can', quantity: 1, name: 'Soda Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
+               { id: 7, model: 'beer', quantity: 1, name: 'Beer Bottle', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.45454 },
 
-            Items: [
-               { id: 0, Model: 'backpack', Quantity: 1, Name: 'Black Bag', Entity: Item_Entity.Player, Type: [Item_Type.Storage], Weight: 0.5, Extra: { Max_Weight: 25 } },
-               { id: 1, Model: 'cheeseburger', Quantity: 1, Name: 'Cheeseburger', Entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.4 },
-               { id: 2, Model: 'soda_can', Quantity: 1, Name: 'Soda Can', Entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
-               { id: 3, Model: 'energy_can', Quantity: 1, Name: 'Energy Can', Entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
-               { id: 5, Model: 'cheeseburger', Quantity: 1, Name: 'Cheeseburger', Entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.4 },
-               { id: 6, Model: 'soda_can', Quantity: 1, Name: 'Soda Can', Entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
-               { id: 7, Model: 'beer', Quantity: 1, Name: 'Beer Bottle', Entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.45454 },
-
-            ],
-
-            Storage: [
-               { id: 29, Model: 'coffe', Quantity: 1, Name: 'Coffe', Entity: Item_Entity.Storage, Owner: 0, Type: [Item_Type.Food], Weight: 0.4 },
-               { id: 30, Model: 'donut', Quantity: 1, Name: 'Donut', Entity: Item_Entity.Storage, Owner: 0, Type: [Item_Type.Food], Weight: 0.35454 },
-               { id: 31, Model: 'cola_can', Quantity: 1, Name: 'Cola Can', Entity: Item_Entity.Storage, Owner: 0, Type: [Item_Type.Food], Weight: 0.35454 },
-               { id: 32, Model: 'donut', Quantity: 1, Name: 'Donut', Entity: Item_Entity.Storage, Owner: 0, Type: [Item_Type.Food], Weight: 0.35454 },
-               { id: 33, Model: 'cola_can', Quantity: 1, Name: 'Cola Can', Entity: Item_Entity.Storage, Owner: 0, Type: [Item_Type.Food], Weight: 0.35454 }
             ],
 
 
@@ -87,63 +90,54 @@
       watch: {
       },
 
-      // computed: { 
-      //    Player_Items: function () { 
-      //       return this.Items.filter(Item => Item.Entity === Item_Entity.Player) ;
-      //    },
-
-      //    Storage_Items: function () {
-      //       if (this.Storage && this.Storage.length > 0) { 
-      //          if (this.Search == null) 
-      //             return this.Storage;
-      //          else 
-      //             return this.Storage.sort().filter(Item => {
-      //                return Item.Name.toLowerCase().includes(this.Search.toLowerCase())
-      //             });
-      //       }
-      //    }
-      // },
-
       methods: { 
 
-         Weight: function (Items) {
-            let Total = 0;
-            Items.forEach(Item => { if (Item.id) Total += Item.Weight; });
-            return Total.toFixed(2);
+         hoverItem: function (item, e) {
+            this.hoverBox = true;
+            this.hoveredItem = item;
+                        
+            if (e) this.hoveredPosition = { left: e.clientX, top: e.clientY };
          },
+
+         // Weight: function (Items) {
+         //    let Total = 0;
+         //    Items.forEach(Item => { if (Item.id) Total += Item.Weight; });
+         //    return Total.toFixed(2);
+         // },
  
 
-         Item_Info: (Item) => { 
-            return Item.Name + ', ' + Messages.ITEM_WEIGHT + Item.Weight.toFixed(2) + Messages.WEIGHT_KG;
-         },
+         // Item_Info: (Item) => { 
+         //    return Item.Name + ', ' + Messages.ITEM_WEIGHT + Item.Weight.toFixed(2) + Messages.WEIGHT_KG;
+         // },
          
-         Which_Environment: (i) => { 
-            return ENVIRONMENT_TYPES[i];
-         }, 
+         // Which_Environment: (i) => { 
+         //    return ENVIRONMENT_TYPES[i];
+         // }, 
 
-         Use: function (Item) {
-            mp.trigger('CLIENT::ITEM:USE', Item);
-         },
+         // Use: function (Item) {
+         //    mp.trigger('CLIENT::ITEM:USE', Item);
+         // },
 
-         Take: function (Item) {
-            console.log(Item);
-            switch (Item.Entity) { 
-               case Item_Entity.Ground: mp.trigger('CLIENT::ITEM:PICKUP', Item.id); break;
-               case Item_Entity.Vehicle: mp.trigger('CLIENT::ITEM:TRUNK:TAKE', Item.id); break;
-               default:  {
-                  console.log('def')
-               }
-            }
-         }
+         // Take: function (Item) {
+         //    console.log(Item);
+         //    switch (Item.Entity) { 
+         //       case Item_Entity.Ground: mp.trigger('CLIENT::ITEM:PICKUP', Item.id); break;
+         //       case Item_Entity.Vehicle: mp.trigger('CLIENT::ITEM:TRUNK:TAKE', Item.id); break;
+         //       default:  {
+         //          console.log('def')
+         //       }
+         //    }
+         // }
       },
 
-      mounted () {           
-         mp.invoke('focus', true);
+      mounted () {        
+         if (window.mp) { 
+            mp.invoke('focus', true);
 
-         mp.events.add('BROWSER::INVENTORY:ITEMS', items => { 
-            console.log('uzo items')
-            console.log(JSON.stringify(items));
-         });
+            mp.events.add('BROWSER::INVENTORY:ITEMS', items => { 
+               
+            });
+         }   
       },
 
       beforeDestroy () {
@@ -190,10 +184,26 @@
    .item { 
       width: 145px;
       position: relative;
+      overflow: hidden;
       border-radius: 10px;
       height: 145px;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
       background: linear-gradient( 90deg, #2e2f40 0%, #252635 100%);
+   }
+   
+   .item h3.quantity { 
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background: #171827;
+      color: #a4a0c1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 10px;
+      right: 10px;
+      margin: 0;
+      border-radius: 100%;
    }
 
    .item h3.item-name { 
@@ -201,7 +211,7 @@
       bottom: 0;
       width: 100%;
       padding: 7px 0 7px 10px;
-      background: linear-gradient(90deg, #171827, transparent);
+      background: rgb(23, 24, 39);
       color: #cdcdcd;
       margin: 0;
       font-size: 0.65rem;

@@ -1,3 +1,4 @@
+import { entityData } from "@/../Server/src/globals/enums";
 import { WaitEntity, LoadMovementClipset, Controls } from "../utils";
 
 
@@ -13,84 +14,16 @@ let AntiKeySpam = false;
 // BLACK SCREEN AFTER DEATH
 mp.game.gameplay.setFadeOutAfterDeath(false); 
 
-
 // DONT REMOVE WEAPON WHEN OUT OF AMMO
 mp.game.weapon.unequipEmptyWeapons = false;
 Player.setCanSwitchWeapon(false);
 
 
-mp.events.addDataHandler({
-   'logged': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => {
-      if (Entity && Entity.remoteId === Player.remoteId) {
-         (<PlayerMp>Player).Logged = NewValue;
-      }
-   },
-
-   'spawned': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => {
-      if (Entity && Entity.remoteId === Player.remoteId) {
-         Player.Spawned = NewValue;
-      }
-   },
-
-   'Money': (Entity: EntityMp, NewValue: number, OldValue: number) => {
-      if (Entity && Entity.remoteId === Player.remoteId) {
-         Player.Money = NewValue;
-      }
-   },
-
-   'Job': (Entity: EntityMp, NewValue: number, OldValue: number) => {
-      if (Entity && Entity.remoteId === Player.remoteId) {
-         Player.Job = NewValue;
-      }
-   },
-
-   'Wounded': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => {
-      if (Entity.type == 'player') {
-         (<PlayerMp>Entity).Wounded = NewValue;
-      }
-   },
-
-   'Seatbelt': (Entity: EntityMp, NewValue: boolean, OldValue: boolean) => { 
-      if (Entity && Entity.remoteId === Player.remoteId) { 
-         Player.Seatbelt = NewValue;
-      }
-   },
-   
-   'Ragdoll': (Entity: PlayerMp, NewValue: number, OldValue: number) => { 
-      if (Entity.type == 'player' && NewValue != OldValue) { 
-         Interactions.Ragdoll(Entity, NewValue);
-      }
-   },
-
-   'Bubble': (Entity: PlayerMp, NewValue: string, OldValue: string) => {
-      if (Entity.type == 'player' && NewValue != OldValue) {
-         Player.Bubble = NewValue;
-      }
-   },
-
-   'Walking_Style': (Entity: PlayerMp, NewValue: string, OldValue: number) => {
-      if (Entity.type == 'player') {
-         Interactions.WalkingStyle(Entity, NewValue);
-      }
-   },
-
-   'Mood': (Entity: PlayerMp, NewValue: string, OldValue: number) => {
-      if (Entity.type == 'player') {
-         Interactions.FacialMood(Entity, NewValue);
-      }
-   },
-
-   'Attachment': (Entity: PlayerMp, NewValue: number, OldValue: number) => {
-      if (NewValue !== OldValue) { 
-         if (NewValue) { 
-            Attachments.Add(Entity, NewValue);
-         } else { 
-            Attachments.Remove(Entity);
-         }
-      }
-   }
-});
-
+// mp.events.addDataHandler(entityData.MONEY, (entity, value, oldValue) => { 
+//    if (entity == mp.players.local && value != oldValue) { 
+      
+//    }
+// });
 
 
 mp.events.add({

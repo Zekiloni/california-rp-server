@@ -1,6 +1,5 @@
 
 import './database';
-import './main';
 import './modules/main';
 import './modules/commands';
 import './modules/player';
@@ -13,7 +12,6 @@ import { Messages } from './globals/constants';
 
 
 //console.log(Items.List);
-
 
 
 // !!! TEST //

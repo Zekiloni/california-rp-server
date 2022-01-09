@@ -14,9 +14,9 @@ Commands['veh'] = {
    } 
 }
 
-Commands[commandData.names.time] = {
+Commands[commandData.Names.TIME] = {
    Admin: adminLevel.SENIOR_ADMIN,
-   Desc: commandData.descriptions.time,
+   Desc: commandData.Descriptions.time,
    Params: ['sat', 'minut', 'sekund'],
    Call: (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) => {
       mp.world.time.set(hour, minute, second);
@@ -24,9 +24,9 @@ Commands[commandData.names.time] = {
 };
 
 
-Commands[commandData.names.weather] = {
+Commands[commandData.Names.WEATHER] = {
    Admin: adminLevel.SENIOR_ADMIN,
-   Desc: commandData.descriptions.weather,
+   Desc: commandData.Descriptions.weather,
    Params: ['tip vremena'],
    Call: (player: PlayerMp, setWeather: string | number) => {
 
@@ -35,6 +35,16 @@ Commands[commandData.names.weather] = {
       } else {
          mp.world.weather = String(setWeather);
       }
+   }
+};
+
+
+Commands[commandData.Names.FIX_VEH] = {
+   Admin: adminLevel.SENIOR_ADMIN,
+   Desc: commandData.Descriptions.FIX_VEH,
+   Vehicle: true,
+   Call: async (player: PlayerMp) => {
+      if (player.vehicle) player.vehicle.repair();
    }
 };
 
@@ -527,13 +537,3 @@ Commands[commandData.names.weather] = {
 //    }
 // };
 
-// Commands['fixveh'] = {
-//    Admin: 3,
-//    Desc: 'Popravite svoje vozilo.',
-//    Call: async (Player: PlayerMp, Args: string[]) => {
-//       if (Player.vehicle) {
-//          Player.vehicle.repair();
-//          Player.SendMessage('Popravili ste vozilo.', Colors.info);
-//       }
-//    }
-// };
