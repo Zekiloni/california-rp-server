@@ -16,7 +16,7 @@ const Keys: any = {
 mp.events.addProc(
    {
       'CLIENT::ITEM:INFO': async (itemName) => { 
-         mp.console.logInfo('usp client item info');
+         mp.console.logInfo('uso loginfo item ')
          const itemInfo = await mp.events.callRemoteProc('SERVER::ITEM:INFO', itemName);
          return JSON.stringify(itemInfo); 
       }
@@ -34,13 +34,14 @@ mp.events.add(
             Browser.call('BROWSER::INVENTORY:ITEMS', items);
          }
       },
-
       
-      'CLIENT::ITEM:DROP': async (item: number, hash: string, quantity = 1) => { 
+      'CLIENT::ITEM:DROP': async (item: any, itemInfo: any, quantity = 1) => { 
          let { position } = Player;
          let heading = mp.players.local.getHeading();
          let rotation = mp.players.local.getRotation(2);
-      
+
+         itemInfo = JSON.parse(itemInfo);
+
          let newPos = new mp.Vector3(
             position.x + Math.cos(((heading + 90) * Math.PI) / 180) * 0.6,
             position.y + Math.sin(((heading + 90) * Math.PI) / 180) * 0.6,
@@ -48,7 +49,7 @@ mp.events.add(
          );
       
          let object = mp.objects.new(
-            mp.game.joaat(hash),
+            mp.game.joaat(itemInfo.model),
             new mp.Vector3(newPos.x, newPos.y, newPos.z),
             {
                alpha: 255,
@@ -70,17 +71,16 @@ mp.events.add(
       
          object.destroy();
       
-         const Inventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', item, JSON.stringify(fixedPosition), quantity);
-         
-         //browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+         const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', item, JSON.stringify(fixedPosition), quantity);
+         if (newInventory) Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
       
-         mp.game.streaming.requestAnimDict('random@domestic');
+         // mp.game.streaming.requestAnimDict('random@domestic');
 
-         // mp.players.forEachInStreamRange((_player) => {
-         //    _player.call('')
-         // });
+         // // mp.players.forEachInStreamRange((_player) => {
+         // //    _player.call('')
+         // // });
 
-         mp.players.local.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
+         // mp.players.local.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
       },
 
       'CLIENT::ITEM:GIVE': Give,

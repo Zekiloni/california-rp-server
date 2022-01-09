@@ -70,7 +70,7 @@ export default class Items extends Model {
 
    refreshItem () { 
       if (this.status == itemData.Status.GROUBD) {
-         this.object = mp.objects.new(baseItem.List[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
+         this.object = mp.objects.new(baseItem.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
          this.object.setVariable(entityData.ITEM, this.name);
       } else { 
          if (this.object) { 
@@ -87,7 +87,7 @@ export default class Items extends Model {
    async useItem (Player: PlayerMp) { 
       const Character = Player.Character;
       
-      const rItem = baseItem.List[this.name];
+      const rItem = baseItem.list[this.name];
    }
 
 

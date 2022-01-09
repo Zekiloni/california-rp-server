@@ -9,7 +9,7 @@ import { Commands } from '../commands';
 Commands[commandData.Names.ITEMS] = { 
    Desc: commandData.Descriptions.items,
    Call: (player: PlayerMp) => { 
-      console.log(baseItem.List);
+      console.log(baseItem.list);
    }
 }
 
@@ -18,8 +18,8 @@ Commands[commandData.Names.GIVE_ITEM] ={
    Desc: commandData.Descriptions.giveItem,
    Admin: adminLevel.SENIOR_ADMIN,
    Call: (player: PlayerMp, targetSearch: any, itemName: string, quantity: number) => { 
-      if (baseItem.List[itemName]) {
-         const foundItem = baseItem.List[itemName];
+      if (baseItem.list[itemName]) {
+         const foundItem = baseItem.list[itemName];
          const target = mp.players.find(targetSearch);
          if (!target) return; // no target found
          Items.giveItem(player, target, foundItem, quantity);

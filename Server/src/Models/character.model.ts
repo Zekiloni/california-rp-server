@@ -205,6 +205,11 @@ export default class Characters extends Model {
             break;
          }
 
+         case spawnTypes.lastPosition: {
+            player.position = new mp.Vector3(this.last_position.x, this.last_position.y, this.last_position.y);
+            break;
+         }
+
       }
       //    Player.RespawnTimer = null;
       //    Player.setVariable('Wounded', this.Wounded);

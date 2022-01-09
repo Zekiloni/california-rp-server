@@ -176,6 +176,13 @@ export const Messages = {
    MONEY_WITHDRAW: 'Podizanje',
    MONEY_DEPOSIT: 'Depozit',
 
+   ITEM_ACTION: { 
+      USE: 'Koristi',
+      GIVE: 'Daj',
+      SPLIT: 'Podeli',
+      DROP: 'Baci',
+   },
+
    WEATHERS: [
       '', 'Vedro', 'Oblaćno', 'Smog', 'Maglovito',
       '', 'Kišno', 'Oluja', 'Provedravanje', 'Neutralno', 

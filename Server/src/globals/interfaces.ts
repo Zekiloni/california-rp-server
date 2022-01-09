@@ -8,3 +8,10 @@ export interface spawnPoint {
    position: Vector3Mp,
    heading: number
 };
+
+
+export interface itemAction { 
+   name: string,
+   icon: string,
+   event: string
+}

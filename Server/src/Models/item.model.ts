@@ -13,11 +13,11 @@ export class baseItem {
    model: string;
    weight: number;
    description?: string;
-   Carry_Model?: string;
+   carryModel?: string;
 
    use?(Player: PlayerMp, ...params: any): void | any;
 
-   static List: { [key:string] : baseItem } = {};
+   static list: { [key:string] : baseItem } = {};
    
    constructor (name: string, type: itemData.Type[], model: string, weight: number = 0.1, desc: string = noDesc) { 
       this.name = name;
@@ -26,7 +26,7 @@ export class baseItem {
       this.weight = weight;     
       this.description = desc;
       
-      baseItem.List[this.name] = this;
+      baseItem.list[this.name] = this;
    }
 
    isWeapon () { 
