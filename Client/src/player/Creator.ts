@@ -2,7 +2,7 @@
 
 import { Browser } from '../browser';
 import { Clothing_Components, Genders, Player_Models } from '../data/Player';
-import { Lobby } from './lobby';
+import { lobby } from './lobby';
 import {  DisableMoving, PlayerPreviewCamera, removeClothing } from '../utils';
 import Female_Torsos from '../data/FEMALE_TORSOS.json';
 import Male_Torsos from '../data/MALE_TORSOS.json';
@@ -18,7 +18,7 @@ mp.events.add(
       'CLIENT::CREATOR:START': () => {
          Active = true;
          mp.events.callRemoteProc('SERVER::CREATOR:INFO').then((Info) => { 
-            Lobby(false);
+            lobby(false);
             Browser.call('BROWSER::SHOW', 'Creator');
             Player.position = Info.Position;
             Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations[0]));

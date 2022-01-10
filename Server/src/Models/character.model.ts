@@ -266,9 +266,9 @@ export default class Characters extends Model {
       await this.save();
    };
 
-   async giveMoney (player: PlayerMp, value: number) {
+   async giveMoney (player: PlayerMp, value: any) {
       this.increment('money', { by: value });
-      player.setVariable(entityData.MONEY, this.money + value);
+      player.setVariable(entityData.MONEY, this.money + parseInt(value));
    };
 
    async setJob (value: number) {

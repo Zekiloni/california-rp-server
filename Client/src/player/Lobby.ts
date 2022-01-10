@@ -2,7 +2,6 @@ import { Browser } from '../browser';
 import { gameInterface, UI_Status } from '../modules/game.UI';
 
 
-const Player = mp.players.local;
 
 let Camera: CameraMp;
 
@@ -11,12 +10,11 @@ mp.events.add(
    {
       'playerReady': async () => {
          const Info = await mp.events.callRemoteProc('SERVER::PLAYER:LOBY');
-         Lobby(true, Info.Position, Info.LookAt, Info.Time);
+         lobby(true, Info.Position, Info.LookAt, Info.Time);
       },
 
       'CLIENT::CHARACTER:PLAY': (character: number, spawnPoint: number) => { 
-         Lobby(false);
-         Browser.call('BROWSER::SHOW', 'Chat');
+         lobby(false);
          mp.events.callRemote('SERVER::CHARACTER:PLAY', character, spawnPoint);
          gameInterface.toggle(UI_Status.VISIBLE);
       }
@@ -39,10 +37,10 @@ mp.events.addProc(
 );
 
 
-export function Lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp, Time?: number) { 
+export function lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp, Time?: number) { 
    if (Toggle && Position && LookAt && Time) { 
-      Player.position = new mp.Vector3(Position.x, Position.y + 1, Position.z);
-      Player.freezePosition(true);
+      mp.players.local.position = new mp.Vector3(Position.x, Position.y + 1, Position.z);
+      mp.players.local.freezePosition(true);
       Camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
       Camera.setActive(true)
       Camera.setCoord(Position.x, Position.y, Position.z);
@@ -54,7 +52,7 @@ export function Lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp
    } else { 
       Browser.call('BROWSER::HIDE', 'Lobby');
       if (Camera) Camera.destroy();
-      Player.freezePosition(false);
+      mp.players.local.freezePosition(false);
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
       mp.game.ui.displayRadar(true);
       mp.game.graphics.transitionFromBlurred(1000)

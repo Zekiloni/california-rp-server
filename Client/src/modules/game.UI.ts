@@ -1,5 +1,6 @@
 
 import { Browser } from '../browser';
+import { controls } from '../data/enums';
 
 
 export enum UI_Status {
@@ -11,44 +12,50 @@ export enum UI_Status {
 
 mp.events.add(
    {
-      'CLIENT::NOTIFICATION': (Message: string, Type: number, Time: number) => { 
-         Browser.call('BROWSER::NOTIFICATION', Message, Type, Time);
+      'CLIENT::NOTIFICATION': (message: string, type: number, time: number) => { 
+         Browser.call('BROWSER::NOTIFICATION', message, type, time);
       }
    }
 );
 
 
-class GAME_UI { 
+class gameUI { 
 
-   Vehicle_UI: boolean = false;
-   Weapon_UI: boolean = false;
+   vehicleInterface: boolean = false;
+   weaponInterface: boolean = false;
    status: UI_Status = UI_Status.HIDDEN;
 
    constructor () { 
       mp.events.add('render', this.GTA_HUD);
+
+      mp.keys.bind(controls.F7, true, () => { 
+         this.toggle(this.status ++);
+      });
    }
 
    toggle (i: UI_Status) { 
-      this.status ++;
-
+      
       if (this.status > UI_Status.HIDDEN) this.status = UI_Status.HIDDEN;
 
-      switch (true) { 
-         case this.status == UI_Status.VISIBLE: {
+      this.status = i;
+
+      switch (this.status) { 
+         case UI_Status.VISIBLE: {
+            mp.console.logInfo(' visible toggle')
             Browser.call('BROWSER::SHOW', 'GameInterface');
-            Browser.call('BROSER::SHOW', 'Chat');
+            Browser.call('BROWSER::SHOW', 'Chat');
             Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
             mp.events.add('render', this.mainInterface);
             break;
          }
 
-         case this.status == UI_Status.ONLY_CHAT: { 
+         case UI_Status.ONLY_CHAT: { 
             Browser.call('BROWSER::HIDE', 'GameInterface');
             mp.events.remove('render', this.mainInterface);
             break;
          }
 
-         case this.status == UI_Status.HIDDEN: { 
+         case UI_Status.HIDDEN: { 
             Browser.call('BROSER::HIDE', 'Chat');
             break;
          }
@@ -110,7 +117,7 @@ class GAME_UI {
 
 }
 
-export const gameInterface = new GAME_UI();
+export const gameInterface = new gameUI();
 
 
 
