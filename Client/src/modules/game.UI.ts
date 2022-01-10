@@ -1,5 +1,5 @@
 
-import { Browser } from './browser';
+import { Browser } from '../browser';
 
 
 export enum UI_Status {
@@ -37,6 +37,7 @@ class GAME_UI {
       switch (true) { 
          case this.Status == UI_Status.Full_Visible: {
             Browser.call('BROWSER::SHOW', 'GameInterface');
+            Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
             mp.events.add('render', this.mainInterface);
             break;
          }
@@ -68,6 +69,7 @@ class GAME_UI {
       const street = mp.game.ui.getStreetNameFromHashKey(path.streetName);
       const heading = gameInterface.whereHeaded(mp.players.local.getHeading());
 
+      Browser.call('BROWSER::GAME_UI:UPDATE_PLAYERS', mp.players.length);
       Browser.call('BROWSER::GAME_UI:UPDATE_LOCATION', street, zone, heading);
    }
 

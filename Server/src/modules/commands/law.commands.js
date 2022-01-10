@@ -43,7 +43,7 @@
 //       },
 //       {
 //          name: 'cuff',
-//          desc: 'ZIP Lisice',
+//          description: 'ZIP Lisice',
 //          // faction: { type: frp.Factions.Types.Law },
 //          call: (player, args) => {
 //                let target = mp.players.find(args[0]);
@@ -61,7 +61,7 @@
 //       },
 //       {
 //          name: 'm',
-//          desc: 'Megafon',
+//          description: 'Megafon',
 //          // faction: { type: frp.Factions.Types.Law },
 //          call: (player, args) => {
 //                let message = args.splice(0).join(" ");
@@ -70,7 +70,7 @@
 //       },
 //       {
 //          name: 'callsign',
-//          desc: 'signa',
+//          description: 'signa',
 //          //faction: { type: FactionTypes.Law },
 //          call: (player, args) => {
 //                if (!player.vehicle)

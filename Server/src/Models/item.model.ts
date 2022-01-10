@@ -19,12 +19,12 @@ export class baseItem {
 
    static list: { [key:string] : baseItem } = {};
    
-   constructor (name: string, type: itemData.Type[], model: string, weight: number = 0.1, desc: string = noDesc) { 
+   constructor (name: string, type: itemData.Type[], model: string, weight: number = 0.1, description: string = noDesc) { 
       this.name = name;
       this.type = type;
       this.model = model;
       this.weight = weight;     
-      this.description = desc;
+      this.description = description;
       
       baseItem.list[this.name] = this;
    }

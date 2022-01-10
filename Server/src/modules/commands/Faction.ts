@@ -5,7 +5,7 @@
 
 // Commands["f"] = {
 //     Faction: 1,
-//     Desc: 'Faction chat',
+//     description: 'Faction chat',
 //     Call: async (Player: PlayerMp, Args: string[]) => {
 //         if (Player.Character.Faction == 0) return Player.Notification(Messages.NOT_IN_ANY_FACTION, NotifyType.ERROR, 5);
 //         // FactionChat
@@ -14,8 +14,8 @@
 
 // Commands["invite"] = {
 //     Leader: true,
-//     Params: ['igrač'],
-//     Desc: 'Slanje zahteva za pristup fakciji',
+//     params: ['igrač'],
+//     description: 'Slanje zahteva za pristup fakciji',
 //     Call: async (Player: PlayerMp, Args: string[]) => {
 //         // Provera da li je lider
 //         const TargetPlayer = mp.players.find(Args[0]);
@@ -27,8 +27,8 @@
 
 // Commands["uninvite"] = {
 //     Leader: true,
-//     Desc: 'Izbacivanje iz fakcije',
-//     Params: ['igrač'],
+//     description: 'Izbacivanje iz fakcije',
+//     params: ['igrač'],
 //     Call: async (Player: PlayerMp, Args: string[]) => {
 //         const TargetPlayer = mp.players.find(Args[0]);
 //         if (!TargetPlayer) return Player.Notification(Messages.USER_NOT_FOUND, NotifyType.ERROR, 5);
@@ -45,8 +45,8 @@
 
 // Commands["setrank"] = {
 //     Faction: 1,
-//     Desc: 'Postavljanje ranka igraču',
-//     Params: ['igrač', 'rank'],
+//     description: 'Postavljanje ranka igraču',
+//     params: ['igrač', 'rank'],
 //     Call: async (Player: PlayerMp, Args: string[]) => {
 //         if (Player.Character.Faction == 0) return Player.Notification(Messages.NOT_FACTION_LEADER, NotifyType.ERROR, 5);
 //         const TargetPlayer = mp.players.find(Args[0]);

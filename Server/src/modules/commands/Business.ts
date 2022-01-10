@@ -8,9 +8,9 @@
 
 // Commands["createbiz"] = {
 //    Admin: 6,
-//    Desc: 'Kreiranje biznisa',
-//    Params: ['tip', 'otvorenog tipa (0 / 1)', 'cena'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    description: 'Kreiranje biznisa',
+//    params: ['tip', 'otvorenog tipa (0 / 1)', 'cena'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       try {
 //          const [Type, WalkIn, Price] = Args;
 //          Business.New(Player, parseInt(Type), parseInt(WalkIn) == 0 ? false : true, parseInt(Price));
@@ -23,7 +23,7 @@
 
 // Commands["deletebiz"] = {
 //    Admin: 6,
-//    Desc: 'Brisanje biznisa',
+//    description: 'Brisanje biznisa',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       try {
 //          const NearBiz = await Business.Nearest(Player);
@@ -39,8 +39,8 @@
 
 // Commands["editbiz"] = {
 //    Admin: 6,
-//    Desc: 'Podešavanje biznisa',
-//    Params: ['opcija', 'vrednost'],
+//    description: 'Podešavanje biznisa',
+//    params: ['opcija', 'vrednost'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       try {
 //          const NearBiz = await Business.Nearest(Player);

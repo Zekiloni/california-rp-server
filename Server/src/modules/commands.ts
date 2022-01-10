@@ -15,16 +15,15 @@ type factionTypeCommand = {
 }
 
 type Command = {
-   Desc: string;
-   Params?: any[];
-   Faction?: factionTypeCommand;
-   Item?: any;
-   Vehicle?: boolean;
-   Job?: number;
-   Position?: Vector3Mp;
-   Admin?: number;
-   Leader?: boolean;
-   Call(Player: PlayerMp, ...params: any): void;
+   description: string;
+   params?: any[];
+   faction?: factionTypeCommand;
+   item?: any;
+   vehicle?: boolean;
+   job?: number;
+   position?: Vector3Mp;
+   admin?: number;
+   call (player: PlayerMp, ...params: any): void;
 };
 
 
@@ -41,24 +40,24 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       const Account = player.Account;
       const Character = player.Character;
 
-      if (Command.Admin && Account.administrator < Command.Admin) return player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
+      if (Command.admin && Account.administrator < Command.admin) return player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
 
-      if (Command.Job && Character.job != Command.Job) return player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
+      if (Command.job && Character.job != Command.job) return player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
 
-      if (Command.Position && player.dist(Command.Position) > 1.85) return player.Notification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
+      if (Command.position && player.dist(Command.position) > 2) return player.Notification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
 
-      if (Command.Faction) {
+      if (Command.faction) {
          //if (Command.Faction.Type && Command.Faction.Type != Factions[Character.Faction].type) return;
-         if (Command.Faction.id && Command.Faction.id != Character.faction) return;
+         if (Command.faction.id && Command.faction.id != Character.faction) return;
       }
 
       //if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, NotifyType.ERROR, 5);
 
       // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', NotifyType.ERROR, 4);
 
-      if (Command.Params && Command.Params.length > params.length) return player.sendMessage('Komanda: /' + commandName + ' [' + Command.Params.join('] [') + '] ', Colors.Help);
+      if (Command.params && Command.params.length > params.length) return player.sendMessage('Komanda: /' + commandName + ' [' + Command.params.join('] [') + '] ', Colors.Help);
 
-      Command.Call(player, ...params);
+      Command.call(player, ...params);
    } else {
       player.Notification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
    }

@@ -6,8 +6,8 @@
 
 // Commands["createhouse"] = {
 //    Admin: 6,
-//    Desc: 'Kreira kuću',
-//    Params: ['tip', 'cena'],
+//    description: 'Kreira kuću',
+//    params: ['tip', 'cena'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const [Type, Price] = Args;
 //       // const NewHouse = House.create({ Type: Type, Price: Number(Price), Position: Player.position, Dimension: Player.dimension, 
@@ -19,7 +19,7 @@
 
 // Commands["deletehouse"] = {
 //    Admin: 6,
-//    Desc: 'Briše kuću',
+//    description: 'Briše kuću',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const NearHouse = await House.Nearest(Player);
 //       if (NearHouse) {
@@ -30,7 +30,7 @@
 // };
 
 // Commands["house"] = {
-//    Desc: 'Upravljanje kućom',
+//    description: 'Upravljanje kućom',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const HasHouse = await House.findOne({ where: { owner: Player.Character.id }});
 //       if (HasHouse) {

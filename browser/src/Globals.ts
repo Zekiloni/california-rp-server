@@ -18,6 +18,8 @@ export const Messages = {
    HOURS_PLAYED: 'Sati igre',
    NO_NO: 'Nema',
    EMPTY_CHARACTER_SLOT: 'Nema karaktera',
+   ONLINE_PLAYERS: 'Online igrači',
+   YOUR_ID: 'Vaš ID',
    E_MAIL: 'E-Adresa',
    REGISTER_DATE: 'Datum registracije',
    LAST_LOGIN: 'Prethodna prijava',

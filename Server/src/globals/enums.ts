@@ -212,7 +212,9 @@ export namespace commandData {
       ENGINE = 'engine',
       TIME = 'time',
       WEATHER = 'weather',
-      FIX_VEH = 'fixveh'
+      FIX_VEH = 'fixveh',
+      GIVE_MONEY = 'givemoney',
+      SET_MONEY = 'setmoney'
    }
 
    export enum Descriptions { 

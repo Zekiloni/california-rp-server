@@ -1,4 +1,4 @@
-import { screenResolution } from "../core";
+import { screenResolution } from "./core";
 
 
 

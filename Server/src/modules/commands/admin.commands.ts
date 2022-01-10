@@ -7,22 +7,21 @@ import { Commands } from '../commands';
 
 
 Commands[commandData.Names.ITEMS] = { 
-   Desc: commandData.Descriptions.items,
-   Call: (player: PlayerMp) => { 
+   description: commandData.Descriptions.items,
+   call: (player: PlayerMp) => { 
       console.log(baseItem.list);
    }
 }
 
 
 Commands[commandData.Names.GIVE_ITEM] ={
-   Desc: commandData.Descriptions.giveItem,
-   Admin: adminLevel.SENIOR_ADMIN,
-   Call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
+   description: commandData.Descriptions.giveItem,
+   admin: adminLevel.SENIOR_ADMIN,
+   call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
       itemName = itemName.join(' ');
       if (baseItem.list[itemName]) {
          const foundItem = baseItem.list[itemName];
          const target = mp.players.find(targetSearch);
-         console.log(foundItem)
          if (!target) return; // no target found
          try { 
 
@@ -40,16 +39,16 @@ Commands[commandData.Names.GIVE_ITEM] ={
 
 
 Commands[commandData.Names.CLEAR_INVENTORY] = { 
-   Desc: commandData.Descriptions.clearInventory,
-   Call: (player: PlayerMp, target: any) => { 
+   description: commandData.Descriptions.clearInventory,
+   call: (player: PlayerMp, target: any) => { 
       
    }
 }
 
 Commands['veh'] = { 
-   Desc: 'Kreiraj auto',
-   Admin: adminLevel.SENIOR_ADMIN,
-   Call: (player: PlayerMp, vName: string) => { 
+   description: 'Kreiraj auto',
+   admin: adminLevel.SENIOR_ADMIN,
+   call: (player: PlayerMp, vName: string) => { 
       console.log(vName);
       const vehicle =  mp.vehicles.new(mp.joaat(vName), player.position);
       player.putIntoVehicle(vehicle, RageEnums.VehicleSeat.DRIVER);
@@ -57,20 +56,20 @@ Commands['veh'] = {
 }
 
 Commands[commandData.Names.TIME] = {
-   Admin: adminLevel.SENIOR_ADMIN,
-   Desc: commandData.Descriptions.time,
-   Params: ['sat', 'minut', 'sekund'],
-   Call: (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) => {
+   admin: adminLevel.SENIOR_ADMIN,
+   description: commandData.Descriptions.time,
+   params: ['sat', 'minut', 'sekund'],
+   call: (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) => {
       mp.world.time.set(hour, minute, second);
    }
 };
 
 
 Commands[commandData.Names.WEATHER] = {
-   Admin: adminLevel.SENIOR_ADMIN,
-   Desc: commandData.Descriptions.weather,
-   Params: ['tip vremena'],
-   Call: (player: PlayerMp, setWeather: string | number) => {
+   admin: adminLevel.SENIOR_ADMIN,
+   description: commandData.Descriptions.weather,
+   params: ['tip vremena'],
+   call: (player: PlayerMp, setWeather: string | number) => {
 
       if (setWeather == Number(setWeather) && setWeather < weather.Names.length - 1 && setWeather >= 0) {
          mp.world.weather = weather.Names[Number(setWeather)];
@@ -82,19 +81,47 @@ Commands[commandData.Names.WEATHER] = {
 
 
 Commands[commandData.Names.FIX_VEH] = {
-   Admin: adminLevel.SENIOR_ADMIN,
-   Desc: commandData.Descriptions.FIX_VEH,
-   Vehicle: true,
-   Call: async (player: PlayerMp) => {
+   admin: adminLevel.SENIOR_ADMIN,
+   description: commandData.Descriptions.FIX_VEH,
+   vehicle: true,
+   call: async (player: PlayerMp) => {
       if (player.vehicle) player.vehicle.repair();
    }
 };
 
 
+Commands[commandData.Names.GIVE_MONEY] =  {
+   admin: adminLevel.LEAD_ADMIN,
+   description: 'opis napisati',
+   call: (player: PlayerMp, targetSearch: any, money: number) => { 
+      const target = mp.players.find(targetSearch);
+
+      if (!target) return; // nema
+
+      target.Character.giveMoney(target, money);
+   }
+};
+
+
+Commands[commandData.Names.SET_MONEY] =  {
+   admin: adminLevel.LEAD_ADMIN,
+   description: 'opis napisati',
+   call: (player: PlayerMp, targetSearch: any, money: number) => { 
+      const target = mp.players.find(targetSearch);
+
+      if (!target) return; // nema
+
+      target.Character.setMoney(target, money);
+   }
+}
+
+
+
+
 //  Commands['adminhelp'] = {
-//     Desc: 'Admin pomoc',
+//     description: 'Admin pomoc',
 //     Admin: 1,
-//     Call: (Player: PlayerMp, Args: string[]) => {
+//     call: (Player: PlayerMp, Args: string[]) => {
 //        let AllowedCommands = [];
 //        for (const i in Commands) {
 //           const Command = Commands[i];
@@ -109,10 +136,10 @@ Commands[commandData.Names.FIX_VEH] = {
 //  };
 
 // Commands['createaccount'] = {
-//    Desc: 'Kreiranje korisničkog računa',
+//    description: 'Kreiranje korisničkog računa',
 //    Admin: 5,
-//    Params: ['ime', 'e-mail', 'šifra'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['ime', 'e-mail', 'šifra'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       try {
 //          const [Username, Email, Password] = Args;
 //          Accounts.create({ UserName: Username, Email: Email, Password: Password });
@@ -125,10 +152,10 @@ Commands[commandData.Names.FIX_VEH] = {
 // };
 
 // Commands['coord'] = {
-//    Desc: 'Teleportovanje do komandi',
+//    description: 'Teleportovanje do komandi',
 //    Admin: 3,
-//    Params: ['x', 'y', 'z'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['x', 'y', 'z'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const [x, y, z] = Args;
 //       Player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z));
 //       Admin.AdminActionNotify(Player, `se teleportovao na koordinate. ${x} ${y} ${z}`);
@@ -136,29 +163,29 @@ Commands[commandData.Names.FIX_VEH] = {
 // };
 
 // Commands['a'] = {
-//    Desc: 'Admin čet',
+//    description: 'Admin čet',
 //    Admin: 1,
-//    Params: ['poruka'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['poruka'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const Message = Args[0].toLowerCase();
 //       Admin.Chat(Player, Message);
 //    }
 // };
 
 // Commands['ao'] = {
-//    Desc: 'Globalno server obaveštenje',
+//    description: 'Globalno server obaveštenje',
 //    Admin: 3,
-//    Params: ['poruka'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['poruka'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const Message = Args[0];
 //       Admin.Broadcast(Player, Message);
 //    }
 // };
 
 // Commands['tpm'] = {
-//    Desc: 'Teleport do waypointa sa mape',
+//    description: 'Teleport do waypointa sa mape',
 //    Admin: 3,
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       Player.callProc('CLIENT::ADMINI:TP:WAYPOINT').then(Waypoint => {
 //          Player.position = new mp.Vector3(Waypoint.x, Waypoint.y, Waypoint.z);
 //          Admin.AdminActionNotify(Player, `se teleportovao na waypoint. ${Waypoint.x} ${Waypoint.y} ${Waypoint.z}`);
@@ -169,10 +196,10 @@ Commands[commandData.Names.FIX_VEH] = {
 // };
 
 // Commands['slap'] = {
-//    Desc: 'Upozorenje/skretanje pažnje igraču na određenu stvar',
+//    description: 'Upozorenje/skretanje pažnje igraču na određenu stvar',
 //    Admin: 2,
-//    Params: ['igrač', 'razlog'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['igrač', 'razlog'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const [Target, Reason] = Args;
 //       const TargetPlayer = mp.players.find(Target);
 //       if (Target) {
@@ -184,19 +211,19 @@ Commands[commandData.Names.FIX_VEH] = {
 // };
 
 // Commands['ar'] = {
-//    Desc: 'Prihvatite report sa liste',
+//    description: 'Prihvatite report sa liste',
 //    Admin: 2,
-//    Params: ['broj'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['broj'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const ReportNumber = Args[0];
 //    }
 // };
 
 // Commands['spec'] = {
-//    Desc: 'Specanje igrača',
+//    description: 'Specanje igrača',
 //    Admin: 2,
-//    Params: ['igrač'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['igrač'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const Target = parseInt(Args[0]);
 //       const TargetPlayer = mp.players.at(Target);
 
@@ -208,10 +235,10 @@ Commands[commandData.Names.FIX_VEH] = {
 
 
 // Commands['rtc'] = {
-//    Desc: 'Specanje igrača',
+//    description: 'Specanje igrača',
 //    Admin: 2,
-//    Params: ['id vozila'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['id vozila'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       if (Player.vehicle) {
 //          //provera da li je vlasničko vozilo 
 //       } else {
@@ -238,9 +265,9 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['save'] = {
 //    Admin: 7,
-//    Desc: 'Sačuvajte trenutnu poziciju',
-//    Params: ['ime'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    description: 'Sačuvajte trenutnu poziciju',
+//    params: ['ime'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       let Name = Args.slice(0).join(' '), Pos = (Player.vehicle) ? Player.vehicle.position : Player.position;
 //       const rot = Player.vehicle ? Player.vehicle.rotation : new mp.Vector3(0, 0, Player.heading);
 //       fs.appendFile(savedPosition, `Position: ${Pos.x}, ${Pos.y}, ${Pos.z} | ${(Player.vehicle) ? `Rotation: ${rot.x}, ${rot.y}, ${rot.z}` : `Heading: ${rot.z}`} | ${(Player.vehicle) ? 'InCar' : 'OnFoot'} - ${name}\r\n`, (err: any) => {
@@ -256,9 +283,9 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['kick'] = {
 //    Admin: 2,
-//    Desc: 'Izbacite igrača sa servera.',
-//    Params: ['igrač', 'razlog'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    description: 'Izbacite igrača sa servera.',
+//    params: ['igrač', 'razlog'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]);
 //       const Reason = Args[1];
 
@@ -275,8 +302,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['sethp'] = {
 //    Admin: 3,
-//    Desc: '',
-//    Params: ['igrač', 'hp'],
+//    description: '',
+//    params: ['igrač', 'hp'],
 //    Call: async (Player, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Health = parseInt(Args[1]);
 //       if (TargetPlayer && Health) {
@@ -288,8 +315,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['setarmor'] = {
 //    Admin: 3,
-//    Desc: '',
-//    Params: ['igrač', 'armor'],
+//    description: '',
+//    params: ['igrač', 'armor'],
 //    Call: async (Player, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Health = parseInt(Args[1]);
 //       if (TargetPlayer && Health) {
@@ -301,8 +328,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['setvw'] = {
 //    Admin: 5,
-//    Desc: '',
-//    Params: ['igrač', 'dimenzija'],
+//    description: '',
+//    params: ['igrač', 'dimenzija'],
 //    Call: async (Player, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Dimension = parseInt(Args[1]);
 //       if (TargetPlayer && Dimension) {
@@ -314,8 +341,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['setskin'] = {
 //    Admin: 6,
-//    Desc: '',
-//    Params: ['igrač', 'model'],
+//    description: '',
+//    params: ['igrač', 'model'],
 //    Call: async (Player, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), PedModel = mp.joaat(Args[1]);
 //       if (TargetPlayer && PedModel) {
@@ -327,8 +354,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['setmoney'] = {
 //    Admin: 7,
-//    Params: ['igrac', 'vrednost'],
-//    Desc: 'Postavite novac u džepu igraču na određenu vrednost',
+//    params: ['igrac', 'vrednost'],
+//    description: 'Postavite novac u džepu igraču na određenu vrednost',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
 
@@ -346,8 +373,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['givemoney'] = {
 //    Admin: 7,
-//    Desc: 'Dodajte novac igraču u džep',
-//    Params: ['igrac', 'vrednost'],
+//    description: 'Dodajte novac igraču u džep',
+//    params: ['igrac', 'vrednost'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
 
@@ -362,7 +389,7 @@ Commands[commandData.Names.FIX_VEH] = {
 
 
 // Commands['happyhours'] = {
-//    Desc: 'Aktiviranje / deaktiviranje duplog XP-a',
+//    description: 'Aktiviranje / deaktiviranje duplog XP-a',
 //    Admin: 6,
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       //HappyHours
@@ -371,52 +398,52 @@ Commands[commandData.Names.FIX_VEH] = {
 // };
 
 // Commands['ban'] = {
-//    Desc: 'Banovanje korisničkog naloga.',
+//    description: 'Banovanje korisničkog naloga.',
 //    Admin: 5,
-//    Params: ['Celo ime jednog od karaktera', 'vreme(dani)', 'razlog'],
+//    params: ['Celo ime jednog od karaktera', 'vreme(dani)', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       //todo
 //    }
 // };
 
 // Commands['unban'] = {
-//    Desc: 'Ukidanje bana korisničkog naloga.',
+//    description: 'Ukidanje bana korisničkog naloga.',
 //    Admin: 5,
-//    Params: ['Celo ime jednog od karaktera', 'razlog'],
+//    params: ['Celo ime jednog od karaktera', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       // todo
 //    }
 // };
 
 // Commands['acclock'] = {
-//    Desc: 'Zaključavanje korisničkog naloga.',
+//    description: 'Zaključavanje korisničkog naloga.',
 //    Admin: 5,
-//    Params: ['Celo ime jednog od karaktera', 'razlog'],
+//    params: ['Celo ime jednog od karaktera', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       // todo
 //    }
 // };
 
 // Commands['accunlock'] = {
-//    Desc: 'Zaključavanje korisničkog naloga.',
+//    description: 'Zaključavanje korisničkog naloga.',
 //    Admin: 5,
-//    Params: ['Celo ime jednog od karaktera', 'razlog'],
+//    params: ['Celo ime jednog od karaktera', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       // TODO
 //    }
 // };
 
 // Commands['warn'] = {
-//    Desc: 'Upozoravanje igrača i dodavanje warning poena.',
+//    description: 'Upozoravanje igrača i dodavanje warning poena.',
 //    Admin: 3,
-//    Params: ['Celo ime jednog od karaktera', 'razlog'],
+//    params: ['Celo ime jednog od karaktera', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 
 //    }
 // };
 
 // Commands['fly'] = {
-//    Desc: 'Uključi/isključi admin letenje',
+//    description: 'Uključi/isključi admin letenje',
 //    Admin: 5,
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       Player.call('CLIENT::ADMIN:FLY');
@@ -424,10 +451,10 @@ Commands[commandData.Names.FIX_VEH] = {
 // };
 
 // Commands['goto'] = {
-//    Desc: 'Teleport do igraca.',
+//    description: 'Teleport do igraca.',
 //    Admin: 2,
-//    Params: ['igrač'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    params: ['igrač'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]);
 //       if (TargetPlayer && TargetPlayer.id != Player.id) {
 //          if (Player.vehicle) {
@@ -446,9 +473,9 @@ Commands[commandData.Names.FIX_VEH] = {
 // };
 
 // Commands['gethere'] = {
-//    Desc: 'Uključi/isključi admin letenje',
+//    description: 'Uključi/isključi admin letenje',
 //    Admin: 3,
-//    Params: ['igrač'],
+//    params: ['igrač'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]);
 //       if (TargetPlayer) {
@@ -470,8 +497,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['revive'] = {
 //    Admin: 4,
-//    Desc: '',
-//    Params: ['igrač', 'razlog'],
+//    description: '',
+//    params: ['igrač', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Reason = Args[1];
 //       if (TargetPlayer && Reason) {
@@ -485,8 +512,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['givegun'] = {
 //    Admin: 6,
-//    Desc: 'Davanje oružja',
-//    Params: ['igrač', 'oružje', 'municija'],
+//    description: 'Davanje oružja',
+//    params: ['igrač', 'oružje', 'municija'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), GunName = Args[1], Ammo = parseInt(Args[2]);
 //       if (TargetPlayer && GunName.length > 0 && Ammo > 0) {
@@ -499,8 +526,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['makeadmin'] = {
 //    Admin: 6,
-//    Desc: '',
-//    Params: ['igrač', 'level'],
+//    description: '',
+//    params: ['igrač', 'level'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), AdminLevel = parseInt(Args[1]);
 //       if (TargetPlayer) {
@@ -518,8 +545,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['makeleader'] = {
 //    Admin: 5,
-//    Desc: 'Postavljanje/skidanje lidera.',
-//    Params: ['igrač', 'level'],
+//    description: 'Postavljanje/skidanje lidera.',
+//    params: ['igrač', 'level'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), PedModel = mp.joaat(Args[1]);
 //       if (TargetPlayer && PedModel) {
@@ -531,8 +558,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['freeze'] = {
 //    Admin: 3,
-//    Desc: 'Zaledite igrača u mestu..',
-//    Params: ['igrač', 'razlog'],
+//    description: 'Zaledite igrača u mestu..',
+//    params: ['igrač', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Reason = Args[1];
 //       if (TargetPlayer && Reason.length > 0) {
@@ -545,8 +572,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['unfreeze'] = {
 //    Admin: 3,
-//    Desc: 'Odledite igrača',
-//    Params: ['igrač'],
+//    description: 'Odledite igrača',
+//    params: ['igrač'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]);
 //       if (TargetPlayer) {
@@ -559,8 +586,8 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['disarm'] = {
 //    Admin: 4,
-//    Desc: 'Oduzmite oružje igraču iz ruku.',
-//    Params: ['igrač', 'razlog'],
+//    description: 'Oduzmite oružje igraču iz ruku.',
+//    params: ['igrač', 'razlog'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Reason = Args[0];
 //       if (TargetPlayer) {
@@ -573,7 +600,7 @@ Commands[commandData.Names.FIX_VEH] = {
 
 // Commands['lr'] = {
 //    Admin: 2,
-//    Desc: 'Lista svih reportova.',
+//    description: 'Lista svih reportova.',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       // todo
 //    }

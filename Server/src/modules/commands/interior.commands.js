@@ -11,7 +11,7 @@ module.exports = {
    commands: [
       {
          name: 'enter',
-         desc: 'Ulaz u interijer.',
+         description: 'Ulaz u interijer.',
          call: async (Player) => {
 
             const Character = await Player.Character();
@@ -56,7 +56,7 @@ module.exports = {
 
       {
          name: 'exit',
-         desc: 'Izlaz iz interijera.',
+         description: 'Izlaz iz interijera.',
          call: async (Player) => {
             const Character = Player.Character;
 

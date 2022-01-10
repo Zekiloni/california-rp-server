@@ -7,76 +7,34 @@
       
       <Offer />
 
-      <div class="top-right">
-         <ul class="server">
-            <li> <div class="icon user"> </div> <h3> {{ Players }} </h3> </li>
-            <li> <div class="icon users"> </div> <h3> {{ Remote_ID }} </h3> </li>
-            <li> 
-               <h2> 
-                  {{ Messages.FOCUS }} 
-                  <small> {{ Messages.ROLEPLAY }} </small> 
-               </h2>
-            </li>
-         </ul>
-
-         <div class="player">
-
-            <h2 class="money"> {{ Helpers.Dollars(money) }} </h2>
+      <div class="server-info">
+         <div class="player-id"> 
+            <h2> # {{ playerId }}</h2>
+            <h3> {{ Messages.YOUR_ID }} </h3>
          </div>
-
+         <div class="online-players"> 
+            <h2 class="online"> {{ onlinePlayers }} </h2>
+            <h3> {{ Messages.ONLINE_PLAYERS }} </h3>
+         </div>
+         <img class="logo" src="@/assets/images/logo.png" />
       </div>
-      
 
-      <div class="bottom-left">
-         <div class="location">
-            <h2> {{ Location.Heading }} </h2>
-            <h3> {{ Location.Zone }} </h3>
-            <h4> {{ Location.Street }} </h4>
+      <div class="info"> 
+         <div class="date-time"> 
+            <h2> 22:34 </h2>
+            <h3> 10. Januar 2022</h3>
          </div>
 
-         <div class="date-time">
-            <h3> {{ cTime }} </h3>
-            <h4> {{ cDate }} </h4>
+         <div class="location"> 
+            <h2> {{ location.heading }} </h2>
+            <h3 class="street"> {{ location.street }} </h3>
+            <h3 class="zone"> {{ location.zone }} </h3>
          </div>
       </div>
 
-
-      <div class="bottom-right">
-         <div class="driving" v-if="Driving">
-            <div class="speed">
-               <div class="speedometer">
-                  <div class="bar" :style="{ width: Vehicle_Speed }"> </div>
-               </div>
-               <h1 class="digi-speed"> 
-                  {{ Driving_Info.Speed }} 
-                  <small> km/h </small>
-               </h1>
-            </div>
-
-
-            <div class="fuel">
-               <vue-svg-gauge
-                  :start-angle="-110"
-                  :end-angle="0"
-                  :value="3"
-                  :separator-step="25"
-                  :min="0"
-                  :max="100"
-                  gauge-color="#2fc782"
-                  :scale-interval="5.0"
-               />            
-            </div>
-
-            <ul class="v-indicators">
-               <li> <div class="icon car-lights" :class="Vehicle_Lights"> </div> </li>
-               <li> <div class="icon indicator-arrow-left" :class="Vehicle_Indicators(0)"> </div> </li>
-               <li> <div class="icon indicator-arrow-right" :class="Vehicle_Indicators(1)"> </div> </li>
-            </ul>
-  
-         </div>
+      <div class="player"> 
+         <h2 class="money"> {{ Helpers.Dollars(money) }} </h2>
       </div>
-
-
    </div>
 
 </template>
@@ -98,20 +56,20 @@
       data () { 
          return { 
 
-            Toggle: true,
-            Blackscreen: false,
+            blackScreen: false,
 
             cTime: '',
             cDate: '',
 
             money: 0,
-            Remote_ID: 0,
-            Players: 0,
 
-            Location: { 
-               Street: 'Miletova Ulica',
-               Zone: 'ustaghajebem',
-               Heading: 'N'
+            playerId: 0,
+            onlinePlayers: 3250,
+
+            location: { 
+               street: 'Miletova',
+               zone: '',
+               heading: 'N'
             },
 
             Driving: true,               
@@ -194,15 +152,17 @@
 
       mounted () { 
          if (window.mp) { 
+            mp.events.add('BROWSER::GAME_UI:UPDATE_LOCATION', (street, zone, heading) => { 
+               this.location.street = street;
+               this.location.zone = zone;
+               this.location.heading = heading;
+            });
 
+            mp.events.add('BROWSER::GAME_UI:PLAYER_ID', id => this.playerId = id);
+            mp.events.add('BROWSER::GAME_UI:UPDATE_PLAYERS', players => this.onlinePlayers = players);
+
+            mp.events.add('BROWSER::GAME_UI:UPDATE_MONEY', money => this.money = money);
          }
-         mp.events.add('BROWSER::GAME_UI:UPDATE_LOCATION', (street, zone, heading) => { 
-            this.Location.Street = street;
-            this.Location.Zone = zone;
-            this.Location.Heading = heading;
-         });
-
-         mp.events.add('BROWSER::GAME_UI:UPDATE_MONEY', money => this.money = money);
       }
    }
 
@@ -210,93 +170,71 @@
 
 <style scoped>
 
-   @import url('http://fonts.cdnfonts.com/css/road-rage');
 
-   .game-interface { 
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      background: rgb(0 0 0 / 35%);
+   .game-interface { width: 100%; height: 100%; position: absolute; }
+
+   .server-info { 
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 15px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+   }
+   
+   .server-info img.logo { width: 65px; opacity: 0.75; }
+
+   .online-players { margin: 0 25px; }
+   .player-id { margin: 0 25px; }
+
+   h3, h2 { margin: 0; text-shadow: 0 0 0.6px rgb(0 0 0 / 75%); }
+
+   .online-players h3, .player-id h3 { font-weight: 450; color: rgb(109 116 126 / 50%); font-size: 0.8rem; }
+   .player-id h2 { color: #848e9c; font-weight: 350; }
+
+   .online-players .online { position: relative; font-weight: 350; padding-left: 25px; color: #00d474; }
+
+   .online::before { 
+      position: absolute;
+      left: 2px;
+      top: 8px;
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 100%;
+      background: #00d474;
+      box-shadow: 0 0 0 4px rgb(0 212 116 / 45%);
    }
 
-   .bottom-left { 
-      position: absolute;
-      width: 400px;
-      min-height: 100px;
-      height: auto;
-      left: 355px;
-      bottom: 15px;
+   .player {  position: absolute; top: 70px; right: 10px; padding: 15px 10px; }
+
+   .player h2.money { 
+      font-family: 'Montserrat ExtraBold';
+      color: #fffdf6;
+      font-size: 1.65rem;
+      font-weight: 500;
+      text-shadow: none;
    }
 
-   .top-right { 
+   .info { 
       position: absolute;
-      top: 15px;
-      right: 20px;
-      width: 285px;
-      height: auto;
-      min-height: 100px;
-   }
-
-   .bottom-right { 
-      position: absolute;
-      bottom: 15px;
-      right: 20px;
+      bottom: 20px;
+      padding: 15px 10px;
+      left: 315px;
       width: 300px;
       height: auto;
-      min-height: 100px;
    }
 
-   .location { width: 100%; position: relative; }
-   .location h2, .location h3, .location h4 { margin: 0; letter-spacing: 0.55px; }
-   .location h2 { color: whitesmoke; text-transform: uppercase; }
-   .location h3 { color: whitesmoke; font-weight: 200; font-size: 16px; }
-   .location h4 { color: #c7c7c7; font-weight: 200; font-size: 13px; }
-   .location::before { 
-      position: absolute; left: -25px; top: 5px; content: '';
-      mask: url('../assets/images/icons/location.svg') no-repeat center; mask-size: cover;
-      width: 17px; height: 17px; background: #fed52e;
-   }
+   .date-time { margin-bottom: 25px; }
+   .date-time h2 { color: #848e9c; font-weight: 350; }
+   .date-time h3 { font-weight: 450; color: rgb(109 116 126 / 55%); font-size: 0.9rem; }
 
-   .date-time { width: 100%; position: relative; margin-top: 15px; }
-   .date-time h3, .date-time h4 { margin: 0; letter-spacing: 0.55px; font-weight: 200; }
-   .date-time h3 { color: whitesmoke; font-size: 16px; }
-   .date-time h4 { color: #d0d0d0; font-size: 13px; }
-   .date-time::before { 
-      position: absolute; left: -25px; top: 5px; content: '';
-      mask: url('../assets/images/icons/clock.svg') no-repeat center; mask-size: cover;
-      width: 17px; height: 17px; background: #fed52e;
-   }
+   .location h2 { color: #fede29; font-weight: 500; }
+   .location h3.street { color: #848e9c; font-weight: 350; }
+   .location h3.zone { font-weight: 450; color: rgb(109 116 126 / 55%); font-size: 0.9rem; }
 
-   .icon { width: 17px; height: 17px; background: #fed52e; }
-   .icon.user { mask: url('../assets/images/icons/user.svg') no-repeat center; mask-size: cover; }
-   .icon.users { mask: url('../assets/images/icons/users.svg') no-repeat center; mask-size: cover; }
 
-   ul.server { display: flex; list-style: none; padding: 0; justify-content: space-between; align-items: center; margin: 0; height: 65px; }
-   ul.server li { display: flex; justify-content: center; align-items: center; }
-   ul.server li h2 { position: relative; text-transform: uppercase; color: white; letter-spacing: 2px; font-weight: 800; font-size: 30px; }
-   ul.server li h3 { margin: 0 7px; color: whitesmoke;  }
-   ul.server li h2 small { position: absolute; bottom: 0px; left: 1px; font-size: 15px; font-weight: 300; color: #fed52e; letter-spacing: 0.7px; font-family: 'Road Rage', sans-serif; }
-
-   .player { display: flex; flex-direction: column; }
-   .player h2.money { color: whitesmoke; width: 100%; text-align: right; font-size: 25px; }
-
-   .speed { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-   .speedometer { width: 200px; height: 45px; background: rgb(0 0 0 / 30%); position: relative; clip-path: polygon(50% 50%, 100% 0, 100% 100%, 0% 100%); overflow: hidden; border-radius: 5px; }
-   .speedometer .bar { position: absolute; top: 0; transition: all 0.35s ease; left: 0; height: 100%; background: #fed52e; width: 0%; }
-   .speed h1.digi-speed { color: whitesmoke; width: 100px; text-align: center; margin: 0; }
-   h1.digi-speed small { display: block; color: #d0d0d0; font-size: 12px; font-weight: 300; text-transform: uppercase; letter-spacing: 1.25px; font-size: 11px; }
-
-   ul.v-indicators { width: 100%; display: flex; align-items: center; padding: 0; list-style: none; }
-   ul.v-indicators li { width: 30px; margin: 0 6px; height: 30px; display: flex; align-items: center; justify-content: center; background: rgb(0 0 0 / 60%); border-radius: 5px; }
-   ul.v-indicators li .icon { width: 17px; height: 17px; background: rgb(245 245 245 / 70%); }
-   .icon.car-lights { mask: url('../assets/images/icons/car-lights.svg') no-repeat center; mask-size: cover; }
-   .icon.car-lights.on { background: #00b865; }
-   .icon.car-lights.on-2 { background: #0b70cf; }
-   .icon.indicator-arrow-right { mask: url('../assets/images/icons/right-arrow.svg') no-repeat center; mask-size: cover; }
-   .icon.indicator-arrow-left { mask: url('../assets/images/icons/right-arrow.svg') no-repeat center; mask-size: cover; transform: rotate(180deg); }
-   .blinking { animation: blinking 1s step-start 0s infinite; }
-
-   .fuel { width: 200px; height: 200px; }
 
    @keyframes blinking {
       50% { background: #00d474; }

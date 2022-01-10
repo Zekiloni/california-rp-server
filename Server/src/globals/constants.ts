@@ -162,7 +162,7 @@ export const Messages = {
    NOT_CAR_OWNER: 'Ne posedujete ovo vozilo',
    HOUSE_ALREADY_OWNER: 'Ova kuća / stan već poseduje vlasnika.',
    LAST_POSITION: 'Zadnja pozicija',
-   LAST_POSITION_DESC: 'Zadnja pozicija prethodnog napuštanja igre.',
+   LAST_POSITION_DESCRIPTION: 'Zadnja pozicija prethodnog napuštanja igre.',
    CAR_BOUGHT: 'Uspešno ste kupili vozilo',
    CAR_ALREADY_OWNED: 'Ovo vozilo je već u nečijem vlasništvu',
    CAR_PARKED: 'Uspešno ste parkirali vozilo',

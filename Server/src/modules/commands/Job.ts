@@ -6,7 +6,7 @@
 // import { Commands } from "../commands";
 
 // // name: 'takejob',
-// // desc: 'Zapošljavanje.',
+// // description: 'Zapošljavanje.',
 // // call: async (player, args) => {
 // //    const Character = player.Character;
 // //    if (Character.Job != frp.Globals.Jobs.Unemployed) return player.Notification(frp.Globals.messages.ALREADY_EMPLOYED, frp.NotifyType.ERROR, 5);
@@ -20,7 +20,7 @@
 // // }
 // // },
 // Commands["takejob"] = {
-//    Desc: 'Zapošljavanje',
+//    description: 'Zapošljavanje',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       if (Player.Character.Job != 0) return Player.Notification(Messages.ALREADY_EMPLOYED, NotifyType.ERROR, 5);
 
@@ -28,7 +28,7 @@
 // };
 
 // Commands["quitjob"] = {
-//    Desc: 'Davanje otkaza',
+//    description: 'Davanje otkaza',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       if (Player.Character.Job == 0) return Player.Notification(Messages.NOT_EMPLOYED, NotifyType.ERROR, 5);
 //       Player.Character.SetJob(0);
@@ -37,8 +37,8 @@
 
 // /* Sanitation job */
 // Commands["garbage"] = {
-//    Desc: 'Započinje/zaustavlja turu smećara.',
-//    Params: ['start / stop'],
+//    description: 'Započinje/zaustavlja turu smećara.',
+//    params: ['start / stop'],
 //    Job: Globals.Jobs.Sanitation,
 //    Position: new mp.Vector3(0, 0, 0), // ToDo
 //    Call: async (Player: PlayerMp, Args: string[]) => {
@@ -57,8 +57,8 @@
 
 // /* Taxi Job */
 // Commands["taxi"] = {
-//    Desc: 'Započinje/zaustavlja taxi smenu.',
-//    Params: ['start / stop'],
+//    description: 'Započinje/zaustavlja taxi smenu.',
+//    params: ['start / stop'],
 //    Job: Globals.Jobs.Taxi,
 //    Position: new mp.Vector3(0, 0, 0), // ToDo
 //    Call: async (Player: PlayerMp, Args: string[]) => {
@@ -76,8 +76,8 @@
 // };
 
 // Commands["fare"] = {
-//    Desc: 'Postavljanje cene po minutu na taksimetru.',
-//    Params: ['cena po minutu'],
+//    description: 'Postavljanje cene po minutu na taksimetru.',
+//    params: ['cena po minutu'],
 //    Job: Globals.Jobs.Taxi,
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       Taxi.Fare(Player, Number(Args[0]));
@@ -86,7 +86,7 @@
 
 // /* Food Delivery */
 // Commands["orders"] = {
-//    Desc: 'Lista naručene hrane.',
+//    description: 'Lista naručene hrane.',
 //    Job: Globals.Jobs.Food_Delivery,
 //    Position: new mp.Vector3(0, 0, 0), //ToDo
 //    Call: async (Player: PlayerMp, Args: string[]) => {

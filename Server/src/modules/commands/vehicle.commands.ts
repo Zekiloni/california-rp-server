@@ -2,18 +2,18 @@ import { commandData } from '../../globals/enums';
 import { Commands } from '../commands';
 
 Commands[commandData.Names.ENGINE] = { 
-   Desc: 'Kontrola motora vozila',
-   Vehicle: true,
-   Call: (player: PlayerMp, vName: string) => { 
+   description: 'Kontrola motora vozila',
+   vehicle: true,
+   call: (player: PlayerMp, vName: string) => { 
 		const Vehicle = player.vehicle;
 		Vehicle.engine = !Vehicle.engine;
    } 
 }
 
 // Commands['seatbelt'] = { 
-//    Desc: 'Vezanje pojasa',
+//    description: 'Vezanje pojasa',
 //    Vehicle: true,
-//    Call: (player: PlayerMp) => { 
+//    call: (player: PlayerMp) => { 
 // 		Player.data.Seatbelt = !Player.data.Seatbelt;
 // 		let message = Player.data.Seatbelt ? ' stavlja pojas.' : ' skida pojas.';
 // 		Player.ProximityMessage(frp.Globals.distances.me, '* ' + Player.name + message, frp.Globals.Colors.purple);
@@ -21,8 +21,8 @@ Commands[commandData.Names.ENGINE] = {
 // }
 
 // Commands['trunk'] = { 
-//    Desc: 'Opcije gepeka vozila',
-//    Call: (player: PlayerMp) => { 
+//    description: 'Opcije gepeka vozila',
+//    call: (player: PlayerMp) => { 
 // 		const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
 // 		if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.NotifyType.ERROR, 6);
 // 		if (Vehicle) Vehicle.data.Trunk = !Vehicle.data.Trunk;
@@ -30,8 +30,8 @@ Commands[commandData.Names.ENGINE] = {
 // }
 
 // Commands['hood'] = { 
-//    Desc: 'Opcije haube vozila',
-//    Call: (player: PlayerMp) => { 
+//    description: 'Opcije haube vozila',
+//    call: (player: PlayerMp) => { 
 // 		const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
 // 		if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.NotifyType.ERROR, 6);
 // 		if (Vehicle) Vehicle.data.Hood = !Vehicle.data.Hood;
@@ -39,8 +39,8 @@ Commands[commandData.Names.ENGINE] = {
 // }
 
 // Commands['fill'] = { 
-//    Desc: 'Opcije haube vozila',
-//    Call: (player: PlayerMp) => { 
+//    description: 'Opcije haube vozila',
+//    call: (player: PlayerMp) => { 
 // 	const NearestStation = await frp.Business.NearestGasStation(Player);
 // 		if (NearestStation) { 
 // 		Player.callProc('client:business.gas:nearpump').then(Pump => { 
@@ -59,8 +59,8 @@ Commands[commandData.Names.ENGINE] = {
 
 
 // Commands['windows'] = { 
-//    Desc: 'Kontrola motora vozila',
-//    Call: (player: PlayerMp) => { 
+//    description: 'Kontrola motora vozila',
+//    call: (player: PlayerMp) => { 
 // 		// todo
 //    } 
 // }

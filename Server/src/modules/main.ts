@@ -138,7 +138,7 @@ mp.events.addProc(
                   spawnPoints.push({
                      name: Messages.LAST_POSITION,
                      type: spawnTypes.lastPosition,
-                     description: Messages.LAST_POSITION_DESC,
+                     description: Messages.LAST_POSITION_DESCRIPTION,
                      position: new mp.Vector3(lastPos.x, lastPos.y, lastPos.z),
                      heading: 0
                   })

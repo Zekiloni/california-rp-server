@@ -3,7 +3,7 @@
    
    <div class="chat" v-if="Settings.Active">
       <ul class="messages" ref="Entries" id="messages" :style="{ overflow: Typing ? 'auto' : 'hidden' }">
-         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive || !Typing ? '0.5' : '1' }" v-bind:key="i">
+         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive || !Typing ? '0.7' : '1' }" v-bind:key="i">
             <b class="timestamp" v-if="Settings.Timestamp" v-html="timeStamp(message.timestamp)"> </b>
             <span v-html="message.content"> </span>
          </li>
@@ -39,7 +39,7 @@
             Settings: { 
                Active: true,
                Fontsize: 15.5,
-               Fonweight: 350,
+               Fonweight: 450,
                Width: 300,
                Height: 200,
                Timestamp: false,

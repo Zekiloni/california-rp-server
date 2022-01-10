@@ -1,5 +1,5 @@
 import { Browser } from '../browser';
-import { gameInterface, UI_Status } from '../game.UI';
+import { gameInterface, UI_Status } from '../modules/game.UI';
 
 
 const Player = mp.players.local;

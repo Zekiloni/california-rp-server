@@ -5,8 +5,8 @@
 // import { Commands } from "../commands";
 
 // Commands["r"] = {
-//    Desc: 'Radio komunikacija',
-//    Params: ['poruka'],
+//    description: 'Radio komunikacija',
+//    params: ['poruka'],
 //    Item: 'Handheld Radio',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
       
@@ -14,8 +14,8 @@
 // };
 
 // Commands["channel"] = {
-//    Desc: 'Podešavanje radio uređaja',
-//    Params: ['join', 'leave', 'create', 'delete', 'password'],
+//    description: 'Podešavanje radio uređaja',
+//    params: ['join', 'leave', 'create', 'delete', 'password'],
 //    Item: 'Handheld Radio',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const Action = Args[0], Freq = Number(Args[1])
@@ -65,7 +65,7 @@
 
 
 //          // name: 'r',
-//          // desc: 'Radio Komunikacija',
+//          // description: 'Radio Komunikacija',
 //          // params: ['tekst'],
 //          // item: 'Handheld Radio',
 //          // call: async (player, args) => {

@@ -1,5 +1,5 @@
 import { Browser } from '../browser';
-import { screenResolution } from '../core';
+import { screenResolution } from './core';
 import { Controls } from '../utils';
 
 

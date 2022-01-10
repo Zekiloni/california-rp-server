@@ -4,9 +4,9 @@ import { Commands } from '../commands';
 
 
 Commands['me'] = {
-   Desc: 'Opis situacije, stanja',
-   Params: ['radnja'],
-   Call:(player: PlayerMp, ...content) => {
+   description: 'Opis situacije, stanja',
+   params: ['radnja'],
+   call: (player: PlayerMp, ...content) => {
       const Text = [...content].join(' ');
       if (!Text.trim()) return;
       player.sendProximityMessage(Distances.ROLEPLAY, '** ' + player.name + ' ' + Text, Colors.Purple);
@@ -14,9 +14,9 @@ Commands['me'] = {
 }
 
 Commands['do'] = {
-   Desc: 'Opis radnje koju radite',
-   Params: ['opis / stanje'],
-   Call:(Player: PlayerMp, args: any) => {
+   description: 'Opis radnje koju radite',
+   params: ['opis / stanje'],
+   call: (Player: PlayerMp, args: any) => {
       const Text = args.splice(0).join(' ');
       if (!Text.trim()) return;
       Player.sendProximityMessage(Distances.ROLEPLAY, '** ' + Text + ' (( ' + Player.name + ' ))', Colors.Purple);
@@ -25,9 +25,9 @@ Commands['do'] = {
 }
 
 Commands['try'] = {
-   Desc: 'Pokušaj',
-   Params: ['radnja'],
-   Call:(Player: PlayerMp, args: any) => {
+   description: 'Pokušaj',
+   params: ['radnja'],
+   call: (Player: PlayerMp, args: any) => {
       const Message = args.splice(0).join(' ');
       if (!Message.trim()) return;
 
@@ -39,9 +39,9 @@ Commands['try'] = {
 }
 
 Commands['l'] = {
-   Desc: 'Izgovoriti nesto tiho',
-   Params: ['tekst'],
-   Call:(player: PlayerMp, args: any) => {
+   description: 'Izgovoriti nesto tiho',
+   params: ['tekst'],
+   call: (player: PlayerMp, args: any) => {
       const Message = args.splice(0).join(' ');
       if (!Message.trim()) return;
       player.sendProximityMessage(Distances.LOW, player.name + ' tiho: ' + Message, Colors.Low);
@@ -49,9 +49,9 @@ Commands['l'] = {
 }
 
 Commands['s'] = {
-   Desc: 'Izgovoriti nesto glasnije',
-   Params: ['tekst'],
-   Call:(Player: PlayerMp, args: any) => {
+   description: 'Izgovoriti nesto glasnije',
+   params: ['tekst'],
+   call: (Player: PlayerMp, args: any) => {
       const Message = args.splice(0).join(' ');
       if (!Message.trim()) return;
       Player.sendProximityMessage(Distances.SHOUT, Player.name + ' se dere: ' + Message, Colors.White);
@@ -59,9 +59,9 @@ Commands['s'] = {
 }
 
 Commands['b'] = {
-   Desc: 'Lokana OOC komunikacija',
-   Params: ['tekst'],
-   Call:(Player: PlayerMp, args: any) => {
+   description: 'Lokana OOC komunikacija',
+   params: ['tekst'],
+   call: (Player: PlayerMp, args: any) => {
       const Message = args.splice(0).join(' ');
       if (!Message.trim()) return;
       Player.sendProximityMessage(Distances.OOC, '(( ' + Player.name + '[' + Player.id + ']: ' + Message + ' ))', Colors.OOC);
@@ -69,9 +69,9 @@ Commands['b'] = {
 }
 
 Commands['w'] = {
-   Desc: 'Sapnuti nekome nesto',
-   Params: ['igrac', 'tekst'],
-   Call:(Player: PlayerMp, args: any) => {
+   description: 'Sapnuti nekome nesto',
+   params: ['igrac', 'tekst'],
+   call: (Player: PlayerMp, args: any) => {
          // const Target = mp.players.find(args[0]);
 
          // if (Target) { 
@@ -87,9 +87,9 @@ Commands['w'] = {
 }
 
 Commands['pm'] = {
-   Desc: 'Privatna poruka',
-   Params: ['igrac', 'tekst'],
-   Call:(Player: PlayerMp, args: any) => {
+   description: 'Privatna poruka',
+   params: ['igrac', 'tekst'],
+   call: (Player: PlayerMp, args: any) => {
       // const Target = mp.players.find(args[0]);
       // if (Target) { 
       //    if (Player.id == Target.id) return;
@@ -102,9 +102,9 @@ Commands['pm'] = {
 }
 
 Commands['ame'] = {
-   Desc: 'Radnja / Akcija',
-   Params: ['sadržaj'],
-   Call:(Player: PlayerMp, args: any) => {
+   description: 'Radnja / Akcija',
+   params: ['sadržaj'],
+   call: (Player: PlayerMp, args: any) => {
       const Content = args.splice(0).join(' ');
       //Player.Bubble(Content, frp.Globals.Colors.Bubble);   
    }

@@ -2,7 +2,7 @@
 //    commands: [
 //       {
 //          name: 'lock',
-//          desc: 'Zakljucati / otkljucati',
+//          description: 'Zakljucati / otkljucati',
 //          call: async (Player) => {
 //             const Character = await Player.Character(), Nearest = await Player.Nearest();
 //             if (Nearest) { 

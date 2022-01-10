@@ -6,15 +6,15 @@
 
 
 // Commands["help"] = {
-//    Desc: 'Lista komandi',
+//    description: 'Lista komandi',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       // ToDo
 //    }
 // };
 
 // Commands["changespawn"] = {
-//    Desc: 'Promena mesta spawna',
-//    Params: ['mesto'],
+//    description: 'Promena mesta spawna',
+//    params: ['mesto'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const Spawns = ['Default spawn', 'Zadnja pozicija', 'Fakcija'];
 //       const InputNumber = parseInt(Args[0]);
@@ -25,8 +25,8 @@
 // };
 
 // Commands["blindfold"] = {
-//    Desc: 'Povez preko ociju',
-//    Params: ['igrac'],
+//    description: 'Povez preko ociju',
+//    params: ['igrac'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]);
 //       if (TargetPlayer) {
@@ -36,8 +36,8 @@
 // };
 
 // Commands["report"] = {
-//    Desc: 'Prijavite igrača ili neki događaj adminu',
-//    Params: ['text'],
+//    description: 'Prijavite igrača ili neki događaj adminu',
+//    params: ['text'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const ReportText = Args[0];
 //       // ToDo
@@ -45,8 +45,8 @@
 // };
 
 // Commands["fontsize"] = {
-//    Desc: 'Veličina fonta četa',
-//    Params: ['vrednost'],
+//    description: 'Veličina fonta četa',
+//    params: ['vrednost'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const InputNumber = parseInt(Args[0]);
 
@@ -59,7 +59,7 @@
 // };
 
 // Commands["dmv"] = {
-//    Desc: 'Otvaranje menija za dozvole',
+//    description: 'Otvaranje menija za dozvole',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       //Player.call('')
 //       // ToDo
@@ -67,8 +67,8 @@
 // }
 
 // Commands["tog"] = {
-//    Desc: 'Gašenje/paljenje određenog elementa',
-//    Params: ['akcija'],
+//    description: 'Gašenje/paljenje određenog elementa',
+//    params: ['akcija'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       switch (Args[0].toLowerCase()) {
 //          case 'PHONE':
@@ -87,8 +87,8 @@
 // }
 
 // Commands["show"] = {
-//    Desc: 'Pokazivanje dokumenta drugom igraču',
-//    Params: ['vrsta', 'igrač'],
+//    description: 'Pokazivanje dokumenta drugom igraču',
+//    params: ['vrsta', 'igrač'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]);
 //       if (!TargetPlayer) return Player.notify(Messages.USER_NOT_FOUND);
@@ -111,8 +111,8 @@
 // };
 
 // Commands["pay"] = {
-//    Desc: 'Davanje novca',
-//    Params: ['igrač', 'količina'],
+//    description: 'Davanje novca',
+//    params: ['igrač', 'količina'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const Character = Player.Character;
 //       if (Character.Hours < 2) return Player.Notification(Messages.YOU_NEED_MINIMUM_2_HOURS_OF_PLAYING, NotifyType.ERROR, 5);
@@ -136,9 +136,9 @@
 // };
 
 // Commands["accept"] = {
-//    Desc: 'Prihvatanje poziva u fakciju',
-//    Params: ['akcija'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    description: 'Prihvatanje poziva u fakciju',
+//    params: ['akcija'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       if (!Args[0]) return;
 //       switch (Args[0].toUpperCase()) {
 //          case 'INVITE':
@@ -159,9 +159,9 @@
 // };
 
 // Commands["buy"] = {
-//    Desc: 'Kupovina',
-//    Params: ['akcija'],
-//    Call: (Player: PlayerMp, Args: string[]) => {
+//    description: 'Kupovina',
+//    params: ['akcija'],
+//    call: (Player: PlayerMp, Args: string[]) => {
 //       if (!Args[0]) return;
 //       switch (Args[0].toUpperCase()) {
 //          case 'HOUSE':
