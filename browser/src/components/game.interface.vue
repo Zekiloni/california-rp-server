@@ -21,8 +21,8 @@
 
       <div class="info"> 
          <div class="date-time"> 
-            <h2> 22:34 </h2>
-            <h3> 10. Januar 2022</h3>
+            <h2> {{ rightNow.time }}</h2>
+            <h3> {{ rightNow.date }}</h3>
          </div>
 
          <div class="location"> 
@@ -58,10 +58,9 @@
 
             blackScreen: false,
 
-            cTime: '',
-            cDate: '',
-
             money: 0,
+
+            rightNow: { date: '', time: '' },
 
             playerId: 0,
             onlinePlayers: 3250,
@@ -110,10 +109,6 @@
          }
       },
 
-      mounted: function () { 
-        this.Update();
-      },
-
       computed: { 
          Vehicle_Speed: function () { 
             const Speed = this.Driving_Info.Speed * 100 / this.Driving_Info.Max_Speed;
@@ -130,18 +125,15 @@
       },
 
       methods: { 
-         Update: function () {
+         update: function () {
 
-            const Now = new Date();
-            this.cTime = Now.getHours() + ':' +(Now.getMinutes() < 10 ? 0 + '' + Now.getMinutes() : Now.getMinutes());
+            const nowDateTime = this.Helpers.dateTime();
+            this.rightNow.time = nowDateTime.getHours() + ':' +(nowDateTime.getMinutes() < 10 ? 0 + '' + nowDateTime.getMinutes() : nowDateTime.getMinutes());
 
-            let Month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'long' }).format(Now);
-            this.cDate = Now.getDate() + '. ' + Month + ', ' + Now.getFullYear();
+            let Month = new Intl.DateTimeFormat('sr-Latn-RS', { month: 'long' }).format(nowDateTime);
+            this.rightNow.date = nowDateTime.getDate() + '. ' + Month + ', ' + nowDateTime.getFullYear();
 
-
-            this.Driving_Info.Speed = Math.floor(Math.random() * 250);;
-
-            setTimeout(() => { this.Update(); }, 1000);
+            setTimeout(this.update, 1000);
          },
 
 
@@ -163,6 +155,9 @@
 
             mp.events.add('BROWSER::GAME_UI:UPDATE_MONEY', money => this.money = money);
          }
+
+         this.update();
+
       }
    }
 
@@ -188,7 +183,7 @@
    .online-players { margin: 0 25px; }
    .player-id { margin: 0 25px; }
 
-   h3, h2 { margin: 0; text-shadow: 0 0 0.6px rgb(0 0 0 / 75%); }
+   h3, h2 { margin: 0; text-shadow: 0 0 0.6px rgb(0 0 0 / 65%); }
 
    .online-players h3, .player-id h3 { font-weight: 450; color: #848e9c; font-size: 0.8rem; }
    .player-id h2 { color: #cdcdcd; font-weight: 350; }

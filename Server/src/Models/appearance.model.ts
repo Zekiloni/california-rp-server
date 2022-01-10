@@ -34,7 +34,7 @@ export default class Appearances extends Model {
    beard: number[];
 
    @AllowNull(false)
-   @Column
+   @Column(DataType.INTEGER)
    eyes: number;
 
    @AllowNull(false)

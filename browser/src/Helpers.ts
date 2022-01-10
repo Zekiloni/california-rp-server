@@ -2,7 +2,15 @@ import { Groups } from './globals';
 
 
 const Helpers = { 
-   Truncate (str: string, n: number) { 
+
+   dateTime: () => { 
+      let date = new Date();
+      let utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+
+      return new Date(utc + (3600000 * + 1));
+   },
+
+   truncate (str: string, n: number) { 
       return (str.length > n) ? str.substr(0, n-1) + '...' : str; 
    },
 

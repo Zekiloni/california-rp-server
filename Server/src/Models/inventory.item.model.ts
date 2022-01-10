@@ -116,6 +116,8 @@ export default class Items extends Model {
 
 
 
+
+
 // frp.Items.afterCreate(async (Item, Options) => {
 //    if (Item.Entity == ItemEntities.Player) { 
 //       if (Item.Item == 'Phone' || Item.Item == 'Smartphone') { 

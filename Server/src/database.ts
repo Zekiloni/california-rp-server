@@ -3,7 +3,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { Logger } from './utils';
-import { logType } from './globals/enums';
+import { itemData, logType } from './globals/enums';
 import { Config } from './config';
 
 import Accounts from './models/account.model';

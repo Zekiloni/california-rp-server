@@ -156,11 +156,9 @@
    .wrapper { 
       width: 100%;
       height: 100%;
-      background: radial-gradient(ellipse at center top, rgb(76 49 142 / 15%) 0%, rgb(32 20 63 / 20%) 50%, rgb(0 0 0 / 45%) 90%);
       position: absolute;
       top: 0;
       left: 0;
-      backdrop-filter: blur(10px);
       display: flex;
       justify-content: center;
       flex-direction: column;
@@ -172,7 +170,7 @@
       width: auto;
       border-radius: 10px;
       height: auto;
-      background: linear-gradient(0deg, #171827, transparent);
+      background: rgb(11 14 17 / 65%);
       display: grid;
       grid-gap: 0.7rem;
       grid-template-columns: repeat(3, 150px);
@@ -193,15 +191,15 @@
       border-radius: 10px;
       height: 145px;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
-      background: linear-gradient( 90deg, #2e2f40 0%, #252635 100%);
+      background: #0b0e11;
    }
    
    .item h3.quantity { 
       position: absolute;
       width: 25px;
       height: 25px;
-      background: #171827;
-      color: #a4a0c1;
+      background: #474d57;
+      color: #cdcdcd;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -216,7 +214,7 @@
       bottom: 0;
       width: 100%;
       padding: 7px 0 7px 10px;
-      background: rgb(23, 24, 39);
+      background: #181a20;
       color: #cdcdcd;
       margin: 0;
       font-size: 0.65rem;

@@ -73,7 +73,7 @@
       height: 200px;
       border-radius: 10px;
       /* backdrop-filter: blur(5px); */
-      background: linear-gradient(45deg, #171827, transparent);
+      background: rgb(11 14 17 / 65%);
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }
 
@@ -84,7 +84,7 @@
       font-weight: 450;
       border-top-left-radius: 10px;
       padding: 10px;
-      background: linear-gradient(90deg, #2e2f40, transparent);
+      background: linear-gradient(90deg, #474d57, transparent);
    }
 
 
@@ -101,7 +101,7 @@
       bottom: 0;
       padding: 0;
       width: 100%;
-      background: rgb(0 0 0 / 20%);
+      background: #181a20;
       margin: 0;
       min-height: 10px;
       display: flex;
@@ -126,7 +126,7 @@
    ul.actions li .icon { 
       width: 30px;
       height: 30px;
-      background-color: #5d5e72;
+      background-color: #474d57;
    }
 
    ul.actions li .icon.use { mask: url('../../assets/images/icons/use-icon.svg') no-repeat center; mask-size: cover; }

@@ -9,7 +9,10 @@
       <Notifications v-if="interfaces.Notifications" />
       <Chat v-if="interfaces.Chat" />
 
-      <Inventory v-if="interfaces.Inventory" />
+      <transition name="fade"> 
+         <Inventory v-if="interfaces.Inventory" />
+      </transition>
+
       <transition name="slide-fade"> 
          <Banking v-if="interfaces.Banking" />
       </transition>
