@@ -62,7 +62,7 @@
       color: whitesmoke;
       align-items: center;
       transition: all .3s ease;
-      background: linear-gradient(0deg, #171827, transparent);
+      background: linear-gradient(0deg, #181a20, transparent);
       flex-direction: column;
       animation: slide-from-top 1.3s ease-in-out;
    }
@@ -85,10 +85,10 @@
       width: 270px;
       padding: 15px 10px;
       transition: all .3s ease;
-      border-bottom: 2px solid #171827;
+      border-bottom: 2px solid #0b0e11;
       color: #cdcdcd;
-      box-shadow: rgb(0 0 0 / 15%) 0px 1px 20px 0px;
-      background: linear-gradient( 90deg, #252635 0%, #202130 100%);
+      box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
+      background: #181a20;
    }
 
    .form input:focus { color: white; transform: scale(1.05); border-color: #7c5bf1; }

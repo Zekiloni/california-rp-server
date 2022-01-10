@@ -1,8 +1,50 @@
 import { Colors } from '../../globals/constants';
 import { adminLevel, commandData, weather } from '../../globals/enums';
+import Items from '../../models/inventory.item.model';
+import { baseItem } from '../../models/item.model';
 import { Admin } from '../admin';
 import { Commands } from '../commands';
 
+
+Commands[commandData.Names.ITEMS] = { 
+   Desc: commandData.Descriptions.items,
+   Call: (player: PlayerMp) => { 
+      console.log(baseItem.list);
+   }
+}
+
+
+Commands[commandData.Names.GIVE_ITEM] ={
+   Desc: commandData.Descriptions.giveItem,
+   Admin: adminLevel.SENIOR_ADMIN,
+   Call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
+      itemName = itemName.join(' ');
+      if (baseItem.list[itemName]) {
+         const foundItem = baseItem.list[itemName];
+         const target = mp.players.find(targetSearch);
+         console.log(foundItem)
+         if (!target) return; // no target found
+         try { 
+
+            Items.giveItem(player, target, foundItem, quantity);
+
+         } catch(e) { 
+            console.log(e)
+         }
+
+      } else { 
+         // that item doesnt exist
+      }
+   }
+}
+
+
+Commands[commandData.Names.CLEAR_INVENTORY] = { 
+   Desc: commandData.Descriptions.clearInventory,
+   Call: (player: PlayerMp, target: any) => { 
+      
+   }
+}
 
 Commands['veh'] = { 
    Desc: 'Kreiraj auto',

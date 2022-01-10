@@ -30,8 +30,41 @@ mp.events.addProc(
          return { info: item, actions: actions };
       },
 
-      'SERVER::ITEM:DROP': async (playeR: PlayerMp, item: Items, position: string) => { 
-         
+      
+      'SERVER::ITEM:USE': async (player: PlayerMp, itemId: number): Promise<Items[]> => { 
+         return new Promise((resolve) => { 
+            Items.findOne({ where: { id: itemId } }).then(async item => { 
+               const rItem = baseItem.list[item?.name!];
+               await rItem?.use!(player, item);
+
+               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.Character.id);
+               if (newInventory) resolve(newInventory)
+            })
+         });
+      },
+
+      'SERVER::ITEM:DROP': async (player: PlayerMp, itemId: number, positionString: string): Promise<Items[]> => { 
+         return new Promise((resolve) => { 
+            Items.findOne({ where: { id: itemId } }).then(async item => { 
+
+               const groundPosition = JSON.parse(positionString);
+               const { position, rotation } = groundPosition;
+
+               item!.owner = 0;
+               item!.status = itemData.Status.GROUND;
+               item!.dimension = player.dimension;
+               item!.fingerprint = player.Character.id;
+               item!.position = new mp.Vector3(position.x, position.y, position.z);
+               item!.rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z);
+               
+               await item?.save();
+               item?.refreshItem();
+               
+               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.Character.id);
+               if (newInventory) resolve(newInventory);
+            });
+         });
+
       }
    }
 );

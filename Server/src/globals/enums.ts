@@ -164,11 +164,11 @@ export namespace weather {
 export namespace itemData {
 
    export enum Type {
-      Equipable, Consumable, Openable, 
-      Drink, Food, Alcohol, Drug, Weapon, 
-      Ammo, Ilegal, Legal, Misc, Clothing,
-      Prop, Heavy, Stackable, Usable, Storage, 
-      Seed, Document, License, Cookable
+      EQUIPABLE, CONSUMABLE, OPENABLE, 
+      DRINK, FOOD, DRUG, WEAPON, AMMO,
+      ILEGAL, LEGAL, MISC, CLOTHING,
+      PROP, HEAVY, STACKABLE, USABLE, STORAGE, 
+      SEED, DOCUMENT, LICENSE, COOKABLE
    }
 
    export enum Entity { 
@@ -178,8 +178,9 @@ export namespace itemData {
    }
 
    export enum Status { 
-      NONE, EQUIPED, GROUBD, RAW, COOKED, BROKEN
+      NONE, EQUIPED, GROUND, RAW, COOKED, BROKEN
    }
+   
 
    export enum Names { 
       drivingLicense = 'Driving licence',
@@ -197,7 +198,8 @@ export namespace itemData {
       chipsItem = 'Chips',
       donutItem = 'Donut',
       sandwichItem = 'Sandwich',
-      tacoItem = 'Taco'
+      tacoItem = 'Taco',
+      COMBAT_PISTOL = 'Combat Pistol'
    }
 }
 

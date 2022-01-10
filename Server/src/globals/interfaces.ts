@@ -15,3 +15,8 @@ export interface itemAction {
    icon: string,
    event: string
 }
+
+export interface itemExtraData  {
+   ammo?: number,
+   serial?: number,
+}

@@ -2,6 +2,7 @@
 
 import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { entityData, itemData, logType } from '../globals/enums';
+import { itemExtraData } from '../globals/interfaces';
 import { Logger } from '../utils';
 import { baseItem } from './item.model';
 
@@ -46,7 +47,7 @@ export default class Items extends Model {
 
    @Default({})
    @Column(DataType.JSON)
-   data: Object;
+   data: itemExtraData;
 
    @CreatedAt
    created_at: Date;
@@ -69,9 +70,9 @@ export default class Items extends Model {
 
 
    refreshItem () { 
-      if (this.status == itemData.Status.GROUBD) {
+      if (this.status == itemData.Status.GROUND) {
          this.object = mp.objects.new(baseItem.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
-         this.object.setVariable(entityData.ITEM, this.name);
+         this.object.setVariable(entityData.ITEM, { name: this.name, id: this.id });
       } else { 
          if (this.object) { 
             this.object.destroy()

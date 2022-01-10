@@ -45,7 +45,7 @@
    import Lobby from '@/components/lobby.vue';
    import Creator from './components/Creator.vue';
    import Notifications from './components/notifications.hints.vue';
-   import GameInterface from './components/game.innterface.vue';
+   import GameInterface from './components/game.interface.vue';
    import Chat from './components/chat';
    import Inventory from './components/items/inventory.vue';
    import Banking from './components/Banking.vue';

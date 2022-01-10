@@ -124,9 +124,9 @@
    .info-header h2 { font-family: 'Montserrat ExtraBold'; letter-spacing: 1px; margin: 5px 0; font-size: 1.7rem; color: #7c5bf1; text-transform: uppercase; }
    .info-header p { color: #cdcdcd; }
 
-   .selector .account { width: 375px; height: auto; padding: 10px 0; border-radius: 10px; margin: 0 20px; background: linear-gradient(0deg, #171827, transparent); }
+   .selector .account { width: 375px; height: auto; padding: 10px 0; border-radius: 10px; margin: 0 20px; background: rgb(11 14 17 / 45%); }
 
-   .selector .account .header { padding: 0 15px 15px 15px; border-bottom: 1px solid #252635; }
+   .selector .account .header { padding: 0 15px 15px 15px; border-bottom: 1px solid #181a20; }
 
    .account .header h2, .account .header h3 { margin: 0; }
    .header h2 { font-size: 2rem; font-weight: 450; color: #f8f8ff; }
@@ -137,15 +137,15 @@
    ul.data li { 
       margin: 15px auto; width: 325px; position: relative;
       display: flex; justify-content: space-between;
-      background: linear-gradient(90deg, #252635, transparent);
+      background: linear-gradient(90deg, #0b0e11, transparent);
       padding: 10px 10px; border-radius: 10px;
    }
 
    ul.data li::before { content: ""; font-weight: 700; position: absolute; display: flex; justify-content: center; align-items: center;
-      height: 39.5px; top: 0; left: 0; border-radius: 10px; box-shadow: rgb(0 0 0 / 15%) 0px 1px 20px 0px; background: #2e2f40;  width: 39px; }
+      height: 39.5px; top: -1px; left: 0; border-radius: 10px; box-shadow: rgb(0 0 0 / 15%) 0px 1px 20px 0px; background: #181a20; width: 39px; }
 
    li span.name { position: relative; padding-left: 45px; color: #9fa5c3; font-weight: 400; }
-   li span.name::before { position: absolute; width: 25px; height: 25px; content: ''; background: #7c5bf1; left: -2.8px; top: -3px; }
+   li span.name::before { position: absolute; width: 25px; height: 25px; content: ''; background: #7c5bf1; left: -2.8px; top: -2.5px; }
    li span.name.hours::before { mask: url('../../assets/images/icons/clock.svg') no-repeat center; mask-size: cover; }
    li span.name.date::before { mask: url('../../assets/images/icons/date.svg') no-repeat center; mask-size: cover; }
    li span.name.last_login::before { mask: url('../../assets/images/icons/login.svg') no-repeat center; mask-size: cover; }
@@ -166,7 +166,7 @@
       width: 250px;
       position: relative;
       height: 100%;
-      background: linear-gradient(0deg, #171827, transparent);
+      background: rgb(11 14 17 / 45%);
       border-radius: 10px;
       transition: all .3s ease;
    }
@@ -193,8 +193,8 @@
 
    .character-slot * { transition: all .3s ease; }
    .character-slot .character-create { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-   .character-create small { text-transform: uppercase; color: #5b5d73; }
-   .create-button { margin: 20px 0; background: #5b5d72; width: 100px; height: 100px; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
+   .character-create small { text-transform: uppercase; color: #474d57; }
+   .create-button { margin: 20px 0; background: #474d57; width: 100px; height: 100px; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
    .character-slot:hover { filter: brightness(1.3); }
    .character-slot:hover .character-create small { color: white; }
    .character-slot:hover .create-button { background: whitesmoke; }

@@ -35,7 +35,7 @@ mp.events.add(
          }
       },
       
-      'CLIENT::ITEM:DROP': async (item: any, itemInfo: any, quantity = 1) => { 
+      'CLIENT::ITEM:DROP': async (item: any, itemInfo: any) => { 
          let { position } = Player;
          let heading = mp.players.local.getHeading();
          let rotation = mp.players.local.getRotation(2);
@@ -71,7 +71,7 @@ mp.events.add(
       
          object.destroy();
       
-         const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', item, JSON.stringify(fixedPosition), quantity);
+         const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', JSON.parse(item).id, JSON.stringify(fixedPosition));
          if (newInventory) Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
       
          // mp.game.streaming.requestAnimDict('random@domestic');
@@ -85,7 +85,11 @@ mp.events.add(
 
       'CLIENT::ITEM:GIVE': Give,
 
-      'CLIENT::ITEM:USE': Use,
+      'CLIENT::ITEM:USE': async (item: any) => { 
+         const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:USE', JSON.parse(item).id);
+         Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
+
+      },
 
       'client:inventory.player:nearby': () => { 
          let Nearby: object[] = [];
@@ -178,11 +182,6 @@ async function Give (target: PlayerMp, item: number, quantity: number) {
    }
 }
 
-async function Use (item: number) { 
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:use', item);
-   Browser.call('');
-   //if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-}
 
 async function Put (weapon: number) { 
    const Inventory = await mp.events.callRemoteProc('server:player.inventory.weapon:put', weapon);

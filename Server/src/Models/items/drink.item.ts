@@ -4,7 +4,7 @@ import { itemData } from '../../globals/enums';
 import { baseItem } from '../item.model';
 
 
-const defaultDrinkType = [itemData.Type.Drink, itemData.Type.Consumable, itemData.Type.Stackable];
+const defaultDrinkType = [itemData.Type.DRINK, itemData.Type.CONSUMABLE, itemData.Type.STACKABLE];
 
 export class drinkItem extends baseItem {
    thirst: number;
@@ -23,7 +23,7 @@ export class drinkItem extends baseItem {
 }
 
 new drinkItem('Coffe', 'prop_fib_coffee', 0.3, 3);
-const pivo = new drinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3, [itemData.Type.Alcohol]);
+const pivo = new drinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3);
 new drinkItem('Cola Can', 'ng_proc_sodacan_01a', 0.3, 3);
 
 

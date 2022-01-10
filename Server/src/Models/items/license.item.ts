@@ -4,7 +4,7 @@ import Items from '../inventory.item.model';
 import { baseItem } from '../item.model';
 
 
-const licenseTypes = [itemData.Type.Misc, itemData.Type.Legal, itemData.Type.License];
+const licenseTypes = [itemData.Type.MISC, itemData.Type.LEGAL, itemData.Type.LICENSE];
 
 export enum weapLicenseType { CCV, PF }
 

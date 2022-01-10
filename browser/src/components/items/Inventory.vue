@@ -4,8 +4,8 @@
 <template>
    <div class="wrapper">
 
-      <div class="inventory" @mouseenter="hoverBox = false" @click="hoverBox = false">
-         <div class="item-holder" v-for="item in items" :key="item.id" @mouseenter=" e => hoverItem(item, e)" > 
+      <div class="inventory" @mouseenter="hoverBox = false, hoveredItem = null" @click="hoverBox = false">
+         <div class="item-holder" v-for="item in availableItems" :key="item.id" @mouseenter=" e => hoverItem(item, e)" > 
             <div class="item">
                <h3 class="quantity"> {{ item.quantity }} </h3>
                <h3 class="item-name"> {{ item.name }} </h3>
@@ -68,7 +68,7 @@
             },
 
             items: [
-               { id: 0, model: 'backpack', quantity: 1, name: 'Coffe', entity: Item_Entity.Player, Type: [Item_Type.Storage], Weight: 0.5, Extra: { Max_Weight: 25 } },
+               // { id: 0, model: 'backpack', quantity: 1, name: 'Coffe', entity: Item_Entity.Player, Type: [Item_Type.Storage], Weight: 0.5, Extra: { Max_Weight: 25 } },
                // { id: 1, model: 'cheeseburger', quantity: 1, name: 'Taco', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.4 },
                // { id: 2, model: 'soda_can', quantity: 1, name: 'Soda Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
                // { id: 3, model: 'energy_can', quantity: 1, name: 'Energy Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
@@ -87,7 +87,10 @@
          }
       },
 
-      watch: {
+      computed: { 
+         availableItems: function () { 
+            return this.items.filter(item => item.status != 1);
+         }
       },
 
       methods: { 
@@ -135,7 +138,8 @@
             mp.invoke('focus', true);
 
             mp.events.add('BROWSER::INVENTORY:ITEMS', items => { 
-               
+               console.log(items)
+               this.items = JSON.parse(items);
             });
          }   
       },
@@ -152,7 +156,7 @@
    .wrapper { 
       width: 100%;
       height: 100%;
-      background: radial-gradient(ellipse at center top, rgb(76 49 142 / 20%) 0%, rgb(32 20 63 / 25%) 50%, rgb(0 0 0 / 45%) 90%);
+      background: radial-gradient(ellipse at center top, rgb(76 49 142 / 15%) 0%, rgb(32 20 63 / 20%) 50%, rgb(0 0 0 / 45%) 90%);
       position: absolute;
       top: 0;
       left: 0;
@@ -168,11 +172,12 @@
       width: auto;
       border-radius: 10px;
       height: auto;
-      background: rgb(23 24 39 / 20%);
+      background: linear-gradient(0deg, #171827, transparent);
       display: grid;
       grid-gap: 0.7rem;
       grid-template-columns: repeat(3, 150px);
       grid-template-rows: repeat(3, 150px);
+      box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }
 
    .item-holder { 

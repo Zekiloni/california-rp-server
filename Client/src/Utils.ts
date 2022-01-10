@@ -38,7 +38,7 @@ export function DisableMoving () {
    mp.game.controls.disableControlAction(0, 35, true);
 }
 
-export function RemoveClothing (Entity: PlayerMp) {
+export function removeClothing (Entity: PlayerMp) {
    const Gender = Genders[Entity.model];
    switch (Gender) { 
       case '0': {

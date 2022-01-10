@@ -32,9 +32,9 @@
       
       data () {
          return { 
-            itemInfo: {"name":"Coffe","type":[3,1,15],"model":"prop_fib_coffee","weight":0.1,"description":"Ovaj predmet nema opis.","thirst":0.3,"alcohol":3},
+            itemInfo: null,
 
-            itemActions: [{"name":"Koristi","event":"CLIENT::ITEM:USE","icon":"use"},{"name":"Baci","event":"CLIENT::ITEM:DROP","icon":"drop"},{"name":"Daj","event":"CLIENT::ITEM:GIVE","icon":"give"},{"name":"Podeli","event":"CLIENT::ITEM:SPLIT","icon":"split"}],
+            itemActions: null,
 
             desiredAmount: null,
 
@@ -44,7 +44,6 @@
 
       methods: { 
          call: function (event) {
-            console.log(this.itemInfo)
             mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.itemInfo), this.desiredAmount ? this.desiredAmount : this.item.quantity);
          }
       },
@@ -73,7 +72,7 @@
       width: 300px;
       height: 200px;
       border-radius: 10px;
-      /* backdrop-filter: blur(10px); */
+      /* backdrop-filter: blur(5px); */
       background: linear-gradient(45deg, #171827, transparent);
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }

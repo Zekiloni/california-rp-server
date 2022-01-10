@@ -3,7 +3,7 @@
 import { Browser } from '../browser';
 import { Clothing_Components, Genders, Player_Models } from '../data/Player';
 import { Lobby } from './lobby';
-import {  DisableMoving, PlayerPreviewCamera, RemoveClothing } from '../utils';
+import {  DisableMoving, PlayerPreviewCamera, removeClothing } from '../utils';
 import Female_Torsos from '../data/FEMALE_TORSOS.json';
 import Male_Torsos from '../data/MALE_TORSOS.json';
 import { Clothing_Combinations } from '../data/Clothing_Combinations';
@@ -26,7 +26,7 @@ mp.events.add(
             mp.game.time.setClockTime(Info.Time, 0, 0);
             Player.freezePosition(true);
             mp.events.add('render', DisableMoving);
-            RemoveClothing(Player);
+            removeClothing(Player);
             mp.game.ui.displayRadar(false);
             PlayerPreviewCamera(true);
          });
@@ -56,7 +56,7 @@ mp.events.add(
 
       'CLIENT::CREATOR:GENDER': (x: number) => {
          Player.model = Player_Models[x];
-         RemoveClothing(Player);
+         removeClothing(Player);
          // Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations[0]));
       },
 

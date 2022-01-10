@@ -164,7 +164,7 @@
       height: auto;
       padding: 10px 5px;
       backdrop-filter: blur(5px);
-      background: linear-gradient(180deg, rgb(46 47 64 / 95%), transparent);
+      background: rgb(11 14 17 / 55%);
       border-radius: 10px;
       position: absolute;
       display: flex;
