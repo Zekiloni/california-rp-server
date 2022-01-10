@@ -18,7 +18,7 @@ mp.events.add(
          Lobby(false);
          Browser.call('BROWSER::SHOW', 'Chat');
          mp.events.callRemote('SERVER::CHARACTER:PLAY', character, spawnPoint);
-         gameInterface.toggle(UI_Status.Full_Visible);
+         gameInterface.toggle(UI_Status.VISIBLE);
       }
    }
 );

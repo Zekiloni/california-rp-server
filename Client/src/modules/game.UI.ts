@@ -3,10 +3,9 @@ import { Browser } from '../browser';
 
 
 export enum UI_Status {
-   Full_Visible,
-   Only_Chat,
-   Chat_Hidden,
-   Fully_Hidden
+   VISIBLE,
+   ONLY_CHAT,
+   HIDDEN
 };
 
 
@@ -23,22 +22,34 @@ class GAME_UI {
 
    Vehicle_UI: boolean = false;
    Weapon_UI: boolean = false;
-   Status: UI_Status = UI_Status.Fully_Hidden;
+   status: UI_Status = UI_Status.HIDDEN;
 
    constructor () { 
       mp.events.add('render', this.GTA_HUD);
    }
 
    toggle (i: UI_Status) { 
-      this.Status ++;
+      this.status ++;
 
-      if (this.Status > UI_Status.Fully_Hidden) this.Status = UI_Status.Full_Visible;
+      if (this.status > UI_Status.HIDDEN) this.status = UI_Status.HIDDEN;
 
       switch (true) { 
-         case this.Status == UI_Status.Full_Visible: {
+         case this.status == UI_Status.VISIBLE: {
             Browser.call('BROWSER::SHOW', 'GameInterface');
+            Browser.call('BROSER::SHOW', 'Chat');
             Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
             mp.events.add('render', this.mainInterface);
+            break;
+         }
+
+         case this.status == UI_Status.ONLY_CHAT: { 
+            Browser.call('BROWSER::HIDE', 'GameInterface');
+            mp.events.remove('render', this.mainInterface);
+            break;
+         }
+
+         case this.status == UI_Status.HIDDEN: { 
+            Browser.call('BROSER::HIDE', 'Chat');
             break;
          }
       }
