@@ -15,7 +15,6 @@ export default class House extends Model {
    @AllowNull(false)
    @Default(0)
    @Column
-
    owner: number;
 
    @AllowNull(false)
