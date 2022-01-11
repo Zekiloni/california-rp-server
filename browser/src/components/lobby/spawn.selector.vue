@@ -129,7 +129,6 @@
       },
 
       mounted () { 
-         console.log('this spawnpoints ' + JSON.stringify(this.spawnPoints))
          this.init();
       }
       

@@ -68,14 +68,6 @@
             },
 
             items: [
-               // { id: 0, model: 'backpack', quantity: 1, name: 'Coffe', entity: Item_Entity.Player, Type: [Item_Type.Storage], Weight: 0.5, Extra: { Max_Weight: 25 } },
-               // { id: 1, model: 'cheeseburger', quantity: 1, name: 'Taco', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.4 },
-               // { id: 2, model: 'soda_can', quantity: 1, name: 'Soda Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
-               // { id: 3, model: 'energy_can', quantity: 1, name: 'Energy Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
-               // { id: 5, model: 'cheeseburger', quantity: 1, name: 'Cheeseburger', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.4 },
-               // { id: 6, model: 'soda_can', quantity: 1, name: 'Soda Can', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.35454 },
-               // { id: 7, model: 'beer', quantity: 1, name: 'Beer Bottle', entity: Item_Entity.Player, Type: [Item_Type.Food], Weight: 0.45454 },
-
             ],
 
 

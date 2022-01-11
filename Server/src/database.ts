@@ -11,6 +11,7 @@ import Bans from './models/ban.model';
 import Characters from './models/character.model';
 import Appearances from './models/appearance.model';
 import Items from './models/inventory.item.model';
+import { Injury } from './models/misc/injury.model';
 
 const Database = new Sequelize({
    database: Config.Database.Name,
@@ -53,6 +54,12 @@ Database.authenticate()
       }
    }
 
+
+   Items.findAll({ where: { on_ground: true } }).then(items => { 
+      items.forEach(item => { 
+         Items.refresh(item);
+      })
+   })
 })();
 
 

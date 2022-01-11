@@ -21,19 +21,17 @@ mp.events.add(
 
 class gameUI { 
 
-   vehicleInterface: boolean = false;
-   weaponInterface: boolean = false;
    status: UI_Status = UI_Status.HIDDEN;
 
    constructor () { 
       mp.events.add('render', this.GTA_HUD);
 
       mp.keys.bind(controls.F7, true, () => { 
-         this.toggle(this.status ++);
+         this.mainInterface(this.status ++);
       });
    }
 
-   toggle (i: UI_Status) { 
+   mainInterface (i: UI_Status) { 
       
       if (this.status > UI_Status.HIDDEN) this.status = UI_Status.HIDDEN;
 
@@ -41,17 +39,16 @@ class gameUI {
 
       switch (this.status) { 
          case UI_Status.VISIBLE: {
-            mp.console.logInfo(' visible toggle')
             Browser.call('BROWSER::SHOW', 'GameInterface');
             Browser.call('BROWSER::SHOW', 'Chat');
             Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
-            mp.events.add('render', this.mainInterface);
+            mp.events.add('render', this.updateMain);
             break;
          }
 
          case UI_Status.ONLY_CHAT: { 
             Browser.call('BROWSER::HIDE', 'GameInterface');
-            mp.events.remove('render', this.mainInterface);
+            mp.events.remove('render', this.updateMain);
             break;
          }
 
@@ -60,6 +57,10 @@ class gameUI {
             break;
          }
       }
+   }
+
+   vehicleInterface (toggle: boolean) { 
+      Browser.call('BROWSER::GAME_UI:VEHICLE:TOGGLE', toggle);
    }
 
    GTA_HUD () { 
@@ -78,8 +79,7 @@ class gameUI {
       gameInterface.HIDE_CORSSAIR();
    }
 
-
-   mainInterface () { 
+   updateMain () { 
       const { x: x, y: y, z: z} = mp.players.local.position;
       const path = mp.game.pathfind.getStreetNameAtCoord(x, y, z, 0, 0);
 

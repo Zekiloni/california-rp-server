@@ -18,7 +18,6 @@ mp.events.add(
          if (Banned) player.kick('Bannedovan');
       },
 
-
       'playerQuit': async (player: PlayerMp) => { 
          const leavingPlayer = player;
 
@@ -34,13 +33,10 @@ mp.events.add(
 
       },
 
-
       'SERVER::CHARACTER:PLAY': async (player: PlayerMp, characterId: number, point: spawnTypes) => {
-         console.log('characterid', characterId)
          const Selected = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
          Selected?.spawnPlayer(player, point);
       },
-
 
       'playerChat': async (player: PlayerMp, Content) => {
          if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
@@ -94,11 +90,9 @@ mp.events.addProc(
          return Config.Settings.Lobby;
       },
 
-
       'SERVER::CREATOR:INFO': (Player: PlayerMp) => { 
          return Config.Settings.Creator;
       },
-
 
       'SERVER::AUTHORIZATION:VERIFY': async (player: PlayerMp, username: string, password: string): Promise<Accounts> => {
          return new Promise((resolve) => {
@@ -134,12 +128,11 @@ mp.events.addProc(
                // if (character?.houses) { }
       
                if (character?.last_position) { 
-                  const lastPos = JSON.parse(character.last_position.toString());
                   spawnPoints.push({
                      name: Messages.LAST_POSITION,
                      type: spawnTypes.lastPosition,
                      description: Messages.LAST_POSITION_DESCRIPTION,
-                     position: new mp.Vector3(lastPos.x, lastPos.y, lastPos.z),
+                     position: new mp.Vector3(character.last_position.x, character.last_position.y, character.last_position.z),
                      heading: 0
                   })
                }

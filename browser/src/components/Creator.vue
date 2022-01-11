@@ -443,9 +443,7 @@
          Play: function () { 
             const Taksks = this.Info.filter(Task => Task.Task == true);
             let Completed = this.Info.filter(Help => Help.Task === true && Help.Completed());
-            console.log('pre play');
             // if (Completed.length != Taksks.lengt) return; 
-            console.log('after play');
             mp.trigger('CLIENT::CREATOR:FINISH', JSON.stringify(this.Character), JSON.stringify(this.Appearance));
          },
 

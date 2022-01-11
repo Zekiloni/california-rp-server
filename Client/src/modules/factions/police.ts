@@ -3,8 +3,6 @@ import { Browser } from '../../browser';
 
 
 
-
-
 class ALPR { 
    toggle: Boolean = false;
 
@@ -24,15 +22,15 @@ class ALPR {
       if (mp.players.local.vehicle) { 
          const playerVehicle = mp.players.local.vehicle;
          
-         const startForwardPosition = mp.players.local.vehicle.getOffsetFromInWorldCoords(0, 2.5, 0);
+         const startForwardPosition = mp.players.local.vehicle.getOffsetFromInWorldCoords(0, 3, 0);
          const startBehindPosition = mp.players.local.vehicle.getOffsetFromInWorldCoords(0, -2.5, 0);
 
          const forwardPosition = playerVehicle.getOffsetFromInWorldCoords(0, 25, 0.15);
          const behindPosition = playerVehicle.getOffsetFromInWorldCoords(0, -25, 0.15);
 
 
-         const forward = mp.raycasting.testPointToPoint(startForwardPosition, forwardPosition);
-         const behind = mp.raycasting.testPointToPoint(startBehindPosition, behindPosition);
+         const forward = mp.raycasting.testCapsule(startForwardPosition, forwardPosition, 0.3);
+         const behind = mp.raycasting.testCapsule(startBehindPosition, behindPosition, 0.3);
 
          if (forward && forward.entity && forward.entity.type == 'vehicle') { 
             mp.game.graphics.drawLine(startForwardPosition.x, startForwardPosition.y, startForwardPosition.z + 0.5, forwardPosition.x, forwardPosition.y, forwardPosition.z, 255, 255, 255, 255);

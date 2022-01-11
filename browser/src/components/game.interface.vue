@@ -7,6 +7,9 @@
       
       <Offer />
 
+      <VehicleInterface v-if="driving" />
+
+
       <div class="server-info">
          <div class="player-id"> 
             <h2> # {{ playerId }}</h2>
@@ -41,16 +44,15 @@
 
 <script>
 
-   import Offer from './Offer.vue';
+   import Offer from './offer.vue';
    import { Messages } from '../globals';
    import Helpers from '../helpers';
-   import { VueSvgGauge } from 'vue-svg-gauge'
-
+   import VehicleInterface from './vehicles/vehicle.main.vue';
 
    export default { 
 
       components: {
-         Offer, VueSvgGauge
+         Offer, VehicleInterface
       },
 
       data () { 
@@ -70,25 +72,11 @@
                zone: '',
                heading: 'N'
             },
-
-            Driving: true,               
-            Seatbelt: false,
-            Driving_Info: { 
-               Speed: 154,
-               Max_Speed: 300,
-               Indicators: [true, false],
-               Lights: { lightsOn: true, highbeamsOn: true },
-               Fuel: 0,
-               Gear: 'N',
-               Failure: { Engine: false },
-               Mileage: 0.00
-            },
+           
+            driving: false,
 
             sounds: { 
                money: new Audio('src/sounds/money.mp3'),
-               seatbelt: { 
-                  put: new Audio('src/sounds/seatbelt_put.mp3'), remove: new Audio('src/sounds/seatbelt_remove.mp3')
-               }
             },
 
             Messages, Helpers
@@ -102,25 +90,6 @@
             this.changeValue = value - oldValue;
             setTimeout(() => { this.change = null; }, 3000);
             this.sounds.money.play();
-         },
-
-         Seatbelt: function (toggle) { 
-            toggle ? this.sounds.seatbelt.put.play() : this.sounds.seatbelt.remove.play();
-         }
-      },
-
-      computed: { 
-         Vehicle_Speed: function () { 
-            const Speed = this.Driving_Info.Speed * 100 / this.Driving_Info.Max_Speed;
-            return Speed + '%';
-         },
-
-         Vehicle_Lights: function () { 
-            const Lights = this.Driving_Info.Lights;
-            if (!Lights.lightsOn && !Lights.highbeamsOn) { return 'off'; }
-            else if (Lights.lightsOn && !Lights.highbeamsOn) { return 'on'; }
-            else if (!Lights.lightsOn && Lights.highbeamsOn) { return 'on-2'; }
-            else if (Lights.lightsOn && Lights.highbeamsOn) { return 'on-2'; }
          }
       },
 
@@ -136,9 +105,9 @@
             setTimeout(this.update, 1000);
          },
 
-
-         Vehicle_Indicators: function (i) { 
-            return this.Driving_Info.Indicators[i] ? 'blinking' : 'off';
+         toggleDriving: function (toggle) {
+            console.log('MAIN VEHICLE INTERFACE: ' + toggle);
+            this.driving = toggle;
          }
       },
 
@@ -154,10 +123,11 @@
             mp.events.add('BROWSER::GAME_UI:UPDATE_PLAYERS', players => this.onlinePlayers = players);
 
             mp.events.add('BROWSER::GAME_UI:UPDATE_MONEY', money => this.money = money);
+
+            mp.events.add('BROWSER::GAME_UI:VEHICLE:TOGGLE', this.toggleDriving)
          }
 
          this.update();
-
       }
    }
 

@@ -1,6 +1,6 @@
 
 
-import { entityData, Global_Dimension, NotifyType, Peds, spawnTypes } from '../globals/enums';
+import { entityData, globalDimension, NotifyType, Peds, spawnTypes } from '../globals/enums';
 import { Messages } from '../globals/constants';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne } from 'sequelize-typescript';
 import { Config } from '../config';
@@ -8,6 +8,7 @@ import { Config } from '../config';
 import Accounts from './account.model';
 import { Injury } from './misc/injury.model';
 import Appearances from './appearance.model';
+import Database from '../database';
 
 
 console.log(Peds.walkingStyles.Normal)
@@ -51,7 +52,6 @@ export default class Characters extends Model {
    @HasOne(() => Appearances)
    appearance: Appearances
 
-
    @Default(0)
    @Column
    paycheck: number
@@ -59,52 +59,67 @@ export default class Characters extends Model {
    @IsUUID(4)
    @Default(DataType.UUIDV4)
    @Column
-   stranger_id: number
+   stranger_id: number;
 
    @Default(0)
    @Column
-   faction: number
+   faction: number;
 
    @Default('none')
    @Column
-   faction_rank: string
+   faction_rank: string;
 
    @Default(0)
    @Column
-   faction_perms: number
+   faction_perms: number;
 
    @Default(0)
    @Column
-   job: number
+   job: number;
 
    @Default(0)
    @Column
-   working_hours: number
+   working_hours: number;
 
    @Default(100)
    @Column
-   health: number
+   health: number;
 
    @Default(100)
    @Column
-   hunger: number
+   hunger: number;
 
    @Default(100)
    @Column
-   thirst: number
+   thirst: number;
    
    @Default(false)
    @Column
-   wounded: boolean
+   wounded: boolean;
 
    @Default([])
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('injuries')); },
+   })    
    injuries: Injury[]
 
-   @Column(DataType.JSON)
-   last_position: Vector3Mp
+   @Default(null)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('last_position')); },
+   })   
+   last_position: Vector3Mp;
+
+   @Default(null)
+   @Column
+   last_dimension: number;
    
-   @Column(DataType.JSON)
+   @Default(null)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('inside')); },
+   })    
    inside: object
 
    @Default(0)
@@ -122,7 +137,6 @@ export default class Characters extends Model {
    @Default(Peds.walkingStyles.Normal)
    @Column(DataType.STRING)
    walking_style: keyof typeof Peds.walkingStyles
-
 
    @Default(Peds.facialMoods.Normal)
    @Column(DataType.STRING)
@@ -143,7 +157,6 @@ export default class Characters extends Model {
    @Default(Config.Max.VEHICLES)
    @Column
    max_vehicles: number
-
 
    @Default(false)
    @Column
@@ -201,12 +214,13 @@ export default class Characters extends Model {
          case spawnTypes.default: { 
             console.log(353)
             player.position = Config.Default.Spawn;
-            player.dimension = Global_Dimension;
+            player.dimension = globalDimension;
             break;
          }
 
          case spawnTypes.lastPosition: {
             player.position = new mp.Vector3(this.last_position.x, this.last_position.y, this.last_position.y);
+            player.dimension = this.last_dimension ? this.last_dimension : globalDimension;
             break;
          }
 
@@ -294,7 +308,6 @@ export default class Characters extends Model {
 
    
 }
-
 
 
 

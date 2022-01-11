@@ -10,6 +10,12 @@ export interface spawnPoint {
 };
 
 
+export interface businessPoint {
+   colshape: ColshapeMp,
+   blip: BlipMp,
+   label: TextLabelMp
+};
+
 export interface itemAction { 
    name: string,
    icon: string,

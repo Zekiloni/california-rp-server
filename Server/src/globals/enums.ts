@@ -1,7 +1,7 @@
 
 
 
-export const Global_Dimension = 0;
+export const globalDimension = 0;
 
 export namespace Peds { 
    export enum Models { 
@@ -133,6 +133,26 @@ export enum logType {
 };
 
 
+export namespace bizData { 
+   export enum Type { 
+      MARKET, GAS_STATION, ELECTRONIC_SHOP, RENT, VEHICLE_DEALERSHIP,
+      CLASSIC_CLOTHING, LUXURY_CLOTHING, RESTAURANT, CAFE_BAR, NIGHT_CLUB,
+      AMMUNATION, PAWN_SHOP, FURNITURE_SHOP, CAR_PARTS, JEWELRY_SHOP, TATTO_SHOP,
+      BARBER_SHOP
+   }
+
+   export function getDefault (type: number) { 
+
+      switch (type) { 
+         case Type.MARKET: { 
+            break;
+         }
+
+      }
+   }
+}
+
+
 export enum adminLevel {
    NONE = 0,
    HELPER = 1,
@@ -178,7 +198,7 @@ export namespace itemData {
    }
 
    export enum Status { 
-      NONE, EQUIPED, GROUND, RAW, COOKED, BROKEN
+      NONE, EQUIPED, RAW, COOKED, BROKEN
    }
    
 

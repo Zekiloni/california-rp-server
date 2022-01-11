@@ -94,7 +94,7 @@ frp.Channels.New = async function (player, frequency, password = null) {
    Character.Frequency = frequency;
    await Character.save();
 
-   Character.GiveMoney(player, -frp.Settings.Frequency.Price);
+   Character.GiveMoney(player, -frp.Setings.Frequency.Price);
 
    player.Notification(frp.Globals.messages.CHANNEL_SUCCESFULLY_CREATED, frp.NotifyType.SUCCESS, 5);
 };

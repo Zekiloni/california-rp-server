@@ -45,6 +45,7 @@
       methods: { 
          call: function (event) {
             mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.itemInfo), this.desiredAmount ? this.desiredAmount : this.item.quantity);
+            this.$parent.hoverBox = false;
          }
       },
 
@@ -72,7 +73,6 @@
       width: 300px;
       height: 200px;
       border-radius: 10px;
-      /* backdrop-filter: blur(5px); */
       background: rgb(11 14 17 / 65%);
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }
@@ -87,14 +87,12 @@
       background: linear-gradient(90deg, #474d57, transparent);
    }
 
-
    p.description { 
       font-weight: 250;
       color: whitesmoke;
       padding: 10px;
       margin: 0;
    }
-
 
    ul.actions { 
       position: absolute;
@@ -110,9 +108,8 @@
       list-style: none;
    }
 
-
    ul.actions li { 
-      padding: 10px 0;
+      padding: 10px 5px;
    }
 
    ul.actions li * {

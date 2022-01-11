@@ -85,13 +85,14 @@
       width: 270px;
       padding: 15px 10px;
       transition: all .3s ease;
-      border-bottom: 2px solid #0b0e11;
+      border: 1px solid #0b0e11;
       color: #cdcdcd;
+      border-radius: 5px;
       box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
       background: #2b2f36;
    }
 
-   .form input:focus { color: white; transform: scale(1.05); border-color: #7c5bf1; }
+   .form input:focus { color: white; transform: scale(1.05); border-color: #474d57; }
    .form .input-container { position: relative; margin: 10px 0; }
 
    button.play { 

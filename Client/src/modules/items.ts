@@ -1,22 +1,16 @@
 import { Browser } from '../browser';
 import { screenResolution } from './core';
-import { Controls } from '../utils';
+import { controls } from '../data/enums';
 
 
-const Player = mp.players.local;
+const player = mp.players.local;
 
-let Active: boolean = false;
-
-
-const Keys: any = {
-   0: 0x31, 1: 0x32, 2: 0x33, 3:0x34, 666: 0x09
-};
+let active: boolean = false;
 
 
 mp.events.addProc(
    {
       'CLIENT::ITEM:INFO': async (itemName) => { 
-         mp.console.logInfo('uso loginfo item ')
          const itemInfo = await mp.events.callRemoteProc('SERVER::ITEM:INFO', itemName);
          return JSON.stringify(itemInfo); 
       }
@@ -27,16 +21,16 @@ mp.events.add(
    {
 
       'CLIENT::INVENTORY:TOGGLE': async () => { 
-         Active = !Active; 
-         Browser.call(Active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'Inventory');
-         if (Active) {
+         active = !active; 
+         Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'Inventory');
+         if (active) {
             const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
             Browser.call('BROWSER::INVENTORY:ITEMS', items);
          }
       },
       
       'CLIENT::ITEM:DROP': async (item: any, itemInfo: any) => { 
-         let { position } = Player;
+         let { position } = player;
          let heading = mp.players.local.getHeading();
          let rotation = mp.players.local.getRotation(2);
 
@@ -93,8 +87,8 @@ mp.events.add(
 
       'client:inventory.player:nearby': () => { 
          let Nearby: object[] = [];
-         mp.players.forEachInRange(Player.position, 4, (target) => { 
-            if (target.dimension === Player.dimension && target.remoteId != Player.remoteId) { 
+         mp.players.forEachInRange(player.position, 4, (target) => { 
+            if (target.dimension === player.dimension && target.remoteId != player.remoteId) { 
                Nearby.push({ id: target.remoteId, name: target.name });
             }
          })
@@ -102,28 +96,32 @@ mp.events.add(
       },
 
       'render': () => { 
-         if (Player.Logged && Player.Spawned) { 
-            mp.objects.forEach((Object) => { 
-               if (Player.hasClearLosTo(Object.handle, 17)) {
-                  const PlayerPosition = Player.position;
-                  const ObjectPosition = Object.position;
-      
-                  if (Object.getVariable('Item')) { 
-                     const Distance = new mp.Vector3(PlayerPosition.x, PlayerPosition.y, PlayerPosition.z).subtract(new mp.Vector3(ObjectPosition.x, ObjectPosition.y, ObjectPosition.z)).length();
-      
-                     const position = mp.game.graphics.world3dToScreen2d(ObjectPosition.x, ObjectPosition.y, ObjectPosition.z + 0.15);
+         if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
+            mp.objects.forEach((object) => { 
+               if (player.hasClearLosTo(object.handle, 17)) {
+                  if (object.getVariable('ITEM')) { 
 
-                     if (position) {
-                        let x = position.x;
-                        let y = position.y;
+                     const { position } = player;
+
+
+                     const objectPosition = object.position;
+
+                     const distance = new mp.Vector3(position.x, position.y, position.z).subtract(new mp.Vector3(objectPosition.x, objectPosition.y, objectPosition.z)).length();
+
+                     let { x, y } = mp.game.graphics.world3dToScreen2d(objectPosition.x, objectPosition.y, objectPosition.z + 0.15);
+
+                     if (x && y) {
                   
-                        if (Distance <= 2.5) {       
-                           let scale = (Distance / 25);
+                        if (distance <= 4.5) {      
+                           
+                           mp.game.graphics.drawLine(position.x, position.y, position.z, object.position.x, object.position.y, object.position.z, 0, 255, 0, 255);
+
+                           let scale = (distance / 25);
                            if (scale < 0.6) scale = 0.6;
                            
                            y -= (scale * (0.005 * (screenResolution.y / 1080))) - parseInt('0.010');
                            
-                           const Item = Object.getVariable('Item');
+                           // const Item = Object.getVariable('Item');
       
                            // mp.game.graphics.drawText(Item, [x, y], {
                            //    font: 4,
@@ -142,35 +140,47 @@ mp.events.add(
 );
 
 
-
-mp.keys.bind(Controls.KEY_I, false, function() {
-   if (Player.getVariable('LOGGED_IN') && Player.getVariable('SPAWNED')) { 
-      if (Player.isTypingInTextChat || Player.getVariable('CUFFED') ) return;
+mp.keys.bind(controls.KEY_I, true, function() {
+   if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
+      if (player.isTypingInTextChat || player.getVariable('CUFFED') ) return;
       mp.events.call('CLIENT::INVENTORY:TOGGLE');
    }
 });
 
 
-function WeaponSelector () { 
-   for (let i in Keys) {
-      const key = Keys[i];
-      mp.keys.bind(key, false, function() {
-         if (Player.Logged && Player.Spawned) { 
-            if (Player.Cuffed || Player.vehicle || mp.players.local.isTypingInTextChat) return;
-            mp.events.callRemote('server:player.inventory.item.weapon:take', i);
+mp.keys.bind(controls.KEY_E, true, function() {
+   if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
+      if (player.isTypingInTextChat || player.getVariable('CUFFED') ) return;
+      mp.objects.forEachInRange(player.position, 2, async object => { 
+         if (object.getVariable('ITEM')) {
+            const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:PICKUP', object.getVariable('ITEM').id);
+            if (active && newInventory) Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
+            return;
          }
       });
    }
-}
-
-WeaponSelector();
-
-mp.keys.bind(Controls.KEY_Y, false, function() {
-   if (Player.Logged && Player.Spawned) { 
-      if (Player.vehicle || Player.getVariable('CUFFED') || mp.players.local.isTypingInTextChat) return;
-      mp.events.callRemote('server:player.inventory.item:pickup');
-   }
 });
+
+// function WeaponSelector () { 
+//    for (let i in Keys) {
+//       const key = Keys[i];
+//       mp.keys.bind(key, false, function() {
+//          if (Player.Logged && Player.Spawned) { 
+//             if (Player.Cuffed || Player.vehicle || mp.players.local.isTypingInTextChat) return;
+//             mp.events.callRemote('server:player.inventory.item.weapon:take', i);
+//          }
+//       });
+//    }
+// }
+
+// WeaponSelector();
+
+// mp.keys.bind(Controls.KEY_Y, false, function() {
+//    if (Player.Logged && Player.Spawned) { 
+//       if (Player.vehicle || Player.getVariable('CUFFED') || mp.players.local.isTypingInTextChat) return;
+//       mp.events.callRemote('server:player.inventory.item:pickup');
+//    }
+// });
 
 
 

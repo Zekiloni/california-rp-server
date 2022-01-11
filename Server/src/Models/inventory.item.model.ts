@@ -1,6 +1,6 @@
 
 
-import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { AfterCreate, AfterDestroy, AfterSave, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { entityData, itemData, logType } from '../globals/enums';
 import { itemExtraData } from '../globals/interfaces';
 import { Logger } from '../utils';
@@ -10,6 +10,8 @@ import { baseItem } from './item.model';
 
 @Table
 export default class Items extends Model { 
+
+   static objects = new Map();
 
    @PrimaryKey
    @AutoIncrement
@@ -22,11 +24,14 @@ export default class Items extends Model {
    @Column(DataType.INTEGER)
    entity: itemData.Entity;
 
-   @Column(DataType.INTEGER)
-   status: itemData.Status;
-
    @Column
    owner: number;
+
+   @Column(DataType.BOOLEAN)
+   on_ground: boolean;
+
+   @Column(DataType.INTEGER)
+   status: itemData.Status;
 
    @Default(1)
    @Column(DataType.INTEGER)
@@ -36,17 +41,26 @@ export default class Items extends Model {
    @Column
    fingerprint: number; 
 
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('position')); }
+   })
    position: Vector3Mp;
 
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('rotation')); }
+   })   
    rotation: Vector3Mp
 
    @Column
    dimension: number;
 
    @Default({})
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('data')); }
+   })   
    data: itemExtraData;
 
    @CreatedAt
@@ -55,38 +69,50 @@ export default class Items extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   object: ObjectMp;
-
-   @AfterCreate
-   static creating (Item: Items) { 
-      Item.refreshItem();
+   get object () { 
+      return Items.objects.get(this.id);
    }
 
+   set object (object: ObjectMp) { 
+      Items.objects.set(this.id, object);
+   }
+
+   @AfterCreate
+   static creating (item: Items) { 
+      Items.refresh(item);
+   }
 
    @AfterDestroy
    static destroying (item: Items) { 
       if (item.object) item.object.destroy();
    }
 
-
-   refreshItem () { 
-      if (this.status == itemData.Status.GROUND) {
-         this.object = mp.objects.new(baseItem.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
-         this.object.setVariable(entityData.ITEM, { name: this.name, id: this.id });
+   @AfterSave
+   static refresh (item: Items) {
+      if (item.on_ground) {
+         item.object = mp.objects.new(baseItem.list[item.name].model, item.position, { alpha: 255, rotation: item.rotation, dimension: item.dimension });
+         item.object.setVariable(entityData.ITEM, { name: item.name, id: item.id });
       } else { 
-         if (this.object) { 
-            this.object.destroy()
+         console.log(item.object)
+         if (item.object) { 
+            item.object.destroy();
+            Items.objects.delete(item.id);
          }
       }
    }
 
 
-   async dropItem () { 
-
+   async dropItem (player: PlayerMp) { 
+      if (this?.on_ground) {
+         this.on_ground = false;
+         this.owner = player.Character.id;
+         this.entity = itemData.Entity.PLAYER;
+         await this.save();
+      }
    }
 
-   async useItem (Player: PlayerMp) { 
-      const Character = Player.Character;
+   async useItem (player: PlayerMp) { 
+      const Character = player.Character;
       
       const rItem = baseItem.list[this.name];
    }

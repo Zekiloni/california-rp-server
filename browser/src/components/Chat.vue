@@ -24,7 +24,7 @@
                @keyup.up="shiftHistory(1)"
                @keyup.down="shiftHistory(0)"
             >
-            <div class="currentLength"> {{ Input.length + ' / 200'}} </div>
+            <p class="currentLength"> {{ Input.length + ' / 200'}} </p>
          </div>
       </transition>
    </div>
@@ -246,21 +246,17 @@
 
    input {
       width: 100%;
-      border: 1px solid rgb(121 121 121 / 13%);
+      border: 1px solid #474d57;
       color: #cdcdcd;
-      background: rgb(21 21 21 / 75%);
+      border-radius: 5px;
+      box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
+      background: #2b2f36;
       position: relative;
-      padding: 6px 10px;
-      font-size: 13.5px;
+      padding: 10px 10px;
       outline: none;
       font-size: 13px !important;
       font-weight: 300;
-      box-shadow: 0 5px 10px rgb(12 12 12 / 15%);
       transition: all 0.45s ease;
-   }
-
-   input:focus { 
-      border-color: #fbc60c; 
    }
 
    ul.messages {
@@ -287,6 +283,8 @@
       text-shadow: -1px -1px 0 rgb(0 0 0 / 20%), 1px -1px 0 rgb(0 0 0 / 20%), -1px 1px 0 rgb(0 0 0 / 20%), 1px 1px 0 rgb(0 0 0 / 20%);
    }
 
+   p.currentLength { color: #848e9c; }
+
    li.message b.timestamp {
       color: white;
       font-weight: 250 !important;
@@ -298,4 +296,5 @@
       border-radius: 2.5px;
       text-shadow: none;
    }
+   
 </style>

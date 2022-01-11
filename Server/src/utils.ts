@@ -2,7 +2,7 @@
 
 import { Config } from './config';
 import { defaultSpawn } from './globals/constants';
-import { Global_Dimension, logType, NotifyType, spawnTypes } from './globals/enums';
+import { globalDimension, logType, NotifyType, spawnTypes } from './globals/enums';
 
 
 export function Logger (Status: logType, Message: any) {
@@ -37,7 +37,7 @@ export function isPlayerNearPlayer (Player: PlayerMp, Target: PlayerMp, Distance
 }
 
 
-export function isAnyVehicleAtPosition (position: Vector3Mp, radius: number = 2, dimension = Global_Dimension) {
+export function isAnyVehicleAtPosition (position: Vector3Mp, radius: number = 2, dimension = globalDimension) {
    let Vehicles: VehicleMp[] = [];
    mp.vehicles.forEachInRange(position, radius, (Vehicle: VehicleMp) => {
       if (Vehicle && Vehicle.dimension == dimension) Vehicles.push(Vehicle);
@@ -51,7 +51,7 @@ export function isPlayerNearPoint (Player: PlayerMp, Position: Vector3Mp, Distan
 }
 
 
-export function createInfoColshape (Position: Vector3Mp, Name: string, Info: string, Radius: number, Color: RGBA, Dimension: number = Global_Dimension, Blip: any = false, Sprite: number = 4) {
+export function createInfoColshape (Position: Vector3Mp, Name: string, Info: string, Radius: number, Color: RGBA, Dimension: number = globalDimension, Blip: any = false, Sprite: number = 4) {
 
    const Colshape = mp.colshapes.newRectangle(Position.x, Position.y, Radius, 2.0, 0);
 

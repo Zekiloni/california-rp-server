@@ -18,19 +18,33 @@ export default class Appearances extends Model {
    character: Characters
 
    @AllowNull(false)
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('face_features')); },
+      set (x) { this.setDataValue('face_features', JSON.stringify(x)); }
+   })    
    face_features: number[];
 
    @AllowNull(false)
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('blend_data')); },
+      set (x) { this.setDataValue('blend_data', JSON.stringify(x)); }
+   })    
    blend_data: number[];
 
    @AllowNull(false)
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('hair')); },
+   })   
    hair: number[];
 
    @AllowNull(false)
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('beard')); },
+   })   
    beard: number[];
 
    @AllowNull(false)
@@ -38,11 +52,17 @@ export default class Appearances extends Model {
    eyes: number;
 
    @AllowNull(false)
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('overlays')); },
+   })   
    overlays: number[];
 
    @AllowNull(true)
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('overlays_colors')); },
+   })   
    overlays_colors: number[];
 
    @CreatedAt

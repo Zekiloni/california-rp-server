@@ -51,20 +51,28 @@ mp.events.addProc(
                const { position, rotation } = groundPosition;
 
                item!.owner = 0;
-               item!.status = itemData.Status.GROUND;
+               item!.on_ground = true;
                item!.dimension = player.dimension;
                item!.fingerprint = player.Character.id;
                item!.position = new mp.Vector3(position.x, position.y, position.z);
                item!.rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z);
                
                await item?.save();
-               item?.refreshItem();
                
                const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.Character.id);
                if (newInventory) resolve(newInventory);
             });
          });
+      },
 
+      'SERVER::ITEM:PICKUP': (player: PlayerMp, itemId: number) => { 
+         return new Promise((resolve) => { 
+            Items.findOne({ where: { id: itemId } }).then(async item => { 
+               await item?.dropItem(player);      
+               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.Character.id);
+               if (newInventory) resolve(newInventory);   
+            });
+         })
       }
    }
 );
