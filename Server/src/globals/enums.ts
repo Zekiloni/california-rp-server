@@ -133,7 +133,6 @@ export enum logType {
 };
 
 
-
 export namespace bizData { 
    export enum Type { 
       MARKET, GAS_STATION, ELECTRONIC_SHOP, RENT, VEHICLE_DEALERSHIP,
@@ -150,6 +149,14 @@ export namespace bizData {
          }
 
       }
+   }
+}
+
+
+export namespace houseData { 
+   export enum Type { 
+      SMALL_TRAILER, BIG_TRAILER, SMALL_APARTMENT, MEDIUM_APARTMENT, BIG_APARTMENT,
+      SMALL_GROUND_HOUSE, MEDIUM_GROUND_HOUSE, SMALL_HOUSE, MEDIUM_HOUSE, BIG_HOUSE
    }
 }
 

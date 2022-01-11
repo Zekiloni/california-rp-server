@@ -1,5 +1,5 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
-import { globalDimension } from '../globals/enums';
+import { globalDimension, houseData } from '../globals/enums';
 import { propertyPoint } from '../globals/interfaces';
 
 @Table
@@ -12,14 +12,13 @@ export default class House extends Model {
    @Column
    id: number;
 
-   @AllowNull(false)
    @Default(0)
    @Column
    owner: number;
 
-   @AllowNull(false)
+   @Default(houseData.Type.SMALL_HOUSE)
    @Column
-   type: number;
+   type: houseData.Type;
 
    @AllowNull(false)
    @Column
