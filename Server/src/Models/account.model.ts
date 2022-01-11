@@ -6,10 +6,11 @@ import Characters from './character.model';
 import { entityData } from '../globals/enums';
 import { Messages } from '../globals/constants';
 
-const Salt = bcrypt.genSaltSync(10);
+const salt = bcrypt.genSaltSync(10);
 
 @Table
 export default class Accounts extends Model {
+
    @AutoIncrement
    @PrimaryKey
    @Column
@@ -62,7 +63,7 @@ export default class Accounts extends Model {
    @Column
    online: boolean
 
-   @Default(-1)
+   @Default(0)
    @Column
    last_character: number
 
@@ -73,8 +74,8 @@ export default class Accounts extends Model {
    updated_at: Date;
 
    @BeforeCreate
-   static Creating (Account: Accounts) { 
-      Account.password = bcrypt.hashSync(Account.password, Salt);
+   static creating (account: Accounts) { 
+      account.password = bcrypt.hashSync(account.password, salt);
    }
 
    @HasMany(() => Characters)

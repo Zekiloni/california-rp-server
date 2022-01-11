@@ -5,11 +5,13 @@ import Characters from '../src/models/character.model';
 
 declare global { 
 
+   type markerColors = {
+      [key: string]: RGBA
+   };
 
    interface Mp {
       Player: any
    }
-
 
    interface PedMp {
       playScenario (Name: string): void;
@@ -19,7 +21,6 @@ declare global {
       OnPlayerEnter (Player: PlayerMp): void;    
       OnPlayerLeave (Player: PlayerMp): void; 
    }
-   
 
    interface VehicleMp { 
       Job: number;

@@ -1,12 +1,13 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, DataType, AfterCreate } from 'sequelize-typescript';
-import { globalDimension } from '../globals/enums';
-import { businessPoint } from '../globals/interfaces';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, DataType, AfterCreate, AllowNull } from 'sequelize-typescript';
+import { markerColors } from '../globals/constants';
+import { bizData, globalDimension } from '../globals/enums';
+import { propertyPoint } from '../globals/interfaces';
 import Characters from './character.model';
 
 
 export default class Business extends Model {
 
-   static objects = new Map<number, businessPoint>();
+   static objects = new Map<number, propertyPoint>();
 
    @Column
    @PrimaryKey
@@ -26,26 +27,30 @@ export default class Business extends Model {
    @Column
    walk_in: boolean
 
+   @AllowNull(false)
    @Column
    price: number
 
+   @Default(null)
    @Column
    owner: number
 
    @Default(0)
+   @Column
    budget: number
 
    @Default(globalDimension)
+   @Column
    dimension: number
 
    @Column
    ipl: string
 
-   @Column(DataType.INTEGER)
+   @Column
    sprite: number
 
-   @Column(DataType.INTEGER)
-   color: number
+   @Column
+   sprite_color: number
 
    @Column
    @Default([])
@@ -83,11 +88,11 @@ export default class Business extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   get object (): businessPoint { 
+   get object (): propertyPoint { 
       return Business.objects.get(this.id)!;
    }
 
-   set object (object: businessPoint) { 
+   set object (object: propertyPoint) { 
       Business.objects.set(this.id, object);
    }
 
@@ -95,16 +100,21 @@ export default class Business extends Model {
    static refresh (business: Business) { 
       if (business.object) { 
 
-         const { position } = business;
 
-         const infoPoint = { 
-            colshape: mp.colshapes.newRectangle(position.x, position.y, position.z, 1.5, business.dimension),
-            blip: mp.blips.new()
-         } 
 
-         business.object = infoPoint;
       } else {
+         const { name, position, sprite, dimension, sprite_color } = business;
 
+         business.object = { 
+            colshape: mp.colshapes.newRectangle(position.x, position.y, 1.8, 2.0, 0),
+            blip: mp.blips.new(sprite, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: name, color: sprite_color, shortRange: true, scale: 0.85 }),
+            marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
+               color: markerColors.BUSINESS,
+               rotation: new mp.Vector3(0, 0, 90),
+               visible: true,
+               dimension: dimension
+            })
+         }; 
       }
    }
 
@@ -125,23 +135,12 @@ export default class Business extends Model {
    }
 
 
-   static async New(Player: PlayerMp, Type: number, WalkIn: boolean, Price: number) {
-
-      if (!BusinessTypes[Price]) return;
+   static async createBiz (Player: PlayerMp, Type: number, WalkIn: boolean, Price: number) {
 
       const Position = Player.position;
       const Dimension = Player.dimension;
       const Walk_in = WalkIn == true ? true : false;
-      const Default: any = BusinessTypes[Type];
       let Products: any = {};
-
-      if (Default.products) {
-         for (const i in Default.products) {
-               let multiplier = Default.products[i];
-               Products[i] = { multiplier: multiplier, supplies: Settings.Business.Default.Supplies }; // '\"' + i + '\"'
-         }
-      }
-
       //console.log(Products)
 
       const NewBiz = await Business.create({ Name: Default.name, Type: Type, Price: Price, Walk_in: Walk_in, Products: Products, Position: Position, Dimension: Dimension });
@@ -150,40 +149,35 @@ export default class Business extends Model {
       }
    };
 
-   static async Nearest(player: PlayerMp) {
-      const Businesses = await Business.findAll();
-      for (const Business of Businesses) {
-         const Position = new mp.Vector3(Business.Position.x, Business.Position.y, Business.Position.z);
-         if (player.dist(Position) < 2.5) return Business;
+   static async getNearest (player: PlayerMp): Promise<Business | undefined> {
+      const business = await Business.findAll();
+      for (const b of business) {]
+         const position = new mp.Vector3(b.position.x, b.position.y, b.position.z);
+         if (player.dist(position) < 2.5) return b;
       }
    };
 
-
-   static async GetNearestGasStation(player: PlayerMp) {
-      const GasStations = await Business.findAll({ where: { Type: Globals.Business.Types.GasStation } });
-      for (const Station of GasStations) {
-         const Position = new mp.Vector3(Station.Position.x, Station.Position.y, Station.Position.z);
-         if (player.dist(Position) < 50) return Station;
+   static async gerNearestGasStation (player: PlayerMp): Promise<Business | undefined>  {
+      const gasStations = await Business.findAll({ where: { type: bizData.Type.GAS_STATION } });
+      for (const station of gasStations) {
+         const position = new mp.Vector3(station.position.x, station.position.y, station.position.z);
+         if (player.dist(position) < 50) return station;
       }
    };
 
-   async Save() {
-      await this.save();
-   }
+   async buy (player: PlayerMp) {
+      const character = player.Character;
 
-   async Buy(player: PlayerMp) {
-      const Character = player.Character;
+      if (this.owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
+      if (this.price > character.money) return; // PORUKA: Nemate dovoljno novca
 
-      if (this.Owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
-      if (this.Price > Character.Money) return; // PORUKA: Nemate dovoljno novca
-
-      this.Owner = Character.id;
-      Character.GiveMoney(player, -this.Price);
+      this.owner = character.id;
+      character.giveMoney(player, -this.price);
       // PORUKA: Uspesno ste kupili biznis
       await this.save();
    };
 
-   async Menu(player: PlayerMp) {
+   async openBuyMenu (player: PlayerMp) {
 
       const Character = player.Character;
 

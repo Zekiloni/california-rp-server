@@ -10,10 +10,10 @@ export interface spawnPoint {
 };
 
 
-export interface businessPoint {
+export interface propertyPoint {
    colshape: ColshapeMp,
    blip: BlipMp,
-   label: TextLabelMp
+   marker: MarkerMp
 };
 
 export interface itemAction { 

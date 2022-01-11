@@ -1,19 +1,6 @@
 
 
 
-type MarkerColors = {
-   [key: string]: RGBA
-};
-
-export const MarkerColors: MarkerColors = { 
-   Business: [253, 201, 41, 185],
-   Faction: [69, 222, 105, 113],
-   Job: [254, 213, 46, 70],
-   Houses: [199, 0, 0, 70],
-   Garages : [255, 255, 255, 70]
-};
-
-
 export const Ranks:string[] = [
    'Player', 
    'Helper', 
@@ -57,6 +44,13 @@ export const defaultSpawn = {
    description: 'Uobičajena (default) pozicija gde se stvarate pri registraciji.'
 }
 
+export const markerColors: markerColors = { 
+   BUSINESS: [253, 201, 41, 185],
+   FACTION: [69, 222, 105, 113],
+   JOB: [254, 213, 46, 70],
+   HOUSE: [199, 0, 0, 70],
+   GARAGE : [255, 255, 255, 70]
+};
 
 export const Messages = {
    WELCOME: 'Dobrodošli na Midnight Roleplay ! Uživajte u igri.',

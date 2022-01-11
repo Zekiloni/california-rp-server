@@ -133,6 +133,7 @@ export enum logType {
 };
 
 
+
 export namespace bizData { 
    export enum Type { 
       MARKET, GAS_STATION, ELECTRONIC_SHOP, RENT, VEHICLE_DEALERSHIP,
