@@ -9,6 +9,10 @@ import Accounts from './account.model';
 import { Injury } from './misc/injury.model';
 import Appearances from './appearance.model';
 import Database from '../database';
+import Houses from './house.model';
+import Business from './business.model';
+import { Vehicles } from './vehicle.model';
+import { characterProperties } from '../globals/interfaces';
 
 
 console.log(Peds.walkingStyles.Normal)
@@ -168,6 +172,15 @@ export default class Characters extends Model {
    @UpdatedAt
    updated_at: Date;
 
+   get properties (): Promise<characterProperties> { 
+      return new Promise(async resolve => { 
+         const houses = await Houses.findAll({ where: { owner: this.id } });
+         const busineess = await Business.findAll({ where: { owner: this.id } });
+         const vehicles = await Vehicles.findAll({ where: { owner: this.id } });
+         return { houses: houses, busineess: busineess, vehicles: vehicles };
+      });
+   }
+
    async spawnPlayer (player: PlayerMp, point: spawnTypes) { 
 
       player.Account.last_character = this.id;
@@ -306,7 +319,6 @@ export default class Characters extends Model {
       player.setVariable(entityData.CUFFED, toggle);
    }
 
-   
 }
 
 

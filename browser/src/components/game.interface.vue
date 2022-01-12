@@ -7,7 +7,9 @@
       
       <Offer />
 
-      <VehicleInterface v-if="driving" />
+      <transition name="fade"> 
+         <VehicleInterface v-if="driving" />
+      </transition>
 
 
       <div class="server-info">
@@ -182,14 +184,7 @@
       text-shadow: none;
    }
 
-   .info { 
-      position: absolute;
-      bottom: 20px;
-      padding: 15px 10px;
-      left: 315px;
-      width: 300px;
-      height: auto;
-   }
+   .info { position: absolute; bottom: 20px; padding: 15px 10px; left: 315px; width: 300px; height: auto; }
 
    .date-time { margin-bottom: 25px; }
    .date-time h2 { color: #cdcdcd; font-weight: 350; }
@@ -198,15 +193,4 @@
    .location h2 { color: #fede29; font-weight: 500; }
    .location h3.street { color: #cdcdcd; font-weight: 350; }
    .location h3.zone { font-weight: 450; color: #848e9c; font-size: 0.9rem; }
-
-
-
-   @keyframes blinking {
-      50% { background: #00d474; }
-   }
-
-
-   
-
-
 </style>

@@ -18,8 +18,8 @@ declare global {
    }
 
    interface ColshapeMp { 
-      OnPlayerEnter (Player: PlayerMp): void;    
-      OnPlayerLeave (Player: PlayerMp): void; 
+      onPlayerEnter (player: PlayerMp): void;    
+      onPlayerLeave (player: PlayerMp): void; 
    }
 
    interface VehicleMp { 
@@ -36,7 +36,6 @@ declare global {
       sendMessage (message: string, color: string): void;
       sendProximityMessage (radius: number, message: string, colors: string[]): void;
       Notification (message: string, Type: number, Time: number): void;
-      Properties (): any;
    }
 
    interface PlayerMpPool { 

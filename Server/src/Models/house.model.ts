@@ -1,9 +1,10 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
-import { globalDimension, houseData } from '../globals/enums';
+import { Messages } from '../globals/constants';
+import { globalDimension, houseData, NotifyType } from '../globals/enums';
 import { propertyPoint } from '../globals/interfaces';
 
 @Table
-export default class House extends Model {
+export default class Houses extends Model {
 
    static objects = new Map<number, propertyPoint>();
 
@@ -46,16 +47,14 @@ export default class House extends Model {
    @Column
    dimension: number;
 
-   @AllowNull(false)
+   @Default(null)
    @Column
    ipl: string;
 
-   @AllowNull(false)
    @Default(false)
    @Column
    rentable: boolean;
 
-   @AllowNull(false)
    @Default(0)
    @Column
    rent: number;
@@ -73,62 +72,64 @@ export default class House extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   object: any;
+   get object (): propertyPoint { 
+      return Houses.objects.get(this.id)!;
+   }
+
+   set object (object: propertyPoint) { 
+      Houses.objects.set(this.id, object);
+   }
 
    @AfterCreate
-   static async AfterCreating(HouseObj: House) { await HouseObj.Refresh(); } // ToDo Namestiti da seta IPL i Interior_Position prema Type
+   static creating (house: Houses) { house.refresh(); }
 
    @AfterDestroy
-   static async AfterDestroying(HouseObj: House, Options: any) {
-      if (HouseObj.GameObject) {
-         HouseObj.GameObject.colshape.destroy();
-         HouseObj.GameObject.blip.destroy();
-         HouseObj.GameObject.marker.destroy();
+   static async destroying (house: Houses, options: any) {
+      if (house.object) {
+         house.object.colshape.destroy();
+         house.object.blip.destroy();
+         house.object.marker.destroy();
+         Houses.objects.delete(house.id);
       }
    }
 
    async refresh () {
-      if (this.GameObject == null) {
-         const GameObjects = {
-            colshape: mp.colshapes.newSphere(this.Position.x, this.Position.y, this.Position.z, 1.8, this.Dimension),
-            blip: mp.blips.new(40, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z), { dimension: this.Dimension, name: 'House', color: 59, shortRange: true, scale: 0.75, drawDistance: 25 }),
-            marker: mp.markers.new(27, new mp.Vector3(this.Position.x, this.Position.y, this.Position.z - 0.98), 1.8, {
-               color: [255, 255, 255, 255],  // Globals.MarkerColors.Houses
+
+      const { position, dimension, owner } = this;
+
+      if (this.object) {
+         this.object.blip.color = owner == 0 ? 49 : 52;
+      } else {
+         this.object = {
+            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
+            blip: mp.blips.new(40, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: 'House', color: 59, shortRange: true, scale: 0.75, drawDistance: 25 }),
+            marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
+               color: [255, 255, 255, 255], 
                rotation: new mp.Vector3(0, 0, 90),
                visible: true,
-               dimension: this.Dimension
+               dimension: dimension
             })
          };
-
-
-         GameObjects.colshape.OnPlayerEnter = (player) => {
-
-            const white = Colors.whitesmoke;
-
-            player.SendMessage('[House] !{' + white + '} Kucaraaa ', Colors.property);
-         };
-
-         this.GameObject = GameObjects;
-      } else {
-         const BlipColor = this.Owner == 0 ? 49 : 52;
-         this.GameObject.blip.color = BlipColor;
       }
+
+      this.object.colshape.onPlayerEnter = (player) => {
+
+      };
    }
 
-   async Buy(Player: PlayerMp) {
-      if (this.Owner != 0) return Player.Notification(Messages.HOUSE_ALREADY_OWNER, NotifyType.ERROR, 5);
+   async buy (player: PlayerMp) {
+      if (this.owner != 0) return player.Notification(Messages.HOUSE_ALREADY_OWNER, NotifyType.ERROR, 5);
 
-      const Character = Player.Character;
-      const Houses = await Player.Properties().Houses;
+      const character = player.Character;
+      const { houses } = await character.properties;
 
+      if (houses.length == character.max_houses) return; // PORUKA: Imate maksimalno kuca;
+      if (this.price > character.money) return player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 
-      if (Houses.length == Character.Max_Houses) return; // PORUKA: Imate maksimalno kuca;
-      if (this.Price > Character.Money) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
+      character.giveMoney(player, -this.price);
+      player.Notification(Messages.SUCCCESSFULLY_BUYED_HOUSE, NotifyType.SUCCESS, 7);
 
-      Character.GiveMoney(Player, -this.Price);
-      Player.Notification(Messages.SUCCCESSFULLY_BUYED_HOUSE, NotifyType.SUCCESS, 7);
-
-      this.Owner = Character.id;
+      this.owner = character.id;
 
       await this.save();
    }
@@ -145,25 +146,25 @@ export default class House extends Model {
 
    }
 
-   async Create(Player: PlayerMp, HouseType: number, Price: number) {
-      if (HouseTypes[HouseType] == undefined) return Player.Notification(Messages.TYPES_ARE_IN_RANGE + '0 - ' + HouseTypes.length + '.', NotifyType.ERROR, 5);
+   // async Create(Player: PlayerMp, HouseType: number, Price: number) {
+   //    if (HouseTypes[HouseType] == undefined) return Player.Notification(Messages.TYPES_ARE_IN_RANGE + '0 - ' + HouseTypes.length + '.', NotifyType.ERROR, 5);
 
-      this.Type = HouseType;
-      const DefaultType = HouseTypes[HouseType];
-      const Position = Player.position;
+   //    this.Type = HouseType;
+   //    const DefaultType = HouseTypes[HouseType];
+   //    const Position = Player.position;
 
-      House.create({
-         Type: DefaultType.id,
-         Price: Price,
-         Position: Position,
-         Dimension: Player.dimension,
-         Interior_Position: DefaultType.Position,
-         IPL: DefaultType.IPL ? DefaultType.IPL : null,
-      });
-   }
+   //    Houses.create({
+   //       Type: DefaultType.id,
+   //       Price: Price,
+   //       Position: Position,
+   //       Dimension: Player.dimension,
+   //       Interior_Position: DefaultType.Position,
+   //       IPL: DefaultType.IPL ? DefaultType.IPL : null,
+   //    });
+   // }
 
    static async getNearest (player: PlayerMp) {
-      const houses = await House.findAll();
+      const houses = await Houses.findAll();
       for (const house of houses) {
          const position = new mp.Vector3(house.position.x, house.position.y, house.position.z);
          if (player.dist(position) < 2.5) return house;

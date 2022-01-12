@@ -1,4 +1,4 @@
-import { Browser } from "@/src/browser";
+import { Browser } from '../../browser';
 import { gameInterface, UI_Status } from "../game.UI";
 
 
@@ -13,19 +13,22 @@ const blockedClasses = [
 mp.events.add({
    'playerEnterVehicle': (vehicle: VehicleMp, seat: number) => { 
       if (seat != -1) return;
-      if (vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
+      if (vehicle && vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
 
       mp.game.vehicle.defaultEngineBehaviour = false;
       mp.players.local.setConfigFlag(429, true);
 
       gameInterface.vehicleInterface(true);
+      
+      const vehicleName = mp.game.ui.getLabelText(mp.game.vehicle.getDisplayNameFromVehicleModel(vehicle.model));
+      Browser.call('BROWSER::GAME_UI:VEHICLE:NAME', vehicleName);
 
       mp.events.add('render', driving);
    },
 
    'playerLeaveVehicle': (vehicle: VehicleMp, seat: number) => {
       if (seat != -1) return;
-      if (vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
+      if (vehicle && vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
 
       gameInterface.vehicleInterface(false);
       mp.events.remove('render', driving);
@@ -43,7 +46,7 @@ function driving () {
       const speed = vehicle.getSpeed() * 3.6;
 
       if (gameInterface.status == UI_Status.VISIBLE) {
-         Browser.call('ROWSER::GAME_UI:VEHICLE:UPDATE')
+         Browser.call('BROWSER::GAME_UI:VEHICLE:UPDATE', Math.round(speed), Math.round(vehicle.rpm * 1000), vehicle.gear)
       } 
    }
 }

@@ -11,7 +11,7 @@ import Bans from './models/ban.model';
 import Characters from './models/character.model';
 import Appearances from './models/appearance.model';
 import Items from './models/inventory.item.model';
-import { Injury } from './models/misc/injury.model';
+import Business from './models/business.model';
 
 const Database = new Sequelize({
    database: Config.Database.Name,
@@ -20,7 +20,7 @@ const Database = new Sequelize({
    password: Config.Database.Password,
    storage: ':memory:',
    models: [ 
-      Accounts, Bans, Characters, Appearances, Items
+      Accounts, Bans, Characters, Appearances, Items, Business
    ],
    logging: false
 });

@@ -26,6 +26,8 @@ class gameUI {
    constructor () { 
       mp.events.add('render', this.GTA_HUD);
 
+      mp.game.gameplay.setFadeOutAfterDeath(false); 
+
       mp.keys.bind(controls.F7, true, () => { 
          this.mainInterface(this.status ++);
       });

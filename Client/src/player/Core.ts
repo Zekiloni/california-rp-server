@@ -1,23 +1,12 @@
-import { entityData } from "@/../Server/src/globals/enums";
 import { WaitEntity, LoadMovementClipset, Controls } from "../utils";
 
 
 const Player = mp.players.local;
 
-mp.nametags.enabled = false;
 
 const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
 
 let AntiKeySpam = false;
-
-
-// BLACK SCREEN AFTER DEATH
-mp.game.gameplay.setFadeOutAfterDeath(false); 
-
-// DONT REMOVE WEAPON WHEN OUT OF AMMO
-mp.game.weapon.unequipEmptyWeapons = false;
-Player.setCanSwitchWeapon(false);
-
 
 // mp.events.addDataHandler(entityData.MONEY, (entity, value, oldValue) => { 
 //    if (entity == mp.players.local && value != oldValue) { 
@@ -33,76 +22,6 @@ mp.events.add({
       if (Entity.type == 'player' && Entity.hasVariable('Walking_Style')) Interactions.WalkingStyle(Entity, Entity.getVariable('Walking_Style'));
       if (Entity.type == 'player' && Entity.hasVariable('Ragdoll')) Interactions.Ragdoll(Entity, Entity.getVariable('Ragdoll'));
       if (Entity.type == 'player' && Entity.hasVariable('Wounded')) Interactions.Ragdoll(Entity, Entity.getVariable('Wounded')); 
-   },
-
-   'render': () => { 
-      if (Player.Logged && Player.Spawned) { 
-         mp.players.forEach((Target) => { 
-
-            const TargetPosition = Target.position;
-            const PlayerPosition = Player.position;
-
-            const Distance = new mp.Vector3(PlayerPosition.x, PlayerPosition.y, PlayerPosition.z).subtract(new mp.Vector3(TargetPosition.x, TargetPosition.y, TargetPosition.z)).length();
-            
-            if (Distance < 8 && Player.id != Target.id && Player.hasClearLosTo(Target.handle, 17)) {
-               if (Target.getAlpha() != 0) { 
-                  
-                  const Index = Target.getBoneIndex(12844)
-                  const NameTag = Target.getWorldPositionOfBone(Index);
-
-                  const Position = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.4);
-
-                  if (Position) { 
-                     let x = Position.x;
-                     let y = Position.y;
-
-                     let scale = (Distance / 25);
-                     if (scale < 0.6) scale = 0.6;
-                     
-                     y -= (scale * (0.005 * (screenRes.y / 1080))) - parseInt('0.010');
-
-                     if (Target.hasVariable('Bubble') && Target.getVariable('Bubble')) { 
-                        const BubblePosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.6);
-                        if (BubblePosition) { 
-                           const Bubble = Target.getVariable('Bubble');
-                           // mp.game.graphics.drawText('* ' + Target.name + ' ' + Bubble.Content + '.', [BubblePosition.x, BubblePosition.y], {
-                           //    font: 4,
-                           //    color: Bubble.Color,
-                           //    scale: [0.325, 0.325],
-                           //    outline: false
-                           // });
-                        }
-                     }
-
-                     if (Target.hasVariable('Wounded') && Target.getVariable('Wounded')) {
-                        const WoundedPosition = mp.game.graphics.world3dToScreen2d(NameTag.x, NameTag.y, NameTag.z + 0.75);
-                        if (WoundedPosition) { 
-                           const Wound = Target.getVariable('Wounded');
-                           // mp.game.graphics.drawText('(( ' + Wound.Text + ' ))', [WoundedPosition.x, WoundedPosition.y], {
-                           //    font: 4,
-                           //    color: Wound.Color,
-                           //    scale: [0.315, 0.315],
-                           //    outline: false
-                           // });
-                        }
-                     }
-
-                     const Content = Target.name + ' [' + Target.remoteId + ']';
-   
-                     // mp.game.graphics.drawText(Content, [x, y], {
-                     //    font: 4,
-                     //    color: [255, 255, 255, 255],
-                     //    scale: [0.325, 0.325],
-                     //    outline: false
-                     // });
-                  }
-
-               }
-            }
-
-         });
-
-      }
    },
 
    'entityModelChange': (Entity: EntityMp, OldModel: PedBaseMp) => { 

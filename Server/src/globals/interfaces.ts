@@ -1,3 +1,6 @@
+import Business from '../models/business.model';
+import Houses from '../models/house.model';
+import { Vehicles } from '../models/vehicle.model';
 import { spawnTypes } from './enums';
 
 
@@ -9,6 +12,12 @@ export interface spawnPoint {
    heading: number
 };
 
+
+export interface characterProperties {
+   houses: Houses[],
+   business: Business[]
+   vehicles: Vehicles[]
+}
 
 export interface propertyPoint {
    colshape: ColshapeMp,

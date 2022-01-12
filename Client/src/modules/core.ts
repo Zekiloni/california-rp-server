@@ -7,7 +7,6 @@ import { gameInterface } from './game.UI';
 const Player = mp.players.local;
 
 
-mp.nametags.enabled = false;
 
 export const screenResolution = mp.game.graphics.getScreenActiveResolution(100, 100);
 
