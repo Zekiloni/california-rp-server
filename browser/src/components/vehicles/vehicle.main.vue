@@ -7,7 +7,7 @@
          <h2 class="rpm"> {{ rpm }} <small> rpm </small> </h2>
       </div>
 
-      <h4 class="vehicle-name"> {{ vehicleName }} </h4>
+      <h4 class="vehicle-name" v-if="vehicleName"> {{ vehicleName }} </h4>
    </div>
 </template>
 
@@ -15,6 +15,7 @@
    export default {
       data () { 
          return {
+            vehicleName: null,
             seatbelt: false,
             speed: 0,
             maxSpeed: 300,
@@ -73,7 +74,7 @@
       background: rgb(132 142 156 / 45%);
    }
 
-   h4.vehicle-name { text-align:center; margin: 25px 0 0 0; font-size: 1.1rem; font-weight: 250; color: rgb(132 142 156 / 35%); letter-spacing: 1.2px; }
+   h4.vehicle-name { text-align: center; margin: 25px 0 0 0; font-size: 0.8rem; font-weight: 250; color: rgb(132 142 156 / 45%); letter-spacing: 1.05px; }
 
 
    @keyframes blinking {

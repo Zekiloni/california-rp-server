@@ -119,7 +119,9 @@ export enum entityData {
    FACIAL_MOOD = 'FACIAL_MOOD',
    CUFFED = 'CUFFED',
    INJURIES = 'INJURIES',
-   ITEM = 'ITEM'
+   ITEM = 'ITEM',
+   VEHICLE_DATA = 'VEHICLE_DATA',
+   DATABASE = 'DATABASE'
 };
 
 export enum logType {
@@ -217,6 +219,16 @@ export namespace itemData {
       sandwichItem = 'Sandwich',
       tacoItem = 'Taco',
       COMBAT_PISTOL = 'Combat Pistol'
+   }
+}
+
+export namespace vvehicleData { 
+   export enum Type { 
+      TEMPORARY, PERMANENT
+   }
+
+   export enum Entity { 
+      PLAYER, FACTION, BUSINESS
    }
 }
 

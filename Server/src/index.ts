@@ -4,6 +4,7 @@ import './modules/main';
 import './modules/commands';
 import './modules/player';
 import './modules/items';
+import './modules/houses';
 import Accounts from './models/account.model';
 import Characters from './models/character.model';
 import { Logger, Sleep } from './utils';

@@ -3,12 +3,12 @@
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
-import { Distances, entityData, NotifyType, spawnTypes } from '../globals/enums';
+import { Distances, entityData, logType, NotifyType, spawnTypes } from '../globals/enums';
 import { Messages, Colors } from '../globals/constants';
 import { Config } from '../config';
 import Bans from '../models/ban.model';
 import { spawnPoint } from '../globals/interfaces';
-import { getDefaultSpawn } from '../utils';
+import { getDefaultSpawn, Logger } from '../utils';
 
 
 mp.events.add(
@@ -29,14 +29,14 @@ mp.events.add(
                await leavingPlayer.Character.save();
             }
          } catch (e) { 
-            console.log(e)
+            Logger(logType.ERROR, 'Saving Character: ' + e);
          }
 
       },
 
       'SERVER::CHARACTER:PLAY': async (player: PlayerMp, characterId: number, point: spawnTypes) => {
-         const Selected = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
-         Selected?.spawnPlayer(player, point);
+         const selectedCharacter = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
+         selectedCharacter?.spawnPlayer(player, point);
       },
 
       'playerChat': async (player: PlayerMp, Content) => {
@@ -101,20 +101,15 @@ mp.events.addProc(
                if (account) { 
                   const logged = account.login(password);
                   if (logged) { 
-                     console.log('Logged status is ' + logged);
                      console.log(account.characters);
                      account.setLogged(player, true);
-                     try { 
-                        resolve(account);
-                     } catch(e) { 
-                        console.log(e)
-                     }
+                     resolve(account);
                   } else { 
-                     player.Notification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
+                     player.sendNotification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
                   }
 
                } else { 
-                  player.Notification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
+                  player.sendNotification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
                }
             });
          });
@@ -160,7 +155,7 @@ mp.events.addProc(
          console.log(Appearance)
 
          const Exist = await Characters.findOne({ where: { name: Character.First_Name + ' ' + Character.Last_Name } });
-         if (Exist) return player.Notification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
+         if (Exist) return player.sendNotification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
 
          const createdCharacter = await Characters.create({ 
             name: Character.First_Name + ' ' + Character.Last_Name, account_id: player.Account.id,
@@ -175,7 +170,7 @@ mp.events.addProc(
 
          createdCharacter.spawnPlayer(player, spawnTypes.default);
 
-         player.Notification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
+         player.sendNotification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
          return true;
       },
 

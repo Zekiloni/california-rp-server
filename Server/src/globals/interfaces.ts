@@ -12,6 +12,16 @@ export interface spawnPoint {
    heading: number
 };
 
+export interface vehicleComponent { 
+   component: number,
+   value: number
+};
+
+export interface vehiclePlate { 
+   content: string,
+   issued: number,
+   expiring: number
+}
 
 export interface characterProperties {
    houses: Houses[],

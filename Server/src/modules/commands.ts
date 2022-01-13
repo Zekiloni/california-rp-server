@@ -40,11 +40,11 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       const Account = player.Account;
       const Character = player.Character;
 
-      if (Command.admin && Account.administrator < Command.admin) return player.Notification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
+      if (Command.admin && Account.administrator < Command.admin) return player.sendNotification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
 
-      if (Command.job && Character.job != Command.job) return player.Notification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
+      if (Command.job && Character.job != Command.job) return player.sendNotification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
 
-      if (Command.position && player.dist(Command.position) > 2) return player.Notification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
+      if (Command.position && player.dist(Command.position) > 2) return player.sendNotification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
 
       if (Command.faction) {
          //if (Command.Faction.Type && Command.Faction.Type != Factions[Character.Faction].type) return;
@@ -59,7 +59,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
       Command.call(player, ...params);
    } else {
-      player.Notification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
+      player.sendNotification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
    }
 });
 

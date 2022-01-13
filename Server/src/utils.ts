@@ -55,7 +55,7 @@ export function createInfoColshape (Position: Vector3Mp, Name: string, Info: str
 
    const Colshape = mp.colshapes.newRectangle(Position.x, Position.y, Radius, 2.0, 0);
 
-   if (Info) Colshape.onPlayerEnter = (Player: PlayerMp) => { Player.Notification(Info, NotifyType.ERROR, 5); };
+   if (Info) Colshape.onPlayerEnter = (Player: PlayerMp) => { Player.sendNotification(Info, NotifyType.ERROR, 5); };
 
    mp.markers.new(27, new mp.Vector3(Position.x, Position.y, Position.z - 0.985), Radius, {
       color: Color, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: Dimension

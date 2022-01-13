@@ -57,7 +57,6 @@ export default class Houses extends Model {
    @Column
    rent: number;
 
-   @Default([])
    @Column({
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('tenants')); },
@@ -79,7 +78,9 @@ export default class Houses extends Model {
    }
 
    @AfterCreate
-   static creating (house: Houses) { house.refresh(); }
+   static async creating (house: Houses) {
+      house.refresh();
+   }
 
    @AfterDestroy
    static async destroying (house: Houses, options: any) {
@@ -92,17 +93,19 @@ export default class Houses extends Model {
    }
 
    static async new (player: PlayerMp, type: number, price: number) {
-      // if (!Object.values(houseData.Type).includes(type)) return player.Notification(Messages.TYPES_ARE_IN_RANGE, NotifyType.ERROR, 5);
-
-      Houses.create({
-         type: type,
-         price: price,
-         position: player.position,
-         Dimension: player.dimension
-      });
+      if (houseData.Type[type]) {
+         Houses.create({
+            type: type,
+            price: price,
+            position: player.position,
+            interior_position: player.position,
+            Dimension: player.dimension,
+            tenants: []
+         });
+      }
    }
 
-   async refresh () {
+   refresh () {
       const { position, dimension, owner } = this;
 
       if (this.object) {
@@ -131,16 +134,16 @@ export default class Houses extends Model {
    }
 
    async buy (player: PlayerMp) {
-      if (this.owner != 0) return player.Notification(Messages.HOUSE_ALREADY_OWNER, NotifyType.ERROR, 5);
+      if (this.owner != 0) return player.sendNotification(Messages.HOUSE_ALREADY_OWNER, NotifyType.ERROR, 5);
 
       const character = player.Character;
       const { houses } = await character.properties;
 
       if (houses.length == character.max_houses) return; // PORUKA: Imate maksimalno kuca;
-      if (this.price > character.money) return player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
+      if (this.price > character.money) return player.sendNotification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 
       character.giveMoney(player, -this.price);
-      player.Notification(Messages.SUCCCESSFULLY_BUYED_HOUSE, NotifyType.SUCCESS, 7);
+      player.sendNotification(Messages.SUCCCESSFULLY_BUYED_HOUSE, NotifyType.SUCCESS, 7);
 
       this.owner = character.id;
 
@@ -152,7 +155,7 @@ export default class Houses extends Model {
          this.locked = !this.locked;
          await this.save();
       } else { 
-         player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, NotifyType.ERROR, 5);
+         player.sendNotification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, NotifyType.ERROR, 5);
       }
    }
 

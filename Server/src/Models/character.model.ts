@@ -209,7 +209,7 @@ export default class Characters extends Model {
       player.setVariable('Ragdoll', false);
 
 
-      player.Notification(Messages.WELCOME, NotifyType.INFO, 4);
+      player.sendNotification(Messages.WELCOME, NotifyType.INFO, 4);
 
 
       this.setWalkingStyle(player, this.walking_style);
@@ -217,7 +217,7 @@ export default class Characters extends Model {
       this.setCuffs(player, this.cuffed);
    
    
-      player.setVariable(entityData.INJURIES, this.injuries.length > 0 ? this.injuries : []);
+      // player.setVariable(entityData.INJURIES, this.injuries.length > 0 ? this.injuries : []);
 
       console.log(222)
       switch (point) { 

@@ -3,7 +3,7 @@
    
    <div class="chat" v-if="Settings.Active">
       <ul class="messages" ref="Entries" id="messages" :style="{ overflow: Typing ? 'auto' : 'hidden' }">
-         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive || !Typing ? '0.7' : '1' }" v-bind:key="i">
+         <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', fontWeight: Settings.Fonweight, opacity: Inactive ? '0.7' : '0.9' }" v-bind:key="i">
             <b class="timestamp" v-if="Settings.Timestamp" v-html="timeStamp(message.timestamp)"> </b>
             <span v-html="message.content"> </span>
          </li>
@@ -239,7 +239,7 @@
 
    .input-form {
       position: absolute;
-      bottom: -55px;
+      bottom: -100px;
       left: 0;
       width: 30vw;
    }

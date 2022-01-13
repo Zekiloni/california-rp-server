@@ -35,7 +35,7 @@ declare global {
 
       sendMessage (message: string, color: string): void;
       sendProximityMessage (radius: number, message: string, colors: string[]): void;
-      Notification (message: string, Type: number, Time: number): void;
+      sendNotification (message: string, Type: number, Time: number): void;
    }
 
    interface PlayerMpPool { 
