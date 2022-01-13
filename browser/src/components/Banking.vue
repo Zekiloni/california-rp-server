@@ -8,7 +8,7 @@
             <div class="profile">
                <h3> {{ Name }} </h3>
                <div class="balance">
-                  <h2> {{ Helpers.Dollars(Balance) }} </h2>
+                  <h2> {{ formatDollars(Balance) }} </h2>
                   <small> {{ Messages.YOUR_BALANCE }} </small>
                </div>
             </div>
@@ -27,7 +27,7 @@
 
                <div class="paycheck">
                   <h2 class="title"> {{ Messages.PAYCHECK }} </h2>
-                  <h4 class="payment" v-html="Paycheck > 0 ? '<b>' + Helpers.Dollars(Paycheck) + '</b>' + Messages.WAITING_FOR_PAYMENT : Messages.THERE_IS_NO_PAYCHECK"> </h4>
+                  <h4 class="payment" v-html="Paycheck > 0 ? '<b>' + formatDollars(Paycheck) + '</b>' + Messages.WAITING_FOR_PAYMENT : Messages.THERE_IS_NO_PAYCHECK"> </h4>
                   <button class="get-payment frp-green" v-if="Paycheck > 0"> {{ Messages.GET_PAYMENT }} </button>
                </div>
 
@@ -37,7 +37,7 @@
                      <li v-for="Transaction in Transactions" :key="Transaction"> 
                         <h4 class="date"> {{ Transaction.Date }} </h4>
                         <h4 class="description" v-html="Transaction.Description"> </h4>
-                        <h4 class="amount"> {{ Helpers.Dollars(Transaction.Amount) }} </h4>
+                        <h4 class="amount"> {{ formatDollars(Transaction.Amount) }} </h4>
                      </li>
                   </ul>
                </div>

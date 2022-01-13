@@ -81,24 +81,30 @@ export default class Accounts extends Model {
    @HasMany(() => Characters)
    characters: Characters[]
    
-   Login (Password: string) {     
-      return bcrypt.compareSync(Password, this.password);
+   login (password: string) {     
+      return bcrypt.compareSync(password, this.password);
    }
 
-   async Logged (player: PlayerMp, toggle: boolean) {
+   async setLogged (player: PlayerMp, toggle: boolean) {
+      console.log('logged', 2)
       this.online = toggle;
       player.Account = this;
       this.login_date = new Date();
       this.ip_adress = player.ip;
-      
+      console.log('logged', 3)
+
       player.setVariable(entityData.LOGGED, true);
       player.setVariable(entityData.ADMIN, this.administrator);
+      console.log('logged', 4)
 
       if (this.hardwer == null || this.social_club == null) {
+         console.log('logged', 5)
          const Already = await Accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } });
          if (Already) player.kick(Messages.USER_ALREADY_EXIST);
          this.hardwer = player.serial;
          this.social_club = player.socialClub;
+         console.log('logged', 6)
+
       }
 
       await this.save();

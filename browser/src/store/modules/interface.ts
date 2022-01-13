@@ -35,7 +35,9 @@ const InitialState = {
    Business: false,
 
    Phone: false,
-   DMV: false
+   DMV: false,
+   
+   HouseInfo: false
 }
 
 export const InterfaceStore = {

@@ -14,7 +14,7 @@
                <img :src="require('../../assets/images/items/' + Item.Model + '.png')" />
                <div class="info"> 
                   <small> {{ i }} </small>
-                  <h3 class="price"> {{ Helpers.Dollars(Business.Multiplier * Item.Multiplier) }} </h3>
+                  <h3 class="price"> {{ formatDollars(Business.Multiplier * Item.Multiplier) }} </h3>
                </div>
             </li>
          </ul>

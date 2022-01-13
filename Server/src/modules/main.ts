@@ -24,6 +24,7 @@ mp.events.add(
          try { 
             if (leavingPlayer.Character) {
                leavingPlayer.Character.last_position = leavingPlayer.position;
+               leavingPlayer.Character.last_dimension = leavingPlayer.dimension;
    
                await leavingPlayer.Character.save();
             }
@@ -98,13 +99,20 @@ mp.events.addProc(
          return new Promise((resolve) => {
             Accounts.findOne({ where: { Username: username }, include: [Characters] }).then((account) => { 
                if (account) { 
-                  const Logged = account.Login(password);
-                  if (Logged) { 
-                     account.Logged(player, true);
-                     resolve(account);
+                  const logged = account.login(password);
+                  if (logged) { 
+                     console.log('Logged status is ' + logged);
+                     console.log(account.characters);
+                     account.setLogged(player, true);
+                     try { 
+                        resolve(account);
+                     } catch(e) { 
+                        console.log(e)
+                     }
                   } else { 
                      player.Notification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
                   }
+
                } else { 
                   player.Notification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
                }
@@ -126,8 +134,10 @@ mp.events.addProc(
                }
                
                // if (character?.houses) { }
+               console.log(character?.last_position)
       
                if (character?.last_position) { 
+                  console.log('if last')
                   spawnPoints.push({
                      name: Messages.LAST_POSITION,
                      type: spawnTypes.lastPosition,
@@ -145,6 +155,9 @@ mp.events.addProc(
 
          const Character = JSON.parse(characterInfo);
          const Appearance = JSON.parse(characterAppearance);
+
+         console.log(Character)
+         console.log(Appearance)
 
          const Exist = await Characters.findOne({ where: { name: Character.First_Name + ' ' + Character.Last_Name } });
          if (Exist) return player.Notification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
@@ -166,7 +179,7 @@ mp.events.addProc(
          return true;
       },
 
-      'SERVER::CHARACTER:DELETE': async (Player: PlayerMp, Char_ID: number) => {
+      'SERVER::CHARACTER:DELETE': async (player: PlayerMp, Char_ID: number) => {
          Characters.findOne({ where: { id: Char_ID } }).then((Character) => { 
             return Character?.destroy()
          })

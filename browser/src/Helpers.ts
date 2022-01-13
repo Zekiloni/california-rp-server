@@ -10,9 +10,6 @@ const Helpers = {
       return new Date(utc + (3600000 * + 1));
    },
 
-   truncate (str: string, n: number) { 
-      return (str.length > n) ? str.substr(0, n-1) + '...' : str; 
-   },
 
    Dollars (i: number) { 
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); 
@@ -43,7 +40,6 @@ const Helpers = {
       const Backgrounds = ['city-night.png'];
       let Random = Backgrounds[Math.floor(Math.random() * Backgrounds.length)];
       return Random;
-
    }
 
 

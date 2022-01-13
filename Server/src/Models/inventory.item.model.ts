@@ -93,7 +93,6 @@ export default class Items extends Model {
          item.object = mp.objects.new(baseItem.list[item.name].model, item.position, { alpha: 255, rotation: item.rotation, dimension: item.dimension });
          item.object.setVariable(entityData.ITEM, { name: item.name, id: item.id });
       } else { 
-         console.log(item.object)
          if (item.object) { 
             item.object.destroy();
             Items.objects.delete(item.id);
@@ -102,8 +101,8 @@ export default class Items extends Model {
    }
 
 
-   async dropItem (player: PlayerMp) { 
-      if (this?.on_ground) {
+   async pickup (player: PlayerMp) { 
+      if (this.on_ground) {
          this.on_ground = false;
          this.owner = player.Character.id;
          this.entity = itemData.Entity.PLAYER;

@@ -1,5 +1,5 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
-import { Messages } from '../globals/constants';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
+import { markerColors, Messages } from '../globals/constants';
 import { globalDimension, houseData, NotifyType } from '../globals/enums';
 import { propertyPoint } from '../globals/interfaces';
 
@@ -25,7 +25,6 @@ export default class Houses extends Model {
    @Column
    price: number;
 
-   @AllowNull(false)
    @Default(false)
    @Column
    locked: boolean;
@@ -42,7 +41,6 @@ export default class Houses extends Model {
    })
    interior_position: Vector3Mp
 
-   @AllowNull(false)
    @Default(globalDimension)
    @Column
    dimension: number;
@@ -93,28 +91,43 @@ export default class Houses extends Model {
       }
    }
 
-   async refresh () {
+   static async new (player: PlayerMp, type: number, price: number) {
+      // if (!Object.values(houseData.Type).includes(type)) return player.Notification(Messages.TYPES_ARE_IN_RANGE, NotifyType.ERROR, 5);
 
+      Houses.create({
+         type: type,
+         price: price,
+         position: player.position,
+         Dimension: player.dimension
+      });
+   }
+
+   async refresh () {
       const { position, dimension, owner } = this;
 
       if (this.object) {
-         this.object.blip.color = owner == 0 ? 49 : 52;
+         this.object.blip.color = owner == 0 ? 2 : 79;
       } else {
          this.object = {
-            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
-            blip: mp.blips.new(40, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: 'House', color: 59, shortRange: true, scale: 0.75, drawDistance: 25 }),
-            marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
-               color: [255, 255, 255, 255], 
-               rotation: new mp.Vector3(0, 0, 90),
+            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, dimension),
+            blip: mp.blips.new(40, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: 'House', color: owner == 0 ? 2 : 79, shortRange: true, scale: 0.75, drawDistance: 25 }),
+            marker: mp.markers.new(30, new mp.Vector3(position.x, position.y, position.z - 0.35), 0.75, {
+               color: markerColors.HOUSES, 
+               rotation: new mp.Vector3(0, 0, 0),
                visible: true,
                dimension: dimension
             })
          };
+
+         this.object.colshape.onPlayerEnter = (player: PlayerMp) => {
+            if (player.vehicle) return;
+            player.call('CLIENT::HOUSE:INFO', [this]);
+         }
+
+         this.object.colshape.onPlayerLeave = (player: PlayerMp) => { 
+            player.call('CLIENT::HOUSE:INFO', [false]);
+         }
       }
-
-      this.object.colshape.onPlayerEnter = (player) => {
-
-      };
    }
 
    async buy (player: PlayerMp) {
@@ -135,33 +148,13 @@ export default class Houses extends Model {
    }
 
    async lock (player: PlayerMp) {
-
       if (this.owner == player.Character.id || this.tenants.includes(player.Character.id)) { 
          this.locked = !this.locked;
-
          await this.save();
       } else { 
-         // player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, NotifyType.ERROR, 5);
+         player.Notification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, NotifyType.ERROR, 5);
       }
-
    }
-
-   // async Create(Player: PlayerMp, HouseType: number, Price: number) {
-   //    if (HouseTypes[HouseType] == undefined) return Player.Notification(Messages.TYPES_ARE_IN_RANGE + '0 - ' + HouseTypes.length + '.', NotifyType.ERROR, 5);
-
-   //    this.Type = HouseType;
-   //    const DefaultType = HouseTypes[HouseType];
-   //    const Position = Player.position;
-
-   //    Houses.create({
-   //       Type: DefaultType.id,
-   //       Price: Price,
-   //       Position: Position,
-   //       Dimension: Player.dimension,
-   //       Interior_Position: DefaultType.Position,
-   //       IPL: DefaultType.IPL ? DefaultType.IPL : null,
-   //    });
-   // }
 
    static async getNearest (player: PlayerMp) {
       const houses = await Houses.findAll();

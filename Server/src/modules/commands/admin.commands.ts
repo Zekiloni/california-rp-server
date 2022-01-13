@@ -1,5 +1,6 @@
 import { Colors } from '../../globals/constants';
-import { adminLevel, commandData, weather } from '../../globals/enums';
+import { adminLevel, commandData, houseData, weather } from '../../globals/enums';
+import Houses from '../../models/house.model';
 import Items from '../../models/inventory.item.model';
 import { baseItem } from '../../models/item.model';
 import { Admin } from '../admin';
@@ -12,7 +13,6 @@ Commands[commandData.Names.ITEMS] = {
       console.log(baseItem.list);
    }
 }
-
 
 Commands[commandData.Names.GIVE_ITEM] ={
    description: commandData.Descriptions.giveItem,
@@ -64,7 +64,6 @@ Commands[commandData.Names.TIME] = {
    }
 };
 
-
 Commands[commandData.Names.WEATHER] = {
    admin: adminLevel.SENIOR_ADMIN,
    description: commandData.Descriptions.weather,
@@ -79,7 +78,6 @@ Commands[commandData.Names.WEATHER] = {
    }
 };
 
-
 Commands[commandData.Names.FIX_VEH] = {
    admin: adminLevel.SENIOR_ADMIN,
    description: commandData.Descriptions.FIX_VEH,
@@ -88,7 +86,6 @@ Commands[commandData.Names.FIX_VEH] = {
       if (player.vehicle) player.vehicle.repair();
    }
 };
-
 
 Commands[commandData.Names.GIVE_MONEY] =  {
    admin: adminLevel.LEAD_ADMIN,
@@ -102,19 +99,32 @@ Commands[commandData.Names.GIVE_MONEY] =  {
    }
 };
 
-
 Commands[commandData.Names.SET_MONEY] =  {
    admin: adminLevel.LEAD_ADMIN,
    description: 'opis napisati',
    call: (player: PlayerMp, targetSearch: any, money: number) => { 
       const target = mp.players.find(targetSearch);
-
       if (!target) return; // nema
-
       target.Character.setMoney(target, money);
    }
 }
 
+Commands[commandData.Names.CREATE_HOUSE] =  {
+   admin: adminLevel.LEAD_ADMIN,
+   description: 'opis napisati',
+   call: (player: PlayerMp, type: houseData.Type, price: number) => { 
+      Houses.new(player, type, price);
+   }
+}
+
+Commands[commandData.Names.DESTROY_HOUSE] =  {
+   admin: adminLevel.LEAD_ADMIN,
+   description: 'opis napisati',
+   call: async (player: PlayerMp, id?: number) => { 
+      const nearestHouse = await Houses.getNearest(player);
+      if (nearestHouse) nearestHouse.destroy();
+   }
+}
 
 
 

@@ -48,7 +48,7 @@ export const markerColors: markerColors = {
    BUSINESS: [253, 201, 41, 185],
    FACTION: [69, 222, 105, 113],
    JOB: [254, 213, 46, 70],
-   HOUSE: [199, 0, 0, 70],
+   HOUSES: [0, 212, 116, 255],
    GARAGE : [255, 255, 255, 70]
 };
 

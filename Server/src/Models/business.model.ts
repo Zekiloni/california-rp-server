@@ -107,7 +107,7 @@ export default class Business extends Model {
          const { name, position, sprite, dimension, sprite_color } = business;
 
          business.object = { 
-            colshape: mp.colshapes.newRectangle(position.x, position.y, 1.8, 2.0, 0),
+            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
             blip: mp.blips.new(sprite, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: name, color: sprite_color, shortRange: true, scale: 0.85 }),
             marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
                color: markerColors.BUSINESS,

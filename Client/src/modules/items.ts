@@ -42,14 +42,8 @@ mp.events.add(
             position.z,
          );
       
-         let object = mp.objects.new(
-            mp.game.joaat(itemInfo.model),
-            new mp.Vector3(newPos.x, newPos.y, newPos.z),
-            {
-               alpha: 255,
-               rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z),
-               dimension: mp.players.local.dimension,
-            },
+         let object = mp.objects.new(mp.game.joaat(itemInfo.model), new mp.Vector3(newPos.x, newPos.y, newPos.z), 
+            { alpha: 255, rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z), dimension: mp.players.local.dimension }
          );
       
          while (object.handle === 0) {
@@ -77,61 +71,18 @@ mp.events.add(
          // mp.players.local.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
       },
 
-      'CLIENT::ITEM:GIVE': Give,
-
       'CLIENT::ITEM:USE': async (item: any) => { 
          const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:USE', JSON.parse(item).id);
          Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
-
       },
 
-      'client:inventory.player:nearby': () => { 
-         let Nearby: object[] = [];
-         mp.players.forEachInRange(player.position, 4, (target) => { 
-            if (target.dimension === player.dimension && target.remoteId != player.remoteId) { 
-               Nearby.push({ id: target.remoteId, name: target.name });
-            }
-         })
-         Browser.call('BROWSER::NEARBY:PLAYERS'); //browser.execute('inventory.nearbyPlayers = ' + JSON.stringify(Nearby));
-      },
+      'CLIENT::ITEM:GIVE': (item, iteminfo, quantity) => { Browser.call('BROWSER::INVENTORY:GIVE_ITEM', item); },
 
       'render': () => { 
          if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
             mp.objects.forEach((object) => { 
                if (player.hasClearLosTo(object.handle, 17)) {
-                  if (object.getVariable('ITEM')) { 
-
-                     const { position } = player;
-
-
-                     const objectPosition = object.position;
-
-                     const distance = new mp.Vector3(position.x, position.y, position.z).subtract(new mp.Vector3(objectPosition.x, objectPosition.y, objectPosition.z)).length();
-
-                     let { x, y } = mp.game.graphics.world3dToScreen2d(objectPosition.x, objectPosition.y, objectPosition.z + 0.15);
-
-                     if (x && y) {
-                  
-                        if (distance <= 4.5) {      
-                           
-                           mp.game.graphics.drawLine(position.x, position.y, position.z, object.position.x, object.position.y, object.position.z, 0, 255, 0, 255);
-
-                           let scale = (distance / 25);
-                           if (scale < 0.6) scale = 0.6;
-                           
-                           y -= (scale * (0.005 * (screenResolution.y / 1080))) - parseInt('0.010');
-                           
-                           // const Item = Object.getVariable('Item');
-      
-                           // mp.game.graphics.drawText(Item, [x, y], {
-                           //    font: 4,
-                           //    color: [255, 255, 255, 255],
-                           //    scale: [0.325, 0.325],
-                           //    outline: false
-                           // });
-                        }
-                     }
-                  }
+                  if (object.getVariable('ITEM')) showItem(object);
                }
             });
          }
@@ -139,14 +90,12 @@ mp.events.add(
    }
 );
 
-
 mp.keys.bind(controls.KEY_I, true, function() {
    if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
       if (player.isTypingInTextChat || player.getVariable('CUFFED') ) return;
       mp.events.call('CLIENT::INVENTORY:TOGGLE');
    }
 });
-
 
 mp.keys.bind(controls.KEY_E, true, function() {
    if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
@@ -161,48 +110,34 @@ mp.keys.bind(controls.KEY_E, true, function() {
    }
 });
 
-// function WeaponSelector () { 
-//    for (let i in Keys) {
-//       const key = Keys[i];
-//       mp.keys.bind(key, false, function() {
-//          if (Player.Logged && Player.Spawned) { 
-//             if (Player.Cuffed || Player.vehicle || mp.players.local.isTypingInTextChat) return;
-//             mp.events.callRemote('server:player.inventory.item.weapon:take', i);
-//          }
-//       });
-//    }
-// }
+function showItem (object: ObjectMp) { 
+   const { position } = player;
 
-// WeaponSelector();
+   const objectPosition = object.position;
 
-// mp.keys.bind(Controls.KEY_Y, false, function() {
-//    if (Player.Logged && Player.Spawned) { 
-//       if (Player.vehicle || Player.getVariable('CUFFED') || mp.players.local.isTypingInTextChat) return;
-//       mp.events.callRemote('server:player.inventory.item:pickup');
-//    }
-// });
+   const distance = new mp.Vector3(position.x, position.y, position.z).subtract(new mp.Vector3(objectPosition.x, objectPosition.y, objectPosition.z)).length();
 
+   let { x, y } = mp.game.graphics.world3dToScreen2d(objectPosition.x, objectPosition.y, objectPosition.z + 0.15);
 
+   if (x && y) {
 
-async function Give (target: PlayerMp, item: number, quantity: number) {
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:give', target, item, quantity);
-   if (Inventory) {
-      Browser.call('');
-      //browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
+      if (distance <= 4.5) {      
+         
+         mp.game.graphics.drawLine(position.x, position.y, position.z, object.position.x, object.position.y, object.position.z, 0, 255, 0, 255);
+
+         let scale = (distance / 25);
+         if (scale < 0.6) scale = 0.6;
+         
+         y -= (scale * (0.005 * (screenResolution.y / 1080))) - parseInt('0.010');
+         
+         // const Item = Object.getVariable('Item');
+
+         // mp.game.graphics.drawText(Item, [x, y], {
+         //    font: 4,
+         //    color: [255, 255, 255, 255],
+         //    scale: [0.325, 0.325],
+         //    outline: false
+         // });
+      }
    }
 }
-
-
-async function Put (weapon: number) { 
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.weapon:put', weapon);
-   Browser.call('');
-   //if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-}
-
-
-async function Unequip (item: number) {
-   const Inventory = await mp.events.callRemoteProc('server:player.inventory.item:unequip', item);
-   Browser.call('');
-   //if (browser) browser.execute('inventory.player.items = ' + JSON.stringify(Inventory));
-};
-

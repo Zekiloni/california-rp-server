@@ -51,7 +51,6 @@ export namespace Peds {
    }
 }
 
-
 export enum Distances { 
    OOC = 8.0,
    IC = 7.5,
@@ -61,7 +60,6 @@ export enum Distances {
    ROLEPLAY = 8.5,
    VEHICLE = 5.5
 };
-
 
 export enum spawnTypes {
    default = 0,
@@ -93,11 +91,9 @@ export namespace Business {
    }
 };
 
-
 export enum NotifyType {
    SUCCESS, ERROR, INFO
 };
-
 
 export enum Jobs { 
    UNEMPLOYED = 0,
@@ -105,7 +101,6 @@ export enum Jobs {
    TAXI_DRIVER = 7,
    FOOD_DELIVERY = 6, 
 };
-
 
 export enum entityData {
    MONEY = 'MONEY',
@@ -127,11 +122,9 @@ export enum entityData {
    ITEM = 'ITEM'
 };
 
-
 export enum logType {
    ERROR, SUCCESS, INFO
 };
-
 
 export namespace bizData { 
    export enum Type { 
@@ -152,14 +145,12 @@ export namespace bizData {
    }
 }
 
-
 export namespace houseData { 
    export enum Type { 
       SMALL_TRAILER, BIG_TRAILER, SMALL_APARTMENT, MEDIUM_APARTMENT, BIG_APARTMENT,
       SMALL_GROUND_HOUSE, MEDIUM_GROUND_HOUSE, SMALL_HOUSE, MEDIUM_HOUSE, BIG_HOUSE
    }
 }
-
 
 export enum adminLevel {
    NONE = 0,
@@ -171,7 +162,6 @@ export enum adminLevel {
    LEAD_ADMIN = 6,
    COMMUNITY_OWNER = 7 
 }
-
 
 export namespace weather { 
 
@@ -206,9 +196,8 @@ export namespace itemData {
    }
 
    export enum Status { 
-      NONE, EQUIPED, RAW, COOKED, BROKEN
+      NONE, EQUIPED, RAW, COOKED, BROKEN, FURNITURE_PLACED
    }
-   
 
    export enum Names { 
       drivingLicense = 'Driving licence',
@@ -231,7 +220,6 @@ export namespace itemData {
    }
 }
 
-
 export namespace commandData { 
    export enum Names {
       ITEMS = 'items',
@@ -242,7 +230,9 @@ export namespace commandData {
       WEATHER = 'weather',
       FIX_VEH = 'fixveh',
       GIVE_MONEY = 'givemoney',
-      SET_MONEY = 'setmoney'
+      SET_MONEY = 'setmoney',
+      CREATE_HOUSE = 'createhouse',
+      DESTROY_HOUSE = 'destroyhouse'
    }
 
    export enum Descriptions { 

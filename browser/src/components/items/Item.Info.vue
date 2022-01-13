@@ -12,7 +12,7 @@
       <p class="description" v-html="itemInfo.description"> </p>
 
       <ul class="actions" v-if="itemActions.length > 0"> 
-         <li v-for="action in itemActions" :key="action.name" v-tooltip="action.name" v-on:click="call(action.event)"> 
+         <li v-for="action in itemActions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
             <div class="icon" :class="action.icon"> </div>
             <!-- {{ action.name }}  -->
          </li>
@@ -46,13 +46,13 @@
          call: function (event) {
             mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.itemInfo), this.desiredAmount ? this.desiredAmount : this.item.quantity);
             this.$parent.hoverBox = false;
+            console.log(event)
          }
       },
 
       async mounted () { 
          if (window.mp) { 
             let itemData = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
-            console.log(itemData)
 
             itemData = JSON.parse(itemData);
 

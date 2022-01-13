@@ -129,19 +129,15 @@ export function objectSize (object: Object) {
    return size;
 };
 
-// NE ZABORAVITI
-// mp.events.add(
-//    {
-//       'playerEnterColshape': (Player: PlayerMp, Colshape: ColshapeMp) => { 
-//          if (Player.vehicle) return;
-//          if (Colshape.OnPlayerEnter) Colshape.OnPlayerEnter(Player); 
-         
-//       },
+mp.events.add(
+   {
+      'playerEnterColshape': (player: PlayerMp, colshape: ColshapeMp) => { 
+         if (colshape.onPlayerEnter) colshape.onPlayerEnter(player);  
+      },
 
-//       'playerExitColshape': (Player: PlayerMp, Colshape: ColshapeMp) => { 
-//          if (Player.vehicle) return;
-//          if (Colshape.OnPlayerLeave) Colshape.OnPlayerLeave(Player); 
-//       }
-//    }
-// );
+      'playerExitColshape': (player: PlayerMp, colshape: ColshapeMp) => { 
+         if (colshape.onPlayerLeave) colshape.onPlayerLeave(player); 
+      }
+   }
+);
 

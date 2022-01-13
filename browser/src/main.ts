@@ -21,6 +21,18 @@ Vue.mixin({
       playAudio: function (audioSource) {
          const audio = new Audio(audioSource);
          audio.play();
+      },
+      
+      formatDollars (i: number) { 
+         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); 
+      },
+
+      onSale (property: any) { 
+         return property.owner == 0 ? true : false;
+      },
+
+      truncate (str: string, n: number) { 
+         return (str.length > n) ? str.substr(0, n-1) + '...' : str; 
       }
    }
  })

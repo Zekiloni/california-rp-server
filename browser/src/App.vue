@@ -7,22 +7,29 @@
 
       <GameInterface v-if="interfaces.GameInterface" />
       <Notifications v-if="interfaces.Notifications" />
+
+
       <Chat v-if="interfaces.Chat" />
 
       <transition name="fade"> 
-         <Inventory v-if="interfaces.Inventory" />
+         <Inventory v-if="interfaces.Inventory" /> 
+      </transition>
+      
+
+      <Banking v-if="interfaces.Banking" />
+      
+      <!-- [HOUSES] -->
+      <transition name="fade"> 
+         <HouseInfo v-if="interfaces.HouseInfo" />
       </transition>
 
-      <transition name="slide-fade"> 
-         <Banking v-if="interfaces.Banking" />
-      </transition>
+      <!-- [BUSINESSES] -->
+      <Market v-if="interfaces.Market" />
 
       <transition name="bounce"> 
          <JobOffer v-if="interfaces.Job_Offer" />
       </transition>
 
-      <!-- [BUSINESSES] -->
-      <Market v-if="interfaces.Market" />
 
       <!-- <transition name="bounce">
          <Lobby v-if="interfaces.Lobby" />
@@ -54,12 +61,13 @@
    import Banking from './components/Banking.vue';
    import JobOffer from './components/jobs/Job_Offer.vue';
    import Market from './components/business/Market.vue';
+   import HouseInfo from './components/houses/house.info.vue';
 
    export default { 
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Inventory, Chat, Banking, JobOffer,
-         Market
+         Market, HouseInfo
       },
 
       data () { 

@@ -21,7 +21,6 @@ export default class Appearances extends Model {
    @Column({
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('face_features')); },
-      set (x) { this.setDataValue('face_features', JSON.stringify(x)); }
    })    
    face_features: number[];
 
@@ -29,7 +28,6 @@ export default class Appearances extends Model {
    @Column({
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('blend_data')); },
-      set (x) { this.setDataValue('blend_data', JSON.stringify(x)); }
    })    
    blend_data: number[];
 

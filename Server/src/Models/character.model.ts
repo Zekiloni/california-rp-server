@@ -185,11 +185,8 @@ export default class Characters extends Model {
 
       player.Account.last_character = this.id;
       player.Character = this;
-      
 
       player.name = this.name;
-
-      console.log('point is ' + point);
 
       player.setVariable(entityData.SPAWNED, true);
 
@@ -220,12 +217,11 @@ export default class Characters extends Model {
       this.setCuffs(player, this.cuffed);
    
    
-      player.setVariable(entityData.INJURIES, this.injuries);
+      player.setVariable(entityData.INJURIES, this.injuries.length > 0 ? this.injuries : []);
 
       console.log(222)
       switch (point) { 
          case spawnTypes.default: { 
-            console.log(353)
             player.position = Config.Default.Spawn;
             player.dimension = globalDimension;
             break;

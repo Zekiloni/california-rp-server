@@ -26,6 +26,7 @@ mp.events.addProc(
    {
       'CLIENT::AUTHORIZATION:SEND': async (username: string, password: string) => { 
          const accountInfo = await mp.events.callRemoteProc('SERVER::AUTHORIZATION:VERIFY', username, password);
+         mp.console.logInfo(JSON.stringify(accountInfo))
          return JSON.stringify(accountInfo);
       },
 

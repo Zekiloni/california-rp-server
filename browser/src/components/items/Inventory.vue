@@ -34,12 +34,11 @@
       </div>
 
       
+
+
       <transition name="fade">
-         <ItemInfo 
-            v-if="hoverBox && hoveredItem" 
-            :item="hoveredItem" 
-            :position="hoveredPosition" 
-         />
+         <ItemInfo v-if="hoverBox && hoveredItem" :item="hoveredItem" :position="hoveredPosition" />
+         <GiveItem v-if="selectedItem" :item="selectedItem" />
       </transition>
    </div>
 </template>
@@ -48,11 +47,12 @@
 
    import { Messages, Item_Entity, Item_Type, ENVIRONMENT_TYPES } from '@/globals';
    import ItemInfo from './item.info.vue';
+   import GiveItem from './give.item.vue';
 
    export default { 
       
       components: {
-         ItemInfo
+         ItemInfo, GiveItem
       },
 
       data () { 
@@ -60,20 +60,12 @@
             hoverBox: false,
             hoveredItem: null,
             hoveredPosition: null,
+            selectedItem: null,
 
-            Page: 0,
-
-            Player: { 
-               Max_Inventory_Weight: 5 
-            },
-
-            items: [
-            ],
-
+            items: [],
 
             Environment_Type: null,
             Environment: null,
-
 
             Messages, Item_Entity
          }
@@ -129,10 +121,11 @@
          if (window.mp) { 
             mp.invoke('focus', true);
 
-            mp.events.add('BROWSER::INVENTORY:ITEMS', items => { 
-               console.log(items)
-               this.items = JSON.parse(items);
-            });
+            mp.events.add('BROWSER::INVENTORY:ITEMS', items => this.items = JSON.parse(items));
+            mp.events.add('BROWSER::INVENTORY:GIVE_ITEM', (item) => { 
+               console.log('give item')
+               console.log(JSON.stringify(item));
+            })
          }   
       },
 

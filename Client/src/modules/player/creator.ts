@@ -1,13 +1,13 @@
 
 
-import { Browser } from '../browser';
-import { Clothing_Components, Genders, Player_Models } from '../data/Player';
-import { lobby } from './lobby';
-import {  DisableMoving, PlayerPreviewCamera, removeClothing } from '../utils';
-import Female_Torsos from '../data/FEMALE_TORSOS.json';
-import Male_Torsos from '../data/MALE_TORSOS.json';
-import { Clothing_Combinations } from '../data/Clothing_Combinations';
-import { gameInterface, UI_Status } from '../modules/game.UI';
+import { Browser } from '../../browser';
+import { Clothing_Components, Genders, Player_Models } from '../../data/Player';
+import { lobby } from '../../Player/lobby';
+import {  DisableMoving, PlayerPreviewCamera, removeClothing } from '../../utils';
+import Female_Torsos from '../../data/FEMALE_TORSOS.json';
+import Male_Torsos from '../../data/MALE_TORSOS.json';
+import { Clothing_Combinations } from '../../data/Clothing_Combinations';
+import { gameInterface, UI_Status } from '../game.UI';
 
 
 const Player = mp.players.local;

@@ -68,7 +68,7 @@ mp.events.addProc(
       'SERVER::ITEM:PICKUP': (player: PlayerMp, itemId: number) => { 
          return new Promise((resolve) => { 
             Items.findOne({ where: { id: itemId } }).then(async item => { 
-               await item?.dropItem(player);      
+               await item?.pickup(player);      
                const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.Character.id);
                if (newInventory) resolve(newInventory);   
             });

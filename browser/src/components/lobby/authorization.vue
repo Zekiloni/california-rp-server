@@ -35,10 +35,15 @@
             const username = this.inputs.username, password = this.inputs.password;
             
             if (username && password) {
-               const logged = await mp.events.callProc('CLIENT::AUTHORIZATION:SEND', username, password);
-               if (logged) {
-                  this.$parent.logged = true;
-                  this.$parent.account = JSON.parse(logged);
+               try {
+                  const logged = await mp.events.callProc('CLIENT::AUTHORIZATION:SEND', username, password);
+                  console.log(JSON.stringify(logged))
+                  if (logged) {
+                     this.$parent.logged = true;
+                     this.$parent.account = JSON.parse(logged);
+                  }
+               } catch (e) { 
+                  console.log(e)
                }
             }
          }

@@ -3,7 +3,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { Logger } from './utils';
-import { itemData, logType } from './globals/enums';
+import { logType } from './globals/enums';
 import { Config } from './config';
 
 import Accounts from './models/account.model';
@@ -12,6 +12,7 @@ import Characters from './models/character.model';
 import Appearances from './models/appearance.model';
 import Items from './models/inventory.item.model';
 import Business from './models/business.model';
+import Houses from './models/house.model';
 
 const Database = new Sequelize({
    database: Config.Database.Name,
@@ -20,7 +21,7 @@ const Database = new Sequelize({
    password: Config.Database.Password,
    storage: ':memory:',
    models: [ 
-      Accounts, Bans, Characters, Appearances, Items, Business
+      Accounts, Bans, Characters, Appearances, Items, Business, Houses
    ],
    logging: false
 });
@@ -43,7 +44,8 @@ Database.authenticate()
       { Username: 'divine', Password: 'divine' },
       { Username: 'Zekiloni', Password: 'kapakapa' },
       { Username: 'pitix', Password: 'pitix' },
-      { Username: 'deker', Password: 'deker' }
+      { Username: 'deker', Password: 'deker' },
+      { Username: 'shamzy', Password: 'shamzy' }
    ];
 
    for (const Admin of Admins) { 
@@ -60,6 +62,12 @@ Database.authenticate()
          Items.refresh(item);
       })
    })
+
+   Houses.findAll().then(houses => { 
+      houses.forEach(house => { 
+         house.refresh();
+      })
+   });
 })();
 
 

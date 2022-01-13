@@ -5,7 +5,7 @@
 
       <Authorization v-if="!logged"/>
 
-      <CharacterSelector v-else-if="logged && account && spawnSelector == false" :account="account"/>
+      <CharacterSelector v-else-if="logged && account && spawnSelector == false" :account="account" />
 
       <SpawnSelector v-else-if="spawnSelector && selectedCharacter" :spawnPoints="spawnPoints" />
          
@@ -49,7 +49,7 @@
       },
 
       beforeDestroy () { 
-         if (mp) mp.invoke('focus', false);
+         if (window.mp) mp.invoke('focus', false);
       }
    }
 
