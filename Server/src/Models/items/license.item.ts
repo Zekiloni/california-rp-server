@@ -1,7 +1,7 @@
 
 import { itemData } from '../../globals/enums';
 import Items from '../inventory.item.model';
-import { baseItem } from '../item.model';
+import { BaseItem } from '../item.model';
 
 
 const licenseTypes = [itemData.Type.MISC, itemData.Type.LEGAL, itemData.Type.LICENSE];
@@ -15,7 +15,7 @@ interface LicenseData {
 }
 
 
-export class LicenseItem extends baseItem {
+export class LicenseItem extends BaseItem {
    
    constructor (name: string, model: string, description: string) { 
       super (name, licenseTypes, model, 0.15, description);

@@ -1,10 +1,10 @@
 import { itemData } from '../../globals/enums';
-import { baseItem } from '../item.model';
+import { BaseItem } from '../item.model';
 
 
 const defaultFoodType = [itemData.Type.FOOD, itemData.Type.CONSUMABLE];
 
-export class foodItem extends baseItem {
+export class foodItem extends BaseItem {
    hunger: number;
    snacks: number;
    

@@ -45,10 +45,11 @@ export const defaultSpawn = {
 }
 
 export const markerColors: markerColors = { 
+   JOBS: [253, 208, 48, 255],
+   HOUSES: [0, 212, 116, 255],
+
    BUSINESS: [253, 201, 41, 185],
    FACTION: [69, 222, 105, 113],
-   JOB: [254, 213, 46, 70],
-   HOUSES: [0, 212, 116, 255],
    GARAGE : [255, 255, 255, 70]
 };
 
@@ -185,3 +186,17 @@ export const Messages = {
 };
 
 
+export const jobNames = {
+   TAXI: 'Downtown Cab Co.'
+};
+
+export const jobDescriptions = {
+   TAXI: 'Vozać taksi vozila.'
+}
+
+export const numberPlatePrefix = { 
+   POLICE: 'LSPD',
+   TAXI: 'TX',
+   LSS: 'LSS',
+   LST: 'LST'
+}

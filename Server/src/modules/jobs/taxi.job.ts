@@ -5,6 +5,23 @@
 // import { Settings } from "../../Server/Settings";
 // import { NotifyType } from "@Shared/enums";
 
+import { jobDescriptions, jobNames } from '../../globals/constants';
+import { job } from '../../globals/enums';
+import Jobs from '../../models/job.model';
+
+
+const taxiJob = new Jobs(
+   job.TAXI_DRIVER, 
+   jobNames.TAXI, 
+   jobDescriptions.TAXI,
+   new mp.Vector3(895.1914, -179.3781, 74.7003), 724, 81
+);
+
+taxiJob.vehiclePoint = [
+   { position: new mp.Vector3(904.9328, -189.1005, 73.4358), rotation: new mp.Vector3(-0.7688, -1.9679, 56.8145) },
+   { position: new mp.Vector3(899.4365, -180.4577, 73.4450), rotation: new mp.Vector3(2.4084, 1.1656, -122.1921) },
+   { position: new mp.Vector3(908.6395, -183.2149, 73.7698), rotation: new mp.Vector3(-0.1393, -1.0507, 57.1918) }
+];
 
 
 

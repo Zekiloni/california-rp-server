@@ -1,14 +1,14 @@
 import { itemData } from '../../globals/enums';
 import Items from '../inventory.item.model';
-import { baseItem, noDesc } from '../item.model';
+import { BaseItem, noDesc } from '../item.model';
 
 export const defaultWeaponType = [itemData.Type.USABLE, itemData.Type.WEAPON]
 
-export class weaponItem extends baseItem {
+export class weaponItem extends BaseItem {
    weapon_hash: string;
-   caliber?: baseItem;
+   caliber?: BaseItem;
    
-   constructor (name: string, model: string, weapHash: string, cal?: baseItem, type?: itemData.Type[], weight: number = 0.35, description: string = noDesc) { 
+   constructor (name: string, model: string, weapHash: string, cal?: BaseItem, type?: itemData.Type[], weight: number = 0.35, description: string = noDesc) { 
       super (name, type ? defaultWeaponType.concat(type) : defaultWeaponType, model, weight, description);
       this.weapon_hash = weapHash;
       this.caliber = cal;

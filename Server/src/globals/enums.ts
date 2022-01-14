@@ -95,12 +95,12 @@ export enum NotifyType {
    SUCCESS, ERROR, INFO
 };
 
-export enum Jobs { 
+export enum job { 
    UNEMPLOYED = 0,
    SANITATION = 4,
    TAXI_DRIVER = 7,
    FOOD_DELIVERY = 6, 
-};
+}
 
 export enum entityData {
    MONEY = 'MONEY',
@@ -120,7 +120,12 @@ export enum entityData {
    CUFFED = 'CUFFED',
    INJURIES = 'INJURIES',
    ITEM = 'ITEM',
-   VEHICLE_DATA = 'VEHICLE_DATA',
+   FUEL = 'FUEL',
+   MILEAGE = 'MILEAGE',
+   DIRT = 'DIRT',
+   WINDOWS = 'WINDOWS',
+   HOOD = 'HOOD',
+   TRUNK = 'TRUNK',
    DATABASE = 'DATABASE'
 };
 
@@ -222,7 +227,7 @@ export namespace itemData {
    }
 }
 
-export namespace vvehicleData { 
+export namespace vehicleData { 
    export enum Type { 
       TEMPORARY, PERMANENT
    }
@@ -244,7 +249,8 @@ export namespace commandData {
       GIVE_MONEY = 'givemoney',
       SET_MONEY = 'setmoney',
       CREATE_HOUSE = 'createhouse',
-      DESTROY_HOUSE = 'destroyhouse'
+      DESTROY_HOUSE = 'destroyhouse',
+      SAVE_POS = 'position'
    }
 
    export enum Descriptions { 

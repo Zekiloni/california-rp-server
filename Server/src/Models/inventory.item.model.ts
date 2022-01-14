@@ -4,7 +4,7 @@ import { AfterCreate, AfterDestroy, AfterSave, AutoIncrement, Column, CreatedAt,
 import { entityData, itemData, logType } from '../globals/enums';
 import { itemExtraData } from '../globals/interfaces';
 import { Logger } from '../utils';
-import { baseItem } from './item.model';
+import { BaseItem } from './item.model';
 
 
 
@@ -90,7 +90,7 @@ export default class Items extends Model {
    @AfterSave
    static refresh (item: Items) {
       if (item.on_ground) {
-         item.object = mp.objects.new(baseItem.list[item.name].model, item.position, { alpha: 255, rotation: item.rotation, dimension: item.dimension });
+         item.object = mp.objects.new(BaseItem.list[item.name].model, item.position, { alpha: 255, rotation: item.rotation, dimension: item.dimension });
          item.object.setVariable(entityData.ITEM, { name: item.name, id: item.id });
       } else { 
          if (item.object) { 
@@ -113,7 +113,7 @@ export default class Items extends Model {
    async useItem (player: PlayerMp) { 
       const Character = player.Character;
       
-      const rItem = baseItem.list[this.name];
+      const rItem = BaseItem.list[this.name];
    }
 
 
@@ -123,7 +123,7 @@ export default class Items extends Model {
    }
 
 
-   static async giveItem (player: PlayerMp, target: PlayerMp, item: baseItem, quantity: number = 1) { 
+   static async giveItem (player: PlayerMp, target: PlayerMp, item: BaseItem, quantity: number = 1) { 
       const alreadyItem = await Items.hasItem(itemData.Entity.PLAYER, target.Character.id, item.name);
       
       alreadyItem && item.isStackable() ? 

@@ -6,7 +6,7 @@ import { itemData } from '../globals/enums';
 export const noDesc = Messages.ITEM_NO_DESCRIPTION;
 
 
-export class baseItem {
+export class BaseItem {
 
    name: string;
    type: itemData.Type[];
@@ -17,7 +17,7 @@ export class baseItem {
 
    use?(Player: PlayerMp, ...params: any): void | any;
 
-   static list: { [key:string] : baseItem } = {};
+   static list: { [key:string] : BaseItem } = {};
    
    constructor (name: string, type: itemData.Type[], model: string, weight: number = 0.1, description: string = noDesc) { 
       this.name = name;
@@ -26,7 +26,7 @@ export class baseItem {
       this.weight = weight;     
       this.description = description;
       
-      baseItem.list[this.name] = this;
+      BaseItem.list[this.name] = this;
    }
 
    isWeapon () { 

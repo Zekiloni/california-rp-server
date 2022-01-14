@@ -35,6 +35,11 @@ export interface propertyPoint {
    marker: MarkerMp
 };
 
+export interface vehiclePoint { 
+   position: Vector3Mp,
+   rotation: Vector3Mp
+}
+
 export interface itemAction { 
    name: string,
    icon: string,

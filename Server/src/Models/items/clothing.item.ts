@@ -1,10 +1,10 @@
 
 
 import { itemData } from '../../globals/enums';
-import { baseItem, noDesc } from '../item.model';
+import { BaseItem, noDesc } from '../item.model';
 
 
-export class ClothingItem extends baseItem {
+export class ClothingItem extends BaseItem {
    Compontent: number;
    
    constructor (name: string, Type: itemData.Type[], model: string, component: number, weight: number = 0.1, description: string = noDesc) { 
