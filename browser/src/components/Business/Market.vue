@@ -39,13 +39,13 @@
                         <h2 v-on:click="Decrease(Item)"> - </h2>
                      </div>
                   </td>
-                  <td width="60"> {{ Helpers.Dollars(Business.Multiplier * Item.Multiplier * Item.Quantity ) }} </td>
+                  <td width="60"> {{ formatDollars(Business.Multiplier * Item.Multiplier * Item.Quantity ) }} </td>
                </tr>
             </table>
             <!-- <li v-for="Item in Cart" :key=Item > {{ Item }} </li> -->
          </div>
          <div class="bill">
-            <h2> Total {{ Helpers.Dollars(Total) }} </h2>
+            <h2> Total {{ formatDollars(Total) }} </h2>
             <button class=""> </button>
          </div>
       </div>

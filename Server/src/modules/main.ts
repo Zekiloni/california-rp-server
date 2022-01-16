@@ -194,7 +194,7 @@ async function updatePlayer (Player: PlayerMp) {
 
    if (Character.minutes >= 60) { 
       await Character.increment('hours', { by: 1 });
-      Character.update({ Minutes: 0 });
+      Character.update({ minutes: 0 });
    }
 
    Character.increment('hunger', { by: -0.35 });

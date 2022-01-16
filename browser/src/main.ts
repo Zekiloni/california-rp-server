@@ -7,11 +7,9 @@ import VTooltip from 'v-tooltip'
 
 
 Vue.config.productionTip = false;
-// Vue.config.devtools = false;
+Vue.config.devtools = true;
 
 //@ts-ignore
-// import VueEllipseProgress from 'vue-ellipse-progress';
-// Vue.use(VueEllipseProgress);
 
 Vue.use(VTooltip)
 
@@ -33,7 +31,16 @@ Vue.mixin({
 
       truncate (str: string, n: number) { 
          return (str.length > n) ? str.substr(0, n-1) + '...' : str; 
-      }
+      },
+
+      isUpper: (str: string) => {
+         return /[A-Z]/.test(str[0]);
+      },
+
+      formatDate (i: Date) { 
+         i = new Date(i); 
+         return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
+      },
    }
  })
 

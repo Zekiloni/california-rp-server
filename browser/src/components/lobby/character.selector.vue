@@ -7,35 +7,35 @@
       </div>
 
       <div class="account">
-            <div class="header">
-               <h2> {{ account.username }} </h2>
-               <h3> {{ Helpers.Group(account.administrator) }} </h3>
-            </div>
-
-            <ul class="data">
-               <li> <span class="name date"> {{ Messages.REGISTER_DATE }} </span>  <span class="value"> {{ Helpers.Date(account.created_at) }} </span> </li>
-               <li> <span class="name last_login"> {{ Messages.LAST_LOGIN }} </span>  <span class="value"> {{ Helpers.Date(account.login_date) }} </span> </li>
-               <li> <span class="name hours"> {{ Messages.HOURS_PLAYED }} </span>  <span class="value"> {{ getHoursPlayed }} </span> </li>
-               <li> <span class="name email"> {{ Messages.E_MAIL }} </span>  <span class="value"> {{ account.email ? account.email : Messages.NO_NO }} </span> </li>
-               <li class="warns"> <span class="name warns"> {{ Messages.WARNS }} </span>  <span class="value" v-tooltip="Messages.MAX_WARNS"> {{ getWarns }} </span> </li>
-            </ul>
+         <div class="header">
+            <h2> {{ account.username }} </h2>
+            <h3> {{ Helpers.Group(account.administrator) }} </h3>
          </div>
 
-         <div class="characters">
-            <div class="character-slot" v-for="i in maxCharacters" :key="i" v-on:mouseenter="playAudio(hoverAudio)"> 
-               <div class="character" v-if="account.characters[i]" >
-                  <div class="main">
-                     <h2 class="name"> {{ account.characters[i].name.split(' ')[0] }} </h2>
-                     <h3 class="last-name"> {{ account.characters[i].name.split(' ')[1] }} </h3>
-                  </div>
-                  <h2 v-on:click="selectCharacter(account.characters[i].id)"> IGRAJ </h2>
+         <ul class="data">
+            <li> <span class="name date"> {{ Messages.REGISTER_DATE }} </span>  <span class="value"> {{ formatDate(account.created_at) }} </span> </li>
+            <li> <span class="name last_login"> {{ Messages.LAST_LOGIN }} </span>  <span class="value"> {{ formatDate(account.login_date) }} </span> </li>
+            <li> <span class="name hours"> {{ Messages.HOURS_PLAYED }} </span>  <span class="value"> {{ getHoursPlayed }} </span> </li>
+            <li> <span class="name email"> {{ Messages.E_MAIL }} </span>  <span class="value"> {{ account.email ? account.email : Messages.NO_NO }} </span> </li>
+            <li class="warns"> <span class="name warns"> {{ Messages.WARNS }} </span>  <span class="value" v-tooltip="Messages.MAX_WARNS"> {{ getWarns }} </span> </li>
+         </ul>
+      </div>
+
+      <div class="characters">
+         <div class="character-slot" v-for="i in maxCharacters" :key="i" v-on:mouseenter="playAudio(hoverAudio)"> 
+            <div class="character" v-if="account.characters[i]" >
+               <div class="main">
+                  <h2 class="name"> {{ account.characters[i].name.split(' ')[0] }} </h2>
+                  <h3 class="last-name"> {{ account.characters[i].name.split(' ')[1] }} </h3>
                </div>
-               <div v-else class="character-create" v-on:click="createCharacter(i)" :class="{ locked: i == 2 && account.Donator == 0}"> 
-                  <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
-                  <div class="create-button"> </div>
-               </div>
+               <h2 v-on:click="selectCharacter(account.characters[i].id)"> IGRAJ </h2>
+            </div>
+            <div v-else class="character-create" v-on:click="createCharacter(i)" :class="{ locked: i == 2 && account.donator == 0}"> 
+               <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
+               <div class="create-button"> </div>
             </div>
          </div>
+      </div>
    </div>
 </template>
 
@@ -93,7 +93,7 @@
          },
 
          createCharacter: function (i) { 
-            if (i == 2 && this.Account.donator == 0) return mp.trigger('CLIENT::NOTIFICATION', this.Messages.NOT_DONATOR, Notification.Error, 5);
+            if (i == 2 && this.account.donator == 0) return mp.trigger('CLIENT::NOTIFICATION', this.Messages.NOT_DONATOR, 1, 5);
             mp.trigger('CLIENT::CREATOR:START');
          }
       }
@@ -137,30 +137,27 @@
    ul.data li { 
       margin: 15px auto; width: 325px; position: relative;
       display: flex; justify-content: space-between;
-      background: linear-gradient(90deg, #0b0e11, transparent);
+      background: #181a20;
       padding: 10px 10px; border-radius: 10px;
    }
 
    ul.data li::before { content: ""; font-weight: 700; position: absolute; display: flex; justify-content: center; align-items: center;
-      height: 39.5px; top: -1px; left: 0; border-radius: 10px; box-shadow: rgb(0 0 0 / 15%) 0px 1px 20px 0px; background: #181a20; width: 39px; }
+      height: 39.5px; top: -1px; left: 0; border-radius: 10px; box-shadow: rgb(0 0 0 / 15%) 0px 1px 20px 0px; background: #2a303c; width: 39px; }
 
-   li span.name { position: relative; padding-left: 45px; color: #9fa5c3; font-weight: 400; }
-   li span.name::before { position: absolute; width: 25px; height: 25px; content: ''; background: #7c5bf1; left: -2.8px; top: -2.5px; }
+   li span.name { position: relative; padding-left: 45px; color: #848E9C; font-weight: 350; }
+   li span.name::before { position: absolute; width: 22px; height: 22px; content: ''; background: #8c7ed5; left: -1.25px; top: -2.4px; }
    li span.name.hours::before { mask: url('../../assets/images/icons/clock.svg') no-repeat center; mask-size: cover; }
    li span.name.date::before { mask: url('../../assets/images/icons/date.svg') no-repeat center; mask-size: cover; }
    li span.name.last_login::before { mask: url('../../assets/images/icons/login.svg') no-repeat center; mask-size: cover; }
    li span.name.email::before { mask: url('../../assets/images/icons/e-mail.svg') no-repeat center; mask-size: cover; }
-   li span.value { font-weight: 800; color: #9fa5c3; }
+   li span.value { font-weight: 500; color: #EAECEF; }
 
-   ul.data li.warns::before { background: #ff3635; }
-   ul.data li.warns { background: linear-gradient(90deg, rgb(255 54 53 / 45%), transparent); }
+   ul.data li.warns::before { background: #ff463d; }
+   ul.data li.warns { background: rgb(255 54 53 / 45%); }
    ul.data li.warns span { color: whitesmoke; }
    li span.name.warns::before { mask: url('../../assets/images/icons/danger.svg') no-repeat center; mask-size: cover; background: #fff; }
 
-
-   .characters { 
-      width: 55%; min-height: 200px;  display: flex; justify-content: space-around; align-items: center; height: auto;
-   }
+   .characters { width: 55%; min-height: 200px; position: relative; display: flex; justify-content: space-around; align-items: center; height: auto; }
 
    .characters .character-slot { 
       width: 250px;
@@ -169,34 +166,21 @@
       background: rgb(11 14 17 / 45%);
       border-radius: 10px;
       transition: all .3s ease;
+      overflow: hidden;
    }
 
+   .main { padding: 15px 15px; }
 
-   .main { 
-      padding: 15px 10px;
-   }
-
-   .main h2.name { 
-      color: #cdcdcd;
-      margin: 0;
-      font-size: 1.5rem;
-      text-transform: uppercase;
-   }
-
-   .main h3.last-name { 
-      margin: 0;
-      font-weight: 350;
-      font-size: 1rem;
-      text-transform: uppercase;
-      color: grey;
-   }
+   .main h2.name { color: #cdcdcd; margin: 0; font-size: 1.5rem; text-transform: uppercase; }
+   .main h3.last-name {  margin: 0; font-weight: 350; font-size: 1rem; text-transform: uppercase; color: grey; }
 
    .character-slot * { transition: all .3s ease; }
    .character-slot .character-create { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
    .character-create small { text-transform: uppercase; color: #474d57; }
    .create-button { margin: 20px 0; background: #474d57; width: 100px; height: 100px; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
-   .character-slot:hover { filter: brightness(1.3); }
+   .character-slot:hover { filter: brightness(1.1); }
    .character-slot:hover .character-create small { color: white; }
    .character-slot:hover .create-button { background: whitesmoke; }
+
 
 </style>

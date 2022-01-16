@@ -311,7 +311,7 @@
                   Completed: () => { 
                      if (
                         this.Character.First_Name.length > 3 && this.Character.Last_Name.length > 3 && this.Character.Origin.length > 3 && 
-                        Helpers.isUpper(this.Character.First_Name) && Helpers.isUpper(this.Character.Last_Name) && Helpers.isUpper(this.Character.Origin) &&
+                        isUpper(this.Character.First_Name) && isUpper(this.Character.Last_Name) && isUpper(this.Character.Origin) &&
                         this.Character.Birth.length > 3
                      ) return true;
                   }

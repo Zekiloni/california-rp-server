@@ -50,8 +50,8 @@ Database.authenticate()
 
    for (const Admin of Admins) { 
       const Exist = await Accounts.findOne({ where: { username: Admin.Username } });
-      console.log(Admin);
       if (Exist == null) { 
+         console.log('Admin Account Created ' + Admin.Username);
          Accounts.create({ username: Admin.Username, password: Admin.Password, administrator: 7 });
       }
    }
