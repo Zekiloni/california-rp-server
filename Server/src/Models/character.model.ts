@@ -13,6 +13,8 @@ import Houses from './house.model';
 import Business from './business.model';
 import { Vehicles } from './vehicle.model';
 import { characterProperties } from '../globals/interfaces';
+import { LicenseItem } from './items/license.item';
+import Items from './inventory.item.model';
 
 
 console.log(Peds.walkingStyles.Normal)
@@ -219,7 +221,6 @@ export default class Characters extends Model {
    
       // player.setVariable(entityData.INJURIES, this.injuries.length > 0 ? this.injuries : []);
 
-      console.log(222)
       switch (point) { 
          case spawnTypes.default: { 
             player.position = Config.Default.Spawn;
@@ -294,8 +295,9 @@ export default class Characters extends Model {
       player.setVariable(entityData.MONEY, this.money + parseInt(value));
    };
 
-   async setJob (value: number) {
+   async setJob (player: PlayerMp, value: number) {
       this.job = value;
+      player.setVariable(entityData.JOB, value);
       await this.save();
    };
 
@@ -313,6 +315,11 @@ export default class Characters extends Model {
    setCuffs (player: PlayerMp, toggle: boolean) {
       this.cuffed = toggle;
       player.setVariable(entityData.CUFFED, toggle);
+   }
+
+   async hasLicense (item?: LicenseItem) {
+      const has = await Items.findOne({ where: { name: item?.name } });
+      return has ? has : false;
    }
 
 }

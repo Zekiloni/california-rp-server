@@ -191,7 +191,7 @@ export const jobNames = {
 };
 
 export const jobDescriptions = {
-   TAXI: 'Vozać taksi vozila.'
+   TAXI: 'Vozać taksi vozila'
 }
 
 export const numberPlatePrefix = { 

@@ -41,7 +41,7 @@ export const Messages = {
    ACCEPT: 'Prihvati',
    CANCEL: 'Odustani',
    TRANSFER_PAGE: 'Transfer Novca',
-   JOB_OFFER: 'Ponuda za Posao', 
+   JOB_OFFER: 'Ponuda za posao', 
    HOUSE_RENTABLE: 'Iznajmljivo',
    JOB_OFFER_CONFIRM: 'Da li želite da se zaposlite kao ',  
    TRANSACTION_HISTORY: 'Istorija Transakcija',

@@ -1,5 +1,5 @@
 import { markerColors } from '../globals/constants';
-import { globalDimension, job } from '../globals/enums';
+import { globalDimension, jobNumber } from '../globals/enums';
 import { vehiclePoint } from '../globals/interfaces';
 
 
@@ -39,11 +39,15 @@ export default class Jobs {
       this.activeWorkers = 0;
 
       this.colshape.onPlayerEnter = (player: PlayerMp) => { 
-         if (player.Character.job == job.UNEMPLOYED) 
+         if (player.Character.job == jobNumber.UNEMPLOYED) 
             player.call('CLIENT::JOB:OFFER', [this]);
          else
             player.outputChatBox('show cmds')
       };
+
+      this.colshape.onPlayerLeave = (player: PlayerMp) => { 
+         player.call('CLIENT::JOB:OFFER', [false]);
+      }
 
       Jobs.list.set(this.id, this);
    }

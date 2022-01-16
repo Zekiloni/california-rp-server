@@ -27,6 +27,8 @@ mp.events.add(
                leavingPlayer.Character.last_dimension = leavingPlayer.dimension;
    
                await leavingPlayer.Character.save();
+
+               console.log('saved char ' + leavingPlayer.Character.name);
             }
          } catch (e) { 
             Logger(logType.ERROR, 'Saving Character: ' + e);

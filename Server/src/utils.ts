@@ -2,7 +2,7 @@
 
 import { Config } from './config';
 import { defaultSpawn } from './globals/constants';
-import { globalDimension, logType, NotifyType, spawnTypes } from './globals/enums';
+import { globalDimension, logType, NotifyType, spawnTypes, vehicleData } from './globals/enums';
 
 
 export function Logger (Status: logType, Message: any) {
@@ -32,18 +32,18 @@ export function getDefaultSpawn () {
    }
 };
 
-export function isPlayerNearPlayer (Player: PlayerMp, Target: PlayerMp, Distance: number = 0.5) {
-   return distanceBetweenVectors(Player.position, Target.position) <= Distance ? true : false;
+export function isPlayerNearPlayer (player: PlayerMp, target: PlayerMp, distance: number = 0.5) {
+   return distanceBetweenVectors(player.position, target.position) <= distance ? true : false;
 }
 
 
-export function isAnyVehicleAtPosition (position: Vector3Mp, radius: number = 2, dimension = globalDimension) {
-   let Vehicles: VehicleMp[] = [];
-   mp.vehicles.forEachInRange(position, radius, (Vehicle: VehicleMp) => {
-      if (Vehicle && Vehicle.dimension == dimension) Vehicles.push(Vehicle);
-   });
-   return Vehicles;
-}
+export function isAnyVehicleAtPosition (position: Vector3Mp, radius: number = 2, dimension = globalDimension): VehicleMp | undefined {
+   for (const vehicle of mp.vehicles.toArray()) { 
+      if (vehicle.dist(position) < radius && vehicle.dimension == dimension) {
+         return vehicle;
+      }
+   }
+};
 
 
 export function isPlayerNearPoint (Player: PlayerMp, Position: Vector3Mp, Distance: number = 1.5) {

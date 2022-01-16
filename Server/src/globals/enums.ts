@@ -95,7 +95,7 @@ export enum NotifyType {
    SUCCESS, ERROR, INFO
 };
 
-export enum job { 
+export enum jobNumber { 
    UNEMPLOYED = 0,
    SANITATION = 4,
    TAXI_DRIVER = 7,

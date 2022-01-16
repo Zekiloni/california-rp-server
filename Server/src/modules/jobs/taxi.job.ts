@@ -1,21 +1,17 @@
 
-// import { Globals } from "../Global/Globals";
-// import { Messages } from "../Global/Messages";
-// import { Vehicles } from "../../models/vehicle.model";
-// import { Settings } from "../../Server/Settings";
-// import { NotifyType } from "@Shared/enums";
-
 import { jobDescriptions, jobNames } from '../../globals/constants';
-import { job } from '../../globals/enums';
+import { jobNumber } from '../../globals/enums';
 import Jobs from '../../models/job.model';
-
+import { isAnyVehicleAtPosition } from '../../utils';
+import { vehiclePoint as vPoint } from '../../globals/interfaces';
 
 const taxiJob = new Jobs(
-   job.TAXI_DRIVER, 
+   jobNumber.TAXI_DRIVER, 
    jobNames.TAXI, 
    jobDescriptions.TAXI,
    new mp.Vector3(895.1914, -179.3781, 74.7003), 724, 81
 );
+
 
 taxiJob.vehiclePoint = [
    { position: new mp.Vector3(904.9328, -189.1005, 73.4358), rotation: new mp.Vector3(-0.7688, -1.9679, 56.8145) },
@@ -23,6 +19,34 @@ taxiJob.vehiclePoint = [
    { position: new mp.Vector3(908.6395, -183.2149, 73.7698), rotation: new mp.Vector3(-0.1393, -1.0507, 57.1918) }
 ];
 
+
+taxiJob.start = async function (player: PlayerMp) { 
+   
+   const hasLicense = await player.Character.hasLicense();
+
+   if (hasLicense) { 
+      
+      let vehicleSpawnPoint: vPoint | null = null;
+      for (const point of (<vPoint[]>this.vehiclePoint)) { 
+         if (!isAnyVehicleAtPosition(point.position)) {
+            vehicleSpawnPoint = point;
+            break;
+         }
+      }
+
+      // create vehicle at vehiclespawnbpoint
+
+   } else { 
+
+   }
+
+};
+
+
+taxiJob.stop = function (player: PlayerMp) { 
+
+
+};
 
 
 

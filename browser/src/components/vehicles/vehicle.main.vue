@@ -61,7 +61,7 @@
    }
 
    .driving-info h2 { position: relative; width: 120px; margin: 0 10px; text-align: center; color: #cdcdcd; font-weight: 350; }
-   .driving-info h2 small { font-size: 0.75rem; color: #848e9c; text-transform: uppercase; display: block; }
+   .driving-info h2 small { font-size: 0.75rem; color: #959eaa; text-transform: uppercase; display: block; }
 
    .driving-info h2.speed::after { 
       position: absolute;

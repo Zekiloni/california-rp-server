@@ -59,7 +59,7 @@
    import Chat from './components/chat';
    import Inventory from './components/items/inventory.vue';
    import Banking from './components/Banking.vue';
-   import JobOffer from './components/jobs/Job_Offer.vue';
+   import JobOffer from './components/jobs/job.offer.vue';
    import Market from './components/business/Market.vue';
    import HouseInfo from './components/houses/house.info.vue';
 
