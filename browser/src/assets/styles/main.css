@@ -58,6 +58,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .fade-enter, .fade-leave-to { opacity: 0; }
 
 
+.hop-in-enter-active { animation: hop-in .2s; }
+.hop-in-leave-active { animation: hop-in .8s reverse; }
+@keyframes hop-in {
+   from { transform: translateY(300px); }
+   to { transform: translateY(0); }
+}
+
 
 .tooltip {
    display: block !important;

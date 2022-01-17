@@ -5,29 +5,23 @@
    <div class="creator">
 
       <ul class="navigation">
-         <li :class="{ 'active': isActive(0) }" v-on:click="Navigate(0)"> 
+         <li :class="{ 'active': isActive(0) }" v-on:click="Navigate(0)" v-tooltip="Messages.IDENTITY "> 
             <div class="icon id-card" />
-            {{ Messages.IDENTITY }} 
          </li>
-         <li :class="{ 'active': isActive(1) }" v-on:click="Navigate(1)">
+         <li :class="{ 'active': isActive(1) }" v-on:click="Navigate(1)" v-tooltip="Messages.BLENDINGS">
             <div class="icon dna" />
-            {{ Messages.BLENDINGS }} 
          </li>
-         <li :class="{ 'active': isActive(2) }" v-on:click="Navigate(2)"> 
+         <li :class="{ 'active': isActive(2) }" v-on:click="Navigate(2)" v-tooltip="Messages.FACE_SHAPE"> 
             <div class="icon head" />
-            {{ Messages.FACE_SHAPE }} 
          </li>
-         <li :class="{ 'active': isActive(3) }" v-on:click="Navigate(3)"> 
+         <li :class="{ 'active': isActive(3) }" v-on:click="Navigate(3)" v-tooltip="Messages.HAIR"> 
             <div class="icon hair" />
-            {{ Messages.HAIR }} 
          </li>
-         <li :class="{ 'active': isActive(4) }" v-on:click="Navigate(4)"> 
+         <li :class="{ 'active': isActive(4) }" v-on:click="Navigate(4)" v-tooltip="Messages.HEAD_OVERLAYS"> 
             <div class="icon face-scan" />
-            {{ Messages.HEAD_OVERLAYS }} 
          </li>
-         <li :class="{ 'active': isActive(5) }" v-on:click="Navigate(5)"> 
+         <li :class="{ 'active': isActive(5) }" v-on:click="Navigate(5)" v-tooltip="Messages.CLOTHING"> 
             <div class="icon clothing" />
-            {{ Messages.CLOTHING }} 
          </li>
       </ul>
 
@@ -40,28 +34,28 @@
 
       <transition name="fade">
 
-         <div class="page flex-page" v-if="Page == 0" key=Identity @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
+         <div class="page flex-page" v-if="page == 0" key=Identity @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <label> {{ Messages.FIRST_NAME }} </label>
-            <input type="text" v-model="Character.First_Name">
+            <input type="text" v-model="first_Name">
 
             <label> {{ Messages.LAST_NAME }} </label>
-            <input type="text" v-model="Character.Last_Name">
+            <input type="text" v-model="last_Name">
 
             <label> {{ Messages.ORIGIN }} </label>
-            <input type="text" v-model="Character.Origin">
+            <input type="text" v-model="origin">
 
             <label> {{ Messages.BIRTH }} </label>
-            <input type="date" v-model="Character.Birth">
+            <input type="date" v-model="birth">
 
             <ul class="genders"> 
                <label> {{ Messages.GENDER }} </label>
-               <li class="gender icon male-gender" :class="{ selected: Character.Gender == 0 }" v-on:click="Gender(0)"> </li>
-               <li class="gender icon female-gender" :class="{ selected: Character.Gender == 1 }" v-on:click="Gender(1)"> </li>
+               <li class="gender icon male-gender" :class="{ selected: gender == 0 }" v-on:click="Gender(0)"> </li>
+               <li class="gender icon female-gender" :class="{ selected: gender == 1 }" v-on:click="Gender(1)"> </li>
             </ul>
 
          </div>
 
-         <div class="page" v-if="Page == 1" key=Blendings @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
+         <div class="page" v-if="page == 1" key=Blendings @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <div class="slider" v-for="(Blend, i) in Appearance.Blend_Data" :key=i>
                <label> {{ Messages.BLEND_DATA[i] }} </label>
                <vue-slider 
@@ -84,7 +78,7 @@
             </div>
          </div>
 
-         <div class="page" v-if="Page == 2" key=Face @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
+         <div class="page" v-if="page == 2" key=Face @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <div class="slider" v-for="(Face, i) in Appearance.Face" :key=i>
                <label> {{ Messages.FACE_FEATURES[i] }} </label>
                <vue-slider 
@@ -101,12 +95,12 @@
             </div>
          </div>
 
-         <div class="page" v-if="Page == 3" key=Hair_Beard @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
+         <div class="page" v-if="page == 3" key=Hair_Beard @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <div class="slider">
                <label> {{ Messages.HAIR_MODEL }} </label>
                <vue-slider 
                   v-model=Appearance.Hair[0] 
-                  :max=Hair_Styles[Character.Gender]
+                  :max=Hair_Styles[gender]
                   :min=0
                   :railStyle=Slider.Rail 
                   :processStyle=Slider.Process
@@ -129,7 +123,7 @@
                </ul>
             </div>
 
-            <div class="slider" v-if="Character.Gender == 0">
+            <div class="slider" v-if="gender == 0">
                <label> {{ Messages.BEARD_MODEL }} </label>
                <vue-slider 
                   v-model=Appearance.Beard[0] 
@@ -153,7 +147,7 @@
             
          </div>
 
-         <div class="page" v-if="Page == 4" key=Overlays @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
+         <div class="page" v-if="page == 4" key=Overlays @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <div class="slider" v-for="(Overlay, i) in Appearance.Overlays" :key=i>
                <label> {{ Head_Overlays.Names[i] }} </label>
                <input type="checkbox" id="checkbox" v-model="Appearance.Overlays_Toggle[i]" v-on:change="ChangeOverlay(i, $event.target.checked)">
@@ -173,7 +167,7 @@
             </div>
          </div>
 
-         <div class="page" v-if="Page == 5" key=Clothing @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
+         <div class="page" v-if="page == 5" key=Clothing @mouseover="Scroll_Disabled = true" @mouseleave="Scroll_Disabled = false">
             <!-- <div class="slider" v-for="(Cloth, i) in Appearance.Clothing" :key=i>
                <label> {{ Clothing_Components.Names[i] }} </label>
                <vue-slider 
@@ -217,7 +211,7 @@
                <label> {{ Clothing_Components.Names[2] }} </label>
                <vue-slider 
                   v-model=Appearance.Clothing[2] 
-                  :max=Clothing_Components.Maximums[Character.Gender][2]
+                  :max=Clothing_Components.Maximums[gender][2]
                   :min=0
                   :railStyle=Slider.Rail 
                   :processStyle=Slider.Process
@@ -231,7 +225,7 @@
                <label> {{ Clothing_Components.Names[3] }} </label>
                <vue-slider 
                   v-model=Appearance.Clothing[3] 
-                  :max=Clothing_Components.Maximums[Character.Gender][3]
+                  :max=Clothing_Components.Maximums[gender][3]
                   :min=0
                   :railStyle=Slider.Rail 
                   :processStyle=Slider.Process
@@ -259,26 +253,26 @@
    import { Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components, Eyes_Colors, Beard_Colors } from '@/globals';
    import VueSlider from 'vue-slider-component'
    import 'vue-slider-component/theme/antd.css'
-   import Helpers from '@/helpers';
+
+   import CharacterIdentity from './creator/creator.identity.vue';
 
    export default { 
       components: { 
-         VueSlider
+         VueSlider, CharacterIdentity
       }, 
 
       data () { 
          return { 
 
-            Page: 0,
+            page: 0,
             Scroll_Disabled: false,
 
-            Character: { 
-               First_Name: '',
-               Last_Name: '',
-               Origin: '',
-               Birth: null,
-               Gender: 0
-            },
+            first_Name: '',
+            last_Name: '',
+            origin: '',
+            birth: null,
+            gender: 0,
+
 
             Appearance: {
                Face: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -310,9 +304,9 @@
                   Task: true, Title: Messages.IDENTITY_RULES.Title, Content: Messages.IDENTITY_RULES.Content,
                   Completed: () => { 
                      if (
-                        this.Character.First_Name.length > 3 && this.Character.Last_Name.length > 3 && this.Character.Origin.length > 3 && 
-                        isUpper(this.Character.First_Name) && isUpper(this.Character.Last_Name) && isUpper(this.Character.Origin) &&
-                        this.Character.Birth.length > 3
+                        this.first_Name.length > 3 && this.last_Name.length > 3 && this.origin.length > 3 && 
+                        this.isUpper(this.first_Name) && this.isUpper(this.last_Name) && this.isUpper(this.origin) &&
+                        this.birth.length > 3
                      ) return true;
                   }
                },
@@ -320,8 +314,8 @@
                   Task: true, Title: Messages.YEAR_RULES.Title, Content: Messages.YEAR_RULES.Content,
                   Completed: () => { 
                      let Year;
-                     if (this.Character.Birth != null) { 
-                        Year = this.Character.Birth.split('-')[0];
+                     if (this.birth != null) { 
+                        Year = this.birth.split('-')[0];
                         if (Year > 1941 && Year < 2002) return true;
                      }
                   }
@@ -340,13 +334,13 @@
             Messages, Blend_Data, Face_Features, Hair_Colors, Hair_Styles, Head_Overlays, Clothing_Components, Eyes_Colors, Beard_Colors,
 
             Slider: { 
-               Rail: { backgroundColor: 'rgb(245 245 245 / 40%)', borderRadius: '15px' },
-               Process: { background: 'linear-gradient(45deg, #fab80a, #fed52e)', borderRadius: '25px' },
-               Dot: { backgroundColor: '#fab80a', borderColor: '#fab80a' },
+               Rail: { backgroundColor: '#181a20', borderRadius: '15px' },
+               Process: { background: '#ffcc45', borderRadius: '25px' },
+               Dot: { backgroundColor: '#ffb901', borderColor: '#ffcc45' },
                DotOptions: { 
                   focusStyle: { 
                      background: 'linear-gradient(45deg, #fab80a, #fed52e)',
-                     boxShadow: '0 0 0 5px rgb(250 184 10 / 20%)'
+                     boxShadow: '0 0 0 5px rgb(255 204 69 / 20%)'
                   }
                }
             }
@@ -370,13 +364,13 @@
       },
 
       methods: { 
-         Navigate: function (i) { this.Page = i; },
-         isActive: function (i)  { return i == this.Page ? true : false; },
+         Navigate: function (i) { this.page = i; },
+         isActive: function (i)  { return i == this.page ? true : false; },
          
          FaceFeature: (i, value) => { mp.trigger('CLIENT::CREATOR:FACE', i, value); },
          Clothing: async (i, value) => { 
             if (i == 11) { 
-               const Combinations = await mp.events.callProc('CLIENT::TOP:COMBINATIONS', this.Character.Gender, value);
+               const Combinations = await mp.events.callProc('CLIENT::TOP:COMBINATIONS', this.gender, value);
                this.CLOTHING_COMBINATIONS.Current_Combination = Combinations;
             }
             mp.trigger('CLIENT::CREATOR:CLOTHING', i, value); 
@@ -451,31 +445,40 @@
 
       mounted () { 
 
-         mp.invoke('focus', true);
+         if (window.mp) {
+            mp.invoke('focus', true);
+
+            mp.events.add('BROWSER::CREATOR:TOPS', tops => this.CLOTHING_COMBINATIONS = tops);
+         }
 
          window.addEventListener('wheel', (e) => { 
             if (this.Scroll_Disabled == false) mp.trigger('CLIENT::PLAYER_CAMERA:ZOOM', e.deltaY);
          });
 
-         mp.events.add('BROWSER::CREATOR:TOPS', (Tops) => { 
-            this.CLOTHING_COMBINATIONS = Tops;
-         });
-         
       }, 
-      
 
       beforeDestroy () { 
          mp.invoke('focus', false);
       }
-
-      // methods: { 
-         
-      // }
    }
 
 </script>
 
 <style scoped>
+
+   input { 
+      position: relative;
+      width: 270px;
+      padding: 15px 10px;
+      transition: all .3s ease;
+      border: 1px solid #0b0e11;
+      color: #cdcdcd;
+      border-radius: 5px;
+      box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
+      background: #2b2f36;
+   }
+
+   input:focus { color: white;  border-color: #474d57; }
 
    div.creator { 
       width: 100%;
@@ -483,25 +486,25 @@
       position: absolute;
       top: 0;
       left: 0;
-      background: url('../assets/images/backgrounds/overlay-1.png'), radial-gradient(50% 50% at 50% 50%, rgba(23, 28, 28, 0) 0%, rgb(15 19 16 / 75%) 100%);
+      background: url('../assets/images/backgrounds/overlay-1.png'), radial-gradient(50% 50% at 50% 50%, rgba(23, 28, 28, 0) 0%, rgb(15 19 16 / 45%) 100%);
    }
    ul.navigation { 
-      padding: 0; list-style: none; position: absolute; top: 0; margin: 0; width: 100%; display: flex; justify-content: center;
+      padding: 15px 0; list-style: none; position: absolute; top: 0; margin: 0; width: 100%; display: flex; justify-content: center;
    }
 
    ul.navigation li { 
-      margin: 0 10px; font-size: 18px; width: 100px; height: 100px; color: rgba(249, 249, 249, 0.5); text-transform: uppercase; font-weight: 500;
-      transition: all 0.35s ease; background: linear-gradient(180.04deg, rgba(229, 255, 255, 0.1) 0.03%, rgba(229, 255, 255, 0) 99.97%); display: flex; flex-direction: column; justify-content: center; align-items: center;
-      position: relative; padding: 20px;
+      border-radius:20px; background: #181a20; box-shadow: rgb(0 0 0 / 15%) 0px 1px 20px 0px;
+      margin: 0 10px; font-size: 18px; width: 80px; height: 80px; 
+      transition: all 0.35s ease; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      position: relative; padding: 5px; 
    }
 
    ul.navigation li i { margin: 2px 0; }
-   ul.navigation li:hover { color: white; background: linear-gradient(180.04deg, rgba(229, 255, 255, 0.3) 0.03%, rgba(229, 255, 255, 0) 99.97%); }
+   /* ul.navigation li.active {  box-shadow: 0 0 0 5px rgb(124 91 241 / 45%);  } */
    ul.navigation li:hover .icon { background: white; }
-   ul.navigation li.active { background: linear-gradient(180.04deg, rgb(255 232 117 / 40%) 0.03%, rgba(229, 255, 255, 0) 99.97%); color: #ffcf1d; }
-   ul.navigation li.active .icon { background: linear-gradient(45deg, #fab80a, #fed52e); }
+   ul.navigation li.active .icon { background: white; }
 
-   .icon { width: 40px; height: 40px; transition: all 0.35s ease; background-color: rgba(249, 249, 249, 0.5); margin: 10px 0; }
+   .icon { width: 40px; height: 40px; transition: all 0.35s ease; background-color: #7c5bf1; margin: 10px 0; }
 
    .icon.id-card { -webkit-mask: url('../assets/images/icons/id-card.svg') no-repeat center; mask: url('../assets/images/icons/id-card.svg') no-repeat center; mask-size: cover; }
    .icon.dna { -webkit-mask: url('../assets/images/icons/dna.svg') no-repeat center; mask: url('../assets/images/icons/dna.svg') no-repeat center; mask-size: cover; }
@@ -512,17 +515,17 @@
    .icon.female-gender { -webkit-mask: url('../assets/images/icons/female-gender.svg') no-repeat center; mask: url('../assets/images/icons/female-gender.svg') no-repeat center; mask-size: cover; }
    .icon.face-scan { -webkit-mask: url('../assets/images/icons/face-scan.svg') no-repeat center; mask: url('../assets/images/icons/face-scan.svg') no-repeat center; mask-size: cover; }
 
-   .page { padding-top: 40px; position: absolute; right: 30px; width: 350px; top: 120px; max-height: 600px; overflow-y: auto; flex-direction: column; justify-content: center; align-items: center; }
+   .page { padding-top: 40px; position: absolute; left: 30px; width: 350px; top: 20px; max-height: 600px; overflow-y: auto; flex-direction: column; justify-content: center; align-items: center; }
 
    .slider { padding: 20px; width: 300px; position: relative; }
    .slider input[type=checkbox] { position: absolute; top: 20px; right: 20px; }
 
-   ul.info { width: 350px; padding: 0; list-style: none; height: 400px; position: absolute; top: 200px; left: 30px; }
+   ul.info { width: 400px; padding: 0; list-style: none; height: 400px; position: absolute; bottom: 20px; left: 30px; }
    ul.info li { padding: 10px 0; transition: all 0.35s ease; }
    ul.info li h3 { color: whitesmoke; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
    ul.info li:nth-child(even) { border-top: 1px solid grey; border-bottom: 1px solid grey; }
-   ul.info li p { color: #b3b3b3; font-weight: 200; margin: 0; }
-   ul.info li.completed { opacity: 0.1;  color: green; }
+   ul.info li p { color: #848e9c; font-weight: 250; margin: 0; }
+   ul.info li.completed { opacity: 0.07; color: green; }
 
    .page input[type=text], .page input[type=date] { width: 175px; }
    label { margin-top: 25px; color: rgb(199, 199, 199); font-size: 16px; font-weight: 100; letter-spacing: 1px; }

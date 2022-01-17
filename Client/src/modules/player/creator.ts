@@ -26,6 +26,7 @@ mp.events.add(
             Player.setHeading(0);
             mp.game.time.setClockTime(Info.Time, 0, 0);
             Player.freezePosition(true);
+            mp.game.audio.startAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
             mp.events.add('render', DisableMoving);
             removeClothing(Player);
             mp.game.ui.displayRadar(false);
@@ -41,6 +42,7 @@ mp.events.add(
             Player.freezePosition(false);
             gameInterface.mainInterface(UI_Status.VISIBLE);
             PlayerPreviewCamera(false);
+            mp.game.audio.stopAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
             Browser.call('BROWSER::HIDE', 'Creator');
          } 
 

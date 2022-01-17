@@ -49,13 +49,15 @@ export function lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp
       Camera.pointAtCoord(LookAt.x, LookAt.y, LookAt.z);
       mp.game.cam.renderScriptCams(true, false, 0, true, false);
       mp.game.ui.displayRadar(false);
-      mp.game.graphics.transitionToBlurred(1000)
+      mp.game.graphics.transitionToBlurred(1000);
+      mp.game.audio.startAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
    } else { 
       Browser.call('BROWSER::HIDE', 'Lobby');
       if (Camera) Camera.destroy();
       mp.players.local.freezePosition(false);
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
       mp.game.ui.displayRadar(true);
-      mp.game.graphics.transitionFromBlurred(1000)
+      mp.game.graphics.transitionFromBlurred(1000);
+      mp.game.audio.stopAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
    }
 }

@@ -1,6 +1,7 @@
 export namespace Config {
 
    export let happyHours:boolean = false;
+   export let freezeTime: boolean = false;
 
    export const Database = { 
       User: 'root',

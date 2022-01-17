@@ -16,6 +16,7 @@ const InitialState = {
 
    GameInterface: false,
    Inventory: false,
+   Phone: false,
    Playerlist: false,
    Banking: false,
    Job_Offer: false,
@@ -34,7 +35,6 @@ const InitialState = {
    House: false,
    Business: false,
 
-   Phone: false,
    DMV: false,
    
    HouseInfo: false

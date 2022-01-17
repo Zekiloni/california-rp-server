@@ -46,6 +46,7 @@ export class BaseItem {
 import './items/drink.item';
 import './items/food.item';
 import './items/weapon.item';
+import './items/phone.item';
 
 
 

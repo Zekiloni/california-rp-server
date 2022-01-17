@@ -23,12 +23,20 @@
 
       <div class="characters">
          <div class="character-slot" v-for="i in maxCharacters" :key="i" v-on:mouseenter="playAudio(hoverAudio)"> 
-            <div class="character" v-if="account.characters[i]" >
+            <div class="character" v-if="account.characters[i]" v-on:click="selectCharacter(account.characters[i].id)" >
                <div class="main">
                   <h2 class="name"> {{ account.characters[i].name.split(' ')[0] }} </h2>
                   <h3 class="last-name"> {{ account.characters[i].name.split(' ')[1] }} </h3>
                </div>
-               <h2 v-on:click="selectCharacter(account.characters[i].id)"> IGRAJ </h2>
+               
+               <ul class="info">
+
+                  <li class="money"> {{ Messages.CASH }} <b>  {{ formatDollars(account.characters[i].money) }} </b> </li>
+                  <li> {{ Messages.ORIGIN }}: <b> {{ account.characters[i].origin }} </b> </li>
+                  <li> {{ Messages.BIRTH }}: <b> {{ account.characters[i].birth }} </b> </li>
+                  <li> {{ Messages.REGISTER_DATE }}: <b> {{ formatDate(account.characters[i].created_at) }} </b> </li>
+               </ul>
+               
             </div>
             <div v-else class="character-create" v-on:click="createCharacter(i)" :class="{ locked: i == 2 && account.donator == 0}"> 
                <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
@@ -63,9 +71,9 @@
             let Result = [0, 0];
             for (let i in this.account.characters) { 
                if (this.account.characters[i]) {
-                  const Character = this.account.characters[i];
-                  Result[0] += Character.hours;
-                  Result[1] += Character.minutes;
+                  const character = this.account.characters[i];
+                  Result[0] += character.hours;
+                  Result[1] += character.minutes;
                }
             }
             return Result[0] + 'h ' + Result[1] + 'm';
@@ -88,7 +96,6 @@
                this.$parent.spawnPoints = JSON.parse(spawnPositions);
                this.$parent.selectedCharacter = id;
                this.$parent.spawnSelector = true;
-
             }
          },
 
@@ -169,18 +176,23 @@
       overflow: hidden;
    }
 
-   .main { padding: 15px 15px; }
+   .character { padding: 20px 20px; }
 
    .main h2.name { color: #cdcdcd; margin: 0; font-size: 1.5rem; text-transform: uppercase; }
-   .main h3.last-name {  margin: 0; font-weight: 350; font-size: 1rem; text-transform: uppercase; color: grey; }
+   .main h3.last-name { margin: 0; font-weight: 350; font-size: 1rem; text-transform: uppercase; color: grey; }
 
    .character-slot * { transition: all .3s ease; }
    .character-slot .character-create { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
    .character-create small { text-transform: uppercase; color: #474d57; }
    .create-button { margin: 20px 0; background: #474d57; width: 100px; height: 100px; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
-   .character-slot:hover { filter: brightness(1.1); }
    .character-slot:hover .character-create small { color: white; }
    .character-slot:hover .create-button { background: whitesmoke; }
 
+   .character:hover h2, .character:hover h3 { color: #ffcc45 !important; }
+   .character { width: 100%; height: 100%; }
+
+   ul.info { list-style: none; color: #595f69; padding: 0; margin-top: 25px; }
+   ul.info li { margin: 10px 0; font-size: 0.75rem; text-transform: uppercase; }
+   ul.info li b { color: #cdcdcd; display: block; margin: 5px 2px; font-size: 1.1rem; text-transform: none; }
 
 </style>

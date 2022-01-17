@@ -11,10 +11,14 @@
 
       <Chat v-if="interfaces.Chat" />
 
+      <!-- [MISC] -->
       <transition name="fade"> 
          <Inventory v-if="interfaces.Inventory" /> 
       </transition>
       
+      <transition> 
+         <Phone v-if="interfaces.Phone" />
+      </transition>
 
       <Banking v-if="interfaces.Banking" />
       
@@ -53,7 +57,7 @@
    import './assets/styles/font-awesome.css';
 
    import Lobby from '@/components/lobby.vue';
-   import Creator from './components/Creator.vue';
+   import Creator from './components/creator.vue';
    import Notifications from './components/notifications.hints.vue';
    import GameInterface from './components/game.interface.vue';
    import Chat from './components/chat';
@@ -62,12 +66,14 @@
    import JobOffer from './components/jobs/job.offer.vue';
    import Market from './components/business/Market.vue';
    import HouseInfo from './components/houses/house.info.vue';
+   import Phone from './components/phone.vue';
+
 
    export default { 
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Inventory, Chat, Banking, JobOffer,
-         Market, HouseInfo
+         Market, HouseInfo, Phone
       },
 
       data () { 
@@ -99,9 +105,6 @@
          ...mapState(['interfaces'])
       }
    }
-   
-
-   
 
 </script>
 

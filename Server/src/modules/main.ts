@@ -187,33 +187,41 @@ mp.events.addProc(
 
 const interval = 60 * 1000;
 
-async function updatePlayer (Player: PlayerMp) {
-   const Character = Player.Character, Account = Player.Account;
+async function updatePlayer (player: PlayerMp) {
    
-   Character.increment('minutes', { by: Config.happyHours == true ? 2 : 1 });
+   player.Character.increment('minutes', { by: Config.happyHours == true ? 2 : 1 }).then(async character => { 
+      if (character.minutes >= 60) { 
+         character.increment('hours', { by: 1 });
+         character.minutes = 0;
+         await character.save();
+      }
+   });
+   
+   player.Character.increment('hunger', { by: -0.35 });
+   player.Character.increment('thirst', { by: -0.70 });
 
-   if (Character.minutes >= 60) { 
-      await Character.increment('hours', { by: 1 });
-      Character.update({ minutes: 0 });
-   }
-
-   Character.increment('hunger', { by: -0.35 });
-   Character.increment('thirst', { by: -0.70 });
-
-   if (Character.muted > 0) {
-      await Character.increment('muted', { by: -1 });
+   if (player.Character.muted > 0) {
+      player.Character.increment('muted', { by: -1 });
    }
 }
 
 
 function minuteCheck() {
+   
+   const today = new Date();
+   if (!Config.freezeTime) {
+      mp.world.time.set(today.getHours(), today.getMinutes(), today.getSeconds());
+   }
+
    mp.players.forEach((player: PlayerMp) => {
       if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
          updatePlayer(player);
       }
    });
-   setTimeout(() => { minuteCheck(); }, interval);
-}
+   
+   setTimeout(minuteCheck, interval);
+
+};
 
 
 minuteCheck();
