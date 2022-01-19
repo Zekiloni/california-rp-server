@@ -160,7 +160,7 @@ function ZoomCamera (Delta: number) {
    }
 
    const dist = mp.game.gameplay.getDistanceBetweenCoords(Player.position.x, Player.position.y, Player.position.z, x, y, z, false);
-   if (dist > 3.5 || dist < 0.3) return;
+   if (dist > 3.5 || dist < 0.35) return;
 
    MovableCamera.setCoord(x, y, z);
 }

@@ -26,6 +26,8 @@ export const Messages = {
    MAX_WARNS: 'Možete imati maksimalno 3 upozorenja.',
    WARNS: 'Upozorenja',
    DONATOR: 'Donator',
+   MALE: 'Muško',
+   FEMALE: 'Žensko',
    ORIGIN: 'Poreklo',
    GENDER: 'Pol',
    CASH: 'Novac',
@@ -115,19 +117,6 @@ export const Messages = {
    ],
 }
 
-export const Blend_Data = { 
-   Maximums: [45, 45, 45, 45, 1, 1], 
-   Minimums: [0, 0, 0, 0, -1, -1],
-   Step: [1, 1, 1, 1, 0.1, 0.1]
-}
-
-export const Face_Features = { 
-   Min: -1, Max: 1, Interval: 0.1
-}
-
-export const Hair_Styles = {
-   0: 75, 1: 79
-};
 
 export const Head_Overlays = { 
    Names: ['Mrlje', 'Obrve', 'Starost, pore', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
@@ -135,21 +124,17 @@ export const Head_Overlays = {
    Maximums: [23, 33, 14, 11, 10, 9, 17, 16]
 }
 
-export const Hair_Colors = [
+export const Colors = [
    '#0c0c0c', '#1d1a17', '#281d18', '#3d1f15', '#682e19', '#954b29', '#a35234', '#9b5f3d', '#b57e54', '#c19167', '#af7f53', '#be9560', '#d0ac75', '#b37f43', '#dbac68', '#e4ba7e', '#bd895a', '#83422c', '#8e3a28', '#8a241c',
    '#962b20', '#a7271d', '#c4351f', '#d8421f', '#c35731', '#d24b21', '#816755', '#917660', '#a88c74', '#d0b69e', '#513442', '#744557', '#a94663', '#cb1e8e', '#f63f78', '#ed9393', '#0b917e', '#248081', '#1b4d6b', '#578d4b',
    '#235433', '#155146', '#889e2e', '#71881b', '#468f21', '#cc953d', '#ebb010', '#ec971a', '#e76816', '#e64810', '#ec4d0e', '#c22313', '#e43315', '#ae1b18', '#6d0c0e', '#281914', '#3d241a', '#4c281a', '#5d3929', '#69402b',
    '#291b16', '#0e0e10', '#e6bb84', '#d8ac74'
 ];
 
-export const Eyes_Colors = [0, 40, 41, 4, 3, 6, 37, 36, 39];
-
-export const Beard_Colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 26, 27, 28, 29, 55, 56, 57, 58, 59, 60, 61, 62, 63];
 
 export const Notification = { 
    Succes: 0, Error: 1, Info: 2
 }
-
 
 export const ENVIRONMENT_TYPES = { 
    '0': 'Zemlja', '6': 'Vozilo', '7': 'Vozilo', '8': 'Kuća - Apartman', '9': 'Biznis'

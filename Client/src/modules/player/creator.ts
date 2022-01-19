@@ -22,9 +22,7 @@ mp.events.add(
             lobby(false);
             Browser.call('BROWSER::SHOW', 'Creator');
             Player.position = Info.Position;
-            Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations[0]));
             Player.setHeading(0);
-            mp.game.time.setClockTime(Info.Time, 0, 0);
             Player.freezePosition(true);
             mp.game.audio.startAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
             mp.events.add('render', DisableMoving);
@@ -52,14 +50,13 @@ mp.events.add(
          Player.setHeadBlendData(shapeM, shapeF, 0, skinM, skinF, 0, shapeMix, skinMix, 0, true);
       },
 
-      'CLIENT::CREATOR:FACE': (Index: number, Value: number) => { 
-         Player.setFaceFeature(Index, Value);
+      'CLIENT::CREATOR:FACE': (i: number, value: number) => { 
+         Player.setFaceFeature(i, value);
       },
 
       'CLIENT::CREATOR:GENDER': (x: number) => {
          Player.model = Player_Models[x];
          removeClothing(Player);
-         // Browser.call('BROWSER::CREATOR:TOPS', JSON.stringify(Clothing_Combinations[0]));
       },
 
       'CLIENT::CREATOR:HAIR': (Style: number, Color: number, Highlights: number) => {
@@ -97,12 +94,12 @@ mp.events.add(
          }
       },
 
-      'CLIENT::CREATOR:EYES_COLOR': (Color: number) => {
-         Player.setEyeColor(Color);
+      'CLIENT::CREATOR:EYES_COLOR': (color: number) => {
+         Player.setEyeColor(color);
       },
 
-      'CLIENT::CREATOR:BEARD': (Style: number, Color: number) => {
-         Player.setHeadOverlay(1, Style, 1.0, Color, 0);
+      'CLIENT::CREATOR:BEARD': (style: number, color: number) => {
+         Player.setHeadOverlay(1, style, 1.0, color, 0);
       }
    }
 );

@@ -37,7 +37,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track {background: rgb(0 0 0 / 60%);}
-::-webkit-scrollbar-thumb { background: #6845ea; box-shadow: 0 3px 25px rgb(104 69 234 / 40%); }
+::-webkit-scrollbar-thumb { background: #6845ea; box-shadow: 0 3px 15px rgb(104 69 234 / 40%); }
 
 .bounce-enter-active { animation: bounce-in .2s; }
 .bounce-leave-active { animation: bounce-in .8s reverse; }

@@ -11,8 +11,7 @@ Vue.config.devtools = true;
 
 //@ts-ignore
 
-Vue.use(VTooltip)
-
+Vue.use(VTooltip);
 
  
 Vue.mixin({

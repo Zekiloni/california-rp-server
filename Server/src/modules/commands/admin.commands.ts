@@ -20,7 +20,6 @@ Commands[commandData.Names.SAVE_POS] = {
       const position = (player.vehicle) ? player.vehicle.position : player.position;
       const rotation = (player.vehicle) ? player.vehicle.rotation : player.heading;
       
-
       fs.appendFile(savedPositions, `Position: { x: ${position.x}, y: ${position.y}, z: ${position.z} } | ${(player.vehicle) ? `Rotation: ${JSON.stringify(rotation)}` : `Heading: ${rotation}`} | ${(player.vehicle) ? 'inCar' : 'onFoot'} - ${positionName}\r\n`, (err) => {
          if (err) {
             Logger(logType.ERROR, 'Saving Position ' + err);
