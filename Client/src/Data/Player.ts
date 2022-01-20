@@ -1,9 +1,7 @@
 
 
 
-export enum Clothing_Components { 
-   Head, Mask, HairStyle, Torso, Legs, Bag, Shoes, Accessorie, Undershirt, Armour, Decal, Top
-}
+
 
 type Torsos = {
    [key: string]: number[]

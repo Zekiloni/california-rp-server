@@ -33,11 +33,10 @@
       <div class="slider" v-if="gender == 0">
          <label> {{ Messages.BEARD_MODEL }} </label>
          <input 
-            type="checkbox"
-            v-model="beard.style"
-            true-value="0"
-            false-value="255"
-            v-on:input="changeBeard('style', beard.style)"
+            type="checkbox" 
+            id="checkbox" 
+            :checked="beard.style == 0"
+            v-on:input="changeBeard('style', beard.style ? 0 : 255)"
          >
          <vue-slider 
             v-model=beard.style
@@ -45,7 +44,8 @@
             :min=0
             class="rail"
             :railStyle=slider.rail 
-            v-if="beard.style != 255"
+            :disabled="beard.style == 255"
+            :class="{ disabled : beard.style == 255 }"
             :processStyle=slider.process
             :dotStyle=slider.dot
             v-on:change="val => changeBeard('style', val)"
@@ -57,7 +57,7 @@
          <div class="slider" v-if="gender == 0 && beard.style != 255">
             <label> {{ Messages.BEARD_COLOR }} </label>
             <ul class="colors"> 
-               <li class="color" v-for="(color) in beardColors" :key=color :class="{ selected: beard[1] == color }" :style="{ backgroundColor: Colors[color] }" v-on:click="changeBeard('color', color)">  </li> 
+               <li class="color" v-for="(color) in beardColors" :key=color :class="{ selected: beard.color == color }" :style="{ backgroundColor: Colors[color] }" v-on:click="changeBeard('color', color)">  </li> 
             </ul>
          </div>
       </transition>
@@ -95,7 +95,7 @@
 
       methods: { 
          changeBeard: function (i, value) {
-            console.log(value)
+            console.log('beard value ' + value)
             this.beard[i] = value;
             mp.events.call('CLIENT::CREATOR:BEARD', this.beard.style, this.beard.color);
          },
@@ -123,7 +123,14 @@
       box-shadow: 0 21px 29px 0 rgb(0 0 0 / 31%);
       background: #2a303c;
       border-radius: 10px;
+      position: relative;
       margin: 15px auto;
+   }
+
+   .slider input[type="checkbox"] {
+      position: absolute;
+      top: 20px;
+      right: 25px;
    }
 
    label { 
@@ -132,10 +139,11 @@
       text-transform: uppercase;
    }
 
-   ul.colors { padding: 10px 0; list-style: none; display: grid; grid-gap: 0.7rem; grid-template-columns: repeat(8, 25px); grid-template-rows: repeat(8, 25px); justify-content: center; height: auto; overflow-y: auto; padding: 5px; }
+   ul.colors { padding: 10px 0; list-style: none; display: grid; grid-gap: 0.7rem; grid-template-columns: repeat(8, 25px); grid-template-rows: repeat(4, 25px); justify-content: center; height: auto; overflow-y: auto; padding: 5px; }
    ul.colors li.color { width: 20px; height: 20px; border-radius: 100%; transition: all 0.35s ease; opacity: 0.7; border: 3px solid transparent; }
    ul.colors li.color:hover, ul.colors li.color.selected { opacity: 1; border-color: rgb(255 255 255 / 70%); box-shadow: 0 0 0 5px rgb(255 255 255 / 25%); }
 
    .slider .rail { margin: 10px 5px; }
+   .slider .rail.disabled { opacity: 0.35; }
 
 </style>

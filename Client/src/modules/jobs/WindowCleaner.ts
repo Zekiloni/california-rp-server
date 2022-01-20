@@ -1,4 +1,4 @@
-import { CreateInteractionSpot } from "../utils";
+import { CreateInteractionSpot } from "../../utils";
 
 const Player = mp.players.local;
 let CleaningActive = false;

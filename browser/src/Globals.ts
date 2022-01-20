@@ -83,6 +83,8 @@ export const Messages = {
    BEARD_COLOR: 'Boja Brade',
    PLAYER_ITEMS: 'Predmeti',
    PLAYER_EQUIPMENT: 'Odeća',
+   TURN_ON: 'Uključi',
+   TURN_OFF: 'Isključi',
    MONEY_AMOUNT: 'Količina novca',
    TRANSFER_THE_MONEY: 'Pošalji Novac',
    MONEY_TARGET: 'Primalac',
@@ -115,14 +117,10 @@ export const Messages = {
       'Nos širina', 'Nos visina', 'Nos dužina', 'Nos - širina mosta', 'Nos - pozicija', 'Nos - pomak mosta nosa', 'Obrve visina', 'Obrve širina', 'Jagodična kost visina', 
       'Jagodična kost širina', 'Obrazi širina', 'Oči', 'Usne', 'Dužina vilice', 'Visina vilice', 'Dužina brade', 'Pozicija brade', 'Širina brade', 'Oblik brade',  'Širina vrata' 
    ],
+   HEAD_OVERLAYS_NAMES: ['Mrlje', 'Obrve', 'Starost, pore', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
 }
 
 
-export const Head_Overlays = { 
-   Names: ['Mrlje', 'Obrve', 'Starost, pore', 'Ten', 'Oštećenja od sunca', 'Karmin', 'Pege', 'Dlake na grudima'],
-   Indexes: [0, 2, 3, 6, 7, 8, 9, 10],
-   Maximums: [23, 33, 14, 11, 10, 9, 17, 16]
-}
 
 export const Colors = [
    '#0c0c0c', '#1d1a17', '#281d18', '#3d1f15', '#682e19', '#954b29', '#a35234', '#9b5f3d', '#b57e54', '#c19167', '#af7f53', '#be9560', '#d0ac75', '#b37f43', '#dbac68', '#e4ba7e', '#bd895a', '#83422c', '#8e3a28', '#8a241c',

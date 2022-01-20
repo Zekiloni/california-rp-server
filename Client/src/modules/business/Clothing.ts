@@ -1,8 +1,9 @@
-import { Browser } from "../browser";
+import { Browser } from '../../browser';
 
 
 const Player = mp.players.local;
 let Active = false;
+
 
 mp.events.add({
    'CLIENT::BUSINESS:CLOTHING:MENU': () => {
@@ -20,6 +21,8 @@ mp.events.add({
    },
 
    'CLIENT::BUSINESS:CLOTHING:PREVIEW': (x, Component: number, Texture: number) => { 
+      // RageEnums.Natives.Ped.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS
+      // RageEnums.Natives.Ped.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS
       const Variation = Player.getDrawableVariation(Component);
       Player.setComponentVariation(Component, Variation, Texture, 2);
    },

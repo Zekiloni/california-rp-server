@@ -1,4 +1,4 @@
-import { WaitEntity, LoadMovementClipset, Controls } from "../utils";
+import { WaitEntity, loadMovementClipset, Controls } from "../utils";
 
 
 const Player = mp.players.local;
@@ -166,7 +166,7 @@ const Interactions = {
       if (Style == null) { 
          Entity.resetMovementClipset(0.0);
       } else { 
-         LoadMovementClipset(Style).then(() => {
+         loadMovementClipset(Style).then(() => {
             Entity.setMovementClipset(Style, 1.0);
          })
       }

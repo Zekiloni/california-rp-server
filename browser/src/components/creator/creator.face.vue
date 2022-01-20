@@ -57,7 +57,7 @@
 
 <style scoped>
    .faces { 
-      height: 80%;
+      height: 95%;
       width: 100%;
       overflow: auto;
       margin: auto;

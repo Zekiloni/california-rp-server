@@ -1,8 +1,10 @@
-import { Clothing_Components, Genders } from './data/Player';
+import {Genders } from './data/Player';
+import { clothingComponents } from './enums/clothing';
 
 const ATMS = [ 
    3424098598, 3168729781, 2930269768, 506770882
 ];
+
 
 
 export function IsNearATM (Position: Vector3Mp) { 
@@ -29,7 +31,7 @@ export const Controls = {
 }
 
 
-export function DisableMoving () { 
+export function disableMoving () { 
    mp.game.controls.disableControlAction(0, 30, true);
    mp.game.controls.disableControlAction(0, 31, true);
    mp.game.controls.disableControlAction(0, 32, true);
@@ -42,20 +44,20 @@ export function removeClothing (Entity: PlayerMp) {
    const Gender = Genders[Entity.model];
    switch (Gender) { 
       case '0': {
-         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Legs, 61, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Shoes, 34, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Undershirt, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Top, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Torso, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Legs, 61, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Shoes, 34, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Undershirt, 15, 0, 2);
          break;
       }
 
       case '1': {
-         Entity.setComponentVariation(Clothing_Components.Top, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Torso, 15, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Legs, 17, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Shoes, 35, 0, 2);
-         Entity.setComponentVariation(Clothing_Components.Undershirt, 14, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Top, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Torso, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Legs, 17, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Shoes, 35, 0, 2);
+         Entity.setComponentVariation(clothingComponents.Undershirt, 14, 0, 2);
          break;
       }
    }
@@ -69,7 +71,7 @@ export function distanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
    return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
 }
 
-export function LoadAnimationDictionary (i: string): Promise<boolean> { 
+export function loadAnimDictionary (i: string): Promise<boolean> { 
    if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve(true);
    return new Promise(async resolve => { 
       mp.game.streaming.requestAnimDict(i);
@@ -80,7 +82,7 @@ export function LoadAnimationDictionary (i: string): Promise<boolean> {
    })
 };
 
-export function LoadMovementClipset (Clipset: string): Promise<boolean> { 
+export function loadMovementClipset (Clipset: string): Promise<boolean> { 
    if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve(true);
    return new Promise(async resolve => { 
       mp.game.streaming.requestClipSet(Clipset);
@@ -126,7 +128,7 @@ export function getStreetZone (position: Vector3Mp) {
 
 let MovableCamera: CameraMp;
 
-export function PlayerPreviewCamera (Toggle: boolean) { 
+export function playerPreviewCamera (Toggle: boolean) { 
    if (Toggle) { 
       const Player = mp.players.local;
       MovableCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);

@@ -45,7 +45,6 @@ export function lobby (Toggle: boolean, Position?: Vector3Mp, LookAt?: Vector3Mp
       Camera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
       Camera.setActive(true)
       Camera.setCoord(Position.x, Position.y, Position.z);
-      mp.game.time.setClockTime(Time, 0, 0);
       Camera.pointAtCoord(LookAt.x, LookAt.y, LookAt.z);
       mp.game.cam.renderScriptCams(true, false, 0, true, false);
       mp.game.ui.displayRadar(false);

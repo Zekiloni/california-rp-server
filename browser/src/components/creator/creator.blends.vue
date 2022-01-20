@@ -21,7 +21,8 @@
       <div class="eye-color">
          <label> {{ Messages.EYES_COLOR }} </label>
          <ul class="colors"> 
-            <li class="color" v-for="(color) in eyeColors" :key=color :class="{ selected: eyeColor == color }" :style="{ backgroundColor: Colors[color] }" v-on:click="eyeColor = color"> </li> 
+            <li class="color" v-for="color in eyeColors" :key=color :class="{ selected: eyeColor == color }" :style="{ backgroundColor: Colors[color] }" v-on:click="changeEyeColor(color)"> {{ color }} </li> 
+            
          </ul>
       </div>
 
@@ -58,6 +59,12 @@
             eyeColors: [0, 40, 41, 4, 3, 6, 37, 36, 39],
 
             Messages, Colors
+         }
+      },
+
+      methods:  {
+         changeEyeColor: function (color) {
+            this.eyeColor = color;
          }
       }
    }

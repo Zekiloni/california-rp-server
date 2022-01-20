@@ -191,7 +191,7 @@
    .character:hover h2, .character:hover h3 { color: #ffcc45 !important; }
    .character { width: 100%; height: 100%; }
 
-   ul.info { list-style: none; color: #595f69; padding: 0; margin-top: 25px; }
+   ul.info { list-style: none; color: #848e9c; padding: 0; margin-top: 25px; }
    ul.info li { margin: 10px 0; font-size: 0.75rem; text-transform: uppercase; }
    ul.info li b { color: #cdcdcd; display: block; margin: 5px 2px; font-size: 1.1rem; text-transform: none; }
 
