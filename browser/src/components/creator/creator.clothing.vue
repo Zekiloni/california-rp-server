@@ -1,19 +1,13 @@
 
 <template>
    <div class="clothing">
-      <vue-slider 
-         v-for="(cloth, i) in clothing" :key="i"
-         v-model=clothing[i]
-   
-         class="rail"
-         :min=0
-         :max=200
-         :railStyle=slider.rail 
-         :processStyle=slider.process
-         :dotStyle=slider.dot
-         v-on:change="value => changeClothing(components[i], value)"
-         :dotOptions=slider.dotOptions
-      />
+      <label> {{ Messages.CHOOSE_OUTFIT }} </label>
+      <p> {{ Messages.OUTFIT_LATER_CLOTHE }} </p>
+      <ul class="presets">
+         <li v-for="(preset, i) in presets[gender]" :key="i" v-on:click="changeClothing(i, preset)" :class="{ selected: clothing == i } "> 
+            {{ i + 1 }}
+         </li>
+      </ul>
    </div>
 </template>
 
@@ -22,31 +16,20 @@
    import { Messages } from '../../globals';
 
    export default {
-            // :data=clothings[i]
-
       components: {
          VueSlider
       },
 
       props: { 
-         clothing: {
-            type: Array,
-            default () { 
-               return [0, 0, 0, 0];
-            }
-         },
-         slider: Object
+         clothing: Number,
+         gender: Number
       },
 
       data () { 
          return { 
-            components: [11, 8, 4, 6],
-
-            clothings: [
-               [0, 1, 3, 4, 6], 
-               [15], 
-               [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 16, 17, 19, 20, 22, 23, 24, 25, 26, 27, 28, 35, 37, 42, 43, 45, 47, 48, 49, 50, 51, 52, 54, 55, 60, 63, 64, 65, 66, 71, 73, 75, 76, 78, 80, 82, 96, 129], 
-               []
+            presets: [
+               [ [9, 15, 47, 31], [69, 2, 48, 42], [39, 15, 15, 7], [95, 15, 37, 29], [143, 15, 55, 48], [167, 109, 94, 1], [168, 71, 23, 1], [126, 15, 55, 61], [166, 65, 102, 31] ],
+               [ [23, 15, 51, 3], [57, 51, 75, 8], [72, 15, 134, 66], [141, 15, 135, 49], [121, 15, 110, 32], [64, 23, 134, 30], [73, 15, 36, 42], [84, 15, 43, 40], [87, 15, 73, 103] ]
             ],
 
             Messages
@@ -54,8 +37,9 @@
       },
 
       methods: { 
-         changeClothing: function (i, value) {
-            mp.events.call('CLIENT::CREATOR:CLOTHING', i, value);
+         changeClothing: function (index, outfit) {
+            this.clothing = index;
+            mp.events.call('CLIENT::CREATOR:CLOTHING', JSON.stringify(outfit));
          }
       }
    }
@@ -65,10 +49,48 @@
    .clothing { 
       height: 400px;
       width: 350px;
-      margin: auto
+      margin: auto;
+      padding: 18px 20px;
+      width: 300px; 
+      border-radius: 10px;
    }
 
-   .rail { 
-      margin: 20px 0;
+   ul.presets { 
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
    }
+
+   ul.presets li {
+      width: 60px;
+      background: #21252f;
+      transition: all .3s ease;
+      margin: 20px;
+      color: #cdcdcd;
+      box-shadow: 0 11px 29px 0 rgb(0 0 0 / 35%);
+      border-radius: 100%;
+      font-weight: 750;
+      font-size: 25px;
+      font-family: 'Montserrat Regular';
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+
+   ul.presets li.selected { background: #7c5bf1; color: white; }
+
+   label {
+      color: #cdcdcd;
+      font-weight: 450;
+      text-transform: uppercase;
+   }
+
+   p {
+      color: #848e9c;
+   }
+
 </style>

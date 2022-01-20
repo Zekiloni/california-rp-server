@@ -76,6 +76,8 @@ export const Messages = {
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',
    SPAWN_SELECTOR_INFO: 'Odabir mesta spawna',
    WAITING_FOR_PAYMENT: ' čeka za isplatu.',
+   CHOOSE_OUTFIT: 'Odaberite outfit',
+   OUTFIT_LATER_CLOTHE: 'Pri kreiranju karaktera birate već podešeni outfit. Kasnije u toku igre možete potpuno drugačije kostumizirati vašu odeću.',
    GET_PAYMENT: 'Isplata',
    WITHDRAW_THE_MONEY: 'Podigni Novac',
    DEPOSIT_THE_MONEY: 'Ostavi Novac',

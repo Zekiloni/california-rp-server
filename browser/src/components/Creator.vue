@@ -78,9 +78,9 @@
             <Clothing
                v-if="page == pages.clothing"
                key="clothing"
-               :slider="slider"
+               :gender="character.gender"
+               :clothing="appearance.clothing"
             />
-            
 
          </transition>
       </div>
@@ -129,7 +129,7 @@
                hair: { style: 0, color: 0, highlight: 0 },
                beard: { style: 255, color: 0 },
                eyeColor: 0,
-               clothing: [0, 0, 0, 0]
+               clothing: -1
             },
 
             Messages, 

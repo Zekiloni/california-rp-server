@@ -1,13 +1,14 @@
 
 
 import { Browser } from '../../browser';
-import { Genders, Player_Models } from '../../data/Player';
+import { Genders, playerModels } from '../../data/Player';
 import { lobby } from '../../Player/lobby';
 import { disableMoving, playerPreviewCamera, removeClothing } from '../../utils';
 import femaleTorsos from '../../data/FEMALE_TORSOS.json';
 import maleTorsos from '../../data/MALE_TORSOS.json';
 import { gameInterface, UI_Status } from '../game.UI';
 import { clothingComponents } from '../../enums/clothing';
+import { PedGender } from '../../enums/ped';
 
 
 
@@ -17,15 +18,18 @@ class characterCreator {
    static start () { 
       characterCreator.active = true;
       mp.events.callRemoteProc('SERVER::CREATOR:INFO').then(async (Info) => { 
+
          lobby(false);
          Browser.call('BROWSER::SHOW', 'Creator');
-         player.position = Info.Position;
-         player.setHeading(0);
-         player.freezePosition(true);
-         mp.game.audio.startAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
-         mp.events.add('render', disableMoving);
-         removeClothing(player);
+
+         mp.players.local.position = Info.Position;
+         mp.players.local.setHeading(0);
+         mp.players.local.freezePosition(true);
+
+         removeClothing(mp.players.local);
+
          mp.game.ui.displayRadar(false);
+         mp.events.add('render', disableMoving);
          playerPreviewCamera(true);
          
       });
@@ -45,13 +49,12 @@ class characterCreator {
    }
 
    static changeGender (gender: number) { 
-      mp.players.local.model = Player_Models[gender];
+      mp.players.local.model = playerModels[gender];
       removeClothing(mp.players.local);
    }
 
    static changeBlend (shapeM: number, shapeF: number, skinM: number, skinF: number, shapeMix: number, skinMix: number) {
-      player.setHeadBlendData(shapeM, shapeF, 0, skinM, skinF, 0, shapeMix, skinMix, 0, true);
-
+      mp.players.local.setHeadBlendData(shapeM, shapeF, 0, skinM, skinF, 0, shapeMix, skinMix, 0, true);
    }
 
    static changeFaceStructure (i: number, value: number) {
@@ -76,30 +79,34 @@ class characterCreator {
       mp.players.local.setHeadOverlay(1, style, 1.0, color, 0);
    }
 
-   static changeClothing (component: number, drawable: number) { 
-      mp.players.local.setComponentVariation(component, drawable, 0, 2);
+   static changeClothing (outfit: string) { 
+      outfit = JSON.parse(outfit);
+      const components = [11, 8, 4, 6];
+      components.forEach((component, i) => { 
+         mp.players.local.setComponentVariation(component, parseInt(outfit[i]), 0, 2);
+      });
 
-      if (component == clothingComponents.Top) { 
-         const gender = Genders[player.model];
-         
-         switch (gender) { 
-            case '0': { 
-               if (maleTorsos[String(drawable) as keyof typeof maleTorsos] != undefined || maleTorsos[String(drawable) as keyof typeof maleTorsos][0] != undefined) {
-                  const Torso = maleTorsos[String(drawable) as keyof typeof maleTorsos][0].BestTorsoDrawable;
-                  if (Torso != -1) player.setComponentVariation(clothingComponents.Torso, Torso, 0, 2);
-               }
-               break;
-            }
+      const drawable = mp.players.local.getDrawableVariation(clothingComponents.Top);
 
-            case '1': {
-               if (femaleTorsos[String(drawable) as keyof typeof femaleTorsos] != undefined || femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0] != undefined) {
-                  const Torso = femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0].BestTorsoDrawable;
-                  if (Torso != -1) player.setComponentVariation(clothingComponents.Torso, Torso, 0, 2);
-               }
-               break;
+      const gender = Genders[mp.players.local.model];
+      switch (gender) { 
+         case PedGender.Male: { 
+            if (maleTorsos[String(drawable) as keyof typeof maleTorsos] != undefined || maleTorsos[String(drawable) as keyof typeof maleTorsos][0] != undefined) {
+               const Torso = maleTorsos[String(drawable) as keyof typeof maleTorsos][0].BestTorsoDrawable;
+               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.Torso, Torso, 0, 2);
             }
+            break;
+         }
+
+         case PedGender.Female: {
+            if (femaleTorsos[String(drawable) as keyof typeof femaleTorsos] != undefined || femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0] != undefined) {
+               const Torso = femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0].BestTorsoDrawable;
+               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.Torso, Torso, 0, 2);
+            }
+            break;
          }
       }
+
    }
 }
 

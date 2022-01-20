@@ -7,7 +7,7 @@ type Torsos = {
    [key: string]: number[]
 }
 
-export const Player_Models = [mp.game.joaat('mp_m_freemode_01'), mp.game.joaat('mp_f_freemode_01')];
+export const playerModels = [mp.game.joaat('mp_m_freemode_01'), mp.game.joaat('mp_f_freemode_01')];
 
 
 export const Genders: { [key: string]: string } = { 

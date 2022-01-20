@@ -1,6 +1,6 @@
 
 export enum PedGender { 
-   Male, Female
+   Male = '0', Female = '1'
 }
 
 export enum PedConfigFlag {

@@ -1,11 +1,11 @@
 
 import { Browser } from '../browser';
-import { Clothing_Components, Genders } from '../data/Player';
+import { Genders } from '../data/Player';
+import { clothingComponents } from '../enums/clothing';
 import { getStreetZone } from '../utils';
 import { gameInterface } from './game.UI';
 
 const Player = mp.players.local;
-
 
 
 export const screenResolution = mp.game.graphics.getScreenActiveResolution(100, 100);
