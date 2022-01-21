@@ -1,6 +1,6 @@
 
 import { Browser } from '../browser';
-import { controls } from '../data/enums';
+import controls from '../enums/controls';
 
 
 export enum UI_Status {

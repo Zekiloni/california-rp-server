@@ -3,9 +3,7 @@
 
 
 
-type Torsos = {
-   [key: string]: number[]
-}
+
 
 export const playerModels = [mp.game.joaat('mp_m_freemode_01'), mp.game.joaat('mp_f_freemode_01')];
 

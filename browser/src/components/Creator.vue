@@ -28,7 +28,6 @@
          </li>
       </ul>
 
-
       <div class="box">
          <transition name="fade" mode="out-in">
 
@@ -84,6 +83,8 @@
 
          </transition>
       </div>
+      
+      <CreatorHints />
    </div>
 
 </template>
@@ -100,10 +101,11 @@
    import Hairines from './creator/creator.hairiness.vue';
    import Overlays from './creator/creator.overlays.vue';
    import Clothing from './creator/creator.clothing.vue';
+   import CreatorHints from './creator/creator.hints.vue';
 
    export default { 
       components: { 
-         VueSlider, CharacterIdentity, BlendData, FaceFeatures, Hairines, Overlays, Clothing
+         VueSlider, CharacterIdentity, BlendData, FaceFeatures, Hairines, Overlays, Clothing, CreatorHints
       }, 
 
       data () { 

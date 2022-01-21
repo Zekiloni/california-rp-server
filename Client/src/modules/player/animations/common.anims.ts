@@ -9,18 +9,18 @@ export default (callback: Function) => {
          data: [
             'anim@amb@nightclub@dancers@solomun_entourage@',
             'mi_dance_facedj_17_v1_female^1',
-            animationFlags.REPEAT,
+            animationFlags.REPEAT
          ]
       },
       {
          name: 'Dance F2',
          callback,
-         data: ['anim@amb@nightclub@mini@dance@dance_solo@female@var_a@', 'high_center', animationFlags.REPEAT],
+         data: ['anim@amb@nightclub@mini@dance@dance_solo@female@var_a@', 'high_center', animationFlags.REPEAT]
       },
       {
          name: 'Dance F3',
          callback,
-         data: ['anim@amb@nightclub@mini@dance@dance_solo@female@var_a@', 'high_center_up', animationFlags.REPEAT],
+         data: ['anim@amb@nightclub@mini@dance@dance_solo@female@var_a@', 'high_center_up', animationFlags.REPEAT]
       },
       {
          name: 'Dance F4',
@@ -29,7 +29,7 @@ export default (callback: Function) => {
             'anim@amb@nightclub@dancers@crowddance_facedj@hi_intensity',
             'hi_dance_facedj_09_v2_female^1',
             animationFlags.REPEAT,
-         ],
+         ]
       },
       {
          name: 'Dance F5',
@@ -38,7 +38,7 @@ export default (callback: Function) => {
             'anim@amb@nightclub@dancers@crowddance_facedj@hi_intensity',
             'hi_dance_facedj_09_v2_female^3',
             animationFlags.REPEAT,
-         ],
+         ]
       },
       {
          name: 'Dance M1',
@@ -47,7 +47,7 @@ export default (callback: Function) => {
             'anim@amb@nightclub@dancers@podium_dancers@',
             'hi_dance_facedj_17_v2_male^5',
             animationFlags.REPEAT,
-         ],
+         ]
       },
       {
          name: 'Dance M2',

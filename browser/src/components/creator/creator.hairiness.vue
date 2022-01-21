@@ -95,7 +95,6 @@
 
       methods: { 
          changeBeard: function (i, value) {
-            console.log('beard value ' + value)
             this.beard[i] = value;
             mp.events.call('CLIENT::CREATOR:BEARD', this.beard.style, this.beard.color);
          },

@@ -71,7 +71,7 @@ export function distanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
    return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
 }
 
-export function loadAnimDictionary (i: string): Promise<boolean> { 
+export function loadAnimation (i: string): Promise<boolean> { 
    if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve(true);
    return new Promise(async resolve => { 
       mp.game.streaming.requestAnimDict(i);

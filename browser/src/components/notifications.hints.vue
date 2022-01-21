@@ -79,8 +79,8 @@
       list-style: none;
       margin: 0;
       position: absolute;
-      left: 25px;
-      bottom: 170px;
+      right: 25px;
+      top: 200px;
       width: 325px;
       min-height: 100px;
       padding: 0;

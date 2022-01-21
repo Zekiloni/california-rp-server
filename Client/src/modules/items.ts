@@ -1,6 +1,6 @@
 import { Browser } from '../browser';
 import { screenResolution } from './core';
-import { controls } from '../data/enums';
+import controls from '../enums/controls';
 
 
 const player = mp.players.local;

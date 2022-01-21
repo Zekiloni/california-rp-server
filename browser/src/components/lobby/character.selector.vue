@@ -183,8 +183,8 @@
 
    .character-slot * { transition: all .3s ease; }
    .character-slot .character-create { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-   .character-create small { text-transform: uppercase; color: #474d57; }
-   .create-button { margin: 20px 0; background: #474d57; width: 100px; height: 100px; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
+   .character-create small { text-transform: uppercase; color: #848e9c; }
+   .create-button { margin: 20px 0; background: #848e9c; width: 100px; height: 100px; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
    .character-slot:hover .character-create small { color: white; }
    .character-slot:hover .create-button { background: whitesmoke; }
 

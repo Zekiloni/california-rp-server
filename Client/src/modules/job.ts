@@ -1,5 +1,5 @@
 import { Browser } from '../browser';
-import { controls } from '../data/enums';
+import controls from '../enums/controls';
 
 const player = mp.players.local;
 let job: number | null = null;
@@ -23,10 +23,21 @@ mp.events.add(
    }
 );
 
+
 mp.keys.bind(controls.KEY_Y, true, function () { 
-   if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) {
-      if (job) {
-         mp.events.callRemote('SERVER::JOB:ACCEPT', job);
-      }
+
+   if (!mp.players.local.getVariable('LOGGED_IN')) {
+      return;
    }
+
+   if (!mp.players.local.getVariable('SPAWNED')) {
+      return;
+   }
+
+   if (!job) {
+      return;
+   }
+
+   mp.events.callRemote('SERVER::JOB:ACCEPT', job);
+
 });
