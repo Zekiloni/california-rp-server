@@ -1,5 +1,5 @@
 
 
 export enum clothingComponents { 
-   Head, Mask, HairStyle, Torso, Legs, Bag, Shoes, Accessorie, Undershirt, Armour, Decal, Top
+   HEAD, MASK, HAIR_STYLE, TORSO, LEGS, BAG, SHOES, ACCESSORIE, UNDERSHIRT, ARMOUR, DECAL, TOP
 }

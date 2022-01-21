@@ -86,14 +86,14 @@ class characterCreator {
          mp.players.local.setComponentVariation(component, parseInt(outfit[i]), 0, 2);
       });
 
-      const drawable = mp.players.local.getDrawableVariation(clothingComponents.Top);
+      const drawable = mp.players.local.getDrawableVariation(clothingComponents.TOP);
 
       const gender = Genders[mp.players.local.model];
       switch (gender) { 
          case PedGender.Male: { 
             if (maleTorsos[String(drawable) as keyof typeof maleTorsos] != undefined || maleTorsos[String(drawable) as keyof typeof maleTorsos][0] != undefined) {
                const Torso = maleTorsos[String(drawable) as keyof typeof maleTorsos][0].BestTorsoDrawable;
-               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.Torso, Torso, 0, 2);
+               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.TORSO, Torso, 0, 2);
             }
             break;
          }
@@ -101,7 +101,7 @@ class characterCreator {
          case PedGender.Female: {
             if (femaleTorsos[String(drawable) as keyof typeof femaleTorsos] != undefined || femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0] != undefined) {
                const Torso = femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0].BestTorsoDrawable;
-               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.Torso, Torso, 0, 2);
+               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.TORSO, Torso, 0, 2);
             }
             break;
          }

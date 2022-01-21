@@ -44,20 +44,20 @@ export function removeClothing (Entity: PlayerMp) {
    const Gender = Genders[Entity.model];
    switch (Gender) { 
       case '0': {
-         Entity.setComponentVariation(clothingComponents.Top, 15, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Torso, 15, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Legs, 61, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Shoes, 34, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Undershirt, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.TOP, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.TORSO, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.LEGS, 61, 0, 2);
+         Entity.setComponentVariation(clothingComponents.SHOES, 34, 0, 2);
+         Entity.setComponentVariation(clothingComponents.UNDERSHIRT, 15, 0, 2);
          break;
       }
 
       case '1': {
-         Entity.setComponentVariation(clothingComponents.Top, 15, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Torso, 15, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Legs, 17, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Shoes, 35, 0, 2);
-         Entity.setComponentVariation(clothingComponents.Undershirt, 14, 0, 2);
+         Entity.setComponentVariation(clothingComponents.TOP, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.TORSO, 15, 0, 2);
+         Entity.setComponentVariation(clothingComponents.LEGS, 17, 0, 2);
+         Entity.setComponentVariation(clothingComponents.SHOES, 35, 0, 2);
+         Entity.setComponentVariation(clothingComponents.UNDERSHIRT, 14, 0, 2);
          break;
       }
    }
