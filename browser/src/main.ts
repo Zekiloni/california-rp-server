@@ -5,7 +5,6 @@ import store from './store';
 import VTooltip from 'v-tooltip'
 
 
-
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
@@ -16,6 +15,7 @@ Vue.use(VTooltip);
  
 Vue.mixin({
    methods: {
+
       playAudio: function (audioSource) {
          const audio = new Audio(audioSource);
          audio.play();
@@ -40,7 +40,7 @@ Vue.mixin({
       formatDate (i: Date) { 
          i = new Date(i); 
          return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
-      },
+      }
    }
  })
 

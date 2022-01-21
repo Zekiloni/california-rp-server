@@ -70,6 +70,7 @@ export const Messages = {
    HEAD_OVERLAYS: 'Detalji',
    LAST_NAME: 'Prezime',
    CLOTHING: 'Odeća',
+   PRESS: 'Koristite',
    HAIR_MODEL: 'Stil Kose',
    HAIR_COLOR: 'Boja Kose',
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',

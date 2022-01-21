@@ -35,9 +35,12 @@ class characterCreator {
    }
 
    static async finish (character: string, appearance: string) { 
-      const isCreated: boolean = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', character, appearance);
+
+      const isCreated = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', character, appearance);
+
       if (isCreated) { 
          characterCreator.active = false;
+         
          mp.events.remove('render', disableMoving);
          mp.players.local.freezePosition(false);
          gameInterface.mainInterface(UI_Status.VISIBLE);
@@ -45,6 +48,7 @@ class characterCreator {
          mp.game.audio.stopAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
          Browser.call('BROWSER::HIDE', 'Creator');
       } 
+
    }
 
    static changeGender (gender: number) { 
