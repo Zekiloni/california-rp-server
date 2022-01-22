@@ -4,7 +4,7 @@
       <label> {{ Messages.CHOOSE_OUTFIT }} </label>
       <p> {{ Messages.OUTFIT_LATER_CLOTHE }} </p>
       <ul class="presets">
-         <li v-for="(preset, i) in presets[gender]" :key="i" v-on:click="clothing = i" :class="{ selected: clothing == i } "> 
+         <li v-for="(preset, i) in presets[gender]" :key="i" v-on:click="setClothing(i)" :class="{ selected: preset == selectedOutfit } "> 
             {{ i + 1 }}
          </li>
       </ul>
@@ -12,17 +12,14 @@
 </template>
 
 <script>
-   import VueSlider from 'vue-slider-component';
    import { Messages } from '../../globals';
 
    export default {
-      components: {
-         VueSlider
-      },
 
       props: { 
-         clothing: Number,
-         gender: Number
+         appearance: Object,
+         outfit: Array,
+         gender: Number,
       },
 
       data () { 
@@ -36,9 +33,17 @@
          }
       },
 
-      watch: { 
-         clothing: function (value) { 
+      computed: { 
+         selectedOutfit: function () { 
+            return this.presets[this.gender].find(preset => preset === this.outfit);
+         },
+      },
+
+      methods: { 
+
+         setClothing: function (value) { 
             const outfit = this.presets[this.gender][value];
+            this.appearance.clothing = outfit;
             mp.events.call('CLIENT::CREATOR:CLOTHING', JSON.stringify(outfit));
          }
       }

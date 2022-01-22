@@ -69,12 +69,12 @@ export default class Appearances extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   Apply (Player: PlayerMp, Gender: number) {
+   apply (player: PlayerMp, gender: number) {
 
       const genders = [ mp.joaat(Peds.Models.MALE), mp.joaat(Peds.Models.FEMALE) ];
-      Player.model = genders[Gender];
+      player.model = genders[gender];
    
-      Player.setHeadBlend(
+      player.setHeadBlend(
          this.blend_data[0], 
          this.blend_data[1], 0,
          this.blend_data[2],
@@ -83,14 +83,14 @@ export default class Appearances extends Model {
          this.blend_data[5], 0
       );
    
-      Player.eyeColor = this.eyes;   
-      Player.setClothes(2, this.hair[0], 0, 2);
-      Player.setHairColor(
+      player.eyeColor = this.eyes;   
+      player.setClothes(2, this.hair[0], 0, 2);
+      player.setHairColor(
          this.hair[1], this.hair[2]
       );
    
       for (let i = 0; i < 20; i ++) { 
-         Player.setFaceFeature(i, this.face_features[i]);
+         player.setFaceFeature(i, this.face_features[i]);
       }
    };
 }

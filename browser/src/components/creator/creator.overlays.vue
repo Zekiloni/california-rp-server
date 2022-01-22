@@ -63,7 +63,6 @@
       methods: {
          changeOverlay: function (i, value) {
             const index = this.index[i];
-            console.log('valie is ' + value)
             mp.events.call('CLIENT::CREATOR:OVERLAY', index, value);
          }
       }

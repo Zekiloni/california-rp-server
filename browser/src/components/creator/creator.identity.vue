@@ -5,28 +5,28 @@
 
       <div class="input-holder">
          <label> {{ Messages.FIRST_NAME }} </label>
-         <input type="text" v-model="name">
+         <input type="text" v-model="identity.name">
       </div>
 
       <div class="input-holder">
          <label> {{ Messages.LAST_NAME }} </label>
-         <input type="text" v-model="lastName">
+         <input type="text" v-model="identity.lastName">
       </div>
 
       <div class="input-holder">
          <label> {{ Messages.ORIGIN }} </label>
-         <input type="text" v-model="origin">
+         <input type="text" v-model="identity.origin">
       </div>
 
       <div class="input-holder">
          <label> {{ Messages.BIRTH }} </label>
-         <input type="date" v-model="birth">
+         <input type="date" v-model="identity.birth">
       </div>
 
       <ul class="genders"> 
          <label> {{ Messages.GENDER }} </label>
-         <li class="gender icon male-gender" :class="{ selected: gender == 0 }" v-on:click="setGender(0)" v-tooltip.bottom="Messages.MALE"> </li>
-         <li class="gender icon female-gender" :class="{ selected: gender == 1 }" v-on:click="setGender(1)" v-tooltip.bottom="Messages.FEMALE"> </li>
+         <li class="gender icon male-gender" :class="{ selected: identity.gender == 0 }" v-on:click="setGender(0)" v-tooltip.bottom="Messages.MALE"> </li>
+         <li class="gender icon female-gender" :class="{ selected: identity.gender == 1 }" v-on:click="setGender(1)" v-tooltip.bottom="Messages.FEMALE"> </li>
       </ul>
    </div>
 </template>
@@ -36,11 +36,7 @@
 
    export default {
       props: {
-         name: String,
-         lastName: String,
-         origin: String,
-         birth: String,
-         gender: Number,
+         identity: Object,
          setGender: Function
       },
       

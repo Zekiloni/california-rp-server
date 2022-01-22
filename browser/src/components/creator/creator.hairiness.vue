@@ -40,7 +40,7 @@
          >
          <vue-slider 
             v-model=beard.style
-            :max=28
+            :max="beard.style == 255 ? 255 : 28"
             :min=0
             class="rail"
             :railStyle=slider.rail 

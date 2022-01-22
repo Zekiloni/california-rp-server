@@ -22,7 +22,6 @@
          <label> {{ Messages.EYES_COLOR }} </label>
          <ul class="colors">
             <li class="color" v-for="(color, i) in colors" :key=color :class="{ selected: eyeColor == indexes[i] }" :style="{ backgroundColor: color }" v-on:click="changeEyes(indexes[i])" > {{ colors[color] }} </li> 
-            
          </ul>
       </div>
 
@@ -48,6 +47,7 @@
             type: Number, 
             default: 0 
          }, 
+         changeEyes: Function,
          slider: Object 
       },
 
@@ -60,14 +60,6 @@
             indexes: [0, 1, 2, 4, 5, 12, 13],
 
             Messages
-         }
-      },
-
-      methods:  {
-         changeEyes: function (color) {
-            console.log('color ' + color)
-            this.eyeColor = color;
-            mp.events.call('CLIENT::CREATOR:EYES_COLOR', color);
          }
       }
    }

@@ -34,11 +34,7 @@
             <CharacterIdentity 
                v-if="page == pages.identity"
                key='identity' 
-               :name="character.name"
-               :lastName="character.lastName"
-               :birth="character.birth"
-               :origin="character.origin"
-               :gender="character.gender"
+               :identity="character"
                :setGender="changeGender"
             />
 
@@ -48,6 +44,7 @@
                :slider="slider"
                :blends="appearance.blends"
                :eyeColor="appearance.eyeColor"
+               :changeEyes="setEyeColor"
             />
 
             <FaceFeatures 
@@ -78,7 +75,8 @@
                v-if="page == pages.clothing"
                key="clothing"
                :gender="character.gender"
-               :clothing="appearance.clothing"
+               :outfit="appearance.clothing"
+               :appearance="appearance"
             />
 
          </transition>
@@ -152,10 +150,9 @@
 
       watch: {
          appearance: {
-            handler: function (value, oldVal) {
+            handler: function (value) {
                if (window.mp) {
                   mp.events.call('CLIENT::CREATOR:BLEND', value.blends[0], value.blends[1], value.blends[2], value.blends[3], value.blends[4], value.blends[5]);
-                  
                }
             },
             deep: true
@@ -176,8 +173,13 @@
             if (window.mp) mp.events.call('CLIENT::CREATOR:GENDER', i);
          },
 
-         finish: function () {
+         setEyeColor: function (i) { 
+            this.appearance.eyeColor = i;
+            mp.events.call('CLIENT::CREATOR:EYES_COLOR', i);
+         },
 
+         finish: function () {
+            const identity = JSON.stringify(this.character), appearance = JSON.stringify(this.appearance);
          }  
       },
 
