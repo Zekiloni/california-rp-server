@@ -27,7 +27,6 @@ class characterCreator {
          mp.players.local.freezePosition(true);
 
          removeClothing(mp.players.local);
-         mp.game.ui.displayRadar(false);
          mp.events.add('render', disableMoving);
          playerPreviewCamera(true);
          
@@ -45,7 +44,6 @@ class characterCreator {
          mp.players.local.freezePosition(false);
          gameInterface.mainInterface(UI_Status.VISIBLE);
          playerPreviewCamera(false);
-         mp.game.audio.stopAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
          Browser.call('BROWSER::HIDE', 'Creator');
       } 
 

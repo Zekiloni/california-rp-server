@@ -217,6 +217,15 @@ export default class Characters extends Model {
       this.setWalkingStyle(player, this.walking_style);
       this.setMood(player, this.facial_mood);
       this.setCuffs(player, this.cuffed);
+
+      if (this.appearance) { 
+         this.appearance.apply(player, this.gender);
+      } else { 
+         Appearances.findOne({ where: { character_id: this.id } }).then(appearance => {
+            appearance?.apply(player, this.gender);
+         });
+      }
+
    
    
       // player.setVariable(entityData.INJURIES, this.injuries.length > 0 ? this.injuries : []);

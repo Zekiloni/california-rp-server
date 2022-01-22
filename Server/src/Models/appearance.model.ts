@@ -2,6 +2,7 @@
 import { Peds } from '../globals/enums';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
 import Characters from './character.model';
+import { beardStyle, hairStyle } from '../globals/interfaces';
 
 @Table
 export default class Appearances extends Model {
@@ -36,14 +37,14 @@ export default class Appearances extends Model {
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('hair')); },
    })   
-   hair: number[];
+   hair: hairStyle;
 
    @AllowNull(false)
    @Column({
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('beard')); },
    })   
-   beard: number[];
+   beard: beardStyle;
 
    @AllowNull(false)
    @Column(DataType.INTEGER)
@@ -84,9 +85,9 @@ export default class Appearances extends Model {
       );
    
       player.eyeColor = this.eyes;   
-      player.setClothes(2, this.hair[0], 0, 2);
+      player.setClothes(2, this.hair.style, 0, 2);
       player.setHairColor(
-         this.hair[1], this.hair[2]
+         this.hair.color, this.hair.highlight
       );
    
       for (let i = 0; i < 20; i ++) { 

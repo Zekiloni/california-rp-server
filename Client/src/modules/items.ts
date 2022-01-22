@@ -82,7 +82,9 @@ mp.events.add(
          if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
             mp.objects.forEach((object) => { 
                if (player.hasClearLosTo(object.handle, 17)) {
-                  if (object.getVariable('ITEM')) showItem(object);
+                  if (object.getVariable('ITEM')) {
+
+                  }
                }
             });
          }
@@ -109,35 +111,3 @@ mp.keys.bind(controls.KEY_E, true, function() {
       });
    }
 });
-
-function showItem (object: ObjectMp) { 
-   const { position } = player;
-
-   const objectPosition = object.position;
-
-   const distance = new mp.Vector3(position.x, position.y, position.z).subtract(new mp.Vector3(objectPosition.x, objectPosition.y, objectPosition.z)).length();
-
-   let { x, y } = mp.game.graphics.world3dToScreen2d(objectPosition.x, objectPosition.y, objectPosition.z + 0.15);
-
-   if (x && y) {
-
-      if (distance <= 4.5) {      
-         
-         mp.game.graphics.drawLine(position.x, position.y, position.z, object.position.x, object.position.y, object.position.z, 0, 255, 0, 255);
-
-         let scale = (distance / 25);
-         if (scale < 0.6) scale = 0.6;
-         
-         y -= (scale * (0.005 * (screenResolution.y / 1080))) - parseInt('0.010');
-         
-         // const Item = Object.getVariable('Item');
-
-         // mp.game.graphics.drawText(Item, [x, y], {
-         //    font: 4,
-         //    color: [255, 255, 255, 255],
-         //    scale: [0.325, 0.325],
-         //    outline: false
-         // });
-      }
-   }
-}

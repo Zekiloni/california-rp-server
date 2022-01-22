@@ -150,25 +150,41 @@ mp.events.addProc(
 
       'SERVER::CREATOR:FINISH': async (player: PlayerMp, characterInfo: string, characterAppearance: string) => { 
 
-         const Character = JSON.parse(characterInfo);
-         const Appearance = JSON.parse(characterAppearance);
+         const character = JSON.parse(characterInfo);
+         const appearance = JSON.parse(characterAppearance);
 
-         console.log(Character)
-         console.log(Appearance)
+         console.log(character);
+         console.log(appearance);
 
-         const Exist = await Characters.findOne({ where: { name: Character.First_Name + ' ' + Character.Last_Name } });
-         if (Exist) return player.sendNotification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
+         const alreadyExist = await Characters.findOne({ where: { name: character.name + ' ' + character.lastName } });
 
-         const createdCharacter = await Characters.create({ 
-            name: Character.First_Name + ' ' + Character.Last_Name, account_id: player.Account.id,
-            origin: Character.Origin, birth: Character.Birth, gender: Character.Gender
-         });
+         if (alreadyExist) {
+            player.sendNotification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
+            return;
+         } 
 
+         const createdCharacter = await Characters.create(
+            { 
+               name: character.name + ' ' + character.lastName,
+               account_id: player.Account.id,
+               origin: character.origin, 
+               birth: character.birth, 
+               gender: character.gender
+            }
+         );
 
-         Appearances.create({
-            character_id: createdCharacter.id, character: createdCharacter, face_features: Appearance.Face, blend_data: Appearance.Blend_Data, 
-            overlays: Appearance.Overlays, hair: Appearance.Hair, beard: Appearance.Beard, eyes: Appearance.Eyes
-         });
+         Appearances.create(
+            {
+               character_id: createdCharacter.id, 
+               character: createdCharacter, 
+               face_features: appearance.face, 
+               blend_data: appearance.blends, 
+               overlays: appearance.overlays, 
+               hair: appearance.hair, 
+               beard: appearance.beard, 
+               eyes: appearance.eyeColor
+            }
+         );
 
          createdCharacter.spawnPlayer(player, spawnTypes.default);
 

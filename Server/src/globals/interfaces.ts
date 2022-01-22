@@ -17,6 +17,18 @@ export interface vehicleComponent {
    value: number
 };
 
+export interface hairStyle { 
+   style: number,
+   color: number,
+   highlight: number
+}
+
+
+export interface beardStyle { 
+   style: number,
+   color: number
+}
+
 export interface vehiclePlate { 
    content: string,
    issued: number,

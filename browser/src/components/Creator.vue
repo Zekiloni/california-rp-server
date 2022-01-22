@@ -180,6 +180,7 @@
 
          finish: function () {
             const identity = JSON.stringify(this.character), appearance = JSON.stringify(this.appearance);
+            mp.events.call('CLIENT::CREATOR:FINISH', identity, appearance);
          }  
       },
 

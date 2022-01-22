@@ -45,6 +45,7 @@ class gameUI {
             Browser.call('BROWSER::SHOW', 'Chat');
             Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
             mp.events.add('render', this.updateMain);
+            mp.game.ui.displayRadar(true);
             break;
          }
 
