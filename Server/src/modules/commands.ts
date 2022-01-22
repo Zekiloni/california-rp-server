@@ -29,35 +29,40 @@ type Command = {
 
 mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
-   if (!player.getVariable(entityData.LOGGED)) return;
+   if (!player.getVariable(entityData.LOGGED)) {
+      return;
+   }
 
    const params = content.split(/ +/);
    
    const commandName = params.splice(0, 1)[0];
-   const Command = Commands[commandName];
+   const command = Commands[commandName];
 
-   if (Command) {
+   if (command) {
       const Account = player.Account;
       const Character = player.Character;
 
-      if (Command.admin && Account.administrator < Command.admin) return player.sendNotification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
+      if (command.admin && Account.administrator < command.admin) {
+         player.sendNotification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);
+         return;
+      } 
 
-      if (Command.job && Character.job != Command.job) return player.sendNotification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
+      if (command.job && Character.job != command.job) return player.sendNotification(Messages.NOT_SPECIFIC_JOB, NotifyType.ERROR, 4);
 
-      if (Command.position && player.dist(Command.position) > 2) return player.sendNotification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
+      if (command.position && player.dist(command.position) > 2) return player.sendNotification(Messages.NOT_ON_POSITION, NotifyType.ERROR, 4);
 
-      if (Command.faction) {
+      if (command.faction) {
          //if (Command.Faction.Type && Command.Faction.Type != Factions[Character.Faction].type) return;
-         if (Command.faction.id && Command.faction.id != Character.faction) return;
+         if (command.faction.id && command.faction.id != Character.faction) return;
       }
 
       //if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, NotifyType.ERROR, 5);
 
       // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', NotifyType.ERROR, 4);
 
-      if (Command.params && Command.params.length > params.length) return player.sendMessage('Komanda: /' + commandName + ' [' + Command.params.join('] [') + '] ', Colors.Help);
+      if (command.params && command.params.length > params.length) return player.sendMessage('Komanda: /' + commandName + ' [' + command.params.join('] [') + '] ', Colors.Help);
 
-      Command.call(player, ...params);
+      command.call(player, ...params);
    } else {
       player.sendNotification(Messages.CMD_DOESNT_EXIST, NotifyType.ERROR, 4);
    }
