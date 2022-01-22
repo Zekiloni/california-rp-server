@@ -2,7 +2,7 @@ import { Messages } from '../globals/constants';
 import { itemData } from '../globals/enums';
 import { itemAction } from '../globals/interfaces';
 import Items from '../models/inventory.item.model';
-import { BaseItem } from '../models/item.model';
+import { baseItem } from '../models/item.model';
 
 
 
@@ -16,7 +16,7 @@ mp.events.addProc(
 
 
       'SERVER::ITEM:INFO': (player: PlayerMp, itemName: string) => { 
-         const item = BaseItem.list[itemName];
+         const item = baseItem.list[itemName];
          const actions: itemAction[] = [];
 
          actions.push(
@@ -34,7 +34,7 @@ mp.events.addProc(
       'SERVER::ITEM:USE': async (player: PlayerMp, itemId: number): Promise<Items[]> => { 
          return new Promise((resolve) => { 
             Items.findOne({ where: { id: itemId } }).then(async item => { 
-               const rItem = BaseItem.list[item?.name!];
+               const rItem = baseItem.list[item?.name!];
                await rItem?.use!(player, item);
 
                const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.Character.id);

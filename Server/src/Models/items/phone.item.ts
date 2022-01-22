@@ -1,11 +1,11 @@
 
 import { itemData } from '../../globals/enums';
-import { BaseItem } from '../item.model';
+import { baseItem } from '../item.model';
 
 
 const defaultPhoneType = [itemData.Type.USABLE, itemData.Type.MISC];
 
-export class phoneItem extends BaseItem {
+export class phoneItem extends baseItem {
    
    constructor (name: string, model: string, weight?: number, description?: string) { 
       super (name, defaultPhoneType, model, weight, description);

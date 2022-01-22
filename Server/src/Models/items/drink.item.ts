@@ -1,12 +1,12 @@
 
 
 import { itemData } from '../../globals/enums';
-import { BaseItem } from '../item.model';
+import { baseItem } from '../item.model';
 
 
 const defaultDrinkType = [itemData.Type.DRINK, itemData.Type.CONSUMABLE, itemData.Type.STACKABLE];
 
-export class drinkItem extends BaseItem {
+export class drinkItem extends baseItem {
    thirst: number;
    alcohol?: number;
    

@@ -155,12 +155,12 @@
       width: auto;
       border-radius: 10px;
       height: auto;
-      background: rgb(11 14 17 / 65%);
+      background:#0b0e11;
       display: grid;
       grid-gap: 0.7rem;
       grid-template-columns: repeat(3, 150px);
       grid-template-rows: repeat(3, 150px);
-      box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
+      box-shadow: 0 21px 29px 0 rgb(0 0 0 / 31%);
    }
 
    .item-holder { 
@@ -176,15 +176,23 @@
       border-radius: 10px;
       height: 145px;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
-      background: #0b0e11;
+      background: #181a20;
+      transition: all .3s ease;
    }
+
+   .item:hover { 
+      background: #2a303c;
+   }
+
+   .item:hover h3.quantity { background: #181a20; }
    
    .item h3.quantity { 
       position: absolute;
       width: 25px;
       height: 25px;
-      background: #474d57;
-      color: #cdcdcd;
+      transition: all .3s ease;
+      background: #2a303c;
+      color: #848e9c;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -199,16 +207,14 @@
       bottom: 0;
       width: 100%;
       padding: 7px 0 7px 10px;
-      background: #181a20;
-      color: #cdcdcd;
+      background: #21252f;
+      color: #a9b1bb;
       margin: 0;
       font-size: 0.65rem;
       font-weight: 550;
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
    }
-
-
 
 
    @media (max-width: 1230px) {

@@ -13,7 +13,7 @@ import Houses from './house.model';
 import Business from './business.model';
 import { Vehicles } from './vehicle.model';
 import { characterProperties } from '../globals/interfaces';
-import { LicenseItem } from './items/license.item';
+import { licenseItem } from './items/license.item';
 import Items from './inventory.item.model';
 
 
@@ -326,7 +326,7 @@ export default class Characters extends Model {
       player.setVariable(entityData.CUFFED, toggle);
    }
 
-   async hasLicense (item?: LicenseItem) {
+   async hasLicense (item?: licenseItem) {
       const has = await Items.findOne({ where: { name: item?.name } });
       return has ? has : false;
    }

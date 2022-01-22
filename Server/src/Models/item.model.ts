@@ -6,7 +6,7 @@ import { itemData } from '../globals/enums';
 export const noDesc = Messages.ITEM_NO_DESCRIPTION;
 
 
-export class BaseItem {
+export class baseItem {
 
    name: string;
    type: itemData.Type[];
@@ -14,10 +14,10 @@ export class BaseItem {
    weight: number;
    description?: string;
    carryModel?: string;
-
+   extraActions?: itemAction[];
    use?(Player: PlayerMp, ...params: any): void | any;
 
-   static list: { [key:string] : BaseItem } = {};
+   static list: { [key:string] : baseItem } = {};
    
    constructor (name: string, type: itemData.Type[], model: string, weight: number = 0.1, description: string = noDesc) { 
       this.name = name;
@@ -26,7 +26,7 @@ export class BaseItem {
       this.weight = weight;     
       this.description = description;
       
-      BaseItem.list[this.name] = this;
+      baseItem.list[this.name] = this;
    }
 
    isWeapon () { 
@@ -47,6 +47,7 @@ import './items/drink.item';
 import './items/food.item';
 import './items/weapon.item';
 import './items/phone.item';
+import { itemAction } from '../globals/interfaces';
 
 
 

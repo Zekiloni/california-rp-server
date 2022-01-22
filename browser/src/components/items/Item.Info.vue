@@ -73,7 +73,8 @@
       width: 300px;
       height: 200px;
       border-radius: 10px;
-      background: rgb(11 14 17 / 65%);
+      background: #181a20;
+      overflow: hidden;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }
 
@@ -84,7 +85,7 @@
       font-weight: 450;
       border-top-left-radius: 10px;
       padding: 10px;
-      background: linear-gradient(90deg, #474d57, transparent);
+      background: #21252f;
    }
 
    p.description { 
@@ -99,7 +100,7 @@
       bottom: 0;
       padding: 0;
       width: 100%;
-      background: #181a20;
+      background: #2a303c;
       margin: 0;
       min-height: 10px;
       display: flex;
@@ -117,13 +118,13 @@
    }
 
    ul.actions li:hover .icon { 
-      background: #fffdf6;
+      background: #ffb901;
    }
 
    ul.actions li .icon { 
       width: 30px;
       height: 30px;
-      background-color: #474d57;
+      background-color: #848e9c;
    }
 
    ul.actions li .icon.use { mask: url('../../assets/images/icons/use-icon.svg') no-repeat center; mask-size: cover; }

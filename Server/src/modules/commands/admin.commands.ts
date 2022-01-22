@@ -4,7 +4,7 @@ import { Colors } from '../../globals/constants';
 import { adminLevel, commandData, houseData, logType, weather } from '../../globals/enums';
 import Houses from '../../models/house.model';
 import Items from '../../models/inventory.item.model';
-import { BaseItem } from '../../models/item.model';
+import { baseItem } from '../../models/item.model';
 import { Logger } from '../../utils';
 import { Admin } from '../admin';
 import { Commands } from '../commands';
@@ -31,7 +31,7 @@ Commands[commandData.Names.SAVE_POS] = {
 Commands[commandData.Names.ITEMS] = { 
    description: commandData.Descriptions.items,
    call: (player: PlayerMp) => { 
-      console.log(BaseItem.list);
+      console.log(baseItem.list);
    }
 }
 
@@ -40,8 +40,8 @@ Commands[commandData.Names.GIVE_ITEM] ={
    admin: adminLevel.SENIOR_ADMIN,
    call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
       itemName = itemName.join(' ');
-      if (BaseItem.list[itemName]) {
-         const foundItem = BaseItem.list[itemName];
+      if (baseItem.list[itemName]) {
+         const foundItem = baseItem.list[itemName];
          const target = mp.players.find(targetSearch);
          if (!target) return; // no target found
          try { 

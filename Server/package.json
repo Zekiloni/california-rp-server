@@ -12,7 +12,7 @@
       "uuid": "^3.4.0"
    },
    "scripts": {
-      "start": "cd.. && cd.. && cd midnigh-rp-local-server && ragemp-server.exe",
+      "start": "cd.. && cd.. && cd midnigh-rp-local-server && ragemp-server.exe --trace-warnings",
       "build": "tsc"
    },
    "devDependencies": {

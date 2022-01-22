@@ -134,7 +134,6 @@ mp.events.addProc(
                console.log(character?.last_position)
       
                if (character?.last_position) { 
-                  console.log('if last')
                   spawnPoints.push({
                      name: Messages.LAST_POSITION,
                      type: spawnTypes.lastPosition,

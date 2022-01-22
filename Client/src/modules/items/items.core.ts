@@ -1,6 +1,8 @@
-import { Browser } from '../browser';
-import { screenResolution } from './core';
-import controls from '../enums/controls';
+import { Browser } from '../../browser';
+import { screenResolution } from '../core';
+import controls from '../../enums/controls';
+import { playAnimation } from '../player/animations';
+import { animationFlags } from '../../enums/animations.flags';
 
 
 const player = mp.players.local;
@@ -68,6 +70,7 @@ mp.events.add(
          // //    _player.call('')
          // // });
 
+         playAnimation(mp.players.local, 'random@domestic', 'pickup_low', animationFlags.NORMAL);
          // mp.players.local.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
       },
 
@@ -92,11 +95,25 @@ mp.events.add(
    }
 );
 
+
 mp.keys.bind(controls.KEY_I, true, function() {
-   if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
-      if (player.isTypingInTextChat || player.getVariable('CUFFED') ) return;
-      mp.events.call('CLIENT::INVENTORY:TOGGLE');
+
+   if (!mp.players.local.getVariable('LOGGED_IN')) { 
+      return;
    }
+
+   if (!mp.players.local.getVariable('SPAWNED')) {
+      return;
+   }
+
+   
+   if (mp.players.local.isTypingInTextChat || mp.players.local.getVariable('CUFFED')) { 
+      return;
+   }
+
+
+   mp.events.call('CLIENT::INVENTORY:TOGGLE');
+
 });
 
 mp.keys.bind(controls.KEY_E, true, function() {
@@ -104,6 +121,7 @@ mp.keys.bind(controls.KEY_E, true, function() {
       if (player.isTypingInTextChat || player.getVariable('CUFFED') ) return;
       mp.objects.forEachInRange(player.position, 2, async object => { 
          if (object.getVariable('ITEM')) {
+            playAnimation(mp.players.local, 'random@domestic', 'pickup_low', animationFlags.NORMAL);
             const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:PICKUP', object.getVariable('ITEM').id);
             if (active && newInventory) Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
             return;

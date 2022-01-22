@@ -66,7 +66,7 @@ export async function playAnimation (
       return;
    }
 
-   // if (mp.players.local.getVariable('DEAD')) {
+   // if (mp.players.local.getVariable('DEAD') || mp.players.local.getVariable('WOUNDED')) {
    //    return;
    // }
 
