@@ -4,7 +4,7 @@ import { itemData } from '../../globals/enums';
 import { baseItem, noDesc } from '../item.model';
 
 
-export class ClothingItem extends baseItem {
+export class clothingItem extends baseItem {
    Compontent: number;
    
    constructor (name: string, Type: itemData.Type[], model: string, component: number, weight: number = 0.1, description: string = noDesc) { 

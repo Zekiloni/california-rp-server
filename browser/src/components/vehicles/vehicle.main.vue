@@ -19,6 +19,7 @@
             seatbelt: false,
             speed: 0,
             maxSpeed: 300,
+            rpm: 0,
             indicators: [true, false],
             lights: { daylights: true, highbeams: true },
             fuel: 0,

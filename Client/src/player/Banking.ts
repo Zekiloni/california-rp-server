@@ -1,6 +1,7 @@
 
 import { Browser } from '../browser';
-import { Controls, IsNearATM } from '../utils';
+import controls from '../enums/controls';
+import { IsNearATM } from '../utils';
 
 const Player = mp.players.local;
 
@@ -29,7 +30,7 @@ mp.events.add(
 );
 
 
-mp.keys.bind(Controls.KEY_Y, false, function () {
+mp.keys.bind(controls.KEY_E, false, function () {
    if (Player.vehicle || Player.isTypingInTextChat || Player.getVariable('Cuffed') || !Player.getVariable('Logged') || Active) return;
 
    if (IsNearATM(Player.position)) { 

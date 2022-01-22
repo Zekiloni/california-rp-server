@@ -193,7 +193,7 @@ export namespace itemData {
       DRINK, FOOD, DRUG, WEAPON, AMMO,
       ILEGAL, LEGAL, MISC, CLOTHING,
       PROP, HEAVY, STACKABLE, USABLE, STORAGE, 
-      SEED, DOCUMENT, LICENSE, COOKABLE
+      SEED, DOCUMENT, LICENSE, COOKABLE, COOKER
    }
 
    export enum Entity { 
@@ -250,7 +250,8 @@ export namespace commandData {
       SET_MONEY = 'setmoney',
       CREATE_HOUSE = 'createhouse',
       DESTROY_HOUSE = 'destroyhouse',
-      SAVE_POS = 'position'
+      SAVE_POS = 'position',
+      FLY = 'fly'
    }
 
    export enum Descriptions { 

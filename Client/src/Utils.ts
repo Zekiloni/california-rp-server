@@ -16,19 +16,26 @@ export function IsNearATM (Position: Vector3Mp) {
    }
 };
 
-export const Controls = {
-   KEY_X: 0x58,
-   KEY_L: 0x4C,
-   KEY_Y: 0x59,
-   LEFT_ARROW: 0x25,
-   RIGHT_ARROW: 0x27,
-   ENTER: 0x0D,
-   KEY_P: 0x50,
-   KEY_I: 0x49,
-   TAB: 0x09,
-   NUMBER_1: 0x31,
-   NUMBER_2: 0x32
-}
+
+
+export const getNormalizedVector = function(vector: Vector3Mp) {
+   var mag = Math.sqrt(
+   vector.x * vector.x + vector.y * vector.y + vector.z * vector.z
+   );
+   vector.x = vector.x / mag;
+   vector.y = vector.y / mag;
+   vector.z = vector.z / mag;
+   return vector;
+};
+
+
+export const getCrossProduct = function(v1: Vector3Mp, v2: Vector3Mp) {
+   let vector = new mp.Vector3(0, 0, 0);
+   vector.x = v1.y * v2.z - v1.z * v2.y;
+   vector.y = v1.z * v2.x - v1.x * v2.z;
+   vector.z = v1.x * v2.y - v1.y * v2.x;
+   return vector;
+};
 
 
 export function disableMoving () { 

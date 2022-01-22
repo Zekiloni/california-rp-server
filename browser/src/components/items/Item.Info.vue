@@ -46,7 +46,6 @@
          call: function (event) {
             mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.itemInfo), this.desiredAmount ? this.desiredAmount : this.item.quantity);
             this.$parent.hoverBox = false;
-            console.log(event)
          }
       },
 

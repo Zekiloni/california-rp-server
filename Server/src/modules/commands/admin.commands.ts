@@ -148,6 +148,16 @@ Commands[commandData.Names.DESTROY_HOUSE] =  {
 }
 
 
+Commands[commandData.Names.FLY] =  {
+   admin: adminLevel.SENIOR_ADMIN,
+   description: 'opis napisati',
+   call: async (player: PlayerMp) => { 
+      player.call('CLIENT::ADMIN:FLY');
+   }
+}
+
+
+
 
 //  Commands['adminhelp'] = {
 //     description: 'Admin pomoc',

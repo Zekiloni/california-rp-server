@@ -121,7 +121,6 @@ mp.keys.bind(controls.KEY_E, true, function() {
       if (player.isTypingInTextChat || player.getVariable('CUFFED') ) return;
       mp.objects.forEachInRange(player.position, 2, async object => { 
          if (object.getVariable('ITEM')) {
-            playAnimation(mp.players.local, 'random@domestic', 'pickup_low', animationFlags.NORMAL);
             const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:PICKUP', object.getVariable('ITEM').id);
             if (active && newInventory) Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
             return;

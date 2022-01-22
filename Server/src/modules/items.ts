@@ -69,6 +69,8 @@ mp.events.addProc(
          return new Promise((resolve) => { 
             Items.findOne({ where: { id: itemId } }).then(async item => { 
                await item?.pickup(player);      
+
+               player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 });
                const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.Character.id);
                if (newInventory) resolve(newInventory);   
             });

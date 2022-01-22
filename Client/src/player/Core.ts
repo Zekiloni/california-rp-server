@@ -1,4 +1,4 @@
-import { WaitEntity, loadMovementClipset, Controls } from "../utils";
+import { WaitEntity, loadMovementClipset } from "../utils";
 
 
 const Player = mp.players.local;
@@ -47,75 +47,75 @@ mp.events.add({
 });
 
 
-// INTERACTIONS :: REMOVE ATTACHMENT
-mp.keys.bind(Controls.KEY_X, false, async function () {
-   if (Player.Logged && Player.Spawned) { 
-      if (Player.isTypingInTextChat) return;
-      if (Player.getVariable('Attachment') != null) {
-         const response = await mp.events.callRemoteProc('server:character.attachment:remove');
-         Player.Attachment = response;
-      }
-   }
-});
+// // INTERACTIONS :: REMOVE ATTACHMENT
+// mp.keys.bind(Controls.KEY_X, false, async function () {
+//    if (Player.Logged && Player.Spawned) { 
+//       if (Player.isTypingInTextChat) return;
+//       if (Player.getVariable('Attachment') != null) {
+//          const response = await mp.events.callRemoteProc('server:character.attachment:remove');
+//          Player.Attachment = response;
+//       }
+//    }
+// });
 
 
 
-// INTERACTIONS :: LOCK
-mp.keys.bind(Controls.KEY_L, false, async function () {
-   if (Player.Logged && Player.Spawned && Player.isTypingInTextChat == false) { 
-     if (AntiKeySpam) return;
+// // INTERACTIONS :: LOCK
+// mp.keys.bind(Controls.KEY_L, false, async function () {
+//    if (Player.Logged && Player.Spawned && Player.isTypingInTextChat == false) { 
+//      if (AntiKeySpam) return;
 
-      mp.events.callRemote('server:interactions:lock');
+//       mp.events.callRemote('server:interactions:lock');
 
-      AntiKeySpam = true;
-      setTimeout(() => { AntiKeySpam = false; }, 4000);
-   }
-});
-
-
-mp.keys.bind(Controls.KEY_Y, false, () => {
-   let Vehicle: any; // PITATI ZAŠTO NE MOŽE VehicleMp 
-   if (!Player.Logged || !Player.Spawned || Player.isTypingInTextChat || Player.Cuffed) return;
-   if (AntiKeySpam) return;
-
-   if (Player.vehicle) { 
-
-      mp.events.callRemote('server:vehicle:windows', Player.vehicle);
+//       AntiKeySpam = true;
+//       setTimeout(() => { AntiKeySpam = false; }, 4000);
+//    }
+// });
 
 
-      AntiKeySpam = true;
-      setTimeout(() => { AntiKeySpam = false; }, 2000);
+// mp.keys.bind(Controls.KEY_Y, false, () => {
+//    let Vehicle: any; // PITATI ZAŠTO NE MOŽE VehicleMp 
+//    if (!Player.Logged || !Player.Spawned || Player.isTypingInTextChat || Player.Cuffed) return;
+//    if (AntiKeySpam) return;
 
-   } else { 
+//    if (Player.vehicle) { 
+
+//       mp.events.callRemote('server:vehicle:windows', Player.vehicle);
+
+
+//       AntiKeySpam = true;
+//       setTimeout(() => { AntiKeySpam = false; }, 2000);
+
+//    } else { 
       
 
-      mp.vehicles.forEachInRange(Player.position, 4.5, (NearbyVehicle) => { 
-         Vehicle = NearbyVehicle;
-      });
+//       mp.vehicles.forEachInRange(Player.position, 4.5, (NearbyVehicle) => { 
+//          Vehicle = NearbyVehicle;
+//       });
    
-      if (Vehicle.doesExist()) { 
+//       if (Vehicle.doesExist()) { 
    
-         const Bones: any = { 'boot': -1.35, 'bonnet': 2.0 };
+//          const Bones: any = { 'boot': -1.35, 'bonnet': 2.0 };
    
-         const Position = Player.position;
+//          const Position = Player.position;
          
-         for (const Bone in Bones) { 
-            const Offset = Bones[Bone];
+//          for (const Bone in Bones) { 
+//             const Offset = Bones[Bone];
    
-            const {x, y, z} = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
+//             const {x, y, z} = Vehicle.getWorldPositionOfBone(Vehicle.getBoneIndexByName(Bone));
       
-            const Distance = mp.game.gameplay.getDistanceBetweenCoords(Position.x, Position.y, Position.z, x, y + Offset, z, true);
+//             const Distance = mp.game.gameplay.getDistanceBetweenCoords(Position.x, Position.y, Position.z, x, y + Offset, z, true);
             
-            if (Distance < 1.35) { 
-               mp.events.callRemote('server:vehicle:interaction', Vehicle, Bone);
+//             if (Distance < 1.35) { 
+//                mp.events.callRemote('server:vehicle:interaction', Vehicle, Bone);
          
-               AntiKeySpam = true;
-               setTimeout(() => { AntiKeySpam = false; }, 2000);
-            } 
-         }
-      }
-   }
-});
+//                AntiKeySpam = true;
+//                setTimeout(() => { AntiKeySpam = false; }, 2000);
+//             } 
+//          }
+//       }
+//    }
+// });
 
 
 mp.events.addProc({

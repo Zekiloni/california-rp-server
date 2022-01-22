@@ -9,6 +9,7 @@
             <div class="item">
                <h3 class="quantity"> {{ item.quantity }} </h3>
                <h3 class="item-name"> {{ item.name }} </h3>
+               <!-- <img class="item-icon" :src="require('@/assets/images/items/' +  item.name.replace(/ /g, '_').toLowerCase() + '.png')" > -->
             </div>
          </div>
          <!-- <div class="items">
@@ -178,6 +179,12 @@
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
       background: #181a20;
       transition: all .3s ease;
+      display: grid;
+   }
+
+   img.item-icon { 
+      width: 80px;
+      margin: auto;
    }
 
    .item:hover { 

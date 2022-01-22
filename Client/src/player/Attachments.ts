@@ -1,6 +1,5 @@
 
 
-const Player = mp.players.local;
 
 const Bones: any = {
    'RIGHT_HAND': 6286,
