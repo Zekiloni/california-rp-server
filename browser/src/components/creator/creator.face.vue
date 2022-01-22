@@ -2,6 +2,7 @@
 
 <template>
    <div class="faces">
+      <div class="strucutres">
       <div class="slider" v-for="(f, i) in face" :key=i>
          <label> {{ Messages.FACE_FEATURES[i] }} </label>
          <vue-slider 
@@ -17,6 +18,8 @@
             v-on:change="value => changeFace(i, value)"
          />
       </div>
+      </div>
+
    </div>
 </template>
 
@@ -57,19 +60,24 @@
 
 <style scoped>
    .faces { 
-      height: 95%;
+      height: 100%;
       width: 100%;
-      overflow: auto;
       margin: auto;
    }
 
+   .strucutres {
+      width: 100%;
+      height: 70%;
+      margin-top: 70px;
+      overflow: auto;
+   }
+
    .slider { 
-      padding: 18px 20px;
+      padding: 10px 20px;
       width: 300px; 
+      margin: 10px auto;
       box-shadow: 0 21px 29px 0 rgb(0 0 0 / 31%);
       background: #2a303c;
-      border-radius: 10px;
-      margin: 15px auto;
    }
 
    label { 

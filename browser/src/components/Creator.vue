@@ -84,7 +84,7 @@
          </transition>
       </div>
       
-      <CreatorHints />
+      <!-- <CreatorHints /> -->
    </div>
 
 </template>
@@ -156,8 +156,6 @@
                if (window.mp) {
                   mp.events.call('CLIENT::CREATOR:BLEND', value.blends[0], value.blends[1], value.blends[2], value.blends[3], value.blends[4], value.blends[5]);
                   
-                  console.log('eye dolor ' + value.eyeColor);
-                  mp.events.call('CLIENT::CREATOR:EYES_COLOR', value.eyeColor);
                }
             },
             deep: true
