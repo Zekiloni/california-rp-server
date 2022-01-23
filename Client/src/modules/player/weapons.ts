@@ -15,6 +15,13 @@ function onPlayerWeaponShot (position: Vector3Mp, entity: any) {
    //@ts-ignore
    mp.game1.weapon.unequipEmptyWeapons = false;
 
+   const { weapon } = mp.players.local;
+
+   // do not keep aiming
+   if (mp.players.local.getAmmoInClip(weapon) == 0) { 
+      mp.players.local.clearTasks();
+   }
+
    // call server-side ammo
    mp.events.callRemote('CLIENT::ITEM:WEAPON:SHOT');
 };
