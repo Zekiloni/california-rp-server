@@ -62,3 +62,4 @@ export interface ItemExtraData  {
    ammo?: number,
    serial?: number,
 }
+

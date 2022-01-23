@@ -3,8 +3,8 @@ import { itemData } from '../globals/enums';
 import { itemAction } from '../globals/interfaces';
 import Items from '../models/inventory.item.model';
 import { baseItem } from '../models/item.model';
-
-
+import { weapons } from '../models/items/weapon.item';
+import weaponData from '../data/weapon.data.json';
 
 
 mp.events.addProc(
@@ -75,6 +75,51 @@ mp.events.addProc(
                if (newInventory) resolve(newInventory);   
             });
          })
+      }
+   }
+);
+
+
+mp.events.add(
+   {
+      'CLIENT::ITEM:WEAPON:SHOT': async (player: PlayerMp) => {
+         console.log(1)
+         if (!player.weapon) { 
+            // no weapon in hand
+            return;
+         }
+         console.log(2)
+
+         type weaponData = { [key: string]: any };
+
+         const weapon = weapons.find(
+            weapon => weapon.weapon_hash == (<weaponData>weaponData)[player.weapon].HashKey.toLowerCase()
+         )!;
+         console.log(3)
+
+         const weaponItem = await Items.findOne(
+            { 
+               where: { 
+                  owner: player.Character.id, 
+                  name: weapon.name, 
+                  status: itemData.Status.EQUIPED 
+               } 
+            }
+         );
+         console.log(4)
+
+         
+         if (!weaponItem) { 
+            return;
+         }
+
+         let data = weaponItem.data;
+         data.ammo! --;
+
+         weaponItem.data = data;
+         console.log(1)
+
+         await weaponItem.save();
       }
    }
 );

@@ -1,15 +1,26 @@
 
 
+mp.players.local.setCanSwitchWeapon(false);
+
+mp.events.add(
+   {
+      'playerWeaponShot': onPlayerWeaponShot,
+      'render': disableDefaultWeaponBehaviour
+   }
+)
 
 
+function onPlayerWeaponShot (position: Vector3Mp, entity: any) {
+   
+   //@ts-ignore
+   mp.game1.weapon.unequipEmptyWeapons = false;
 
-mp.events.add('CLIENT::WEAPON:CONFIG', () => {
-   // don't remove weapon after run out of ammo
-   mp.game.weapon.unequipEmptyWeapons = false;
-   mp.players.local.setCanSwitchWeapon(false);
+   // call server-side ammo
+   mp.events.callRemote('CLIENT::ITEM:WEAPON:SHOT');
+};
 
 
-
+function disableDefaultWeaponBehaviour () {
    // disable weapon switch
    for (let i = 157; i < 164; i++) {
       mp.game.controls.disableControlAction(0, i, true);
@@ -20,5 +31,5 @@ mp.events.add('CLIENT::WEAPON:CONFIG', () => {
    mp.game.controls.disableControlAction(0, 13, true);
    mp.game.controls.disableControlAction(0, 14, true);
    mp.game.controls.disableControlAction(0, 15, true);
-});
+}
 

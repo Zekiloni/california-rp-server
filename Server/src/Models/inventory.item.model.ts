@@ -4,6 +4,7 @@ import { AfterCreate, AfterDestroy, AfterSave, AutoIncrement, Column, CreatedAt,
 import { entityData, itemData, logType } from '../globals/enums';
 import { ItemExtraData } from '../globals/interfaces';
 import { Logger } from '../utils';
+import Characters from './character.model';
 import { baseItem } from './item.model';
 
 
@@ -134,6 +135,21 @@ export default class Items extends Model {
    static async hasItem (entity: itemData.Entity, owner: number, itemName: string) {
       const has = await Items.findOne({ where: { entity: entity, owner: owner, name: itemName } });
       return has == null ? false : has;
+   }
+
+   static async unequipWeapons (character: Characters) { 
+      Items.findAll({ where: { entity: itemData.Entity.PLAYER, owner: character.id, status: itemData.Status.EQUIPED } }).then(items => { 
+         if (items.length == 0) {
+            return
+         }
+         
+         items.forEach(async item => {
+            if (baseItem.list[item.name].isWeapon()) {
+               item.status = itemData.Status.NONE;
+               await item.save();
+            }
+         });
+      })
    }
 
    

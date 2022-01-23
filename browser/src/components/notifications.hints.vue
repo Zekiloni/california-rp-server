@@ -90,7 +90,7 @@
    }
 
    ul.notifications li.notification { 
-      background: #181a20;
+      background: #21252f;
       border-top-left-radius: 20px;
       border-bottom-right-radius: 20px;
       padding: 10px;

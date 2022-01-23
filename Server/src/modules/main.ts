@@ -1,4 +1,3 @@
-'use strict';
 
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
@@ -9,6 +8,7 @@ import { Config } from '../config';
 import Bans from '../models/ban.model';
 import { spawnPoint } from '../globals/interfaces';
 import { getDefaultSpawn, Logger } from '../utils';
+import Items from '../models/inventory.item.model';
 
 
 mp.events.add(
@@ -27,6 +27,8 @@ mp.events.add(
                leavingPlayer.Character.last_dimension = leavingPlayer.dimension;
    
                await leavingPlayer.Character.save();
+               
+               Items.unequipWeapons(leavingPlayer.Character);
 
                console.log('saved char ' + leavingPlayer.Character.name);
             }
