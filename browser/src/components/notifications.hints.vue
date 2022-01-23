@@ -79,7 +79,7 @@
       list-style: none;
       margin: 0;
       position: absolute;
-      right: 25px;
+      right: 15px;
       top: 200px;
       width: 325px;
       min-height: 100px;
@@ -90,12 +90,14 @@
    }
 
    ul.notifications li.notification { 
-      background: linear-gradient(45deg, rgb(21 21 21 / 40%), transparent);
-      padding: 5px 10px;
+      background: #181a20;
+      border-top-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      padding: 10px;
       margin: 7px 0;
-      box-shadow: rgb(0 0 0 / 25%) 0px 4px 6px -1px, rgb(0 0 0 / 6%) 0px 2px 4px -1px;
+      box-shadow: 0 17px 28px 0 rgb(0 0 0 / 30%);
       display: flex;
-      border-left: 3px solid transparent;
+      border-bottom: 3px solid transparent;
    }
 
    li.notification .type { 
@@ -106,7 +108,7 @@
       margin: 0;
       display: flex;
       align-items: center;
-      font-size: 14.5px;
+      font-size: 13.5px;
       margin-left: 10px;
       font-weight: 300;
       width: 100%;
@@ -118,12 +120,12 @@
    li.notification.error, li.notification.error .type { border-color: #ff3a41 !important; color: #ff3a41; }
    li.notification.info, li.notification.info .type { border-color: #fab80a !important; color: #fab80a; }
 
-   .notification-enter-active { animation: notification-in 0.35s; }
+   .notification-enter-active { animation: notification-in 0.65s; }
    .notification-leave-active { animation: notification-in 0.55s reverse; }
 
    @keyframes notification-in {
-      0% { transform: translateX(-200px); }
-      50% { transform: translateX(10px); }
+      0% { transform: translateX(200px); }
+      50% { transform: translateX(5px); }
       100% { transform: translateX(0px); }
    }
 

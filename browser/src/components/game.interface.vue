@@ -154,7 +154,7 @@
    .online-players { margin: 0 25px; }
    .player-id { margin: 0 25px; }
 
-   h3, h2 { margin: 0; text-shadow: 0 0 0.6px rgb(0 0 0 / 65%); }
+   h3, h2 { margin: 0; text-shadow: 0 0 0.7px rgb(0 0 0 / 95%); }
 
    .online-players h3, .player-id h3 { font-weight: 450; color: #848e9c; font-size: 0.8rem; }
    .player-id h2 { color: #cdcdcd; font-weight: 350; }
@@ -173,7 +173,7 @@
       box-shadow: 0 0 0 4px rgb(0 212 116 / 45%);
    }
 
-   .player {  position: absolute; top: 70px; right: 10px; padding: 15px 10px; }
+   .player { position: absolute; top: 70px; right: 10px; padding: 15px 10px; }
 
    .player h2.money { 
       font-family: 'Montserrat ExtraBold';
@@ -187,9 +187,9 @@
 
    .date-time { margin-bottom: 25px; }
    .date-time h2 { color: #cdcdcd; font-weight: 350; }
-   .date-time h3 { font-weight: 450; color: #848e9c; font-size: 0.9rem; }
+   .date-time h3 { font-weight: 450; color: #959fae; font-size: 0.9rem; }
 
-   .location h2 { color: #fede29; font-weight: 500; }
+   .location h2 { color: #ffcc45; font-weight: 500; }
    .location h3.street { color: #cdcdcd; font-weight: 350; }
-   .location h3.zone { font-weight: 450; color: #848e9c; font-size: 0.9rem; }
+   .location h3.zone { font-weight: 450; color: #959fae; font-size: 0.9rem; }
 </style>

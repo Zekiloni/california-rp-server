@@ -58,7 +58,7 @@ export interface itemAction {
    event: string
 }
 
-export interface itemExtraData  {
+export interface ItemExtraData  {
    ammo?: number,
    serial?: number,
 }

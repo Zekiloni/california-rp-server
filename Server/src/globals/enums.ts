@@ -223,7 +223,8 @@ export namespace itemData {
       donutItem = 'Donut',
       sandwichItem = 'Sandwich',
       tacoItem = 'Taco',
-      COMBAT_PISTOL = 'Combat Pistol'
+      COMBAT_PISTOL = 'Combat Pistol',
+      AMMO_9MM = '9mm Clip'
    }
 }
 

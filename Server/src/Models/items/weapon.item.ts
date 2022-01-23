@@ -2,7 +2,12 @@ import { itemData } from '../../globals/enums';
 import Items from '../inventory.item.model';
 import { baseItem, noDesc } from '../item.model';
 
+import './ammo.item';
+
+
 export const defaultWeaponType = [itemData.Type.USABLE, itemData.Type.WEAPON]
+
+export let weapons: weaponItem[] = [];
 
 export class weaponItem extends baseItem {
    weapon_hash: string;
@@ -12,6 +17,10 @@ export class weaponItem extends baseItem {
       super (name, type ? defaultWeaponType.concat(type) : defaultWeaponType, model, weight, description);
       this.weapon_hash = weapHash;
       this.caliber = cal;
+      
+      weapons.push(this);
+
+      console.log(this)
 
       this.use = async function (player: PlayerMp, item: Items) { 
          item.status = itemData.Status.EQUIPED;
@@ -22,7 +31,7 @@ export class weaponItem extends baseItem {
 }
 
 
-new weaponItem(itemData.Names.COMBAT_PISTOL, 'w_pi_combatpistol', 'weapon_combatpistol');
+new weaponItem(itemData.Names.COMBAT_PISTOL, 'w_pi_combatpistol', 'weapon_combatpistol', baseItem.list[itemData.Names.AMMO_9MM]);
 
 // // WEAPONS / ORUZIJE
 

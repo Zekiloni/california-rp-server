@@ -195,6 +195,12 @@ mp.events.addProc(
          Characters.findOne({ where: { id: Char_ID } }).then((Character) => { 
             return Character?.destroy()
          })
+      },
+
+      'entityModelChange': (entity: EntityMp, oldModel: number) => { 
+         if (entity.type == 'player') { 
+            (<PlayerMp>entity).call('CLIENT::WEAPON:CONFIG');
+         }
       }
    }
 );

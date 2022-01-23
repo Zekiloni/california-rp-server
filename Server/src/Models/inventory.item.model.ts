@@ -2,7 +2,7 @@
 
 import { AfterCreate, AfterDestroy, AfterSave, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { entityData, itemData, logType } from '../globals/enums';
-import { itemExtraData } from '../globals/interfaces';
+import { ItemExtraData } from '../globals/interfaces';
 import { Logger } from '../utils';
 import { baseItem } from './item.model';
 
@@ -61,7 +61,7 @@ export default class Items extends Model {
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('data')); }
    })   
-   data: itemExtraData;
+   data: ItemExtraData;
 
    @CreatedAt
    created_at: Date;

@@ -75,7 +75,7 @@
       background: rgb(132 142 156 / 45%);
    }
 
-   h4.vehicle-name { text-align: center; margin: 25px 0 0 0; font-size: 0.8rem; font-weight: 250; color: rgb(132 142 156 / 45%); letter-spacing: 1.05px; }
+   h4.vehicle-name { text-align: center; margin: 25px 0 0 0; font-size: 0.8rem; font-weight: 350; color: #ffcc45; letter-spacing: 1.05px; }
 
 
    @keyframes blinking {

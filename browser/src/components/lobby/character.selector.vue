@@ -131,7 +131,7 @@
    .info-header h2 { font-family: 'Montserrat ExtraBold'; letter-spacing: 1px; margin: 5px 0; font-size: 1.7rem; color: #7c5bf1; text-transform: uppercase; }
    .info-header p { color: #cdcdcd; }
 
-   .selector .account { width: 375px; height: auto; padding: 10px 0; border-radius: 10px; margin: 0 20px; background: rgb(11 14 17 / 45%); }
+   .selector .account { width: 375px; height: auto; padding: 30px 10px; border-radius: 10px; margin: 0 20px; background: #21252f; box-shadow: 0 21px 29px 0 rgb(0 0 0 / 31%); }
 
    .selector .account .header { padding: 0 15px 15px 15px; border-bottom: 1px solid #181a20; }
 

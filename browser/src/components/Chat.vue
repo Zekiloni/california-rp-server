@@ -281,7 +281,7 @@
       text-align: left;
       transition: all 0.35s ease;
       direction: ltr;
-      text-shadow: -1px -1px 0 rgb(0 0 0 / 20%), 1px -1px 0 rgb(0 0 0 / 40%), -1px 1px 0 rgb(0 0 0 / 20%), 1px 1px 0 rgb(0 0 0 / 50%);
+      text-shadow: -1px -1px 0 rgb(0 0 0 / 40%), 1px -1px 0 rgb(0 0 0 / 40%), -1px 1px 0 rgb(0 0 0 / 40%), 1px 1px 0 rgb(0 0 0 / 70%);
    }
 
    p.currentLength { color: #848e9c; }
