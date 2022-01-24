@@ -46,7 +46,7 @@ Commands[commandData.Names.GIVE_ITEM] ={
          if (!target) return; // no target found
          try { 
 
-            Items.giveItem(player, target, foundItem, quantity);
+            Items.giveItem(target, foundItem, quantity);
 
          } catch(e) { 
             console.log(e)

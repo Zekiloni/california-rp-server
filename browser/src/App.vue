@@ -3,7 +3,7 @@
    <div id="app">
       <Lobby v-if="interfaces.lobby" />
 
-      <Creator v-if="interfaces.Creator" />
+      <Creator v-if="interfaces.characterCreator" />
 
       <GameInterface v-if="interfaces.GameInterface" />
       <Notifications v-if="interfaces.Notifications" />

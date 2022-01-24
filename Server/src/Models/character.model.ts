@@ -1,8 +1,8 @@
 
 
-import { Distances, entityData, globalDimension, NotifyType, Peds, spawnTypes } from '../globals/enums';
+import { Distances, entityData, globalDimension, itemData, NotifyType, Peds, spawnTypes } from '../globals/enums';
 import { Colors, Messages } from '../globals/constants';
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne } from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, AfterCreate } from 'sequelize-typescript';
 import { Config } from '../config';
 
 import Accounts from './account.model';
@@ -15,6 +15,8 @@ import { Vehicles } from './vehicle.model';
 import { characterProperties } from '../globals/interfaces';
 import { licenseItem } from './items/license.item';
 import Items from './inventory.item.model';
+import { baseItem } from './item.model';
+import { documentType } from './items/document.item';
 
 
 console.log(Peds.walkingStyles.Normal)
@@ -173,6 +175,23 @@ export default class Characters extends Model {
 
    @UpdatedAt
    updated_at: Date;
+
+   @AfterCreate
+   static async onCreate (character: Characters, options: any) {
+      const player = mp.players.find((player: PlayerMp) => player.Character == character);
+
+      const documentItem = await Items.giveItem(player!, baseItem.list[itemData.Names.DOCUMENT_ID_CARD], 1);
+
+      documentItem!.data = {
+         name: character.name,
+         birth: character.birth,
+         origin: character.origin,
+         gender: character.gender
+      };
+
+      await documentItem?.save();
+      console.log(documentItem);
+   }
 
    get properties (): Promise<characterProperties> { 
       return new Promise(async resolve => { 

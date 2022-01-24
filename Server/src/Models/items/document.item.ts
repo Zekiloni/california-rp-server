@@ -31,4 +31,4 @@ export class documentType extends baseItem {
    }
 }
 
-new documentType(itemData.Names.DOCUMENT_ID_CARD, 'p_ld_id_card_01', itemData.Type.ID_CARD);
+new documentType(itemData.Names.DOCUMENT_ID_CARD, 'p_ld_id_card_01', itemData.Type.ID_CARD, [itemData.Type.ID_CARD], 0.05, itemData.Descriptions.DOCUMENT_ID_CARD);

@@ -19,7 +19,7 @@ class characterCreator {
       mp.events.callRemoteProc('SERVER::CREATOR:INFO').then(async (Info) => { 
 
          lobby(false);
-         Browser.call('BROWSER::SHOW', 'Creator');
+         Browser.call('BROWSER::SHOW', 'characterCreator');
 
          mp.players.local.position = Info.Position;
          mp.players.local.setHeading(0);
@@ -43,7 +43,7 @@ class characterCreator {
          mp.players.local.freezePosition(false);
          gameInterface.mainInterface(UI_Status.VISIBLE);
          playerPreviewCamera(false);
-         Browser.call('BROWSER::HIDE', 'Creator');
+         Browser.call('BROWSER::HIDE', 'characterCreator');
       } 
 
    }

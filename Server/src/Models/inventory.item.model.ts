@@ -128,11 +128,14 @@ export default class Items extends Model {
    }
 
 
-   static async giveItem (player: PlayerMp, target: PlayerMp, item: baseItem, quantity: number = 1) { 
-      const alreadyItem = await Items.hasItem(itemData.Entity.PLAYER, target.Character.id, item.name);
+   static async giveItem (player: PlayerMp, item: baseItem, quantity: number = 1) { 
+      const alreadyItem = await Items.hasItem(itemData.Entity.PLAYER, player.Character.id, item.name);
       
-      alreadyItem && item.isStackable() ? 
-         alreadyItem.increment('quantity', { by: quantity }) : Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: target.Character.id });
+      if (alreadyItem && item.isStackable()) {
+         alreadyItem.increment('quantity', { by: quantity });
+      } else { 
+         return Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: player.Character.id });
+      }
    }
 
 

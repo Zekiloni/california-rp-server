@@ -9,7 +9,7 @@
       </transition>
 
       <transition-group name="notification" tag="ul" class="notifications">
-         <li v-for="(notification, i) in notifications" v-bind:key="i" class="notification" :class="notificationTypes[notification.type].Class"> 
+         <li v-for="(notification, i) in notifications" v-bind:key="'n' + i" class="notification" :class="notificationTypes[notification.type].Class"> 
             <div class="type">
                <i aria-hidden="true" :class="notificationTypes[notification.type].Icon"> </i>
             </div>

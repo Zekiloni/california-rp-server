@@ -61,5 +61,9 @@ export interface itemAction {
 export interface ItemExtraData  {
    ammo?: number,
    serial?: number,
+   name?: string,
+   birth?: string,
+   gender?: number,
+   origin?: string
 }
 

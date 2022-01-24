@@ -228,6 +228,10 @@ export namespace itemData {
       COMBAT_PISTOL = 'Combat Pistol',
       AMMO_9MM = '9mm Clip'
    }
+
+   export const Descriptions = {
+      DOCUMENT_ID_CARD: 'Vaš identifikacioni dokument. Lična karta. Nije preporučljivo da je izgubite.'
+   }
 }
 
 export namespace vehicleData { 
