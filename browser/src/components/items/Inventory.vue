@@ -173,6 +173,7 @@
       background: rgb(11 14 17 / 55%);
       align-items: center;
       flex-direction: column;
+      box-shadow: 0 7px 15px 0 rgb(0 0 0 / 40%);
    }
 
    .equiped .item { 
@@ -196,7 +197,7 @@
       grid-template-columns: repeat(3, 150px);
       grid-template-rows: repeat(3, 150px);
       /* border: 1.5px solid rgb(128 128 128 / 45%); */
-      /* box-shadow: 0 7px 15px 0 rgb(0 0 0 / 45%); */
+      box-shadow: 0 7px 15px 0 rgb(0 0 0 / 45%);
    }
 
    .item-holder { 

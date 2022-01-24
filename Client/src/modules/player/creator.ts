@@ -9,7 +9,6 @@ import maleTorsos from '../player/clothing/male.torsos';
 import { gameInterface, UI_Status } from '../game.UI';
 import { clothingComponents } from '../../enums/clothing';
 import { pedGender } from '../../enums/ped';
-import { playAnimation } from './animations';
 
 
 class characterCreator {

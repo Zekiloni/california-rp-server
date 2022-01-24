@@ -193,7 +193,8 @@ export namespace itemData {
       DRINK, FOOD, DRUG, WEAPON, AMMO,
       ILEGAL, LEGAL, MISC, CLOTHING,
       PROP, HEAVY, STACKABLE, USABLE, STORAGE, 
-      SEED, DOCUMENT, LICENSE, COOKABLE, COOKER
+      SEED, DOCUMENT, LICENSE, COOKABLE, COOKER,
+      ID_CARD, LAW_BADGE
    }
 
    export enum Entity { 
@@ -207,22 +208,23 @@ export namespace itemData {
    }
 
    export enum Names { 
-      drivingLicense = 'Driving licence',
-      flyingLicense = 'License for Flying',
-      fishingLicense = 'Fishing permit',
-      huntingLicense = 'Hunting permit',
-      weaponLicense = 'Weapons license',
-      truckLicense = 'Truck license',
-      boatingLicense = 'Boat License',
-      cheeseburgerItem = 'Cheeseburger',
-      hamburgerItem = 'Hamburger',
-      friesItem = 'Fries',
-      pizzaItem = 'Pizza',
-      chickenBurgerItem = 'Chicken Burger',
-      chipsItem = 'Chips',
-      donutItem = 'Donut',
-      sandwichItem = 'Sandwich',
-      tacoItem = 'Taco',
+      DRIVING_LICENSE = 'Driving licence',
+      FLYING_LICENSE = 'License for Flying',
+      FISHING_LICENSE = 'Fishing permit',
+      HUNTING_LICENSE = 'Hunting permit',
+      WEAPON_LICENSE = 'Weapons license',
+      TRUCK_LICENSE = 'Truck license',
+      BOATING_LICENSE = 'Boat License',
+      FOOD_CHEESE_BURGER = 'Cheeseburger',
+      FOOD_HAMBURGER = 'Hamburger',
+      FOOD_FRIES = 'Fries',
+      FOOD_PIZZA = 'Pizza',
+      FOOD_CHICKEN_BURGER = 'Chicken Burger',
+      FOOD_CHIPS = 'Chips',
+      DOCUMENT_ID_CARD = 'ID Card',
+      FOOD_DONUT = 'Donut',
+      FOOD_SANDWICH = 'Sandwich',
+      FOOD_TACO = 'Taco',
       COMBAT_PISTOL = 'Combat Pistol',
       AMMO_9MM = '9mm Clip'
    }

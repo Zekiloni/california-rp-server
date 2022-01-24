@@ -11,20 +11,21 @@ const InitialState = {
    Notifications: true,
    Chat: false,
 
-   Lobby: true,
+   lobby: false,
    Creator: false,
 
    GameInterface: false,
    Inventory: false,
    Phone: false,
+   id_Document: true,
+   licenses: false,
+
    Playerlist: false,
    Banking: false,
    Job_Offer: false,
    Miner: false,
    Food: false,
    Transit: false,
-   CharacterLicenses: false,
-   CharacterIdentity: false,
 
    Clothing: false,
    Market: false,

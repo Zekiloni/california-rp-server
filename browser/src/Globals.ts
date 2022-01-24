@@ -34,6 +34,7 @@ export const Messages = {
    BIRTH: 'Datum Rodjenja',
    BANK: 'Banka',
    IDENTITY: 'Identitet',
+   ID_CARD: 'Lična karta',
    IN: 'u',
    BLENDINGS: 'Genetika',
    WITHDRAW_PAGE: 'Podizanje Novca',

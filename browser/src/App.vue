@@ -1,7 +1,7 @@
 <template>
 
    <div id="app">
-      <Lobby v-if="interfaces.Lobby" />
+      <Lobby v-if="interfaces.lobby" />
 
       <Creator v-if="interfaces.Creator" />
 
@@ -14,6 +14,10 @@
       <!-- [MISC] -->
       <transition name="fade"> 
          <Inventory v-if="interfaces.Inventory" /> 
+      </transition>
+      
+      <transition name="fade">
+         <Document v-if="interfaces.id_Document" />
       </transition>
       
       <transition> 
@@ -62,6 +66,7 @@
    import GameInterface from './components/game.interface.vue';
    import Chat from './components/chat';
    import Inventory from './components/items/inventory.vue';
+   import Document from './components/misc/id.document.vue';
    import Banking from './components/Banking.vue';
    import JobOffer from './components/jobs/job.offer.vue';
    import Market from './components/business/Market.vue';
@@ -73,7 +78,7 @@
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Inventory, Chat, Banking, JobOffer,
-         Market, HouseInfo, Phone
+         Market, HouseInfo, Phone, Document
       },
 
       data () { 

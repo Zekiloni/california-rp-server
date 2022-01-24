@@ -2,8 +2,7 @@
 
 
 <template>
-   <div class="phone" ref="phone" @blur="console.log('gey')">
-
+   <div class="phone" ref="phone" v-on:click="console.log('jaa')">
 
    </div>
 </template>
@@ -33,8 +32,6 @@
       },
 
       mounted () { 
-         this.$nextTick(() => { this.$refs.phone.focus(); });
-
          if (window.mp) { 
             mp.invoke('focus', true); 
          }

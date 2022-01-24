@@ -52,6 +52,7 @@
    .vehicle-info { 
       position: absolute; bottom: 20px; padding: 15px 10px; right: 30px;
       display: flex; justify-content: center; flex-direction: column;
+      text-shadow: 0 0.7px 1px rgb(0 0 0 / 90%);
    }
 
    .driving-info {
@@ -61,8 +62,8 @@
       align-items: center;
    }
 
-   .driving-info h2 { position: relative; width: 120px; margin: 0 10px; text-align: center; color: #cdcdcd; font-weight: 350; }
-   .driving-info h2 small { font-size: 0.75rem; color: #959eaa; text-transform: uppercase; display: block; }
+   .driving-info h2 { position: relative; width: 120px; margin: 0 10px; text-align: center; color: #cdcdcd; font-weight: 450; }
+   .driving-info h2 small { font-size: 0.75rem; color: #959eaa; text-transform: uppercase; display: block; letter-spacing: 1px; }
 
    .driving-info h2.speed::after { 
       position: absolute;

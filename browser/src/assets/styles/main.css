@@ -12,6 +12,11 @@ body {
    font-style: normal;
 }
 
+#app {
+   width: 100%;
+   height: 100%;
+   display: grid;
+}
 
 input {
    border: none;

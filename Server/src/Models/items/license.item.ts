@@ -26,10 +26,10 @@ export class licenseItem extends baseItem {
    }
 }
 
-new licenseItem(itemData.Names.drivingLicense, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.boatingLicense, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.fishingLicense, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.flyingLicense, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.weaponLicense, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.huntingLicense, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.truckLicense, 'prop_cs_documents_01', 'a');
+new licenseItem(itemData.Names.DRIVING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemData.Names.BOATING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemData.Names.FISHING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemData.Names.FLYING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemData.Names.WEAPON_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemData.Names.HUNTING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemData.Names.TRUCK_LICENSE, 'prop_cs_documents_01', 'a');

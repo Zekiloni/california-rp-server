@@ -22,15 +22,16 @@ export class foodItem extends baseItem {
    }
 }
 
-new foodItem(itemData.Names.cheeseburgerItem, 'prop_cs_burger_01', 2, 3)
-new foodItem(itemData.Names.hamburgerItem, 'prop_cs_burger_01', 2, 3)
-new foodItem(itemData.Names.friesItem, 'prop_food_chips', 1, 2)
-new foodItem(itemData.Names.pizzaItem, 'prop_pizza_box_02', 3, 4)
-new foodItem(itemData.Names.chickenBurgerItem, 'prop_cs_burger_01', 3, 4)
-new foodItem(itemData.Names.chipsItem, 'v_ret_ml_chips4', 1, 2)
-new foodItem(itemData.Names.donutItem, 'prop_donut_02', 1, 2)
-new foodItem(itemData.Names.sandwichItem , 'prop_sandwich_01', 3, 4)
-new foodItem(itemData.Names.tacoItem, 'prop_taco_01', 2, 3)
+new foodItem(itemData.Names.FOOD_CHEESE_BURGER, 'prop_cs_burger_01', 2, 3);
+new foodItem(itemData.Names.FOOD_HAMBURGER, 'prop_cs_burger_01', 2, 3);
+new foodItem(itemData.Names.FOOD_CHICKEN_BURGER, 'prop_cs_burger_01', 3, 4);
+new foodItem(itemData.Names.FOOD_PIZZA, 'prop_pizza_box_02', 3, 4);
+new foodItem(itemData.Names.FOOD_SANDWICH , 'prop_sandwich_01', 3, 4);
+new foodItem(itemData.Names.FOOD_TACO, 'prop_taco_01', 2, 3);
+new foodItem(itemData.Names.FOOD_FRIES, 'prop_food_chips', 1, 2);
+new foodItem(itemData.Names.FOOD_CHIPS, 'v_ret_ml_chips4', 1, 2);
+new foodItem(itemData.Names.FOOD_DONUT, 'prop_donut_02', 1, 2);
+
 
 
 

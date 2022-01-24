@@ -154,9 +154,9 @@
    .online-players { margin: 0 25px; }
    .player-id { margin: 0 25px; }
 
-   h3, h2 { margin: 0; text-shadow: 0 0 0.7px rgb(0 0 0 / 95%); }
+   h3, h2 { margin: 0; text-shadow: 0 0.7px 1px rgb(0 0 0 / 70%); }
 
-   .online-players h3, .player-id h3 { font-weight: 450; color: #848e9c; font-size: 0.8rem; }
+   .online-players h3, .player-id h3 { font-weight: 450; color: #959eac; font-size: 0.8rem; }
    .player-id h2 { color: #cdcdcd; font-weight: 350; }
 
    .online-players .online { position: relative; font-weight: 350; padding-left: 25px; color: #00d474; }
@@ -180,7 +180,6 @@
       color: #fffdf6;
       font-size: 1.65rem;
       font-weight: 500;
-      text-shadow: none;
    }
 
    .info { position: absolute; bottom: 20px; padding: 15px 10px; left: 315px; width: 300px; height: auto; }
@@ -190,6 +189,7 @@
    .date-time h3 { font-weight: 450; color: #959fae; font-size: 0.9rem; }
 
    .location h2 { color: #ffcc45; font-weight: 500; }
-   .location h3.street { color: #cdcdcd; font-weight: 350; }
+   .location h3.street { color: #e2e2e2; font-weight: 350; }
    .location h3.zone { font-weight: 450; color: #959fae; font-size: 0.9rem; }
+   
 </style>
