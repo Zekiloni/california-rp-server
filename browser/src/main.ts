@@ -12,6 +12,7 @@ Vue.config.devtools = true;
 
 Vue.use(VTooltip);
 
+
  
 Vue.mixin({
    methods: {

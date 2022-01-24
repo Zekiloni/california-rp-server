@@ -2,7 +2,8 @@
 
 
 <template>
-   <div class="phone">
+   <div class="phone" ref="phone" @blur="console.log('gey')">
+
 
    </div>
 </template>
@@ -11,15 +12,29 @@
    export default {
       data () { 
          return { 
+            applications: [
+               { name: 'contacts', toggle: false },
+               { name: 'calls', toggle: false }
+            ]
+         }
+      },
 
+      computed: { 
+         opened: function () { 
+            return this.applications.filter(application => application.toggle === true);
          }
       },
 
       methods: {
+         open: function (application) {
+            application.toggle = true;
 
+         }
       },
 
       mounted () { 
+         this.$nextTick(() => { this.$refs.phone.focus(); });
+
          if (window.mp) { 
             mp.invoke('focus', true); 
          }

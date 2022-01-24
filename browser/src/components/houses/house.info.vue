@@ -43,9 +43,10 @@
       width: 320px;
       margin: auto;
       min-height: 200px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      background: linear-gradient(180deg, rgb(11 14 17 / 85%), transparent);
+      overflow: hidden;
+      border-radius: 10px;
+      background: rgb(11 14 17 / 75%);
+      box-shadow: 0 7px 15px 0 rgb(0 0 0 / 61%);
    }
 
    h2.adress {
@@ -56,7 +57,7 @@
       font-size: 1.15rem;
       border-top-left-radius: 10px;
       padding: 10px;
-      background: linear-gradient(90deg, #474d57, transparent);
+      background: #181a20;
    }
 
    h2.adress small { 
@@ -68,8 +69,8 @@
 
    ul.info { list-style: none; padding: 10px; margin: 0; }
    
-   ul.info li { font-size: 0.9rem; color: #848e9c; margin: 5px 0; }
-   ul.info b { color: #cdcdcd; font-weight: 500; }
+   ul.info li { font-size: 0.8rem; color: #848e9c; margin: 5px 0; }
+   ul.info b { color: #cdcdcd; font-weight: 350; }
 
    ul.info li.sale { color: #78cd78; font-weight: 500; font-size: 1.05rem; }
 

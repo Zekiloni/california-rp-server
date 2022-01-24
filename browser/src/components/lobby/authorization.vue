@@ -67,7 +67,7 @@
       color: whitesmoke;
       align-items: center;
       transition: all .3s ease;
-      background: linear-gradient(0deg, #181a20, transparent);
+      background: linear-gradient(0deg, #0b0e11, transparent);
       flex-direction: column;
       animation: slide-from-top 1.3s ease-in-out;
    }

@@ -5,7 +5,7 @@
    <div class="wrapper">
 
       <div class="equiped">
-         <div class="item" v-for="item in equiped" :key="item" v-on:click="unequip(item.id)">  {{ item.id }} </div>
+         <div class="item" v-for="item in equiped" :key="item.id" v-on:click="unequip(item.id)">  {{ item.id }} </div>
       </div>
 
       <div class="inventory" @mouseenter="hoverBox = false, hoveredItem = null" @click="hoverBox = false">
@@ -159,14 +159,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      background: rgb(11 14 17 / 70%);
    }
 
    .equiped { 
       height: 480px;
-      width: 120px;
-      padding: 0 15px;
+      width: 110px;
+      padding: 15px;
       display: flex;
+      margin: 0 15px;
       justify-content: flex-start;
+      border-radius: 10px;
+      background: rgb(11 14 17 / 55%);
       align-items: center;
       flex-direction: column;
    }
@@ -185,12 +189,14 @@
       width: auto;
       border-radius: 10px;
       height: 480px;
-      background:#0b0e11;
+      background: rgb(11 14 17 / 75%);
       display: grid;
       grid-gap: 0.7rem;
+      margin: 0 15px;
       grid-template-columns: repeat(3, 150px);
       grid-template-rows: repeat(3, 150px);
-      box-shadow: 0 21px 29px 0 rgb(0 0 0 / 31%);
+      /* border: 1.5px solid rgb(128 128 128 / 45%); */
+      /* box-shadow: 0 7px 15px 0 rgb(0 0 0 / 45%); */
    }
 
    .item-holder { 
@@ -206,7 +212,7 @@
       border-radius: 10px;
       height: 145px;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
-      background: #181a20;
+      background: #0b0e11;
       transition: all .3s ease;
       display: grid;
    }
