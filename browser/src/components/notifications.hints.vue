@@ -90,7 +90,7 @@
    }
 
    ul.notifications li.notification { 
-      background: #21252f;
+      background: rgb(11 14 17 / 60%);
       border-top-left-radius: 20px;
       border-bottom-right-radius: 20px;
       padding: 10px;
@@ -116,9 +116,9 @@
    }
    
 
-   li.notification.success, li.notification.success .type { border-color: #41d888 !important; color: #41d888; }
-   li.notification.error, li.notification.error .type { border-color: #ff3a41 !important; color: #ff3a41; }
-   li.notification.info, li.notification.info .type { border-color: #fab80a !important; color: #fab80a; }
+   li.notification.success, li.notification.success .type { border-color: rgb(65 216 136 / 70%) !important; color: #41d888; }
+   li.notification.error, li.notification.error .type { border-color: rgb(255 58 65 / 70%) !important; color: #ff3a41; }
+   li.notification.info, li.notification.info .type { border-color: rgb(250 184 10 / 70%) !important; color: #fab80a; }
 
    .notification-enter-active { animation: notification-in 0.65s; }
    .notification-leave-active { animation: notification-in 0.55s reverse; }

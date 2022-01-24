@@ -2,8 +2,8 @@
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
-import { Distances, entityData, logType, NotifyType, spawnTypes } from '../globals/enums';
-import { Messages, Colors } from '../globals/constants';
+import { entityData, logType, NotifyType, spawnTypes } from '../globals/enums';
+import { Messages } from '../globals/constants';
 import { Config } from '../config';
 import Bans from '../models/ban.model';
 import { spawnPoint } from '../globals/interfaces';
@@ -38,51 +38,16 @@ mp.events.add(
 
       },
 
+      'playerChat': (player: PlayerMp, content) => player.Character.onChat(player, content),
+
+      'playerDeath': (player: PlayerMp) => player.Character.onDeath(player),
+
       'SERVER::CHARACTER:PLAY': async (player: PlayerMp, characterId: number, point: spawnTypes) => {
          const selectedCharacter = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
          selectedCharacter?.spawnPlayer(player, point);
       },
 
-      'playerChat': async (player: PlayerMp, Content) => {
-         if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
-
-            if (player.getVariable(entityData.MUTED)) return; // u are muted
-
-            const character = player.Character;
-
-            player.sendProximityMessage(Distances.IC, character.name + Messages.PERSON_SAYS + Content, Colors.White);
-         }
-   
-         //    if (Player.getVariable('Muted')) return;
-   
-         //    const Character = await Player.Character();
-   
-         //    const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
-   
-         //    if (Player.vehicle) { 
-   
-         //       const vClass = await Player.callProc('client:player.vehicle:class');
-         //       if (vClass == 14 || vClass == 13 || vClass == 8) { 
-         //          Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
-         //       } else { 
-   
-         //          const Seat = Player.seat;
-         //          let Windows = Player.vehicle.getVariable('Windows');
-   
-         //          if (Windows[Seat]) { 
-         //             Player.ProximityMessage(Distances.VEHICLE, Name + Messages.PERSON_SAYS + Content, Colors.White);
-   
-         //          } else { 
-         //             Player.VehicleMessage(Name + Messages.PERSON_SAYS_IN_VEHICLE + Content, Colors.Vehicle);
-         //          }
-         //       }
-   
-         //    } else { 
-         //       Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
-         //    }
-   
-         // }
-      }
+       
    }
 );
 

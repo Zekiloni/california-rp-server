@@ -11,7 +11,7 @@ export class phoneItem extends baseItem {
       super (name, defaultPhoneType, model, weight, description);
 
       this.use = function (player: PlayerMp) {
-         console.log(this)
+         player.call('CLIENT::INVENTORY:TOGGLE');
          player.call('CLIENT::PHONE:TOGGLE', [true]);
       }
 

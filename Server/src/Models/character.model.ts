@@ -1,7 +1,7 @@
 
 
-import { entityData, globalDimension, NotifyType, Peds, spawnTypes } from '../globals/enums';
-import { Messages } from '../globals/constants';
+import { Distances, entityData, globalDimension, NotifyType, Peds, spawnTypes } from '../globals/enums';
+import { Colors, Messages } from '../globals/constants';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne } from 'sequelize-typescript';
 import { Config } from '../config';
 
@@ -331,6 +331,53 @@ export default class Characters extends Model {
       return has ? has : false;
    }
 
+   onDeath (player: PlayerMp) { 
+      const { position } = player;
+      console.log(1)
+      player.spawn(position);
+      
+   }
+
+   onChat (player: PlayerMp, content: any) {
+      if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
+
+         if (player.getVariable(entityData.MUTED)) return; // u are muted
+
+         const character = player.Character;
+
+         player.sendProximityMessage(Distances.IC, character.name + Messages.PERSON_SAYS + content, Colors.White);
+      }
+
+      //    if (Player.getVariable('Muted')) return;
+
+      //    const Character = await Player.Character();
+
+      //    const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
+
+      //    if (Player.vehicle) { 
+
+      //       const vClass = await Player.callProc('client:player.vehicle:class');
+      //       if (vClass == 14 || vClass == 13 || vClass == 8) { 
+      //          Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
+      //       } else { 
+
+      //          const Seat = Player.seat;
+      //          let Windows = Player.vehicle.getVariable('Windows');
+
+      //          if (Windows[Seat]) { 
+      //             Player.ProximityMessage(Distances.VEHICLE, Name + Messages.PERSON_SAYS + Content, Colors.White);
+
+      //          } else { 
+      //             Player.VehicleMessage(Name + Messages.PERSON_SAYS_IN_VEHICLE + Content, Colors.Vehicle);
+      //          }
+      //       }
+
+      //    } else { 
+      //       Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
+      //    }
+
+      // }
+   }
 }
 
 

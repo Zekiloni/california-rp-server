@@ -169,7 +169,7 @@
          },
 
          Close: function () { 
-            if (this.Active && this.Typing) { 
+            if (this.Settings.Active && this.Typing) { 
                this.Toggle(false);     
             }
          },

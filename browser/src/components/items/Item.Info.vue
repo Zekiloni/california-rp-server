@@ -11,6 +11,12 @@
       <h2 class="name"> {{ itemInfo.name }} </h2>
       <p class="description" v-html="itemInfo.description"> </p>
 
+      <model-viewer alt="aaa" 
+         src="http://mwojtasik.dev/tools/gtav/object-glb/apa_heist_apart2_door?token=6033ef29c5dfce67b5146a74"
+         shadow-intensity="0" 
+         camera-controls>
+      </model-viewer>
+
       <ul class="actions" v-if="itemActions.length > 0"> 
          <li v-for="action in itemActions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
             <div class="icon" :class="action.icon"> </div>
@@ -23,6 +29,7 @@
 
 <script>
    import { Messages } from '../../globals';
+   import '@google/model-viewer';
 
    export default { 
       props: {
@@ -50,6 +57,11 @@
       },
 
       async mounted () { 
+
+         const headers = new Headers();
+         headers.append('Access-Control-Allow-Origin', '*');
+
+
          if (window.mp) { 
             let itemData = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
 
@@ -70,7 +82,8 @@
    .item-info { 
       position: absolute;
       width: 300px;
-      height: 200px;
+      min-height: 230px;
+      height: auto;
       border-radius: 10px;
       background: #181a20;
       overflow: hidden;

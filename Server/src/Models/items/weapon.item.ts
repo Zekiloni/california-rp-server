@@ -23,7 +23,7 @@ export class weaponItem extends baseItem {
       console.log(this)
 
       this.use = async function (player: PlayerMp, item: Items) { 
-         item.status = itemData.Status.EQUIPED;
+         item.equiped = true;
          player.giveWeapon(mp.joaat(this.weapon_hash), item.data.ammo ? item.data.ammo : 0);
          await item.save();
       }

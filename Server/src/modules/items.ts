@@ -102,7 +102,7 @@ mp.events.add(
                where: { 
                   owner: player.Character.id, 
                   name: weapon.name, 
-                  status: itemData.Status.EQUIPED 
+                  equiped: true
                } 
             }
          );
@@ -114,7 +114,9 @@ mp.events.add(
          }
 
          let data = weaponItem.data;
-         data.ammo! --;
+         if (data.ammo! > 0) {
+            data.ammo! --;
+         }
 
          weaponItem.data = data;
          console.log(1)

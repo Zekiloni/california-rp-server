@@ -4,8 +4,12 @@
 <template>
    <div class="wrapper">
 
+      <div class="equiped">
+         <div class="item" v-for="item in equiped" :key="item" v-on:click="unequip(item.id)">  {{ item.id }} </div>
+      </div>
+
       <div class="inventory" @mouseenter="hoverBox = false, hoveredItem = null" @click="hoverBox = false">
-         <div class="item-holder" v-for="item in availableItems" :key="item.id" @mouseenter=" e => hoverItem(item, e)" > 
+         <div class="item-holder" v-for="item in available" :key="item.id" @mouseenter=" e => hoverItem(item, e)" > 
             <div class="item">
                <h3 class="quantity"> {{ item.quantity }} </h3>
                <h3 class="item-name"> {{ item.name }} </h3>
@@ -35,7 +39,6 @@
       </div>
 
       
-
 
       <transition name="fade">
          <ItemInfo v-if="hoverBox && hoveredItem" :item="hoveredItem" :position="hoveredPosition" />
@@ -73,8 +76,12 @@
       },
 
       computed: { 
-         availableItems: function () { 
-            return this.items.filter(item => item.status != 1);
+         available: function () { 
+            return this.items.filter(item => item.equiped == false);
+         },
+
+         equiped: function () {
+            return this.items.filter(item => item.equiped == true);
          }
       },
 
@@ -83,9 +90,13 @@
          hoverItem: function (item, e) {
             this.hoverBox = true;
             this.hoveredItem = item;
-                        
+
             if (e) this.hoveredPosition = { left: e.clientX, top: e.clientY };
          },
+
+         unequip: function (id) {
+            mp.events.call('CLIENT::ITEM:UNEQUIP');
+         }
 
          // Weight: function (Items) {
          //    let Total = 0;
@@ -147,15 +158,33 @@
       left: 0;
       display: flex;
       justify-content: center;
-      flex-direction: column;
       align-items: center;
+   }
+
+   .equiped { 
+      height: 480px;
+      width: 120px;
+      padding: 0 15px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: column;
+   }
+
+   .equiped .item { 
+      width: 100px;
+      margin: 20px 0;
+      height: 100px;
+      box-shadow: 0 21px 29px 0 rgb(0 0 0 / 31%);
+      background: #606163;
+      border-radius: 10px;
    }
 
    .inventory { 
       padding: 15px;
       width: auto;
       border-radius: 10px;
-      height: auto;
+      height: 480px;
       background:#0b0e11;
       display: grid;
       grid-gap: 0.7rem;

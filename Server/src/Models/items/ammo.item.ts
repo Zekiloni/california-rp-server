@@ -1,8 +1,9 @@
-import { itemData } from '../../globals/enums';
+import { itemData, logType } from '../../globals/enums';
 import Items from '../inventory.item.model';
 import { baseItem, noDesc } from '../item.model';
 import weaponData from '../../data/weapon.data.json';
 import { weapons } from './weapon.item';
+import { Logger } from '../../utils';
 
 
 type weaponData = { [key: string]: any }
@@ -12,13 +13,13 @@ export class ammoItem extends baseItem {
    clipSize: number;
    
    constructor (name: string, model: string, bullets: number, weight: number = 0.1, description: string = noDesc) { 
-      super (name, [itemData.Type.AMMO, itemData.Type.MISC], model, weight, description);
+      super (name, [itemData.Type.USABLE, itemData.Type.STACKABLE, itemData.Type.AMMO, itemData.Type.MISC], model, weight, description);
       this.clipSize = bullets;
       
       this.use = async function (player: PlayerMp, item: Items) {
 
          if (!player.weapon) { 
-            // no weapon in hand
+            // ERROR: No weapon
             return;
          }
 
@@ -32,13 +33,13 @@ export class ammoItem extends baseItem {
                where: { 
                   owner: player.Character.id, 
                   name: ww.name, 
-                  status: itemData.Status.EQUIPED 
+                  equiped: true
                } 
             }
          );
 
          if (!weaponItem) { 
-            // no weapon
+            Logger(logType.ERROR, 'updating weapon exception.');
             return;
          }
          
@@ -53,12 +54,13 @@ export class ammoItem extends baseItem {
             };
          }
 
-         console.log(ww);
-
-         console.log('Ammo ' + ammo + ', new ammo ' + (ammo + this.clipSize));
+         if (item.quantity > 1) { 
+            item.increment('quantity', { by: -1 } );
+         } else { 
+            item.destroy();
+         }
 
          await weaponItem.save()
-  
       };
    }
 };

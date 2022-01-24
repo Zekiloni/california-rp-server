@@ -203,7 +203,7 @@ export namespace itemData {
    }
 
    export enum Status { 
-      NONE, EQUIPED, RAW, COOKED, BROKEN, FURNITURE_PLACED
+      NONE, RAW, COOKED, BROKEN, FURNITURE_PLACED
    }
 
    export enum Names { 

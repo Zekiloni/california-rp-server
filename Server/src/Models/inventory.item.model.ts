@@ -31,6 +31,10 @@ export default class Items extends Model {
    @Column(DataType.BOOLEAN)
    on_ground: boolean;
 
+   @Default(false)
+   @Column(DataType.BOOLEAN)
+   equiped: boolean;
+
    @Column(DataType.INTEGER)
    status: itemData.Status;
 
@@ -138,14 +142,14 @@ export default class Items extends Model {
    }
 
    static async unequipWeapons (character: Characters) { 
-      Items.findAll({ where: { entity: itemData.Entity.PLAYER, owner: character.id, status: itemData.Status.EQUIPED } }).then(items => { 
+      Items.findAll({ where: { entity: itemData.Entity.PLAYER, owner: character.id, equiped: true } }).then(items => { 
          if (items.length == 0) {
             return
          }
          
          items.forEach(async item => {
             if (baseItem.list[item.name].isWeapon()) {
-               item.status = itemData.Status.NONE;
+               item.equiped = false;
                await item.save();
             }
          });
