@@ -176,6 +176,8 @@ export const Messages = {
    TRY_END: [
       'uspeva', 'ne uspeva'
    ],
+   DROPS_COIN: ' baca novčić i pada na ',
+   COIN_RESULT: ['glava', 'pismo'],
    PM_FROM: 'PM od',
    PM_TO: 'PM za',
 

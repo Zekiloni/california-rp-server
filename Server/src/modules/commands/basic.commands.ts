@@ -8,7 +8,7 @@ Commands[CommandEnums.Names.ROLEPLAY_ME] = {
    params: [
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, ...content) => {
+   call (player: PlayerMp, ...content) {
       const text = [...content].join(' ');
 
       if (!text.trim()) {
@@ -25,7 +25,7 @@ Commands[CommandEnums.Names.ROLEPLAY_DO] = {
    params: [
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, ...content) => {
+   call (player: PlayerMp, ...content) {
       const text = [...content].join(' ');
 
       if (!text.trim()) {
@@ -42,7 +42,7 @@ Commands[CommandEnums.Names.ROLEPLAY_TRY] = {
    params: [
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, ...content) => {
+   call (player: PlayerMp, ...content) {
       const text = [...content].join(' ');
 
       if (!text.trim()) {
@@ -64,7 +64,7 @@ Commands[CommandEnums.Names.LOW_CHAT] = {
    params: [
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, ...content: any) => {
+   call (player: PlayerMp, ...content: any) {
       const text = [...content].join(' ');
 
       if (!text.trim()) {
@@ -85,7 +85,7 @@ Commands[CommandEnums.Names.SHOUT_CHAT] = {
    params: [
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, ...content: any) => {
+   call (player: PlayerMp, ...content: any) {
       const text = [...content].join(' ');
 
       if (!text.trim()) {
@@ -107,7 +107,7 @@ Commands[CommandEnums.Names.WHISPER] = {
       CommandEnums.Params.PLAYER,
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, targetSearch: string | number, ...content: any) => {
+   call (player: PlayerMp, targetSearch: string | number, ...content: any) {
 
       const text = [...content].join(' ');
 
@@ -143,7 +143,7 @@ Commands[CommandEnums.Names.ROLEPLAY_AME] = {
    params: [
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, ...content: any) => {
+   call (player: PlayerMp, ...content: any) {
 
       const text = [...content].join(' ');
 
@@ -173,7 +173,7 @@ Commands[CommandEnums.Names.OOC_CHAT] = {
    params: [
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, ...content: any) => {
+   call (player: PlayerMp, ...content: any) {
       const text = [...content].join(' ');
 
       if (!text.trim()) {
@@ -195,7 +195,7 @@ Commands[CommandEnums.Names.PM] = {
       CommandEnums.Params.PLAYER, 
       CommandEnums.Params.TEXT
    ],
-   call: (player: PlayerMp, targetSearch: string | number, ...content: any) => {
+   call (player: PlayerMp, targetSearch: string | number, ...content: any) {
       
       const text = [...content].join(' ');
       
@@ -226,3 +226,28 @@ Commands[CommandEnums.Names.PM] = {
       );
    }
 };
+
+
+Commands[CommandEnums.Names.COIN] = {
+   description: '',
+   call (player: PlayerMp) {
+      if (player.Character.money < 1) {
+         // PORUKA: Nemate novca
+         return;
+      }
+
+      if (player.Character.wounded) {
+         // PORUKA: Nemate novca
+         return;
+      }
+
+
+      const coinResult = Messages.COIN_RESULT[Math.floor(Math.random() * Messages.COIN_RESULT.length)];   
+
+      player.sendProximityMessage(
+         Distances.ROLEPLAY, 
+         '* ' + player.name + Messages.DROPS_COIN + coinResult, 
+         Colors.Purple
+      );  
+   }
+}

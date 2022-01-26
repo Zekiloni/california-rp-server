@@ -271,7 +271,8 @@ export namespace CommandEnums {
       FLY = 'fly',
       ROLEPLAY_TRY = 'try',
       SHOUT_CHAT = 's',
-      ROLEPLAY_AME = 'ame'
+      ROLEPLAY_AME = 'ame',
+      COIN = 'coin'
    }
 
    export enum Params { 
