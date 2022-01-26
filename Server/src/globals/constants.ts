@@ -170,10 +170,14 @@ export const Messages = {
    INVITED_TO_FACTION: 'Pozvani ste da se pridružite fakciji ',
    QUETLY: 'tiho',
    IS_SHOUTING: 'se dere',
+   WHISPERING: 'Šapućete',
+   IS_WHISPERING_U: 'vam šapuće',
    TRIES_TO: ' pokušava da ',
    TRY_END: [
       'uspeva', 'ne uspeva'
    ],
+   PM_FROM: 'PM od',
+   PM_TO: 'PM za',
 
    MONEY_WITHDRAW: 'Podizanje',
    MONEY_DEPOSIT: 'Depozit',

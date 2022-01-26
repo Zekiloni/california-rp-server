@@ -296,7 +296,9 @@ export namespace CommandEnums {
       ROLEPLAY_TRY = 'Pokušaj radnje.',
       LOW_CHAT = 'Tih govor.',
       SHOUT_CHAT = 'Glasniji govor.',
-      OOC_CHAT = 'Lokalni OOC govor.'
+      OOC_CHAT = 'Lokalni OOC govor.',
+      PM_CHAT ='Privatna poruka.',
+      WHISPER = 'Šaputanje.',
    }
 }
 

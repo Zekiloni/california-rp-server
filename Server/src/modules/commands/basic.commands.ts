@@ -101,6 +101,53 @@ Commands[CommandEnums.Names.SHOUT_CHAT] = {
 };
 
 
+Commands[CommandEnums.Names.WHISPER] = {
+   description: CommandEnums.Descriptions.WHISPER,
+   params: [
+      CommandEnums.Params.PLAYER,
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, targetSearch: string | number, ...content: any) => {
+
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      }
+
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         // PORUKA: IGRAC NIJE PRONADJEN
+         return;
+      }
+
+      if (target.id == player.id) {
+         // PORUKA: NE MOZETE SAMI SEBI
+         return;
+      }
+
+      if (player.dist(target.position) > Distances.WHISPER || player.dimension != target.dimension) {
+         // PORUKA: IGRAC NIJE U VASOJ BLIZINI
+         return;
+      }
+
+      target.sendMessage(player.name + ' ' + Messages.IS_WHISPERING_U + ': ' + text, Colors.White[3]);
+      player.sendMessage(Messages.WHISPERING + ' ' + target.name + ': ' + text, Colors.White[3]);
+   }
+};
+
+
+Commands['ame'] = {
+   description: 'Radnja / Akcija',
+   params: ['sadržaj'],
+   call: (Player: PlayerMp, args: any) => {
+      const Content = args.splice(0).join(' ');
+      //Player.Bubble(Content, frp.Globals.Colors.Bubble);   
+   }
+}
+
+
 Commands[CommandEnums.Names.OOC_CHAT] = {
    description: CommandEnums.Descriptions.OOC_CHAT,
    params: [
@@ -119,46 +166,43 @@ Commands[CommandEnums.Names.OOC_CHAT] = {
          Colors.OOC
       );
    }
-}
+};
 
-Commands['w'] = {
-   description: 'Sapnuti nekome nesto',
-   params: ['igrac', 'tekst'],
-   call: (Player: PlayerMp, args: any) => {
-         // const Target = mp.players.find(args[0]);
 
-         // if (Target) { 
-         //    if (Player.id == Target.id) return;
-         //    const Message = args.splice(1).join(' ');
-         //    if (!Message.trim()) return;
-         //    if (Player.dist(Target.position) > Distances.WHISPER) return Player.Notification(Messages.PLAYER_NOT_NEAR, NotifyType.ERROR, 5);
+Commands[CommandEnums.Names.PM] = {
+   description: CommandEnums.Descriptions.PM_CHAT,
+   params: [
+      CommandEnums.Params.PLAYER, 
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, targetSearch: string | number, ...content: any) => {
+      
+      const text = [...content].join(' ');
+      
+      if (!text.trim()) {
+         return;
+      }
 
-         //    Target.SendMessage(Player.name + ' vam šapuće: ' + Message + '.', Colors.White[3]);
-         //    Player.SendMessage('Šapnuli ste ' + Target.name + ': ' + Message + '.', Colors.White[3]);
-         // }
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         // PORUKA: IGRAC NIJE PRONADJEN
+         return;
+      }
+
+      if (target.id == player.id) {
+         // PORUKA: NE MOZETE SAMI SEBI
+         return;
+      }
+
+      target.sendMessage(
+         '(( ' + Messages.PM_FROM + ' ' + player.name + ' [' + player.id + ']: ' + text + ' ))', 
+         Colors.PM.From
+      );
+
+      player.sendMessage(
+         '(( ' + Messages.PM_TO + ' ' + target.name + ' [' + target.id + ']: ' + text + ' ))', 
+         Colors.PM.To
+      );
    }
-}
-
-Commands['pm'] = {
-   description: 'Privatna poruka',
-   params: ['igrac', 'tekst'],
-   call: (Player: PlayerMp, args: any) => {
-      // const Target = mp.players.find(args[0]);
-      // if (Target) { 
-      //    if (Player.id == Target.id) return;
-      //    let Message = args.splice(1).join(' ');
-      //    if (!Message.trim()) return;
-      //    Target.SendMessage('(( PM od ' + Player.name + ' [' + Player.id + ']: ' + Message + ' ))', Colors.PM.From);
-      //    Player.SendMessage('(( PM za ' + Target.name + ' [' + Target.id + ']: ' + Message + ' ))', Colors.PM.To);
-      // }
-   }
-}
-
-Commands['ame'] = {
-   description: 'Radnja / Akcija',
-   params: ['sadržaj'],
-   call: (Player: PlayerMp, args: any) => {
-      const Content = args.splice(0).join(' ');
-      //Player.Bubble(Content, frp.Globals.Colors.Bubble);   
-   }
-}
+};
