@@ -213,7 +213,7 @@ export namespace itemData {
    export enum Entity { 
       PLAYER, BACKPACK, STORAGE,
       VEHICLE, TEMPORARY_VEHICLE,
-      HOUSE, BUSINESS
+      HOUSE, BUSINESS, NONE
    }
 
    export enum Status { 

@@ -11,7 +11,7 @@
 
          <ul class="items"> 
             <li class="item" v-for="(Item, i) in Business.Products" :key=Item v-on:click="Add(Item)" v-tooltip="i"> 
-               <img :src="require('../../assets/images/items/' + Item.Model + '.png')" />
+               <!-- <img :src="require('../../assets/images/items/' + Item.Model + '.png')" /> -->
                <div class="info"> 
                   <small> {{ i }} </small>
                   <h3 class="price"> {{ formatDollars(Business.Multiplier * Item.Multiplier) }} </h3>

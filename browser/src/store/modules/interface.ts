@@ -29,17 +29,18 @@ const InitialState = {
    Food: false,
    Transit: false,
 
-   Clothing: false,
-   Market: false,
-   Drinks: false,
-   Rent: false,
-   Fuel: false,
-   Dealership: false,
+   clothing_Shop: true,
+   market_Shop: false,
+   drinks_Shop: false,
+   rent_Shop: false,
+   gas_Station: false,
+   dealership: false,
+   
    House: false,
    Business: false,
 
    DMV: false,
-   
+      
    houseInfo: false
 }
 

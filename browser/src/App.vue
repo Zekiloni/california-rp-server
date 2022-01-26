@@ -1,6 +1,7 @@
 <template>
 
    <div id="app">
+
       <Lobby v-if="interfaces.lobby" />
 
       <Creator v-if="interfaces.characterCreator" />
@@ -27,7 +28,7 @@
       <transition name="fade"> 
          <Banking v-if="interfaces.banking" />
       </transition>
-     
+   
       
       <!-- [HOUSES] -->
       <transition name="fade"> 
@@ -35,7 +36,7 @@
       </transition>
 
       <!-- [BUSINESSES] -->
-      <Market v-if="interfaces.Market" />
+      <Market v-if="interfaces.market" />
 
       <transition name="bounce"> 
          <JobOffer v-if="interfaces.job_Offer" />
@@ -75,7 +76,6 @@
    import Market from './components/business/Market.vue';
    import HouseInfo from './components/houses/house.info.vue';
    import Phone from './components/phone.vue';
-
 
    export default { 
 

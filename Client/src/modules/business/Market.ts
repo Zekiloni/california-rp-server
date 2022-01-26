@@ -9,9 +9,9 @@ mp.events.add({
    'client:business.market:menu': (business) => { 
       Active = !Active;
       if (Active) { 
-         Browser.call('BROWSER::SHOW', 'Market');
+         Browser.call('BROWSER::SHOW', 'market');
       } else { 
-         Browser.call('BROWSER::HIDE', 'Market');
+         Browser.call('BROWSER::HIDE', 'market');
       }
    },
 

@@ -4,6 +4,7 @@ import './modules/main';
 import './modules/commands';
 import './modules/player';
 import './modules/items';
+import './modules/auctions'
 import './modules/bank'
 import './modules/jobs';
 import './modules/houses';
