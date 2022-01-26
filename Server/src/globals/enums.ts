@@ -1,7 +1,7 @@
 
 
 
-export const globalDimension = 0;
+export const GlobalDimension = 0;
 
 export namespace Peds { 
    export enum Models { 
@@ -48,6 +48,17 @@ export namespace Peds {
       'Quick': 'move_m@quick',
       'Sad': 'move_m@sad@a',
       'Tough': 'move_m@tool_belt@a',
+   }
+}
+
+
+export namespace Locations { 
+   export enum Sprites { 
+      BANK = 207
+   }
+
+   export enum Markers {
+      BANK = 29
    }
 }
 

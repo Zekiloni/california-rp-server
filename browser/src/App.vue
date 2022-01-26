@@ -5,15 +5,15 @@
 
       <Creator v-if="interfaces.characterCreator" />
 
-      <GameInterface v-if="interfaces.GameInterface" />
-      <Notifications v-if="interfaces.Notifications" />
+      <GameInterface v-if="interfaces.gameInterface" />
+      <Notifications v-if="interfaces.notifications" />
 
 
-      <Chat v-if="interfaces.Chat" />
+      <Chat v-if="interfaces.chat" />
 
       <!-- [MISC] -->
       <transition name="fade"> 
-         <Inventory v-if="interfaces.Inventory" /> 
+         <Inventory v-if="interfaces.inventory" /> 
       </transition>
       
       <transition name="fade">
@@ -21,21 +21,24 @@
       </transition>
       
       <transition> 
-         <Phone v-if="interfaces.Phone" />
+         <Phone v-if="interfaces.phone" />
       </transition>
 
-      <Banking v-if="interfaces.Banking" />
+      <transition name="fade"> 
+         <Banking v-if="interfaces.banking" />
+      </transition>
+     
       
       <!-- [HOUSES] -->
       <transition name="fade"> 
-         <HouseInfo v-if="interfaces.HouseInfo" />
+         <HouseInfo v-if="interfaces.houseInfo" />
       </transition>
 
       <!-- [BUSINESSES] -->
       <Market v-if="interfaces.Market" />
 
       <transition name="bounce"> 
-         <JobOffer v-if="interfaces.Job_Offer" />
+         <JobOffer v-if="interfaces.job_Offer" />
       </transition>
 
 
@@ -67,7 +70,7 @@
    import Chat from './components/chat';
    import Inventory from './components/items/inventory.vue';
    import Document from './components/misc/id.document.vue';
-   import Banking from './components/Banking.vue';
+   import Banking from './components/banking.vue';
    import JobOffer from './components/jobs/job.offer.vue';
    import Market from './components/business/Market.vue';
    import HouseInfo from './components/houses/house.info.vue';

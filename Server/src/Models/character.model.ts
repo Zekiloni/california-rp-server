@@ -1,6 +1,6 @@
 
 
-import { Distances, entityData, globalDimension, itemData, NotifyType, Peds, spawnTypes } from '../globals/enums';
+import { Distances, entityData, GlobalDimension, itemData, NotifyType, Peds, spawnTypes } from '../globals/enums';
 import { Colors, Messages } from '../globals/constants';
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, AfterCreate } from 'sequelize-typescript';
 import { Config } from '../config';
@@ -233,13 +233,13 @@ export default class Characters extends Model {
       switch (point) { 
          case spawnTypes.default: { 
             player.position = Config.Default.Spawn;
-            player.dimension = globalDimension;
+            player.dimension = GlobalDimension;
             break;
          }
 
          case spawnTypes.lastPosition: {
             player.position = new mp.Vector3(this.last_position.x, this.last_position.y, this.last_position.y);
-            player.dimension = this.last_dimension ? this.last_dimension : globalDimension;
+            player.dimension = this.last_dimension ? this.last_dimension : GlobalDimension;
             break;
          }
 

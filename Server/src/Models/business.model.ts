@@ -1,6 +1,6 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, DataType, AfterCreate, AllowNull } from 'sequelize-typescript';
 import { markerColors } from '../globals/constants';
-import { bizData, globalDimension } from '../globals/enums';
+import { bizData, GlobalDimension } from '../globals/enums';
 import { propertyPoint } from '../globals/interfaces';
 import Characters from './character.model';
 
@@ -39,7 +39,7 @@ export default class Business extends Model {
    @Column
    budget: number
 
-   @Default(globalDimension)
+   @Default(GlobalDimension)
    @Column
    dimension: number
 

@@ -1,6 +1,6 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
 import { markerColors, Messages } from '../globals/constants';
-import { globalDimension, houseData, NotifyType } from '../globals/enums';
+import { GlobalDimension, houseData, NotifyType } from '../globals/enums';
 import { propertyPoint } from '../globals/interfaces';
 
 @Table
@@ -41,7 +41,7 @@ export default class Houses extends Model {
    })
    interior_position: Vector3Mp
 
-   @Default(globalDimension)
+   @Default(GlobalDimension)
    @Column
    dimension: number;
 

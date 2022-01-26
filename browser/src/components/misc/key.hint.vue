@@ -2,7 +2,7 @@
 
 <template>
    <div class="key" v-tooltip="keys[keyName].name">
-      <div class="icon" :class="keys[keyName].icon">a</div>
+      <div class="icon" :class="keys[keyName].icon"> </div>
    </div>
 </template>
 
@@ -15,9 +15,9 @@
       data () {
          return {
             keys: {
-               'aada': {
+               0x08: {
                   icon: '', name: 'adad'
-               }
+               },
             }
          }
       }

@@ -4,9 +4,11 @@
 <template>
    
    <div class="notifications-hints"> 
-      <transition name="slide-top">
-         <div class="hint" v-if="hint"> </div>
-      </transition>
+      <transition-group name="slide-top" tag="ul" class="hints">
+         <li class="hint"  v-for="hint in hints" :key="hint"> 
+            
+         </li>
+      </transition-group>
 
       <transition-group name="notification" tag="ul" class="notifications">
          <li v-for="(notification, i) in notifications" v-bind:key="'n' + i" class="notification" :class="notificationTypes[notification.type].Class"> 
@@ -31,14 +33,14 @@
       data () { 
          return { 
 
-            hint: null,
-
             notificationTypes: [
                { Icon: 'fa fa-check', Class: 'success', Sound: new Audio(Success_Sound) },
                { Icon: 'fas fa-exclamation', Class: 'error', Sound: new Audio(Error_Sound) },
                { Icon: 'fa fa-info', Class: 'info', Sound: new Audio(Info_Sound) }
             ],
 
+            help: null,
+            hints: [],
             notifications: [],
          }
       },
@@ -49,14 +51,21 @@
                this.push(message, type, time);
             });  
 
-            mp.events.add('BROWSER::HINT', (message, time = 4) => { 
-               this.hint = { message: message };
-               setTimeout(() => { this.hint = null }, time * 1000);
+            mp.events.add('BROWSER::HINT', (key, message, time = 6) => { 
+               this.addHint(key, message, time);
             });
          }
       },
 
       methods: { 
+
+         addHint: function (key, message, time) {
+            const hint = this.hints.push({ key: key, content: message });
+            setTimeout(() => { 
+               const inex = this.hints.indexOf(hint);
+               this.hints.splice(inex, 1);
+            }, time * 1000);
+         },
 
          push: function (message, type, time) { 
             this.notificationTypes[type].Sound.play();

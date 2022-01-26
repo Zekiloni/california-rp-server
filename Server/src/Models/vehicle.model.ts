@@ -1,6 +1,6 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
 import { Messages } from '../globals/constants';
-import { entityData, globalDimension, NotifyType, vehicleData } from '../globals/enums';
+import { entityData, GlobalDimension, NotifyType, vehicleData } from '../globals/enums';
 import { vehicleComponent, vehiclePlate } from '../globals/interfaces';
 import { generateNumber, generateString } from '../utils';
 import Business from './business.model';
@@ -125,7 +125,7 @@ export class Vehicles extends Model {
       return Vehicle;
    }
 
-   static async newTemporary (model: string, position: Vector3Mp, rotation: Vector3Mp, color: number[], plate: string, dimension = globalDimension) {
+   static async newTemporary (model: string, position: Vector3Mp, rotation: Vector3Mp, color: number[], plate: string, dimension = GlobalDimension) {
       const [primary, secondary] = color;
 
       const vehicle = mp.vehicles.new(mp.joaat(model), position, {
@@ -190,7 +190,7 @@ export class Vehicles extends Model {
          alpha: 255,
          locked: locked,
          engine: false,
-         dimension: globalDimension
+         dimension: GlobalDimension
       });
 
 

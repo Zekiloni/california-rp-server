@@ -2,15 +2,13 @@
 
 
 
-mp.Player.prototype.sendNotification = function (Message: string, Type: number, Time: number = 4) {
-   this.call('CLIENT::NOTIFICATION', [Message, Type, Time]);
+mp.Player.prototype.sendNotification = function (message: string, type: number, time: number = 4) {
+   this.call('CLIENT::NOTIFICATION', [message, type, time]);
 };
 
 
-mp.Player.prototype.Teleport = function (Position: Vector3Mp, Heading: number = 180) {
-   this.Position = Position;
-   this.Heading = Heading;
-   // Safe tp
+mp.Player.prototype.sendHint = function (key: number, message: string, time: number) {
+   this.call('CLIENT::HINT', [key, message, time]);
 };
 
 

@@ -24,7 +24,7 @@ mp.events.add(
 
       'CLIENT::INVENTORY:TOGGLE': async () => { 
          active = !active; 
-         Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'Inventory');
+         Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'inventory');
          if (active) {
             const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
             Browser.call('BROWSER::INVENTORY:ITEMS', items);

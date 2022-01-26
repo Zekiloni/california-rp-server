@@ -1,5 +1,5 @@
 import { markerColors } from '../globals/constants';
-import { globalDimension, jobNumber } from '../globals/enums';
+import { GlobalDimension, jobNumber } from '../globals/enums';
 import { vehiclePoint } from '../globals/interfaces';
 
 
@@ -28,13 +28,13 @@ export default class Jobs {
       this.name = name;
       this.description = description;
       this.position = position;
-      this.colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, globalDimension),
-      this.blip = mp.blips.new(sprite, position, { dimension: globalDimension, name: name, color: spriteColor, shortRange: true, scale: 0.85, drawDistance: 150 }),
+      this.colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, GlobalDimension),
+      this.blip = mp.blips.new(sprite, position, { dimension: GlobalDimension, name: name, color: spriteColor, shortRange: true, scale: 0.85, drawDistance: 150 }),
       this.marker = mp.markers.new(0, new mp.Vector3(position.x, position.y, position.z - 0.25), 0.65, {
          color: markerColors.JOBS, 
          rotation: new mp.Vector3(0, 0, 0),
          visible: true,
-         dimension: globalDimension
+         dimension: GlobalDimension
       })
       this.activeWorkers = 0;
 

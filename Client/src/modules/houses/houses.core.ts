@@ -24,13 +24,13 @@ function showHouseInfo (info: boolean | object) {
 
       const location = getStreetZone(mp.players.local.position);
 
-      Browser.call('BROWSER::SHOW', 'HouseInfo');
+      Browser.call('BROWSER::SHOW', 'houseInfo');
       Browser.call('BROWSER::HOUSE:INFO', info, location);
    } else { 
       active = false;
       house = null;
 
-      Browser.call('BROWSER::HIDE', 'HouseInfo');
+      Browser.call('BROWSER::HIDE', 'houseInfo');
    }
 }
 

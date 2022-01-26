@@ -7,7 +7,7 @@ let job: number | null = null;
 mp.events.add(
    {
       'CLIENT::JOB:OFFER': (info: any) => {
-         Browser.call(info ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'Job_Offer');
+         Browser.call(info ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'job_Offer');
          if (info) Browser.call('BROWSER::JOB:OFFER', info);
          job = info.id;
       },

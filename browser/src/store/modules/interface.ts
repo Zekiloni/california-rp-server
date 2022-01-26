@@ -8,21 +8,23 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 const InitialState = {
-   Notifications: true,
-   Chat: false,
+   notifications: true,
+   chat: false,
 
    lobby: true,
    characterCreator: false,
 
-   GameInterface: false,
-   Inventory: false,
-   Phone: false,
+   gameInterface: false,
+   inventory: false,
+   phone: false,
    id_Document: false,
    licenses: false,
+   
+   banking: false,
+   atm: false,
 
    Playerlist: false,
-   Banking: false,
-   Job_Offer: false,
+   job_Offer: false,
    Miner: false,
    Food: false,
    Transit: false,
@@ -38,7 +40,7 @@ const InitialState = {
 
    DMV: false,
    
-   HouseInfo: false
+   houseInfo: false
 }
 
 export const InterfaceStore = {

@@ -14,6 +14,10 @@ mp.events.add(
    {
       'CLIENT::NOTIFICATION': (message: string, type: number, time: number) => { 
          Browser.call('BROWSER::NOTIFICATION', message, type, time);
+      },
+
+      'CLIENT::HINT': (key: number, message: string, time: number) => {
+         Browser.call('BROWSER::HINT', key, message, time);
       }
    }
 );
@@ -41,8 +45,8 @@ class gameUI {
 
       switch (this.status) { 
          case UI_Status.VISIBLE: {
-            Browser.call('BROWSER::SHOW', 'GameInterface');
-            Browser.call('BROWSER::SHOW', 'Chat');
+            Browser.call('BROWSER::SHOW', 'gameInterface');
+            Browser.call('BROWSER::SHOW', 'chat');
             Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
             mp.events.add('render', this.updateMain);
             mp.game.ui.displayRadar(true);
@@ -50,13 +54,13 @@ class gameUI {
          }
 
          case UI_Status.ONLY_CHAT: { 
-            Browser.call('BROWSER::HIDE', 'GameInterface');
+            Browser.call('BROWSER::HIDE', 'gameInterface');
             mp.events.remove('render', this.updateMain);
             break;
          }
 
          case UI_Status.HIDDEN: { 
-            Browser.call('BROSER::HIDE', 'Chat');
+            Browser.call('BROSER::HIDE', 'chat');
             break;
          }
       }

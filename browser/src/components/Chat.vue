@@ -198,7 +198,7 @@
    
       mounted () {
 
-         this.Push('Midnight Roleplay - www.mn-rp.com');
+         this.Push('midnight Roleplay - www.mn-rp.com @ rage.mp');
 
 	      let events = {
             'chat:push': this.Push, 'chat:clear': this.Clear,
@@ -280,7 +280,7 @@
       width: 100%;
       text-align: left;
       transition: all 0.35s ease;
-      background: rgb(24 26 32 / 5%);
+      background: rgb(24 26 32 / 1%);
       direction: ltr;
       text-shadow: -1px 1px 0 rgb(0 0 0 / 65%),
          1px 1px 0 rgb(0 0 0 / 55%),

@@ -52,7 +52,7 @@ Commands[CommandEnums.Names.ROLEPLAY_TRY] = {
       const tryResult = Messages.TRY_END[Math.floor(Math.random() * Messages.TRY_END.length)];      
       player.sendProximityMessage(
          Distances.ROLEPLAY, 
-         '* ' + player.name + Messages.TRIES_TO + text + Messages.AND + tryResult, 
+         '* ' + player.name + Messages.TRIES_TO + text + Messages.AND + tryResult + '.', 
          Colors.Purple
       );  
    }
@@ -246,7 +246,7 @@ Commands[CommandEnums.Names.COIN] = {
 
       player.sendProximityMessage(
          Distances.ROLEPLAY, 
-         '* ' + player.name + Messages.DROPS_COIN + coinResult, 
+         '* ' + player.name + Messages.DROPS_COIN + coinResult + '.', 
          Colors.Purple
       );  
    }

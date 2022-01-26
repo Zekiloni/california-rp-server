@@ -47,6 +47,7 @@ export const defaultSpawn = {
 export const markerColors: markerColors = { 
    JOBS: [253, 208, 48, 255],
    HOUSES: [0, 212, 116, 255],
+   BANKS: [36, 156, 36, 175],
 
    BUSINESS: [253, 201, 41, 185],
    FACTION: [69, 222, 105, 113],
@@ -166,6 +167,7 @@ export const Messages = {
    AND: ' i ',
    NOT_READY_FOR_HARVEST: 'Još nije vreme za branje.',
    MINIMUM_PAY_AMOUNT: 'Minimum 1$.',
+   BANK: 'Bank',
    NOT_FACTION_LEADER: 'Niste lider ove fakcije.',
    INVITED_TO_FACTION: 'Pozvani ste da se pridružite fakciji ',
    QUETLY: 'tiho',
@@ -177,7 +179,7 @@ export const Messages = {
       'uspeva', 'ne uspeva'
    ],
    DROPS_COIN: ' baca novčić i pada na ',
-   COIN_RESULT: ['glava', 'pismo'],
+   COIN_RESULT: ['glavu', 'pismo'],
    PM_FROM: 'PM od',
    PM_TO: 'PM za',
 
