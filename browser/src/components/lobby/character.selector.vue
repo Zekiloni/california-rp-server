@@ -92,7 +92,6 @@
          selectCharacter: async function (id) {
             const spawnPositions = await mp.events.callProc('CLIENT::CHARACTER:SPAWNS', id);
             if (spawnPositions) {
-               console.log(1)
                this.$parent.spawnPoints = JSON.parse(spawnPositions);
                this.$parent.selectedCharacter = id;
                this.$parent.spawnSelector = true;

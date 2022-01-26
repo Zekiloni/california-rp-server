@@ -1,20 +1,20 @@
 
 import fs from 'fs';
+import { Config } from '../../config';
 import { Colors } from '../../globals/constants';
-import { adminLevel, commandData, houseData, logType, weather } from '../../globals/enums';
+import { adminLevel, CommandEnums, houseData, logType, NotifyType, weather } from '../../globals/enums';
 import Houses from '../../models/house.model';
 import Items from '../../models/inventory.item.model';
 import { baseItem } from '../../models/item.model';
 import { Logger } from '../../utils';
-import { Admin } from '../admin';
 import { Commands } from '../commands';
 
 
 const savedPositions = 'savedPositions.txt';
 
-Commands[commandData.Names.SAVE_POS] = { 
-   description: commandData.Descriptions.items,
-   admin: adminLevel.SENIOR_ADMIN,
+Commands[CommandEnums.Names.SAVE_POS] = { 
+   description: CommandEnums.Descriptions.ITEMS,
+   admin: adminLevel.LEAD_ADMINISTRATOR,
    call: (player: PlayerMp, ...saveName) => { 
       let positionName = saveName.slice(0).join(' '); 
       const position = (player.vehicle) ? player.vehicle.position : player.position;
@@ -28,16 +28,77 @@ Commands[commandData.Names.SAVE_POS] = {
    }
 }
 
-Commands[commandData.Names.ITEMS] = { 
-   description: commandData.Descriptions.items,
+
+Commands[CommandEnums.Names.GOTO] = {
+   description: CommandEnums.Descriptions.GOTO,
+   admin: adminLevel.ADMINISTRATOR,
+   params: [
+      CommandEnums.Params.PLAYER
+   ],
+   call: (player: PlayerMp, targetSearch: string | number) => {
+      const target = mp.players.find(targetSearch);
+
+      if (target && target.id != player.id) {
+         if (player.vehicle) {
+
+            const { seat, vehicle } = player;
+
+            vehicle.position = new mp.Vector3(target.position.x + 2, target.position.y, target.position.z);
+            vehicle.dimension = target.dimension;
+            player.putIntoVehicle(vehicle, seat);
+
+         } else {
+            player.position = target.position;
+            player.dimension = target.dimension;
+         }
+
+         player.sendNotification('SUCCES TELEPORT', NotifyType.SUCCESS, 4);
+      }
+   }
+};
+
+
+Commands[CommandEnums.Names.GET_HERE] = {
+   description: CommandEnums.Descriptions.GET_HERE,
+   admin: adminLevel.SENIOR_ADMINISTRATOR,
+   params: [
+      CommandEnums.Params.PLAYER
+   ],
+   call: (player: PlayerMp, targetSearch: string | number) => {
+      const target = mp.players.find(targetSearch);
+
+      if (target && target.id != player.id) {
+         if (target.vehicle) {
+
+            const { seat, vehicle } = target;
+
+            vehicle.position = new mp.Vector3(player.position.x + 2, player.position.y, player.position.z);
+            vehicle.dimension = player.dimension;
+            target.dimension = player.dimension;
+            target.putIntoVehicle(vehicle, seat);
+
+         } else {
+            target.position = player.position;
+            target.dimension = player.dimension;
+         }
+
+         player.sendNotification('SUCCES TELEPORT', NotifyType.SUCCESS, 4);
+      }
+   }
+};
+
+
+Commands[CommandEnums.Names.ITEMS] = { 
+   description: CommandEnums.Descriptions.ITEMS,
    call: (player: PlayerMp) => { 
       console.log(baseItem.list);
    }
-}
+};
 
-Commands[commandData.Names.GIVE_ITEM] ={
-   description: commandData.Descriptions.giveItem,
-   admin: adminLevel.SENIOR_ADMIN,
+
+Commands[CommandEnums.Names.GIVE_ITEM] ={
+   description: CommandEnums.Descriptions.GIVE_ITEM,
+   admin: adminLevel.SENIOR_ADMINISTRATOR,
    call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
       itemName = itemName.join(' ');
       if (baseItem.list[itemName]) {
@@ -59,16 +120,17 @@ Commands[commandData.Names.GIVE_ITEM] ={
 }
 
 
-Commands[commandData.Names.CLEAR_INVENTORY] = { 
-   description: commandData.Descriptions.clearInventory,
+Commands[CommandEnums.Names.CLEAR_INVENTORY] = { 
+   description: CommandEnums.Descriptions.CLEAR_INVENTORY,
    call: (player: PlayerMp, target: any) => { 
       
    }
 }
 
+
 Commands['veh'] = { 
    description: 'Kreiraj auto',
-   admin: adminLevel.SENIOR_ADMIN,
+   admin: adminLevel.LEAD_ADMINISTRATOR,
    call: (player: PlayerMp, vName: string) => { 
       console.log(vName);
       const vehicle =  mp.vehicles.new(mp.joaat(vName), player.position);
@@ -76,21 +138,33 @@ Commands['veh'] = {
    } 
 }
 
-Commands[commandData.Names.TIME] = {
-   admin: adminLevel.SENIOR_ADMIN,
-   description: commandData.Descriptions.time,
-   params: ['sat', 'minut', 'sekund'],
+
+Commands[CommandEnums.Names.TIME] = {
+   admin: adminLevel.LEAD_ADMINISTRATOR,
+   description: CommandEnums.Descriptions.SET_TIME,
+   params: [
+      CommandEnums.Params.HOUR,
+      CommandEnums.Params.MINUTE,
+      CommandEnums.Params.SECONDS
+   ],
    call: (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) => {
-      mp.world.time.set(hour, minute, second);
+      if (hour == 666) {
+         Config.freezeTime = false;
+      } else { 
+         Config.freezeTime = true;
+         mp.world.time.set(hour, minute, second);
+      }
    }
 };
 
-Commands[commandData.Names.WEATHER] = {
-   admin: adminLevel.SENIOR_ADMIN,
-   description: commandData.Descriptions.weather,
-   params: ['tip vremena'],
-   call: (player: PlayerMp, setWeather: string | number) => {
 
+Commands[CommandEnums.Names.WEATHER] = {
+   admin: adminLevel.SENIOR_ADMINISTRATOR,
+   description: CommandEnums.Descriptions.SET_WEATHER,
+   params: [
+      CommandEnums.Params.WEATHER
+   ],
+   call: (player: PlayerMp, setWeather: string | number) => {
       if (setWeather == Number(setWeather) && setWeather < weather.Names.length - 1 && setWeather >= 0) {
          mp.world.weather = weather.Names[Number(setWeather)];
       } else {
@@ -99,29 +173,36 @@ Commands[commandData.Names.WEATHER] = {
    }
 };
 
-Commands[commandData.Names.FIX_VEH] = {
-   admin: adminLevel.SENIOR_ADMIN,
-   description: commandData.Descriptions.FIX_VEH,
+Commands[CommandEnums.Names.FIX_VEH] = {
+   admin: adminLevel.SENIOR_ADMINISTRATOR,
+   description: CommandEnums.Descriptions.FIX_VEH,
    vehicle: true,
    call: async (player: PlayerMp) => {
-      if (player.vehicle) player.vehicle.repair();
+      if (!player.vehicle) {
+         return;
+      }
+
+      player.vehicle.repair();
    }
 };
 
-Commands[commandData.Names.GIVE_MONEY] =  {
-   admin: adminLevel.LEAD_ADMIN,
+Commands[CommandEnums.Names.GIVE_MONEY] =  {
+   admin: adminLevel.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    call: (player: PlayerMp, targetSearch: any, money: number) => { 
       const target = mp.players.find(targetSearch);
 
-      if (!target) return; // nema
+      if (!target) {
+         // PORUKA: // nema igraca
+         return;
+      };
 
       target.Character.giveMoney(target, money);
    }
 };
 
-Commands[commandData.Names.SET_MONEY] =  {
-   admin: adminLevel.LEAD_ADMIN,
+Commands[CommandEnums.Names.SET_MONEY] =  {
+   admin: adminLevel.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    call: (player: PlayerMp, targetSearch: any, money: number) => { 
       const target = mp.players.find(targetSearch);
@@ -130,16 +211,16 @@ Commands[commandData.Names.SET_MONEY] =  {
    }
 }
 
-Commands[commandData.Names.CREATE_HOUSE] =  {
-   admin: adminLevel.LEAD_ADMIN,
+Commands[CommandEnums.Names.CREATE_HOUSE] =  {
+   admin: adminLevel.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    call: (player: PlayerMp, type: houseData.Type, price: number) => { 
       Houses.new(player, type, price);
    }
 }
 
-Commands[commandData.Names.DESTROY_HOUSE] =  {
-   admin: adminLevel.LEAD_ADMIN,
+Commands[CommandEnums.Names.DESTROY_HOUSE] =  {
+   admin: adminLevel.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    call: async (player: PlayerMp, id?: number) => { 
       const nearestHouse = await Houses.getNearest(player);
@@ -148,8 +229,8 @@ Commands[commandData.Names.DESTROY_HOUSE] =  {
 }
 
 
-Commands[commandData.Names.FLY] =  {
-   admin: adminLevel.SENIOR_ADMIN,
+Commands[CommandEnums.Names.FLY] =  {
+   admin: adminLevel.SENIOR_ADMINISTRATOR,
    description: 'opis napisati',
    call: async (player: PlayerMp) => { 
       player.call('CLIENT::ADMIN:FLY');
@@ -491,27 +572,6 @@ Commands[commandData.Names.FLY] =  {
 //    }
 // };
 
-// Commands['goto'] = {
-//    description: 'Teleport do igraca.',
-//    Admin: 2,
-//    params: ['igrač'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]);
-//       if (TargetPlayer && TargetPlayer.id != Player.id) {
-//          if (Player.vehicle) {
-//             const Seat = Player.seat, Vehicle = Player.vehicle;
-//             Vehicle.position = new mp.Vector3(TargetPlayer.position.x + 2, TargetPlayer.position.y, TargetPlayer.position.z);
-//             Vehicle.dimension = TargetPlayer.dimension;
-//             Player.putIntoVehicle(Vehicle, Seat);
-//          } else {
-//             Player.position = TargetPlayer.position;
-//             Player.dimension = TargetPlayer.dimension;
-//          }
-//          TargetPlayer.SendMessage('Admin ' + Player.name + ' se teleportovao do vas !', Colors.tomato);
-//          Player.SendMessage('Teleportovali ste se do ' + TargetPlayer.name + ' !', Colors.tomato);
-//       }
-//    }
-// };
 
 // Commands['gethere'] = {
 //    description: 'Uključi/isključi admin letenje',

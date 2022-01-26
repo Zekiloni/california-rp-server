@@ -14,8 +14,9 @@ export class documentType extends baseItem {
       this.specialType = special;
 
       console.log(this)
+      
       this.use = function (player: PlayerMp, item: Items) {
-
+         console.log(item.data)
          switch (this.specialType) {
             case itemData.Type.ID_CARD: {
                player.call('CLIENT::ID:SHOW', [item.data!]); 

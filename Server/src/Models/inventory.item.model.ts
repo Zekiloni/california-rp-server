@@ -134,7 +134,7 @@ export default class Items extends Model {
       if (alreadyItem && item.isStackable()) {
          alreadyItem.increment('quantity', { by: quantity });
       } else { 
-         return Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: player.Character.id });
+         Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: player.Character.id });
       }
    }
 

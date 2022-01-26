@@ -37,7 +37,6 @@
             if (username && password) {
                try {
                   const logged = await mp.events.callProc('CLIENT::AUTHORIZATION:SEND', username, password);
-                  console.log(JSON.stringify(logged))
                   if (logged) {
                      this.$parent.logged = true;
                      this.$parent.account = JSON.parse(logged);

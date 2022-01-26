@@ -163,10 +163,17 @@ export const Messages = {
    CAR_PARKED: 'Uspešno ste parkirali vozilo',
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    WAITING_FOR_PAYMENT: ' čeka za isplatu.',
+   AND: ' i ',
    NOT_READY_FOR_HARVEST: 'Još nije vreme za branje.',
    MINIMUM_PAY_AMOUNT: 'Minimum 1$.',
    NOT_FACTION_LEADER: 'Niste lider ove fakcije.',
    INVITED_TO_FACTION: 'Pozvani ste da se pridružite fakciji ',
+   QUETLY: 'tiho',
+   IS_SHOUTING: 'se dere',
+   TRIES_TO: ' pokušava da ',
+   TRY_END: [
+      'uspeva', 'ne uspeva'
+   ],
 
    MONEY_WITHDRAW: 'Podizanje',
    MONEY_DEPOSIT: 'Depozit',

@@ -10,31 +10,33 @@ const blockedClasses = [
 
 
 
-mp.events.add({
-   'playerEnterVehicle': (vehicle: VehicleMp, seat: number) => { 
-      if (seat != -1) return;
-      if (vehicle && vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
+mp.events.add(
+   {
+      'playerEnterVehicle': (vehicle: VehicleMp, seat: number) => { 
+         if (seat != -1) return;
+         if (vehicle && vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
 
-      mp.game.vehicle.defaultEngineBehaviour = false;
-      mp.players.local.setConfigFlag(429, true);
+         mp.game.vehicle.defaultEngineBehaviour = false;
+         mp.players.local.setConfigFlag(429, true);
 
-      gameInterface.vehicleInterface(true);
-      
-      const vehicleName = mp.game.ui.getLabelText(mp.game.vehicle.getDisplayNameFromVehicleModel(vehicle.model));
-      Browser.call('BROWSER::GAME_UI:VEHICLE:NAME', vehicleName);
+         gameInterface.vehicleInterface(true);
+         
+         const vehicleName = mp.game.ui.getLabelText(mp.game.vehicle.getDisplayNameFromVehicleModel(vehicle.model));
+         Browser.call('BROWSER::GAME_UI:VEHICLE:NAME', vehicleName);
 
-      mp.events.add('render', driving);
-   },
+         mp.events.add('render', driving);
+      },
 
-   'playerLeaveVehicle': (vehicle: VehicleMp, seat: number) => {
-      if (seat != -1) return;
-      if (vehicle && vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
+      'playerLeaveVehicle': (vehicle: VehicleMp, seat: number) => {
+         if (seat != -1) return;
+         if (vehicle && vehicle.getClass() == RageEnums.VehicleClasses.CYCLES) return;
 
-      gameInterface.vehicleInterface(false);
-      mp.events.remove('render', driving);
+         gameInterface.vehicleInterface(false);
+         mp.events.remove('render', driving);
 
+      }
    }
-})
+)
 
 
 function driving () { 
@@ -48,5 +50,9 @@ function driving () {
       if (gameInterface.status == UI_Status.VISIBLE) {
          Browser.call('BROWSER::GAME_UI:VEHICLE:UPDATE', Math.round(speed), Math.round(vehicle.rpm * 1000), vehicle.gear)
       } 
+
+      if (vehicle.isUpsidedown()) {
+         mp.game.controls.disableControlAction(0, 59, true);
+      }
    }
 }

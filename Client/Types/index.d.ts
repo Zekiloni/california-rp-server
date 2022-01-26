@@ -29,7 +29,6 @@ declare global {
       Job: number;
       Wounded: boolean;
       Seatbelt: boolean;
-      Bubble: string;
       Attachment: ObjectMp;
       Crouching: boolean = false;
       /* Functions */

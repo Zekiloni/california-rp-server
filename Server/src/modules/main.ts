@@ -2,13 +2,14 @@
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
-import { entityData, logType, NotifyType, spawnTypes } from '../globals/enums';
+import { entityData, itemData, logType, NotifyType, spawnTypes } from '../globals/enums';
 import { Messages } from '../globals/constants';
 import { Config } from '../config';
 import Bans from '../models/ban.model';
 import { spawnPoint } from '../globals/interfaces';
 import { getDefaultSpawn, Logger } from '../utils';
 import Items from '../models/inventory.item.model';
+import { baseItem } from '../models/item.model';
 
 
 mp.events.add(
@@ -70,7 +71,6 @@ mp.events.addProc(
                if (account) { 
                   const logged = account.login(password);
                   if (logged) { 
-                     console.log(account.characters);
                      account.setLogged(player, true);
                      resolve(account);
                   } else { 
@@ -119,9 +119,6 @@ mp.events.addProc(
          const character = JSON.parse(characterInfo);
          const appearance = JSON.parse(characterAppearance);
 
-         console.log(character);
-         console.log(appearance);
-
          const alreadyExist = await Characters.findOne({ where: { name: character.name + ' ' + character.lastName } });
 
          if (alreadyExist) {
@@ -153,6 +150,16 @@ mp.events.addProc(
          );
 
          createdCharacter.spawnPlayer(player, spawnTypes.default);
+
+         Items.create({ name: itemData.Names.DOCUMENT_ID_CARD, quantity: 1, entity: itemData.Entity.PLAYER, owner: createdCharacter.id }).then(async item => {
+            item!.data = {
+               name: createdCharacter.name,
+               birth: createdCharacter.birth,
+               origin: createdCharacter.origin,
+               gender: createdCharacter.gender
+            };
+            await item.save();
+         });
 
          player.sendNotification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
          return true;

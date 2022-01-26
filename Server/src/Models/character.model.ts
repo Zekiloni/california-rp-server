@@ -8,15 +8,12 @@ import { Config } from '../config';
 import Accounts from './account.model';
 import { Injury } from './misc/injury.model';
 import Appearances from './appearance.model';
-import Database from '../database';
 import Houses from './house.model';
 import Business from './business.model';
 import { Vehicles } from './vehicle.model';
 import { characterProperties } from '../globals/interfaces';
 import { licenseItem } from './items/license.item';
 import Items from './inventory.item.model';
-import { baseItem } from './item.model';
-import { documentType } from './items/document.item';
 
 
 console.log(Peds.walkingStyles.Normal)
@@ -176,23 +173,6 @@ export default class Characters extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @AfterCreate
-   static async onCreate (character: Characters, options: any) {
-      const player = mp.players.find((player: PlayerMp) => player.Character == character);
-
-      const documentItem = await Items.giveItem(player!, baseItem.list[itemData.Names.DOCUMENT_ID_CARD], 1);
-
-      documentItem!.data = {
-         name: character.name,
-         birth: character.birth,
-         origin: character.origin,
-         gender: character.gender
-      };
-
-      await documentItem?.save();
-      console.log(documentItem);
-   }
-
    get properties (): Promise<characterProperties> { 
       return new Promise(async resolve => { 
          const houses = await Houses.findAll({ where: { owner: this.id } });
@@ -222,11 +202,12 @@ export default class Characters extends Model {
       player.setVariable(entityData.FACTION_DUTY, false);
       player.setVariable(entityData.JOB_DUTY, false);
       player.setVariable(entityData.JOB_VEHICLE, null);
-      player.setVariable('Working_Uniform', false);
       player.setVariable(entityData.ADMIN_DUTY, false);
+      player.setVariable(entityData.FREEZED, false);
+      player.setVariable(entityData.BUBBLE, null);
+      player.setVariable('Working_Uniform', false);
       player.setVariable('Attachment', null);
       player.setVariable('Phone_Ringing', false);
-      player.setVariable(entityData.FREEZED, false);
       player.setVariable('Ragdoll', false);
 
 
@@ -349,12 +330,12 @@ export default class Characters extends Model {
       const has = await Items.findOne({ where: { name: item?.name } });
       return has ? has : false;
    }
+   
 
    onDeath (player: PlayerMp) { 
       const { position } = player;
       console.log(1)
       player.spawn(position);
-      
    }
 
    onChat (player: PlayerMp, content: any) {
@@ -722,13 +703,6 @@ mp.Player.prototype.sendProximityMessage = function (radius: number, message: st
 // };
 
 
-
-// mp.Player.prototype.Bubble = function (Content, Color) { 
-//    Player.setVariable('Bubble', { Content: Content, Color: Color });
-//    Player.BubbleExpire = setTimeout(() => {
-//       if (Player) Player.setVariable('Bubble', null);
-//    }, 4000);
-// };
 
 
 // mp.players.find = (playerName) => {

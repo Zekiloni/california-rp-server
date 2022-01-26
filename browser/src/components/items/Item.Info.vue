@@ -11,11 +11,7 @@
       <h2 class="name"> {{ itemInfo.name }} </h2>
       <p class="description" v-html="itemInfo.description"> </p>
 
-      <model-viewer alt="aaa" 
-         src="http://mwojtasik.dev/tools/gtav/object-glb/apa_heist_apart2_door?token=6033ef29c5dfce67b5146a74"
-         shadow-intensity="0" 
-         camera-controls>
-      </model-viewer>
+      <ModelPreview :model="itemInfo.model" class="model-preview" />
 
       <ul class="actions" v-if="itemActions.length > 0"> 
          <li v-for="action in itemActions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
@@ -23,15 +19,21 @@
             <!-- {{ action.name }}  -->
          </li>
       </ul>
+      	
    </div>
 
 </template>
 
 <script>
-   import { Messages } from '../../globals';
-   import '@google/model-viewer';
+   import { Messages } from '@/globals';
+   import ModelPreview from './model.preview.vue';
 
    export default { 
+
+      components: {
+         ModelPreview 
+      },
+
       props: {
          item: Object,
          position: Object
@@ -106,6 +108,8 @@
       padding: 10px;
       margin: 0;
    }
+
+   .model-preview { width: 500px; height: 400px; }
 
    ul.actions { 
       position: absolute;

@@ -1,70 +1,123 @@
 import { Colors, Messages } from '../../globals/constants';
-import { Distances, NotifyType } from '../../globals/enums';
+import { CommandEnums, Distances } from '../../globals/enums';
 import { Commands } from '../commands';
 
 
-Commands['me'] = {
-   description: 'Opis situacije, stanja',
-   params: ['radnja'],
+Commands[CommandEnums.Names.ROLEPLAY_ME] = {
+   description: CommandEnums.Descriptions.ROLEPLAY_ME,
+   params: [
+      CommandEnums.Params.TEXT
+   ],
    call: (player: PlayerMp, ...content) => {
-      const Text = [...content].join(' ');
-      if (!Text.trim()) return;
-      player.sendProximityMessage(Distances.ROLEPLAY, '** ' + player.name + ' ' + Text, Colors.Purple);
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      };
+
+      player.sendProximityMessage(Distances.ROLEPLAY, '** ' + player.name + ' ' + text, Colors.Purple);
    }
-}
+};
 
-Commands['do'] = {
-   description: 'Opis radnje koju radite',
-   params: ['opis / stanje'],
-   call: (Player: PlayerMp, args: any) => {
-      const Text = args.splice(0).join(' ');
-      if (!Text.trim()) return;
-      Player.sendProximityMessage(Distances.ROLEPLAY, '** ' + Text + ' (( ' + Player.name + ' ))', Colors.Purple);
+
+Commands[CommandEnums.Names.ROLEPLAY_DO] = {
+   description: CommandEnums.Descriptions.ROLEPLAY_DO,
+   params: [
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, ...content) => {
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      };
+
+      player.sendProximityMessage(Distances.ROLEPLAY, '** ' + text + ' (( ' + player.name + ' ))', Colors.Purple);
    }
-   
-}
+};
 
-Commands['try'] = {
-   description: 'Pokušaj',
-   params: ['radnja'],
-   call: (Player: PlayerMp, args: any) => {
-      const Message = args.splice(0).join(' ');
-      if (!Message.trim()) return;
 
-      let End = ['uspeva', 'ne uspeva']; 
-      let Random = End[Math.floor(Math.random() * End.length)];
-               
-      Player.sendProximityMessage(Distances.ROLEPLAY, '* ' + Player.name + ' pokušava da ' + Message + ' i ' + Random, Colors.Purple);  
+Commands[CommandEnums.Names.ROLEPLAY_TRY] = {
+   description: CommandEnums.Descriptions.ROLEPLAY_TRY,
+   params: [
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, ...content) => {
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      };
+
+      const tryResult = Messages.TRY_END[Math.floor(Math.random() * Messages.TRY_END.length)];      
+      player.sendProximityMessage(
+         Distances.ROLEPLAY, 
+         '* ' + player.name + Messages.TRIES_TO + text + Messages.AND + tryResult, 
+         Colors.Purple
+      );  
    }
-}
+};
 
-Commands['l'] = {
-   description: 'Izgovoriti nesto tiho',
-   params: ['tekst'],
-   call: (player: PlayerMp, args: any) => {
-      const Message = args.splice(0).join(' ');
-      if (!Message.trim()) return;
-      player.sendProximityMessage(Distances.LOW, player.name + ' tiho: ' + Message, Colors.Low);
+
+Commands[CommandEnums.Names.LOW_CHAT] = {
+   description: CommandEnums.Descriptions.LOW_CHAT,
+   params: [
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, ...content: any) => {
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      };
+
+      player.sendProximityMessage(
+         Distances.LOW, 
+         player.name + ' ' + Messages.QUETLY + ': ' + text, 
+         Colors.Low
+      );
    }
-}
+};
 
-Commands['s'] = {
-   description: 'Izgovoriti nesto glasnije',
-   params: ['tekst'],
-   call: (Player: PlayerMp, args: any) => {
-      const Message = args.splice(0).join(' ');
-      if (!Message.trim()) return;
-      Player.sendProximityMessage(Distances.SHOUT, Player.name + ' se dere: ' + Message, Colors.White);
+
+Commands[CommandEnums.Names.SHOUT_CHAT] = {
+   description: CommandEnums.Descriptions.SHOUT_CHAT,
+   params: [
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, ...content: any) => {
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      };
+
+      player.sendProximityMessage(
+         Distances.SHOUT, 
+         player.name + ' ' + Messages.IS_SHOUTING + ': ' + text, 
+         Colors.White
+      );
    }
-}
+};
 
-Commands['b'] = {
-   description: 'Lokana OOC komunikacija',
-   params: ['tekst'],
-   call: (Player: PlayerMp, args: any) => {
-      const Message = args.splice(0).join(' ');
-      if (!Message.trim()) return;
-      Player.sendProximityMessage(Distances.OOC, '(( ' + Player.name + '[' + Player.id + ']: ' + Message + ' ))', Colors.OOC);
+
+Commands[CommandEnums.Names.OOC_CHAT] = {
+   description: CommandEnums.Descriptions.OOC_CHAT,
+   params: [
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, ...content: any) => {
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      };
+
+      player.sendProximityMessage(
+         Distances.OOC, 
+         '(( ' + player.name + '[' + player.id + ']: ' + text + ' ))',
+         Colors.OOC
+      );
    }
 }
 

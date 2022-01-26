@@ -1,6 +1,6 @@
 
 <template>
-   <div class="id-card" >
+   <div class="id-card">
       <img src="@/assets/images/other/goverment-logo.png" alt="los santos goverment logo" class="gov-logo">
       <h2>
          {{ Messages.ID_CARD }}
@@ -50,12 +50,20 @@
          }
       },
 
+      methods: {
+         close: function () {
+            
+         }
+      },
+
       mounted () {
          if (!window.mp) {
             return;
          }
 
-         mp.events.add('BROWSER::IDENTITY:INFO', data => this.data = data);
+         mp.events.call('BROWSER::HIDE', 'inventory');
+
+         mp.events.add('BROWSER::IDENTITY:INFO', data => this.data = JSON.parse(data));
       }
    }
 </script>

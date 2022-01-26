@@ -5,6 +5,7 @@ import { itemData } from '../globals/enums';
 
 export const noDesc = Messages.ITEM_NO_DESCRIPTION;
 
+let models: string[] =  []
 
 export class baseItem {
 
@@ -25,7 +26,7 @@ export class baseItem {
       this.model = model;
       this.weight = weight;     
       this.description = description;
-      
+      models.push(this.model)
       baseItem.list[this.name] = this;
    }
 
@@ -53,8 +54,7 @@ import { itemAction } from '../globals/interfaces';
 
 
 
-
-
+console.log(models)
 
 // new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);
 // new Items('Energy Drink', [Items.Type.Drink, Items.Type.Consumable], 'prop_energy_drink', 0.2);

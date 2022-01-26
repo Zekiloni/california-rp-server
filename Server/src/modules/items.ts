@@ -95,7 +95,10 @@ mp.events.add(
          const weapon = weapons.find(
             weapon => weapon.weapon_hash == (<weaponData>weaponData)[player.weapon].HashKey.toLowerCase()
          )!;
-         console.log(3)
+         
+         if (!weapon) {
+            return;
+         }
 
          const weaponItem = await Items.findOne(
             { 

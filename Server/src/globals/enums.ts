@@ -113,11 +113,13 @@ export enum entityData {
    FACTION_DUTY = 'FACTION_DUTY',
    JOB_DUTY = 'JOB_DUTY',
    FREEZED = 'FREEZED',
+   BUBBLE = 'FREEZED',
    JOB_VEHICLE = 'JOB_VEHICLE',
    ADMIN_DUTY = 'ADMIN_DUTY',
    WALKING_STYLE = 'WALKING_STYLE',
    FACIAL_MOOD = 'FACIAL_MOOD',
    CUFFED = 'CUFFED',
+   MASKED = 'MASKED',
    INJURIES = 'INJURIES',
    ITEM = 'ITEM',
    FUEL = 'FUEL',
@@ -161,13 +163,13 @@ export namespace houseData {
 
 export enum adminLevel {
    NONE = 0,
-   HELPER = 1,
-   JUNIOR_ADMIN = 2,
-   ADMIN = 3,
-   SENIOR_ADMIN = 4,
-   GENERAL_ADMIN = 5,
-   LEAD_ADMIN = 6,
-   COMMUNITY_OWNER = 7 
+   GAME_ASISSTANT = 1,
+   ADMINISTRATOR = 2,
+   ADMINISTRATOR_2 = 3,
+   SENIOR_ADMINISTRATOR = 4,
+   LEAD_ADMINISTRATOR = 5,
+   COMMUNITY_MANAGER = 6,
+   OWNER = 7 
 }
 
 export namespace weather { 
@@ -244,8 +246,14 @@ export namespace vehicleData {
    }
 }
 
-export namespace commandData { 
+export namespace CommandEnums { 
    export enum Names {
+      ROLEPLAY_ME = 'me',
+      ROLEPLAY_DO = 'do',
+      OOC_CHAT = 'b',
+      PM = 'pm',
+      LOW_CHAT = 'l',
+      WHISPER = 'whisper',
       ITEMS = 'items',
       GIVE_ITEM = 'giveitem',
       CLEAR_INVENTORY = 'clearinventory',
@@ -258,16 +266,37 @@ export namespace commandData {
       CREATE_HOUSE = 'createhouse',
       DESTROY_HOUSE = 'destroyhouse',
       SAVE_POS = 'position',
-      FLY = 'fly'
+      GOTO = 'goto',
+      GET_HERE = 'gethere',
+      FLY = 'fly',
+      ROLEPLAY_TRY = 'try',
+      SHOUT_CHAT = 's',
+   }
+
+   export enum Params { 
+      PLAYER = 'id / ime igrača',
+      TEXT = 'tekst',
+      HOUR = 'sat',
+      MINUTE = 'minuta',
+      SECONDS = 'sekunda',
+      WEATHER = 'ime vremena / id'
    }
 
    export enum Descriptions { 
-      items = 'Lista svih predmeta.',
-      giveItem = 'Davanje predmeta.',
-      clearInventory = 'Čišćenje predmeta osobe.',
-      time = 'Promena vremena.',
-      weather = 'Vremenske prilike.',
-      FIX_VEH = 'Popravka vozila.'
+      ITEMS = 'Lista svih predmeta.',
+      GIVE_ITEM = 'Davanje predmeta.',
+      CLEAR_INVENTORY = 'Čišćenje predmeta osobe.',
+      SET_TIME = 'Promena vremena, stavite sate na 666 da se vreme automatski menja.',
+      SET_WEATHER = 'Vremenske prilike.',
+      FIX_VEH = 'Popravka vozila.',
+      GOTO = 'Teleport do igrača.',
+      GET_HERE = 'Teleportovanje igrača do sebe.',
+      ROLEPLAY_ME = 'Akcija, radnja.',
+      ROLEPLAY_DO = 'Stanje, status.',
+      ROLEPLAY_TRY = 'Pokušaj radnje.',
+      LOW_CHAT = 'Tih govor.',
+      SHOUT_CHAT = 'Glasniji govor.',
+      OOC_CHAT = 'Lokalni OOC govor.'
    }
 }
 

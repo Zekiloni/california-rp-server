@@ -74,8 +74,8 @@ export function CompareVectors (i: Vector3Mp, x: Vector3Mp) {
    return i.x == x.x && i.y == x.y && i.z == x.z;
 };
 
-export function distanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
-   return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
+export function distanceBetweenVectors (first: Vector3Mp, second: Vector3Mp) {
+   return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(second.x, second.y, second.z)).length();
 }
 
 export function loadAnimation (i: string): Promise<boolean> { 
