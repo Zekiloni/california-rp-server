@@ -1,5 +1,5 @@
 import { Colors, Messages } from '../../globals/constants';
-import { CommandEnums, Distances } from '../../globals/enums';
+import { CommandEnums, Distances, entityData } from '../../globals/enums';
 import { Commands } from '../commands';
 
 
@@ -138,12 +138,32 @@ Commands[CommandEnums.Names.WHISPER] = {
 };
 
 
-Commands['ame'] = {
-   description: 'Radnja / Akcija',
-   params: ['sadržaj'],
-   call: (Player: PlayerMp, args: any) => {
-      const Content = args.splice(0).join(' ');
-      //Player.Bubble(Content, frp.Globals.Colors.Bubble);   
+Commands[CommandEnums.Names.ROLEPLAY_AME] = {
+   description: CommandEnums.Descriptions.ROLEPLAY_AME,
+   params: [
+      CommandEnums.Params.TEXT
+   ],
+   call: (player: PlayerMp, ...content: any) => {
+
+      const text = [...content].join(' ');
+
+      if (!text.trim()) {
+         return;
+      }
+
+      if (text.length > 64) {
+         // PORUKA: MAKS DUZINA AME JE 64
+         return;
+      }
+
+      player.setVariable(entityData.BUBBLE, text);
+      setTimeout(() => { 
+         if (!player) {
+            return;
+         }
+
+         player.setVariable(entityData.BUBBLE, null);
+      }, 6000);
    }
 }
 

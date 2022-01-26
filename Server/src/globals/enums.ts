@@ -271,6 +271,7 @@ export namespace CommandEnums {
       FLY = 'fly',
       ROLEPLAY_TRY = 'try',
       SHOUT_CHAT = 's',
+      ROLEPLAY_AME = 'ame'
    }
 
    export enum Params { 
@@ -294,6 +295,7 @@ export namespace CommandEnums {
       ROLEPLAY_ME = 'Akcija, radnja.',
       ROLEPLAY_DO = 'Stanje, status.',
       ROLEPLAY_TRY = 'Pokušaj radnje.',
+      ROLEPLAY_AME = 'Opis, ekspresija.',
       LOW_CHAT = 'Tih govor.',
       SHOUT_CHAT = 'Glasniji govor.',
       OOC_CHAT = 'Lokalni OOC govor.',
