@@ -1,0 +1,15 @@
+.fade-with-bottom-slide-enter-active, .fade-with-bottom-slide-leave-active {
+   transition: all 1.25s;
+}
+
+.fade-with-bottom-slide-enter, .fade-with-bottom-slide-leave-to {
+   opacity: 0;
+   transform: translateY(30px);
+}
+
+.fade-enter-active, .fade-leave-active { transition: opacity .5s; }
+.fade-enter, .fade-leave-to { opacity: 0; }
+
+@keyframes fade-in {
+   from { opacity: 0; }
+}

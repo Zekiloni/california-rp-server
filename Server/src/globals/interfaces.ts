@@ -17,6 +17,12 @@ export interface vehicleComponent {
    value: number
 };
 
+export interface BankCredit {
+   amount: number,
+   interest: number,
+   deadline: number
+}
+
 export interface hairStyle { 
    style: number,
    color: number,

@@ -16,7 +16,7 @@ mp.events.add(
          Browser.call('BROWSER::NOTIFICATION', message, type, time);
       },
 
-      'CLIENT::HINT': (key: number, message: string, time: number) => {
+      'CLIENT::HINT': (key: string, message: string, time: number) => {
          Browser.call('BROWSER::HINT', key, message, time);
       }
    }

@@ -178,6 +178,8 @@ export const Messages = {
    TRY_END: [
       'uspeva', 'ne uspeva'
    ],
+   PRESS: 'Pritisnite',
+   TO_OPEN_BANK_MENU: 'Bankovne opcije',
    DROPS_COIN: ' baca novčić i pada na ',
    COIN_RESULT: ['glavu', 'pismo'],
    PM_FROM: 'PM od',

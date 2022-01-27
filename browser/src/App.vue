@@ -26,10 +26,11 @@
       </transition>
 
       <transition name="fade"> 
-         <Banking v-if="interfaces.banking" />
+         <Banking v-if="interfaces.banking" key=banking />\
+         <ATM v-if="interfaces.atm" key=atm />
       </transition>
    
-      
+
       <!-- [HOUSES] -->
       <transition name="fade"> 
          <HouseInfo v-if="interfaces.houseInfo" />
@@ -38,7 +39,7 @@
       <!-- [BUSINESSES] -->
       <Market v-if="interfaces.market" />
 
-      <transition name="bounce"> 
+      <transition name="fade"> 
          <JobOffer v-if="interfaces.job_Offer" />
       </transition>
 
@@ -62,6 +63,7 @@
 <script>
    import { mapMutations, mapState } from 'vuex';
    import './assets/styles/main.css';
+   import './assets/styles/animations.css'
    import './assets/styles/font-awesome.css';
 
    import Lobby from '@/components/lobby.vue';
@@ -71,7 +73,8 @@
    import Chat from './components/chat';
    import Inventory from './components/items/inventory.vue';
    import Document from './components/misc/id.document.vue';
-   import Banking from './components/banking.vue';
+   import Banking from './components/other/banking.vue';
+   import ATM from './components/other/atm.vue';
    import JobOffer from './components/jobs/job.offer.vue';
    import Market from './components/business/Market.vue';
    import HouseInfo from './components/houses/house.info.vue';
@@ -80,8 +83,8 @@
    export default { 
 
       components: { 
-         Lobby, Creator, Notifications, GameInterface, Inventory, Chat, Banking, JobOffer,
-         Market, HouseInfo, Phone, Document
+         Lobby, Creator, Notifications, GameInterface, Inventory, Chat, 
+         Banking, ATM, JobOffer, Market, HouseInfo, Phone, Document
       },
 
       data () { 

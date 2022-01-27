@@ -13,6 +13,7 @@ import Appearances from './models/appearance.model';
 import Items from './models/inventory.item.model';
 import Business from './models/business.model';
 import Houses from './models/house.model';
+import Banks from './models/bank.model';
 
 const Database = new Sequelize({
    database: Config.Database.Name,
@@ -21,7 +22,14 @@ const Database = new Sequelize({
    password: Config.Database.Password,
    storage: ':memory:',
    models: [ 
-      Accounts, Bans, Characters, Appearances, Items, Business, Houses
+      Accounts, 
+      Bans, 
+      Characters, 
+      Appearances, 
+      Banks,
+      Items,
+      Business, 
+      Houses,
    ],
    logging: false
 });

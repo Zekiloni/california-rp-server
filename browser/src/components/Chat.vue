@@ -9,7 +9,7 @@
          </li>
       </ul>
 
-      <transition name="slide-fade">
+      <transition name="fade">
          <div class="input-form" v-if="Typing">
             <input
                placeholder="Sadržaj."

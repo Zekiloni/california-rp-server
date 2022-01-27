@@ -1,5 +1,6 @@
 import { markerColors, Messages } from '../globals/constants';
-import { GlobalDimension, Locations } from '../globals/enums';
+import { Controls, GlobalDimension, Locations, NotifyType } from '../globals/enums';
+import Bank from '../models/bank.model';
 
 
 class banking {
@@ -27,6 +28,7 @@ class banking {
             }
 
             player.call('CLIENT::BANK:MENU', [true]);
+            player.sendHint(Controls.KEY_E, Messages.TO_OPEN_BANK_MENU, 6);
          }
 
          colshape.onPlayerLeave = (player) => {
@@ -48,6 +50,20 @@ class banking {
       }
    }
 
+   static async createAccount (player: PlayerMp) {
+
+      console.log(player.Character.bank);
+
+      if (player.Character.bank) {
+         player.sendNotification('', NotifyType.ERROR, 7);
+         return false;
+      }
+
+      const bankAccount = await Bank.create({ character_id: player.Character.id, character: player.Character });
+      player.Character.bank = bankAccount;
+      return bankAccount;
+   }
+
    static showATM (player: PlayerMp) {
       
    }
@@ -65,11 +81,17 @@ new banking();
 
 mp.events.add(
    {
-      'SERVER::BANK:ATM': banking.showATM,
-      'SERVER::BANK:WITHDRAW': banking.withdrawMoney,
-      'SERVER":BANK:DEPOSIT': banking.depositMoney
+      'SERVER::BANKING:ATM': banking.showATM,
+      'SERVER::BANKING:WITHDRAW': banking.withdrawMoney,
+      'SERVER::BANKING:DEPOSIT': banking.depositMoney,
    }
 );
 
+
+mp.events.addProc(
+   {
+      'SERVER::BANKING:CREATE': banking.createAccount
+   }
+)
 
 

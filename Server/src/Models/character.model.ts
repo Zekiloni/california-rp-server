@@ -14,6 +14,7 @@ import { Vehicles } from './vehicle.model';
 import { characterProperties } from '../globals/interfaces';
 import { licenseItem } from './items/license.item';
 import Items from './inventory.item.model';
+import Bank from './bank.model';
 
 
 console.log(Peds.walkingStyles.Normal)
@@ -55,7 +56,10 @@ export default class Characters extends Model {
    salary: number
 
    @HasOne(() => Appearances)
-   appearance: Appearances
+   appearance: Appearances;
+
+   @HasOne(() => Bank)
+   bank: Bank;
 
    @Default(0)
    @Column

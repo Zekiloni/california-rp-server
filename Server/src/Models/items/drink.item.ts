@@ -6,7 +6,7 @@ import { baseItem } from '../item.model';
 
 const defaultDrinkType = [itemData.Type.DRINK, itemData.Type.CONSUMABLE, itemData.Type.STACKABLE];
 
-export class drinkItem extends baseItem {
+export class DrinkItem extends baseItem {
    thirst: number;
    alcohol?: number;
    
@@ -22,9 +22,9 @@ export class drinkItem extends baseItem {
    }
 }
 
-new drinkItem('Coffe', 'prop_fib_coffee', 0.3, 3);
-const pivo = new drinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3);
-new drinkItem('Cola Can', 'ng_proc_sodacan_01a', 0.3, 3);
+new DrinkItem('Coffe', 'prop_fib_coffee', 0.3, 3);
+new DrinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3);
+new DrinkItem('Cola Can', 'ng_proc_sodacan_01a', 0.3, 3);
 
 
 

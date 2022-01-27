@@ -6,7 +6,7 @@ import { baseItem } from '../item.model';
 
 const defaultDocumentType = [itemData.Type.DOCUMENT, itemData.Type.USABLE];
 
-export class documentType extends baseItem {
+export class DocumentItem extends baseItem {
    specialType: number;
    
    constructor (name: string, model: string, special: number, type?: itemData.Type[], weight?: number, description?: string) { 
@@ -32,4 +32,4 @@ export class documentType extends baseItem {
    }
 }
 
-new documentType(itemData.Names.DOCUMENT_ID_CARD, 'p_ld_id_card_01', itemData.Type.ID_CARD, [itemData.Type.ID_CARD], 0.05, itemData.Descriptions.DOCUMENT_ID_CARD);
+new DocumentItem(itemData.Names.DOCUMENT_ID_CARD, 'p_ld_id_card_01', itemData.Type.ID_CARD, [itemData.Type.ID_CARD], 0.05, itemData.Descriptions.DOCUMENT_ID_CARD);

@@ -2,6 +2,7 @@
 import Accounts from '../models/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
+import Banks from '../models/bank.model';
 import { entityData, itemData, logType, NotifyType, spawnTypes } from '../globals/enums';
 import { Messages } from '../globals/constants';
 import { Config } from '../config';
@@ -44,9 +45,9 @@ mp.events.add(
       'playerDeath': (player: PlayerMp) => player.Character.onDeath(player),
 
       'SERVER::CHARACTER:PLAY': async (player: PlayerMp, characterId: number, point: spawnTypes) => {
-         const selectedCharacter = await Characters.findOne({ where: { id: characterId }, include: [Appearances]  });
+         const selectedCharacter = await Characters.findOne({ where: { id: characterId }, include: [Appearances, Banks]  });
          selectedCharacter?.spawnPlayer(player, point);
-      },
+      }
 
        
    }

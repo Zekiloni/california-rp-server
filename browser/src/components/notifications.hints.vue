@@ -4,9 +4,9 @@
 <template>
    
    <div class="notifications-hints"> 
-      <transition-group name="slide-top" tag="ul" class="hints">
-         <li class="hint"  v-for="hint in hints" :key="hint"> 
-            
+      <transition-group name="fade" tag="ul" class="hints">
+         <li class="hint"  v-for="(hint, i) in hints" :key="'hint-'+i"> 
+            <KeyHint :keyName="hint.key" /> <h4> {{ hint.message }} </h4>
          </li>
       </transition-group>
 
@@ -24,19 +24,24 @@
 
 <script>
 
-   import Error_Sound from '../assets/sounds/error.mp3';
-   import Success_Sound from '../assets/sounds/success.mp3';
-   import Info_Sound from '../assets/sounds/info.mp3';
+   import error_Sound from '../assets/sounds/error.mp3';
+   import success_Sound from '../assets/sounds/success.mp3';
+   import info_Sound from '../assets/sounds/info.mp3';
 
+   import KeyHint from './misc/key.hint.vue';
 
    export default { 
+      components: {
+         KeyHint
+      },
+
       data () { 
          return { 
 
             notificationTypes: [
-               { Icon: 'fa fa-check', Class: 'success', Sound: new Audio(Success_Sound) },
-               { Icon: 'fas fa-exclamation', Class: 'error', Sound: new Audio(Error_Sound) },
-               { Icon: 'fa fa-info', Class: 'info', Sound: new Audio(Info_Sound) }
+               { Icon: 'fa fa-check', Class: 'success', Sound: new Audio(success_Sound) },
+               { Icon: 'fas fa-exclamation', Class: 'error', Sound: new Audio(error_Sound) },
+               { Icon: 'fa fa-info', Class: 'info', Sound: new Audio(info_Sound) }
             ],
 
             help: null,
@@ -52,18 +57,25 @@
             });  
 
             mp.events.add('BROWSER::HINT', (key, message, time = 6) => { 
-               this.addHint(key, message, time);
+               this.createHint(key, message, time);
             });
          }
       },
 
       methods: { 
 
-         addHint: function (key, message, time) {
-            const hint = this.hints.push({ key: key, content: message });
+         createHint: function (key, message, time) {
+            const alreadyExist = this.hints.find(hint => hint.message == message);
+
+            if (alreadyExist) {
+               return;
+            }
+
+            const createdHint = this.hints.push({ key: key, message: message });
+
             setTimeout(() => { 
-               const inex = this.hints.indexOf(hint);
-               this.hints.splice(inex, 1);
+               const index = this.hints.indexOf(createdHint);
+               this.hints.splice(index, 1);
             }, time * 1000);
          },
 
@@ -82,6 +94,33 @@
 </script>
 
 <style scoped>
+
+   ul.hints { 
+      position: absolute;
+      padding: 0;
+      left: 30px;
+      list-style: none;
+      top: 480px;
+   }
+
+   ul.hints li {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 10px 0;
+      background: rgb(18 20 25 / 85%);
+      border-radius: 10px;
+      padding-right: 25px;
+      box-shadow: 0 5px 15px 0 rgb(0 0 0 / 30%);
+   }
+
+   ul.hints li h4 {
+      color: #adb6c4;
+      font-style: italic;
+      text-shadow: 0 0.7px 1px rgb(0 0 0 / 40%);
+      font-weight: 450;
+      margin: 0 10px;
+   }
 
    ul.notifications { 
       padding: 0;

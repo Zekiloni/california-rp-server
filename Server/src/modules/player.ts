@@ -7,7 +7,7 @@ mp.Player.prototype.sendNotification = function (message: string, type: number, 
 };
 
 
-mp.Player.prototype.sendHint = function (key: number, message: string, time: number) {
+mp.Player.prototype.sendHint = function (key: string, message: string, time: number) {
    this.call('CLIENT::HINT', [key, message, time]);
 };
 

@@ -167,7 +167,7 @@
    }
 
    .header::after { 
-      position: absolute; content: ''; bottom: -5px; right: 60px; width: 160px; height: 160px; background: url('../assets/images/icons/bank.svg'); background-size: cover; filter: grayscale(1); opacity: 0.45;
+      position: absolute; content: ''; bottom: -5px; right: 60px; width: 160px; height: 160px; background: url('../../assets/images/icons/bank.svg'); background-size: cover; filter: grayscale(1); opacity: 0.45;
    }
 
    .header .profile { width: 300px; height: 100px; }
@@ -184,14 +184,14 @@
 
    ul.navigation li { transition: all 0.35s ease; width: 30px; height: 30px; background: whitesmoke; opacity: 0.5; mask-size: cover; }
    ul.navigation li:hover { opacity: 1; }
-   ul.navigation li.home-page { mask: url('../assets/images/icons/home-page.svg') no-repeat center; }
-   ul.navigation li.withdraw-page { mask: url('../assets/images/icons/withdraw-money.svg') no-repeat center; }
-   ul.navigation li.deposit-page { mask: url('../assets/images/icons/deposit-money.svg') no-repeat center; }
-   ul.navigation li.transfer-page { mask: url('../assets/images/icons/transfer-money.svg') no-repeat center; }
-   ul.navigation li.savings-page { mask: url('../assets/images/icons/savings.svg') no-repeat center; }
+   ul.navigation li.home-page { mask: url('../../assets/images/icons/home-page.svg') no-repeat center; }
+   ul.navigation li.withdraw-page { mask: url('../../assets/images/icons/withdraw-money.svg') no-repeat center; }
+   ul.navigation li.deposit-page { mask: url('../../assets/images/icons/deposit-money.svg') no-repeat center; }
+   ul.navigation li.transfer-page { mask: url('../../assets/images/icons/transfer-money.svg') no-repeat center; }
+   ul.navigation li.savings-page { mask: url('../../assets/images/icons/savings.svg') no-repeat center; }
    ul.navigation li.active { opacity: 1; }
 
-   .logout { position: absolute; top: 10px; right: 5px; width: 30px; height: 30px; background: whitesmoke; opacity: 0.5; transition: all .35s ease; mask-size: cover; mask: url('../assets/images/icons/logout.svg') no-repeat center;  }
+   .logout { position: absolute; top: 10px; right: 5px; width: 30px; height: 30px; background: whitesmoke; opacity: 0.5; transition: all .35s ease; mask-size: cover; mask: url('../../assets/images/icons/logout.svg') no-repeat center;  }
    .logout:hover { background: white; opacity: 0.8; }
 
    .transaction-history { width: 370px; margin: 0 auto; margin-top: 20px; }

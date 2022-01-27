@@ -8,13 +8,6 @@ const licenseTypes = [itemData.Type.MISC, itemData.Type.LEGAL, itemData.Type.LIC
 
 export enum weapLicenseType { CCV, PF }
 
-interface LicenseData {
-   Issued: Date
-   Expiring: Date
-   Type?: weapLicenseType
-}
-
-
 export class licenseItem extends baseItem {
    
    constructor (name: string, model: string, description: string) { 
