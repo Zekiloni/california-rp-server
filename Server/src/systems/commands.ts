@@ -39,8 +39,8 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
    const command = Commands[commandName];
 
    if (command) {
-      const Account = player.Account;
-      const Character = player.Character;
+      const Account = player.account;
+      const Character = pplayer.character;
 
       if (command.admin && Account.administrator < command.admin) {
          player.sendNotification('Nije vam dozvoljeno !', NotifyType.ERROR, 4);

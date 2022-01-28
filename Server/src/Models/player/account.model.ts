@@ -109,7 +109,7 @@ export class accounts extends Model {
    async setLogged (player: PlayerMp, toggle: boolean) {
       this.online = toggle;
       console.log('loged 1')
-      player.Account = this;
+      player.account = this;
       this.login_date = new Date();
       this.ip_adress = player.ip;
       console.log('loged 2')

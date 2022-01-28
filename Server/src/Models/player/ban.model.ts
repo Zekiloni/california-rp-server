@@ -51,8 +51,8 @@ export class bans extends Model {
    static async createBan (player: PlayerMp, target: any, reason: string, date: Date, expiring: Date) {
       const ipAdress = validateIP(target);
       if (ipAdress) {
-         const playerAccount = player.Account;
-         const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.Account.id });
+         const playerAccount = player.account;
+         const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.account.id });
          if (playerAccount) {
             Banned.Account = playerAccount.id;
             Banned.HardwareId = playerAccount.hardwer;
@@ -65,12 +65,12 @@ export class bans extends Model {
          if (Online) {
             const Account = await Online.Account;
 
-            Bans.create({ Account: Online.Account.id, Character: Online.Character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.Account.id });
+            Bans.create({ Account: Online.Account.id, Character: Online.Character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             Online.kick(reason);
          } else {
             const OfflineAcc = await Accounts.findOne({ where: { Name: target } })
             if (OfflineAcc) {
-               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.Account.id });
+               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             } else {
                player.sendNotification(Messages.USER_NOT_FOUND, NotifyType.ERROR, 5);
             }

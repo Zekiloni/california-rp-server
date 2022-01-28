@@ -19,7 +19,7 @@ import { generateNumber } from '../utils';
             return;
          }
 
-         if (player.Character && player.Character.wounded) {
+         if (pplayer.character && pplayer.character.wounded) {
             return;
          }
 
@@ -68,13 +68,13 @@ mp.events.add(
 mp.events.addProc(
    {
       'SERVER::BANKING:CREATE': async (player: PlayerMp): Promise<Items> => {
-         // if (player.Character.bank) {
+         // if (pplayer.character.bank) {
          //    player.sendNotification('vec imate racun', NotifyType.ERROR, 7);
          //    return;
          // }
          console.log(1)
 
-         // const hasCreditCard = await Items.hasItem(itemData.Entity.PLAYER, player.Character.id, itemData.Names.CREDIT_CARD);
+         // const hasCreditCard = await Items.hasItem(itemData.Entity.PLAYER, pplayer.character.id, itemData.Names.CREDIT_CARD);
 
          // if (hasCreditCard) {
          //    // PORUKA: vec imate kreditnu karticu
@@ -82,13 +82,13 @@ mp.events.addProc(
          // }
 
          return new Promise(resolve => {
-            Bank.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: player.Character.id, character: player.Character } ).then(bank_Account => {
+            Bank.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: pplayer.character.id, character: pplayer.character } ).then(bank_Account => {
                Items.create({  name: itemData.Names.CREDIT_CARD, 
                   entity: itemData.Entity.PLAYER, 
-                  owner: player.Character.id, 
+                  owner: pplayer.character.id, 
                   quantity: 1,
                   data: {
-                     name: player.Character.name,
+                     name: pplayer.character.name,
                      bank: bank_Account.number,
                      pin: Math.floor(Math.random() * 1000),
                      expiring: Date.now(),

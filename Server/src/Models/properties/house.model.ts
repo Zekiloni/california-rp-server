@@ -142,7 +142,7 @@ export class houses extends Model {
    async buy (player: PlayerMp) {
       if (this.owner != 0) return player.sendNotification(Messages.HOUSE_ALREADY_OWNER, NotifyType.ERROR, 5);
 
-      const character = player.Character;
+      const character = pplayer.character;
       const { houses } = await character.properties;
 
       if (houses.length == character.max_houses) return; // PORUKA: Imate maksimalno kuca;
@@ -157,7 +157,7 @@ export class houses extends Model {
    }
 
    async lock (player: PlayerMp) {
-      if (this.owner == player.Character.id || this.tenants.includes(player.Character.id)) { 
+      if (this.owner == pplayer.character.id || this.tenants.includes(pplayer.character.id)) { 
          this.locked = !this.locked;
          await this.save();
       } else { 

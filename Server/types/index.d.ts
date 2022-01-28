@@ -1,6 +1,5 @@
 
-import Accounts from '../src/models/player/account.model';
-import Characters from '../src/models/character.model';
+import { accounts, characters } from '@models';
 
 
 declare global { 
@@ -23,15 +22,13 @@ declare global {
    }
 
    interface VehicleMp { 
-      Job: number;
-      Faction: number;
       DATABASE: number;
    }
 
    interface PlayerMp { 
       RespawnTimer: any;
-      Character: Characters;
-      Account: Accounts;
+      character: characters;
+      account: accounts;
 
       sendMessage (message: string, color: string): void;
       sendProximityMessage (radius: number, message: string, colors: string[]): void;

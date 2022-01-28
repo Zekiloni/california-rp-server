@@ -91,7 +91,7 @@ export default class Plant extends Model {
         // Namestiti da ne moze svuda da se planta
         //
         const GrowTime = Plant.GetPlantGrowTime(Type);
-        Plant.create({Type: Type, Owner: Player.Character, Grow_Time: GrowTime, Position: new mp.Vector3(Player.position.x + 0.2, Player.position.y + 0.3, Player.position.z)});
+        Plant.create({Type: Type, Owner: Player.character, Grow_Time: GrowTime, Position: new mp.Vector3(Player.position.x + 0.2, Player.position.y + 0.3, Player.position.z)});
         
     }
 

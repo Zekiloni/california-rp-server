@@ -4,7 +4,7 @@
 //          name: 'lock',
 //          description: 'Zakljucati / otkljucati',
 //          call: async (Player) => {
-//             const Character = await Player.Character(), Nearest = await Player.Nearest();
+//             const Character = await Player.character(), Nearest = await Player.Nearest();
 //             if (Nearest) { 
 //                switch (true) { 
 //                   case Nearest instanceof frp.Business: { 

@@ -32,7 +32,7 @@ export class Admin {
       if (!message.trim()) return;
 
       mp.players.forEach((Target: PlayerMp) => {
-         Target.sendMessage('(( [ ! ] ' + Ranks[player.Account.administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
+         Target.sendMessage('(( [ ! ] ' + Ranks[player.account.administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
       });
    }
 

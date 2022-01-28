@@ -44,7 +44,7 @@
 
 //    static async MakeLeader(player: PlayerMp, faction: number) {
 //       if (this.List[faction]) {
-//          const Character = await player.Character();
+//          const Character = await pplayer.character();
 //          Character.Faction = faction;
 //          Character.Faction_Rank = 'Leader';
 //          Character.Faction_Perms = this.Permissions.Leader;
@@ -61,7 +61,7 @@
 
 //    static async Chat(player: PlayerMp, message: string) {
 //       if (!message.trim()) return;
-//       const Character = await player.Character();
+//       const Character = await pplayer.character();
 
 //       mp.players.forEach(async (target) => {
 //          if (target.data.logged && target.data.spawned) {

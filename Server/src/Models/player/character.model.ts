@@ -2,11 +2,11 @@
 
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany } from 'sequelize-typescript';
-import { accounts, apppearances, banks } from '@models';
-import { facial_Moods, walking_Styles } from '@constants';
+import { accounts, apppearances, banks, houses, business } from '@models';
+import { facial_Moods, gDimension, walking_Styles } from '@constants';
 import { playerConfig } from '@configs';
-import { characterProperties, playerInjury } from '@interfaces';
-import Houses from '@models/properties/house.model';
+import { playerInjury } from '@interfaces';
+import { spawnPointTypes } from '@enums/player';
 
 
 @Table
@@ -126,9 +126,7 @@ export class characters extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { 
-            return JSON.parse(this.getDataValue('inside')); 
-         }
+         get () { return JSON.parse(this.getDataValue('inside')); }
       }
    )    
    inside: { position: Vector3Mp, type: number }
@@ -179,13 +177,16 @@ export class characters extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @HasMany(() => Houses)
-   appearance: apppearances
+   @HasMany(() => houses)
+   houses: houses
 
-   async spawnPlayer (player: PlayerMp, point: spawnTypes) { 
+   @HasMany(() => business)
+   business: business
 
-      player.Account.last_character = this.id;
-      player.Character = this;
+   async spawnPlayer (player: PlayerMp, point: spawnPointTypes) { 
+
+      player.account.last_character = this.id;
+      player.character = this;
 
       player.name = this.name;
 
@@ -231,13 +232,13 @@ export class characters extends Model {
       // player.setVariable(entityData.INJURIES, this.injuries.length > 0 ? this.injuries : []);
 
       switch (point) { 
-         case spawnTypes.default: { 
-            player.position = Config.Default.Spawn;
-            player.dimension = GlobalDimension;
+         case spawnPointTypes.DEFAULT: { 
+            player.position = playerConfig.main.spawn;
+            player.dimension = gDimension;
             break;
          }
 
-         case spawnTypes.lastPosition: {
+         case spawnPointTypes.LAST_POSITION: {
             player.position = new mp.Vector3(this.last_position.x, this.last_position.y, this.last_position.z);
             player.dimension = this.last_dimension ? this.last_dimension : GlobalDimension;
             break;
@@ -285,7 +286,7 @@ export class characters extends Model {
       // }
 
 
-      await player.Account.save();
+      await player.account.save();
    }
 
    async setHealth (player: PlayerMp, value: number) { 
@@ -310,13 +311,13 @@ export class characters extends Model {
       await this.save();
    };
 
-   async setWalkingStyle (player: PlayerMp, style: keyof typeof Peds.walkingStyles) {
+   async setWalkingStyle (player: PlayerMp, style: keyof typeof walking_Styles) {
       this.walking_style = style;
       player.setVariable(entityData.WALKING_STYLE, style);
       await this.save();
    };
 
-   setMood (player: PlayerMp, mood: keyof typeof Peds.facialMoods) { 
+   setMood (player: PlayerMp, mood: keyof typeof facial_Moods) { 
       this.facial_mood = mood;
       player.setVariable(entityData.FACIAL_MOOD, mood);
    };
@@ -343,14 +344,14 @@ export class characters extends Model {
 
          if (player.getVariable(entityData.MUTED)) return; // u are muted
 
-         const character = player.Character;
+         const character = pplayer.character;
 
          player.sendProximityMessage(Distances.IC, character.name + Messages.PERSON_SAYS + content, Colors.White);
       }
 
       //    if (Player.getVariable('Muted')) return;
 
-      //    const Character = await Player.Character();
+      //    const Character = await Player.character();
 
       //    const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
 

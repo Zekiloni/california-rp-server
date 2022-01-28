@@ -87,7 +87,7 @@
 //    }
 
 //    async Deliver (Player: PlayerMp) { 
-//       const Character = Player.Character;
+//       const Character = Player.character;
 //       let Counter = 0;
    
 //       for (const OrderedItem of this.Items) { 
@@ -122,7 +122,7 @@
 // mp.events.addProc({
 //    'server:job.food.order:accept': async (player, index) => { 
 //       let Order = Food.Orders[index];
-//       const Character = await player.Character();
+//       const Character = await pplayer.character();
 
 //       if (Order && Order.Status == FoodDeliveryStatus.Ordered) { 
 

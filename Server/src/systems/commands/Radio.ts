@@ -69,7 +69,7 @@
 //          // params: ['tekst'],
 //          // item: 'Handheld Radio',
 //          // call: async (player, args) => {
-//          //    const Character = player.Character;
+//          //    const Character = pplayer.character;
 //          //    console.log('Frekvencija /r Karaktera ' + Character.Frequency);
 //          //    if (Character.Frequency == 0) return player.Notification(frp.Globals.messages.NOT_IN_CHANNEL, frp.NotifyType.ERROR, 4);
 

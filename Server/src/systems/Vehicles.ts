@@ -22,7 +22,7 @@
 // mp.events.add({
 
 //    'playerEnterVehicle': (Player: PlayerMp, Vehicle: VehicleMp, Seat: number) => { 
-//       const Character = Player.Character();
+//       const Character = Player.character();
 //       if (Vehicle.Job && Vehicle.Job != Character.Job) return Player.removeFromVehicle();
 //       if (Vehicle.Faction && Vehicle.Faction != Character.Faction) return Player.removeFromVehicle();
 //    },

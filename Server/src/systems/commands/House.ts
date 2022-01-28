@@ -32,7 +32,7 @@
 // Commands["house"] = {
 //    description: 'Upravljanje kućom',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
-//       const HasHouse = await House.findOne({ where: { owner: Player.Character.id }});
+//       const HasHouse = await House.findOne({ where: { owner: Player.character.id }});
 //       if (HasHouse) {
 //          Player.call('CLIENT::HOUSE:MANAGER');
 //       } else Player.Notification(Messages.YOU_DONT_OWN_A_HOUSE, NotifyType.ERROR, 5);

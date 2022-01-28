@@ -22,7 +22,7 @@ taxiJob.vehiclePoint = [
 
 taxiJob.start = async function (player: PlayerMp) { 
    
-   const hasLicense = await player.Character.hasLicense();
+   const hasLicense = await pplayer.character.hasLicense();
 
    if (hasLicense) { 
       
@@ -83,7 +83,7 @@ taxiJob.stop = function (player: PlayerMp) {
 //       this.Taximeter = null;
 //       this.Customers = [];
 
-//       Taxi.Drivers[Player.Character.id] = this;
+//       Taxi.Drivers[Player.character.id] = this;
 //    }
 
 //    static async Start (Player: PlayerMp, haveVehicle: boolean) { 
@@ -155,7 +155,7 @@ taxiJob.stop = function (player: PlayerMp) {
 
 //       if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, NotifyType.ERROR, 5);
 
-//       const Character = Player.Character;
+//       const Character = Player.character;
 
 //       const vID = Player.getVariable('Job_Vehicle');
 //       if (vID) { 
@@ -176,7 +176,7 @@ taxiJob.stop = function (player: PlayerMp) {
 
 //       if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, NotifyType.ERROR, 5);
 
-//       const Shift = Taxi.Drivers[Player.Character.id];
+//       const Shift = Taxi.Drivers[Player.character.id];
 
 //       if (Shift) { 
 

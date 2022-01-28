@@ -52,7 +52,7 @@
 //       console.log('Number ' + Points);
 
 //       // ToDo
-//     //   const Character =  Player.Character;
+//     //   const Character =  Player.character;
 //     //   Character.Uniform(Player, false);
 
 //       Player.setVariable('Job_Duty', false);
@@ -88,7 +88,7 @@
 //       Player.Notification(Messages.GARBAGE_JOB_STARTED, Globals.Notification.Info, 12);
    
 //       // ToDo
-//       //(await Player.Character()).Uniform(Player, Configuration.Uniform);
+//       //(await Player.character()).Uniform(Player, Configuration.Uniform);
 //    }
 
 // };

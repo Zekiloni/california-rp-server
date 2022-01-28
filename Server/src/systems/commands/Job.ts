@@ -8,7 +8,7 @@
 // // name: 'takejob',
 // // description: 'Zapošljavanje.',
 // // call: async (player, args) => {
-// //    const Character = player.Character;
+// //    const Character = pplayer.character;
 // //    if (Character.Job != frp.Globals.Jobs.Unemployed) return player.Notification(frp.Globals.messages.ALREADY_EMPLOYED, frp.NotifyType.ERROR, 5);
 
 // //    const Nearest = frp.Jobs.Nearest(player);
@@ -22,7 +22,7 @@
 // Commands["takejob"] = {
 //    description: 'Zapošljavanje',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
-//       if (Player.Character.Job != 0) return Player.Notification(Messages.ALREADY_EMPLOYED, NotifyType.ERROR, 5);
+//       if (Player.character.Job != 0) return Player.Notification(Messages.ALREADY_EMPLOYED, NotifyType.ERROR, 5);
 
 //    }
 // };
@@ -30,8 +30,8 @@
 // Commands["quitjob"] = {
 //    description: 'Davanje otkaza',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
-//       if (Player.Character.Job == 0) return Player.Notification(Messages.NOT_EMPLOYED, NotifyType.ERROR, 5);
-//       Player.Character.SetJob(0);
+//       if (Player.character.Job == 0) return Player.Notification(Messages.NOT_EMPLOYED, NotifyType.ERROR, 5);
+//       Player.character.SetJob(0);
 //    }
 // };
 

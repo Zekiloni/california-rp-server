@@ -2,7 +2,7 @@
 
 import { Config } from './config';
 import { defaultSpawn } from './globals/constants';
-import { GlobalDimension, logType, NotifyType, spawnTypes, vehicleData } from './globals/enums';
+import { GlobalDimension, logType, NotifyType, spawnPointTypes, vehicleData } from './globals/enums';
 
 
 export function Logger (Status: logType, Message: any) {
@@ -12,20 +12,20 @@ export function Logger (Status: logType, Message: any) {
 }
 
 
-export function distanceBetweenVectors (First: Vector3Mp, Second: Vector3Mp) {
-   return new mp.Vector3(First.x, First.y, First.z).subtract(new mp.Vector3(Second.x, Second.y, Second.z)).length();
+export function distanceBetweenVectors (first: Vector3Mp, second: Vector3Mp) {
+   return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(second.x, second.y, second.z)).length();
 }
 
 
-export function randomInteger (Min: number, Max: number) {
-   return Math.random() * (Max - Min) + Min;
+export function randomInteger (min: number, max: number) {
+   return Math.random() * (max - min) + min;
 }
 
 
 export function getDefaultSpawn () { 
    return {
       name: defaultSpawn.name,
-      type: spawnTypes.default,
+      type: spawnPointTypes.default,
       description: defaultSpawn.description,
       position: Config.Default.Spawn,
       heading: Config.Default.Heading

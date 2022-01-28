@@ -248,7 +248,7 @@ Commands[CommandEnums.Names.FLY] =  {
 //        for (const i in Commands) {
 //           const Command = Commands[i];
 //           if (Command) {
-//              if (Command.Admin! > 0 && Command.Admin! <= Player.Account.Administrator) {
+//              if (Command.Admin! > 0 && Command.Admin! <= player.account.Administrator) {
 //                 AllowedCommands.push(Command);
 //              }
 //           }
@@ -482,7 +482,7 @@ Commands[CommandEnums.Names.FLY] =  {
 //       const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
 
 //       if (TargetPlayer && Value) {
-//          const Character = await Characters.findOne({ where: { id: Player.Character.id } });
+//          const Character = await Characters.findOne({ where: { id: Player.character.id } });
 //          if (Character) {
 //             Character.Money = Value;
 //             Character.save();
@@ -501,7 +501,7 @@ Commands[CommandEnums.Names.FLY] =  {
 //       const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
 
 //       if (TargetPlayer && Value) {
-//          Player.Character.GiveMoney(Player, Value);
+//          Player.character.GiveMoney(Player, Value);
 //          TargetPlayer.SendMessage('[OOC] Admin Vam je dao novac.' + Value + '$', Colors.tomato);
 //       }
 //    }
@@ -603,9 +603,9 @@ Commands[CommandEnums.Names.FLY] =  {
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const TargetPlayer = mp.players.find(Args[0]), Reason = Args[1];
 //       if (TargetPlayer && Reason) {
-//          Player.Character.Wounded = false;
-//          Player.Character.Health = 100;
-//          TargetPlayer.spawn(Player.Character.Last_Position);
+//          Player.character.Wounded = false;
+//          Player.character.Health = 100;
+//          TargetPlayer.spawn(Player.character.Last_Position);
 //          Admin.AdminActionNotify(Player, `je oživeo igrača ${TargetPlayer.name}. Razlog: ${Reason}.`);
 //       }
 //    }
@@ -633,13 +633,13 @@ Commands[CommandEnums.Names.FLY] =  {
 //       const TargetPlayer = mp.players.find(Args[0]), AdminLevel = parseInt(Args[1]);
 //       if (TargetPlayer) {
 //          if (AdminLevel > 0) {
-//             Player.Account.Administrator = AdminLevel;
+//             player.account.Administrator = AdminLevel;
 //             Admin.AdminActionNotify(Player, `je postavio ${Administrators[AdminLevel]}-a igraču ${TargetPlayer.name}.`);
 //          } else {
-//             Player.Account.Administrator = 0;
+//             player.account.Administrator = 0;
 //             Admin.AdminActionNotify(Player, `je skinuo ${Administrators[AdminLevel]}-a igraču ${TargetPlayer.name}.`);
 //          }
-//          Player.Account.save();
+//          player.account.save();
 //       }
 //    }
 // };

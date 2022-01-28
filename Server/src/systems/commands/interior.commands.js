@@ -14,7 +14,7 @@ module.exports = {
          description: 'Ulaz u interijer.',
          call: async (Player) => {
 
-            const Character = await Player.Character();
+            const Character = await Player.character();
             const Nearest = await Player.Nearest();
 
             if (Nearest.Locked) return;
@@ -58,7 +58,7 @@ module.exports = {
          name: 'exit',
          description: 'Izlaz iz interijera.',
          call: async (Player) => {
-            const Character = Player.Character;
+            const Character = Player.character;
 
             if (!Character.Inside) return;
 

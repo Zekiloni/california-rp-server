@@ -16,7 +16,7 @@
 
 // mp.events.add({
 //    'server:bussines.market:buy': async (Player: PlayerMp, Total: number, ItemsList: string, Biz) => { // ItemsList:Items[] ? 
-//       const Character = await Player.Character();
+//       const Character = await Player.character();
    
 //       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 
@@ -46,7 +46,7 @@
 //    },
    
 //    'server:business.drinks:buy': async (Player, Total, Item, Biz) => { 
-//       const Character = await Player.Character();
+//       const Character = await Player.character();
 
 //       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 
@@ -67,7 +67,7 @@
 //    },
 
 //    'server:business.clothing:buy': async (player, Total, Items, Biz) => { 
-//       const Character = await player.Character();
+//       const Character = await pplayer.character();
 
 //       if (Character.Money < Total) return player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
 //       const InBusiness = await Business.findOne({ where: { id: Biz } });
@@ -100,7 +100,7 @@
 //       Total = parseInt(Total);
 //       Color = JSON.parse(Color);
 
-//       const Character = await Player.Character();
+//       const Character = await Player.character();
 
 //       if (Character.Money < Total) return Player.Notification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 4);
 //       const InBusiness = await Business.findOne({ where: { id: Biz } });

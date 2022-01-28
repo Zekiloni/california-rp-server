@@ -29,7 +29,7 @@
 //       Main.Sleep(4).then(async () => { 
 //          frp.GameObjects.TemporaryVehicles[vehicle].destroy();
 
-//          const Character = await Player.Character();
+//          const Character = await Player.character();
 //          Character.GiveLicense(Category);
 
 //          Player.Notification(Messages.SUCCEFULLY_GET_LICENSE + Category + '.', NotifyType.SUCCESS, 6);
@@ -38,7 +38,7 @@
 //    },
 
 //    'server:vehicle.department:menu': async (player) => { 
-//       const Character = await player.Character();
+//       const Character = await pplayer.character();
 //       const Player = { Money: Character.Money, Licenses: Character.Licenses };
 //       const Department = { Quiz: Quiz, Licenses: Settings.Licenses };
 //       player.call('client:vehicle.department:menu', [Player, Department]);

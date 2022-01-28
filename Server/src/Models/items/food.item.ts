@@ -16,7 +16,7 @@ export class FoodItem extends baseItem {
       // .... todo
 
       this.use = function (player: PlayerMp) {
-         player.Character.hunger += this.hunger;
+         pplayer.character.hunger += this.hunger;
       }
 
    }

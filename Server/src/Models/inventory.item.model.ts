@@ -110,14 +110,14 @@ export default class Items extends Model {
    async pickup (player: PlayerMp) { 
       if (this.on_ground) {
          this.on_ground = false;
-         this.owner = player.Character.id;
+         this.owner = pplayer.character.id;
          this.entity = itemData.Entity.PLAYER;
          await this.save();
       }
    }
 
    async useItem (player: PlayerMp) { 
-      const Character = player.Character;
+      const Character = pplayer.character;
       
       const rItem = baseItem.list[this.name];
    }
@@ -130,12 +130,12 @@ export default class Items extends Model {
 
 
    static async giveItem (player: PlayerMp, item: baseItem, quantity: number = 1) { 
-      const alreadyItem = await Items.hasItem(itemData.Entity.PLAYER, player.Character.id, item.name);
+      const alreadyItem = await Items.hasItem(itemData.Entity.PLAYER, pplayer.character.id, item.name);
       
       if (alreadyItem && item.isStackable()) {
          alreadyItem.increment('quantity', { by: quantity });
       } else { 
-         Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: player.Character.id });
+         Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: pplayer.character.id });
       }
    }
 
@@ -429,7 +429,7 @@ export default class Items extends Model {
 
 // frp.Items.prototype.Equip = async function (player) { 
 
-//    const Character = await player.Character();
+//    const Character = await pplayer.character();
 //    const Item = ItemRegistry[this.Item];
 
 //    const AlreadyEquiped = await frp.Items.IsEquiped(player, this.Item);
@@ -461,7 +461,7 @@ export default class Items extends Model {
 
 // frp.Items.prototype.Unequip = async function (player) {
 //    return new Promise(async (resolve) => { 
-//       const Character = await player.Character(), Item = ItemRegistry[this.Item];
+//       const Character = await pplayer.character(), Item = ItemRegistry[this.Item];
 
 //       this.Entity = ItemEntities.Player;
 //       await this.save();
@@ -549,7 +549,7 @@ export default class Items extends Model {
 
 
 // frp.Items.prototype.Eat = async function (player) { 
-//    const Character = await player.Character();
+//    const Character = await pplayer.character();
 //    const Item = ItemRegistry[this.Item];
 
 //    const animation = Animations['eat'];
@@ -563,7 +563,7 @@ export default class Items extends Model {
 // };
 
 // frp.Items.prototype.Drink = async function (player) { 
-//    const Character = await player.Character();
+//    const Character = await pplayer.character();
 //    const Item = ItemRegistry[this.Item];
 
 //    const animation = Animations['drink2'];

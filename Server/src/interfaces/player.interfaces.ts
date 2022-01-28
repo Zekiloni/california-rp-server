@@ -1,7 +1,4 @@
-import { spawnTypes } from '@enums/player';
-import Business from '@models/properties/business.model';
-import Houses from '@models/properties/house.model';
-import { vehicles } from '@models/vehicle.model';
+import { spawnPointTypes } from '@enums';
 
 
 export interface playerInjury { 
@@ -10,11 +7,7 @@ export interface playerInjury {
    bone: number
 };
 
-export interface characterProperties {
-   houses: Houses[],
-   business: Business[]
-   vehicles: vehicles[]
-}
+
 
 export interface hairStyle { 
    style: number
@@ -30,7 +23,7 @@ export interface beardStyle {
 export interface spawnPoint { 
    name: string,
    description: string
-   type: spawnTypes
+   type: spawnPointTypes
    position: Vector3Mp
    heading: number
 };

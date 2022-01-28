@@ -220,7 +220,7 @@ export class vehicles extends Model {
    }
 
    async lock (player: PlayerMp) {
-      const character = player.Character;
+      const character = pplayer.character;
 
       switch (this.entity) {
          case vehicleData.Entity.PLAYER: {

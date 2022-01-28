@@ -1,13 +1,16 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, DataType, AfterCreate, AllowNull } from 'sequelize-typescript';
-import { markerColors } from '../../globals/constants';
-import { bizData, GlobalDimension } from '../../globals/enums';
-import { propertyPoint } from '../globals/interfaces';
-import Characters from './character.model';
+
+import { interactionPoint } from '@interfaces';
+import { gDimension } from '@constants';
+import { characters } from '@models';
+import { bizData } from '../../globals/enums';
+import { businessConfig } from '@configs/business.config';
 
 
-export default class Business extends Model {
+@Table
+export class business extends Model {
 
-   static objects = new Map<number, propertyPoint>();
+   static objects = new Map<number, interactionPoint>();
 
    @PrimaryKey
    @AutoIncrement
@@ -39,7 +42,7 @@ export default class Business extends Model {
    @Column
    budget: number
 
-   @Default(GlobalDimension)
+   @Default(gDimension)
    @Column
    dimension: number
 
@@ -53,34 +56,44 @@ export default class Business extends Model {
    sprite_color: number
 
    @Default([])
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('workers')); },
-   })    
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('workers')); }
+      }
+   )    
    workers: number[]
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('products')); },
-   })    
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('products')); }
+      }
+   )    
    products: { multiplier: number, quantity: number }[]
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('position')); },
-   })       
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('position')); }
+      }
+   )       
    position: Vector3Mp
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('vehicle_point')); },
-   })
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('vehicle_point')); }
+      }
+   )
    vehicle_point: Vector3Mp
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('interior_position')); },
-   })
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('interior_position')); }
+      }
+   )
    interior_position: Vector3Mp
 
    @CreatedAt
@@ -89,16 +102,16 @@ export default class Business extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   get object (): propertyPoint { 
-      return Business.objects.get(this.id)!;
+   get object (): interactionPoint { 
+      return business.objects.get(this.id)!;
    }
 
-   set object (object: propertyPoint) { 
-      Business.objects.set(this.id, object);
+   set object (object: interactionPoint) { 
+      business.objects.set(this.id, object);
    }
 
    @AfterCreate
-   static refresh (business: Business) { 
+   static refresh (business: business) { 
       if (business.object) { 
 
 
@@ -110,7 +123,7 @@ export default class Business extends Model {
             colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
             blip: mp.blips.new(sprite, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: name, color: sprite_color, shortRange: true, scale: 0.85 }),
             marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
-               color: markerColors.BUSINESS,
+               color: businessConfig.markerColor,
                rotation: new mp.Vector3(0, 0, 90),
                visible: true,
                dimension: dimension
@@ -120,14 +133,14 @@ export default class Business extends Model {
    }
 
 
-   async addWorker (playerr: PlayerMp, targetCharacter: Characters) { 
+   async addWorker (playerr: PlayerMp, targetCharacter: characters) { 
       let workers = this.workers;
       workers.push(targetCharacter.id);
       this.workers = workers;
       await this.save();
    }
 
-   async removeWorker (player: PlayerMp, targetCharacter: Characters) { 
+   async removeWorker (player: PlayerMp, targetCharacter: characters) { 
       let workers = this.workers;
       let x = workers.find(worker => worker == targetCharacter.id);
       if (x) workers.splice(workers.indexOf(x), 1);
@@ -144,30 +157,30 @@ export default class Business extends Model {
       let Products: any = {};
       //console.log(Products)
 
-      const NewBiz = await Business.create({ Name: Default.name, Type: Type, Price: Price, Walk_in: Walk_in, Products: Products, Position: Position, Dimension: Dimension });
+      const NewBiz = await business.create({ Name: Default.name, Type: Type, Price: Price, Walk_in: Walk_in, Products: Products, Position: Position, Dimension: Dimension });
       if (NewBiz) {
          // Log
       }
    };
 
-   static async getNearest (player: PlayerMp): Promise<Business | undefined> {
-      const business = await Business.findAll();
-      for (const b of business) {
-         const position = new mp.Vector3(b.position.x, b.position.y, b.position.z);
-         if (player.dist(position) < 2.5) return b;
-      }
-   };
+   // static async getNearest (player: PlayerMp): Promise<business | undefined> {
+   //    const business = await business.findAll();
+   //    for (const b of business) {
+   //       const position = new mp.Vector3(b.position.x, b.position.y, b.position.z);
+   //       if (player.dist(position) < 2.5) return b;
+   //    }
+   // };
 
-   static async gerNearestGasStation (player: PlayerMp): Promise<Business | undefined>  {
-      const gasStations = await Business.findAll({ where: { type: bizData.Type.GAS_STATION } });
-      for (const station of gasStations) {
-         const position = new mp.Vector3(station.position.x, station.position.y, station.position.z);
-         if (player.dist(position) < 50) return station;
-      }
-   };
+   // static async gerNearestGasStation (player: PlayerMp): Promise<business | undefined>  {
+   //    const gasStations = await Business.findAll({ where: { type: bizData.Type.GAS_STATION } });
+   //    for (const station of gasStations) {
+   //       const position = new mp.Vector3(station.position.x, station.position.y, station.position.z);
+   //       if (player.dist(position) < 50) return station;
+   //    }
+   // };
 
    async buy (player: PlayerMp) {
-      const character = player.Character;
+      const character = pplayer.character;
 
       if (this.owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
       if (this.price > character.money) return; // PORUKA: Nemate dovoljno novca
@@ -180,7 +193,7 @@ export default class Business extends Model {
 
    async openBuyMenu (player: PlayerMp) {
 
-      const Character = player.Character;
+      const Character = pplayer.character;
 
       // switch (this.Type) {
       //    case Globals.Business.Types.Dealership: {
@@ -248,7 +261,7 @@ export default class Business extends Model {
    };
 
    async sell (player: PlayerMp, target: any = 0, price = 0) {
-      let Character = player.Character;
+      let Character = pplayer.character;
       if (price == 0) price = (this.price / 100) * 65;
 
       Character.giveMoney(player, price);
@@ -291,7 +304,7 @@ export default class Business extends Model {
 
    // async WorkersAdd(player: PlayerMp) {
    //    let Workers = this.Workers;
-   //    Workers.push(player.Character.id);
+   //    Workers.push(pplayer.character.id);
    //    this.Workers = Workers;
    //    // PORUKA: Uspesno ste zaposlili igraca da radi u vas biznis
    //    await this.save();

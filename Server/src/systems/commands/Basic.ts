@@ -18,7 +18,7 @@
 //    Call: async (Player: PlayerMp, Args: string[]) => {
 //       const Spawns = ['Default spawn', 'Zadnja pozicija', 'Fakcija'];
 //       const InputNumber = parseInt(Args[0]);
-//       //Player.Character.Spawn_Place = Spawns[InputNumber];
+//       //Player.character.Spawn_Place = Spawns[InputNumber];
 //       // ToDo
 //       Player.SendMessage('Promenili ste mesto spawna na ' + Spawns[InputNumber], Colors.info);
 //    }
@@ -96,13 +96,13 @@
 //       switch (Args[0].toLowerCase()) {
 //          case 'LIC':
 //             // ToDo
-//             TargetPlayer.call('CLIENT::DOCUMENTS:SHOW', [0, Player.Character]);
+//             TargetPlayer.call('CLIENT::DOCUMENTS:SHOW', [0, Player.character]);
 //             break;
 //          case 'ID':
-//             TargetPlayer.call('CLIENT::DOCUMENTS:SHOW', [1, Player.Character]);
+//             TargetPlayer.call('CLIENT::DOCUMENTS:SHOW', [1, Player.character]);
 //             break;
 //          case 'PASSPORT':
-//             TargetPlayer.call('CLIENT::DOCUMENTS:SHOW', [2, Player.Character]);
+//             TargetPlayer.call('CLIENT::DOCUMENTS:SHOW', [2, Player.character]);
 //             break;
 //          default:
 //             break;
@@ -114,7 +114,7 @@
 //    description: 'Davanje novca',
 //    params: ['igrač', 'količina'],
 //    Call: async (Player: PlayerMp, Args: string[]) => {
-//       const Character = Player.Character;
+//       const Character = Player.character;
 //       if (Character.Hours < 2) return Player.Notification(Messages.YOU_NEED_MINIMUM_2_HOURS_OF_PLAYING, NotifyType.ERROR, 5);
 
 //       const Target = mp.players.find(Args[0]);
@@ -146,9 +146,9 @@
 //             if (Faction == 0)
 //                return false;
 
-//             Player.Character.Faction = Faction;
-//             Player.Character.Faction_Rank = 'Newbie';
-//             Player.Character.save();
+//             Player.character.Faction = Faction;
+//             Player.character.Faction_Rank = 'Newbie';
+//             Player.character.save();
 
 //             //Player.SendMessage('Uspešno ste se pridružili fakciji ' + mp.factions[faction].name + '.', mp.colors.success);
 //             break;

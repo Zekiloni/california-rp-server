@@ -24,15 +24,15 @@ mp.events.add(
          const leavingPlayer = player;
 
          try { 
-            if (leavingPlayer.Character) {
-               leavingPlayer.Character.last_position = leavingPlayer.position;
-               leavingPlayer.Character.last_dimension = leavingPlayer.dimension;
+            if (leavingPlayer.character) {
+               leavingPlayer.character.last_position = leavingPlayer.position;
+               leavingPlayer.character.last_dimension = leavingPlayer.dimension;
    
-               await leavingPlayer.Character.save();
+               await leavingPlayer.character.save();
                
-               Items.unequipWeapons(leavingPlayer.Character);
+               Items.unequipWeapons(leavingPlayer.character);
 
-               console.log('saved char ' + leavingPlayer.Character.name);
+               console.log('saved char ' + leavingPlayer.character.name);
             }
          } catch (e) { 
             Logger(logType.ERROR, 'Saving Character: ' + e);
@@ -40,9 +40,9 @@ mp.events.add(
 
       },
 
-      'playerChat': (player: PlayerMp, content) => player.Character.onChat(player, content),
+      'playerChat': (player: PlayerMp, content) => pplayer.character.onChat(player, content),
 
-      'playerDeath': (player: PlayerMp) => player.Character.onDeath(player),
+      'playerDeath': (player: PlayerMp) => pplayer.character.onDeath(player),
 
       'SERVER::CHARACTER:PLAY': async (player: PlayerMp, characterId: number, point: spawnTypes) => {
          const selectedCharacter = await Characters.findOne({ where: { id: characterId }, include: [Appearances, Banks]  });
@@ -130,7 +130,7 @@ mp.events.addProc(
          const createdCharacter = await Characters.create(
             { 
                name: character.name + ' ' + character.lastName,
-               account_id: player.Account.id,
+               account_id: player.account.id,
                origin: character.origin, 
                birth: character.birth, 
                gender: character.gender
@@ -185,7 +185,7 @@ const interval = 60 * 1000;
 
 async function updatePlayer (player: PlayerMp) {
    
-   player.Character.increment('minutes', { by: Config.happyHours == true ? 2 : 1 }).then(async character => { 
+   pplayer.character.increment('minutes', { by: Config.happyHours == true ? 2 : 1 }).then(async character => { 
       if (character.minutes >= 60) { 
          character.increment('hours', { by: 1 });
          character.minutes = 0;
@@ -193,11 +193,11 @@ async function updatePlayer (player: PlayerMp) {
       }
    });
    
-   player.Character.increment('hunger', { by: -0.35 });
-   player.Character.increment('thirst', { by: -0.70 });
+   pplayer.character.increment('hunger', { by: -0.35 });
+   pplayer.character.increment('thirst', { by: -0.70 });
 
-   if (player.Character.muted > 0) {
-      player.Character.increment('muted', { by: -1 });
+   if (pplayer.character.muted > 0) {
+      pplayer.character.increment('muted', { by: -1 });
    }
 }
 
