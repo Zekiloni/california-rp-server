@@ -1,7 +1,7 @@
 
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany } from 'sequelize-typescript';
 import { accounts, apppearances, banks } from '@models';
 import { facial_Moods, walking_Styles } from '@constants';
 import { playerConfig } from '@configs';
@@ -179,7 +179,7 @@ export class characters extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @HasOne(() => apppearances)
+   @HasMany(() => Houses)
    appearance: apppearances
 
    async spawnPlayer (player: PlayerMp, point: spawnTypes) { 
