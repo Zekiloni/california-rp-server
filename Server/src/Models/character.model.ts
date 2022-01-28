@@ -28,7 +28,7 @@ export default class Characters extends Model {
 
    @ForeignKey(() => Accounts)
    @Column
-   account_id: number
+   account_id: number;
 
    @BelongsTo(() => Accounts)
    account: Accounts
@@ -114,10 +114,14 @@ export default class Characters extends Model {
    injuries: Injury[]
 
    @Default(null)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('last_position')); },
-   })   
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('last_position')); 
+         },
+      }
+   )   
    last_position: Vector3Mp;
 
    @Default(null)
@@ -182,7 +186,7 @@ export default class Characters extends Model {
          const houses = await Houses.findAll({ where: { owner: this.id } });
          const busineess = await Business.findAll({ where: { owner: this.id } });
          const vehicles = await Vehicles.findAll({ where: { owner: this.id } });
-         return { houses: houses, busineess: busineess, vehicles: vehicles };
+         resolve ({ houses: houses, business: busineess, vehicles: vehicles });
       });
    }
 
@@ -242,7 +246,7 @@ export default class Characters extends Model {
          }
 
          case spawnTypes.lastPosition: {
-            player.position = new mp.Vector3(this.last_position.x, this.last_position.y, this.last_position.y);
+            player.position = new mp.Vector3(this.last_position.x, this.last_position.y, this.last_position.z);
             player.dimension = this.last_dimension ? this.last_dimension : GlobalDimension;
             break;
          }

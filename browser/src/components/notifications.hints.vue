@@ -4,7 +4,7 @@
 <template>
    
    <div class="notifications-hints"> 
-      <transition-group name="fade" tag="ul" class="hints">
+      <transition-group name="fade-with-bottom-slide" tag="ul" class="hints">
          <li class="hint"  v-for="(hint, i) in hints" :key="'hint-'+i"> 
             <KeyHint :keyName="hint.key" /> <h4> {{ hint.message }} </h4>
          </li>

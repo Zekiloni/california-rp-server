@@ -14,58 +14,61 @@ export default class Accounts extends Model {
    @AutoIncrement
    @PrimaryKey
    @Column
-   id: number
+   id: number;
 
    @Unique(true)
    @Column
-   username: string
+   username: string;
 
    @Unique(true)
    @Column
-   email: string
+   email: string;
+
+   @HasMany(() => Characters)
+   characters: Characters[];
 
    @Column
-   password: string
+   password: string;
 
    @Default(0)
    @Column
-   administrator: number
+   administrator: number;
 
    @Default(null)
    @Column
-   login_date: Date
+   login_date: Date;
 
    @Default(null)
    @Column
-   ip_adress: string
+   ip_adress: string;
 
    @Default(null)
    @Column
-   social_club: string
+   social_club: string;
    
    @Default(null)
    @Column
-   hardwer: string
+   hardwer: string;
 
    @Default(0)
    @Column
-   warns: number
+   warns: number;
 
    @Default(0)
    @Column
-   donator: number
+   donator: number;
 
    @Default(0)
    @Column
-   coins: number
+   coins: number;
 
    @Default(false)
    @Column
-   online: boolean
+   online: boolean;
 
    @Default(0)
    @Column
-   last_character: number
+   last_character: number;
 
    @CreatedAt
    created_at: Date;
@@ -78,8 +81,6 @@ export default class Accounts extends Model {
       account.password = bcrypt.hashSync(account.password, salt);
    }
 
-   @HasMany(() => Characters)
-   characters: Characters[];
    
    login (password: string) {     
       return bcrypt.compareSync(password, this.password);
@@ -87,12 +88,15 @@ export default class Accounts extends Model {
 
    async setLogged (player: PlayerMp, toggle: boolean) {
       this.online = toggle;
+      console.log('loged 1')
       player.Account = this;
       this.login_date = new Date();
       this.ip_adress = player.ip;
+      console.log('loged 2')
 
       player.setVariable(entityData.LOGGED, true);
       player.setVariable(entityData.ADMIN, this.administrator);
+      console.log('loged 3')
 
       if (this.hardwer == null || this.social_club == null) {
          const Already = await Accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } });
@@ -100,6 +104,7 @@ export default class Accounts extends Model {
          this.hardwer = player.serial;
          this.social_club = player.socialClub;
       }
+      console.log('loged 4')
 
       await this.save();
    }

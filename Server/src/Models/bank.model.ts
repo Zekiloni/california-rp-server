@@ -8,16 +8,15 @@ export default class Banks extends Model {
 
    @Unique(true)
    @PrimaryKey
-   @Default(Math.floor(Math.random() * 100000000000000000))
    @Column
-   number: bigint;
+   number: string;
 
    @ForeignKey(() => Characters)
    @Column
    character_id: number;
 
    @BelongsTo(() => Characters)
-   character: Characters
+   character: Characters;
 
    @Default(0)
    @Column

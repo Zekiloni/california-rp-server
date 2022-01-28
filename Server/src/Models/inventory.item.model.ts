@@ -28,6 +28,7 @@ export default class Items extends Model {
    @Column
    owner: number;
 
+   @Default(false)
    @Column(DataType.BOOLEAN)
    on_ground: boolean;
 

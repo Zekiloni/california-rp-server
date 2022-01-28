@@ -66,29 +66,24 @@ mp.events.addProc(
          return Config.Settings.Creator;
       },
 
-      'SERVER::AUTHORIZATION:VERIFY': async (player: PlayerMp, username: string, password: string): Promise<Accounts> => {
-         console.log('verify' + 1)
-         return new Promise((resolve) => {
-            console.log('verify' + 2)
-            Accounts.findOne({ where: { Username: username }, include: [Characters] }).then((account) => { 
-               console.log('verify' + 3)
-               if (account) { 
-                  console.log('verify' + 4)
-                  const logged = account.login(password);
-                  console.log('logged ' + logged)
-                  if (logged) { 
-                     console.log(1)
-                     account.setLogged(player, true);
-                     console.log(2)
-                     resolve(account);
-                  } else { 
-                     player.sendNotification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
-                  }
-               } else { 
-                  player.sendNotification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
-               }
-            });
-         });
+      'SERVER::AUTHORIZATION:VERIFY': (player: PlayerMp, username: string, password: string) =>  {
+         return Accounts.findOne({ where: { username: username }, include: Characters }).then(account => {
+            if (!account) {
+               player.sendNotification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
+               return;
+            }
+
+            const logged = account.login(password);
+
+            if (!logged) { 
+               player.sendNotification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
+               return;
+            }
+
+            account.setLogged(player, true);
+
+            return account;
+         })
       },
 
       'SERVER::CHARACTER:SPAWNS': async (player: PlayerMp, id: number): Promise<spawnPoint[]> => { 
@@ -105,7 +100,6 @@ mp.events.addProc(
                }
                
                // if (character?.houses) { }
-               console.log(character?.last_position)
       
                if (character?.last_position) { 
                   spawnPoints.push({

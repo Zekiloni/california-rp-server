@@ -45,6 +45,7 @@ export class baseItem {
 }
 
 import './items/document.item';
+import './items/creditCard.item';
 import './items/drink.item';
 import './items/food.item';
 import './items/weapon.item';

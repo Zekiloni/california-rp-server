@@ -1,0 +1,29 @@
+
+
+export namespace playerConfig {
+
+   export const main = { 
+      moeny: 3000,
+      spawn: new mp.Vector3(-1355.6395, -519.5300, 23.4648),
+      heading: 120,
+
+      creator: { 
+         position: new mp.Vector3(2.7733354, 525.318298, 170.617156),
+         heading: 0
+      },
+   
+      lobby: { 
+         position: new mp.Vector3(-1765.12, -1111.37, 24.83),
+         look_At: new mp.Vector3(-1690.09, -1081.34, 31.31),
+      }
+   }
+
+   export const max = {
+      inventory_Weight: 5,
+      houses: 3,
+      businesses: 2,
+      vehicles: 5,
+   }
+
+
+}

@@ -141,6 +141,7 @@
       width: 100%;
       height: 100%;
       animation: fade-in 2s ease-in;
+       background: radial-gradient(rgb(71 77 87 / 55%), rgb(11 14 17 / 95%));
    }
 
    .map-container {

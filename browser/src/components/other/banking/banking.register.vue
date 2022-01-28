@@ -66,7 +66,7 @@
       font-size: 2rem;
    }
 
-   label { color: #9ea8b6; width: 200px; margin: 0 15px; }
+   label { color: #9ea8b6; width: 200px; margin: 0 15px; font-weight: 450; }
 
    .contract { 
       display: flex;

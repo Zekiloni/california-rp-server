@@ -1,12 +1,12 @@
 
 import './database';
-import './modules/main';
-import './modules/commands';
-import './modules/player';
-import './modules/items';
-import './modules/bank'
-import './modules/jobs';
-import './modules/houses';
+import './systems/main';
+import './systems/commands';
+import './systems/player';
+import './systems/items';
+import './systems/bank'
+import './systems/jobs';
+import './systems/houses';
 import Accounts from './models/account.model';
 import Characters from './models/character.model';
 import { Logger, Sleep } from './utils';

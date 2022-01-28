@@ -2,7 +2,6 @@
 import { Peds } from '../globals/enums';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
 import Characters from './character.model';
-import { beardStyle, hairStyle } from '../globals/interfaces';
 
 @Table
 export default class Appearances extends Model {
@@ -11,12 +10,15 @@ export default class Appearances extends Model {
    @Column
    id: number;
 
+   
    @ForeignKey(() => Characters)
    @Column
    character_id: number;
 
+
    @BelongsTo(() => Characters)
    character: Characters
+
 
    @AllowNull(false)
    @Column({
@@ -25,6 +27,7 @@ export default class Appearances extends Model {
    })    
    face_features: number[];
 
+
    @AllowNull(false)
    @Column({
       type: DataType.JSON,
@@ -32,23 +35,35 @@ export default class Appearances extends Model {
    })    
    blend_data: number[];
 
-   @AllowNull(false)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('hair')); },
-   })   
-   hair: hairStyle;
 
    @AllowNull(false)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('beard')); },
-   })   
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('hair')); 
+         }
+      }
+   )   
+   hair: hairStyle;
+
+
+   @AllowNull(false)
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('beard')); 
+         }
+      }
+   )   
    beard: beardStyle;
+
 
    @AllowNull(false)
    @Column(DataType.INTEGER)
    eyes: number;
+
 
    @AllowNull(false)
    @Column(
@@ -61,19 +76,27 @@ export default class Appearances extends Model {
    )   
    overlays: number[];
 
+
    @AllowNull(true)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('overlays_colors')); },
-   })   
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('overlays_colors')); 
+         }
+      }
+   )   
    overlays_colors: number[];
+
 
    @CreatedAt
    created_at: Date;
 
+
    @UpdatedAt
    updated_at: Date;
 
+   
    apply (player: PlayerMp, gender: number) {
 
       const genders = [ mp.joaat(Peds.Models.MALE), mp.joaat(Peds.Models.FEMALE) ];

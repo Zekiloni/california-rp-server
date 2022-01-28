@@ -13,23 +13,22 @@ let active = {
 
 mp.events.add(
    {
-      'CLIENT::BANK:MENU': onEnterBank
+      'CLIENT::BANKING:MENU': onEnterBank
    }
 );
 
 mp.events.addProc(
    {
-      'CLIENT::BANKING:CREATE': createBank,
+      'CLIENT::BANKING:CREATE': async () => {
+         const response = await mp.events.callRemoteProc('SERVER::BANKING:CREATE');
+         mp.console.logInfo(JSON.stringify(response))
+         return response;
+      },
    }
 );
 
+
 mp.keys.bind(controls.KEY_E, true, openMenu);
-
-
-async function createBank () {
-   const response = await mp.events.callRemoteProc('SERVER::BANKING:CREATE');
-   return response;
-}
 
 
 function onEnterBank (toggle: boolean) {
@@ -40,6 +39,10 @@ let UIstatus: UI_Status;
 
 function openMenu () {
    if (!inBank) {
+      return;
+   }
+
+   if (mp.players.local.isTypingInTextChat) {
       return;
    }
 

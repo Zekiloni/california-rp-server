@@ -1,7 +1,7 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
+import { numberPlate, vehicleComponent } from '@interfaces/vehicle.interfaces';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
 import { Messages } from '../globals/constants';
 import { entityData, GlobalDimension, NotifyType, vehicleData } from '../globals/enums';
-import { vehicleComponent, vehiclePlate } from '../globals/interfaces';
 import { generateNumber, generateString } from '../utils';
 import Business from './business.model';
 
@@ -9,7 +9,7 @@ import Business from './business.model';
 let TemporaryVehicles = [];
 
 @Table
-export class Vehicles extends Model {
+export class vehicles extends Model {
 
    static objects = new Map<number, VehicleMp>();
    
@@ -36,7 +36,7 @@ export class Vehicles extends Model {
 
    @AllowNull(false)
    @Column(DataType.JSON)
-   numberPlate: vehiclePlate;
+   numberPlate: numberPlate;
 
    @AllowNull(false)
    @Column
@@ -96,25 +96,25 @@ export class Vehicles extends Model {
    updated_at: Date;
 
    get object (): VehicleMp { 
-      return Vehicles.objects.get(this.id)!;
+      return vehicles.objects.get(this.id)!;
    }
 
    set object (vehicle: VehicleMp) { 
-      Vehicles.objects.set(this.id, vehicle);
+      vehicles.objects.set(this.id, vehicle);
    }
 
    @AfterCreate
-   static async creating (vehicle: Vehicles) {  }
+   static async creating (vehicle: vehicles) {  }
 
    @AfterDestroy
-   static async destroying (vehicle: Vehicles, options: any) {
+   static async destroying (vehicle: vehicles, options: any) {
       if (vehicle.object) { 
          vehicle.object.destroy();
       }
    }
 
    static async new (model: string, entity: any, owner: number, position: Vector3Mp, rotation: number) {
-      const Vehicle = await Vehicles.create({
+      const Vehicle = await vehicles.create({
          Model: model,
          Entity: entity,
          Owner: owner,
@@ -145,7 +145,7 @@ export class Vehicles extends Model {
 
 
    static vehicleInstance (vehicle: VehicleMp) {
-      Vehicles.findOne({ where: { id: vehicle.getVariable(entityData.DATABASE) } }).then(vehicle => { 
+      vehicles.findOne({ where: { id: vehicle.getVariable(entityData.DATABASE) } }).then(vehicles => { 
          return vehicle;
       });
    };
@@ -185,7 +185,7 @@ export class Vehicles extends Model {
       
       const vehicle = mp.vehicles.new(mp.joaat(this.model), new mp.Vector3(position.x, position.y, position.z), {
          heading: this.rotation.z,
-         numberPlate: numberPlate.content,
+         numberPlate: numberPlate.plate,
          color: [primary, secondary],
          alpha: 255,
          locked: locked,
@@ -256,14 +256,14 @@ export class Vehicles extends Model {
    async generateNumberPlate (expiringDays: number = 30) {
       let currentData = Date.now();
       
-      const numbeRPlate: vehiclePlate = { 
-         content: this.id.toString() + generateString(3) + generateNumber(0, 900).toString(),
+      const numberPlate: numberPlate = { 
+         plate: this.id.toString() + generateString(3) + generateNumber(0, 900).toString(),
          issued: currentData,
          expiring: currentData + (expiringDays * 84000) 
       };
 
-      this.numberPlate = numbeRPlate;
-      this.object.numberPlate = numbeRPlate.content;
+      this.numberPlate = numberPlate;
+      this.object.numberPlate = numberPlate.plate;
       await this.save();
    }
 

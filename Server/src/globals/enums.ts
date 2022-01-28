@@ -30,7 +30,7 @@ export namespace Peds {
    }
 
    export const walkingStyles = { 
-      'Normal': null,
+      'Normal': 'normal',
       'Brave': 'move_m@brave',
       'Confident': 'move_m@confident',
       'Drunk': 'move_m@drunk@verydrunk',
@@ -72,35 +72,8 @@ export enum Distances {
    VEHICLE = 5.5
 };
 
-export enum spawnTypes {
-   default = 0,
-   lastPosition = 1,
-   faction = 2,
-   house = 3
-}
 
-export namespace Business { 
 
-   export enum Default { 
-      SUPPLIES = 125
-   }
-
-   export enum Types { 
-      MARKET = 0, 
-      GAS_STATION = 1,
-      ELECTRONICS = 2, 
-      VEHICLE_RENT = 3, 
-      DEALERSHIP = 4, 
-      CLOTHING = 5,
-      RESTAURANT = 6, 
-      CAFE = 7, 
-      NIGHT_CLUB = 8, 
-      GUN_SHOP = 9,
-      FURNITURE_SHOP = 10, 
-      PAWN_SHOP = 11, 
-      TATTO = 12
-   }
-};
 
 export enum NotifyType {
    SUCCESS, ERROR, INFO
@@ -222,7 +195,7 @@ export namespace itemData {
       ILEGAL, LEGAL, MISC, CLOTHING,
       PROP, HEAVY, STACKABLE, USABLE, STORAGE, 
       SEED, DOCUMENT, LICENSE, COOKABLE, COOKER,
-      ID_CARD, LAW_BADGE
+      ID_CARD, LAW_BADGE, CREDIT_CARD
    }
 
    export enum Entity { 
@@ -236,6 +209,7 @@ export namespace itemData {
    }
 
    export enum Names { 
+      CREDIT_CARD = 'Credit Card',
       DRIVING_LICENSE = 'Driving licence',
       FLYING_LICENSE = 'License for Flying',
       FISHING_LICENSE = 'Fishing permit',
@@ -258,7 +232,8 @@ export namespace itemData {
    }
 
    export const Descriptions = {
-      DOCUMENT_ID_CARD: 'Vaš identifikacioni dokument. Lična karta. Nije preporučljivo da je izgubite.'
+      DOCUMENT_ID_CARD: 'Identifikacioni dokument. Lična karta. Nije preporučljivo da je izgubite.',
+      CREDIT_CARD: 'Kreditna kartica bankovnog računa. Služi za podizanje novca na bankomatima i plaćanje.'
    }
 }
 
