@@ -1,12 +1,12 @@
 
-import Accounts from '../models/account.model';
+import Accounts from '../models/player/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
 import Banks from '../models/bank.model';
 import { entityData, itemData, logType, NotifyType, spawnTypes } from '../globals/enums';
 import { Messages } from '../globals/constants';
 import { Config } from '../config';
-import Bans from '../models/ban.model';
+import Bans from '../models/player/ban.model';
 import { spawnPoint } from '../globals/interfaces';
 import { getDefaultSpawn, Logger } from '../utils';
 import Items from '../models/inventory.item.model';

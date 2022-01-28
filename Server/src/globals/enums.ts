@@ -18,37 +18,7 @@ export namespace Peds {
       NECK = 18
    };
 
-   export const facialMoods = {
-      'Normal': 'normal',
-      'Zamišljena': 'mood_aiming_1',
-      'Ljutita': 'mood_angry_1',
-      'Pijana': 'mood_drunk_1',
-      'Srećna': 'mood_happy_1' ,
-      'Povredjena': 'mood_injured_1',
-      'Stresirana': 'mood_stressed_1' ,
-      'Uvređena': 'mood_sulk_1',
-   }
 
-   export const walkingStyles = { 
-      'Normal': 'normal',
-      'Brave': 'move_m@brave',
-      'Confident': 'move_m@confident',
-      'Drunk': 'move_m@drunk@verydrunk',
-      'Fat': 'move_m@fat@a',
-      'Gangster': 'move_m@shadyped@a',
-      'Hurry': 'move_m@hurry@a',
-      'DeadlyWound': 'move_m@injured',
-      'HeavyWound': 'move_m@drunk@verydrunk',
-      'MediumWound': 'move_m@drunk@moderatedrunk',
-      'Wounded': 'move_injured_generic',
-      'LegsDamage': 'move_m@drunk@verydrunk',
-      'Injured_Ground': 'move_injured_ground',
-      'Strafed': 'move_strafe@injured',
-      'Intimidated': 'move_m@intimidation@1h',
-      'Quick': 'move_m@quick',
-      'Sad': 'move_m@sad@a',
-      'Tough': 'move_m@tool_belt@a',
-   }
 }
 
 
@@ -138,13 +108,6 @@ export namespace bizData {
    }
 }
 
-export namespace houseData { 
-   export enum Type { 
-      SMALL_TRAILER, BIG_TRAILER, SMALL_APARTMENT, MEDIUM_APARTMENT, BIG_APARTMENT,
-      SMALL_GROUND_HOUSE, MEDIUM_GROUND_HOUSE, SMALL_HOUSE, MEDIUM_HOUSE, BIG_HOUSE
-   }
-}
-
 export enum adminLevel {
    NONE = 0,
    GAME_ASISSTANT = 1,
@@ -157,34 +120,8 @@ export enum adminLevel {
 }
 
 
-export enum Controls {
-   KEY_E = 'e',
-   KEY_I = 'i',
-   KEY_A = 'a',
-   KEY_F = 'f',
-   KEY_W = 'w',
-   KEY_S = 's',
-   KEY_D = 'd',
-   KEY_C = 'c',
-   KEY_Y = 'y',
-   KEY_Z = 'z'
-}
 
 
-export namespace weather { 
-
-   export const Names = [
-      'EXTRASUNNY', 'CLEAR', 'CLOUDS', 'SMOG', 'FOGGY',
-      'OVERCAST', 'RAIN', 'THUNDER', 'CLEARING', 'NEUTRAL',
-      'SNOW', 'BLIZZARD', 'SNOWLIGHT', 'XMAS', 'HALLOWEEN'
-   ];
-
-   export enum Types {
-      extrasunny,	clear, clouds, smog, foggy,
-      overcast, rain, thunder, clearing, neutral,
-      snow, blizzard, snowlight, xmas, halloween
-   };
-};
 
 
 export namespace itemData {

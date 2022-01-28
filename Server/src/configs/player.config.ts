@@ -3,7 +3,7 @@
 export namespace playerConfig {
 
    export const main = { 
-      moeny: 3000,
+      money: 3000,
       spawn: new mp.Vector3(-1355.6395, -519.5300, 23.4648),
       heading: 120,
 
@@ -19,10 +19,10 @@ export namespace playerConfig {
    }
 
    export const max = {
-      inventory_Weight: 5,
-      houses: 3,
-      businesses: 2,
-      vehicles: 5,
+      INVENTORY_WEIGHT: 5,
+      HOUSES: 3,
+      BUSINESS: 2,
+      VEHICLES: 5,
    }
 
 

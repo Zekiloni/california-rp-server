@@ -6,14 +6,7 @@ import { Logger } from './utils';
 
 import { logType } from './globals/enums';
 
-import Accounts from './models/account.model';
-import Bans from './models/ban.model';
-import Characters from './models/character.model';
-import Appearances from './models/appearance.model';
-import Items from './models/inventory.item.model';
-import Business from './models/business.model';
-import Houses from './models/house.model';
-import Banks from './models/bank.model';
+
 import { databaseConfig } from './configs';
 
 
@@ -24,7 +17,7 @@ const Database = new Sequelize({
    password: databaseConfig.password,
    storage: ':memory:',
    models: [ 
-      Accounts, 
+      accounts, 
       Bans, 
       Characters, 
       Appearances, 

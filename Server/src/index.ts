@@ -7,12 +7,9 @@ import './systems/items';
 import './systems/bank'
 import './systems/jobs';
 import './systems/houses';
-import Accounts from './models/account.model';
-import Characters from './models/character.model';
 import { Logger, Sleep } from './utils';
 import { logType } from './globals/enums';
 import { Messages } from './globals/constants';
-
 
 //console.log(Items.List);
 
@@ -42,12 +39,6 @@ import { Messages } from './globals/constants';
 // console.log('Finished in ' + ((End - Start) / 1000));
 
 
-(async () => {
-   const Chars = await Characters.count()
-   const Users = await Accounts.count();
-   Logger(logType.INFO, 'There are registered ' + Users + ' users, with ' + Chars + ' registered characters.')
-
-})();
 
 
 const Exit = async () => {

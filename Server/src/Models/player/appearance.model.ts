@@ -1,38 +1,44 @@
 
-import { Peds } from '../globals/enums';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import Characters from './character.model';
+import { characters } from '@models';
+import { hairStyle } from '@interfaces';
+
 
 @Table
-export default class Appearances extends Model {
+export class apppearances extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
-   id: number;
+   id: number
 
-   
-   @ForeignKey(() => Characters)
+   @ForeignKey(() => characters)
    @Column
-   character_id: number;
+   character_id: number
 
-
-   @BelongsTo(() => Characters)
-   character: Characters
-
+   @BelongsTo(() => characters)
+   character: characters
 
    @AllowNull(false)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('face_features')); },
-   })    
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('face_features')); 
+         }
+      }
+   )    
    face_features: number[];
 
 
    @AllowNull(false)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('blend_data')); },
-   })    
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('blend_data')); 
+         }
+      }
+   )    
    blend_data: number[];
 
 

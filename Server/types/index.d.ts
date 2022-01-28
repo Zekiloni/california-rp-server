@@ -1,5 +1,5 @@
 
-import Accounts from '../src/models/account.model';
+import Accounts from '../src/models/player/account.model';
 import Characters from '../src/models/character.model';
 
 

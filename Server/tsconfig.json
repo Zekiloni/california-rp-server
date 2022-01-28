@@ -47,14 +47,19 @@
     "paths": {
       "@configs/*": ["src/configs/*"],
       "@configs": ["src/configs/index"],
+
       "@constants/*": ["src/constants/*"],
       "@constants": ["src/constants/index"],
+
       "@enums/*": ["src/enums/*"],
       "@enums*": ["src/enums/index"],
+
       "@interfaces/*": ["src/interfaces/*"],
-      "@interfaces": ["src/interfaces/index*"],
+      "@interfaces": ["src/interfaces/index"],
+
       "@models/*": ["src/models/*"],
       "@models": ["src/models/index"],
+
       "@modules/*": ["src/modules/*"],
       "@modules": ["src/modules/index"]
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */

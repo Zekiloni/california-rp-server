@@ -1,9 +1,14 @@
-import { spawnTypes } from '@enums/player.enums';
-import Business from '@models/business.model';
-import Houses from '@models/house.model';
+import { spawnTypes } from '@enums/player';
+import Business from '@models/properties/business.model';
+import Houses from '@models/properties/house.model';
 import { vehicles } from '@models/vehicle.model';
 
 
+export interface playerInjury { 
+   weapon: string
+   damage: number
+   bone: number
+};
 
 export interface characterProperties {
    houses: Houses[],

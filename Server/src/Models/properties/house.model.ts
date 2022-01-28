@@ -1,12 +1,14 @@
+
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
-import { markerColors, Messages } from '../globals/constants';
-import { GlobalDimension, houseData, NotifyType } from '../globals/enums';
-import { propertyPoint } from '../globals/interfaces';
+import { interactionPoint } from '@interfaces';
+import { houseType } from '@enums';
+import { gDimension } from '@constants';
+
 
 @Table
-export default class Houses extends Model {
+export class houses extends Model {
 
-   static objects = new Map<number, propertyPoint>();
+   static objects = new Map<number, interactionPoint>();
 
    @PrimaryKey
    @AutoIncrement
@@ -17,9 +19,9 @@ export default class Houses extends Model {
    @Column
    owner: number;
 
-   @Default(houseData.Type.SMALL_HOUSE)
+   @Default(houseType)
    @Column
-   type: houseData.Type;
+   type: houseType;
 
    @AllowNull(false)
    @Column
@@ -29,19 +31,23 @@ export default class Houses extends Model {
    @Column
    locked: boolean;
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('position')); },
-   })       
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('position')); }
+      }
+   )       
    position: Vector3Mp
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('interior_position')); },
-   })
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('interior_position')); }
+      }
+   )
    interior_position: Vector3Mp
 
-   @Default(GlobalDimension)
+   @Default(gDimension)
    @Column
    dimension: number;
 
@@ -57,10 +63,12 @@ export default class Houses extends Model {
    @Column
    rent: number;
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('tenants')); },
-   })
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('tenants')); }
+      }
+   )
    tenants: number[];
 
    @CreatedAt
@@ -69,32 +77,31 @@ export default class Houses extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   get object (): propertyPoint { 
-      return Houses.objects.get(this.id)!;
+   get object (): interactionPoint { 
+      return houses.objects.get(this.id)!;
    }
 
-   set object (object: propertyPoint) { 
-      Houses.objects.set(this.id, object);
+   set object (object: interactionPoint) { 
+      houses.objects.set(this.id, object);
    }
 
    @AfterCreate
-   static async creating (house: Houses) {
+   static async creating (house: houses) {
       house.refresh();
    }
 
    @AfterDestroy
-   static async destroying (house: Houses, options: any) {
+   static async destroying (house: houses, options: any) {
       if (house.object) {
-         house.object.colshape.destroy();
-         house.object.blip.destroy();
-         house.object.marker.destroy();
-         Houses.objects.delete(house.id);
+         house.object.colshape!.destroy();
+         house.object.blip!.destroy();
+         house.object.marker!.destroy();
+         houses.objects.delete(house.id);
       }
    }
 
    static async new (player: PlayerMp, type: number, price: number) {
-      if (houseData.Type[type]) {
-         Houses.create({
+         houses.create({
             type: type,
             price: price,
             position: player.position,
@@ -102,14 +109,13 @@ export default class Houses extends Model {
             Dimension: player.dimension,
             tenants: []
          });
-      }
    }
 
    refresh () {
       const { position, dimension, owner } = this;
 
       if (this.object) {
-         this.object.blip.color = owner == 0 ? 2 : 79;
+         this.object.blip!.color = owner == 0 ? 2 : 79;
       } else {
          this.object = {
             colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, dimension),
@@ -122,12 +128,12 @@ export default class Houses extends Model {
             })
          };
 
-         this.object.colshape.onPlayerEnter = (player: PlayerMp) => {
+         this.object.colshape!.onPlayerEnter = (player: PlayerMp) => {
             if (player.vehicle) return;
             player.call('CLIENT::HOUSE:INFO', [this]);
          }
 
-         this.object.colshape.onPlayerLeave = (player: PlayerMp) => { 
+         this.object.colshape!.onPlayerLeave = (player: PlayerMp) => { 
             player.call('CLIENT::HOUSE:INFO', [false]);
          }
       }
@@ -159,13 +165,13 @@ export default class Houses extends Model {
       }
    }
 
-   static async getNearest (player: PlayerMp) {
-      const houses = await Houses.findAll();
-      for (const house of houses) {
-         const position = new mp.Vector3(house.position.x, house.position.y, house.position.z);
-         if (player.dist(position) < 2.5) return house;
-      }
-  };
+   // static async getNearest (player: PlayerMp) {
+   //    const houses = await Houses.findAll();
+   //    for (const house of houses) {
+   //       const position = new mp.Vector3(house.position.x, house.position.y, house.position.z);
+   //       if (player.dist(position) < 2.5) return house;
+   //    }
+   // };
 
 }
 

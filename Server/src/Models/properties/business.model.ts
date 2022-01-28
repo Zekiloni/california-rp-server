@@ -1,6 +1,6 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, DataType, AfterCreate, AllowNull } from 'sequelize-typescript';
-import { markerColors } from '../globals/constants';
-import { bizData, GlobalDimension } from '../globals/enums';
+import { markerColors } from '../../globals/constants';
+import { bizData, GlobalDimension } from '../../globals/enums';
 import { propertyPoint } from '../globals/interfaces';
 import Characters from './character.model';
 

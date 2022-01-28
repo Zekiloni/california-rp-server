@@ -1,4 +1,4 @@
-import Houses from '../models/house.model';
+import Houses from '../models/properties/house.model';
 
 
 mp.events.add(

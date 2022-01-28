@@ -1,59 +1,53 @@
-import { NotifyType } from '../globals/enums';
-import { Messages } from '../globals/constants';
-import { validateIP } from '../utils';
+import { NotifyType } from '../../globals/enums';
+import { Messages } from '../../globals/constants';
+import { validateIP } from '../../utils';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
-import Accounts from './account.model';
 
 
 @Table
-export default class Bans extends Model {
+export class bans extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
-   ID: number;
+   id: number;
 
    @Column
-   Account: number;
+   account_id: number;
 
+   @Default(null)
    @Column
-   Character: number;
-
-   @Default('')
-   @Column
-   IP: string
+   ip: string
 
    @Default(0)
    @Column
-   HardwareId: string;
+   hardware_Id: string;
 
-   @Default('')
+   @Default(null)
    @Column
-   Social: string;
+   social: string;
 
    @Default(0)
    @Column
-   Issuer: number;
+   issuer: number;
 
    @Default('')
    @Column
-   Reason: string;
+   reason: string;
 
    @Default(Date.now())
    @Column
-   Date: string;
+   date: string;
 
    @Default(0)
    @Column
-   Expiring: string;
+   expirinrg: string;
 
    @CreatedAt
-   Created_At: Date;
+   created_At: Date;
 
    @UpdatedAt
-   Updated_At: Date;
+   updated_At: Date;
 
-
-   // Target can be IP/Exact_Character_Name
    static async createBan (player: PlayerMp, target: any, reason: string, date: Date, expiring: Date) {
       const ipAdress = validateIP(target);
       if (ipAdress) {

@@ -3,7 +3,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 import { Messages } from '../globals/constants';
 import { entityData, GlobalDimension, NotifyType, vehicleData } from '../globals/enums';
 import { generateNumber, generateString } from '../utils';
-import Business from './business.model';
+import Business from './properties/business.model';
 
 
 let TemporaryVehicles = [];

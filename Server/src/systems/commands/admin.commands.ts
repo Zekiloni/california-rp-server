@@ -3,7 +3,7 @@ import fs from 'fs';
 import { Config } from '../../config';
 import { Colors } from '../../globals/constants';
 import { adminLevel, CommandEnums, houseData, logType, NotifyType, weather } from '../../globals/enums';
-import Houses from '../../models/house.model';
+import Houses from '../../models/properties/house.model';
 import Items from '../../models/inventory.item.model';
 import { baseItem } from '../../models/item.model';
 import { Logger } from '../../utils';

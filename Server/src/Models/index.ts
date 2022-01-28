@@ -1,10 +1,11 @@
 
 
-export * from './account.model';
-export * from './ban.model';
-export * from './character.model';
-export * from './appearance.model';
-export * from './bank.model';
-export * from './house.model';
-export * from './business.model';
+export * from './player/account.model';
+export * from './player/ban.model';
+export * from './player/character.model';
+export * from './player/appearance.model';
+export * from './player/bank.model';
+export * from './item.model';
 export * from './vehicle.model';
+export * from './properties/business.model';
+export * from './properties/house.model';

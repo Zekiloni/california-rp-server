@@ -1,39 +1,29 @@
 
 
-import { Distances, entityData, GlobalDimension, itemData, NotifyType, Peds, spawnTypes } from '../globals/enums';
-import { Colors, Messages } from '../globals/constants';
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, AfterCreate } from 'sequelize-typescript';
-import { Config } from '../config';
 
-import Accounts from './account.model';
-import { Injury } from './misc/injury.model';
-import Appearances from './appearance.model';
-import Houses from './house.model';
-import Business from './business.model';
-import { Vehicles } from './vehicle.model';
-import { characterProperties } from '../globals/interfaces';
-import { licenseItem } from './items/license.item';
-import Items from './inventory.item.model';
-import Bank from './bank.model';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne } from 'sequelize-typescript';
+import { accounts, apppearances, banks } from '@models';
+import { facial_Moods, walking_Styles } from '@constants';
+import { playerConfig } from '@configs';
+import { characterProperties, playerInjury } from '@interfaces';
+import Houses from '@models/properties/house.model';
 
-
-console.log(Peds.walkingStyles.Normal)
 
 @Table
-export default class Characters extends Model {
+export class characters extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
    id: number
 
-   @ForeignKey(() => Accounts)
+   @ForeignKey(() => accounts)
    @Column
-   account_id: number;
+   account_id: number
 
-   @BelongsTo(() => Accounts)
-   account: Accounts
+   @BelongsTo(() => accounts)
+   account: accounts
 
-   @Unique
+   @Unique(true)
    @Length({ min: 6, max: 48 })
    @Column
    name: string
@@ -47,7 +37,7 @@ export default class Characters extends Model {
    @Column
    origin: string
 
-   @Default(Config.Default.Money)
+   @Default(playerConfig.main.money)
    @Column
    money: number
 
@@ -55,11 +45,11 @@ export default class Characters extends Model {
    @Column
    salary: number
 
-   @HasOne(() => Appearances)
-   appearance: Appearances;
+   @HasOne(() => apppearances)
+   appearance: apppearances
 
-   @HasOne(() => Bank)
-   bank: Bank;
+   @HasOne(() => banks)
+   bank: banks;
 
    @Default(0)
    @Column
@@ -74,9 +64,9 @@ export default class Characters extends Model {
    @Column
    faction: number;
 
-   @Default('none')
+   @Default(null)
    @Column
-   faction_rank: string;
+   faction_rank: string | null;
 
    @Default(0)
    @Column
@@ -107,11 +97,15 @@ export default class Characters extends Model {
    wounded: boolean;
 
    @Default([])
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('injuries')); },
-   })    
-   injuries: Injury[]
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('injuries')); 
+         }
+      }
+   )    
+   injuries: playerInjury[]
 
    @Default(null)
    @Column(
@@ -119,7 +113,7 @@ export default class Characters extends Model {
          type: DataType.JSON,
          get () { 
             return JSON.parse(this.getDataValue('last_position')); 
-         },
+         }
       }
    )   
    last_position: Vector3Mp;
@@ -129,11 +123,15 @@ export default class Characters extends Model {
    last_dimension: number;
    
    @Default(null)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('inside')); },
-   })    
-   inside: object
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('inside')); 
+         }
+      }
+   )    
+   inside: { position: Vector3Mp, type: number }
 
    @Default(0)
    @Column
@@ -147,27 +145,27 @@ export default class Characters extends Model {
    @Column
    minutes: number
 
-   @Default(Peds.walkingStyles.Normal)
+   @Default(walking_Styles.Normal)
    @Column(DataType.STRING)
-   walking_style: keyof typeof Peds.walkingStyles
+   walking_style: keyof typeof walking_Styles
 
-   @Default(Peds.facialMoods.Normal)
+   @Default(facial_Moods.Normal)
    @Column(DataType.STRING)
-   facial_mood: keyof typeof Peds.facialMoods
+   facial_mood: keyof typeof facial_Moods
    
-   @Default(Config.Max.INVENTORY_WEIGHT)
+   @Default(playerConfig.max.INVENTORY_WEIGHT)
    @Column
    max_inventory_weight: number
 
-   @Default(Config.Max.HOUSES)
+   @Default(playerConfig.max.HOUSES)
    @Column
    max_houses: number
 
-   @Default(Config.Max.BUSINESSES)
+   @Default(playerConfig.max.BUSINESS)
    @Column
    max_business: number
 
-   @Default(Config.Max.VEHICLES)
+   @Default(playerConfig.max.VEHICLES)
    @Column
    max_vehicles: number
 
@@ -181,14 +179,8 @@ export default class Characters extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   get properties (): Promise<characterProperties> { 
-      return new Promise(async resolve => { 
-         const houses = await Houses.findAll({ where: { owner: this.id } });
-         const busineess = await Business.findAll({ where: { owner: this.id } });
-         const vehicles = await Vehicles.findAll({ where: { owner: this.id } });
-         resolve ({ houses: houses, business: busineess, vehicles: vehicles });
-      });
-   }
+   @HasOne(() => apppearances)
+   appearance: apppearances
 
    async spawnPlayer (player: PlayerMp, point: spawnTypes) { 
 
