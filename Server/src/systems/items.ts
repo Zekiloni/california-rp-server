@@ -11,7 +11,7 @@ mp.events.addProc(
    {
 
       'SERVER::PLAYER:ITEMS:GET': async (player: PlayerMp) => { 
-         return Items.getItems(itemData.Entity.PLAYER, pplayer.character.id);
+         return Items.getItems(itemData.Entity.PLAYER, player.character.id);
       },
 
 
@@ -37,7 +37,7 @@ mp.events.addProc(
                const rItem = baseItem.list[item?.name!];
                await rItem?.use!(player, item);
 
-               const newInventory = await Items.getItems(itemData.Entity.PLAYER, pplayer.character.id);
+               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.character.id);
                if (newInventory) resolve(newInventory)
             })
          });
@@ -53,13 +53,13 @@ mp.events.addProc(
                item!.owner = 0;
                item!.on_ground = true;
                item!.dimension = player.dimension;
-               item!.fingerprint = pplayer.character.id;
+               item!.fingerprint = player.character.id;
                item!.position = new mp.Vector3(position.x, position.y, position.z);
                item!.rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z);
                
                await item?.save();
                
-               const newInventory = await Items.getItems(itemData.Entity.PLAYER, pplayer.character.id);
+               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.character.id);
                if (newInventory) resolve(newInventory);
             });
          });
@@ -71,7 +71,7 @@ mp.events.addProc(
                await item?.pickup(player);      
 
                player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 });
-               const newInventory = await Items.getItems(itemData.Entity.PLAYER, pplayer.character.id);
+               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.character.id);
                if (newInventory) resolve(newInventory);   
             });
          })
@@ -103,7 +103,7 @@ mp.events.add(
          const weaponItem = await Items.findOne(
             { 
                where: { 
-                  owner: pplayer.character.id, 
+                  owner: player.character.id, 
                   name: weapon.name, 
                   equiped: true
                } 

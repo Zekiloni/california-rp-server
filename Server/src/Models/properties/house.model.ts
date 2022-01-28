@@ -140,16 +140,16 @@ export class houses extends Model {
    }
 
    async buy (player: PlayerMp) {
-      if (this.owner != 0) return player.sendNotification(Messages.HOUSE_ALREADY_OWNER, NotifyType.ERROR, 5);
+      if (this.owner != 0) return player.sendNotification(Messages.HOUSE_ALREADY_OWNER, notifyType.ERROR, 5);
 
-      const character = pplayer.character;
+      const character = player.character;
       const { houses } = await character.properties;
 
       if (houses.length == character.max_houses) return; // PORUKA: Imate maksimalno kuca;
-      if (this.price > character.money) return player.sendNotification(Messages.NOT_ENOUGH_MONEY, NotifyType.ERROR, 5);
+      if (this.price > character.money) return player.sendNotification(Messages.NOT_ENOUGH_MONEY, notifyType.ERROR, 5);
 
       character.giveMoney(player, -this.price);
-      player.sendNotification(Messages.SUCCCESSFULLY_BUYED_HOUSE, NotifyType.SUCCESS, 7);
+      player.sendNotification(Messages.SUCCCESSFULLY_BUYED_HOUSE, notifyType.SUCCESS, 7);
 
       this.owner = character.id;
 
@@ -157,11 +157,11 @@ export class houses extends Model {
    }
 
    async lock (player: PlayerMp) {
-      if (this.owner == pplayer.character.id || this.tenants.includes(pplayer.character.id)) { 
+      if (this.owner == player.character.id || this.tenants.includes(player.character.id)) { 
          this.locked = !this.locked;
          await this.save();
       } else { 
-         player.sendNotification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, NotifyType.ERROR, 5);
+         player.sendNotification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, notifyType.ERROR, 5);
       }
    }
 

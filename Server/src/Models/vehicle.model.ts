@@ -1,7 +1,7 @@
 import { numberPlate, vehicleComponent } from '@interfaces/vehicle.interfaces';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
 import { Messages } from '../globals/constants';
-import { entityData, GlobalDimension, NotifyType, vehicleData } from '../globals/enums';
+import { entityData, GlobalDimension, notifyType, vehicleData } from '../globals/enums';
 import { generateNumber, generateString } from '../utils';
 import Business from './properties/business.model';
 
@@ -220,11 +220,11 @@ export class vehicles extends Model {
    }
 
    async lock (player: PlayerMp) {
-      const character = pplayer.character;
+      const character = player.character;
 
       switch (this.entity) {
          case vehicleData.Entity.PLAYER: {
-            // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, NotifyType.ERROR, 6);
+            // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, notifyType.ERROR, 6);
 
             this.object.locked = !this.object.locked;
             this.locked = this.object.locked;
@@ -242,7 +242,7 @@ export class vehicles extends Model {
          }
 
          case vehicleData.Entity.FACTION: {
-            if (this.owner != character.faction) return player.sendNotification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, NotifyType.ERROR, 6);
+            if (this.owner != character.faction) return player.sendNotification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, notifyType.ERROR, 6);
 
             this.object.locked = !this.object.locked;
             this.locked = this.object.locked;

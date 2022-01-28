@@ -2,7 +2,7 @@
 import fs from 'fs';
 import { Config } from '../../config';
 import { Colors } from '../../globals/constants';
-import { adminLevel, CommandEnums, houseData, logType, NotifyType, weather } from '../../globals/enums';
+import { adminLevel, CommandEnums, houseData, logType, notifyType, weather } from '../../globals/enums';
 import Houses from '../../models/properties/house.model';
 import Items from '../../models/inventory.item.model';
 import { baseItem } from '../../models/item.model';
@@ -52,7 +52,7 @@ Commands[CommandEnums.Names.GOTO] = {
             player.dimension = target.dimension;
          }
 
-         player.sendNotification('SUCCES TELEPORT', NotifyType.SUCCESS, 4);
+         player.sendNotification('SUCCES TELEPORT', notifyType.SUCCESS, 4);
       }
    }
 };
@@ -82,7 +82,7 @@ Commands[CommandEnums.Names.GET_HERE] = {
             target.dimension = player.dimension;
          }
 
-         player.sendNotification('SUCCES TELEPORT', NotifyType.SUCCESS, 4);
+         player.sendNotification('SUCCES TELEPORT', notifyType.SUCCESS, 4);
       }
    }
 };
@@ -312,7 +312,7 @@ Commands[CommandEnums.Names.FLY] =  {
 //          Player.position = new mp.Vector3(Waypoint.x, Waypoint.y, Waypoint.z);
 //          Admin.AdminActionNotify(Player, `se teleportovao na waypoint. ${Waypoint.x} ${Waypoint.y} ${Waypoint.z}`);
 //       }).catch(() => {
-//          Player.Notification('Nema markera', NotifyType.ERROR, 4);
+//          Player.Notification('Nema markera', notifyType.ERROR, 4);
 //       });
 //    }
 // };

@@ -19,7 +19,7 @@ import { generateNumber } from '../utils';
             return;
          }
 
-         if (pplayer.character && pplayer.character.wounded) {
+         if (player.character && player.character.wounded) {
             return;
          }
 
@@ -68,13 +68,13 @@ mp.events.add(
 mp.events.addProc(
    {
       'SERVER::BANKING:CREATE': async (player: PlayerMp): Promise<Items> => {
-         // if (pplayer.character.bank) {
-         //    player.sendNotification('vec imate racun', NotifyType.ERROR, 7);
+         // if (player.character.bank) {
+         //    player.sendNotification('vec imate racun', notifyType.ERROR, 7);
          //    return;
          // }
          console.log(1)
 
-         // const hasCreditCard = await Items.hasItem(itemData.Entity.PLAYER, pplayer.character.id, itemData.Names.CREDIT_CARD);
+         // const hasCreditCard = await Items.hasItem(itemData.Entity.PLAYER, player.character.id, itemData.Names.CREDIT_CARD);
 
          // if (hasCreditCard) {
          //    // PORUKA: vec imate kreditnu karticu
@@ -82,13 +82,13 @@ mp.events.addProc(
          // }
 
          return new Promise(resolve => {
-            Bank.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: pplayer.character.id, character: pplayer.character } ).then(bank_Account => {
+            Bank.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: player.character.id, character: player.character } ).then(bank_Account => {
                Items.create({  name: itemData.Names.CREDIT_CARD, 
                   entity: itemData.Entity.PLAYER, 
-                  owner: pplayer.character.id, 
+                  owner: player.character.id, 
                   quantity: 1,
                   data: {
-                     name: pplayer.character.name,
+                     name: player.character.name,
                      bank: bank_Account.number,
                      pin: Math.floor(Math.random() * 1000),
                      expiring: Date.now(),

@@ -31,7 +31,7 @@ export class ammoItem extends baseItem {
          const weaponItem = await Items.findOne(
             { 
                where: { 
-                  owner: pplayer.character.id, 
+                  owner: player.character.id, 
                   name: ww.name, 
                   equiped: true
                } 

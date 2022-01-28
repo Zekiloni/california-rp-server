@@ -1,6 +1,7 @@
 
 
 export namespace cmds {
+
    export const names = {
       ROLEPLAY_ME: 'me',
       ROLEPLAY_DO: 'do',
@@ -27,7 +28,7 @@ export namespace cmds {
       SHOUT_CHAT: 's',
       ROLEPLAY_AME: 'ame',
       COIN: 'coin'
-   }
+   };
    
    export const params = { 
       PLAYER: 'id / ime igrača',
@@ -36,7 +37,7 @@ export namespace cmds {
       MINUTE: 'minuta',
       SECONDS: 'sekunda',
       WEATHER: 'ime vremena / id'
-   }
+   };
    
    export const descriptions = { 
       ITEMS: 'Lista svih predmeta.',
@@ -56,5 +57,6 @@ export namespace cmds {
       OOC_CHAT: 'Lokalni OOC govor.',
       PM_CHAT:'Privatna poruka.',
       WHISPER: 'Šaputanje.'
-   }
+   };
+   
 }

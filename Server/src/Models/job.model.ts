@@ -39,7 +39,7 @@ export default class Jobs {
       this.activeWorkers = 0;
 
       this.colshape.onPlayerEnter = (player: PlayerMp) => { 
-         if (pplayer.character.job == jobNumber.UNEMPLOYED) 
+         if (player.character.job == jobNumber.UNEMPLOYED) 
             player.call('CLIENT::JOB:OFFER', [this]);
          else
             player.outputChatBox('show cmds')

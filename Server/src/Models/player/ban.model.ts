@@ -1,4 +1,4 @@
-import { NotifyType } from '../../globals/enums';
+import { notifyType } from '../../globals/enums';
 import { Messages } from '../../globals/constants';
 import { validateIP } from '../../utils';
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
@@ -72,7 +72,7 @@ export class bans extends Model {
             if (OfflineAcc) {
                Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             } else {
-               player.sendNotification(Messages.USER_NOT_FOUND, NotifyType.ERROR, 5);
+               player.sendNotification(Messages.USER_NOT_FOUND, notifyType.ERROR, 5);
             }
          }
       }

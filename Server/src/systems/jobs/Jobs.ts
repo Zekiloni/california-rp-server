@@ -87,7 +87,7 @@
 //       });
 
 //       this.Colshape.OnPlayerEnter = async (player) => { 
-//          const Character = await pplayer.character();
+//          const Character = await player.character();
 //          if (Character.Job != Globals.Jobs.Unemployed) return;
 //          player.Notification(this.Name + ', ' + this.Description + '.<br>' + '/takejob', Globals.Notification.Info, 5);
 //       }
@@ -112,13 +112,13 @@
 //    async Take (Player: PlayerMp) {
 //       const Character = await Player.character();
 
-//       Player.Notification(Messages.SUCCESFULLY_JOB + this.Description, NotifyType.SUCCESS, 5);
+//       Player.Notification(Messages.SUCCESFULLY_JOB + this.Description, notifyType.SUCCESS, 5);
 //       Character.SetJob(Player, this.ID);
 //    }
 
 //    async Quit (Player: PlayerMp) {
 //       const Character = await Player.character();
-//       if (Character.Job == Globals.Jobs.Unemployed) return Player.Notification(Messages.UNEMPLOYED, NotifyType.ERROR, 5);
+//       if (Character.Job == Globals.Jobs.Unemployed) return Player.Notification(Messages.UNEMPLOYED, notifyType.ERROR, 5);
 //    }
 // };
 

@@ -45,9 +45,7 @@ export enum Distances {
 
 
 
-export enum NotifyType {
-   SUCCESS, ERROR, INFO
-};
+
 
 export enum jobNumber { 
    UNEMPLOYED = 0,

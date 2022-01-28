@@ -231,12 +231,12 @@ Commands[CommandEnums.Names.PM] = {
 Commands[CommandEnums.Names.COIN] = {
    description: '',
    call (player: PlayerMp) {
-      if (pplayer.character.money < 1) {
+      if (player.character.money < 1) {
          // PORUKA: Nemate novca
          return;
       }
 
-      if (pplayer.character.wounded) {
+      if (player.character.wounded) {
          // PORUKA: Nemate novca
          return;
       }

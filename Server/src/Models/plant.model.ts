@@ -1,7 +1,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default } from 'sequelize-typescript';
 import { Messages } from '../globals/constants';
-import { NotifyType } from '../globals/enums';
+import { notifyType } from '../globals/enums';
 
 enum GrowStage {
     Seed, Small_Plant,
@@ -96,7 +96,7 @@ export default class Plant extends Model {
     }
 
     Harvest(Player: PlayerMp) {
-        if (this.CurrentStage != GrowStage.Harvest_Ready) return Player.sendNotification(Messages.NOT_READY_FOR_HARVEST, NotifyType.ERROR, 6);
+        if (this.CurrentStage != GrowStage.Harvest_Ready) return Player.sendNotification(Messages.NOT_READY_FOR_HARVEST, notifyType.ERROR, 6);
 
         switch (this.Type) {
             case Specie.Cannabis:

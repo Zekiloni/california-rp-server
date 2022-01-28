@@ -212,7 +212,7 @@ export class characters extends Model {
       player.setVariable('Ragdoll', false);
 
 
-      player.sendNotification(Messages.WELCOME, NotifyType.INFO, 4);
+      player.sendNotification(Messages.WELCOME, notifyType.INFO, 4);
 
 
       this.setWalkingStyle(player, this.walking_style);
@@ -344,7 +344,7 @@ export class characters extends Model {
 
          if (player.getVariable(entityData.MUTED)) return; // u are muted
 
-         const character = pplayer.character;
+         const character = player.character;
 
          player.sendProximityMessage(Distances.IC, character.name + Messages.PERSON_SAYS + content, Colors.White);
       }

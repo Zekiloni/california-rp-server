@@ -3,7 +3,7 @@ import Accounts from '../models/player/account.model';
 import Appearances from  '../models/appearance.model';
 import Characters from '../models/character.model';
 import Banks from '../models/bank.model';
-import { entityData, itemData, logType, NotifyType, spawnTypes } from '../globals/enums';
+import { entityData, itemData, logType, notifyType, spawnTypes } from '../globals/enums';
 import { Messages } from '../globals/constants';
 import { Config } from '../config';
 import Bans from '../models/player/ban.model';
@@ -40,9 +40,9 @@ mp.events.add(
 
       },
 
-      'playerChat': (player: PlayerMp, content) => pplayer.character.onChat(player, content),
+      'playerChat': (player: PlayerMp, content) => player.character.onChat(player, content),
 
-      'playerDeath': (player: PlayerMp) => pplayer.character.onDeath(player),
+      'playerDeath': (player: PlayerMp) => player.character.onDeath(player),
 
       'SERVER::CHARACTER:PLAY': async (player: PlayerMp, characterId: number, point: spawnTypes) => {
          const selectedCharacter = await Characters.findOne({ where: { id: characterId }, include: [Appearances, Banks]  });
@@ -69,14 +69,14 @@ mp.events.addProc(
       'SERVER::AUTHORIZATION:VERIFY': (player: PlayerMp, username: string, password: string) =>  {
          return Accounts.findOne({ where: { username: username }, include: Characters }).then(account => {
             if (!account) {
-               player.sendNotification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
+               player.sendNotification(Messages.USER_DOESNT_EXIST, notifyType.ERROR, 5);
                return;
             }
 
             const logged = account.login(password);
 
             if (!logged) { 
-               player.sendNotification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
+               player.sendNotification(Messages.INCCORRECT_PASSWORD, notifyType.ERROR, 5);
                return;
             }
 
@@ -123,7 +123,7 @@ mp.events.addProc(
          const alreadyExist = await Characters.findOne({ where: { name: character.name + ' ' + character.lastName } });
 
          if (alreadyExist) {
-            player.sendNotification(Messages.CHARACTER_ALREADY_EXIST, NotifyType.ERROR, 5);
+            player.sendNotification(Messages.CHARACTER_ALREADY_EXIST, notifyType.ERROR, 5);
             return;
          } 
 
@@ -162,7 +162,7 @@ mp.events.addProc(
             await item.save();
          });
 
-         player.sendNotification(Messages.CHARACTER_CREATED, NotifyType.SUCCESS, 4);
+         player.sendNotification(Messages.CHARACTER_CREATED, notifyType.SUCCESS, 4);
          return true;
       },
 
@@ -185,7 +185,7 @@ const interval = 60 * 1000;
 
 async function updatePlayer (player: PlayerMp) {
    
-   pplayer.character.increment('minutes', { by: Config.happyHours == true ? 2 : 1 }).then(async character => { 
+   player.character.increment('minutes', { by: Config.happyHours == true ? 2 : 1 }).then(async character => { 
       if (character.minutes >= 60) { 
          character.increment('hours', { by: 1 });
          character.minutes = 0;
@@ -193,11 +193,11 @@ async function updatePlayer (player: PlayerMp) {
       }
    });
    
-   pplayer.character.increment('hunger', { by: -0.35 });
-   pplayer.character.increment('thirst', { by: -0.70 });
+   player.character.increment('hunger', { by: -0.35 });
+   player.character.increment('thirst', { by: -0.70 });
 
-   if (pplayer.character.muted > 0) {
-      pplayer.character.increment('muted', { by: -1 });
+   if (player.character.muted > 0) {
+      player.character.increment('muted', { by: -1 });
    }
 }
 
