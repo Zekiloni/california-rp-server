@@ -51,10 +51,14 @@ export default class Appearances extends Model {
    eyes: number;
 
    @AllowNull(false)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('overlays')); },
-   })   
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { 
+            return JSON.parse(this.getDataValue('overlays')); 
+         },
+      }
+   )   
    overlays: number[];
 
    @AllowNull(true)

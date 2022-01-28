@@ -79,7 +79,7 @@ export default class Accounts extends Model {
    }
 
    @HasMany(() => Characters)
-   characters: Characters[]
+   characters: Characters[];
    
    login (password: string) {     
       return bcrypt.compareSync(password, this.password);

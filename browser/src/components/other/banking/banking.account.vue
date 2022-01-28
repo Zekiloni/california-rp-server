@@ -32,7 +32,7 @@
       data () {
          return {
 
-            dateTime: null,
+            dateTime: '',
 
             account: {
                name: 'Zachary Parker',

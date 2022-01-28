@@ -67,17 +67,23 @@ mp.events.addProc(
       },
 
       'SERVER::AUTHORIZATION:VERIFY': async (player: PlayerMp, username: string, password: string): Promise<Accounts> => {
+         console.log('verify' + 1)
          return new Promise((resolve) => {
+            console.log('verify' + 2)
             Accounts.findOne({ where: { Username: username }, include: [Characters] }).then((account) => { 
+               console.log('verify' + 3)
                if (account) { 
+                  console.log('verify' + 4)
                   const logged = account.login(password);
+                  console.log('logged ' + logged)
                   if (logged) { 
+                     console.log(1)
                      account.setLogged(player, true);
+                     console.log(2)
                      resolve(account);
                   } else { 
                      player.sendNotification(Messages.INCCORRECT_PASSWORD, NotifyType.ERROR, 5);
                   }
-
                } else { 
                   player.sendNotification(Messages.USER_DOESNT_EXIST, NotifyType.ERROR, 5);
                }
