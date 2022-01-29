@@ -5,10 +5,10 @@ import './modules/commands';
 import './modules/player';
 import './modules/minute';
 
-import './systems/main/items';
-import './systems/main/bank'
-import './systems/jobs';
-import './systems/main/houses';
+import './modules/items';
+import './modules/bank'
+import './modules/jobs';
+import './modules/houses';
 import { sleep } from '@shared';
 import { logs } from'@models';
 import { lang } from './constants';
