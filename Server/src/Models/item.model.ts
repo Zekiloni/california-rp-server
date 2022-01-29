@@ -1,6 +1,6 @@
 
 
-import { itemDescriptions } from '@constants';
+import { itemDescriptions, lang } from '@constants';
 import { itemEnums } from '@enums';
 import { itemAction } from '@interfaces';
 
@@ -14,7 +14,7 @@ export class items {
    description?: string;
    carryModel?: string;
    extraActions?: itemAction[];
-   use?(Player: PlayerMp, ...params: any): void | any;
+   use? (Player: PlayerMp, ...params: any): void | any;
 
    static list: { [key:string] : items } = {};
 
@@ -28,21 +28,40 @@ export class items {
       items.list[this.name] = this;
    }
 
+
    isWeapon () { 
       return this.type.includes(itemEnums.type.WEAPON);
    }
+
 
    isCookable () {
       return this.type.includes(itemEnums.type.COOKABLE);
    }
 
+
    isStackable () { 
       return this.type.includes(itemEnums.type.STACKABLE);
+   }
+
+
+   availableActions () {
+      let actions: itemAction[] = [];
+
+      actions.push(
+         { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' },
+         { name: lang.itemAction.drop, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
+         { name: lang.itemAction.give, event: 'CLIENT::ITEM:GIVE', icon: 'give' }
+      );
+
+      if (this.isStackable()){
+         actions.push( { name: lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' } );
+      } 
    }
    
 }
 
-// import './items/document.item';
+
+import './items/document.item';
 import './items/creditCard.item';
 import './items/drink.item';
 import './items/food.item';
@@ -50,6 +69,8 @@ import './items/ammo.item';
 import './items/weapon.item';
 import './items/phone.item';
 import './items/cooker.item';
+
+
 
 
 // new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);

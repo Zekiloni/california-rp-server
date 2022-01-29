@@ -1,7 +1,5 @@
 
-import { lang } from '@constants';
 import { itemEnums } from '@enums';
-import { itemAction } from '@interfaces';
 import { items, inventories } from '@models';
 
 
@@ -15,19 +13,7 @@ mp.events.addProc(
 
       'SERVER::ITEM:INFO': (player: PlayerMp, itemName: string) => { 
          const item = items.list[itemName];
-         const actions: itemAction[] = [];
-
-         actions.push(
-            { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' },
-            { name: lang.itemAction.drop, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
-            { name: lang.itemAction.give, event: 'CLIENT::ITEM:GIVE', icon: 'give' },
-         );
-
-         if (item.isStackable()){
-            actions.push({ name: lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' });
-         } 
-
-         return { info: item, actions: actions };
+         return { info: item, actions: item.availableActions() };
       },
 
       

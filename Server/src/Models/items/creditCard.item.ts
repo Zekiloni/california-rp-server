@@ -4,7 +4,7 @@ import { itemEnums } from '@enums';
 import { items, inventories } from '@models';
 
 
-export class creditCardTime extends items {
+export default class creditCardTime extends items {
    constructor (name: string, model: string, type: itemEnums.type[], weight: number = 0.1, description?: string) { 
       
       super (name, type, model, weight, description);

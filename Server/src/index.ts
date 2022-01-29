@@ -4,32 +4,16 @@ import 'module-alias/register';
 import './database';
 import './modules/rage';
 import './modules/commands';
-import './modules/player';
-import './modules/minute';
+import './modules/player'
 import './modules/items';
+import './modules/minute';
 import './modules/bank'
 import './modules/jobs';
 import './modules/houses';
 
 import { sleep } from '@shared';
 import { logs } from'@models';
-import { lang } from './constants';
-
-
-//console.log(Items.List);
-
-
-// !!! TEST //
-
-// DATA
-// let Globals = require('./configs/Globals');
-
-// // MODELS 
-// let Logs = require('./models/Logs');
-
-
-// // MODULES
-// const Helpers = require('./modules/Managers');
+import { lang } from '@constants';
 
 
 
@@ -42,8 +26,6 @@ import { lang } from './constants';
 // let Start = new Date();
 // let End = new Date();
 // console.log('Finished in ' + ((End - Start) / 1000));
-
-
 
 
 const exitProcess = async () => {
