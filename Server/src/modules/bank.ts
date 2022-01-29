@@ -72,7 +72,7 @@ mp.events.addProc(
          // }
          console.log(1)
 
-         // const hasCreditCard = await Items.hasItem(itemData.Entity.PLAYER, player.character.id, itemData.Names.CREDIT_CARD);
+         // const hasCreditCard = await Items.hasItem(itemData.Entity.PLAYER, player.character.id, itemNames.CREDIT_CARD);
 
          // if (hasCreditCard) {
          //    // PORUKA: vec imate kreditnu karticu
@@ -81,7 +81,7 @@ mp.events.addProc(
 
          return new Promise(resolve => {
             Bank.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: player.character.id, character: player.character } ).then(bank_Account => {
-               Items.create( { name: itemData.Names.CREDIT_CARD, 
+               Items.create( { name: itemNames.CREDIT_CARD, 
                   entity: itemData.Entity.PLAYER, 
                   owner: player.character.id, 
                   quantity: 1,

@@ -10,7 +10,7 @@ import { items, logs, characters } from '@models';
 @Table
 export class inventories extends Model { 
 
-   static objects = new Map();
+   static objects = new Map<number, ObjectMp>();
 
    @PrimaryKey
    @AutoIncrement
@@ -74,7 +74,7 @@ export class inventories extends Model {
    updated_at: Date;
 
    get object () { 
-      return inventories.objects.get(this.id);
+      return inventories.objects.get(this.id)!;
    }
 
    set object (object: ObjectMp) { 

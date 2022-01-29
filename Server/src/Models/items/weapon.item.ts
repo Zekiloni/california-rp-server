@@ -11,7 +11,6 @@ export const weaponType = [
    itemEnums.type.WEAPON
 ];
 
-export let weapons: weaponItem[] = [];
 
 export class weaponItem extends items {
    weapon_hash: string;
@@ -22,7 +21,6 @@ export class weaponItem extends items {
       this.weapon_hash = weapHash;
       this.caliber = cal;
       
-      weapons.push(this);
 
       this.use = async function (player: PlayerMp, item: inventories) { 
          item.equiped = true;

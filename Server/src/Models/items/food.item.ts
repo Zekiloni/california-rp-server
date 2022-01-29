@@ -9,7 +9,7 @@ const foodType = [
 ];
 
 
-export class FoodItem extends items {
+export class foodItem extends items {
    hunger: number;
    snacks: number;
    
@@ -17,8 +17,6 @@ export class FoodItem extends items {
       super (name, type ? foodType.concat(type) : foodType, model, weight, description);
       this.hunger = hunger;
       this.snacks = snacks;
-
-      // .... todo
 
       this.use = function (player: PlayerMp, item: inventories) {
          player.character.hunger += this.hunger;
@@ -28,15 +26,15 @@ export class FoodItem extends items {
 }
 
 
-new FoodItem(itemNames.FOOD_CHEESE_BURGER, 'prop_cs_burger_01', 2, 3);
-new FoodItem(itemNames.FOOD_HAMBURGER, 'prop_cs_burger_01', 2, 3);
-new FoodItem(itemNames.FOOD_CHICKEN_BURGER, 'prop_cs_burger_01', 3, 4);
-new FoodItem(itemNames.FOOD_PIZZA, 'prop_pizza_box_02', 3, 4);
-new FoodItem(itemNames.FOOD_SANDWICH , 'prop_sandwich_01', 3, 4);
-new FoodItem(itemNames.FOOD_TACO, 'prop_taco_01', 2, 3);
-new FoodItem(itemNames.FOOD_FRIES, 'prop_food_chips', 1, 2);
-new FoodItem(itemNames.FOOD_CHIPS, 'v_ret_ml_chips4', 1, 2);
-new FoodItem(itemNames.FOOD_DONUT, 'prop_donut_02', 1, 2);
+new foodItem(itemNames.FOOD_CHEESE_BURGER, 'prop_cs_burger_01', 2, 3);
+new foodItem(itemNames.FOOD_HAMBURGER, 'prop_cs_burger_01', 2, 3);
+new foodItem(itemNames.FOOD_CHICKEN_BURGER, 'prop_cs_burger_01', 3, 4);
+new foodItem(itemNames.FOOD_PIZZA, 'prop_pizza_box_02', 3, 4);
+new foodItem(itemNames.FOOD_SANDWICH , 'prop_sandwich_01', 3, 4);
+new foodItem(itemNames.FOOD_TACO, 'prop_taco_01', 2, 3);
+new foodItem(itemNames.FOOD_FRIES, 'prop_food_chips', 1, 2);
+new foodItem(itemNames.FOOD_CHIPS, 'v_ret_ml_chips4', 1, 2);
+new foodItem(itemNames.FOOD_DONUT, 'prop_donut_02', 1, 2);
 
 
 

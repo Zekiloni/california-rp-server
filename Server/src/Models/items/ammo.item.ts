@@ -1,22 +1,19 @@
-import { itemData, logType } from '../../globals/enums';
-import Items from '../inventory.model';
-import { baseItem, noDesc } from '../item.model';
-import weaponData from '../../data/weapon.data.json';
-import { weapons } from './weapon.item';
-import { Logger } from '../../utils';
+import { items, inventories, logs} from '@models';
+import { itemEnums } from '@enums';
+import { itemNames } from '@constants';
 
 
 type weaponData = { [key: string]: any }
 
 
-export class ammoItem extends baseItem {
+export class ammoItem extends items {
    clipSize: number;
    
-   constructor (name: string, model: string, bullets: number, weight: number = 0.1, description: string = noDesc) { 
-      super (name, [itemData.Type.USABLE, itemData.Type.STACKABLE, itemData.Type.AMMO, itemData.Type.MISC], model, weight, description);
+   constructor (name: string, model: string, bullets: number, weight: number = 0.1, description?: string) { 
+      super (name, [itemEnums.type.USABLE, itemEnums.type.STACKABLE, itemEnums.type.AMMO, itemEnums.type.MISC], model, weight, description);
       this.clipSize = bullets;
       
-      this.use = async function (player: PlayerMp, item: Items) {
+      this.use = async function (player: PlayerMp, item: inventories) {
 
          if (!player.weapon) { 
             // ERROR: No weapon
@@ -24,22 +21,22 @@ export class ammoItem extends baseItem {
          }
 
 
-         const ww = weapons.find(
-            weapon => weapon.weapon_hash == (<weaponData>weaponData)[player.weapon].HashKey.toLowerCase()
-         )!;
+         const weapon = await player.call('CLIENT::WEAPON:NAME', [player.weapon]);
+
+         logs.info('Weapon Name ' + weapon + ', player ' + player.name);
       
-         const weaponItem = await Items.findOne(
+         const weaponItem = await inventories.findOne(
             { 
                where: { 
                   owner: player.character.id, 
-                  name: ww.name, 
+                  name: <string>weapon!, 
                   equiped: true
                } 
             }
          );
 
          if (!weaponItem) { 
-            Logger(logType.ERROR, 'updating weapon exception.');
+            logs.error('updateWeapon: No weapon');
             return;
          }
          
@@ -67,4 +64,4 @@ export class ammoItem extends baseItem {
 
 
 
-new ammoItem(itemData.Names.AMMO_9MM, 'prop_box_ammo07b', 10, 0.3, 'sarzer 9mm 10 metkova');
+new ammoItem(itemNames.AMMO_9MM, 'prop_box_ammo07b', 10, 0.3, 'sarzer 9mm 10 metkova');

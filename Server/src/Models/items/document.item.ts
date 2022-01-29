@@ -1,23 +1,28 @@
 
-import Items from '../inventory.model';
-import { baseItem } from '../item.model';
+
+import { items, inventories } from '@models';
+import { itemEnums } from '@enums/items';
+import { itemNames, itemDescriptions } from '@constants';
 
 
-const defaultDocumentType = [itemData.Type.DOCUMENT, itemData.Type.USABLE];
+const documentType = [
+   itemEnums.type.DOCUMENT, itemEnums.type.USABLE
+];
 
-export class DocumentItem extends baseItem {
+
+export class documentItem extends items {
    specialType: number;
    
-   constructor (name: string, model: string, special: number, type?: itemData.Type[], weight?: number, description?: string) { 
-      super (name, type ? defaultDocumentType.concat(type) : defaultDocumentType, model, weight, description);
+   constructor (name: string, model: string, special: number, type?: itemEnums.type[], weight?: number, description?: string) { 
+      super (name, type ? documentType.concat(type) : documentType, model, weight, description);
       this.specialType = special;
 
       console.log(this)
       
-      this.use = function (player: PlayerMp, item: Items) {
+      this.use = function (player: PlayerMp, item: inventories) {
          console.log(item.data)
          switch (this.specialType) {
-            case itemData.Type.ID_CARD: {
+            case itemEnums.type.ID_CARD: {
                player.call('CLIENT::ID:SHOW', [item.data!]); 
                break;
             }
@@ -31,4 +36,14 @@ export class DocumentItem extends baseItem {
    }
 }
 
-new DocumentItem(itemData.Names.DOCUMENT_ID_CARD, 'p_ld_id_card_01', itemData.Type.ID_CARD, [itemData.Type.ID_CARD], 0.05, itemData.Descriptions.DOCUMENT_ID_CARD);
+
+new documentItem (
+   itemNames.DOCUMENT_ID_CARD, 
+   'p_ld_id_card_01', 
+   itemEnums.type.ID_CARD, 
+   [
+      itemEnums.type.ID_CARD
+   ],
+   0.05,
+   itemDescriptions.DOCUMENT_ID_CARD
+);

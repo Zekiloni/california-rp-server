@@ -40,6 +40,10 @@ mp.events.add(
 mp.events.addProc({
    'CLIENT::GET:STREET_ZONE': (position: Vector3Mp) => { 
       return getStreetZone(position);
+   },
+
+   'CLIENT::WEAPON:NAME': (hash: number) => {
+      return mp.game.weapon.getWeapontypeModel(hash);
    }
 })
 

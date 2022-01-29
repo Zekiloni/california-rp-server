@@ -1,30 +1,44 @@
 
 
-import { itemData } from '../../globals/enums';
-import { baseItem } from '../item.model';
+import { itemEnums } from '@enums/items';
+import { items, inventories } from '@models';
 
 
-const defaultDrinkType = [itemData.Type.DRINK, itemData.Type.CONSUMABLE, itemData.Type.STACKABLE];
 
-export class DrinkItem extends baseItem {
+const drinkType = [
+   itemEnums.type.DRINK, 
+   itemEnums.type.CONSUMABLE, 
+   itemEnums.type.STACKABLE
+];
+
+
+export class drinkItem extends items {
    thirst: number;
    alcohol?: number;
    
-   constructor (name: string, model: string, thirst: number, alcohol: number = 0, type?: itemData.Type[], weight?: number, description?: string) { 
-      super (name, type ? defaultDrinkType.concat(type) : defaultDrinkType, model, weight, description);
+   constructor (name: string, model: string, thirst: number, alcohol: number = 0, type?: itemEnums.type[], weight?: number, description?: string) { 
+      super (name, type ? drinkType.concat(type) : drinkType, model, weight, description);
       this.thirst = thirst;
       this.alcohol = alcohol;
 
-      this.use = function (player: PlayerMp) {
+      this.use = function (player: PlayerMp, item: inventories) {
+         if (item.quantity == 1) {
+            item.destroy()
+         } else { 
+            item.decrement('quantity', { by: 1 } ).then(item => {
+               item.save();
+            });
+         }
          player.character.thirst += this.thirst;
       }
 
    }
 }
 
-new DrinkItem('Coffe', 'prop_fib_coffee', 0.3, 3);
-new DrinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3);
-new DrinkItem('Cola Can', 'ng_proc_sodacan_01a', 0.3, 3);
+
+new drinkItem('Coffe', 'prop_fib_coffee', 0.3, 3);
+new drinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3);
+new drinkItem('Cola Can', 'ng_proc_sodacan_01a', 0.3, 3);
 
 
 
