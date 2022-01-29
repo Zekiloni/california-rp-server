@@ -1,9 +1,10 @@
 
 
 
-import { notifyType } from '@enums';
-import { jobNumber } from '../globals/enums';
-import Jobs from '../models/job.model';
+
+import { notifications } from '@enums';
+import { jobs } from '@models';
+
 
 import './jobs/taxi.job';
 
@@ -16,7 +17,7 @@ mp.events.add(
             return;
          }
 
-         const job = Jobs.list.get(id);
+         const job = jobs.list.get(id);
 
          if (!job) {
             return;

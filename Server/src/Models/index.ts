@@ -8,6 +8,7 @@ export * from './player/appearance.model';
 export * from './player/bank.model';
 export * from './inventory.model';
 export * from './item.model';
+export * from './job.model';
 export * from './misc/channel.model';
 export * from './vehicle.model';
 export * from './properties/business.model';

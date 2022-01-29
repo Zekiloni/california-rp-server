@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { Commands } from '../../modules/commands';
+import { Commands } from '../commands';
 
 Commands[cmds.names.ENGINE] = { 
    description: 'Kontrola motora vozila',

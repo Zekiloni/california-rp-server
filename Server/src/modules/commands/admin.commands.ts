@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 
-import { Commands } from '../../modules/commands';
+import { Commands } from '../commands';
 import { logs, items, inventories, houses } from '@models';
 import { cmds, weathers } from '@constants';
 import { rank, notifications } from '@enums';

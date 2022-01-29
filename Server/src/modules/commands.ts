@@ -60,6 +60,6 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 });
 
 
-import '../systems/commands/basic.commands';
-import '../systems/commands/admin.commands';
-import '../systems/commands/vehicle.commands';
+import './commands/basic.commands';
+import './commands/admin.commands';
+import './commands/vehicle.commands';

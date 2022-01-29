@@ -1,13 +1,13 @@
-import { markerColors } from '../globals/constants';
-import { GlobalDimension, jobNumber } from '../globals/enums';
-import { vehiclePoint } from '../globals/interfaces';
+import { gDimension } from '@constants';
+import { jobsConfig } from '@configs';
+import { vehiclePoint } from '@interfaces';
 
 
 
-export default class Jobs { 
+export class jobs { 
 
-   static list = new Map<number, Jobs>();
-   
+   static list = new Map<number, jobs>();
+
    id: number;
    name: string;
    description?: string;
@@ -28,27 +28,38 @@ export default class Jobs {
       this.name = name;
       this.description = description;
       this.position = position;
-      this.colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, GlobalDimension),
-      this.blip = mp.blips.new(sprite, position, { dimension: GlobalDimension, name: name, color: spriteColor, shortRange: true, scale: 0.85, drawDistance: 150 }),
-      this.marker = mp.markers.new(0, new mp.Vector3(position.x, position.y, position.z - 0.25), 0.65, {
-         color: markerColors.JOBS, 
-         rotation: new mp.Vector3(0, 0, 0),
-         visible: true,
-         dimension: GlobalDimension
-      })
+
+      this.colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, gDimension);
+
+      this.blip = mp.blips.new(sprite, position, 
+         { 
+            dimension: gDimension, name: name, color: spriteColor, shortRange: true, scale: 0.85, drawDistance: 150 
+         }
+      );
+
+      this.marker = mp.markers.new(jobsConfig.markerType, new mp.Vector3(position.x, position.y, position.z - 0.25), 0.65, 
+         {
+            color: jobsConfig.markerColor, 
+            rotation: new mp.Vector3(0, 0, 0),
+            visible: true,
+            dimension: gDimension
+         }
+      )
+
       this.activeWorkers = 0;
 
       this.colshape.onPlayerEnter = (player: PlayerMp) => { 
-         if (player.character.job == jobNumber.UNEMPLOYED) 
+         if (player.character?.isUnemployed()) {
             player.call('CLIENT::JOB:OFFER', [this]);
-         else
-            player.outputChatBox('show cmds')
+         } else { 
+            player.outputChatBox('show cmds');
+         }
       };
 
       this.colshape.onPlayerLeave = (player: PlayerMp) => { 
          player.call('CLIENT::JOB:OFFER', [false]);
       }
 
-      Jobs.list.set(this.id, this);
+      jobs.list.set(this.id, this);
    }
 }

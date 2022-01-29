@@ -2,7 +2,7 @@
 import { cmds, colors, lang } from '@constants';
 import { distances } from '@enums';
 import { shared_Data } from '@shared';
-import { Commands } from '../../modules/commands';
+import { Commands } from '../commands';
 
 
 Commands[cmds.names.ROLEPLAY_ME] = {
