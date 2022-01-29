@@ -48,15 +48,15 @@ export class logs extends Model {
    }
 
    static error (message: any) {
-      console.log(consoleColors.red + '[' + timeDate() + ']' + consoleColors.white + message);
+      console.log(consoleColors.red + '[' + timeDate() + '] ' + consoleColors.white + message);
    } 
 
    static info (message: string) {
-      console.log(consoleColors.yellow + '[' + timeDate() + ']' + consoleColors.white + message);
+      console.log(consoleColors.yellow + '[' + timeDate() + '] ' + consoleColors.white + message);
    }
 
    static succes (message: string) {
-      console.log(consoleColors.green + '[' + timeDate() + ']' + consoleColors.white + message);
+      console.log(consoleColors.green + '[' + timeDate() + '] ' + consoleColors.white + message);
    }
 }
 

@@ -1,8 +1,8 @@
-import { logs, bans, characters, accounts, items, inventories, apppearances, banks } from '@models';
+import { logs, bans, characters, accounts, inventories, apppearances, banks } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { itemEnums, notifications, spawnPointTypes } from '@enums';
 import { itemNames, lang } from '@constants';
-import { spawnPoint } from '@interfaces/player.interfaces';
+import { spawnPoint } from '@interfaces';
 
 
 
@@ -48,6 +48,7 @@ async function playerJoinHandler (player: PlayerMp) {
    const isBanned = await bans.isBanned(player);
 
    if (isBanned) {
+      console.log(player.name + ' banned')
       // PORUKA: Banovan
       // kick...
    }
@@ -56,52 +57,54 @@ async function playerJoinHandler (player: PlayerMp) {
 
 async function characterFinish (player: PlayerMp, characterInfo: string, characterAppearance: string) { 
 
-   const character = JSON.parse(characterInfo);
-   const appearance = JSON.parse(characterAppearance);
+   const cInfo = JSON.parse(characterInfo);
+   const cAppearance = JSON.parse(characterAppearance);
 
-   const alreadyExist = await characters.findOne( { where: { name: character.name + ' ' + character.lastName } } );
+   const alreadyExist = await characters.findOne( { where: { name: cInfo.name + ' ' + cInfo.lastName } } );
 
    if (alreadyExist) {
       player.sendNotification(lang.characterAlreadyExist, notifications.type.ERROR, notifications.time.SHORT);
       return;
    } 
 
-   const createdCharacter = await characters.create(
+   characters.create(
       { 
-         name: character.name + ' ' + character.lastName,
+         name: cInfo.name + ' ' + cInfo.lastName,
          account_id: player.account.id,
-         origin: character.origin, 
-         birth: character.birth, 
-         gender: character.gender
+         origin: cInfo.origin, 
+         birth: cInfo.birth, 
+         gender: cInfo.gender
       }
-   );
+   ).then(async character => {
+      const appearance = await apppearances.create(
+         {
+            character_id: character.id, 
+            character: character, 
+            face_features: cAppearance.face, 
+            blend_data: cAppearance.blends, 
+            overlays: cAppearance.overlays, 
+            hair: cAppearance.hair, 
+            beard: cAppearance.beard, 
+            eyes: cAppearance.eyeColor
+         }
+      )
+      
+      character.appearance = appearance;
+      character.spawnPlayer(player, spawnPointTypes.DEFAULT);
 
-   apppearances.create(
-      {
-         character_id: createdCharacter.id, 
-         character: createdCharacter, 
-         face_features: appearance.face, 
-         blend_data: appearance.blends, 
-         overlays: appearance.overlays, 
-         hair: appearance.hair, 
-         beard: appearance.beard, 
-         eyes: appearance.eyeColor
-      }
-   );
-
-   createdCharacter.spawnPlayer(player, spawnPointTypes.DEFAULT);
-
-   inventories.create({ name: itemNames.DOCUMENT_ID_CARD, quantity: 1, entity: itemEnums.entity.PLAYER, owner: createdCharacter.id }).then(async item => {
-      item!.data = {
-         name: createdCharacter.name,
-         birth: createdCharacter.birth,
-         origin: createdCharacter.origin,
-         gender: createdCharacter.gender
-      };
-      await item.save();
-   });
+      inventories.create({ name: itemNames.DOCUMENT_ID_CARD, quantity: 1, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
+         item!.data = {
+            name: character.name,
+            birth: character.birth,
+            origin: character.origin,
+            gender: character.gender
+         };
+         await item.save();
+      });
+   })
 
    player.sendNotification(lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
+
    return true;
 }
 
@@ -191,8 +194,6 @@ async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: st
          await leavingPlayer.character.save();
          
          inventories.unequipWeapons(leavingPlayer.character);
-
-         console.log('saved char ' + leavingPlayer.character.name);
       }
    } catch (e) { 
       logs.error('playerQuitHadnler: ' + e);
@@ -223,13 +224,18 @@ mp.Player.prototype.sendMessage = function (message: string, color: string) {
 
 
 mp.players.find = (searchQuery: any): PlayerMp => {
+   console.log(1)
    if (!isNaN(searchQuery)) {
+      console.log(2)
       return mp.players.at(searchQuery)
    } else { 
+      console.log(3)
       const found = mp.players.toArray().find(player => player.name.toLowerCase() == searchQuery.toLowerCase());
       if (found) {
+         console.log(4)
          return found;
       } else { 
+         console.log(5)
          return mp.players.toArray().find(player => player.name.toLowerCase().includes(searchQuery.toLowerCase()))!;
       }
    }

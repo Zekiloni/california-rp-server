@@ -15,7 +15,7 @@ export class bans extends Model {
    id: number;
 
    @Column
-   account_id: number;
+   account: number
 
    @Default(null)
    @Column
@@ -41,9 +41,9 @@ export class bans extends Model {
    @Column
    date: string;
 
-   @Default(0)
+   @Default(-1)
    @Column
-   expirinrg: string;
+   expirinrg: number;
 
    @CreatedAt
    created_At: Date;
@@ -51,13 +51,13 @@ export class bans extends Model {
    @UpdatedAt
    updated_At: Date;
 
-   static async createBan (player: PlayerMp, target: any, reason: string, date: Date, expiring: Date) {
+   static async add (player: PlayerMp, target: any, reason: string, date: Date, expiring: Date) {
       const ipAdress = validateIP(target);
       if (ipAdress) {
          const playerAccount = player.account;
          const Banned = await bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.account.id });
          if (playerAccount) {
-            Banned.account_id = playerAccount.id;
+            Banned.account = playerAccount.id;
             Banned.hardware_Id = playerAccount.hardwer;
             Banned.social = playerAccount.social_club;
          }
@@ -90,7 +90,7 @@ export class bans extends Model {
    }
 
    static async isBanned (player: PlayerMp) {
-      const result = await bans.findOne({ where: { IP: player.ip, Social: player.socialClub } });
+      const result = await bans.findOne( { where: { ip: player.ip, social: player.socialClub } } );
       return result ? result : false;
    };
 }

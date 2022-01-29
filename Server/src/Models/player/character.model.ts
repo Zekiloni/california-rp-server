@@ -98,7 +98,7 @@ export class characters extends Model {
    @Column
    wounded: boolean;
 
-   @Default([])
+   @Default(null)
    @Column(
       {
          type: DataType.JSON,
@@ -213,25 +213,17 @@ export class characters extends Model {
       player.setVariable('Phone_Ringing', false);
       player.setVariable('Ragdoll', false);
 
-
       player.sendNotification(lang.welcomeToServer, notifications.type.INFO, 4);
-
 
       this.setWalkingStyle(player, this.walking_style);
       this.setMood(player, this.facial_mood);
       this.setCuffs(player, this.cuffed);
 
-      if (this.appearance) { 
+      if (this.appearance) {
          this.appearance.apply(player, this.gender);
-      } else { 
-         apppearances.findOne({ where: { character_id: this.id } }).then(appearance => {
-            appearance?.apply(player, this.gender);
-         });
       }
 
-   
-   
-      // player.setVariable(shared_Data.INJURIES, this.injuries.length > 0 ? this.injuries : []);
+      player.setVariable(shared_Data.INJURIES, this.injuries ? this.injuries : []);
 
       switch (point) { 
          case spawnPointTypes.DEFAULT: { 
@@ -245,8 +237,8 @@ export class characters extends Model {
             player.dimension = this.last_dimension ? this.last_dimension : gDimension;
             break;
          }
-
       }
+
       //    Player.RespawnTimer = null;
       //    Player.setVariable('Wounded', this.Wounded);
       //    if (this.Wounded) { 
@@ -337,7 +329,6 @@ export class characters extends Model {
 
    onDeath (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) { 
       const { position } = player;
-      console.log(1)
       player.spawn(position);
    }
 

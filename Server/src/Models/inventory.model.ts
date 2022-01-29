@@ -129,7 +129,7 @@ export class inventories extends Model {
 
    static async giveItem (player: PlayerMp, item: items, quantity: number = 1) { 
       const alreadyItem = await inventories.hasItem(itemEnums.entity.PLAYER, player.character.id, item.name);
-      
+      console.log('give 2')
       if (alreadyItem && item.isStackable()) {
          alreadyItem.increment('quantity', { by: quantity });
       } else { 

@@ -98,15 +98,15 @@ Commands[cmds.names.GIVE_ITEM] ={
    description: cmds.descriptions.GIVE_ITEM,
    admin: rank.SENIOR_ADMINISTRATOR,
    call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
+      console.log('usi u cmd')
       itemName = itemName.join(' ');
       if (items.list[itemName]) {
          const foundItem = items.list[itemName];
          const target = mp.players.find(targetSearch);
          if (!target) return; // no target found
          try { 
-
+            console.log('give 1')
             inventories.giveItem(target, foundItem, quantity);
-
          } catch(e) { 
             console.log(e)
          }

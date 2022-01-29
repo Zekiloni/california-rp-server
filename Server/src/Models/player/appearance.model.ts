@@ -30,7 +30,6 @@ export class apppearances extends Model {
    )    
    face_features: number[];
 
-
    @AllowNull(false)
    @Column(
       {
@@ -41,7 +40,6 @@ export class apppearances extends Model {
       }
    )    
    blend_data: number[];
-
 
    @AllowNull(false)
    @Column(
@@ -54,7 +52,6 @@ export class apppearances extends Model {
    )   
    hair: hairStyle;
 
-
    @AllowNull(false)
    @Column(
       {
@@ -66,11 +63,9 @@ export class apppearances extends Model {
    )   
    beard: beardStyle;
 
-
    @AllowNull(false)
    @Column(DataType.INTEGER)
    eyes: number;
-
 
    @AllowNull(false)
    @Column(
@@ -83,32 +78,17 @@ export class apppearances extends Model {
    )   
    overlays: number[];
 
-
-   @AllowNull(true)
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return JSON.parse(this.getDataValue('overlays_colors')); 
-         }
-      }
-   )   
-   overlays_colors: number[];
-
-
    @CreatedAt
    created_at: Date;
 
-
    @UpdatedAt
    updated_at: Date;
-
    
    apply (player: PlayerMp, gender: number) {
-
+      console.log(this)
       const genders = [ mp.joaat(playerModels.MALE), mp.joaat(playerModels.FEMALE) ];
       player.model = genders[gender];
-   
+
       player.setHeadBlend(
          this.blend_data[0], 
          this.blend_data[1], 0,
@@ -117,13 +97,14 @@ export class apppearances extends Model {
          this.blend_data[4],
          this.blend_data[5], 0
       );
-   
+
       player.eyeColor = this.eyes;   
+      
       player.setClothes(2, this.hair.style, 0, 2);
       player.setHairColor(
          this.hair.color, this.hair.highlight
       );
-   
+
       for (let i = 0; i < 20; i ++) { 
          player.setFaceFeature(i, this.face_features[i]);
       }

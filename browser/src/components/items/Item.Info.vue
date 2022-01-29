@@ -58,11 +58,7 @@
          }
       },
 
-      async mounted () { 
-
-         const headers = new Headers();
-         headers.append('Access-Control-Allow-Origin', '*');
-
+      async mounted () {
 
          if (window.mp) { 
             let itemData = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);

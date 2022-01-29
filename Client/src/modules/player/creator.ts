@@ -2,7 +2,7 @@
 
 import { Browser } from '../../browser';
 import { Genders, playerModels } from '../../data/Player';
-import { lobby } from '../../Player/lobby';
+import { lobby } from './lobby';
 import { disableMoving, playerPreviewCamera, removeClothing } from '../../utils';
 import femaleTorsos from '../player/clothing/female.torsos';
 import maleTorsos from '../player/clothing/male.torsos';
@@ -16,24 +16,21 @@ class characterCreator {
 
    static start () { 
       characterCreator.active = true;
-      mp.events.callRemoteProc('SERVER::CREATOR:INFO').then(async (Info) => { 
-
+      mp.events.callRemoteProc('SERVER::CREATOR:INFO').then(async (info) => { 
          lobby(false);
          Browser.call('BROWSER::SHOW', 'characterCreator');
 
-         mp.players.local.position = Info.Position;
+         mp.players.local.position = info.position;
          mp.players.local.setHeading(0);
          mp.players.local.freezePosition(true);
 
          removeClothing(mp.players.local);
          mp.events.add('render', disableMoving);
          playerPreviewCamera(true);
-         
       });
    }
 
    static async finish (character: string, appearance: string) { 
-
       const isCreated = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', character, appearance);
 
       if (isCreated) { 
@@ -45,7 +42,6 @@ class characterCreator {
          playerPreviewCamera(false);
          Browser.call('BROWSER::HIDE', 'characterCreator');
       } 
-
    }
 
    static changeGender (gender: number) { 

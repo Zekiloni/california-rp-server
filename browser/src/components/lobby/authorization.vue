@@ -68,7 +68,7 @@
       transition: all .3s ease;
       background: linear-gradient(0deg, #0b0e11, transparent);
       flex-direction: column;
-      animation: slide-from-top 1.3s ease-in-out;
+      animation: slide-from-bottom 1.3s ease-in-out;
    }
 
    img.logo { width: 220px; }
@@ -118,9 +118,9 @@
       filter: brightness(1.2);
    }
 
-   @keyframes slide-from-top {
-      from { transform: translateY(-700px); }
-      to { transform: translateY(0); }
+   @keyframes slide-from-bottom {
+      from { transform: translateY(80px); opacity: 0; }
+      tp { transform:  translateY(0); opacity: 1; }
    }
 
 

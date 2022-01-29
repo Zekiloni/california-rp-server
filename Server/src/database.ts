@@ -3,7 +3,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { databaseConfig } from '@configs';
-import { logs, accounts, characters, apppearances, banks, houses, business } from '@models';
+import { logs, accounts, characters, apppearances, banks, houses, business, bans, inventories } from '@models';
 import { lang } from '@constants';
 
 
@@ -14,10 +14,12 @@ const Database = new Sequelize({
    password: databaseConfig.password,
    storage: ':memory:',
    models: [ 
+      bans,
       logs, 
       accounts, 
       characters, 
-      apppearances, 
+      apppearances,
+      inventories, 
       banks,
       houses,
       business
