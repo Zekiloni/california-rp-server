@@ -1,4 +1,16 @@
 
+export const ranks:string[] = [
+   'Player', 
+   'Game Assistant', 
+   'Administrator', 
+   'Administrator 2',
+   'Senior Administrator', 
+   'Lead Administrator', 
+   'Community Manager', 
+   'Owner'
+];
+
+
 export const facial_Moods = {
    'Normal': 'normal',
    'Zamišljena': 'mood_aiming_1',
@@ -8,7 +20,7 @@ export const facial_Moods = {
    'Povredjena': 'mood_injured_1',
    'Stresirana': 'mood_stressed_1' ,
    'Uvređena': 'mood_sulk_1',
-}
+};
 
 export const walking_Styles = { 
    'Normal': 'normal',
@@ -29,4 +41,4 @@ export const walking_Styles = {
    'Quick': 'move_m@quick',
    'Sad': 'move_m@sad@a',
    'Tough': 'move_m@tool_belt@a',
-}
+};

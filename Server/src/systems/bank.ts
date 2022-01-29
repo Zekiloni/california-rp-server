@@ -1,5 +1,5 @@
 import { bankConfig } from '@configs';
-import { gDimension } from '@constants';
+import { gDimension, lang } from '@constants';
 
 import { generateNumber } from '../utils';
 
@@ -8,9 +8,9 @@ import { generateNumber } from '../utils';
 (() => {
 
    for (const position of bankConfig.positions) {
-      mp.blips.new(bankConfig.sprite, position, { dimension: gDimension, name: Messages.BANK, color: 52, shortRange: true, scale: 0.85, drawDistance: 150 });
+      mp.blips.new(bankConfig.sprite, position, { dimension: gDimension, name: lang.BANK, color: 52, shortRange: true, scale: 0.85, drawDistance: 150 });
 
-      const colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, GlobalDimension);
+      const colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, gDimension);
 
       colshape.onPlayerEnter = (player: PlayerMp) => {
          if (player.vehicle) {
