@@ -1,12 +1,12 @@
 import { Colors, Messages } from '../../globals/constants';
 import { CommandEnums, Distances, entityData } from '../../globals/enums';
-import { Commands } from '../../commands';
+import { Commands } from '../../modules/commands';
 
 
-Commands[CommandEnums.Names.ROLEPLAY_ME] = {
-   description: CommandEnums.Descriptions.ROLEPLAY_ME,
+Commands[cmds.names.ROLEPLAY_ME] = {
+   description: cmds.descriptions.ROLEPLAY_ME,
    params: [
-      CommandEnums.Params.TEXT
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, ...content) {
       const text = [...content].join(' ');
@@ -20,10 +20,10 @@ Commands[CommandEnums.Names.ROLEPLAY_ME] = {
 };
 
 
-Commands[CommandEnums.Names.ROLEPLAY_DO] = {
-   description: CommandEnums.Descriptions.ROLEPLAY_DO,
+Commands[cmds.names.ROLEPLAY_DO] = {
+   description: cmds.descriptions.ROLEPLAY_DO,
    params: [
-      CommandEnums.Params.TEXT
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, ...content) {
       const text = [...content].join(' ');
@@ -37,10 +37,10 @@ Commands[CommandEnums.Names.ROLEPLAY_DO] = {
 };
 
 
-Commands[CommandEnums.Names.ROLEPLAY_TRY] = {
-   description: CommandEnums.Descriptions.ROLEPLAY_TRY,
+Commands[cmds.names.ROLEPLAY_TRY] = {
+   description: cmds.descriptions.ROLEPLAY_TRY,
    params: [
-      CommandEnums.Params.TEXT
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, ...content) {
       const text = [...content].join(' ');
@@ -59,10 +59,10 @@ Commands[CommandEnums.Names.ROLEPLAY_TRY] = {
 };
 
 
-Commands[CommandEnums.Names.LOW_CHAT] = {
-   description: CommandEnums.Descriptions.LOW_CHAT,
+Commands[cmds.names.LOW_CHAT] = {
+   description: cmds.descriptions.LOW_CHAT,
    params: [
-      CommandEnums.Params.TEXT
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, ...content: any) {
       const text = [...content].join(' ');
@@ -80,10 +80,10 @@ Commands[CommandEnums.Names.LOW_CHAT] = {
 };
 
 
-Commands[CommandEnums.Names.SHOUT_CHAT] = {
-   description: CommandEnums.Descriptions.SHOUT_CHAT,
+Commands[cmds.names.SHOUT_CHAT] = {
+   description: cmds.descriptions.SHOUT_CHAT,
    params: [
-      CommandEnums.Params.TEXT
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, ...content: any) {
       const text = [...content].join(' ');
@@ -101,11 +101,11 @@ Commands[CommandEnums.Names.SHOUT_CHAT] = {
 };
 
 
-Commands[CommandEnums.Names.WHISPER] = {
-   description: CommandEnums.Descriptions.WHISPER,
+Commands[cmds.names.WHISPER] = {
+   description: cmds.descriptions.WHISPER,
    params: [
-      CommandEnums.Params.PLAYER,
-      CommandEnums.Params.TEXT
+      cmds.params.PLAYER,
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, targetSearch: string | number, ...content: any) {
 
@@ -138,10 +138,10 @@ Commands[CommandEnums.Names.WHISPER] = {
 };
 
 
-Commands[CommandEnums.Names.ROLEPLAY_AME] = {
-   description: CommandEnums.Descriptions.ROLEPLAY_AME,
+Commands[cmds.names.ROLEPLAY_AME] = {
+   description: cmds.descriptions.ROLEPLAY_AME,
    params: [
-      CommandEnums.Params.TEXT
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, ...content: any) {
 
@@ -168,10 +168,10 @@ Commands[CommandEnums.Names.ROLEPLAY_AME] = {
 }
 
 
-Commands[CommandEnums.Names.OOC_CHAT] = {
-   description: CommandEnums.Descriptions.OOC_CHAT,
+Commands[cmds.names.OOC_CHAT] = {
+   description: cmds.descriptions.OOC_CHAT,
    params: [
-      CommandEnums.Params.TEXT
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, ...content: any) {
       const text = [...content].join(' ');
@@ -189,11 +189,11 @@ Commands[CommandEnums.Names.OOC_CHAT] = {
 };
 
 
-Commands[CommandEnums.Names.PM] = {
-   description: CommandEnums.Descriptions.PM_CHAT,
+Commands[cmds.names.PM] = {
+   description: cmds.descriptions.PM_CHAT,
    params: [
-      CommandEnums.Params.PLAYER, 
-      CommandEnums.Params.TEXT
+      cmds.params.PLAYER, 
+      cmds.params.TEXT
    ],
    call (player: PlayerMp, targetSearch: string | number, ...content: any) {
       
@@ -228,7 +228,7 @@ Commands[CommandEnums.Names.PM] = {
 };
 
 
-Commands[CommandEnums.Names.COIN] = {
+Commands[cmds.names.COIN] = {
    description: '',
    call (player: PlayerMp) {
       if (player.character.money < 1) {

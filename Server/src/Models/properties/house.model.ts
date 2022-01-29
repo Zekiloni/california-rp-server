@@ -1,8 +1,9 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
 import { interactionPoint } from '@interfaces';
-import { houseType } from '@enums';
-import { gDimension } from '@constants';
+import { notifications } from '@enums';
+import { gDimension, lang } from '@constants';
+import { houseConfig } from '@configs/house.config';
 
 
 @Table
@@ -19,9 +20,9 @@ export class houses extends Model {
    @Column
    owner: number;
 
-   @Default(houseType)
+   @Default(houseConfig.type.MEDIUM_GROUND_HOUSE)
    @Column
-   type: houseType;
+   type: houseConfig.type;
 
    @AllowNull(false)
    @Column
@@ -121,7 +122,7 @@ export class houses extends Model {
             colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, dimension),
             blip: mp.blips.new(40, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: 'House', color: owner == 0 ? 2 : 79, shortRange: true, scale: 0.75, drawDistance: 25 }),
             marker: mp.markers.new(30, new mp.Vector3(position.x, position.y, position.z - 0.35), 0.75, {
-               color: markerColors.HOUSES, 
+               color: houseConfig.markerColor, 
                rotation: new mp.Vector3(0, 0, 0),
                visible: true,
                dimension: dimension
@@ -140,16 +141,22 @@ export class houses extends Model {
    }
 
    async buy (player: PlayerMp) {
-      if (this.owner != 0) return player.sendNotification(Messages.HOUSE_ALREADY_OWNER, notifyType.ERROR, 5);
+      if (this.owner != 0) return player.sendNotification(lang.houseAlreadyOwner, notifications.type.ERROR, 5);
 
       const character = player.character;
-      const { houses } = await character.properties;
 
-      if (houses.length == character.max_houses) return; // PORUKA: Imate maksimalno kuca;
-      if (this.price > character.money) return player.sendNotification(Messages.NOT_ENOUGH_MONEY, notifyType.ERROR, 5);
+      if (character.houses.length == character.max_houses) {
+         player.sendNotification(lang.youHaveMaximumHouses, notifications.type.ERROR, 5);
+         return;
+      }
+
+      if (this.price > character.money) {
+         player.sendNotification(lang.notEnoughMoney, notifications.type.ERROR, 5);
+         return;
+      } 
 
       character.giveMoney(player, -this.price);
-      player.sendNotification(Messages.SUCCCESSFULLY_BUYED_HOUSE, notifyType.SUCCESS, 7);
+      player.sendNotification(lang.successfullyBuyedHouse, notifications.type.SUCCESS, 7);
 
       this.owner = character.id;
 
@@ -161,17 +168,20 @@ export class houses extends Model {
          this.locked = !this.locked;
          await this.save();
       } else { 
-         player.sendNotification(Messages.YOU_DONT_HAVE_HOUSE_KEYS, notifyType.ERROR, 5);
+         player.sendNotification(lang.youDontHaveHouseKeys, notifications.type.ERROR, 5);
       }
    }
 
-   // static async getNearest (player: PlayerMp) {
-   //    const houses = await Houses.findAll();
-   //    for (const house of houses) {
-   //       const position = new mp.Vector3(house.position.x, house.position.y, house.position.z);
-   //       if (player.dist(position) < 2.5) return house;
-   //    }
-   // };
+   static async getNearest (player: PlayerMp): Promise<houses | void> {
+      return houses.findAll().then(houses => {
+         houses.forEach(house => { 
+            if (player.dist(house.position) < 2.5 && player.dimension == house.dimension) {
+               return house;
+            }
+         })
+      })
+
+   };
 
 }
 

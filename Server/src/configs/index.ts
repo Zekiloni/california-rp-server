@@ -12,4 +12,5 @@ export * from './jobs.config';
 
 export * from './vehicle.config';
 export * from './business.config';
+export * from './house.config';
 

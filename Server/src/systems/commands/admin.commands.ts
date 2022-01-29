@@ -1,20 +1,18 @@
 
 import fs from 'fs';
-import { Config } from '../../config';
-import { Colors } from '../../globals/constants';
-import { adminLevel, CommandEnums, houseData, logType, notifyType, weather } from '../../globals/enums';
-import Houses from '../../models/properties/house.model';
-import Items from '../../models/inventory.model';
-import { baseItem } from '../../models/item.model';
-import { Logger } from '../../utils';
-import { Commands } from '../../commands';
+
+import { Commands } from '../../modules/commands';
+import { logs, items, inventories, houses } from '@models';
+import { cmds, weathers } from '@constants';
+import { rank, notifications } from '@enums';
+import { houseConfig, serverConfig } from '@configs';
 
 
 const savedPositions = 'savedPositions.txt';
 
-Commands[CommandEnums.Names.SAVE_POS] = { 
-   description: CommandEnums.Descriptions.ITEMS,
-   admin: adminLevel.LEAD_ADMINISTRATOR,
+Commands[cmds.names.SAVE_POS] = { 
+   description: cmds.descriptions.ITEMS,
+   admin: rank.LEAD_ADMINISTRATOR,
    call: (player: PlayerMp, ...saveName) => { 
       let positionName = saveName.slice(0).join(' '); 
       const position = (player.vehicle) ? player.vehicle.position : player.position;
@@ -22,18 +20,18 @@ Commands[CommandEnums.Names.SAVE_POS] = {
       
       fs.appendFile(savedPositions, `Position: { x: ${position.x}, y: ${position.y}, z: ${position.z} } | ${(player.vehicle) ? `Rotation: ${JSON.stringify(rotation)}` : `Heading: ${rotation}`} | ${(player.vehicle) ? 'inCar' : 'onFoot'} - ${positionName}\r\n`, (err) => {
          if (err) {
-            Logger(logType.ERROR, 'Saving Position ' + err);
+            logs.error(err);
          }
       });
    }
 }
 
 
-Commands[CommandEnums.Names.GOTO] = {
-   description: CommandEnums.Descriptions.GOTO,
-   admin: adminLevel.ADMINISTRATOR,
+Commands[cmds.names.GOTO] = {
+   description: cmds.descriptions.GOTO,
+   admin: rank.ADMINISTRATOR,
    params: [
-      CommandEnums.Params.PLAYER
+      cmds.params.PLAYER
    ],
    call: (player: PlayerMp, targetSearch: string | number) => {
       const target = mp.players.find(targetSearch);
@@ -52,17 +50,17 @@ Commands[CommandEnums.Names.GOTO] = {
             player.dimension = target.dimension;
          }
 
-         player.sendNotification('SUCCES TELEPORT', notifyType.SUCCESS, 4);
+         player.sendNotification('SUCCES TELEPORT', notifications.type.SUCCESS, 4);
       }
    }
 };
 
 
-Commands[CommandEnums.Names.GET_HERE] = {
-   description: CommandEnums.Descriptions.GET_HERE,
-   admin: adminLevel.SENIOR_ADMINISTRATOR,
+Commands[cmds.names.GET_HERE] = {
+   description: cmds.descriptions.GET_HERE,
+   admin: rank.SENIOR_ADMINISTRATOR,
    params: [
-      CommandEnums.Params.PLAYER
+      cmds.params.PLAYER
    ],
    call: (player: PlayerMp, targetSearch: string | number) => {
       const target = mp.players.find(targetSearch);
@@ -82,32 +80,32 @@ Commands[CommandEnums.Names.GET_HERE] = {
             target.dimension = player.dimension;
          }
 
-         player.sendNotification('SUCCES TELEPORT', notifyType.SUCCESS, 4);
+         player.sendNotification('SUCCES TELEPORT', notifications.type.SUCCESS, 4);
       }
    }
 };
 
 
-Commands[CommandEnums.Names.ITEMS] = { 
-   description: CommandEnums.Descriptions.ITEMS,
+Commands[cmds.names.ITEMS] = { 
+   description: cmds.descriptions.ITEMS,
    call: (player: PlayerMp) => { 
-      console.log(baseItem.list);
+      console.log(items.list);
    }
 };
 
 
-Commands[CommandEnums.Names.GIVE_ITEM] ={
-   description: CommandEnums.Descriptions.GIVE_ITEM,
-   admin: adminLevel.SENIOR_ADMINISTRATOR,
+Commands[cmds.names.GIVE_ITEM] ={
+   description: cmds.descriptions.GIVE_ITEM,
+   admin: rank.SENIOR_ADMINISTRATOR,
    call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
       itemName = itemName.join(' ');
-      if (baseItem.list[itemName]) {
-         const foundItem = baseItem.list[itemName];
+      if (items.list[itemName]) {
+         const foundItem = items.list[itemName];
          const target = mp.players.find(targetSearch);
          if (!target) return; // no target found
          try { 
 
-            Items.giveItem(target, foundItem, quantity);
+            inventories.giveItem(target, foundItem, quantity);
 
          } catch(e) { 
             console.log(e)
@@ -120,8 +118,8 @@ Commands[CommandEnums.Names.GIVE_ITEM] ={
 }
 
 
-Commands[CommandEnums.Names.CLEAR_INVENTORY] = { 
-   description: CommandEnums.Descriptions.CLEAR_INVENTORY,
+Commands[cmds.names.CLEAR_INVENTORY] = { 
+   description: cmds.descriptions.CLEAR_INVENTORY,
    call: (player: PlayerMp, target: any) => { 
       
    }
@@ -130,7 +128,7 @@ Commands[CommandEnums.Names.CLEAR_INVENTORY] = {
 
 Commands['veh'] = { 
    description: 'Kreiraj auto',
-   admin: adminLevel.LEAD_ADMINISTRATOR,
+   admin: rank.LEAD_ADMINISTRATOR,
    call: (player: PlayerMp, vName: string) => { 
       console.log(vName);
       const vehicle =  mp.vehicles.new(mp.joaat(vName), player.position);
@@ -139,43 +137,43 @@ Commands['veh'] = {
 }
 
 
-Commands[CommandEnums.Names.TIME] = {
-   admin: adminLevel.LEAD_ADMINISTRATOR,
-   description: CommandEnums.Descriptions.SET_TIME,
+Commands[cmds.names.TIME] = {
+   admin: rank.LEAD_ADMINISTRATOR,
+   description: cmds.descriptions.SET_TIME,
    params: [
-      CommandEnums.Params.HOUR,
-      CommandEnums.Params.MINUTE,
-      CommandEnums.Params.SECONDS
+      cmds.params.HOUR,
+      cmds.params.MINUTE,
+      cmds.params.SECONDS
    ],
    call: (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) => {
       if (hour == 666) {
-         Config.freezeTime = false;
+         serverConfig.freezeTime = false;
       } else { 
-         Config.freezeTime = true;
+         serverConfig.freezeTime = true;
          mp.world.time.set(hour, minute, second);
       }
    }
 };
 
 
-Commands[CommandEnums.Names.WEATHER] = {
-   admin: adminLevel.SENIOR_ADMINISTRATOR,
-   description: CommandEnums.Descriptions.SET_WEATHER,
+Commands[cmds.names.WEATHER] = {
+   admin: rank.SENIOR_ADMINISTRATOR,
+   description: cmds.descriptions.SET_WEATHER,
    params: [
-      CommandEnums.Params.WEATHER
+      cmds.params.WEATHER
    ],
-   call: (player: PlayerMp, setWeather: string | number) => {
-      if (setWeather == Number(setWeather) && setWeather < weather.Names.length - 1 && setWeather >= 0) {
-         mp.world.weather = weather.Names[Number(setWeather)];
+   call: (player: PlayerMp, weather: string | number) => {
+      if (weather == Number(weather) && weather < weathers.length - 1 && weather >= 0) {
+         mp.world.weather = weathers[Number(weather)];
       } else {
-         mp.world.weather = String(setWeather);
+         mp.world.weather = String(weather);
       }
    }
 };
 
-Commands[CommandEnums.Names.FIX_VEH] = {
-   admin: adminLevel.SENIOR_ADMINISTRATOR,
-   description: CommandEnums.Descriptions.FIX_VEH,
+Commands[cmds.names.FIX_VEH] = {
+   admin: rank.SENIOR_ADMINISTRATOR,
+   description: cmds.descriptions.FIX_VEH,
    vehicle: true,
    call: async (player: PlayerMp) => {
       if (!player.vehicle) {
@@ -186,8 +184,8 @@ Commands[CommandEnums.Names.FIX_VEH] = {
    }
 };
 
-Commands[CommandEnums.Names.GIVE_MONEY] =  {
-   admin: adminLevel.LEAD_ADMINISTRATOR,
+Commands[cmds.names.GIVE_MONEY] =  {
+   admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    call: (player: PlayerMp, targetSearch: any, money: number) => { 
       const target = mp.players.find(targetSearch);
@@ -197,40 +195,40 @@ Commands[CommandEnums.Names.GIVE_MONEY] =  {
          return;
       };
 
-      target.Character.giveMoney(target, money);
+      target.character.giveMoney(target, money);
    }
 };
 
-Commands[CommandEnums.Names.SET_MONEY] =  {
-   admin: adminLevel.LEAD_ADMINISTRATOR,
+Commands[cmds.names.SET_MONEY] =  {
+   admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    call: (player: PlayerMp, targetSearch: any, money: number) => { 
       const target = mp.players.find(targetSearch);
       if (!target) return; // nema
-      target.Character.setMoney(target, money);
+      target.character.setMoney(target, money);
    }
 }
 
-Commands[CommandEnums.Names.CREATE_HOUSE] =  {
-   admin: adminLevel.LEAD_ADMINISTRATOR,
+Commands[cmds.names.CREATE_HOUSE] =  {
+   admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
-   call: (player: PlayerMp, type: houseData.Type, price: number) => { 
-      Houses.new(player, type, price);
+   call: (player: PlayerMp, type: houseConfig.type, price: number) => { 
+      houses.new(player, type, price);
    }
 }
 
-Commands[CommandEnums.Names.DESTROY_HOUSE] =  {
-   admin: adminLevel.LEAD_ADMINISTRATOR,
+Commands[cmds.names.DESTROY_HOUSE] =  {
+   admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    call: async (player: PlayerMp, id?: number) => { 
-      const nearestHouse = await Houses.getNearest(player);
+      const nearestHouse = await houses.getNearest(player);
       if (nearestHouse) nearestHouse.destroy();
    }
 }
 
 
-Commands[CommandEnums.Names.FLY] =  {
-   admin: adminLevel.SENIOR_ADMINISTRATOR,
+Commands[cmds.names.FLY] =  {
+   admin: rank.SENIOR_ADMINISTRATOR,
    description: 'opis napisati',
    call: async (player: PlayerMp) => { 
       player.call('CLIENT::ADMIN:FLY');
@@ -312,7 +310,7 @@ Commands[CommandEnums.Names.FLY] =  {
 //          Player.position = new mp.Vector3(Waypoint.x, Waypoint.y, Waypoint.z);
 //          Admin.AdminActionNotify(Player, `se teleportovao na waypoint. ${Waypoint.x} ${Waypoint.y} ${Waypoint.z}`);
 //       }).catch(() => {
-//          Player.Notification('Nema markera', notifyType.ERROR, 4);
+//          Player.Notification('Nema markera', notifications.type.ERROR, 4);
 //       });
 //    }
 // };

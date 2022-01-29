@@ -107,10 +107,10 @@
 //       if (Counter == this.Items.length) { 
 //          const Earned = Globals.Jobs.Multiplier * Main.Between(4, 8);
 //          Character.GiveMoney(Player, Earned);
-//          Player.Notification(Messages.ORDER_SUCCESS + Main.Dollars(Earned) + '.', notifyType.SUCCESS, 5);
+//          Player.Notification(Messages.ORDER_SUCCESS + Main.Dollars(Earned) + '.', notifications.type.SUCCESS, 5);
          
 //       } else { 
-//         Player.Notification(Messages.ORDER_NOT_COMPLETED, notifyType.ERROR, 5);
+//         Player.Notification(Messages.ORDER_NOT_COMPLETED, notifications.type.ERROR, 5);
 //       }
 //    };
 // };
@@ -160,7 +160,7 @@
 
 //          return Order;
 //       } else { 
-//          player.Notification(Messages.ORDER_ALREADY_PROCESSING, notifyType.ERROR, 5);
+//          player.Notification(Messages.ORDER_ALREADY_PROCESSING, notifications.type.ERROR, 5);
 //          return false;
 //       }
 //    }

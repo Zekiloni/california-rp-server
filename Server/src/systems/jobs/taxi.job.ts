@@ -102,7 +102,7 @@ taxiJob.stop = function (player: PlayerMp) {
 //             }
 //          }
 
-//          if (AvailablePosition == null) return Player.Notification(Messages.THERE_IS_NO_PLACE_FOR_VEHICLE, notifyType.ERROR, 5);
+//          if (AvailablePosition == null) return Player.Notification(Messages.THERE_IS_NO_PLACE_FOR_VEHICLE, notifications.type.ERROR, 5);
 
 //          Vehicle = Vehicles.CreateTemporary(
 //             Configuration.Vehicle.Model, 
@@ -120,7 +120,7 @@ taxiJob.stop = function (player: PlayerMp) {
 
 //          Vehicle = Player.vehicle;
 
-//          if (!Vehicle.numberPlate.includes('TX')) return Player.Notification(Messages.NO_TX_IN_NUMBERPLATE, notifyType.ERROR, 5);
+//          if (!Vehicle.numberPlate.includes('TX')) return Player.Notification(Messages.NO_TX_IN_NUMBERPLATE, notifications.type.ERROR, 5);
 
          
 //       }
@@ -153,7 +153,7 @@ taxiJob.stop = function (player: PlayerMp) {
 
 //    static async Stop (Player: PlayerMp) { 
 
-//       if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, notifyType.ERROR, 5);
+//       if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, notifications.type.ERROR, 5);
 
 //       const Character = Player.character;
 
@@ -174,7 +174,7 @@ taxiJob.stop = function (player: PlayerMp) {
 
 //    static Fare (Player: PlayerMp, Price: number) { 
 
-//       if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, notifyType.ERROR, 5);
+//       if (!Player.getVariable('Job_Duty')) return Player.Notification(Messages.JOB_NOT_STARTED, notifications.type.ERROR, 5);
 
 //       const Shift = Taxi.Drivers[Player.character.id];
 
@@ -182,11 +182,11 @@ taxiJob.stop = function (player: PlayerMp) {
 
 //          const Max = Settings.Default.Taximeter + 5, Min = Settings.Default.Taximeter;
 
-//          if (Price > Max || Price < Min) return Player.Notification(Messages.TAXIMETRE_PRICE_RANGE + Min + ' - ' + Max + '.', notifyType.ERROR, 6);
+//          if (Price > Max || Price < Min) return Player.Notification(Messages.TAXIMETRE_PRICE_RANGE + Min + ' - ' + Max + '.', notifications.type.ERROR, 6);
 
 //          Shift.Fare = Price;
 
-//          Player.Notification(Messages.TAXIMETRE_SETTED_ON + Main.Dollars(Price) + '.', notifyType.ERROR, 6);
+//          Player.Notification(Messages.TAXIMETRE_SETTED_ON + Main.Dollars(Price) + '.', notifications.type.ERROR, 6);
 
 //       }
 

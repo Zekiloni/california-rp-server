@@ -45,11 +45,11 @@
 //       if (!Vehicle) return;
 //       switch (Action) { 
 //          case 'bonnet': { 
-//             if (Vehicle.locked) return Player.Notification(Messages.VEHICLE_IS_LOCKED, notifyType.ERROR, 6);
+//             if (Vehicle.locked) return Player.Notification(Messages.VEHICLE_IS_LOCKED, notifications.type.ERROR, 6);
 //             Vehicle.data.Hood = !Vehicle.data.Hood;
 //             break; }
 //          case 'boot': { 
-//             if (Vehicle.locked) return Player.Notification(Messages.VEHICLE_IS_LOCKED, notifyType.ERROR, 6);
+//             if (Vehicle.locked) return Player.Notification(Messages.VEHICLE_IS_LOCKED, notifications.type.ERROR, 6);
 //             Vehicle.data.Trunk = !Vehicle.data.Trunk;
 //             break; 
 //          }

@@ -35,7 +35,7 @@
 //       const HasHouse = await House.findOne({ where: { owner: Player.character.id }});
 //       if (HasHouse) {
 //          Player.call('CLIENT::HOUSE:MANAGER');
-//       } else Player.Notification(Messages.YOU_DONT_OWN_A_HOUSE, notifyType.ERROR, 5);
+//       } else Player.Notification(Messages.YOU_DONT_OWN_A_HOUSE, notifications.type.ERROR, 5);
       
 //    }
 // };

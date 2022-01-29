@@ -1,7 +1,7 @@
-import { CommandEnums } from '../../globals/enums';
-import { Commands } from '../commands';
+import { cmds } from '@constants';
+import { Commands } from '../../modules/commands';
 
-Commands[CommandEnums.Names.ENGINE] = { 
+Commands[cmds.names.ENGINE] = { 
    description: 'Kontrola motora vozila',
    vehicle: true,
    call: (player: PlayerMp, vName: string) => { 
@@ -24,7 +24,7 @@ Commands[CommandEnums.Names.ENGINE] = {
 //    description: 'Opcije gepeka vozila',
 //    call: (player: PlayerMp) => { 
 // 		const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
-// 		if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.notifyType.ERROR, 6);
+// 		if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.notifications.type.ERROR, 6);
 // 		if (Vehicle) Vehicle.data.Trunk = !Vehicle.data.Trunk;
 //    } 
 // }
@@ -33,7 +33,7 @@ Commands[CommandEnums.Names.ENGINE] = {
 //    description: 'Opcije haube vozila',
 //    call: (player: PlayerMp) => { 
 // 		const Vehicle = frp.Vehicles.Nearest(Player.position, 2);
-// 		if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.notifyType.ERROR, 6);
+// 		if (Vehicle && Vehicle.locked) return Player.Notification(frp.Globals.messages.VEHICLE_IS_LOCKED, frp.notifications.type.ERROR, 6);
 // 		if (Vehicle) Vehicle.data.Hood = !Vehicle.data.Hood;
 //    } 
 // }
@@ -49,10 +49,10 @@ Commands[CommandEnums.Names.ENGINE] = {
 // 		};
 // 		Player.call('client:business.gas:menu', [Info]);
 // 		}).catch(() => { 
-// 		Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_PUMP, frp.notifyType.ERROR, 5);
+// 		Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_PUMP, frp.notifications.type.ERROR, 5);
 // 		});
 // 		} else { 
-// 		Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_STATION, frp.notifyType.ERROR, 5);
+// 		Player.Notification(frp.Globals.messages.NOT_NEAR_GAS_STATION, frp.notifications.type.ERROR, 5);
 // 	}
 //    } 
 // }

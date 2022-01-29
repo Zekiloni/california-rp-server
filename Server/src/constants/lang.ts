@@ -6,6 +6,8 @@ export const lang = {
    // server back-end
    successDbConnection: 'Uspesno povezan na databazu.',
    serverIsClosing: 'Server se gasi...',
+   defaultSpawn: 'Default Spawn',
+   defaultSpawnDescripiton: 'Default spawn pozicija gde se stvvorite pri registracija.',
 
    // success messages
    welcomeToServer: 'Dobrodošli na Midnight Roleplay ! Uživajte u igri.',
@@ -31,6 +33,7 @@ export const lang = {
    incorrectPassword: 'Korisnička šifra nije tačna.',
    alreadyEmployed: 'Već ste zaposleni.', 
    jobAlreadyStarted: 'Već ste započeli posao.',
+   youHaveMaximumHouses: 'Imate maksimalan broj kuća.',
    thereAreNoOrdersRightNow: 'Trenutno nema porudžbina.',
    notEmployed: 'Niste zaposleni.',
    jobNotStarted: 'Niste započeli posao.',

@@ -180,10 +180,10 @@ export class characters extends Model {
    updated_at: Date;
 
    @HasMany(() => houses)
-   houses: houses
+   houses: houses[];
 
    @HasMany(() => business)
-   business: business
+   business: business[];
 
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes) { 
 

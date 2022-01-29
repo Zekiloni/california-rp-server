@@ -67,7 +67,7 @@ mp.events.addProc(
    {
       'SERVER::BANKING:CREATE': async (player: PlayerMp): Promise<Items> => {
          // if (player.character.bank) {
-         //    player.sendNotification('vec imate racun', notifyType.ERROR, 7);
+         //    player.sendNotification('vec imate racun', notifications.type.ERROR, 7);
          //    return;
          // }
          console.log(1)

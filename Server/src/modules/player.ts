@@ -1,23 +1,50 @@
 import { logs, bans, characters, accounts, items, inventories, apppearances, banks } from '@models';
 import { playerConfig, serverConfig } from '@configs';
+import { itemEnums, notifications, spawnPointTypes } from '@enums';
+import { itemNames, lang } from '@constants';
+import { spawnPoint } from '@interfaces/player.interfaces';
 
 
-export const lobbySettings = () => {
+
+mp.events.add(
+   {
+      'playerJoin': playerJoinHandler,
+      'playerQuit': playerQuitHadnler,
+      'playerChat': playerChatHandler,
+      'playerDeath': playerDeathHandler,
+      'entityModelChange': playerModelChange,
+      'SERVER::CHARACTER:PLAY': playerSelectCharacter
+   }
+);
+
+
+mp.events.addProc(
+   {
+      'SERVER::PLAYER:LOBY': lobbySettings,
+      'SERVER::CREATOR:INFO': creatorSettings,
+      'SERVER::AUTHORIZATION:VERIFY': authorizationVerify,
+      'SERVER::CHARACTER:SPAWNS': getCharacterSpawns,
+      'SERVER::CREATOR:FINISH': characterFinish
+   }
+);
+
+
+function lobbySettings () {
    return playerConfig.main.lobby;
 }
 
 
-export const creatorSettings = () => { 
+function creatorSettings ()  { 
    return playerConfig.main.creator;
 }
 
 
-export function playerChatHandler (player: PlayerMp, content: string) {
+function playerChatHandler (player: PlayerMp, content: string) {
    player.character!.onChat(player, content)
 }
 
 
-export async function playerJoinHandler (player: PlayerMp) {
+async function playerJoinHandler (player: PlayerMp) {
    const isBanned = await bans.isBanned(player);
 
    if (isBanned) {
@@ -27,19 +54,133 @@ export async function playerJoinHandler (player: PlayerMp) {
 }
 
 
-export function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnTypes) {
-   characters.findOne( { where: { id: characterId }, include: [apppearances, banks] } ).then(character => {
-      character!.spawnPlayer(player, point);
+async function characterFinish (player: PlayerMp, characterInfo: string, characterAppearance: string) { 
+
+   const character = JSON.parse(characterInfo);
+   const appearance = JSON.parse(characterAppearance);
+
+   const alreadyExist = await characters.findOne( { where: { name: character.name + ' ' + character.lastName } } );
+
+   if (alreadyExist) {
+      player.sendNotification(lang.characterAlreadyExist, notifications.type.ERROR, notifications.time.SHORT);
+      return;
+   } 
+
+   const createdCharacter = await characters.create(
+      { 
+         name: character.name + ' ' + character.lastName,
+         account_id: player.account.id,
+         origin: character.origin, 
+         birth: character.birth, 
+         gender: character.gender
+      }
+   );
+
+   apppearances.create(
+      {
+         character_id: createdCharacter.id, 
+         character: createdCharacter, 
+         face_features: appearance.face, 
+         blend_data: appearance.blends, 
+         overlays: appearance.overlays, 
+         hair: appearance.hair, 
+         beard: appearance.beard, 
+         eyes: appearance.eyeColor
+      }
+   );
+
+   createdCharacter.spawnPlayer(player, spawnPointTypes.DEFAULT);
+
+   inventories.create({ name: itemNames.DOCUMENT_ID_CARD, quantity: 1, entity: itemEnums.entity.PLAYER, owner: createdCharacter.id }).then(async item => {
+      item!.data = {
+         name: createdCharacter.name,
+         birth: createdCharacter.birth,
+         origin: createdCharacter.origin,
+         gender: createdCharacter.gender
+      };
+      await item.save();
+   });
+
+   player.sendNotification(lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
+   return true;
+}
+
+
+function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]> { 
+   return new Promise((resolve) => {
+
+      let spawnPoints: spawnPoint[] = [];
+
+      characters.findOne({ where: { id: id } }).then((character) => { 
+
+         const defaultSpawn: spawnPoint = {
+            name: lang.defaultSpawn,
+            type: spawnPointTypes.DEFAULT,
+            description: lang.defaultSpawnDescripiton,
+            position: playerConfig.main.spawn,
+            heading: playerConfig.main.heading
+         }
+
+         spawnPoints.push(defaultSpawn);
+
+         if (character?.faction) {
+            // push factionn spawn
+         }
+         
+         // if (character?.houses) { }
+
+         if (character?.last_position) { 
+            spawnPoints.push(
+               {
+                  name: lang.lastPosition,
+                  type: spawnPointTypes.LAST_POSITION,
+                  description: lang.lastPositionDescription,
+                  position: new mp.Vector3(character.last_position.x, character.last_position.y, character.last_position.z),
+                  heading: 0
+               }
+            )
+         }
+         resolve(spawnPoints);
+      });
+   });
+}
+
+
+function authorizationVerify (player: PlayerMp, username: string, password: string) {
+   return accounts.findOne({ where: { username: username }, include: characters }).then(account => {
+
+      if (!account) {
+         player.sendNotification(lang.userDoesntExist, notifications.type.ERROR, 5);
+         return;
+      }
+
+      const logged = account.login(password);
+
+      if (!logged) { 
+         player.sendNotification(lang.incorrectPassword, notifications.type.ERROR, 5);
+         return;
+      }
+
+      account.setLogged(player, true);
+
+      return account;
    })
 }
 
 
-export function playerDeathHandler (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) {
+function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes) {
+   characters.findOne( { where: { id: characterId }, include: [apppearances, banks] } ).then(character => {
+      character!.spawnPlayer(player, point);
+   });
+}
+
+
+function playerDeathHandler (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) {
    player.character!.onDeath(player, reason, killer);
 }
 
 
-export async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: string | null) {
+async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: string | null) {
    const leavingPlayer = player;
 
    try { 
@@ -60,7 +201,7 @@ export async function playerQuitHadnler (player: PlayerMp, exitType: string, rea
 }
 
 
-export function playerModelChange (entity: EntityMp, oldModel: number) {
+function playerModelChange (entity: EntityMp, oldModel: number) {
    if (entity.type == 'player') { 
       (<PlayerMp>entity).call('CLIENT::WEAPON:CONFIG');
    }

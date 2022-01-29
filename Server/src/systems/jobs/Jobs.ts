@@ -112,13 +112,13 @@
 //    async Take (Player: PlayerMp) {
 //       const Character = await Player.character();
 
-//       Player.Notification(Messages.SUCCESFULLY_JOB + this.Description, notifyType.SUCCESS, 5);
+//       Player.Notification(Messages.SUCCESFULLY_JOB + this.Description, notifications.type.SUCCESS, 5);
 //       Character.SetJob(Player, this.ID);
 //    }
 
 //    async Quit (Player: PlayerMp) {
 //       const Character = await Player.character();
-//       if (Character.Job == Globals.Jobs.Unemployed) return Player.Notification(Messages.UNEMPLOYED, notifyType.ERROR, 5);
+//       if (Character.Job == Globals.Jobs.Unemployed) return Player.Notification(Messages.UNEMPLOYED, notifications.type.ERROR, 5);
 //    }
 // };
 

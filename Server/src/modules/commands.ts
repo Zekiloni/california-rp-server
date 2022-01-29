@@ -47,9 +47,9 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
          };
       }
 
-      //if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, notifyType.ERROR, 5);
+      //if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, notifications.type.ERROR, 5);
 
-      // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', notifyType.ERROR, 4);
+      // // if (cmd.item && await frp.Items.HasItem(Player.CHARACTER_ID, cmd.item) == false) return Player.Notification(Messages.YOU_DONT_HAVE + cmd.item + '.', notifications.type.ERROR, 4);
 
       if (command.params && command.params.length > params.length) return player.sendMessage('Komanda: /' + commandName + ' [' + command.params.join('] [') + '] ', colors.hex.Help);
 
@@ -60,6 +60,6 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 });
 
 
-import './systems/commands/basic.commands';
-import './systems/commands/admin.commands';
-import './systems/commands/vehicle.commands';
+import '../systems/commands/basic.commands';
+import '../systems/commands/admin.commands';
+import '../systems/commands/vehicle.commands';

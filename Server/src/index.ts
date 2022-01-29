@@ -1,9 +1,10 @@
 
 import './database';
 import './modules/rage';
-import './systems/player';
-import './commands';
+import './modules/commands';
 import './modules/player';
+import './modules/minute';
+
 import './systems/main/items';
 import './systems/main/bank'
 import './systems/jobs';

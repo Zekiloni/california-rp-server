@@ -9,20 +9,20 @@
 // // description: 'Zapošljavanje.',
 // // call: async (player, args) => {
 // //    const Character = player.character;
-// //    if (Character.Job != frp.Globals.Jobs.Unemployed) return player.Notification(frp.Globals.messages.ALREADY_EMPLOYED, frp.notifyType.ERROR, 5);
+// //    if (Character.Job != frp.Globals.Jobs.Unemployed) return player.Notification(frp.Globals.messages.ALREADY_EMPLOYED, frp.notifications.type.ERROR, 5);
 
 // //    const Nearest = frp.Jobs.Nearest(player);
 // //    if (Nearest) {
 // //       player.call('client:job:offer', [Nearest]);
 // //    } else {
-// //       player.Notification(frp.Globals.messages.NOT_NEAR_JOB, frp.notifyType.ERROR, 5);
+// //       player.Notification(frp.Globals.messages.NOT_NEAR_JOB, frp.notifications.type.ERROR, 5);
 // //    }
 // // }
 // // },
 // Commands["takejob"] = {
 //    description: 'Zapošljavanje',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
-//       if (Player.character.Job != 0) return Player.Notification(Messages.ALREADY_EMPLOYED, notifyType.ERROR, 5);
+//       if (Player.character.Job != 0) return Player.Notification(Messages.ALREADY_EMPLOYED, notifications.type.ERROR, 5);
 
 //    }
 // };
@@ -30,7 +30,7 @@
 // Commands["quitjob"] = {
 //    description: 'Davanje otkaza',
 //    Call: async (Player: PlayerMp, Args: string[]) => {
-//       if (Player.character.Job == 0) return Player.Notification(Messages.NOT_EMPLOYED, notifyType.ERROR, 5);
+//       if (Player.character.Job == 0) return Player.Notification(Messages.NOT_EMPLOYED, notifications.type.ERROR, 5);
 //       Player.character.SetJob(0);
 //    }
 // };

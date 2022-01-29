@@ -61,7 +61,7 @@
 //                   break;
 //                case 'VPOINT':
 //                   NearBiz.Vehicle_Point = Player.position;
-//                   Player.Notification('Uredili ste mesto za vozila biznisu [' + NearBiz.id + '] ' + NearBiz.Name + '.', notifyType.SUCCESS, 5);
+//                   Player.Notification('Uredili ste mesto za vozila biznisu [' + NearBiz.id + '] ' + NearBiz.Name + '.', notifications.type.SUCCESS, 5);
 //                   break;
 //                default:
 //                   break;
