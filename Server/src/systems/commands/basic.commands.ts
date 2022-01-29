@@ -1,5 +1,7 @@
-import { Colors, Messages } from '../../globals/constants';
-import { CommandEnums, Distances, entityData } from '../../globals/enums';
+
+import { cmds, colors, lang } from '@constants';
+import { distances } from '@enums';
+import { shared_Data } from '@shared';
 import { Commands } from '../../modules/commands';
 
 
@@ -15,7 +17,7 @@ Commands[cmds.names.ROLEPLAY_ME] = {
          return;
       };
 
-      player.sendProximityMessage(Distances.ROLEPLAY, '** ' + player.name + ' ' + text, Colors.Purple);
+      player.sendProximityMessage(distances.ROLEPLAY, '** ' + player.name + ' ' + text, colors.hex.Purple);
    }
 };
 
@@ -32,7 +34,7 @@ Commands[cmds.names.ROLEPLAY_DO] = {
          return;
       };
 
-      player.sendProximityMessage(Distances.ROLEPLAY, '** ' + text + ' (( ' + player.name + ' ))', Colors.Purple);
+      player.sendProximityMessage(distances.ROLEPLAY, '** ' + text + ' (( ' + player.name + ' ))', colors.hex.Purple);
    }
 };
 
@@ -49,11 +51,12 @@ Commands[cmds.names.ROLEPLAY_TRY] = {
          return;
       };
 
-      const tryResult = Messages.TRY_END[Math.floor(Math.random() * Messages.TRY_END.length)];      
+      const tryResult = lang.tryEnd[Math.floor(Math.random() * lang.tryEnd.length)];     
+
       player.sendProximityMessage(
-         Distances.ROLEPLAY, 
-         '* ' + player.name + Messages.TRIES_TO + text + Messages.AND + tryResult + '.', 
-         Colors.Purple
+         distances.ROLEPLAY, 
+         '* ' + player.name + lang.tiresTo + text + lang.and + tryResult + '.', 
+         colors.hex.Purple
       );  
    }
 };
@@ -72,9 +75,9 @@ Commands[cmds.names.LOW_CHAT] = {
       };
 
       player.sendProximityMessage(
-         Distances.LOW, 
-         player.name + ' ' + Messages.QUETLY + ': ' + text, 
-         Colors.Low
+         distances.LOW, 
+         player.name + ' ' + lang.quetly + ': ' + text, 
+         colors.hex.Low
       );
    }
 };
@@ -93,9 +96,9 @@ Commands[cmds.names.SHOUT_CHAT] = {
       };
 
       player.sendProximityMessage(
-         Distances.SHOUT, 
-         player.name + ' ' + Messages.IS_SHOUTING + ': ' + text, 
-         Colors.White
+         distances.SHOUT, 
+         player.name + ' ' + lang.isShouting + ': ' + text, 
+         colors.hex.White
       );
    }
 };
@@ -127,13 +130,13 @@ Commands[cmds.names.WHISPER] = {
          return;
       }
 
-      if (player.dist(target.position) > Distances.WHISPER || player.dimension != target.dimension) {
+      if (player.dist(target.position) > distances.WHISPER || player.dimension != target.dimension) {
          // PORUKA: IGRAC NIJE U VASOJ BLIZINI
          return;
       }
 
-      target.sendMessage(player.name + ' ' + Messages.IS_WHISPERING_U + ': ' + text, Colors.White[3]);
-      player.sendMessage(Messages.WHISPERING + ' ' + target.name + ': ' + text, Colors.White[3]);
+      target.sendMessage(player.name + ' ' + lang.isWhisperingU + ': ' + text, colors.hex.White[3]);
+      player.sendMessage(lang.whispering + ' ' + target.name + ': ' + text, colors.hex.White[3]);
    }
 };
 
@@ -156,13 +159,13 @@ Commands[cmds.names.ROLEPLAY_AME] = {
          return;
       }
 
-      player.setVariable(entityData.BUBBLE, text);
+      player.setVariable(shared_Data.BUBBLE, text);
       setTimeout(() => { 
          if (!player) {
             return;
          }
 
-         player.setVariable(entityData.BUBBLE, null);
+         player.setVariable(shared_Data.BUBBLE, null);
       }, 6000);
    }
 }
@@ -181,9 +184,9 @@ Commands[cmds.names.OOC_CHAT] = {
       };
 
       player.sendProximityMessage(
-         Distances.OOC, 
+         distances.OOC, 
          '(( ' + player.name + '[' + player.id + ']: ' + text + ' ))',
-         Colors.OOC
+         colors.hex.OOC
       );
    }
 };
@@ -216,13 +219,13 @@ Commands[cmds.names.PM] = {
       }
 
       target.sendMessage(
-         '(( ' + Messages.PM_FROM + ' ' + player.name + ' [' + player.id + ']: ' + text + ' ))', 
-         Colors.PM.From
+         '(( ' + lang.pmFrom + ' ' + player.name + ' [' + player.id + ']: ' + text + ' ))', 
+         colors.hex.PM.From
       );
 
       player.sendMessage(
-         '(( ' + Messages.PM_TO + ' ' + target.name + ' [' + target.id + ']: ' + text + ' ))', 
-         Colors.PM.To
+         '(( ' + lang.pmTo + ' ' + target.name + ' [' + target.id + ']: ' + text + ' ))', 
+         colors.hex.PM.To
       );
    }
 };
@@ -242,12 +245,12 @@ Commands[cmds.names.COIN] = {
       }
 
 
-      const coinResult = Messages.COIN_RESULT[Math.floor(Math.random() * Messages.COIN_RESULT.length)];   
+      const coinResult = lang.coinResult[Math.floor(Math.random() * lang.coinResult.length)];   
 
       player.sendProximityMessage(
-         Distances.ROLEPLAY, 
-         '* ' + player.name + Messages.DROPS_COIN + coinResult + '.', 
-         Colors.Purple
+         distances.ROLEPLAY, 
+         '* ' + player.name + lang.dropsCoin + coinResult + '.', 
+         colors.hex.Purple
       );  
    }
 }
