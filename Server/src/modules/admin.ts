@@ -1,29 +1,23 @@
 
 
 
-import { Colors, Ranks } from '../globals/constants';
-import { entityData } from '../globals/enums';
+
+import { ranks, colors } from '@constants';
+import { playerReport } from '@interfaces';
 
 
-interface Report {
-   Sender: PlayerMp,
-   Message: string,
-   Answer?: string | null,
-   Answered_by?: PlayerMp | null,
-   Time: number,
-   Readed: boolean
-};
+
 
 
 export class Admin {
-   static Reports = new Map<PlayerMp, Report>()
+   static Reports = new Map<PlayerMp, playerReport>()
 
    static sendMessage (player: PlayerMp, message: string) {
       if (!message.trim()) return;
 
       mp.players.forEach((target: PlayerMp) => {
-         if (target.getVariable(entityData.LOGGED) && target.Account.administrator > 0) {
-            target.sendMessage('(( ' + Ranks[target.Account.administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
+         if (target.account.administrator > 0) {
+            target.sendMessage('(( ' + ranks[target.account.administrator] + ' ' + player.name + ': ' + message + ' ))', colors.hex.Admin);
          }
       });
    }
@@ -32,7 +26,7 @@ export class Admin {
       if (!message.trim()) return;
 
       mp.players.forEach((Target: PlayerMp) => {
-         Target.sendMessage('(( [ ! ] ' + Ranks[player.account.administrator] + ' ' + player.name + ': ' + message + ' ))', Colors.Admin);
+         Target.sendMessage('(( [ ! ] ' + ranks[player.account.administrator] + ' ' + player.name + ': ' + message + ' ))', colors.hex.Admin);
       });
    }
 
@@ -40,10 +34,10 @@ export class Admin {
       if (Admin.Reports.get(player)) return; // already have report
 
       Admin.Reports.set(player, {
-         Sender: player,
-         Message: message,
-         Time: Date.now(),
-         Readed: false
+         sender: player,
+         message: message,
+         time: Date.now(),
+         readed: false
       });
    }
 
@@ -51,7 +45,7 @@ export class Admin {
       const report = Admin.Reports.get(player);
       if (report) {
          // show report
-         report.Readed = true;
+         report.readed = true;
 
          Admin.deleteReport(player)
       }

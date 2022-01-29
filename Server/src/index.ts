@@ -1,4 +1,6 @@
 
+import 'module-alias/register';
+
 import './database';
 import './modules/rage';
 import './modules/commands';

@@ -1,14 +1,16 @@
-import { bankConfig } from '@configs';
-import { gDimension, lang } from '@constants';
 
-import { generateNumber } from '../utils';
+import { bankConfig } from '@configs';
+import { gDimension, lang, itemNames } from '@constants';
+import { banks, inventories, items } from '@models';
+import { controls, generateNumber } from '@shared';
+import { itemEnums } from '@enums';
 
 
 
 (() => {
 
    for (const position of bankConfig.positions) {
-      mp.blips.new(bankConfig.sprite, position, { dimension: gDimension, name: lang.BANK, color: 52, shortRange: true, scale: 0.85, drawDistance: 150 });
+      mp.blips.new(bankConfig.sprite, position, { dimension: gDimension, name: lang.bank, color: 52, shortRange: true, scale: 0.85, drawDistance: 150 });
 
       const colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, gDimension);
 
@@ -22,7 +24,7 @@ import { generateNumber } from '../utils';
          }
 
          player.call('CLIENT::BANKING:MENU', [true]);
-         player.sendHint(Controls.KEY_E, Messages.TO_OPEN_BANK_MENU, 6);
+         player.sendHint(controls.KEY_E, lang.toOpenBankMenu, 6);
       }
 
       colshape.onPlayerLeave = (player) => {
@@ -30,14 +32,14 @@ import { generateNumber } from '../utils';
       }
 
       mp.markers.new(
-         Locations.Markers.BANK, 
+         bankConfig.marker, 
          new mp.Vector3(position.x, position.y, position.z - 0.25), 
          1.05, 
          {
-            color: markerColors.BANKS, 
+            color: bankConfig.markerColor, 
             rotation: new mp.Vector3(0, 0, 0),
             visible: true,
-            dimension: GlobalDimension
+            dimension: gDimension
          }
       );
    }
@@ -65,14 +67,14 @@ mp.events.add(
 
 mp.events.addProc(
    {
-      'SERVER::BANKING:CREATE': async (player: PlayerMp): Promise<Items> => {
+      'SERVER::BANKING:CREATE': async (player: PlayerMp): Promise<inventories> => {
          // if (player.character.bank) {
          //    player.sendNotification('vec imate racun', notifications.type.ERROR, 7);
          //    return;
          // }
          console.log(1)
 
-         // const hasCreditCard = await Items.hasItem(itemData.Entity.PLAYER, player.character.id, itemNames.CREDIT_CARD);
+         // const hasCreditCard = await Items.hasItem(itemEnums.entity.PLAYER, player.character.id, itemNames.CREDIT_CARD);
 
          // if (hasCreditCard) {
          //    // PORUKA: vec imate kreditnu karticu
@@ -80,9 +82,9 @@ mp.events.addProc(
          // }
 
          return new Promise(resolve => {
-            Bank.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: player.character.id, character: player.character } ).then(bank_Account => {
-               Items.create( { name: itemNames.CREDIT_CARD, 
-                  entity: itemData.Entity.PLAYER, 
+            banks.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: player.character.id, character: player.character } ).then(bank_Account => {
+               inventories.create( { name: itemNames.CREDIT_CARD, 
+                  entity: itemEnums.entity.PLAYER, 
                   owner: player.character.id, 
                   quantity: 1,
                   data: {

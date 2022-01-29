@@ -1,10 +1,9 @@
 
+
 import { itemDescriptions } from '@constants';
 import { itemEnums } from '@enums';
 import { itemAction } from '@interfaces';
 
-
-let models: string[] =  []
 
 export class items {
 
@@ -18,14 +17,14 @@ export class items {
    use?(Player: PlayerMp, ...params: any): void | any;
 
    static list: { [key:string] : items } = {};
-   
+
    constructor (name: string, type: itemEnums.type[], model: string, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
       this.name = name;
       this.type = type;
       this.model = model;
       this.weight = weight;     
       this.description = description;
-      models.push(this.model)
+
       items.list[this.name] = this;
    }
 
@@ -43,7 +42,7 @@ export class items {
    
 }
 
-import './items/document.item';
+// import './items/document.item';
 import './items/creditCard.item';
 import './items/drink.item';
 import './items/food.item';
@@ -52,9 +51,6 @@ import './items/weapon.item';
 import './items/phone.item';
 import './items/cooker.item';
 
-
-
-console.log(models)
 
 // new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);
 // new Items('Energy Drink', [Items.Type.Drink, Items.Type.Consumable], 'prop_energy_drink', 0.2);

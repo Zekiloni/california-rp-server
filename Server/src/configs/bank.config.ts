@@ -10,6 +10,8 @@ export namespace bankConfig {
 
    export const marker = 29;
 
+   export const markerColor: RGBA = [133, 187, 101, 225];
+
    export const positions: Vector3Mp[] = [
       new mp.Vector3(247.139022, 222.13290, 106.28690),
       new mp.Vector3(150.226699, -1039.814, 29.374057),

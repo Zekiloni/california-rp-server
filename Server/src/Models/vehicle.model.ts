@@ -1,9 +1,12 @@
-import { numberPlate, vehicleComponent } from '@interfaces/vehicle.interfaces';
+
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
-import { Messages } from '../globals/constants';
-import { entityData, GlobalDimension, notifyType, vehicleData } from '../globals/enums';
-import { generateNumber, generateString } from '../utils';
-import Business from './properties/business.model';
+
+import { numberPlate, vehicleComponent } from '@interfaces';
+import { gDimension, lang } from '@constants';
+import { generateNumber, generateString, shared_Data } from '@shared';
+import { vehicleConfig } from '@configs';
+import { notifications } from '@enums'; 
+import { business } from '@models';
 
 
 let TemporaryVehicles = [];
@@ -24,7 +27,7 @@ export class vehicles extends Model {
 
    @AllowNull(false)
    @Column
-   entity: vehicleData.Entity;
+   entity: vehicleConfig.entity;
 
    @AllowNull(false)
    @Column
@@ -125,7 +128,7 @@ export class vehicles extends Model {
       return Vehicle;
    }
 
-   static async newTemporary (model: string, position: Vector3Mp, rotation: Vector3Mp, color: number[], plate: string, dimension = GlobalDimension) {
+   static async newTemporary (model: string, position: Vector3Mp, rotation: Vector3Mp, color: number[], plate: string, dimension = gDimension) {
       const [primary, secondary] = color;
 
       const vehicle = mp.vehicles.new(mp.joaat(model), position, {
@@ -145,7 +148,7 @@ export class vehicles extends Model {
 
 
    static vehicleInstance (vehicle: VehicleMp) {
-      vehicles.findOne({ where: { id: vehicle.getVariable(entityData.DATABASE) } }).then(vehicles => { 
+      vehicles.findOne({ where: { id: vehicle.getVariable(shared_Data.DATABASE) } }).then(vehicles => { 
          return vehicle;
       });
    };
@@ -190,18 +193,18 @@ export class vehicles extends Model {
          alpha: 255,
          locked: locked,
          engine: false,
-         dimension: GlobalDimension
+         dimension: gDimension
       });
 
 
-      vehicle.setVariable(entityData.DATABASE, this.id);
+      vehicle.setVariable(shared_Data.DATABASE, this.id);
 
-      vehicle.setVariable(entityData.FUEL, this.fuel);
-      vehicle.setVariable(entityData.MILEAGE, this.mileage);
-      vehicle.setVariable(entityData.DIRT, this.dirt);
-      vehicle.setVariable(entityData.TRUNK, false);
-      vehicle.setVariable(entityData.HOOD, false);
-      vehicle.setVariable(entityData.WINDOWS, [false, false, false, false]);
+      vehicle.setVariable(shared_Data.FUEL, this.fuel);
+      vehicle.setVariable(shared_Data.MILEAGE, this.mileage);
+      vehicle.setVariable(shared_Data.DIRT, this.dirt);
+      vehicle.setVariable(shared_Data.TRUNK, false);
+      vehicle.setVariable(shared_Data.HOOD, false);
+      vehicle.setVariable(shared_Data.WINDOWS, [false, false, false, false]);
       
       this.object = vehicle;
    }
@@ -223,7 +226,7 @@ export class vehicles extends Model {
       const character = player.character;
 
       switch (this.entity) {
-         case vehicleData.Entity.PLAYER: {
+         case vehicleConfig.entity.PLAYER: {
             // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, notifications.type.ERROR, 6);
 
             this.object.locked = !this.object.locked;
@@ -233,16 +236,16 @@ export class vehicles extends Model {
             break;
          }
 
-         case vehicleData.Entity.BUSINESS: {
-            Business.findOne(({ where: { owner: this.owner } })).then(business => {
+         case vehicleConfig.entity.BUSINESS: {
+            business.findOne(({ where: { owner: this.owner } })).then(business => {
 
             });
 
             break;
          }
 
-         case vehicleData.Entity.FACTION: {
-            if (this.owner != character.faction) return player.sendNotification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, notifications.type.ERROR, 6);
+         case vehicleConfig.entity.FACTION: {
+            if (this.owner != character.faction) return player.sendNotification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, 6);
 
             this.object.locked = !this.object.locked;
             this.locked = this.object.locked;
@@ -278,9 +281,9 @@ export class vehicles extends Model {
    }
 
    window (i: number) {
-      let windows = this.object.getVariable(entityData.WINDOWS);
+      let windows = this.object.getVariable(shared_Data.WINDOWS);
       windows[i] = !windows[i];
-      this.object.setVariable(entityData.WINDOWS, windows);
+      this.object.setVariable(shared_Data.WINDOWS, windows);
    }
 
    loadTuning () {

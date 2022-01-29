@@ -1,10 +1,9 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, DefaultScope, DataType, AfterCreate, AllowNull } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
 import { gDimension } from '@constants';
 import { characters } from '@models';
-import { bizData } from '../../globals/enums';
-import { businessConfig } from '@configs/business.config';
+import { businessConfig } from '@configs';
 
 
 @Table
@@ -20,8 +19,9 @@ export class business extends Model {
    @Column
    name: string
 
+   @Default(businessConfig.type.MARKET)
    @Column
-   type: number
+   type: businessConfig.type
 
    @Default(false)
    @Column
@@ -34,6 +34,7 @@ export class business extends Model {
    @Column
    price: number
 
+   @ForeignKey(() => characters)
    @Default(null)
    @Column
    owner: number
@@ -113,8 +114,6 @@ export class business extends Model {
    @AfterCreate
    static refresh (business: business) { 
       if (business.object) { 
-
-
 
       } else {
          const { name, position, sprite, dimension, sprite_color } = business;

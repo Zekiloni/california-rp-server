@@ -13,13 +13,13 @@ const consoleColors = {
 @Table
 export class logs extends Model {
 
-   @Column
    @PrimaryKey
    @AutoIncrement
+   @Column
    id: number
 
-   @Column
    @Default('')
+   @Column
    type: string
 
    @Column
@@ -31,17 +31,17 @@ export class logs extends Model {
    @Column
    participant: number
 
-   @Column
    @Default('')
-   message: number
-
    @Column
+   message: string
+
    @CreatedAt
-   created_At: Date;
-
    @Column
+   created_At: Date
+
    @UpdatedAt
-   updated_At: Date;
+   @Column
+   updated_At: Date
 
    static new (account: accounts, character: characters, participant: accounts, message: string) {
       logs.create({ account_id: account.id, character_id: character.id, participant: participant.id, content: message });

@@ -1,6 +1,6 @@
 
 
-import { itemEnums } from '@enums/items';
+import { itemEnums } from '@enums';
 import { items, inventories } from '@models';
 
 

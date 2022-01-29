@@ -8,7 +8,7 @@ const screenRes = mp.game.graphics.getScreenActiveResolution(100, 100);
 
 let AntiKeySpam = false;
 
-// mp.events.addDataHandler(entityData.MONEY, (entity, value, oldValue) => { 
+// mp.events.addDataHandler(shared_Data.MONEY, (entity, value, oldValue) => { 
 //    if (entity == mp.players.local && value != oldValue) { 
       
 //    }

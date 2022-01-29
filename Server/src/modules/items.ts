@@ -1,51 +1,51 @@
-import { Messages } from '../globals/constants';
-import { itemData } from '../globals/enums';
-import { itemAction } from '../globals/interfaces';
-import Items from '../models/inventory.model';
-import { baseItem } from '../models/item.model';
-import { weapons } from '../models/items/weapon.item';
-import weaponData from '../data/weapon.data.json';
+
+import { lang } from '@constants';
+import { itemEnums } from '@enums';
+import { itemAction } from '@interfaces';
+import { items, inventories } from '@models';
 
 
 mp.events.addProc(
    {
 
       'SERVER::PLAYER:ITEMS:GET': async (player: PlayerMp) => { 
-         return Items.getItems(itemData.Entity.PLAYER, player.character.id);
+         return inventories.getItems(itemEnums.entity.PLAYER, player.character!.id);
       },
 
 
       'SERVER::ITEM:INFO': (player: PlayerMp, itemName: string) => { 
-         const item = baseItem.list[itemName];
+         const item = items.list[itemName];
          const actions: itemAction[] = [];
 
          actions.push(
-            { name: Messages.ITEM_ACTION.USE, event: 'CLIENT::ITEM:USE', icon: 'use' },
-            { name: Messages.ITEM_ACTION.DROP, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
-            { name: Messages.ITEM_ACTION.GIVE, event: 'CLIENT::ITEM:GIVE', icon: 'give' },
+            { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' },
+            { name: lang.itemAction.drop, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
+            { name: lang.itemAction.give, event: 'CLIENT::ITEM:GIVE', icon: 'give' },
          );
 
-         if (item.isStackable()) actions.push({ name: Messages.ITEM_ACTION.SPLIT, event: 'CLIENT::ITEM:SPLIT', icon: 'split' });
+         if (item.isStackable()){
+            actions.push({ name: lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' });
+         } 
 
          return { info: item, actions: actions };
       },
 
       
-      'SERVER::ITEM:USE': async (player: PlayerMp, itemId: number): Promise<Items[]> => { 
+      'SERVER::ITEM:USE': async (player: PlayerMp, itemId: number): Promise < inventories[] > => { 
          return new Promise((resolve) => { 
-            Items.findOne({ where: { id: itemId } }).then(async item => { 
-               const rItem = baseItem.list[item?.name!];
+            inventories.findOne({ where: { id: itemId } }).then(async item => { 
+               const rItem = items.list[item?.name!];
                await rItem?.use!(player, item);
 
-               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.character.id);
+               const newInventory = await inventories.getItems(itemEnums.entity.PLAYER, player.character.id);
                if (newInventory) resolve(newInventory)
             })
          });
       },
 
-      'SERVER::ITEM:DROP': async (player: PlayerMp, itemId: number, positionString: string): Promise<Items[]> => { 
+      'SERVER::ITEM:DROP': async (player: PlayerMp, itemId: number, positionString: string): Promise < inventories[] > => { 
          return new Promise((resolve) => { 
-            Items.findOne({ where: { id: itemId } }).then(async item => { 
+            inventories.findOne({ where: { id: itemId } }).then(async item => { 
 
                const groundPosition = JSON.parse(positionString);
                const { position, rotation } = groundPosition;
@@ -59,7 +59,7 @@ mp.events.addProc(
                
                await item?.save();
                
-               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.character.id);
+               const newInventory = await inventories.getItems(itemEnums.entity.PLAYER, player.character.id);
                if (newInventory) resolve(newInventory);
             });
          });
@@ -67,11 +67,11 @@ mp.events.addProc(
 
       'SERVER::ITEM:PICKUP': (player: PlayerMp, itemId: number) => { 
          return new Promise((resolve) => { 
-            Items.findOne({ where: { id: itemId } }).then(async item => { 
+            inventories.findOne({ where: { id: itemId } }).then(async item => { 
                await item?.pickup(player);      
 
                player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 });
-               const newInventory = await Items.getItems(itemData.Entity.PLAYER, player.character.id);
+               const newInventory = await inventories.getItems(itemEnums.entity.PLAYER, player.character.id);
                if (newInventory) resolve(newInventory);   
             });
          })
@@ -88,29 +88,18 @@ mp.events.add(
             // no weapon in hand
             return;
          }
-         console.log(2)
 
-         type weaponData = { [key: string]: any };
+         const weapon = await player.call('CLIENT::WEAPON:NAME', [player.weapon]);
 
-         const weapon = weapons.find(
-            weapon => weapon.weapon_hash == (<weaponData>weaponData)[player.weapon].HashKey.toLowerCase()
-         )!;
-         
-         if (!weapon) {
-            return;
-         }
-
-         const weaponItem = await Items.findOne(
+         const weaponItem = await inventories.findOne(
             { 
                where: { 
                   owner: player.character.id, 
-                  name: weapon.name, 
+                  name: weapon!, 
                   equiped: true
                } 
             }
          );
-         console.log(4)
-
          
          if (!weaponItem) { 
             return;

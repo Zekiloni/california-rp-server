@@ -1,7 +1,7 @@
 
 
 import { items, inventories } from '@models';
-import { itemEnums } from '@enums/items';
+import { itemEnums } from '@enums';
 import { itemNames, itemDescriptions } from '@constants';
 
 

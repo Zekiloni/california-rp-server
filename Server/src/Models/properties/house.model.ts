@@ -1,9 +1,10 @@
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType, ForeignKey } from 'sequelize-typescript';
 import { interactionPoint } from '@interfaces';
 import { notifications } from '@enums';
 import { gDimension, lang } from '@constants';
-import { houseConfig } from '@configs/house.config';
+import { houseConfig } from '@configs';
+import { characters } from '@models';
 
 
 @Table
@@ -16,6 +17,7 @@ export class houses extends Model {
    @Column
    id: number;
 
+   @ForeignKey(() => characters)
    @Default(0)
    @Column
    owner: number;

@@ -1,3 +1,8 @@
+
+import { serverConfig } from '@configs';
+import { updatePlayer } from './player';
+
+
 function minuteCheck() {
    
    const today = new Date();
@@ -11,7 +16,7 @@ function minuteCheck() {
       }
    });
    
-   setTimeout(minuteCheck, interval);
+   setTimeout(minuteCheck, 1 * 60 * 1000);
 
 };
 

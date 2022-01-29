@@ -1,5 +1,5 @@
 
-import { itemDescriptions, itemNames } from '@constants/items';
+import { itemDescriptions, itemNames } from '@constants';
 import { itemEnums } from '@enums';
 import { items, inventories } from '@models';
 

@@ -68,7 +68,7 @@ export class characters extends Model {
 
    @Default(null)
    @Column
-   faction_rank: string | null;
+   faction_rank: number;
 
    @Default(0)
    @Column
@@ -231,7 +231,7 @@ export class characters extends Model {
 
    
    
-      // player.setVariable(entityData.INJURIES, this.injuries.length > 0 ? this.injuries : []);
+      // player.setVariable(shared_Data.INJURIES, this.injuries.length > 0 ? this.injuries : []);
 
       switch (point) { 
          case spawnPointTypes.DEFAULT: { 
