@@ -1,28 +1,33 @@
+import { itemEnums } from "@enums";
+import { items, inventories } from '@models';
+import { itemNames } from '@constants';
 
-import { itemData } from '../../globals/enums';
-import Items from '../inventory.item.model';
-import { baseItem } from '../item.model';
 
-
-const licenseTypes = [itemData.Type.MISC, itemData.Type.LEGAL, itemData.Type.LICENSE];
+const licenseTypes = [
+   itemEnums.type.MISC, 
+   itemEnums.type.LEGAL, 
+   itemEnums.type.LICENSE
+];
 
 export enum weapLicenseType { CCV, PF }
 
-export class licenseItem extends baseItem {
+
+export class licenseItem extends items {
    
    constructor (name: string, model: string, description: string) { 
       super (name, licenseTypes, model, 0.15, description);
 
-      this.use = function (player: PlayerMp, item: Items,target: PlayerMp = player) {
+      this.use = function (player: PlayerMp, item: inventories,target: PlayerMp = player) {
          target.call('CLIENT::LICENSE:SHOW', [item]);
       }
    }
 }
 
-new licenseItem(itemData.Names.DRIVING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.BOATING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.FISHING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.FLYING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.WEAPON_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.HUNTING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemData.Names.TRUCK_LICENSE, 'prop_cs_documents_01', 'a');
+
+new licenseItem(itemNames.DRIVING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemNames.BOATING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemNames.FISHING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemNames.FLYING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemNames.WEAPON_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemNames.HUNTING_LICENSE, 'prop_cs_documents_01', 'a');
+new licenseItem(itemNames.TRUCK_LICENSE, 'prop_cs_documents_01', 'a');

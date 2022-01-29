@@ -1,36 +1,42 @@
-import { itemData } from '../../globals/enums';
-import { baseItem } from '../item.model';
+import { itemEnums } from "@enums";
+import { items, inventories } from '@models';
+import { itemNames } from '@constants';
 
 
-const defaultFoodType = [itemData.Type.FOOD, itemData.Type.CONSUMABLE];
+const foodType = [
+   itemEnums.type.FOOD, 
+   itemEnums.type.CONSUMABLE
+];
 
-export class FoodItem extends baseItem {
+
+export class FoodItem extends items {
    hunger: number;
    snacks: number;
    
-   constructor (name: string, model: string, hunger: number, snacks: number, type?: itemData.Type[], weight?: number, description?: string) { 
-      super (name, type ? defaultFoodType.concat(type) : defaultFoodType, model, weight, description);
+   constructor (name: string, model: string, hunger: number, snacks: number, type?: itemEnums.type[], weight?: number, description?: string) { 
+      super (name, type ? foodType.concat(type) : foodType, model, weight, description);
       this.hunger = hunger;
       this.snacks = snacks;
 
       // .... todo
 
-      this.use = function (player: PlayerMp) {
+      this.use = function (player: PlayerMp, item: inventories) {
          player.character.hunger += this.hunger;
       }
 
    }
 }
 
-new FoodItem(itemData.Names.FOOD_CHEESE_BURGER, 'prop_cs_burger_01', 2, 3);
-new FoodItem(itemData.Names.FOOD_HAMBURGER, 'prop_cs_burger_01', 2, 3);
-new FoodItem(itemData.Names.FOOD_CHICKEN_BURGER, 'prop_cs_burger_01', 3, 4);
-new FoodItem(itemData.Names.FOOD_PIZZA, 'prop_pizza_box_02', 3, 4);
-new FoodItem(itemData.Names.FOOD_SANDWICH , 'prop_sandwich_01', 3, 4);
-new FoodItem(itemData.Names.FOOD_TACO, 'prop_taco_01', 2, 3);
-new FoodItem(itemData.Names.FOOD_FRIES, 'prop_food_chips', 1, 2);
-new FoodItem(itemData.Names.FOOD_CHIPS, 'v_ret_ml_chips4', 1, 2);
-new FoodItem(itemData.Names.FOOD_DONUT, 'prop_donut_02', 1, 2);
+
+new FoodItem(itemNames.FOOD_CHEESE_BURGER, 'prop_cs_burger_01', 2, 3);
+new FoodItem(itemNames.FOOD_HAMBURGER, 'prop_cs_burger_01', 2, 3);
+new FoodItem(itemNames.FOOD_CHICKEN_BURGER, 'prop_cs_burger_01', 3, 4);
+new FoodItem(itemNames.FOOD_PIZZA, 'prop_pizza_box_02', 3, 4);
+new FoodItem(itemNames.FOOD_SANDWICH , 'prop_sandwich_01', 3, 4);
+new FoodItem(itemNames.FOOD_TACO, 'prop_taco_01', 2, 3);
+new FoodItem(itemNames.FOOD_FRIES, 'prop_food_chips', 1, 2);
+new FoodItem(itemNames.FOOD_CHIPS, 'v_ret_ml_chips4', 1, 2);
+new FoodItem(itemNames.FOOD_DONUT, 'prop_donut_02', 1, 2);
 
 
 

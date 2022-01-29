@@ -9,7 +9,7 @@ import { Config } from '../config';
 import Bans from '../models/player/ban.model';
 import { spawnPoint } from '../globals/interfaces';
 import { getDefaultSpawn, Logger } from '../utils';
-import Items from '../models/inventory.item.model';
+import Items from '../models/inventory.model';
 import { baseItem } from '../models/item.model';
 
 

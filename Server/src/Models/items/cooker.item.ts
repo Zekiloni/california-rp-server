@@ -1,15 +1,15 @@
-import { itemData } from '../../globals/enums';
-import { baseItem, noDesc } from '../item.model';
+import { itemDescriptions } from "@constants";
+import { itemEnums } from "@enums";
+import { items } from '@models';
 
 
 
-
-export class cookerItem extends baseItem {
+export class cookerItem extends items {
    slots: number;
    offsets: Vector3Mp[];
    
-   constructor (name: string, model: string, slots: number, weight: number = 0.1, description: string = noDesc) { 
-      super (name, [itemData.Type.HEAVY, itemData.Type.COOKER], model, weight, description);
+   constructor (name: string, model: string, slots: number, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
+      super (name, [itemEnums.type.HEAVY, itemEnums.type.COOKER], model, weight, description);
       this.slots = slots;
       this.use = function (player: PlayerMp, drawable: number, palette: number) {
          // .... todo

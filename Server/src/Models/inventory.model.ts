@@ -1,16 +1,14 @@
 
 
 import { AfterCreate, AfterDestroy, AfterSave, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
-import { entityData, itemData, logType } from '../globals/enums';
-import { ItemExtraData } from '../globals/interfaces';
-import { Logger } from '../utils';
-import Characters from './character.model';
-import { baseItem } from './item.model';
-
+import { itemEnums } from '@enums';
+import { shared_Data } from '@shared';
+import { itemExtra } from '@interfaces';
+import { items, logs, characters } from '@models';
 
 
 @Table
-export default class Items extends Model { 
+export class inventories extends Model { 
 
    static objects = new Map();
 
@@ -23,7 +21,7 @@ export default class Items extends Model {
    name: string;
 
    @Column(DataType.INTEGER)
-   entity: itemData.Entity;
+   entity: itemEnums.entity;
 
    @Column
    owner: number;
@@ -37,7 +35,7 @@ export default class Items extends Model {
    equiped: boolean;
 
    @Column(DataType.INTEGER)
-   status: itemData.Status;
+   status: itemEnums.status;
 
    @Default(1)
    @Column(DataType.INTEGER)
@@ -67,7 +65,7 @@ export default class Items extends Model {
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('data')); }
    })   
-   data: ItemExtraData;
+   data: itemExtra;
 
    @CreatedAt
    created_at: Date;
@@ -76,32 +74,32 @@ export default class Items extends Model {
    updated_at: Date;
 
    get object () { 
-      return Items.objects.get(this.id);
+      return inventories.objects.get(this.id);
    }
 
    set object (object: ObjectMp) { 
-      Items.objects.set(this.id, object);
+      inventories.objects.set(this.id, object);
    }
 
    @AfterCreate
-   static creating (item: Items) { 
-      Items.refresh(item);
+   static creating (inventory: inventories) { 
+      inventories.refresh(inventory);
    }
 
    @AfterDestroy
-   static destroying (item: Items) { 
+   static destroying (item: inventories) { 
       if (item.object) item.object.destroy();
    }
 
    @AfterSave
-   static refresh (item: Items) {
+   static refresh (item: inventories) {
       if (item.on_ground) {
-         item.object = mp.objects.new(baseItem.list[item.name].model, item.position, { alpha: 255, rotation: item.rotation, dimension: item.dimension });
-         item.object.setVariable(entityData.ITEM, { name: item.name, id: item.id });
+         item.object = mp.objects.new(items.list[item.name].model, item.position, { alpha: 255, rotation: item.rotation, dimension: item.dimension });
+         item.object.setVariable(shared_Data.ITEM, { name: item.name, id: item.id });
       } else { 
          if (item.object) { 
             item.object.destroy();
-            Items.objects.delete(item.id);
+            inventories.objects.delete(item.id);
          }
       }
    }
@@ -111,7 +109,7 @@ export default class Items extends Model {
       if (this.on_ground) {
          this.on_ground = false;
          this.owner = player.character.id;
-         this.entity = itemData.Entity.PLAYER;
+         this.entity = itemEnums.entity.PLAYER;
          await this.save();
       }
    }
@@ -119,42 +117,42 @@ export default class Items extends Model {
    async useItem (player: PlayerMp) { 
       const Character = player.character;
       
-      const rItem = baseItem.list[this.name];
+      const rItem = items.list[this.name];
    }
 
 
-   static async getItems (entity: itemData.Entity, owner: number)  { 
-      const items = await Items.findAll({where: { owner: owner, entity: entity }}).catch(e => Logger(logType.ERROR, 'Catching Items ' + e));
+   static async getItems (entity: itemEnums.entity, owner: number)  { 
+      const items = await inventories.findAll({where: { owner: owner, entity: entity }}).catch(e => logs.error('Catching Items ' + e));
       return items;
    }
 
 
-   static async giveItem (player: PlayerMp, item: baseItem, quantity: number = 1) { 
-      const alreadyItem = await Items.hasItem(itemData.Entity.PLAYER, player.character.id, item.name);
+   static async giveItem (player: PlayerMp, item: items, quantity: number = 1) { 
+      const alreadyItem = await inventories.hasItem(itemEnums.entity.PLAYER, player.character.id, item.name);
       
       if (alreadyItem && item.isStackable()) {
          alreadyItem.increment('quantity', { by: quantity });
       } else { 
-         Items.create({ name: item.name, quantity: quantity, entity: itemData.Entity.PLAYER, owner: player.character.id });
+         inventories.create({ name: item.name, quantity: quantity, entity: itemEnums.entity.PLAYER, owner: player.character.id });
       }
    }
 
 
-   static async hasItem (entity: itemData.Entity, owner: number, itemName: string) {
-      const has = await Items.findOne({ where: { entity: entity, owner: owner, name: itemName } });
+   static async hasItem (entity: itemEnums.entity, owner: number, itemName: string) {
+      const has = await inventories.findOne({ where: { entity: entity, owner: owner, name: itemName } });
       return has == null ? false : has;
    }
 
-   static async unequipWeapons (character: Characters) { 
-      Items.findAll({ where: { entity: itemData.Entity.PLAYER, owner: character.id, equiped: true } }).then(items => { 
-         if (items.length == 0) {
+   static async unequipWeapons (character: characters) { 
+      inventories.findAll({ where: { entity: itemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(inventoryies => { 
+         if (inventoryies.length == 0) {
             return
          }
          
-         items.forEach(async item => {
-            if (baseItem.list[item.name].isWeapon()) {
-               item.equiped = false;
-               await item.save();
+         inventoryies.forEach(async inventory => {
+            if (items.list[inventory.name].isWeapon()) {
+               inventory.equiped = false;
+               await inventory.save();
             }
          });
       })

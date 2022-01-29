@@ -1,14 +1,18 @@
+import { itemEnums } from "@enums";
+import { items } from '@models';
+import { itemNames } from '@constants';
 
-import { itemData } from '../../globals/enums';
-import { baseItem } from '../item.model';
+
+const phoneType = [
+   itemEnums.type.USABLE,
+   itemEnums.type.MISC,
+];
 
 
-const defaultPhoneType = [itemData.Type.USABLE, itemData.Type.MISC];
-
-export class phoneItem extends baseItem {
+export class phoneItem extends items {
    
    constructor (name: string, model: string, weight?: number, description?: string) { 
-      super (name, defaultPhoneType, model, weight, description);
+      super (name, phoneType, model, weight, description);
 
       this.use = function (player: PlayerMp) {
          player.call('CLIENT::INVENTORY:TOGGLE');
@@ -18,6 +22,7 @@ export class phoneItem extends baseItem {
    }
 }
 
-new phoneItem('Phone', 'prop_phone_proto', 0.3, 'telefon');
+
+new phoneItem(itemNames.SMART_PHONE, 'prop_phone_proto', 0.3, 'telefon');
 
 

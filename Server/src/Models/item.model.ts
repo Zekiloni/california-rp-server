@@ -1,16 +1,15 @@
 
-import { Messages } from '../globals/constants';
-import { itemData } from '../globals/enums';
+import { itemDescriptions } from '@constants';
+import { itemEnums } from '@enums';
+import { itemAction } from '@interfaces';
 
-
-export const noDesc = Messages.ITEM_NO_DESCRIPTION;
 
 let models: string[] =  []
 
-export class baseItem {
+export class items {
 
    name: string;
-   type: itemData.Type[];
+   type: itemEnums.type[];
    model: string;
    weight: number;
    description?: string;
@@ -18,28 +17,28 @@ export class baseItem {
    extraActions?: itemAction[];
    use?(Player: PlayerMp, ...params: any): void | any;
 
-   static list: { [key:string] : baseItem } = {};
+   static list: { [key:string] : items } = {};
    
-   constructor (name: string, type: itemData.Type[], model: string, weight: number = 0.1, description: string = noDesc) { 
+   constructor (name: string, type: itemEnums.type[], model: string, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
       this.name = name;
       this.type = type;
       this.model = model;
       this.weight = weight;     
       this.description = description;
       models.push(this.model)
-      baseItem.list[this.name] = this;
+      items.list[this.name] = this;
    }
 
    isWeapon () { 
-      return this.type.includes(itemData.Type.WEAPON);
+      return this.type.includes(itemEnums.type.WEAPON);
    }
 
    isCookable () {
-      return this.type.includes(itemData.Type.COOKABLE);
+      return this.type.includes(itemEnums.type.COOKABLE);
    }
 
    isStackable () { 
-      return this.type.includes(itemData.Type.STACKABLE);
+      return this.type.includes(itemEnums.type.STACKABLE);
    }
    
 }
@@ -51,7 +50,6 @@ import './items/food.item';
 import './items/weapon.item';
 import './items/phone.item';
 import './items/cooker.item';
-import { itemAction } from '../globals/interfaces';
 
 
 

@@ -1,56 +1,62 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { accounts, characters } from '@models';
+import { timeDate } from '@shared';
 
-const Types = {
-    0: 'SERVER',
-    1: 'PLAYER',
-    2: 'ADMIN',
-    3: 'MONEY',
-    4: 'SELL',
-    5: 'GIVE'
-};
+
+const consoleColors = {
+   red: '\x1b[31m',
+   white: '\x1b[37m',
+   green: '\x1b[32m',
+   yellow: '\x1b[33m'
+}
 
 @Table
-export default class Logs extends Model {
+export class logs extends Model {
 
    @Column
    @PrimaryKey
    @AutoIncrement
-   ID: number
+   id: number
 
    @Column
    @Default('')
-   Type: string
+   type: string
 
    @Column
-   Account: number
+   account_id: number
 
    @Column
-   Character: number
+   character_id: number
 
    @Column
-   Participant: number
+   participant: number
 
    @Column
    @Default('')
-   Message: number
+   message: number
 
    @Column
    @CreatedAt
-   Created_At: Date;
+   created_At: Date;
 
    @Column
    @UpdatedAt
-   Updated_At: Date;
+   updated_At: Date;
 
-   static async New (accountId: number, characterId: number, participant: number, message: string) {
-      Logs.create({ Account: accountId, Character: characterId, Participant: participant, Message: message });
+   static new (account: accounts, character: characters, participant: accounts, message: string) {
+      logs.create({ account_id: account.id, character_id: character.id, participant: participant.id, content: message });
    }
 
+   static error (message: any) {
+      console.log(consoleColors.red + '[' + timeDate() + ']' + consoleColors.white + message);
+   } 
+
+   static info (message: string) {
+      console.log(consoleColors.yellow + '[' + timeDate() + ']' + consoleColors.white + message);
+   }
+
+   static succes (message: string) {
+      console.log(consoleColors.green + '[' + timeDate() + ']' + consoleColors.white + message);
+   }
 }
 
-
-(async () => {
-
-   Logs.sync();
-
-})();

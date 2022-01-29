@@ -1,7 +1,7 @@
 import { Messages } from '../globals/constants';
 import { itemData } from '../globals/enums';
 import { itemAction } from '../globals/interfaces';
-import Items from '../models/inventory.item.model';
+import Items from '../models/inventory.model';
 import { baseItem } from '../models/item.model';
 import { weapons } from '../models/items/weapon.item';
 import weaponData from '../data/weapon.data.json';

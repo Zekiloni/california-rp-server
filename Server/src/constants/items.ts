@@ -20,7 +20,8 @@ export const itemNames = {
    FOOD_SANDWICH : 'Sandwich',
    FOOD_TACO : 'Taco',
    COMBAT_PISTOL : 'Combat Pistol',
-   AMMO_9MM : '9mm Clip'
+   AMMO_9MM : '9mm Clip',
+   SMART_PHONE: 'Smartphone'
 }
 
 

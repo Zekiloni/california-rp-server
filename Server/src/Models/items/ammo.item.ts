@@ -1,5 +1,5 @@
 import { itemData, logType } from '../../globals/enums';
-import Items from '../inventory.item.model';
+import Items from '../inventory.model';
 import { baseItem, noDesc } from '../item.model';
 import weaponData from '../../data/weapon.data.json';
 import { weapons } from './weapon.item';

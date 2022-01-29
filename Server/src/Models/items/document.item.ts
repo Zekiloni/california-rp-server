@@ -1,6 +1,5 @@
 
-import { itemData } from '../../globals/enums';
-import Items from '../inventory.item.model';
+import Items from '../inventory.model';
 import { baseItem } from '../item.model';
 
 

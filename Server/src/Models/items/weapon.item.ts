@@ -1,26 +1,30 @@
-import { itemData } from '../../globals/enums';
-import Items from '../inventory.item.model';
-import { baseItem, noDesc } from '../item.model';
+import { itemEnums } from "@enums";
+import { items, inventories } from '@models';
+import { itemNames } from '@constants';
+
 
 import './ammo.item';
 
 
-export const defaultWeaponType = [itemData.Type.USABLE, itemData.Type.WEAPON]
+export const weaponType = [
+   itemEnums.type.USABLE, 
+   itemEnums.type.WEAPON
+];
 
 export let weapons: weaponItem[] = [];
 
-export class weaponItem extends baseItem {
+export class weaponItem extends items {
    weapon_hash: string;
-   caliber?: baseItem;
+   caliber?: items;
    
-   constructor (name: string, model: string, weapHash: string, cal?: baseItem, type?: itemData.Type[], weight: number = 0.35, description: string = noDesc) { 
-      super (name, type ? defaultWeaponType.concat(type) : defaultWeaponType, model, weight, description);
+   constructor (name: string, model: string, weapHash: string, cal?: items, type?: itemEnums.type[], weight: number = 0.35, description?: string ) { 
+      super (name, type ? weaponType.concat(type) : weaponType, model, weight, description);
       this.weapon_hash = weapHash;
       this.caliber = cal;
       
       weapons.push(this);
 
-      this.use = async function (player: PlayerMp, item: Items) { 
+      this.use = async function (player: PlayerMp, item: inventories) { 
          item.equiped = true;
          player.giveWeapon(mp.joaat(this.weapon_hash), item.data.ammo ? item.data.ammo : 0);
          await item.save();
@@ -29,7 +33,7 @@ export class weaponItem extends baseItem {
 }
 
 
-new weaponItem(itemData.Names.COMBAT_PISTOL, 'w_pi_combatpistol', 'weapon_combatpistol', baseItem.list[itemData.Names.AMMO_9MM]);
+new weaponItem(itemNames.COMBAT_PISTOL, 'w_pi_combatpistol', 'weapon_combatpistol', items.list[itemNames.AMMO_9MM]);
 
 // // WEAPONS / ORUZIJE
 

@@ -2,12 +2,9 @@
 
 import { Sequelize } from 'sequelize-typescript';
 
-import { Logger } from './utils';
-
-import { logType } from './globals/enums';
-
-
-import { databaseConfig } from './configs';
+import { databaseConfig } from '@configs';
+import { logs, accounts, characters, apppearances, banks} from '@models';
+import { lang } from '@constants';
 
 
 const Database = new Sequelize({
@@ -17,33 +14,30 @@ const Database = new Sequelize({
    password: databaseConfig.password,
    storage: ':memory:',
    models: [ 
+      logs, 
       accounts, 
-      Bans, 
-      Characters, 
-      Appearances, 
-      Banks,
-      Items,
-      Business, 
-      Houses,
+      characters, 
+      apppearances, 
+      banks,
    ],
    logging: false
 });
 
 Database.authenticate()
    .then(() => { 
-      Logger(logType.SUCCESS, 'Connected');
+      logs.succes(lang.successDbConnection);
    })
    .then(() => { 
       return Database.sync()
    })
-   .catch((Error: any) => { 
-      Logger(logType.ERROR, Error);
+   .catch((error: any) => { 
+      logs.error(error);
    });
 
 
 (async () => { 
 
-   const Admins = [
+   const admins = [
       { Username: 'divine', Password: 'divine' },
       { Username: 'Zekiloni', Password: 'kapakapa' },
       { Username: 'pitix', Password: 'pitix' },
@@ -51,26 +45,25 @@ Database.authenticate()
       { Username: 'shamzy', Password: 'shamzy' }
    ];
 
-   for (const Admin of Admins) { 
-      const Exist = await Accounts.findOne({ where: { username: Admin.Username } });
-      if (Exist == null) { 
-         console.log('Admin Account Created ' + Admin.Username);
-         Accounts.create({ username: Admin.Username, password: Admin.Password, administrator: 7 });
+   for (const admin of admins) { 
+      const exist = await accounts.findOne({ where: { username: admin.Username } });
+      if (exist == null) { 
+         accounts.create({ username: admin.Username, password: admin.Password, administrator: 7 });
       }
    }
 
+   // TO DO
+   // Items.findAll({ where: { on_ground: true } }).then(items => { 
+   //    items.forEach(item => { 
+   //       Items.refresh(item);
+   //    })
+   // })
 
-   Items.findAll({ where: { on_ground: true } }).then(items => { 
-      items.forEach(item => { 
-         Items.refresh(item);
-      })
-   })
-
-   Houses.findAll().then(houses => { 
-      houses.forEach(house => { 
-         house.refresh();
-      })
-   });
+   // Houses.findAll().then(houses => { 
+   //    houses.forEach(house => { 
+   //       house.refresh();
+   //    })
+   // });
 })();
 
 

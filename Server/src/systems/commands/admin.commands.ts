@@ -4,7 +4,7 @@ import { Config } from '../../config';
 import { Colors } from '../../globals/constants';
 import { adminLevel, CommandEnums, houseData, logType, notifyType, weather } from '../../globals/enums';
 import Houses from '../../models/properties/house.model';
-import Items from '../../models/inventory.item.model';
+import Items from '../../models/inventory.model';
 import { baseItem } from '../../models/item.model';
 import { Logger } from '../../utils';
 import { Commands } from '../commands';
