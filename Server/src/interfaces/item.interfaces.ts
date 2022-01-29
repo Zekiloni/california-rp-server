@@ -18,4 +18,7 @@ export interface itemExtra  {
    bank?: number
    created?: number
    pin?: number
+   frequency?: number
 };
+
+

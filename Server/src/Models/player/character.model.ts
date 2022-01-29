@@ -2,11 +2,13 @@
 
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany } from 'sequelize-typescript';
-import { accounts, apppearances, banks, houses, business } from '@models';
-import { facial_Moods, gDimension, walking_Styles } from '@constants';
+
+import { accounts, apppearances, banks, houses, business, inventories } from '@models';
+import { facial_Moods, gDimension, walking_Styles, lang, colors } from '@constants';
+import { spawnPointTypes, notifications, distances } from '@enums';
 import { playerConfig } from '@configs';
+import { shared_Data } from '@shared';
 import { playerInjury } from '@interfaces';
-import { spawnPointTypes } from '@enums/player';
 
 
 @Table
@@ -190,29 +192,29 @@ export class characters extends Model {
 
       player.name = this.name;
 
-      player.setVariable(entityData.SPAWNED, true);
+      player.setVariable(shared_Data.SPAWNED, true);
 
       // loading money and health
       this.setHealth(player, this.health);
       this.setMoney(player, this.money);
 
-      player.setVariable(entityData.JOB, this.job);
-      player.setVariable(entityData.FACTION, this.faction);
+      player.setVariable(shared_Data.JOB, this.job);
+      player.setVariable(shared_Data.FACTION, this.faction);
 
       // temporary variables
-      player.setVariable(entityData.FACTION_DUTY, false);
-      player.setVariable(entityData.JOB_DUTY, false);
-      player.setVariable(entityData.JOB_VEHICLE, null);
-      player.setVariable(entityData.ADMIN_DUTY, false);
-      player.setVariable(entityData.FREEZED, false);
-      player.setVariable(entityData.BUBBLE, null);
+      player.setVariable(shared_Data.FACTION_DUTY, false);
+      player.setVariable(shared_Data.JOB_DUTY, false);
+      player.setVariable(shared_Data.JOB_VEHICLE, null);
+      player.setVariable(shared_Data.ADMIN_DUTY, false);
+      player.setVariable(shared_Data.FREEZED, false);
+      player.setVariable(shared_Data.BUBBLE, null);
       player.setVariable('Working_Uniform', false);
       player.setVariable('Attachment', null);
       player.setVariable('Phone_Ringing', false);
       player.setVariable('Ragdoll', false);
 
 
-      player.sendNotification(Messages.WELCOME, notifyType.INFO, 4);
+      player.sendNotification(lang.welcomeToServer, notifications.type.INFO, 4);
 
 
       this.setWalkingStyle(player, this.walking_style);
@@ -222,7 +224,7 @@ export class characters extends Model {
       if (this.appearance) { 
          this.appearance.apply(player, this.gender);
       } else { 
-         Appearances.findOne({ where: { character_id: this.id } }).then(appearance => {
+         apppearances.findOne({ where: { character_id: this.id } }).then(appearance => {
             appearance?.apply(player, this.gender);
          });
       }
@@ -240,7 +242,7 @@ export class characters extends Model {
 
          case spawnPointTypes.LAST_POSITION: {
             player.position = new mp.Vector3(this.last_position.x, this.last_position.y, this.last_position.z);
-            player.dimension = this.last_dimension ? this.last_dimension : GlobalDimension;
+            player.dimension = this.last_dimension ? this.last_dimension : gDimension;
             break;
          }
 
@@ -295,45 +297,45 @@ export class characters extends Model {
    };
 
    async setMoney (player: PlayerMp, value: number) { 
-      player.setVariable(entityData.MONEY, value);
+      player.setVariable(shared_Data.MONEY, value);
       this.money = value;
       await this.save();
    };
 
    async giveMoney (player: PlayerMp, value: any) {
       this.increment('money', { by: value });
-      player.setVariable(entityData.MONEY, this.money + parseInt(value));
+      player.setVariable(shared_Data.MONEY, this.money + parseInt(value));
    };
 
    async setJob (player: PlayerMp, value: number) {
       this.job = value;
-      player.setVariable(entityData.JOB, value);
+      player.setVariable(shared_Data.JOB, value);
       await this.save();
    };
 
    async setWalkingStyle (player: PlayerMp, style: keyof typeof walking_Styles) {
       this.walking_style = style;
-      player.setVariable(entityData.WALKING_STYLE, style);
+      player.setVariable(shared_Data.WALKING_STYLE, style);
       await this.save();
    };
 
    setMood (player: PlayerMp, mood: keyof typeof facial_Moods) { 
       this.facial_mood = mood;
-      player.setVariable(entityData.FACIAL_MOOD, mood);
+      player.setVariable(shared_Data.FACIAL_MOOD, mood);
    };
 
    setCuffs (player: PlayerMp, toggle: boolean) {
       this.cuffed = toggle;
-      player.setVariable(entityData.CUFFED, toggle);
+      player.setVariable(shared_Data.CUFFED, toggle);
    }
 
-   async hasLicense (item?: licenseItem) {
-      const has = await Items.findOne({ where: { name: item?.name } });
+   async hasLicense (item?: inventories) {
+      const has = await inventories.findOne({ where: { name: item?.name } });
       return has ? has : false;
    }
    
 
-   onDeath (player: PlayerMp) { 
+   onDeath (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) { 
       const { position } = player;
       console.log(1)
       player.spawn(position);
@@ -344,13 +346,13 @@ export class characters extends Model {
    }
 
    onChat (player: PlayerMp, content: any) {
-      if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
+      if (player.getVariable(shared_Data.LOGGED) && player.getVariable(shared_Data.SPAWNED)) {
 
-         if (player.getVariable(entityData.MUTED)) return; // u are muted
+         if (player.getVariable(shared_Data.MUTED)) return; // u are muted
 
          const character = player.character;
 
-         player.sendProximityMessage(Distances.IC, character.name + Messages.PERSON_SAYS + content, Colors.White);
+         player.sendProximityMessage(distances.IC, character.name + lang.personSays + content, colors.hex.White);
       }
 
       //    if (Player.getVariable('Muted')) return;

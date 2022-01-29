@@ -5,7 +5,7 @@ export const lang = {
 
    // server back-end
    successDbConnection: 'Uspesno povezan na databazu.',
-
+   serverIsClosing: 'Server se gasi...',
 
    // success messages
    welcomeToServer: 'Dobrodošli na Midnight Roleplay ! Uživajte u igri.',
@@ -75,6 +75,7 @@ export const lang = {
    dmgUsage: 'Department of Motor Vehicles <br>Korišćenje: /dmv',
    cmdSyntax: '<b>[KOMANDA]</b> ',
    press: 'Pritisnite',
+   pleaseReconnect: 'Rekontektuje se na F1.',
 
 
    // info messages

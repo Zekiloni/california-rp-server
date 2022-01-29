@@ -1,6 +1,6 @@
 import { Colors, Messages } from '../../globals/constants';
 import { CommandEnums, Distances, entityData } from '../../globals/enums';
-import { Commands } from '../commands';
+import { Commands } from '../../commands';
 
 
 Commands[CommandEnums.Names.ROLEPLAY_ME] = {

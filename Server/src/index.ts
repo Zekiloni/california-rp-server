@@ -1,15 +1,17 @@
 
 import './database';
-import './systems/main';
-import './systems/commands';
+import './modules/rage';
 import './systems/player';
-import './systems/items';
-import './systems/bank'
+import './commands';
+import './modules/player';
+import './systems/main/items';
+import './systems/main/bank'
 import './systems/jobs';
-import './systems/houses';
-import { Logger, Sleep } from './utils';
-import { logType } from './globals/enums';
-import { Messages } from './globals/constants';
+import './systems/main/houses';
+import { sleep } from '@shared';
+import { logs } from'@models';
+import { lang } from './constants';
+
 
 //console.log(Items.List);
 
@@ -41,25 +43,25 @@ import { Messages } from './globals/constants';
 
 
 
-const Exit = async () => {
-   Logger(logType.SUCCESS, 'Clossing Connection, Bye-bye !');
-   mp.players.broadcast('Server se gasi. Rekonektujte se na F1.');
+const exitProcess = async () => {
+   logs.info(lang.serverIsClosing);
+   mp.players.broadcast(lang.serverIsClosing + ' ' + lang.pleaseReconnect);
 
    mp.players.forEach((player) =>  {
-      player.kick(Messages.SERVER_RESTART);
+      player.kick(lang.serverRestart);
    });
 
    
-   Sleep(2.5).then(() => { 
+   sleep(2.5).then(() => { 
       process.exit();
    })
 };
 
 
-process.on('SIGHUP', Exit);
-process.on('SIGQUIT', Exit);
-process.on('SIGTERM', Exit);
-process.on('SIGINT', Exit);
+process.on('SIGHUP', exitProcess);
+process.on('SIGQUIT', exitProcess);
+process.on('SIGTERM', exitProcess);
+process.on('SIGINT', exitProcess);
 
 
 

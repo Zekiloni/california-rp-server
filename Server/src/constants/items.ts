@@ -1,6 +1,7 @@
 
 
 export const itemNames = { 
+   HANDHELD_RADIO: 'Handheld Radio',
    CREDIT_CARD : 'Credit Card',
    DRIVING_LICENSE : 'Driving licence',
    FLYING_LICENSE : 'License for Flying',

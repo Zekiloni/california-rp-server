@@ -7,3 +7,4 @@ export * from './house.interfaces';
 export * from './bank.interfaces';
 export * from './vehicle.interfaces';
 export * from './other.interfaces';
+

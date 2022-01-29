@@ -1,7 +1,8 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
 import { characters } from '@models';
-import { hairStyle } from '@interfaces';
+import { beardStyle, hairStyle } from '@interfaces';
+import { playerModels } from '@shared';
 
 
 @Table
@@ -105,7 +106,7 @@ export class apppearances extends Model {
    
    apply (player: PlayerMp, gender: number) {
 
-      const genders = [ mp.joaat(Peds.Models.MALE), mp.joaat(Peds.Models.FEMALE) ];
+      const genders = [ mp.joaat(playerModels.MALE), mp.joaat(playerModels.FEMALE) ];
       player.model = genders[gender];
    
       player.setHeadBlend(

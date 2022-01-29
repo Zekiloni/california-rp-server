@@ -7,7 +7,7 @@ import Houses from '../../models/properties/house.model';
 import Items from '../../models/inventory.model';
 import { baseItem } from '../../models/item.model';
 import { Logger } from '../../utils';
-import { Commands } from '../commands';
+import { Commands } from '../../commands';
 
 
 const savedPositions = 'savedPositions.txt';

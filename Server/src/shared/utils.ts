@@ -1,4 +1,5 @@
 import { gDimension } from "@constants";
+import { notifications } from "@enums";
 
 
 export function randomInteger (min: number, max: number) {
@@ -23,7 +24,7 @@ export function distanceBetweenVectors (first: Vector3Mp, second: Vector3Mp) {
 }
 
 
-export function Sleep (Seconds: number) {
+export function sleep (Seconds: number) {
    return new Promise(resolve => setTimeout(resolve, Seconds * 1000));
 }
 
@@ -71,11 +72,11 @@ export function timeDate () {
 }
 
 
-export function createInfoColshape (Position: Vector3Mp, Name: string, Info: string, Radius: number, Color: RGBA, Dimension: number = GlobalDimension, Blip: any = false, Sprite: number = 4) {
+export function createInfoColshape (Position: Vector3Mp, Name: string, Info: string, Radius: number, Color: RGBA, Dimension: number = gDimension, Blip: any = false, Sprite: number = 4) {
 
    const Colshape = mp.colshapes.newRectangle(Position.x, Position.y, Radius, 2.0, 0);
 
-   if (Info) Colshape.onPlayerEnter = (Player: PlayerMp) => { Player.sendNotification(Info, notifyType.ERROR, 5); };
+   if (Info) Colshape.onPlayerEnter = (Player: PlayerMp) => { Player.sendNotification(Info, notifications.type.ERROR, 5); };
 
    mp.markers.new(27, new mp.Vector3(Position.x, Position.y, Position.z - 0.985), Radius, {
       color: Color, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: Dimension

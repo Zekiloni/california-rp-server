@@ -1,7 +1,10 @@
-import { notifyType } from '../../globals/enums';
-import { Messages } from '../../globals/constants';
-import { validateIP } from '../../utils';
+
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+
+import { lang } from '@constants';
+import { validateIP } from '@shared';
+import { accounts } from '@models';
+import { notifications } from '@enums';
 
 
 @Table
@@ -52,27 +55,27 @@ export class bans extends Model {
       const ipAdress = validateIP(target);
       if (ipAdress) {
          const playerAccount = player.account;
-         const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.account.id });
+         const Banned = await bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.account.id });
          if (playerAccount) {
-            Banned.Account = playerAccount.id;
-            Banned.HardwareId = playerAccount.hardwer;
-            Banned.Social = playerAccount.social_club;
+            Banned.account_id = playerAccount.id;
+            Banned.hardware_Id = playerAccount.hardwer;
+            Banned.social = playerAccount.social_club;
          }
          await Banned.save();
       }
       else {
          let Online = mp.players.find(target);
          if (Online) {
-            const Account = await Online.Account;
+            const Account = await Online.account;
 
-            Bans.create({ Account: Online.Account.id, Character: Online.Character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
+            bans.create({ Account: Online.account.id, Character: Online.character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             Online.kick(reason);
          } else {
-            const OfflineAcc = await Accounts.findOne({ where: { Name: target } })
+            const OfflineAcc = await accounts.findOne({ where: { Name: target } })
             if (OfflineAcc) {
-               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
+               bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             } else {
-               player.sendNotification(Messages.USER_NOT_FOUND, notifyType.ERROR, 5);
+               player.sendNotification(lang.userNotFound, notifications.type.ERROR, 5);
             }
          }
       }
@@ -87,7 +90,7 @@ export class bans extends Model {
    }
 
    static async isBanned (player: PlayerMp) {
-      const result = await Bans.findOne({ where: { IP: player.ip, Social: player.socialClub } });
+      const result = await bans.findOne({ where: { IP: player.ip, Social: player.socialClub } });
       return result ? result : false;
    };
 }

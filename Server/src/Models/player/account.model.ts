@@ -2,8 +2,8 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
-import { entityData } from '../../globals/enums';
-import { Messages } from '../../globals/constants';
+import { shared_Data } from '@shared';
+import { lang } from '@constants';
 import { characters } from '@models';
 
 
@@ -108,23 +108,26 @@ export class accounts extends Model {
 
    async setLogged (player: PlayerMp, toggle: boolean) {
       this.online = toggle;
-      console.log('loged 1')
+
       player.account = this;
+      
       this.login_date = new Date();
       this.ip_adress = player.ip;
-      console.log('loged 2')
 
-      player.setVariable(entityData.LOGGED, true);
-      player.setVariable(entityData.ADMIN, this.administrator);
-      console.log('loged 3')
+      player.setVariable(shared_Data.LOGGED, true);
+      player.setVariable(shared_Data.ADMIN, this.administrator);
 
       if (this.hardwer == null || this.social_club == null) {
-         const Already = await accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } });
-         if (Already) player.kick(Messages.USER_ALREADY_EXIST);
+
+         accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } }).then(account => {
+            if (account) {
+               player.kick(lang.userAlreadyExist);
+            }
+         });
+
          this.hardwer = player.serial;
          this.social_club = player.socialClub;
       }
-      console.log('loged 4')
 
       await this.save();
    }
@@ -132,7 +135,7 @@ export class accounts extends Model {
    
    setAdministrator (player: PlayerMp, level: number) {
       this.administrator = level;
-      player.setVariable(entityData.ADMIN, level); 
+      player.setVariable(shared_Data.ADMIN, level); 
       this.save();
    }
 }
