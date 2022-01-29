@@ -1,8 +1,6 @@
-import { bankConfig } from '@configs/bank.config';
-import { markerColors, Messages } from '../globals/constants';
-import { Controls, GlobalDimension, itemData, Locations } from '../globals/enums';
-import Bank from '../models/bank.model';
-import Items from '../models/inventory.item.model';
+import { bankConfig } from '@configs';
+import { gDimension } from '@constants';
+
 import { generateNumber } from '../utils';
 
 
@@ -10,7 +8,7 @@ import { generateNumber } from '../utils';
 (() => {
 
    for (const position of bankConfig.positions) {
-      mp.blips.new(Locations.Sprites.BANK, position, { dimension: GlobalDimension, name: Messages.BANK, color: 52, shortRange: true, scale: 0.85, drawDistance: 150 });
+      mp.blips.new(bankConfig.sprite, position, { dimension: gDimension, name: Messages.BANK, color: 52, shortRange: true, scale: 0.85, drawDistance: 150 });
 
       const colshape = mp.colshapes.newSphere(position.x, position.y, position.z, 1.0, GlobalDimension);
 
@@ -83,7 +81,7 @@ mp.events.addProc(
 
          return new Promise(resolve => {
             Bank.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: player.character.id, character: player.character } ).then(bank_Account => {
-               Items.create({  name: itemData.Names.CREDIT_CARD, 
+               Items.create( { name: itemData.Names.CREDIT_CARD, 
                   entity: itemData.Entity.PLAYER, 
                   owner: player.character.id, 
                   quantity: 1,
@@ -91,7 +89,7 @@ mp.events.addProc(
                      name: player.character.name,
                      bank: bank_Account.number,
                      pin: Math.floor(Math.random() * 1000),
-                     expiring: Date.now(),
+                     expiring: Date.now() + (30 * 24 * 60 * 60 * 1000),
                   } 
                }).then(credit_Card => {
                   resolve(credit_Card);

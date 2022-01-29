@@ -339,6 +339,10 @@ export class characters extends Model {
       player.spawn(position);
    }
 
+   isUnemployed () {
+      return this.job == 0 ? true : false;
+   }
+
    onChat (player: PlayerMp, content: any) {
       if (player.getVariable(entityData.LOGGED) && player.getVariable(entityData.SPAWNED)) {
 

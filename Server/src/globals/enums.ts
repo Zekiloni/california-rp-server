@@ -22,15 +22,6 @@ export namespace Peds {
 }
 
 
-export namespace Locations { 
-   export enum Sprites { 
-      BANK = 207
-   }
-
-   export enum Markers {
-      BANK = 29
-   }
-}
 
 export enum Distances { 
    OOC = 6.5,
