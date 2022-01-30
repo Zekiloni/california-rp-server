@@ -13,3 +13,6 @@ export * from './misc/channel.model';
 export * from './vehicle.model';
 export * from './properties/business.model';
 export * from './properties/house.model';
+export * from './factions/faction.model';
+export * from './factions/rank.model';
+

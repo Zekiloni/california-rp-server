@@ -1,7 +1,7 @@
 
 export * from './player';
 export * from './items';
-
+export * from './factions';
 
 export enum distances { 
    OOC = 6.5,
