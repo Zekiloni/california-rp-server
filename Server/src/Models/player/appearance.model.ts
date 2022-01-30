@@ -6,7 +6,7 @@ import { playerModels } from '@shared';
 
 
 @Table
-export class apppearances extends Model {
+export class appearances extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
@@ -37,18 +37,6 @@ export class apppearances extends Model {
    @Column(DataType.FLOAT)
    skin_Mix: number
 
-
-   @AllowNull(false)
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return JSON.parse(this.getDataValue('face_features')); 
-         }
-      }
-   )    
-   face_features: number[];
-
    @Column
    hair_Style: number
 
@@ -58,20 +46,37 @@ export class apppearances extends Model {
    @Column
    hair_Highlight: number
 
-   @Column(DataType.NUMBER)
+   @Column
    beard_Style: number
 
-   @Column(DataType.NUMBER)
+   @Column
    beard_Color: number
 
    @AllowNull(false)
-   @Column(DataType.INTEGER)
+   @Column
    eyes: number;
 
    @AllowNull(false)
    @Column(
       {
          type: DataType.JSON,
+         set (face: number[]) {
+            this.setDataValue('face_Features', JSON.stringify(face))
+         },
+         get () { 
+            return JSON.parse(this.getDataValue('face_Features')); 
+         }
+      }
+   )    
+   face_Features: number[];
+
+   @AllowNull(false)
+   @Column(
+      {
+         type: DataType.JSON,
+         set (face: number[]) {
+            this.setDataValue('overlays', JSON.stringify(face))
+         },
          get () { 
             return JSON.parse(this.getDataValue('overlays')); 
          },
@@ -118,7 +123,7 @@ export class apppearances extends Model {
       );
 
       for (let i = 0; i < 20; i ++) { 
-         player.setFaceFeature(i, this.face_features[i]);
+         player.setFaceFeature(i, this.face_Features[i]);
       }
    };
 }

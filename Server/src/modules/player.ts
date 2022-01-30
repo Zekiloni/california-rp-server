@@ -1,4 +1,4 @@
-import { logs, bans, characters, accounts, inventories, apppearances, banks } from '@models';
+import { logs, bans, characters, accounts, inventories, appearances, banks } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { itemEnums, notifications, spawnPointTypes } from '@enums';
 import { itemNames, lang } from '@constants';
@@ -60,6 +60,8 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    const cInfo = JSON.parse(characterInfo);
    const cAppearance = JSON.parse(characterAppearance);
 
+   console.log(cAppearance)
+
    const alreadyExist = await characters.findOne( { where: { name: cInfo.name + ' ' + cInfo.lastName } } );
 
    if (alreadyExist) {
@@ -67,7 +69,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
       return;
    } 
 
-   characters.create(
+   const character = await characters.create(
       { 
          name: cInfo.name + ' ' + cInfo.lastName,
          account_id: player.account.id,
@@ -75,33 +77,40 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
          birth: cInfo.birth, 
          gender: cInfo.gender
       }
-   ).then(async character => {
-      const appearance = await apppearances.create(
-         {
-            character_id: character.id, 
-            character: character, 
-            face_features: cAppearance.face, 
-            blend_data: cAppearance.blends, 
-            overlays: cAppearance.overlays, 
-            hair: cAppearance.hair, 
-            beard: cAppearance.beard, 
-            eyes: cAppearance.eyeColor
-         }
-      )
-      
-      character.appearance = appearance;
-      character.spawnPlayer(player, spawnPointTypes.DEFAULT);
+   );
 
-      inventories.create({ name: itemNames.DOCUMENT_ID_CARD, quantity: 1, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
-         item!.data = {
-            name: character.name,
-            birth: character.birth,
-            origin: character.origin,
-            gender: character.gender
-         };
-         await item.save();
-      });
-   })
+   const appearance = await appearances.create(
+      {
+         character_id: character.id, 
+         character: character, 
+         shape_First: cAppearance.blends[0],
+         shape_Second: cAppearance.blends[1],
+         skin_First: cAppearance.blends[2],
+         skin_Second: cAppearance.blends[3],
+         shape_Mix: cAppearance.blends[4],
+         skin_Mix: cAppearance.blends[5],
+         eyes: cAppearance.eyeColor,
+         hair_Style: cAppearance.hair.style,
+         hair_Color: cAppearance.hair.color,
+         hair_Highlight: cAppearance.hair.highlight,
+         beard_Style: cAppearance.beard.style,
+         beard_Color: cAppearance.beard.color,
+         face_Features: cAppearance.face, 
+         overlays: cAppearance.overlays, 
+      }
+   );
+      
+   character.spawnPlayer(player, spawnPointTypes.DEFAULT, appearance);
+
+   inventories.create({ name: itemNames.DOCUMENT_ID_CARD, quantity: 1, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
+      item!.data = {
+         name: character.name,
+         birth: character.birth,
+         origin: character.origin,
+         gender: character.gender
+      };
+      await item.save();
+   });
 
    player.sendNotification(lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
 
@@ -172,8 +181,8 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
 
 function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes) {
-   characters.findOne( { where: { id: characterId }, include: [apppearances, banks] } ).then(character => {
-      character!.spawnPlayer(player, point);
+   characters.findOne( { where: { id: characterId }, include: [appearances, banks] } ).then(character => {
+      character!.spawnPlayer(player, point, character?.appearance!);
    });
 }
 
@@ -224,7 +233,6 @@ mp.Player.prototype.sendMessage = function (message: string, color: string) {
 
 
 mp.players.find = (searchQuery: any): PlayerMp => {
-   console.log(1)
    if (!isNaN(searchQuery)) {
       console.log(2)
       return mp.players.at(searchQuery)

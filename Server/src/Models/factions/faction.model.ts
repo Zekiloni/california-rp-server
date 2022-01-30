@@ -9,13 +9,13 @@ export class factions extends Model {
 
    static objects = new Map<number, factionPoints>()
 
-   @Column
    @PrimaryKey
    @AutoIncrement
+   @Column
    id: number
 
-   @Column
    @Default(factionConfig.type.LEO)
+   @Column
    type: factionConfig.type
 
    @Unique(true)
@@ -43,23 +43,25 @@ export class factions extends Model {
    })   
    garage_point: Vector3Mp
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('equipment_point')); }
-   })   
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('equipment_point')); }
+      }
+   )   
    equipment_point: Vector3Mp
 
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('equipment')); }
-   })   
+   @Column(
+      {
+         type: DataType.JSON,
+         get () { return JSON.parse(this.getDataValue('equipment')); }
+      }
+   )   
    equipment: string[]
 
-   @Column
    @CreatedAt
    created_At: Date
 
-   @Column
    @UpdatedAt
    updated_At: Date
 

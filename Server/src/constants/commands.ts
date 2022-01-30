@@ -8,7 +8,7 @@ export namespace cmds {
       OOC_CHAT: 'b',
       PM: 'pm',
       LOW_CHAT: 'l',
-      WHISPER: 'whisper',
+      WHISPER: 'w',
       ITEMS: 'items',
       GIVE_ITEM: 'giveitem',
       CLEAR_INVENTORY: 'clearinventory',

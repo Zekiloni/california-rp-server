@@ -143,7 +143,7 @@ export const lang = {
    coinResult: ['glavu', 'pismo'],
    pmFrom: 'PM od',
    pmTo: 'PM za',
-   quetly: 'tiho',
+   quetly: 'govori tiho',
    isShouting: 'se dere',
    whispering: 'Šapućete',
    isWhisperingU: 'vam šapuće',

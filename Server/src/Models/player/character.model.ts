@@ -3,7 +3,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany } from 'sequelize-typescript';
 
-import { accounts, apppearances, banks, houses, business, inventories } from '@models';
+import { accounts, appearances, banks, houses, business, inventories } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors } from '@constants';
 import { spawnPointTypes, notifications, distances } from '@enums';
 import { playerConfig } from '@configs';
@@ -47,8 +47,8 @@ export class characters extends Model {
    @Column
    salary: number
 
-   @HasOne(() => apppearances)
-   appearance: apppearances
+   @HasOne(() => appearances)
+   appearance: appearances
 
    @HasOne(() => banks)
    bank: banks;
@@ -185,7 +185,7 @@ export class characters extends Model {
    @HasMany(() => business)
    business: business[];
 
-   async spawnPlayer (player: PlayerMp, point: spawnPointTypes) { 
+   async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances) { 
 
       player.account.last_character = this.id;
       player.character = this;
@@ -219,8 +219,8 @@ export class characters extends Model {
       this.setMood(player, this.facial_mood);
       this.setCuffs(player, this.cuffed);
 
-      if (this.appearance) {
-         this.appearance.apply(player, this.gender);
+      if (appearance) {
+         appearance.apply(player, this.gender);
       }
 
       player.setVariable(shared_Data.INJURIES, this.injuries ? this.injuries : []);

@@ -7,9 +7,9 @@ import { none } from '@constants';
 @Table
 export class ranks extends Model {
 
-   @Column
    @PrimaryKey
    @AutoIncrement
+   @Column
    id: number
 
    @ForeignKey(() => factions)
