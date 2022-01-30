@@ -19,6 +19,25 @@ export class apppearances extends Model {
    @BelongsTo(() => characters)
    character: characters
 
+   @Column
+   shape_First: number
+
+   @Column
+   shape_Second: number
+
+   @Column
+   skin_First: number
+
+   @Column
+   skin_Second: number
+
+   @Column(DataType.FLOAT)
+   shape_Mix: number
+
+   @Column(DataType.FLOAT)
+   skin_Mix: number
+
+
    @AllowNull(false)
    @Column(
       {
@@ -30,38 +49,20 @@ export class apppearances extends Model {
    )    
    face_features: number[];
 
-   @AllowNull(false)
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return JSON.parse(this.getDataValue('blend_data')); 
-         }
-      }
-   )    
-   blend_data: number[];
+   @Column
+   hair_Style: number
 
-   @AllowNull(false)
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return JSON.parse(this.getDataValue('hair')); 
-         }
-      }
-   )   
-   hair: hairStyle;
+   @Column
+   hair_Color: number
 
-   @AllowNull(false)
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return JSON.parse(this.getDataValue('beard')); 
-         }
-      }
-   )   
-   beard: beardStyle;
+   @Column
+   hair_Highlight: number
+
+   @Column(DataType.NUMBER)
+   beard_Style: number
+
+   @Column(DataType.NUMBER)
+   beard_Color: number
 
    @AllowNull(false)
    @Column(DataType.INTEGER)
@@ -86,23 +87,34 @@ export class apppearances extends Model {
    
    apply (player: PlayerMp, gender: number) {
       console.log(this)
-      const genders = [ mp.joaat(playerModels.MALE), mp.joaat(playerModels.FEMALE) ];
+      const genders = [ 
+         mp.joaat(playerModels.MALE),
+         mp.joaat(playerModels.FEMALE)
+      ];
+
       player.model = genders[gender];
 
       player.setHeadBlend(
-         this.blend_data[0], 
-         this.blend_data[1], 0,
-         this.blend_data[2],
-         this.blend_data[3], 0,
-         this.blend_data[4],
-         this.blend_data[5], 0
+         this.shape_First, 
+         this.shape_Second, 
+         0,
+         this.skin_First,
+         this.skin_Second, 
+         0,
+         this.shape_Mix,
+         this.skin_Mix, 
+         0
       );
 
       player.eyeColor = this.eyes;   
       
-      player.setClothes(2, this.hair.style, 0, 2);
+      player.setClothes(2, this.hair_Style, 0, 2);
       player.setHairColor(
-         this.hair.color, this.hair.highlight
+         this.hair_Color, this.hair_Highlight
+      );
+
+      player.setHeadOverlay(1, 
+         [this.beard_Style, 1.0, this.beard_Color, 0]
       );
 
       for (let i = 0; i < 20; i ++) { 

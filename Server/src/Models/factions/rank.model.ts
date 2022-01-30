@@ -1,6 +1,8 @@
 import { Table, Column, PrimaryKey, AutoIncrement, Model, Unique, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
 import { characters, factions } from '@models';
 import { factionPermissions } from '@enums';
+import { none } from '@constants';
+
 
 @Table
 export class ranks extends Model {
@@ -46,9 +48,9 @@ export class ranks extends Model {
          }
       
          characters.findAll().then(characters => {
-            const members = characters.filter(character => character.faction == this.faction.id);
+            const members = characters.filter(character => character.faction_rank == this.id);
             members.forEach(async member => { 
-               member.faction_rank = 0;
+               member.faction_rank = none;
                await member.save();
             })
          });

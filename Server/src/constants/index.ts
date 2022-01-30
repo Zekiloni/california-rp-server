@@ -8,3 +8,5 @@ export * from './colors';
 export * from './weather';
 
 export const gDimension = 0;
+
+export const none = 0;
