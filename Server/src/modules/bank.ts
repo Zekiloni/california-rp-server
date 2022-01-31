@@ -72,7 +72,6 @@ mp.events.addProc(
          //    player.sendNotification('vec imate racun', notifications.type.ERROR, 7);
          //    return;
          // }
-         console.log(1)
 
          // const hasCreditCard = await Items.hasItem(itemEnums.entity.PLAYER, player.character.id, itemNames.CREDIT_CARD);
 

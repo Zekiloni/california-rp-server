@@ -69,7 +69,6 @@ mp.events.addProc(
 mp.events.add(
    {
       'CLIENT::ITEM:WEAPON:SHOT': async (player: PlayerMp) => {
-         console.log(1)
          if (!player.weapon) { 
             // no weapon in hand
             return;
@@ -97,7 +96,6 @@ mp.events.add(
          }
 
          weaponItem.data = data;
-         console.log(1)
 
          await weaponItem.save();
       }

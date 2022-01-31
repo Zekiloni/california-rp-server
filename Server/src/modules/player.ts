@@ -159,24 +159,30 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
 
 
 function authorizationVerify (player: PlayerMp, username: string, password: string) {
-   return accounts.findOne({ where: { username: username }, include: characters }).then(account => {
+   try {
+      return accounts.findOne({ where: { username: username }, include: characters }).then(async account => {
 
-      if (!account) {
-         player.sendNotification(lang.userDoesntExist, notifications.type.ERROR, 5);
-         return;
-      }
 
-      const logged = account.login(password);
-
-      if (!logged) { 
-         player.sendNotification(lang.incorrectPassword, notifications.type.ERROR, 5);
-         return;
-      }
-
-      account.setLogged(player, true);
-
-      return account;
-   })
+         if (!account) {
+            player.sendNotification(lang.userDoesntExist, notifications.type.ERROR, 5);
+            return;
+         }
+   
+   
+         const logged = account.login(password);
+   
+         if (!logged) { 
+            player.sendNotification(lang.incorrectPassword, notifications.type.ERROR, 5);
+            return;
+         }
+   
+         account.setLogged(player, true);
+   
+         return account;
+      })
+   } catch (e) {
+      console.log(e)
+   }
 }
 
 
