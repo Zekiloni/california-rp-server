@@ -41,6 +41,10 @@ export class items {
       return this.type.includes(itemEnums.type.STACKABLE);
    }
 
+   isEquipable () {
+      return this.type.includes(itemEnums.type.EQUIPABLE);
+   }
+
    availableActions () {
       let actions: itemAction[] = [];
 
@@ -59,6 +63,8 @@ export class items {
             actions.push( { name: action.name, event: action.event, icon: action.icon } )
          });
       }
+      
+      return actions;
    }
    
 }

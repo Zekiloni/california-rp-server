@@ -10,7 +10,8 @@ import './ammo.item';
 
 export const weaponType = [
    itemEnums.type.USABLE, 
-   itemEnums.type.WEAPON
+   itemEnums.type.WEAPON,
+   itemEnums.type.EQUIPABLE
 ];
 
 
@@ -20,12 +21,11 @@ export class weaponItem extends items {
    
    constructor (name: string, model: string, weapHash: string, cal?: items, type?: itemEnums.type[], weight: number = 0.35, description?: string ) { 
       super (name, type ? weaponType.concat(type) : weaponType, model, weight, description);
+
       this.weapon_hash = weapHash;
       this.caliber = cal;
-      
 
       this.use = async function (player: PlayerMp, item: inventories) { 
-         item.equiped = true;
          player.giveWeapon(mp.joaat(this.weapon_hash), item.data.ammo ? item.data.ammo : 0);
          await item.save();
       }

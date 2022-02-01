@@ -3,7 +3,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max } from 'sequelize-typescript';
 
-import { accounts, appearances, banks, houses, business, inventories } from '@models';
+import { accounts, appearances, banks, houses, business, inventories, items } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances } from '@enums';
 import { playerConfig } from '@configs';
@@ -172,10 +172,12 @@ export class characters extends Model {
    updated_at: Date;
 
    @HasMany(() => houses)
-   houses: houses[];
+   houses: houses[]
 
    @HasMany(() => business)
-   business: business[];
+   business: business[]
+
+   equiped: inventories[] = [];
 
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances) { 
 

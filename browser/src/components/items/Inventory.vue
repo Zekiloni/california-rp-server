@@ -9,7 +9,7 @@
       </div>
 
       <div class="inventory" @mouseenter="hoverBox = false, hoveredItem = null" @click="hoverBox = false">
-         <div class="item-holder" v-for="item in available" :key="item.id" @mouseenter=" e => hoverItem(item, e)" > 
+         <div class="item-holder" v-for="item in items" :key="item.id" @mouseenter=" e => hoverItem(item, e)" > 
             <div class="item">
                <h3 class="quantity"> {{ item.quantity }} </h3>
                <h3 class="item-name"> {{ item.name }} </h3>
@@ -49,7 +49,7 @@
 
 <script>
 
-   import { Messages, Item_Entity, Item_Type, ENVIRONMENT_TYPES } from '@/globals';
+   import { Messages, Item_Entity} from '@/globals';
    import ItemInfo from './item.info.vue';
    import GiveItem from './give.item.vue';
 
@@ -67,21 +67,9 @@
             selectedItem: null,
 
             items: [],
-
-            Environment_Type: null,
-            Environment: null,
+            equiped: [],
 
             Messages, Item_Entity
-         }
-      },
-
-      computed: { 
-         available: function () { 
-            return this.items.filter(item => item.equiped == false);
-         },
-
-         equiped: function () {
-            return this.items.filter(item => item.equiped == true);
          }
       },
 
@@ -133,9 +121,8 @@
          if (window.mp) { 
             mp.invoke('focus', true);
 
-            mp.events.add('BROWSER::INVENTORY:ITEMS', items => this.items = JSON.parse(items));
+            mp.events.add('BROWSER::INVENTORY:ITEMS', (items, equiped) => { this.items = JSON.parse(items); this.equiped = JSON.parse(equiped) } );
             mp.events.add('BROWSER::INVENTORY:GIVE_ITEM', (item) => { 
-               console.log('give item')
                console.log(JSON.stringify(item));
             })
          }   
@@ -159,7 +146,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgb(11 14 17 / 70%);
+      background: radial-gradient(rgb(71 77 87 / 55%), rgb(11 14 17 / 85%));
    }
 
    .equiped { 
@@ -170,18 +157,16 @@
       margin: 0 15px;
       justify-content: flex-start;
       border-radius: 10px;
-      background: rgb(11 14 17 / 55%);
+      background: rgb(11 14 17 / 20%);
       align-items: center;
       flex-direction: column;
-      box-shadow: 0 7px 15px 0 rgb(0 0 0 / 40%);
    }
 
    .equiped .item { 
       width: 100px;
       margin: 20px 0;
       height: 100px;
-      box-shadow: 0 21px 29px 0 rgb(0 0 0 / 31%);
-      background: #606163;
+      background: #181a20;
       border-radius: 10px;
    }
 
@@ -190,14 +175,13 @@
       width: auto;
       border-radius: 10px;
       height: 480px;
-      background: rgb(11 14 17 / 75%);
+      background: rgb(11 14 17 / 20%);
       display: grid;
       grid-gap: 0.7rem;
       margin: 0 15px;
       grid-template-columns: repeat(3, 150px);
       grid-template-rows: repeat(3, 150px);
       /* border: 1.5px solid rgb(128 128 128 / 45%); */
-      box-shadow: 0 7px 15px 0 rgb(0 0 0 / 45%);
    }
 
    .item-holder { 
@@ -212,8 +196,7 @@
       overflow: hidden;
       border-radius: 10px;
       height: 145px;
-      box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
-      background: #0b0e11;
+      background: #181a20;
       transition: all .3s ease;
       display: grid;
    }
@@ -225,6 +208,7 @@
 
    .item:hover { 
       background: #2a303c;
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
    }
 
    .item:hover h3.quantity { background: #181a20; }

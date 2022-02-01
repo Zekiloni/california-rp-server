@@ -61,8 +61,10 @@ mp.events.add(
       
          object.destroy();
       
-         const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', JSON.parse(item).id, JSON.stringify(fixedPosition));
-         if (newInventory) Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
+         const inventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', JSON.parse(item).id, JSON.stringify(fixedPosition));
+         if (inventory) {
+            Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
+         }
       
          // mp.game.streaming.requestAnimDict('random@domestic');
 
@@ -75,8 +77,10 @@ mp.events.add(
       },
 
       'CLIENT::ITEM:USE': async (item: any) => { 
-         const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:USE', JSON.parse(item).id);
-         Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
+         const inventory = await mp.events.callRemoteProc('SERVER::ITEM:USE', JSON.parse(item).id);
+         if (inventory) {
+            Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
+         }
       },
 
       'CLIENT::ITEM:GIVE': (item, iteminfo, quantity) => { Browser.call('BROWSER::INVENTORY:GIVE_ITEM', item); },

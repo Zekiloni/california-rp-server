@@ -5,6 +5,7 @@ import { itemEnums } from '@enums';
 import { shared_Data } from '@shared';
 import { itemExtra } from '@interfaces';
 import { items, logs, characters } from '@models';
+import { none } from '@constants';
 
 
 @Table
@@ -41,7 +42,7 @@ export class inventories extends Model {
    @Column(DataType.INTEGER)
    quantity: number;
    
-   @Default(0)
+   @Default(none)
    @Column
    fingerprint: number; 
 
@@ -105,7 +106,7 @@ export class inventories extends Model {
    }
 
 
-   async pickup (player: PlayerMp) { 
+   async pickupItem (player: PlayerMp) { 
       if (this.on_ground) {
          this.on_ground = false;
          this.owner = player.character.id;
@@ -120,45 +121,48 @@ export class inventories extends Model {
       const rItem = items.list[this.name];
    }
 
-
-   static async getItems (entity: itemEnums.entity, owner: number)  { 
-      const items = await inventories.findAll({where: { owner: owner, entity: entity }}).catch(e => logs.error('Catching Items ' + e));
-      return items;
+   static async doesHaveItem (entity: itemEnums.entity, owner: number, itemName: string) {
+      return inventories.findOne( { where: { entity: entity, owner: owner, name: itemName } } ).then(haveItem => {
+         return haveItem ? haveItem : false;
+      });
    }
 
-
-   static async giveItem (player: PlayerMp, item: items, quantity: number = 1) { 
-      const alreadyItem = await inventories.hasItem(itemEnums.entity.PLAYER, player.character.id, item.name);
-      console.log('give 2')
-      if (alreadyItem && item.isStackable()) {
-         alreadyItem.increment('quantity', { by: quantity });
-      } else { 
-         inventories.create({ name: item.name, quantity: quantity, entity: itemEnums.entity.PLAYER, owner: player.character.id });
-      }
-   }
-
-
-   static async hasItem (entity: itemEnums.entity, owner: number, itemName: string) {
-      const has = await inventories.findOne({ where: { entity: entity, owner: owner, name: itemName } });
-      return has == null ? false : has;
-   }
-
-   static async unequipWeapons (character: characters) { 
-      inventories.findAll({ where: { entity: itemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(inventoryies => { 
-         if (inventoryies.length == 0) {
-            return
+   static getEntityItems (entity: itemEnums.entity, owner: number, includeEquiped?: boolean)  { 
+      return inventories.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
+         if (includeEquiped) {
+            return items;
+         } else {
+            return items.filter(item => item.equiped != true);
          }
-         
-         inventoryies.forEach(async inventory => {
-            if (items.list[inventory.name].isWeapon()) {
-               inventory.equiped = false;
-               await inventory.save();
-            }
-         });
-      })
+      }).catch(e => {
+         logs.error('ctchingPlyerItems: ' + e);
+      });
    }
 
-   
+   static getEquipedItems (player: PlayerMp) {
+      return player.character?.equiped;
+   }
+
+   static giveItem (player: PlayerMp, item: items, quantity: number = 1) { 
+      inventories.doesHaveItem(itemEnums.entity.PLAYER, player.character.id, item.name).then(haveItem => {
+         if (haveItem && item.isStackable()) {
+            haveItem.increment('quantity', { by: quantity } );
+         } else { 
+            inventories.create( { name: item.name, quantity: quantity, entity: itemEnums.entity.PLAYER, owner: player.character.id } );
+         }
+      });
+   };
+
+   static async savePlayerEquipment (character: characters) { 
+      if (character.equiped.length == 0) {
+         return;
+      }
+
+      character.equiped.forEach(async item => {
+         await item.save();
+      });
+   }
+
 }
 
 
@@ -278,25 +282,6 @@ export class inventories extends Model {
 // };
 
 
-// frp.Items.prototype.Drop = async function (player, place, quantity = 1) {
-//    const Position = JSON.parse(place);
-//    if (this.Quantity == quantity) {
-//       this.Entity = ItemEntities.Ground;
-//       this.Position = Position.position;
-//       this.Rotation = Position.rotation;
-//       this.Dimension = player.dimension;
-//       this.Last_Owner = player.character;
-//       this.Refresh();
-//       await this.save();
-//    } else {
-//       this.increment('Quantity', { by: -quantity });
-//       frp.Items.New(this.Item, quantity, ItemEntities.Ground, 0, Position.position, Position.rotation, player.dimension);
-//    }
-
-//    player.ProximityMessage(frp.Globals.distances.me, `* ${player.name} baca ${this.Item} na zemlju.`, frp.Globals.Colors.purple);
-
-//    return frp.Items.Inventory(player);
-// };
 
 
 // frp.Items.prototype.Pickup = async function (player) {

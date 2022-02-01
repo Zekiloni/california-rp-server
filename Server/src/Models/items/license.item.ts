@@ -8,8 +8,9 @@ import { itemNames } from '@constants';
 const licenseTypes = [
    itemEnums.type.MISC, 
    itemEnums.type.LEGAL, 
-   itemEnums.type.LICENSE
+   itemEnums.type.LICENSE,
 ];
+
 
 export enum weapLicenseType { CCV, PF }
 
