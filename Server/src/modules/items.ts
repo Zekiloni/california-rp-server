@@ -10,12 +10,10 @@ mp.events.addProc(
          return inventories.getItems(itemEnums.entity.PLAYER, player.character!.id);
       },
 
-
       'SERVER::ITEM:INFO': (player: PlayerMp, itemName: string) => { 
          const item = items.list[itemName];
          return { info: item, actions: item.availableActions() };
       },
-
       
       'SERVER::ITEM:USE': async (player: PlayerMp, itemId: number): Promise < inventories[] > => { 
          return new Promise((resolve) => { 

@@ -33,16 +33,13 @@ export class items {
       return this.type.includes(itemEnums.type.WEAPON);
    }
 
-
    isCookable () {
       return this.type.includes(itemEnums.type.COOKABLE);
    }
 
-
    isStackable () { 
       return this.type.includes(itemEnums.type.STACKABLE);
    }
-
 
    availableActions () {
       let actions: itemAction[] = [];
@@ -56,19 +53,25 @@ export class items {
       if (this.isStackable()){
          actions.push( { name: lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' } );
       } 
+
+      if (this.extraActions) {
+         this.extraActions.forEach(action => {
+            actions.push( { name: action.name, event: action.event, icon: action.icon } )
+         });
+      }
    }
    
 }
 
 
-// import './items/document.item';
-// import './items/creditCard.item';
-// import './items/drink.item';
-// import './items/food.item';
-// import './items/ammo.item';
-// import './items/weapon.item';
-// import './items/phone.item';
-// import './items/cooker.item';
+import './items/document.item';
+import './items/creditCard.item';
+import './items/drink.item';
+import './items/food.item';
+import './items/ammo.item';
+import './items/weapon.item';
+import './items/phone.item';
+import './items/cooker.item';
 
 
 

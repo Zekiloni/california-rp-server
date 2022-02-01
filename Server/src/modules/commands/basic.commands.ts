@@ -5,6 +5,18 @@ import { shared_Data } from '@shared';
 import { Commands } from '../commands';
 
 
+Commands[cmds.names.HELP] = {
+   description: cmds.descriptions.HELP,
+   call (player: PlayerMp) {
+      for (const i in Commands) {
+         const cmd = Commands[i];
+         const params = cmd.params ? (' [' + cmd.params?.join('] [') + '] ').toString() : ' []';
+         const help = ('/' + String(i)) + String(params) + ' - '  +  (cmd.description ? cmd.description : '/');
+         player.outputChatBox(help);
+      }
+   }
+}
+
 Commands[cmds.names.ROLEPLAY_ME] = {
    description: cmds.descriptions.ROLEPLAY_ME,
    params: [

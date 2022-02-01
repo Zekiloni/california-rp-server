@@ -1,7 +1,9 @@
 
+import { items } from '../item.model';
+import { inventories  } from '../inventory.model';
 import { itemDescriptions, itemNames } from '@constants';
 import { itemEnums } from '@enums';
-import { items, inventories } from '@models';
+
 
 
 export default class creditCardTime extends items {

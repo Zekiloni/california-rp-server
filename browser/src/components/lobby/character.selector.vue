@@ -103,7 +103,6 @@
             mp.trigger('CLIENT::CREATOR:START');
          }
       }
-      
    }
 </script>
 

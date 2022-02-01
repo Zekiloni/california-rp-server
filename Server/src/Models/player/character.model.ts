@@ -1,10 +1,10 @@
 
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max } from 'sequelize-typescript';
 
 import { accounts, appearances, banks, houses, business, inventories } from '@models';
-import { facial_Moods, gDimension, walking_Styles, lang, colors } from '@constants';
+import { facial_Moods, gDimension, walking_Styles, lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
@@ -15,11 +15,11 @@ import { playerInjury } from '@interfaces';
 export class characters extends Model {
    @PrimaryKey
    @AutoIncrement
-   @Column
+   @Column(DataType.INTEGER)
    id: number
 
    @ForeignKey(() => accounts)
-   @Column
+   @Column(DataType.INTEGER)
    account_id: number
 
    @BelongsTo(() => accounts)
@@ -27,25 +27,21 @@ export class characters extends Model {
 
    @Unique(true)
    @Length({ min: 6, max: 48 })
-   @Column
+   @Column(DataType.STRING(128))
    name: string
 
-   @Column
+   @Column(DataType.INTEGER)
    gender: number
 
    @Column
    birth: string
 
-   @Column
+   @Column(DataType.STRING(64))
    origin: string
 
    @Default(playerConfig.main.money)
-   @Column
+   @Column(DataType.INTEGER)
    money: number
-
-   @Default(0)
-   @Column
-   salary: number
 
    @HasOne(() => appearances)
    appearance: appearances
@@ -53,49 +49,45 @@ export class characters extends Model {
    @HasOne(() => banks)
    bank: banks;
 
-   @Default(0)
+   @Default(none)
    @Column
    paycheck: number
 
-   @IsUUID(4)
-   @Default(DataType.UUIDV4)
-   @Column
-   stranger_id: number;
-
-   @Default(0)
+   @Default(none)
    @Column
    faction: number;
 
    @Default(null)
-   @Column
+   @Column(DataType.INTEGER)
    faction_rank: number;
 
-   @Default(0)
-   @Column
+   @Default(none)
+   @Column(DataType.INTEGER)
    faction_perms: number;
 
-   @Default(0)
-   @Column
+   @Default(none)
+   @Length( { min: none, max : 30 })
+   @Column(DataType.INTEGER( { length: 2 } ))
    job: number;
 
-   @Default(0)
-   @Column
+   @Default(none)
+   @Column(DataType.INTEGER( { length: 8 } ))
    working_hours: number;
 
    @Default(100)
-   @Column
+   @Column(DataType.INTEGER( { length: 3 }))
    health: number;
 
    @Default(100)
-   @Column
+   @Column(DataType.INTEGER( { length: 3 }))
    hunger: number;
 
    @Default(100)
-   @Column
+   @Column(DataType.INTEGER( { length: 3 } ))
    thirst: number;
    
    @Default(false)
-   @Column
+   @Column(DataType.BOOLEAN)
    wounded: boolean;
 
    @Default(null)
@@ -133,16 +125,16 @@ export class characters extends Model {
    )    
    inside: { position: Vector3Mp, type: number }
 
-   @Default(0)
-   @Column
+   @Default(none)
+   @Column(DataType.INTEGER( { length: 3 } ))
    muted: number
 
    @Default(0)
-   @Column
+   @Column(DataType.INTEGER( { length: 11 } ))
    hours: number
 
    @Default(0)
-   @Column
+   @Column(DataType.INTEGER( { length: 3 } ))
    minutes: number
 
    @Default(walking_Styles.Normal)
@@ -150,27 +142,27 @@ export class characters extends Model {
    walking_style: keyof typeof walking_Styles
 
    @Default(facial_Moods.Normal)
-   @Column(DataType.STRING)
+   @Column(DataType.STRING(32))
    facial_mood: keyof typeof facial_Moods
    
    @Default(playerConfig.max.INVENTORY_WEIGHT)
-   @Column
+   @Column(DataType.INTEGER( { length: 2 } ))
    max_inventory_weight: number
 
    @Default(playerConfig.max.HOUSES)
-   @Column
+   @Column(DataType.INTEGER( { length: 2 } ))
    max_houses: number
 
    @Default(playerConfig.max.BUSINESS)
-   @Column
+   @Column(DataType.INTEGER( { length: 2 } ))
    max_business: number
 
    @Default(playerConfig.max.VEHICLES)
-   @Column
+   @Column(DataType.INTEGER( { length: 2 } ))
    max_vehicles: number
 
    @Default(false)
-   @Column
+   @Column(DataType.BOOLEAN)
    cuffed: boolean
 
    @CreatedAt

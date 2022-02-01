@@ -3,9 +3,10 @@ import fs from 'fs';
 
 import { Commands } from '../commands';
 import { logs, items, inventories, houses } from '@models';
-import { cmds, weathers } from '@constants';
+import { cmds, lang, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { houseConfig, serverConfig } from '@configs';
+import { shared_Data } from '@shared';
 
 
 const savedPositions = 'savedPositions.txt';
@@ -88,16 +89,34 @@ Commands[cmds.names.GET_HERE] = {
 
 Commands[cmds.names.ITEMS] = { 
    description: cmds.descriptions.ITEMS,
-   call: (player: PlayerMp) => { 
+   call (player: PlayerMp) { 
       console.log(items.list);
    }
 };
 
 
+Commands[cmds.names.INVICIBLE] = { 
+   description: cmds.descriptions.INVICIBLE,
+   admin: rank.ADMINISTRATOR_2,
+   call (player: PlayerMp) { 
+      
+      const toggle = player.alpha == 255 ? 0 : 255;
+      player.alpha = toggle;
+
+      if (player.vehicle) {
+         const vToggle = player.vehicle.alpha == 255 ? 0 : 255;
+         console.log(player.vehicle.alpha)
+         player.vehicle.alpha =vToggle;
+      }
+   }
+};
+
+
+
 Commands[cmds.names.GIVE_ITEM] ={
    description: cmds.descriptions.GIVE_ITEM,
    admin: rank.SENIOR_ADMINISTRATOR,
-   call: (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) => { 
+   call (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) { 
       console.log('usi u cmd')
       itemName = itemName.join(' ');
       if (items.list[itemName]) {
@@ -120,21 +139,63 @@ Commands[cmds.names.GIVE_ITEM] ={
 
 Commands[cmds.names.CLEAR_INVENTORY] = { 
    description: cmds.descriptions.CLEAR_INVENTORY,
-   call: (player: PlayerMp, target: any) => { 
+   call (player: PlayerMp, target: any) { 
       
    }
 }
 
-
-Commands['veh'] = { 
-   description: 'Kreiraj auto',
+Commands[cmds.names.GIVE_GUN] = { 
+   description: cmds.descriptions.GIVE_GUN,
    admin: rank.LEAD_ADMINISTRATOR,
-   call: (player: PlayerMp, vName: string) => { 
-      console.log(vName);
-      const vehicle =  mp.vehicles.new(mp.joaat(vName), player.position);
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.WEAPON,
+      cmds.params.AMMO
+   ],
+   call (player: PlayerMp, targetSearch, weapon, ammo) { 
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT)
+         return;
+      }
+      console.log(target.name)
+      target.giveWeapon(mp.joaat(weapon), parseInt(ammo));
+      console.log('dao gun')
+   }
+}
+
+
+Commands[cmds.names.CREATE_VEHICLE] = { 
+   description: cmds.descriptions.CREATE_VEHICLE,
+   admin: rank.LEAD_ADMINISTRATOR,
+   call (player: PlayerMp, vName: string, primaryColor: number, secondaryColor: number) { 
+
+      const vehicle = mp.vehicles.new(mp.joaat(vName), player.position);
+      vehicle.setColor(Number(primaryColor), Number(secondaryColor));
+
       player.putIntoVehicle(vehicle, RageEnums.VehicleSeat.DRIVER);
    } 
+};
+
+Commands[cmds.names.DESTROY_VEHICLE] = {
+   description: cmds.descriptions.DESTROY_VEHICLE,
+   admin: rank.LEAD_ADMINISTRATOR,
+   call (player: PlayerMp) {
+      const vehicle = mp.vehicles.getClosest(player.position);
+
+      if (!vehicle || vehicle.dimension != player.dimension) {
+         return;
+      }
+
+      if (vehicle.getVariable(shared_Data.DATABASE)) {
+
+      }
+
+      vehicle.destroy();
+   }
 }
+
 
 
 Commands[cmds.names.TIME] = {
@@ -145,7 +206,7 @@ Commands[cmds.names.TIME] = {
       cmds.params.MINUTE,
       cmds.params.SECONDS
    ],
-   call: (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) => {
+   call (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) {
       if (hour == 666) {
          serverConfig.freezeTime = false;
       } else { 
@@ -162,7 +223,7 @@ Commands[cmds.names.WEATHER] = {
    params: [
       cmds.params.WEATHER
    ],
-   call: (player: PlayerMp, weather: string | number) => {
+   call (player: PlayerMp, weather: string | number) {
       if (weather == Number(weather) && weather < weathers.length - 1 && weather >= 0) {
          mp.world.weather = weathers[Number(weather)];
       } else {
@@ -175,7 +236,7 @@ Commands[cmds.names.FIX_VEH] = {
    admin: rank.SENIOR_ADMINISTRATOR,
    description: cmds.descriptions.FIX_VEH,
    vehicle: true,
-   call: async (player: PlayerMp) => {
+   async call (player: PlayerMp) {
       if (!player.vehicle) {
          return;
       }
@@ -187,7 +248,7 @@ Commands[cmds.names.FIX_VEH] = {
 Commands[cmds.names.GIVE_MONEY] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
-   call: (player: PlayerMp, targetSearch: any, money: number) => { 
+   call (player: PlayerMp, targetSearch: any, money: number) { 
       const target = mp.players.find(targetSearch);
 
       if (!target) {
@@ -202,7 +263,7 @@ Commands[cmds.names.GIVE_MONEY] =  {
 Commands[cmds.names.SET_MONEY] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
-   call: (player: PlayerMp, targetSearch: any, money: number) => { 
+   call (player: PlayerMp, targetSearch: any, money: number) { 
       const target = mp.players.find(targetSearch);
       if (!target) return; // nema
       target.character.setMoney(target, money);
@@ -212,7 +273,7 @@ Commands[cmds.names.SET_MONEY] =  {
 Commands[cmds.names.CREATE_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
-   call: (player: PlayerMp, type: houseConfig.type, price: number) => { 
+   call (player: PlayerMp, type: houseConfig.type, price: number) { 
       houses.new(player, type, price);
    }
 }
@@ -220,7 +281,7 @@ Commands[cmds.names.CREATE_HOUSE] =  {
 Commands[cmds.names.DESTROY_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
-   call: async (player: PlayerMp, id?: number) => { 
+   async call (player: PlayerMp, id?: number) { 
       const nearestHouse = await houses.getNearest(player);
       if (nearestHouse) nearestHouse.destroy();
    }
@@ -230,7 +291,7 @@ Commands[cmds.names.DESTROY_HOUSE] =  {
 Commands[cmds.names.FLY] =  {
    admin: rank.SENIOR_ADMINISTRATOR,
    description: 'opis napisati',
-   call: async (player: PlayerMp) => { 
+   async call (player: PlayerMp) { 
       player.call('CLIENT::ADMIN:FLY');
    }
 }

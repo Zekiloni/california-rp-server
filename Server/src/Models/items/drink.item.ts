@@ -1,8 +1,7 @@
 
-
+import { items } from '../item.model';
+import { inventories  } from '../inventory.model';
 import { itemEnums } from '@enums';
-import { items, inventories } from '@models';
-
 
 
 const drinkType = [

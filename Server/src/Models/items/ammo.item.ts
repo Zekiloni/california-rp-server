@@ -1,4 +1,7 @@
-import { items, inventories, logs} from '@models';
+
+
+import { items } from '../item.model';
+import { inventories, logs} from '@models';
 import { itemEnums } from '@enums';
 import { itemNames } from '@constants';
 

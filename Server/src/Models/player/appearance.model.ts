@@ -1,7 +1,6 @@
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey, Max } from 'sequelize-typescript';
 import { characters } from '@models';
-import { beardStyle, hairStyle } from '@interfaces';
 import { playerModels } from '@shared';
 
 
@@ -9,26 +8,26 @@ import { playerModels } from '@shared';
 export class appearances extends Model {
    @PrimaryKey
    @AutoIncrement
-   @Column
+   @Column(DataType.INTEGER)
    id: number
 
    @ForeignKey(() => characters)
-   @Column
+   @Column(DataType.INTEGER( { length: 11 } ))
    character_id: number
 
    @BelongsTo(() => characters)
    character: characters
 
-   @Column
+   @Column(DataType.INTEGER)
    shape_First: number
 
-   @Column
+   @Column(DataType.INTEGER)
    shape_Second: number
 
-   @Column
+   @Column(DataType.INTEGER)
    skin_First: number
 
-   @Column
+   @Column(DataType.INTEGER)
    skin_Second: number
 
    @Column(DataType.FLOAT)
@@ -37,23 +36,23 @@ export class appearances extends Model {
    @Column(DataType.FLOAT)
    skin_Mix: number
 
-   @Column
+   @Column(DataType.INTEGER)
    hair_Style: number
 
-   @Column
+   @Column(DataType.INTEGER)
    hair_Color: number
 
-   @Column
+   @Column(DataType.INTEGER)
    hair_Highlight: number
 
-   @Column
+   @Column(DataType.INTEGER)
    beard_Style: number
 
-   @Column
+   @Column(DataType.INTEGER)
    beard_Color: number
 
    @AllowNull(false)
-   @Column
+   @Column(DataType.INTEGER)
    eyes: number;
 
    @AllowNull(false)

@@ -9,6 +9,7 @@ import { spawnPoint } from '@interfaces';
 mp.events.add(
    {
       'playerJoin': playerJoinHandler,
+      'playerReady': playerReadyHandler,
       'playerQuit': playerQuitHadnler,
       'playerChat': playerChatHandler,
       'playerDeath': playerDeathHandler,
@@ -54,13 +55,15 @@ async function playerJoinHandler (player: PlayerMp) {
    }
 }
 
+function playerReadyHandler (player: PlayerMp) {
+   player.dimension = mp.players.length + 1;
+}
+
 
 async function characterFinish (player: PlayerMp, characterInfo: string, characterAppearance: string) { 
 
    const cInfo = JSON.parse(characterInfo);
    const cAppearance = JSON.parse(characterAppearance);
-
-   console.log(cAppearance)
 
    const alreadyExist = await characters.findOne( { where: { name: cInfo.name + ' ' + cInfo.lastName } } );
 
@@ -73,6 +76,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
       { 
          name: cInfo.name + ' ' + cInfo.lastName,
          account_id: player.account.id,
+         account: player.account,
          origin: cInfo.origin, 
          birth: cInfo.birth, 
          gender: cInfo.gender
@@ -99,7 +103,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
          overlays: cAppearance.overlays, 
       }
    );
-      
+   
    character.spawnPlayer(player, spawnPointTypes.DEFAULT, appearance);
 
    inventories.create({ name: itemNames.DOCUMENT_ID_CARD, quantity: 1, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
@@ -111,6 +115,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
       };
       await item.save();
    });
+
 
    player.sendNotification(lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
 
@@ -159,30 +164,24 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
 
 
 function authorizationVerify (player: PlayerMp, username: string, password: string) {
-   try {
-      return accounts.findOne({ where: { username: username }, include: characters }).then(async account => {
+   return accounts.findOne( { where: { username: username }, include: [characters] } ).then(account => {
 
+      if (!account) {
+         player.sendNotification(lang.userDoesntExist, notifications.type.ERROR, 5);
+         return;
+      }
 
-         if (!account) {
-            player.sendNotification(lang.userDoesntExist, notifications.type.ERROR, 5);
-            return;
-         }
-   
-   
-         const logged = account.login(password);
-   
-         if (!logged) { 
-            player.sendNotification(lang.incorrectPassword, notifications.type.ERROR, 5);
-            return;
-         }
-   
-         account.setLogged(player, true);
-   
-         return account;
-      })
-   } catch (e) {
-      console.log(e)
-   }
+      const logged = account.login(password);
+
+      if (!logged) { 
+         player.sendNotification(lang.incorrectPassword, notifications.type.ERROR, 5);
+         return;
+      }
+
+      account.setLogged(player, true);
+
+      return account;
+   })
 }
 
 

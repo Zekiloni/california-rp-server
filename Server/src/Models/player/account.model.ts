@@ -1,9 +1,10 @@
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany, DataType, Length } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
 import { shared_Data } from '@shared';
-import { lang } from '@constants';
+import { rank } from '@enums';
+import { lang, none } from '@constants';
 import { characters } from '@models';
 
 
@@ -17,79 +18,64 @@ export class accounts extends Model {
    @PrimaryKey
    @Column
    id: number;
-
-
+   
    @Unique(true)
-   @Column
+   @Column(DataType.STRING(64))
    username: string;
 
-
-   @Unique(true)
-   @Column
+   @Column(DataType.TEXT)
    email: string;
-
 
    @HasMany(() => characters)
    characters: characters[];
 
-
-   @Column
+   @Column(DataType.TEXT)
    password: string;
 
-
-   @Default(0)
-   @Column
+   @Default(rank.NONE)
+   @Column(DataType.INTEGER)
    administrator: number;
-
 
    @Default(null)
    @Column
    login_date: Date;
 
-
    @Default(null)
-   @Column
+   @Column(DataType.STRING(64))
    ip_adress: string;
 
-
    @Default(null)
-   @Column
+   @Column(DataType.STRING(64))
    social_club: string;
   
-   
    @Default(null)
-   @Column
+   @Column(DataType.STRING(256))
    hardwer: string;
 
-
-   @Default(0)
-   @Column
+   @Default(none)
+   @Length( { min: 0, max: 3 } )
+   @Column(DataType.INTEGER)
    warns: number;
 
-
-   @Default(0)
-   @Column
+   @Default(none)
+   @Length( { min: 0, max: 3 } )
+   @Column(DataType.INTEGER)
    donator: number;
 
-
-   @Default(0)
-   @Column
+   @Default(none)
+   @Column(DataType.INTEGER)
    coins: number;
 
-
    @Default(false)
-   @Column
+   @Column(DataType.BOOLEAN)
    online: boolean;
 
-
-   @Default(0)
-   @Column
+   @Default(none)
+   @Column(DataType.INTEGER)
    last_character: number;
-
 
    @CreatedAt
    created_at: Date;
-
 
    @UpdatedAt
    updated_at: Date;
@@ -104,7 +90,6 @@ export class accounts extends Model {
    login (password: string) {     
       return bcrypt.compareSync(password, this.password);
    }
-
 
    async setLogged (player: PlayerMp, toggle: boolean) {
       this.online = toggle;
@@ -131,7 +116,6 @@ export class accounts extends Model {
 
       await this.save();
    }
-
    
    setAdministrator (player: PlayerMp, level: number) {
       this.administrator = level;

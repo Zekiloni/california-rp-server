@@ -44,9 +44,11 @@ Database.authenticate()
    const admins = [
       { Username: 'divine', Password: 'divine' },
       { Username: 'Zekiloni', Password: 'kapakapa' },
+      { Username: 'Parzival', Password: 'parzival' },
       { Username: 'pitix', Password: 'pitix' },
       { Username: 'deker', Password: 'deker' },
-      { Username: 'shamzy', Password: 'shamzy' }
+      { Username: 'VessX', Password: 'vessx' },
+      { Username: 'Daquan', Password: 'daquan' }
    ];
 
    for (const admin of admins) { 
