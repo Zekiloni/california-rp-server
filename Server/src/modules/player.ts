@@ -207,7 +207,7 @@ async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: st
 
          await leavingPlayer.character.save();
          
-         inventories.unequipWeapons(leavingPlayer.character);
+         inventories.savePlayerEquipment(leavingPlayer.character);
       }
    } catch (e) { 
       logs.error('playerQuitHadnler: ' + e);

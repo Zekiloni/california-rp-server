@@ -1,11 +1,11 @@
 
 
-mp.players.local.setCanSwitchWeapon(false);
+//mp.players.local.setCanSwitchWeapon(false);
 
 mp.events.add(
    {
       'playerWeaponShot': onPlayerWeaponShot,
-      'render': disableDefaultWeaponBehaviour
+      //'render': disableDefaultWeaponBehaviour
    }
 )
 

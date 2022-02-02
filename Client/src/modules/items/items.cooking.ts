@@ -6,9 +6,9 @@ const objects = [
 ];
 
 mp.events.add('entityStreamIn', (entity: EntityMp) => { 
-   mp.gui.chat.push('entity type ' + JSON.stringify(entity.type))
+   //mp.gui.chat.push('entity type ' + JSON.stringify(entity.type))
    if (entity.type == entityType.OBJECT)  {
-      mp.gui.chat.push('adada')
+      //mp.gui.chat.push('adada')
       if (entity.getVariable('ITEM') && objects.includes(entity.model)) {
          mp.gui.chat.push('rostilj')
       }

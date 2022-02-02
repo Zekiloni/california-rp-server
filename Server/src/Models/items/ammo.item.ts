@@ -5,8 +5,9 @@ import { inventories, logs} from '@models';
 import { itemEnums } from '@enums';
 import { itemNames } from '@constants';
 
+import weaponData from '../../configs/weapon.data.json';
 
-type weaponData = { [key: string]: any }
+
 
 
 export class ammoItem extends items {
@@ -23,16 +24,17 @@ export class ammoItem extends items {
             return;
          }
 
+         //@ts-ignore
+         const weapon = weaponData[player.weapon.toString()];
 
-         const weapon = await player.call('CLIENT::WEAPON:NAME', [player.weapon]);
-
-         logs.info('Weapon Name ' + weapon + ', player ' + player.name);
+         logs.info('Weapon Name ' + weapon.Name + ', player ' + player.name);
       
          const weaponItem = await inventories.findOne(
             { 
                where: { 
                   owner: player.character.id, 
-                  name: <string>weapon!, 
+                  //@ts-ignore
+                  name: weapon.Name, 
                   equiped: true
                } 
             }

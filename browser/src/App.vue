@@ -31,6 +31,10 @@
       </transition>
    
 
+      <!-- [ITEMS] -->
+      <HandheldRadio v-if="interfaces.handheld_Radio" />
+
+
       <!-- [HOUSES] -->
       <transition name="fade"> 
          <HouseInfo v-if="interfaces.houseInfo" />
@@ -79,12 +83,14 @@
    import Market from './components/business/Market.vue';
    import HouseInfo from './components/houses/house.info.vue';
    import Phone from './components/phone.vue';
+   import HandheldRadio from './components/misc/handheld.radio.vue';
 
    export default { 
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Inventory, Chat, 
-         Banking, ATM, JobOffer, Market, HouseInfo, Phone, Document
+         Banking, ATM, JobOffer, Market, HouseInfo, Phone, Document, 
+         HandheldRadio
       },
 
       data () { 

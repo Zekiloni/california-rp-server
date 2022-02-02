@@ -11,12 +11,13 @@ const InitialState = {
    notifications: true,
    chat: false,
 
-   lobby: true,
+   lobby: false,
    characterCreator: false,
 
    gameInterface: false,
    inventory: false,
    phone: false,
+   handheld_Radio: true,
    id_Document: false,
    licenses: false,
    

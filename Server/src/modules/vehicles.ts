@@ -1,3 +1,30 @@
+
+mp.events.add( 
+   {
+      'playerExitVehicle': onPlayerExitVehicle,
+   }
+);
+
+
+/**
+* Handle player leave vehicle
+* @function onPlayerExitVehicle
+* @param {PlayerMp} player The player that is leaving the vehicle.
+* @param {VehicleMp} vehicle The vehicle.
+*/
+function onPlayerExitVehicle (player: PlayerMp, vehicle: VehicleMp) {
+
+   if (!vehicle) {
+      return;
+   }
+
+   // # if engine runing keep it
+   if (vehicle.engine) {
+      vehicle.engine = true;
+   }
+}
+
+
 // type VehicleInfo = {
 //     model: string,
 //     category: string[],

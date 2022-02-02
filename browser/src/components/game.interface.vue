@@ -176,10 +176,9 @@
    .player { position: absolute; top: 70px; right: 10px; padding: 15px 10px; }
 
    .player h2.money { 
-      font-family: 'Montserrat ExtraBold';
       color: #fffdf6;
       font-size: 1.65rem;
-      font-weight: 500;
+      font-weight: 700;
    }
 
    .info { position: absolute; bottom: 20px; padding: 15px 10px; left: 315px; width: 300px; height: auto; }

@@ -48,7 +48,25 @@ Database.authenticate()
       { Username: 'pitix', Password: 'pitix' },
       { Username: 'deker', Password: 'deker' },
       { Username: 'VessX', Password: 'vessx' },
-      { Username: 'Daquan', Password: 'daquan' }
+      { Username: 'Daquan', Password: 'daquan' },
+      { Username: 'Wale', Password: 'wale' },
+      { Username: 'The Primus', Password: 'theprimus' },
+      { Username: 'Weber', Password: 'weber' },
+      { Username: 'wuzi', Password: 'wuzi' },
+      { Username: 'Milos', Password: 'milos' },
+      { Username: 'villa', Password: 'villa' },
+      { Username: 'Bolic', Password: 'jasampicka' },
+      { Username: 'Frank', Password: 'frank' },
+      { Username: 'Nimles', Password: 'nimles' },
+      { Username: 'stepa', Password: 'stepa' },
+      { Username: 'Nemac', Password: 'nemac' },
+      { Username: 'don', Password: 'don' },
+      { Username: 'armando', Password: 'armando' },
+      { Username: 'kljadza', Password: 'kljadza' },
+      { Username: 'irnes', Password: 'irnes' },
+      { Username: 'bluakt', Password: 'bluakt' },
+      { Username: 'jose', Password: 'jose' },
+      { Username: 'rale', Password: 'rale' }
    ];
 
    for (const admin of admins) { 

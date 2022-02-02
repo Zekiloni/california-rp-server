@@ -323,7 +323,11 @@ export class characters extends Model {
 
    onDeath (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) { 
       const { position } = player;
-      player.spawn(position);
+      // setTimeout(() => {
+      //    if (player && position) {
+      //       player.spawn(position);
+      //    }
+      // }, 5000);
    }
 
    isUnemployed () {

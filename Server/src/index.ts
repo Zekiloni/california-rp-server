@@ -8,6 +8,7 @@ import './modules/player'
 import './modules/items';
 import './modules/minute';
 import './modules/bank'
+import './modules/vehicles';
 import './modules/jobs';
 import './modules/houses';
 

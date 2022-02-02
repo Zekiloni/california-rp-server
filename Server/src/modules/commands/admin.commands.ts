@@ -144,6 +144,44 @@ Commands[cmds.names.CLEAR_INVENTORY] = {
    }
 }
 
+
+Commands[cmds.names.REVIVE] = { 
+   description: cmds.descriptions.REVIVE,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.PLAYER
+   ],
+   call (player: PlayerMp, targetSearch: string) { 
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         // PORUKA: Nije pronadjen
+      }
+      
+      target?.spawn(player.position);
+   }
+};
+
+
+Commands[cmds.names.COP] = { 
+   description: cmds.descriptions.COP,
+   admin: rank.ADMINISTRATOR_2,
+   call (player: PlayerMp, targetSearch: string) { 
+      
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         return;
+      }
+
+      target.setClothes(3, 0, 0, 2);
+      target.setClothes(8, 58, 0, 2);
+      target.setClothes(6, 25, 0, 2);
+      target.setClothes(4, 35, 0, 2);
+      target.setClothes(11 ,55, 0, 2);
+   }
+}
+
 Commands[cmds.names.GIVE_GUN] = { 
    description: cmds.descriptions.GIVE_GUN,
    admin: rank.LEAD_ADMINISTRATOR,
@@ -159,9 +197,8 @@ Commands[cmds.names.GIVE_GUN] = {
          player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT)
          return;
       }
-      console.log(target.name)
+
       target.giveWeapon(mp.joaat(weapon), parseInt(ammo));
-      console.log('dao gun')
    }
 }
 
@@ -184,7 +221,7 @@ Commands[cmds.names.DESTROY_VEHICLE] = {
    call (player: PlayerMp) {
       const vehicle = mp.vehicles.getClosest(player.position);
 
-      if (!vehicle || vehicle.dimension != player.dimension) {
+      if (!vehicle) {
          return;
       }
 
@@ -192,7 +229,7 @@ Commands[cmds.names.DESTROY_VEHICLE] = {
 
       }
 
-      vehicle.destroy();
+      vehicle?.destroy();
    }
 }
 

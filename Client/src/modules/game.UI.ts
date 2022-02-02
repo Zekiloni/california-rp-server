@@ -83,7 +83,7 @@ class gameUI {
       mp.game.invoke('0x9E4CFFF989258472'); // Anti AFK CAM
       mp.game.invoke('0xF4F2C0D4EE209E20'); // Anti shake cam
       
-      gameInterface.HIDE_CORSSAIR();
+      // gameInterface.HIDE_CORSSAIR();
    }
 
    updateMain () { 
