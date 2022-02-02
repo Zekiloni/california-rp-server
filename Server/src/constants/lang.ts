@@ -158,6 +158,7 @@ export const lang = {
    itemAction: { 
       use: 'Koristi predmet',
       give: 'Daj predmet',
+      equip: 'Opremi',
       split: 'Podeli predmet',
       drop: 'Baci predmet',
    },

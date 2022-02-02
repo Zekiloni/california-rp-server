@@ -45,14 +45,25 @@ export class items {
       return this.type.includes(itemEnums.type.EQUIPABLE);
    }
 
+   isUsable () {
+      return this.type.includes(itemEnums.type.USABLE);
+   }
+
    availableActions () {
       let actions: itemAction[] = [];
 
       actions.push(
-         { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' },
          { name: lang.itemAction.drop, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
          { name: lang.itemAction.give, event: 'CLIENT::ITEM:GIVE', icon: 'give' }
       );
+
+      if (this.isEquipable()) {
+         actions.push( { name: lang.itemAction.equip, event: 'CLIENT::ITEM:EQUIP', icon: 'use' } )
+      }
+
+      if (this.isUsable()) {
+         actions.push( { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' } )
+      }
 
       if (this.isStackable()){
          actions.push( { name: lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' } );

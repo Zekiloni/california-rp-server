@@ -28,8 +28,6 @@ function getPlayerItems (player: PlayerMp) {
 
 async function getItemInfo (player: PlayerMp, itemName: string) { 
    const item = items.list[itemName];
-   console.log(item)
-   console.log(item.availableActions())
    return { info: item, actions: item.availableActions() };
 };
 

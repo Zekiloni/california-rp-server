@@ -4,12 +4,12 @@
 
    <transition name="appear-from-bottom" appear> 
       <div class="handheld-radio" >
-         <div class="screen" :class="{ off: power == false }">
+         <div class="screen" :class="{ off: info.power == false }">
             <div class="slots">
                 <h2> slot </h2>
-                <h4 v-for="dSlot in slots" :key=dSlot :class="{ selected: dSlot == slot }" @click="setSlot(dSlot)"> {{ dSlot }} </h4>
+                <h4 v-for="dSlot in slots" :key=dSlot :class="{ selected: dSlot == info.slot }" @click="setSlot(dSlot)"> {{ dSlot }} </h4>
              </div>
-            <h2 class="frequency"> {{ frequency }} </h2>
+            <h2 class="frequency"> {{ info.frequency }} </h2>
             <h2 class="hz"> 888 </h2>
          </div>
          <ul class="digits">
@@ -32,56 +32,74 @@
                digits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                slots: [1, 2, 3],
                selected: 0,
-               
-               power: true,
-               frequency: '231',
-               slot: 1
+
+               info: {
+                  power: true,
+                  frequency: '231',
+                  slot: 1
+               }
             }
          },
 
          methods: {
-            input: function (i) {
+            input: function (i : string) {
 
-               if (!this.power) {
+               if (!this.info.power) {
                   return;
                }
 
-               let old = this.frequency.split('');
+               let old = this.info.frequency.split('');
                old[this.selected] = i;
                this.selected ++;
 
-               if (this.selected > this.frequency.length - 1) {
+               if (this.selected > this.info.frequency.length - 1) {
                   this.selected = 0;
                }
 
-               this.frequency = old.join('');
+               this.info.frequency = old.join('');
             },
 
             set: function () {
 
-               if (!this.power) {
+               if (!this.info.power) {
                   return;
                }
                
                //@ts-ignore
-               mp.events.add('CLIENT::FREQUENCY:SET', this.frequency)
+               mp.events.add('CLIENT::FREQUENCY:SET', this.info.frequency)
             },
 
             setSlot: function (i: number) {
-               if (!this.power) {
+               if (!this.info.power) {
                   return;
                }
 
-               this.slot = i;
+               this.info.slot = i;
             },
 
             toggle: function () {
-               this.power = !this.power;
+               this.info.power = !this.info.power;
             }
          },
 
          async mounted () {
-            
+            //@ts-ignore
+            if (window.mp) {
+               
+               //@ts-ignore
+               mp.invoke('focus', true);
+
+               //@ts-ignore
+               mp.events.add('BROWSER::HANDHELD_RADIO', (info: string) => this.info = JSON.parse(info))
+            }
+         },
+
+         beforeDestroy () {
+            //@ts-ignore
+            if (window.mp) {            
+               //@ts-ignore
+               mp.invoke('focus', false);
+            }
          }
       }
    );
@@ -91,23 +109,23 @@
    .handheld-radio { 
       position: absolute;
       right: 350px;
-      width: 230px;
-      height: 365px;
+      width: 200px;
+      height: 325px;
       border-top-left-radius: 25px;
       border-top-right-radius: 25px;
-      background: radial-gradient(rgb(71 77 87 / 25%), rgb(11 14 17 / 25%));
+      background: radial-gradient(rgb(71 77 87 / 35%), rgb(11 14 17 / 55%));
       bottom: 0;
    }
 
    .handheld-radio::after {
       content: '';
       top: -200px;
-      left: 50px;
+      left: 40px;
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
-      width: 30px;
+      width: 22px;
       height: 200px;
-      background: radial-gradient(rgb(71 77 87 / 25%), rgb(11 14 17 / 25%));
+      background: radial-gradient(rgb(71 77 87 / 35%), rgb(11 14 17 / 55%));
       position: absolute;
    }
 
@@ -122,9 +140,9 @@
    .slots h2 { margin: 0 0; font-weight: 550; font-size: 0.6rem; }
 
    .screen { 
-      width: 195px;
+      width: 170px;
       position: relative;
-      height: 130px;
+      height: 115px;
       background: #181a20;
       margin: 20px auto;
       transition: all .15s ease;
@@ -146,7 +164,7 @@
       text-align: right;
       color: #ffcc45;
       width: 200px;
-      font-size: 6.85rem;
+      font-size: 5.85rem;
       z-index: 1;
    }
 
@@ -160,7 +178,7 @@
       margin: 0;
       z-index: 0;
       letter-spacing: 0.1rem;
-      font-size: 6.95rem;
+      font-size: 5.95rem;
       color: #2a303c;
       text-align: right;
    }
@@ -176,9 +194,9 @@
    }
 
    .digits li {
-      width: 45px; 
+      width: 40px; 
       margin: 5px; 
-      height: 35px; 
+      height: 30px; 
       background: #181a20; 
       color: #9ba4b1;
       display: flex;
@@ -196,9 +214,9 @@
       font-size: 0.75rem;
    }
 
-   .digits li.power { width: 50px; }
+   .digits li.power { width: 40px; }
    .digits li.power .icon { 
-      width: 20px; height: 20px; background: tomato;
+      width: 15px; height: 15px; background: tomato;
       mask: url('../../assets/images/icons/power.svg') no-repeat center; 
       mask-size: cover;
    }
