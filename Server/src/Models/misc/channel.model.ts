@@ -1,7 +1,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, CreatedAt, UpdatedAt, AllowNull } from 'sequelize-typescript';
 import { inventories } from '@models';
-import { itemNames } from '@constants';
+import { colors, itemNames, lang } from '@constants';
 
 
 @Table
@@ -44,8 +44,7 @@ export default class channels extends Model {
    }
 
    async changePassword (password: string) {
-      this.password = password;
-      await this.save();
+     this.update('password', password);
    }
 
 
@@ -95,6 +94,20 @@ export default class channels extends Model {
 
       // PORUKA: Frekvencija uspesno izbrisana
       await this.destroy();
+   }
+
+   send (sender: PlayerMp | null, message: string) {
+      const by = sender ? sender.character.name : lang.dispatcher;
+      const freq = this.frequency.toString();
+      
+      mp.players.forEach(player => {
+         const equiped = inventories.hasEquiped(player, itemNames.HANDHELD_RADIO);
+         if (equiped) {
+            if (equiped.data.power && equiped.data.frequency == this.frequency) {
+               player.sendMessage('[CH: ' + freq + '] ' + by + ': ' + message, colors.hex.RADIO);
+            }
+         }
+      });
    }
 }
 

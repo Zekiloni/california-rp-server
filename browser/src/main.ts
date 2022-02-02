@@ -9,9 +9,7 @@ Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
 //@ts-ignore
-
 Vue.use(VTooltip);
-
 
  
 Vue.mixin({

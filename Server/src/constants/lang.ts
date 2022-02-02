@@ -138,6 +138,7 @@ export const lang = {
    // others 
    and: ' i ', 
    times: ' puta',
+   dispatcher: 'DISPATCHER',
    bank: 'Bank',
    dropsCoin: ' baca novčić i pada na ',
    coinResult: ['glavu', 'pismo'],

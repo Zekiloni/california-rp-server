@@ -25,6 +25,8 @@
          <Phone v-if="interfaces.phone" />
       </transition>
 
+      <Playerlist v-if="interfaces.playerlist" />
+
       <transition name="fade"> 
          <Banking v-if="interfaces.banking" key=banking />\
          <ATM v-if="interfaces.atm" key=atm />
@@ -74,6 +76,7 @@
    import Creator from './components/creator.vue';
    import Notifications from './components/notifications.hints.vue';
    import GameInterface from './components/game.interface.vue';
+   import Playerlist from './components/misc/playerlist.vue';
    import Chat from './components/chat';
    import Inventory from './components/items/inventory.vue';
    import Document from './components/misc/id.document.vue';
@@ -88,9 +91,9 @@
    export default { 
 
       components: { 
-         Lobby, Creator, Notifications, GameInterface, Inventory, Chat, 
-         Banking, ATM, JobOffer, Market, HouseInfo, Phone, Document, 
-         HandheldRadio
+         Lobby, Creator, Notifications, GameInterface, Playerlist,
+         Inventory, Chat, Banking, ATM, JobOffer, Market, HouseInfo, 
+         Phone, Document, HandheldRadio
       },
 
       data () { 

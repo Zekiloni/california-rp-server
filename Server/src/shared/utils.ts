@@ -7,6 +7,11 @@ export function randomInteger (min: number, max: number) {
 }
 
 
+export function checkForDot (text: string) {
+   const last = text.slice(-1);
+   return last == '.' ? text : text + '.';
+}
+
 export function isInRangeOfPoint (first: Vector3Mp, range: number, second: Vector3Mp) {
    return distanceBetweenVectors(first, second) < range ? true : false;
 }

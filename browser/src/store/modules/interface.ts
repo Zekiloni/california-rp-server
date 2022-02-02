@@ -17,14 +17,15 @@ const InitialState = {
    gameInterface: false,
    inventory: false,
    phone: false,
-   handheld_Radio: true,
+   handheld_Radio: false,
    id_Document: false,
    licenses: false,
    
    banking: false,
    atm: false,
 
-   Playerlist: false,
+   playerlist: true,
+
    job_Offer: false,
    Miner: false,
    Food: false,

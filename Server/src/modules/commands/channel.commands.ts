@@ -13,8 +13,8 @@ Commands[cmds.names.RADIO] = {
          return;
       };
 
-      mp.players.forEach(player => {
-         player.sendMessage('[CH: 911] ' + player.name + ' : ' + text, colors.hex.RADIO);
+      mp.players.forEach(target => {
+         target.sendMessage('[CH: 911] ' + player.name + ' : ' + text, colors.hex.RADIO);
       });
    }
 }

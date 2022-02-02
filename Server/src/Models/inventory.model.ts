@@ -138,6 +138,10 @@ export class inventories extends Model {
       });
    }
 
+   static hasEquiped (player: PlayerMp, itemName: string) {
+      return player.character.equiped.find(item => item.name == itemName);
+   }
+
    static getEntityItems (entity: itemEnums.entity, owner: number, includeEquiped?: boolean)  { 
       return inventories.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
          if (includeEquiped) {

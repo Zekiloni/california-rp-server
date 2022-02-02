@@ -66,7 +66,8 @@ Database.authenticate()
       { Username: 'irnes', Password: 'irnes' },
       { Username: 'bluakt', Password: 'bluakt' },
       { Username: 'jose', Password: 'jose' },
-      { Username: 'rale', Password: 'rale' }
+      { Username: 'rale', Password: 'rale' },
+      { Username: 'vukodlak', Password: 'vukodlak' }
    ];
 
    for (const admin of admins) { 

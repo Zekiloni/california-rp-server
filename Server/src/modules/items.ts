@@ -63,7 +63,7 @@ async function onItemDrop (player: PlayerMp, itemId: number, positionString: str
       const groundPosition = JSON.parse(positionString);
       const { position, rotation } = groundPosition;
 
-      item?.dropItem(player, new mp.Vector3(position.x, position.y, position.z), new mp.Vector3(rotation.x, rotation.y, rotation.z))
+      await item?.dropItem(player, new mp.Vector3(position.x, position.y, position.z), new mp.Vector3(rotation.x, rotation.y, rotation.z))
          
       const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
       return inventory;

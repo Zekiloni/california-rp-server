@@ -1,7 +1,5 @@
 
 import { Browser } from '../browser';
-import { Genders } from '../data/Player';
-import { clothingComponents } from '../enums/clothing';
 import { getStreetZone } from '../utils';
 import { gameInterface } from './game.UI';
 
