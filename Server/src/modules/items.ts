@@ -58,35 +58,22 @@ async function onItemUse (player: PlayerMp, itemId: number): Promise < inventori
 };
 
 
-async function onItemDrop (player: PlayerMp, itemId: number, positionString: string): Promise < inventories[] > { 
-   return new Promise((resolve) => { 
-      inventories.findOne({ where: { id: itemId } }).then(async item => { 
+async function onItemDrop (player: PlayerMp, itemId: number, positionString: string) { 
+   inventories.findOne({ where: { id: itemId } }).then(async item => { 
+      const groundPosition = JSON.parse(positionString);
+      const { position, rotation } = groundPosition;
 
-         const groundPosition = JSON.parse(positionString);
-         const { position, rotation } = groundPosition;
-
-         item!.owner = 0;
-         item!.on_ground = true;
-         item!.dimension = player.dimension;
-         item!.fingerprint = player.character.id;
-         item!.position = new mp.Vector3(position.x, position.y, position.z);
-         item!.rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z);
+      item?.dropItem(player, new mp.Vector3(position.x, position.y, position.z), new mp.Vector3(rotation.x, rotation.y, rotation.z))
          
-         await item?.save();
-         
-         const newInventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
-         if (newInventory) resolve(newInventory);
-      });
+      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      return inventory;
    });
 };
 
 
 async function onItemPickup (player: PlayerMp, itemId: number) { 
-
    return inventories.findOne( { where: { id: itemId } } ).then(async item => {
       await item?.pickupItem(player);      
-
-      player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 } );
 
       const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
       return inventory;  

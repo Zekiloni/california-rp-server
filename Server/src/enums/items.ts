@@ -9,7 +9,7 @@ export namespace itemEnums {
       ILEGAL, LEGAL, MISC, CLOTHING,
       PROP, HEAVY, STACKABLE, USABLE, STORAGE, 
       SEED, DOCUMENT, LICENSE, COOKABLE, COOKER,
-      ID_CARD, LAW_BADGE, CREDIT_CARD
+      ID_CARD, LAW_BADGE, CREDIT_CARD, ELECTRONIC_DEVICE
    }
 
    export enum entity { 

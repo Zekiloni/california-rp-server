@@ -29,5 +29,6 @@ export const itemNames = {
 export const itemDescriptions = { 
    NO_DESCRIPTION : 'Ovaj predmet nema opis.',
    DOCUMENT_ID_CARD : 'Identifikacioni dokument. Lična karta. Nije preporučljivo da je izgubite.',
-   CREDIT_CARD : 'Kreditna kartica bankovnog računa. Služi za podizanje novca na bankomatima i plaćanje.'
+   CREDIT_CARD : 'Kreditna kartica bankovnog računa. Služi za podizanje novca na bankomatima i plaćanje.',
+   HANDHELD_RADIO: 'Ručni radio prijemnik (motorola). Služi za komunikaciju medju ljudima povezanih na istu frekvenciju.'
 }

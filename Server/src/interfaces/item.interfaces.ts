@@ -18,6 +18,8 @@ export interface itemExtra  {
    bank?: number
    created?: number
    pin?: number
+   power?: boolean
+   slot?: number
    frequency?: number
 };
 

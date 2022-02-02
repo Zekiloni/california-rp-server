@@ -15,6 +15,7 @@ export class items {
    carryModel?: string;
    extraActions?: itemAction[];
    use? (Player: PlayerMp, ...params: any): void | any;
+   equip? (player: PlayerMp, ...params: any): void | any;
 
    static list: { [key:string] : items } = {};
 
@@ -77,7 +78,6 @@ export class items {
       
       return actions;
    }
-   
 }
 
 
@@ -160,7 +160,6 @@ import './items/cooker.item';
 
 
 // // MISCELLANEOUS
-// new Item('Handheld Radio', ItemType.Misc, 'prop_cs_hand_radio', 0.2, false, false);
 // new Item('Smartphone', ItemType.Misc, 'prop_amb_phone', 0.2, false, false);
 // new Item('Phone', ItemType.Misc, 'prop_v_m_phone_01', 0.2, false, function (player) { });
 // new Item('Boombox', ItemType.Misc, 'prop_boombox_01', 0.5, false, function (player) { });
