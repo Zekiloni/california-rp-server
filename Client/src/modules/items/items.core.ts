@@ -84,7 +84,6 @@ mp.events.add(
 
       'CLIENT::ITEM:EQUIP': async (item: string) => {
          const inventory = await mp.events.callRemoteProc('SERVER::ITEM:EQUIP', JSON.parse(item).id);
-         mp.gui.chat.push('Item Equip 1');
          if (inventory) {
             Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
          }     

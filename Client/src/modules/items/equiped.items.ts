@@ -33,7 +33,7 @@ function useEquipment (index: number) {
    }
    
    antiSpam = true;
-   setTimeout(() => { antiSpam = false; } , 2500);
+   setTimeout(() => { antiSpam = false; } , 1575);
 
    mp.events.callRemote('SERVER::USE:EQUIPED', index);   
 }

@@ -11,7 +11,6 @@
       <h2 class="name"> {{ itemInfo.name }} </h2>
       <p class="description" v-html="itemInfo.description"> </p>
 
-      <ModelPreview :model="itemInfo.model" class="model-preview" />
 
       <ul class="actions" v-if="itemActions.length > 0"> 
          <li v-for="action in itemActions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
@@ -26,13 +25,8 @@
 
 <script>
    import { Messages } from '@/globals';
-   import ModelPreview from './model.preview.vue';
 
    export default { 
-
-      components: {
-         ModelPreview 
-      },
 
       props: {
          item: Object,
@@ -80,10 +74,11 @@
    .item-info { 
       position: absolute;
       width: 300px;
-      min-height: 230px;
+      min-height: 120px;
       height: auto;
       border-radius: 10px;
       background: #181a20;
+      padding-bottom: 50px;
       overflow: hidden;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }
@@ -99,9 +94,12 @@
    }
 
    p.description { 
-      font-weight: 250;
-      color: whitesmoke;
-      padding: 10px;
+      font-weight: 300;
+      color: #cdcdcd;
+      line-height: 1.2rem;
+      letter-spacing: 0.025rem;
+      font-size: 0.75rem;
+      padding: 15px;
       margin: 0;
    }
 

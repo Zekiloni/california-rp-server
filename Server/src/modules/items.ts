@@ -75,7 +75,7 @@ function useEquiped (player: PlayerMp, index: number) {
    }
 
    const item = player.character.equiped[index];
-
+   
    if (!item) {
       return;
    }
@@ -143,13 +143,26 @@ async function onWeaponShot (player: PlayerMp) {
 }
 
 
-async function updateHandheldRadio (player: PlayerMp, data: any) {
-   console.log(data)
+async function updateHandheldRadio (player: PlayerMp, newInfo: any) {
+
+   newInfo = JSON.parse(newInfo);
+
+   console.log(newInfo)
+
    const item = player.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
    const index = player.character.equiped.indexOf(item!);
    
-   item!.data = data;
+   let newData = item?.data;
+   
+   newData = {
+      power: newInfo.power,
+      frequency: newInfo.frequency,
+      slot: newInfo.slot
+   };
+
+   item!.data = newData;
    await item!.save();
 
    player.character.equiped[index] = item!;
+
 }

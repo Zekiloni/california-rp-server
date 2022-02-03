@@ -60,13 +60,9 @@
             },
 
             set: function () {
-
-               if (!this.info.power) {
-                  return;
-               }
                
                //@ts-ignore
-               mp.events.call('CLIENT::ITEMS:RADIO:UPDATE', this.info);
+               mp.events.call('CLIENT::ITEMS:RADIO:UPDATE', JSON.stringify(this.info));
             },
 
             setSlot: function (i: number) {
@@ -75,15 +71,10 @@
                }
 
                this.info.slot = i;
-
-               //@ts-ignore
-               mp.events.call('CLIENT::ITEMS:RADIO:UPDATE', this.info);
             },
 
             toggle: function () {
                this.info.power = !this.info.power;
-               //@ts-ignore
-               mp.events.call('CLIENT::ITEMS:RADIO:UPDATE', this.info);
             }
          },
 
