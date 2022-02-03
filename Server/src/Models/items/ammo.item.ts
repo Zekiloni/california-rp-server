@@ -4,10 +4,7 @@ import { items } from '../item.model';
 import { inventories, logs} from '@models';
 import { itemEnums } from '@enums';
 import { itemNames } from '@constants';
-
 import weaponData from '../../configs/weapon.data.json';
-
-
 
 
 export class ammoItem extends items {
@@ -18,7 +15,6 @@ export class ammoItem extends items {
       this.clipSize = bullets;
       
       this.use = async function (player: PlayerMp, item: inventories) {
-
          if (!player.weapon) { 
             // ERROR: No weapon
             return;

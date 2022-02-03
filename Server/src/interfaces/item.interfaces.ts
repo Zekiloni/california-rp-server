@@ -20,7 +20,7 @@ export interface itemExtra  {
    pin?: number
    power?: boolean
    slot?: number
-   frequency?: number
+   frequency?: string
 };
 
 

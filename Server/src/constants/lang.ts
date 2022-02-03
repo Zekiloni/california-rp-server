@@ -31,6 +31,8 @@ export const lang = {
    notNearJob: 'Ne nalazite se u blizini posla',
    userDoesntExist: 'Korisničko ime nije pronadjeno.',
    incorrectPassword: 'Korisnička šifra nije tačna.',
+   youReachedMaxEquipemnt: 'Limit opremljenih predmeta je ',
+   youAlreadyEquiped: 'Već imate opremljen ',
    alreadyEmployed: 'Već ste zaposleni.', 
    jobAlreadyStarted: 'Već ste započeli posao.',
    youHaveMaximumHouses: 'Imate maksimalan broj kuća.',

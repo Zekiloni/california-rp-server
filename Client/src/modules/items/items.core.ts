@@ -1,7 +1,6 @@
 import { Browser } from '../../browser';
-import { screenResolution } from '../core';
 import controls from '../../enums/controls';
-import { playAnimation } from '../player/animations';
+import { playAnimation } from '../player/animation';
 import { animationFlags } from '../../enums/animations.flags';
 
 
@@ -83,6 +82,14 @@ mp.events.add(
          }
       },
 
+      'CLIENT::ITEM:EQUIP': async (item: string) => {
+         const inventory = await mp.events.callRemoteProc('SERVER::ITEM:EQUIP', JSON.parse(item).id);
+         mp.gui.chat.push('Item Equip 1');
+         if (inventory) {
+            Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
+         }     
+      },
+
       'CLIENT::ITEM:GIVE': (item, iteminfo, quantity) => { Browser.call('BROWSER::INVENTORY:GIVE_ITEM', item); },
 
       'render': () => { 
@@ -117,7 +124,6 @@ mp.keys.bind(controls.KEY_I, true, function() {
 
 
    mp.events.call('CLIENT::INVENTORY:TOGGLE');
-
 });
 
 mp.keys.bind(controls.KEY_E, true, function() {

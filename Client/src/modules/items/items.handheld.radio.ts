@@ -4,15 +4,29 @@ import { Browser } from '../../browser';
 
 let active: boolean = false;
 
-mp.events.addProc('CLIENT::ITEMS:RADIO:TOGGLE', toggleRadio);
 
-function toggleRadio (info: any) {
+mp.events.add(
+   {
+      'CLIENT::ITEMS:RADIO:TOGGLE': toggleRadio,
+      'CLIENT::ITEMS:RADIO:UPDATE': updateRadio
+   }
+)
+
+
+function toggleRadio (info?: any) {
    active = !active;
-   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'handheldRadio');
+   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'handheld_Radio');
 
    if (active && info) {
       Browser.call('BROWSER::HANDHELD_RADIO', info);
    }
 
-   return active;
+   if (!active) {
+      mp.events.callRemote('SERVER::ANIMATION:STOP');
+   }
+}
+
+
+function updateRadio (data: string) {
+   mp.events.callRemote('SERVER::ITEMS:RADIO:UPDATE', data);
 }

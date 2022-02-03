@@ -3,6 +3,7 @@ import { playerConfig, serverConfig } from '@configs';
 import { itemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { itemNames, lang } from '@constants';
 import { spawnPoint } from '@interfaces';
+import { shared_Data } from '@shared';
 
 
 
@@ -14,7 +15,8 @@ mp.events.add(
       'playerChat': playerChatHandler,
       'playerDeath': playerDeathHandler,
       'entityModelChange': playerModelChange,
-      'SERVER::CHARACTER:PLAY': playerSelectCharacter
+      'SERVER::CHARACTER:PLAY': playerSelectCharacter,
+      'SERVER::ANIMATION:STOP': stopPlayeranimation
    }
 );
 
@@ -277,4 +279,8 @@ export function updatePlayer (player: PlayerMp) {
    if (player.character!.muted > 0) {
       player.character.increment('muted', { by: -1 });
    }
+}
+
+function stopPlayeranimation (player: PlayerMp) {
+   player.setVariable(shared_Data.ANIMATION, null);
 }

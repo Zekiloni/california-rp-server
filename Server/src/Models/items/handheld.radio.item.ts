@@ -4,8 +4,8 @@ import { items } from '../item.model';
 import { inventories  } from '@models';
 import { itemDescriptions, itemNames } from "@constants";
 import { itemEnums } from "@enums";
-
-
+import { shared_Data } from '@shared';
+import { animations } from '@configs';
 
 
 export class handheldRadioItem extends items {
@@ -14,12 +14,9 @@ export class handheldRadioItem extends items {
       super (name, [itemEnums.type.EQUIPABLE, itemEnums.type.MISC, itemEnums.type.ELECTRONIC_DEVICE], model, weight, itemDescriptions.HANDHELD_RADIO);
 
       this.use = async function (player: PlayerMp, item: inventories) {
-         const active = await player.callProc('CLIENT::ITEMS:RADIO:TOGGLE', [item.data]);
-         if (active) {
-            // animacija motorola
-         } else { 
-            player.stopAnimation();
-         }
+         player.call('CLIENT::ITEMS:RADIO:TOGGLE', [item.data]);
+
+         player.setVariable(shared_Data.ANIMATION, animations.walkie);
       };
    }
 };

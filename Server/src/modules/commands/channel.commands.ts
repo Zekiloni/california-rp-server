@@ -1,4 +1,4 @@
-import { cmds, colors } from '@constants';
+import { cmds, colors, itemNames } from '@constants';
 import { Commands } from '../commands';
 
 Commands[cmds.names.RADIO] = {
@@ -13,8 +13,15 @@ Commands[cmds.names.RADIO] = {
          return;
       };
 
+      const radio = player.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
+
       mp.players.forEach(target => {
-         target.sendMessage('[CH: 911] ' + player.name + ' : ' + text, colors.hex.RADIO);
+         
+         const equiped = target.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
+
+         if (equiped?.data.frequency == radio?.data.frequency) {
+            target.sendMessage('[CH ' + radio?.data.frequency + '] ' + player.name + ' : ' + text, colors.hex.RADIO);
+         }
       });
    }
 }

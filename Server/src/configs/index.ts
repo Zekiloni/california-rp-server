@@ -12,4 +12,5 @@ export * from './faction.config';
 export * from './vehicle.config';
 export * from './business.config';
 export * from './house.config';
+export * from './animations';
 

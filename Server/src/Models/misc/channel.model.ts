@@ -15,7 +15,7 @@ export default class channels extends Model {
    @Unique(true)
    @AllowNull(false)
    @Column
-   frequency: number;
+   frequency: string;
 
    @AllowNull(true)
    @Column
@@ -48,13 +48,13 @@ export default class channels extends Model {
    }
 
 
-   async join (player: PlayerMp, radioItem: inventories, frequency: number, password: string | null) {
+   async join (player: PlayerMp, radioItem: inventories, frequency: string, password: string | null) {
       if (this.password != password) {
          // PORUKA: Pogresna sifra frekvencije
          return;
       }
 
-      if (radioItem.data.frequency != 0) {
+      if (radioItem.data.frequency != '0') {
          // PORUKA: Vec ste u nekoj frekvenciji
          return;
       }
@@ -72,7 +72,7 @@ export default class channels extends Model {
          return;
       }
 
-      radioItem.data.frequency = 0;
+      radioItem.data.frequency = '0';
       // PORUKA: Napustili ste uspesno frekvenciju
       await radioItem.save();
    }
@@ -86,7 +86,7 @@ export default class channels extends Model {
       inventories.findAll({ where: { item: itemNames.HANDHELD_RADIO }}).then(radios => {
          radios.forEach(async radio => {
             if (radio.data.frequency == this.frequency) {
-               radio.data.frequency = 9;
+               radio.data.frequency = '0';
                await radio.save()
             }
          })

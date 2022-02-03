@@ -23,6 +23,7 @@ export namespace playerConfig {
       HOUSES: 3,
       BUSINESS: 2,
       VEHICLES: 5,
+      EQUIPMENT: 4,
    }
 
 

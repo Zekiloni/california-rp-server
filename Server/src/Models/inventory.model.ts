@@ -1,11 +1,12 @@
 
 
 import { AfterCreate, AfterDestroy, AfterSave, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
-import { itemEnums } from '@enums';
+import { itemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { itemExtra } from '@interfaces';
 import { items, logs, characters } from '@models';
-import { none } from '@constants';
+import { itemNames, lang, none } from '@constants';
+import { playerConfig } from '@configs';
 
 
 @Table
@@ -83,8 +84,27 @@ export class inventories extends Model {
    }
 
    @AfterCreate
-   static creating (inventory: inventories) { 
+   static async creating (inventory: inventories) { 
       inventories.refresh(inventory);
+      
+      const rItem = items.list[inventory.name];
+
+      if (!rItem) {
+         return;
+      }
+
+      switch (rItem.name) {
+         case itemNames.HANDHELD_RADIO: {
+            inventory.data = {
+               power: true,
+               frequency: '000',
+               slot: 1
+            }
+            break;
+         }
+      }
+
+      await inventory.save();
    }
 
    @AfterDestroy
@@ -105,7 +125,6 @@ export class inventories extends Model {
       }
    }
 
-
    async pickupItem (player: PlayerMp) { 
       if (this.on_ground) {
          this.on_ground = false;
@@ -123,6 +142,31 @@ export class inventories extends Model {
       this.fingerprint = player.character.id;
       this.position = position;
       this.rotation = rotation;
+      await this.save();
+   }
+
+   async equipItem (player: PlayerMp) {
+      const rItem = items.list[this.name!];
+
+      let { equiped: equipment } = player.character;
+      
+      if (equipment.length > playerConfig.max.EQUIPMENT) {
+         player.sendNotification(lang.youReachedMaxEquipemnt + playerConfig.max.EQUIPMENT + '.', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (!rItem.isEquipable) {
+         logs.error('equipItem: isEquipable');
+         return;
+      }
+
+      if (equipment.find(alreadyEquiped => alreadyEquiped.name == this.name)) {
+         player.sendNotification(lang.youAlreadyEquiped + ' ' + this.name + '.', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      equipment.push(this);
+      this.equiped = true;
       await this.save();
    }
 
@@ -169,13 +213,14 @@ export class inventories extends Model {
    };
 
    static async savePlayerEquipment (character: characters) { 
-      if (character.equiped.length == 0) {
-         return;
-      }
-
       character.equiped.forEach(async item => {
+         item.equiped = false;
          await item.save();
       });
+
+      character.equiped = [];
+
+      await character.save();
    }
 
 }

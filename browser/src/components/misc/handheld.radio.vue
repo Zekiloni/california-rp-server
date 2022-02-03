@@ -66,7 +66,7 @@
                }
                
                //@ts-ignore
-               mp.events.add('CLIENT::FREQUENCY:SET', this.info.frequency)
+               mp.events.call('CLIENT::ITEMS:RADIO:UPDATE', this.info);
             },
 
             setSlot: function (i: number) {
@@ -75,10 +75,15 @@
                }
 
                this.info.slot = i;
+
+               //@ts-ignore
+               mp.events.call('CLIENT::ITEMS:RADIO:UPDATE', this.info);
             },
 
             toggle: function () {
                this.info.power = !this.info.power;
+               //@ts-ignore
+               mp.events.call('CLIENT::ITEMS:RADIO:UPDATE', this.info);
             }
          },
 
@@ -90,7 +95,7 @@
                mp.invoke('focus', true);
 
                //@ts-ignore
-               mp.events.add('BROWSER::HANDHELD_RADIO', (info: string) => this.info = JSON.parse(info))
+               mp.events.add('BROWSER::HANDHELD_RADIO', (info: string) => this.info = JSON.parse(info) );
             }
          },
 

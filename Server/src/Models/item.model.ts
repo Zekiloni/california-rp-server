@@ -61,7 +61,7 @@ export class items {
          actions.push( { name: lang.itemAction.equip, event: 'CLIENT::ITEM:EQUIP', icon: 'use' } )
       }
 
-      if (this.isUsable()) {
+      if (this.isUsable() && !actions.find(action => action.name == lang.itemAction.equip)) {
          actions.push( { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' } )
       }
 
@@ -87,6 +87,7 @@ import './items/food.item';
 import './items/ammo.item';
 import './items/weapon.item';
 import './items/phone.item';
+import './items/handheld.radio.item';
 import './items/cooker.item';
 
 

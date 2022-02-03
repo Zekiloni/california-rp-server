@@ -21,6 +21,7 @@ export enum shared_Data {
    MASKED = 'MASKED',
    INJURIES = 'INJURIES',
    ITEM = 'ITEM',
+   ANIMATION = 'ANIMATION',
    FUEL = 'FUEL',
    MILEAGE = 'MILEAGE',
    DIRT = 'DIRT',

@@ -14,7 +14,9 @@ enum controls {
    ENTER = 0x0D,
    TAB = 0x09,
    NUMBER_1 = 0x31,
-   NUMBER_2 = 0x32
+   NUMBER_2 = 0x32,
+   NUMBER_3 = 0x33,
+   NUMBER_4 = 0x34,
 }
 
 export default controls;
