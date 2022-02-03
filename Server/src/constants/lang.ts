@@ -13,7 +13,7 @@ export const lang = {
    welcomeToServer: 'Dobrodošli na Midnight Roleplay ! Uživajte u igri.',
    characterCreated: 'Uspešno ste kreirali karaktera.',
    welcomeToRegister: 'Dobrodošli na Midnight Roleplay, uživajte u igri.',
-
+   accountCreated: 'Račun uspešno kreiran !',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -134,6 +134,9 @@ export const lang = {
    invitedToFaction: 'Pozvani ste da se pridružite fakciji ',
    toOpenBankMenu: 'Bankovne opcije',
 
+   // warnings
+   adminWarnedYou: 'vas je upozorio',
+
 
    // others 
    and: ' i ', 
@@ -147,6 +150,7 @@ export const lang = {
    quetly: 'govori tiho',
    isShouting: 'se dere',
    whispering: 'Šapućete',
+   admin: 'Admin',
    isWhisperingU: 'vam šapuće',
    tiresTo: ' pokušava da ',
    tryEnd: [

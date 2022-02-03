@@ -14,7 +14,7 @@ export namespace colors {
       Tomato: 'FF6347',
       Megaphone: ['F4D31C', 'F4D31C', 'F4D31C', 'F4D31C', 'F4D31C'],
       Admin: 'F82234',
-      Broadcast: 'F71326',
+      BROADCAST: 'F71326',
       Info: 'E48857',
       Success: '6BD56B',
       Error: 'FF6347',

@@ -11,7 +11,7 @@ const InitialState = {
    notifications: true,
    chat: false,
 
-   lobby: false,
+   lobby: true,
    characterCreator: false,
 
    gameInterface: false,
@@ -24,7 +24,7 @@ const InitialState = {
    banking: false,
    atm: false,
 
-   playerlist: true,
+   playerlist: false,
 
    job_Offer: false,
    Miner: false,

@@ -12,8 +12,14 @@ export namespace cmds {
       PM: 'pm',
       LOW_CHAT: 'l',
       WHISPER: 'w',
+      FLIP: 'flip',
+      CREATE_ACCOUNT: 'createaccount',
       REVIVE: 'revive',
       ITEMS: 'items',
+      KICK: 'kick',
+      BAN: 'ban',
+      HEALTH: 'health',
+      A_CHAT: 'a',
       GIVE_ITEM: 'giveitem',
       CLEAR_INVENTORY: 'clearinventory',
       ENGINE: 'engine',
@@ -26,16 +32,20 @@ export namespace cmds {
       CREATE_HOUSE: 'createhouse',
       DESTROY_HOUSE: 'destroyhouse',
       SAVE_POS: 'position',
+      XYZ: 'xyz',
       GOTO: 'goto',
       GET_HERE: 'gethere',
       CREATE_VEHICLE: 'vehicle',
       DESTROY_VEHICLE: 'destroyvehicle',
       FLY: 'fly',
       ROLEPLAY_TRY: 'try',
+      SLAP: 'slap',
       COP: 'cop',
       SHOUT_CHAT: 's',
+      DIMENSION: 'dimension',
       ROLEPLAY_AME: 'ame',
-      COIN: 'coin'
+      COIN: 'coin',
+      ANNOUNCEMENT: 'ao',
    };
    
    export const params = { 
@@ -46,12 +56,19 @@ export namespace cmds {
       SECONDS: 'sekunda',
       WEAPON: 'ime oružija',
       AMMO: 'municija',
-      WEATHER: 'ime vremena / id'
+      WEATHER: 'ime vremena / id',
+      COORD: 'koordinata',
+      REASON: 'razlog',
+      NUMBER: 'broj',
+      USERNAME: 'korisničko ime',
+      PASSWORD: 'šifra',
+      E_MAIL: 'e-mail'
    };
    
    export const descriptions = { 
       NO_DESC: 'Bez opisa.',
       HELP: 'Lista komandi.',
+      KICK: 'Kikovanje igrača.',
       CREATE_VEHICLE: 'Kreiranje vozila.',
       DESTROY_VEHICLE: 'Brisanje najbližeg vozila ili odredjenog id-a.',
       ITEMS: 'Lista svih predmeta.',
@@ -63,18 +80,26 @@ export namespace cmds {
       SET_TIME: 'Promena vremena, stavite sate na 666 da se vreme automatski menja.',
       SET_WEATHER: 'Vremenske prilike.',
       FIX_VEH: 'Popravka vozila.',
+      FLIP: 'Normala.',
       GOTO: 'Teleport do igrača.',
       GET_HERE: 'Teleportovanje igrača do sebe.',
       REVIVE: 'Oživljavanje igrača.',
+      HEALTH: 'Podešavanje HP-a igrača.',
+      XYZ: 'Teleportovanje do koordinata (X, Y, Z).',
+      DIMENSION: 'Setovanje dimenzije igrača.',
       ROLEPLAY_ME: 'Akcija, radnja.',
       ROLEPLAY_DO: 'Stanje, status.',
+      SLAP: 'Upozorenje / skretanje pažnje igraču na određenu stvar.',
       ROLEPLAY_TRY: 'Pokušaj radnje.',
       ROLEPLAY_AME: 'Opis, ekspresija.',
       LOW_CHAT: 'Tih govor.',
       SHOUT_CHAT: 'Glasniji govor.',
       OOC_CHAT: 'Lokalni OOC govor.',
       PM_CHAT:'Privatna poruka.',
-      WHISPER: 'Šaputanje.'
+      WHISPER: 'Šaputanje.',
+      A_CHAT: 'Admin komunikacija.',
+      CREATE_ACCOUNT: 'Kreiranje računa.',
+      ANNOUNCEMENT: 'Emitovanje igračima.',
    };
    
 }

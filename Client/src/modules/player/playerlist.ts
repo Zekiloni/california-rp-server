@@ -7,6 +7,16 @@ let active: boolean = false;
 mp.keys.bind(controls.TAB, true, openPlayerlist);
 
 function openPlayerlist () {
+
+   if (mp.players.local.isTypingInTextChat) {
+      return;
+   }
+
+
+   if (!mp.players.local.getVariable('SPAWNED')) {
+      return;
+   }
+
    active = !active;
    
    Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'playerlist');

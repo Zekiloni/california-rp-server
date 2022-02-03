@@ -15,7 +15,6 @@ export class items {
    carryModel?: string;
    extraActions?: itemAction[];
    use? (Player: PlayerMp, ...params: any): void | any;
-   equip? (player: PlayerMp, ...params: any): void | any;
 
    static list: { [key:string] : items } = {};
 

@@ -4,6 +4,7 @@
    <transition name="fade" appear> 
       <div class="playerlist">
          <div class="header">
+            <h4> {{ Messages.ONLINE_PLAYERS }} </h4>
             <input class="search" type="text" v-model="search" :placeholder="Messages.SEARCH">
          </div>
 
@@ -14,12 +15,12 @@
                   <th> {{ Messages.PLAYER_NAME }} </th>
                </tr>
             </thead>
-                 <transition-group name="list" tag="tbody">
+            <transition-group name="list" tag="tbody">
                <tr v-for="player in sortPlayers" :key="player.name" :class="{ joining: !player.spawned }">
                   <td class="player-id"> {{ player.id }} </td>
                   <td> {{ player.spawned ? player.name : Messages.JOINING_THE_GAME }} </td>
                </tr>
-                 </transition-group>
+            </transition-group>
          </table>
       </div>
    </transition>
@@ -33,31 +34,9 @@
 
       data () {
          return {
-            players: [
-               { id: 0, name: 'Zeki', spawned: true },
-               { id: 1, name: 'Test', spawned: true },
-               { id: 2, name: 'zechery', spawned: false },
-               { id: 3, name: 'awfrhtht', spawned: true },
-               { id: 4, name: 'Teawgrgrdst', spawned: true },
-               { id: 5, name: 'zechjgujjmgery', spawned: false },
-               { id: 6, name: 'wdawdwadaw', spawned: true },
-               { id: 7, name: 'awdawdawf', spawned: true },
-               { id: 10, name: 'hyfyhfh', spawned: false },
-               { id: 11, name: 'fthfthfthfth', spawned: false },
-               { id: 12, name: 'hftfthfhf', spawned: true },
-               { id: 13, name: 'Teathfthfwgrgrdst', spawned: true },
-               { id: 14, name: 'y5fyfgig7', spawned: false },
-               { id: 16, name: 'tdtd5y5y', spawned: true },
-               { id: 17, name: 'w3rw3ty6', spawned: true },
-               { id: 18, name: 'd4td4t4w', spawned: false },
-               { id: 19, name: 'ftyfty4te', spawned: false },
-               { id: 20, name: 'jyfgftyfty', spawned: true },
-               { id: 21, name: 'kjhkjhkhk', spawned: true },
-            ],
+            players: [ ],
 
             search: '',
-            reverse : false,
-            sort_By: 'id',
 
             Messages
          }
@@ -71,17 +50,6 @@
                //@ts-ignore
                default: return this.players.sort((first_Player: any, second_Player: any) => first_Player.id > second_Player.id);
             }
-         }
-      },
-
-      methods: {
-         setSort: function (key: string) {
-            if (this.sort_By == key) {
-               this.reverse = !this.reverse;
-               return;
-            }
-            this.sort_By = key;
-
          }
       },
       
@@ -125,7 +93,15 @@
    .header {
       margin: 20px 0;
       width: 800px;
-      background: red;
+      display: flex;
+      justify-content: space-between;
+   }
+
+   .header h4 { 
+      font-size: 1.3rem;
+      font-weight: 450;
+      margin: 0;
+      color: #cdcdcd;
    }
 
    input.search {
@@ -149,6 +125,7 @@
       height: 415px;
       overflow-y: scroll;
       border-radius: 5px;
+      background: rgb(11 14 17 / 20%);
    }
 
    .players td, .players th {
@@ -156,14 +133,14 @@
    }
 
    .players tr { 
-      background: #21252f;
+      background: #181a20;
       color: #acacad;
       margin: 5px 0;
       transition: all .3s ease;
    }
 
    .players tr:nth-child(even) {
-      background-color: #2a303c;
+      background-color: rgb(24 26 32 / 65%);
       color: #cdcdcd;
    }
 
@@ -171,6 +148,8 @@
       background-color: #7454e5;
       color: whitesmoke;
    }
+   
+   .players tbody tr { height: 50px; }
 
    .players tr.joining:hover {
       background: none;
@@ -185,7 +164,7 @@
       padding-bottom: 12px;
       width: 760px;
       text-align: left;
-      background-color: #181a20;
+      background-color: #0b0e11;
       color: #cdcdcd;
    }
 

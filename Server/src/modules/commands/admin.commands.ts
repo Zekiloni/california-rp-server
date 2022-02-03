@@ -2,11 +2,11 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses } from '@models';
-import { cmds, lang, weathers } from '@constants';
+import { logs, items, inventories, houses, accounts } from '@models';
+import { cmds, colors, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { houseConfig, serverConfig } from '@configs';
-import { shared_Data } from '@shared';
+import { checkForDot, shared_Data } from '@shared';
 
 
 const savedPositions = 'savedPositions.txt';
@@ -117,12 +117,18 @@ Commands[cmds.names.GIVE_ITEM] ={
    description: cmds.descriptions.GIVE_ITEM,
    admin: rank.SENIOR_ADMINISTRATOR,
    call (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) { 
-      console.log('usi u cmd')
+
       itemName = itemName.join(' ');
+
       if (items.list[itemName]) {
          const foundItem = items.list[itemName];
          const target = mp.players.find(targetSearch);
-         if (!target) return; // no target found
+
+         if (!target) {
+            // PORUKA: igrac nije
+            return;
+         }; 
+
          try { 
             console.log('give 1')
             inventories.giveItem(target, foundItem, quantity);
@@ -131,7 +137,7 @@ Commands[cmds.names.GIVE_ITEM] ={
          }
 
       } else { 
-         // that item doesnt exist
+         // PORUKA: Predmet ne postoji
       }
    }
 }
@@ -143,6 +149,26 @@ Commands[cmds.names.CLEAR_INVENTORY] = {
       
    }
 }
+
+
+Commands[cmds.names.HEALTH] = { 
+   description: cmds.descriptions.HEALTH,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.NUMBER
+   ],
+   call (player: PlayerMp, targetSearch: string, hp: string) { 
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         return;
+      }
+      
+      target.health = Number(hp);
+   }
+};
 
 
 Commands[cmds.names.REVIVE] = { 
@@ -181,6 +207,7 @@ Commands[cmds.names.COP] = {
       target.setClothes(11 ,55, 0, 2);
    }
 }
+
 
 Commands[cmds.names.GIVE_GUN] = { 
    description: cmds.descriptions.GIVE_GUN,
@@ -234,7 +261,6 @@ Commands[cmds.names.DESTROY_VEHICLE] = {
 }
 
 
-
 Commands[cmds.names.TIME] = {
    admin: rank.LEAD_ADMINISTRATOR,
    description: cmds.descriptions.SET_TIME,
@@ -269,6 +295,7 @@ Commands[cmds.names.WEATHER] = {
    }
 };
 
+
 Commands[cmds.names.FIX_VEH] = {
    admin: rank.SENIOR_ADMINISTRATOR,
    description: cmds.descriptions.FIX_VEH,
@@ -281,6 +308,7 @@ Commands[cmds.names.FIX_VEH] = {
       player.vehicle.repair();
    }
 };
+
 
 Commands[cmds.names.GIVE_MONEY] =  {
    admin: rank.LEAD_ADMINISTRATOR,
@@ -297,6 +325,7 @@ Commands[cmds.names.GIVE_MONEY] =  {
    }
 };
 
+
 Commands[cmds.names.SET_MONEY] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
@@ -307,6 +336,7 @@ Commands[cmds.names.SET_MONEY] =  {
    }
 }
 
+
 Commands[cmds.names.CREATE_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
@@ -314,6 +344,7 @@ Commands[cmds.names.CREATE_HOUSE] =  {
       houses.new(player, type, price);
    }
 }
+
 
 Commands[cmds.names.DESTROY_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
@@ -334,122 +365,178 @@ Commands[cmds.names.FLY] =  {
 }
 
 
+Commands[cmds.names.KICK] = {
+   description: cmds.descriptions.KICK,
+   admin: rank.ADMINISTRATOR,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.REASON
+   ],
+   call (player: PlayerMp, targetSearch: string | number, ...res) {
+      const reason = [...res].join(' ');
+
+      if (!reason.trim()) {
+         // PORUKA: 'razlog ne moze biti prazan, space'
+         return;
+      }
+
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      // LOGS
+
+      player.kick('admin ' + player.account.username + ', reason ' + reason);
+   }
+}
 
 
-//  Commands['adminhelp'] = {
-//     description: 'Admin pomoc',
-//     Admin: 1,
-//     call: (Player: PlayerMp, Args: string[]) => {
-//        let AllowedCommands = [];
-//        for (const i in Commands) {
-//           const Command = Commands[i];
-//           if (Command) {
-//              if (Command.Admin! > 0 && Command.Admin! <= player.account.Administrator) {
-//                 AllowedCommands.push(Command);
-//              }
-//           }
+Commands[cmds.names.SLAP] = {
+   description: cmds.descriptions.SLAP,
+   admin: rank.ADMINISTRATOR_2,
+   params: [
+      cmds.params.PLAYER
+   ],
+   call (player: PlayerMp, targetSearch: string) {
+      const target = mp.players.find(targetSearch);
 
-//        }
-//     }
-//  };
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+      }
 
-// Commands['createaccount'] = {
-//    description: 'Kreiranje korisničkog računa',
-//    Admin: 5,
-//    params: ['ime', 'e-mail', 'šifra'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       try {
-//          const [Username, Email, Password] = Args;
-//          Accounts.create({ UserName: Username, Email: Email, Password: Password });
-//          Admin.AdminActionNotify(Player, 'je napravio novi nalog. UserName: ' + Username);
-//       } catch (Ex) {
-//          Main.Terminal(1, JSON.stringify(Ex));
-//       }
+      const { position } = target!;
+      
+      if (target) {
+         target.position = new mp.Vector3(position.x, position.y, position.z + 2);
+         target.sendNotification(lang.admin + ' ' + player.character.name + ' ' + lang.adminWarnedYou + '.', notifications.type.ERROR, notifications.time.SHORT);
+      }
+   }
+};
 
-//    }
-// };
 
-// Commands['coord'] = {
-//    description: 'Teleportovanje do komandi',
-//    Admin: 3,
-//    params: ['x', 'y', 'z'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const [x, y, z] = Args;
-//       Player.position = new mp.Vector3(parseFloat(x), parseFloat(y), parseFloat(z));
-//       Admin.AdminActionNotify(Player, `se teleportovao na koordinate. ${x} ${y} ${z}`);
-//    }
-// };
+Commands[cmds.names.XYZ] = {
+   description: cmds.descriptions.XYZ,
+   admin: rank.ADMINISTRATOR_2,
+   params: [
+      cmds.params.COORD,
+      cmds.params.COORD,
+      cmds.params.COORD
+   ],
+   call (player: PlayerMp, x: string, y: string, z: string) {
+      if (!x || !y || !z) {
+         return;
+      }
+      
+      player.position = new mp.Vector3(Number(x), Number(y), Number(z));
+   }
+};
 
-// Commands['a'] = {
-//    description: 'Admin čet',
-//    Admin: 1,
-//    params: ['poruka'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const Message = Args[0].toLowerCase();
-//       Admin.Chat(Player, Message);
-//    }
-// };
 
-// Commands['ao'] = {
-//    description: 'Globalno server obaveštenje',
-//    Admin: 3,
-//    params: ['poruka'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const Message = Args[0];
-//       Admin.Broadcast(Player, Message);
-//    }
-// };
+Commands[cmds.names.A_CHAT] = {
+   description: cmds.descriptions.A_CHAT,
+   admin: rank.GAME_ASISSTANT,
+   params: [
+      cmds.params.TEXT,
+   ],
+   call (player: PlayerMp, ...content) {
+      const text = [...content].join(' ');
 
-// Commands['tpm'] = {
-//    description: 'Teleport do waypointa sa mape',
-//    Admin: 3,
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       Player.callProc('CLIENT::ADMINI:TP:WAYPOINT').then(Waypoint => {
-//          Player.position = new mp.Vector3(Waypoint.x, Waypoint.y, Waypoint.z);
-//          Admin.AdminActionNotify(Player, `se teleportovao na waypoint. ${Waypoint.x} ${Waypoint.y} ${Waypoint.z}`);
-//       }).catch(() => {
-//          Player.Notification('Nema markera', notifications.type.ERROR, 4);
-//       });
-//    }
-// };
+      if (!text.trim()) {
+         return;
+      }
+      
+      const rank = ranks[player.account.administrator];
 
-// Commands['slap'] = {
-//    description: 'Upozorenje/skretanje pažnje igraču na određenu stvar',
-//    Admin: 2,
-//    params: ['igrač', 'razlog'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const [Target, Reason] = Args;
-//       const TargetPlayer = mp.players.find(Target);
-//       if (Target) {
-//          TargetPlayer.position = new mp.Vector3(TargetPlayer.position.x, TargetPlayer.position.y, TargetPlayer.position.z + 2);
-//          Admin.AdminActionNotify(Player, `je ošamario igrača ${TargetPlayer.name}. Razlog: ${Reason}.`);
-//          TargetPlayer.SendMessage('[OOC] Admin vas je ošamario. Razlog: ' + Reason, Colors.info);
-//       }
-//    }
-// };
+      const admins = mp.players.toArray().filter(player => player.account.administrator > none);
+      admins.forEach(admin => {
+         admin.sendMessage(rank + ' ' + player.name + ': ' + checkForDot(text), colors.hex.BROADCAST);
+      });
+   }
+};
 
-// Commands['ar'] = {
-//    description: 'Prihvatite report sa liste',
-//    Admin: 2,
-//    params: ['broj'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const ReportNumber = Args[0];
-//    }
-// };
 
-// Commands['spec'] = {
-//    description: 'Specanje igrača',
-//    Admin: 2,
-//    params: ['igrač'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const Target = parseInt(Args[0]);
-//       const TargetPlayer = mp.players.at(Target);
+Commands[cmds.names.ANNOUNCEMENT] = {
+   description: cmds.descriptions.ANNOUNCEMENT,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.TEXT,
+   ],
+   call (player: PlayerMp, ...content) {
+      const message = [...content].join(' ');
+      
+      if (!message.trim()) {
+         return;
+      }
 
-//       if (Target && TargetPlayer) {
-//          //TargetPlayer.call('SPEC_EVENT', [TargetPlayer]);
-//       }
-//    }
-// };
+      const rank = ranks[player.account.administrator];
+      const name = player.name + ' (' + player.account.username + ')';
+
+      mp.players.forEach(target => {
+         target.sendMessage(rank + ' ' + name + ': ' + checkForDot(message), colors.hex.BROADCAST);
+      })
+   }
+};
+
+
+Commands[cmds.names.CREATE_ACCOUNT] = {
+   description: cmds.descriptions.CREATE_ACCOUNT,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.USERNAME,
+      cmds.params.PASSWORD,
+      cmds.params.E_MAIL
+   ],
+   call (player: PlayerMp, username: string, password: string, mail: string) {
+      accounts.create( { username: username, password: password, email: mail } ).catch(e => logs.error('creatingAccount: ' + e) );
+      // LOGS
+      player.sendNotification(lang.accountCreated + ' (' + username + ', ' + password + ')', notifications.type.SUCCESS, notifications.time.LONG);
+   }
+};
+
+
+Commands[cmds.names.FLIP] = {
+   description: cmds.descriptions.FLIP,
+   admin: rank.ADMINISTRATOR_2,
+   call (player: PlayerMp) {
+      if (!player.vehicle) {
+         player.sendNotification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
+         return;
+      }
+
+      player.vehicle.rotation = new mp.Vector3(0, 0, 0);
+   }
+}
+
+
+Commands[cmds.names.DIMENSION] = {
+   description: cmds.descriptions.XYZ,
+   admin: rank.ADMINISTRATOR_2,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.NUMBER
+   ],
+   call (player: PlayerMp, targetSearch: string, dimension: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (target.vehicle) {
+         target.vehicle.dimension = Number(dimension);
+      }
+      
+      // PORUKA: Admin vam je promenio dimenziju
+      // LOGS
+
+      target.dimension = Number(dimension);
+   }
+};
+
 
 
 // Commands['rtc'] = {
@@ -480,42 +567,6 @@ Commands[cmds.names.FLY] =  {
 
 //    }
 // };
-
-// Commands['save'] = {
-//    Admin: 7,
-//    description: 'Sačuvajte trenutnu poziciju',
-//    params: ['ime'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       let Name = Args.slice(0).join(' '), Pos = (Player.vehicle) ? Player.vehicle.position : Player.position;
-//       const rot = Player.vehicle ? Player.vehicle.rotation : new mp.Vector3(0, 0, Player.heading);
-//       fs.appendFile(savedPosition, `Position: ${Pos.x}, ${Pos.y}, ${Pos.z} | ${(Player.vehicle) ? `Rotation: ${rot.x}, ${rot.y}, ${rot.z}` : `Heading: ${rot.z}`} | ${(Player.vehicle) ? 'InCar' : 'OnFoot'} - ${name}\r\n`, (err: any) => {
-//          if (err) {
-//             Main.Terminal(3, 'Greska u cuvanju pozicije. Igrac: ' + Player.name + ' Pozicija: ' + Pos)
-//          }
-//          else {
-//             Player.SendMessage(`Trenutna pozicija: ${Name} { X: ${Player.position.x}, Y: ${Player.position.y}, Z: ${Player.position.z} }.`, Colors.info);
-//          }
-//       });
-//    }
-// };
-
-// Commands['kick'] = {
-//    Admin: 2,
-//    description: 'Izbacite igrača sa servera.',
-//    params: ['igrač', 'razlog'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]);
-//       const Reason = Args[1];
-
-//       if (TargetPlayer) {
-//          TargetPlayer.SendMessage('[OOC] Admin vas je ošamario. Razlog: ' + Reason, Colors.info);
-//          Admin.AdminActionNotify(Player, `je kikovao igrača ${TargetPlayer.name}. Razlog: ${Reason}.`);
-//          KickEx(Player, Reason);
-//       }
-//    }
-// };
-
-
 
 
 // Commands['sethp'] = {
@@ -767,19 +818,7 @@ Commands[cmds.names.FLY] =  {
 //    }
 // };
 
-// Commands['unfreeze'] = {
-//    Admin: 3,
-//    description: 'Odledite igrača',
-//    params: ['igrač'],
-//    Call: async (Player: PlayerMp, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]);
-//       if (TargetPlayer) {
-//          TargetPlayer.call('CLIENT::UNFREEZE');
-//          TargetPlayer.SendMessage('[OOC] Admin Vas je odledio.', Colors.info);
-//          Admin.AdminActionNotify(Player, `je odledio igrača ${TargetPlayer.name}.`);
-//       }
-//    }
-// };
+
 
 // Commands['disarm'] = {
 //    Admin: 4,
@@ -795,11 +834,5 @@ Commands[cmds.names.FLY] =  {
 //    }
 // };
 
-// Commands['lr'] = {
-//    Admin: 2,
-//    description: 'Lista svih reportova.',
-//    Call: async (Player: PlayerMp, Args: string[]) => {
-//       // todo
-//    }
-// };
+
 
