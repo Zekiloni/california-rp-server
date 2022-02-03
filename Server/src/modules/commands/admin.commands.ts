@@ -130,7 +130,6 @@ Commands[cmds.names.GIVE_ITEM] ={
          }; 
 
          try { 
-            console.log('give 1')
             inventories.giveItem(target, foundItem, quantity);
          } catch(e) { 
             console.log(e)
@@ -142,6 +141,25 @@ Commands[cmds.names.GIVE_ITEM] ={
    }
 }
 
+
+Commands[cmds.names.FREEZE] = {
+   description: cmds.descriptions.FREEZE,
+   params: [
+      cmds.params.PLAYER
+   ],
+   call (player: PlayerMp, targetSearch: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         return;
+      }
+
+      target.character.freezed! = !target.character.freezed;
+
+      target.call('CLIENT::FREEZE', [target.character.freezed]);
+   }
+}
 
 Commands[cmds.names.CLEAR_INVENTORY] = { 
    description: cmds.descriptions.CLEAR_INVENTORY,
@@ -185,6 +203,41 @@ Commands[cmds.names.REVIVE] = {
       }
       
       target?.spawn(player.position);
+   }
+};
+
+
+Commands[cmds.names.DISARM] = { 
+   description: cmds.descriptions.DISARM,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.PLAYER
+   ],
+   call (player: PlayerMp, targetSearch: string) { 
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         return;
+      }
+      
+      target.removeAllWeapons();
+
+      if (target.character) {
+         target.character.equiped.forEach(async equipment => {
+            const item = items.list[equipment.name];
+            const index = target.character.equiped.indexOf(equipment);
+
+            if (item.isWeapon()) {
+               equipment.equiped = false;
+               target.character.equiped.splice(index, 1);
+               await equipment.save();
+            }
+         })
+      }
+
+      target.sendNotification(lang.admin + ' ' + player.name + lang.disarmedYou, notifications.type.INFO, notifications.time.MED);
+      player.sendNotification(lang.youDisarmedPlayer + ' ' + target.name + '.', notifications.type.SUCCESS, notifications.time.MED);
    }
 };
 
@@ -233,6 +286,9 @@ Commands[cmds.names.GIVE_GUN] = {
 Commands[cmds.names.CREATE_VEHICLE] = { 
    description: cmds.descriptions.CREATE_VEHICLE,
    admin: rank.LEAD_ADMINISTRATOR,
+   params: [
+      cmds.params.VEHICLE_MODEL
+   ],
    call (player: PlayerMp, vName: string, primaryColor: number, secondaryColor: number) { 
 
       const vehicle = mp.vehicles.new(mp.joaat(vName), player.position);
@@ -514,12 +570,13 @@ Commands[cmds.names.FLIP] = {
    description: cmds.descriptions.FLIP,
    admin: rank.ADMINISTRATOR_2,
    call (player: PlayerMp) {
-      if (!player.vehicle) {
+      if (player.vehicle) {
          player.sendNotification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
-         return;
+         player.vehicle.rotation = new mp.Vector3(0, 0, 0);
+      } else if (mp.vehicles.getClosest(player.position)) { 
+         const closesVehicle = mp.vehicles.getClosest(player.position);
+         closesVehicle.rotation = new mp.Vector3(0, 0, 0);
       }
-
-      player.vehicle.rotation = new mp.Vector3(0, 0, 0);
    }
 }
 
@@ -817,19 +874,6 @@ Commands[cmds.names.DIMENSION] = {
 //    }
 // };
 
-// Commands['freeze'] = {
-//    Admin: 3,
-//    description: 'Zaledite igrača u mestu..',
-//    params: ['igrač', 'razlog'],
-//    Call: async (Player: PlayerMp, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]), Reason = Args[1];
-//       if (TargetPlayer && Reason.length > 0) {
-//          TargetPlayer.call('CLIENT::FREEZE');
-//          TargetPlayer.SendMessage('[OOC] Admin Vas je zaledio. Razlog: ' + Reason, Colors.info);
-//          Admin.AdminActionNotify(Player, `je zaledio igraca ${TargetPlayer.name}. Razlog: ${Args[1]}.`);
-//       }
-//    }
-// };
 
 
 

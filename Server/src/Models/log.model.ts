@@ -1,6 +1,14 @@
+
+
+import rp from 'request-promise';
+
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import { accounts, characters } from '@models';
 import { timeDate } from '@shared';
+import { logging } from '@enums';
+import { serverConfig } from '@configs';
+import { colors } from '@constants';
+
 
 
 const consoleColors = {
@@ -8,7 +16,8 @@ const consoleColors = {
    white: '\x1b[37m',
    green: '\x1b[32m',
    yellow: '\x1b[33m'
-}
+};
+
 
 @Table
 export class logs extends Model {
@@ -57,6 +66,30 @@ export class logs extends Model {
 
    static succes (message: string) {
       console.log(consoleColors.green + '[' + timeDate() + '] ' + consoleColors.white + message);
+   }
+
+   static discord (title: string, message: string, category: logging.category) {
+      
+      const embed = {
+         title: title,
+         description: message,
+         color: parseInt(colors.hex.BROADCAST, 16)
+      };
+
+      const params = {
+         username: serverConfig.name,
+         embeds: [embed]
+      };
+
+      const options = {
+         method: 'POST',
+         uri: serverConfig.discordLog,
+         body: params,
+         json: true
+      };
+
+      rp(options)
+         .catch(e => logs.error('discordHook: ' + e) );
    }
 }
 

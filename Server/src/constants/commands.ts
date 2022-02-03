@@ -13,6 +13,7 @@ export namespace cmds {
       LOW_CHAT: 'l',
       WHISPER: 'w',
       FLIP: 'flip',
+      DISARM: 'disarm',
       CREATE_ACCOUNT: 'createaccount',
       REVIVE: 'revive',
       ITEMS: 'items',
@@ -38,6 +39,7 @@ export namespace cmds {
       CREATE_VEHICLE: 'vehicle',
       DESTROY_VEHICLE: 'destroyvehicle',
       FLY: 'fly',
+      FREEZE: 'freeze',
       ROLEPLAY_TRY: 'try',
       SLAP: 'slap',
       COP: 'cop',
@@ -62,7 +64,8 @@ export namespace cmds {
       NUMBER: 'broj',
       USERNAME: 'korisničko ime',
       PASSWORD: 'šifra',
-      E_MAIL: 'e-mail'
+      E_MAIL: 'e-mail',
+      VEHICLE_MODEL: 'model vozila',
    };
    
    export const descriptions = { 
@@ -94,6 +97,8 @@ export namespace cmds {
       SLAP: 'Upozorenje / skretanje pažnje igraču na određenu stvar.',
       ROLEPLAY_TRY: 'Pokušaj radnje.',
       ROLEPLAY_AME: 'Opis, ekspresija.',
+      DISARM: 'Oduzimanje oružija igraču.',
+      FREEZE: 'Zamrzavanje igrača na trenutnu poziciji.',
       LOW_CHAT: 'Tih govor.',
       SHOUT_CHAT: 'Glasniji govor.',
       OOC_CHAT: 'Lokalni OOC govor.',

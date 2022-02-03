@@ -1,6 +1,6 @@
 import { logs, bans, characters, accounts, inventories, appearances, banks } from '@models';
 import { playerConfig, serverConfig } from '@configs';
-import { itemEnums, notifications, spawnPointTypes } from '@enums';
+import { itemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { itemNames, lang } from '@constants';
 import { spawnPoint } from '@interfaces';
 
@@ -175,6 +175,13 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
       if (!logged) { 
          player.sendNotification(lang.incorrectPassword, notifications.type.ERROR, 5);
+
+         logs.discord(
+            lang.unsuccessfulAuth, 
+            lang.account + ': **' + username + '**\n' + lang.IP + ': **' + player.ip + '**\n' + lang.social + ': **' + player.socialClub + '**', 
+            logging.category.ACCOUNT
+         );
+
          return;
       }
 

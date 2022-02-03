@@ -28,6 +28,13 @@ export namespace notifications {
 
 export namespace logging { 
    
+   export enum category {
+      ACCOUNT,
+      ADMIN,
+      MONEY,
+      KILL
+   }
+
    export enum type { 
       SUCCESS = 0,
       ERROR = 1,

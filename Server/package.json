@@ -26,6 +26,7 @@
    },
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
-      "@types/ragemp-s": "github:CocaColaBear/types-ragemp-s#v1.0"
+      "@types/ragemp-s": "github:CocaColaBear/types-ragemp-s#v1.0",
+      "@types/request-promise": "^4.1.48"
    }
 }

@@ -2,7 +2,6 @@
 
 
 export * from './database.config';
-export * from './main.config';
 export * from './server.config';
 
 export * from './player.config';

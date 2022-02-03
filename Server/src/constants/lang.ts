@@ -69,6 +69,7 @@ export const lang = {
    thereIsNoPaycheck: 'Trenutno nema novca za isplatu.',
    notReadyForHarvest: 'Još nije vreme za branje.',
    notFactionLeader: 'Niste lider ove fakcije.',
+   unsuccessfulAuth: 'Neuspešna prijava',
 
 
    // help messages
@@ -90,6 +91,7 @@ export const lang = {
    taximetrePriceRange: 'Cena je u rangu ',
    succefullyGetLicense: 'Uspešno ste prošli testove i praktični deo polaganja za ',
    taximetreSettedOn: 'Uspešno ste promenili cenu vožnje po minuti na ',
+   youDisarmedPlayer: 'Razoružali ste igrača',
    personSays: ' kaže: ', 
    personSaysInVehicle: ' [vozilo] kaže: ',
    personIsInjured: 'Ova osoba je ranjena ',
@@ -101,6 +103,7 @@ export const lang = {
    typesAreInRange: 'Taj tip ne postoji, tipovi se kreću izmedju ',
    successfullyLocked: 'Uspešno ste zaključali ',
    successfullyUnlocked: 'Uspešno ste otključali ',
+   disarmedYou: ' vam je oduzeo oružija.',
    youEnteredTaxiVehicle: 'Ušli ste u Taksi vozilo oznake ',
    pricePerMinute: ', sa cenom po minutu ',
    vehicle: 'Vozilo',
@@ -149,6 +152,10 @@ export const lang = {
    pmTo: 'PM za',
    quetly: 'govori tiho',
    isShouting: 'se dere',
+   account: 'Račun',
+   social: 'RGSC',
+   hardwer: 'Hardver',
+   IP: 'IP Adresa',
    whispering: 'Šapućete',
    admin: 'Admin',
    isWhisperingU: 'vam šapuće',

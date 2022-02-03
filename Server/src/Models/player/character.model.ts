@@ -179,6 +179,8 @@ export class characters extends Model {
 
    equiped: inventories[] = [];
 
+   freezed: boolean = false;
+
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances) { 
 
       player.account.last_character = this.id;
