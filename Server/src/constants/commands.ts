@@ -85,6 +85,8 @@ export namespace cmds {
       GET_HERE: 'Teleportovanje igrača do sebe.',
       REVIVE: 'Oživljavanje igrača.',
       HEALTH: 'Podešavanje HP-a igrača.',
+      SET_MONEY: 'Podešavanje novca igrača.',
+      GIVE_MONEY: 'Davanje novca igraču.',
       XYZ: 'Teleportovanje do koordinata (X, Y, Z).',
       DIMENSION: 'Setovanje dimenzije igrača.',
       ROLEPLAY_ME: 'Akcija, radnja.',

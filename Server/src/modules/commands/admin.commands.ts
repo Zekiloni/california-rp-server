@@ -312,27 +312,40 @@ Commands[cmds.names.FIX_VEH] = {
 
 Commands[cmds.names.GIVE_MONEY] =  {
    admin: rank.LEAD_ADMINISTRATOR,
-   description: 'opis napisati',
-   call (player: PlayerMp, targetSearch: any, money: number) { 
+   description: cmds.descriptions.GIVE_MONEY,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.NUMBER
+   ],
+   call (player: PlayerMp, targetSearch: string, money: string) { 
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         // PORUKA: // nema igraca
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
          return;
       };
 
-      target.character.giveMoney(target, money);
+      target.character?.giveMoney(target, Number(money));
    }
 };
 
 
 Commands[cmds.names.SET_MONEY] =  {
    admin: rank.LEAD_ADMINISTRATOR,
-   description: 'opis napisati',
-   call (player: PlayerMp, targetSearch: any, money: number) { 
+   description: cmds.descriptions.SET_MONEY,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.NUMBER
+   ],
+   call (player: PlayerMp, targetSearch: string, money: string) { 
       const target = mp.players.find(targetSearch);
-      if (!target) return; // nema
-      target.character.setMoney(target, money);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
+         return;
+      }; 
+
+      target.character?.setMoney(target, Number(money));
    }
 }
 
