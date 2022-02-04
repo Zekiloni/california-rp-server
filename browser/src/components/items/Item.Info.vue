@@ -78,7 +78,7 @@
       height: auto;
       border-radius: 10px;
       background: #181a20;
-      padding-bottom: 50px;
+      padding-bottom: 60px;
       overflow: hidden;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }

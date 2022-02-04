@@ -291,9 +291,9 @@ export class characters extends Model {
       await this.save();
    };
 
-   async giveMoney (player: PlayerMp, value: any) {
+   async giveMoney (player: PlayerMp, value: number) {
       this.increment('money', { by: value });
-      player.setVariable(shared_Data.MONEY, this.money + parseInt(value));
+      player.setVariable(shared_Data.MONEY, this.money + value);
    };
 
    async setJob (player: PlayerMp, value: number) {

@@ -5,7 +5,7 @@
 mp.events.add(
    {
       'playerWeaponShot': onPlayerWeaponShot,
-      'render': disableDefaultWeaponBehaviour
+      'render': disableDefaultWeaponBehaviour,
    }
 )
 

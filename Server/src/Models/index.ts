@@ -11,8 +11,12 @@ export * from './inventory.model';
 export * from './job.model';
 export * from './misc/channel.model';
 export * from './vehicle.model';
-export * from './properties/business.model';
 export * from './properties/house.model';
 export * from './factions/faction.model';
 export * from './factions/rank.model';
 
+
+// @business
+export * from './business/business.model';
+export * from './business/product.model';
+export * from './business/worker.model';
