@@ -78,11 +78,11 @@ Database.authenticate()
    }
 
    // TO DO
-   // Items.findAll({ where: { on_ground: true } }).then(items => { 
-   //    items.forEach(item => { 
-   //       Items.refresh(item);
-   //    })
-   // })
+   inventories.findAll({ where: { on_ground: true } }).then(items => { 
+      items.forEach(item => { 
+         inventories.refresh(item);
+      })
+   })
 
    // Houses.findAll().then(houses => { 
    //    houses.forEach(house => { 

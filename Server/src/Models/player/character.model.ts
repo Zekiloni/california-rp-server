@@ -71,15 +71,15 @@ export class characters extends Model {
    job: number;
 
    @Default(none)
-   @Column(DataType.INTEGER( { length: 8 } ))
+   @Column(DataType.INTEGER)
    working_hours: number;
 
    @Default(100)
-   @Column(DataType.INTEGER( { length: 3 }))
+   @Column(DataType.INTEGER)
    health: number;
 
    @Default(100)
-   @Column(DataType.INTEGER( { length: 3 }))
+   @Column(DataType.INTEGER)
    hunger: number;
 
    @Default(100)
@@ -284,18 +284,18 @@ export class characters extends Model {
 
    async setHealth (player: PlayerMp, value: number) { 
       player.health = value;
-      this.health = value;
+      await this.update( { health: value } );
    };
 
    async setMoney (player: PlayerMp, value: number) { 
       player.setVariable(shared_Data.MONEY, value);
-      this.money = value;
-      await this.save();
+      await this.update({ money: value });
    };
 
    async giveMoney (player: PlayerMp, value: number) {
-      this.increment('money', { by: value });
-      player.setVariable(shared_Data.MONEY, this.money + value);
+      const money = player.getVariable(shared_Data.MONEY);
+      await this.update( { money: money + value });
+      player.setVariable(shared_Data.MONEY, money + value);
    };
 
    async setJob (player: PlayerMp, value: number) {
@@ -331,16 +331,30 @@ export class characters extends Model {
 
       player.call('CLIENT::DEATHSCREEN', [Date.now() + playerConfig.respawnTimer])
 
-      this.respawnTimer = setTimeout(() => {
+      this.respawnTimer = setTimeout(async () => {
          if (player) {
-            player.call('CLIENT::DEATHSCREEN', [false])
-            player.setVariable(shared_Data.INJURIES, []);
-            player.setVariable(shared_Data.WOUNDED, false);
+            this.respawn(player, true);
          }
 
          clearTimeout(this.respawnTimer!);
       }, playerConfig.respawnTimer);
 
+   }
+
+   async respawn (player: PlayerMp, inHospital: boolean) {
+
+      const position = inHospital ? new mp.Vector3(280.8525, -1432.99853, 29.9649658) : player.position;
+
+      player.call('CLIENT::DEATHSCREEN', [false])
+      player.setVariable(shared_Data.INJURIES, []);
+      player.setVariable(shared_Data.WOUNDED, false);
+
+      this.wounded = false;
+      this.injuries = [];
+
+      player.spawn(position);
+
+      await this.save();
    }
 
    isUnemployed () {

@@ -15,7 +15,9 @@ export namespace playerConfig {
       lobby: { 
          position: new mp.Vector3(-1765.12, -1111.37, 24.83),
          look_At: new mp.Vector3(-1690.09, -1081.34, 31.31),
-      }
+      },
+
+      healthRegeneration: 80
    }
 
    export const max = {

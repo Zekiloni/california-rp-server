@@ -62,3 +62,4 @@ import './commands/basic.commands';
 import './commands/admin.commands';
 import './commands/vehicle.commands';
 import './commands/channel.commands';
+import './commands/test.commands';

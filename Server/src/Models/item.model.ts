@@ -89,6 +89,7 @@ import './items/weapon.item';
 import './items/phone.item';
 import './items/handheld.radio.item';
 import './items/cooker.item';
+import './items/med.item';
 
 
 

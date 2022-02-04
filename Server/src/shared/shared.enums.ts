@@ -1,10 +1,9 @@
 
 
-
 export enum shared_Data { 
    MONEY = 'MONEY',
    LOGGED = 'LOGGED_IN',
-   ADMIN = 'ADMIN_LEVEL',
+   ADMIN = 'ADMINISTRATOR',
    SPAWNED = 'SPAWNED',
    MUTED = 'MUTED',
    JOB = 'JOB',

@@ -14,7 +14,7 @@ const savedPositions = 'savedPositions.txt';
 Commands[cmds.names.SAVE_POS] = { 
    description: cmds.descriptions.ITEMS,
    admin: rank.LEAD_ADMINISTRATOR,
-   call: (player: PlayerMp, ...saveName) => { 
+   call (player: PlayerMp, ...saveName) { 
       let positionName = saveName.slice(0).join(' '); 
       const position = (player.vehicle) ? player.vehicle.position : player.position;
       const rotation = (player.vehicle) ? player.vehicle.rotation : player.heading;
@@ -34,7 +34,7 @@ Commands[cmds.names.GOTO] = {
    params: [
       cmds.params.PLAYER
    ],
-   call: (player: PlayerMp, targetSearch: string | number) => {
+   call (player: PlayerMp, targetSearch: string | number) {
       const target = mp.players.find(targetSearch);
 
       if (target && target.id != player.id) {
@@ -63,7 +63,7 @@ Commands[cmds.names.GET_HERE] = {
    params: [
       cmds.params.PLAYER
    ],
-   call: (player: PlayerMp, targetSearch: string | number) => {
+   call (player: PlayerMp, targetSearch: string | number) {
       const target = mp.players.find(targetSearch);
 
       if (target && target.id != player.id) {
@@ -73,8 +73,13 @@ Commands[cmds.names.GET_HERE] = {
 
             vehicle.position = new mp.Vector3(player.position.x + 2, player.position.y, player.position.z);
             vehicle.dimension = player.dimension;
-            target.dimension = player.dimension;
-            target.putIntoVehicle(vehicle, seat);
+
+            const occupants = vehicle.getOccupants();
+
+            occupants.forEach(occupant => {
+               occupant.dimension = player.dimension;
+               occupant.putIntoVehicle(vehicle, occupant.seat);
+            });
 
          } else {
             target.position = player.position;
@@ -554,6 +559,26 @@ Commands[cmds.names.ANNOUNCEMENT] = {
 };
 
 
+Commands[cmds.names.MAKE_ADMIN] = {
+   description: cmds.descriptions.MAKE_ADMIN,
+   admin: rank.OWNER,
+   params: [
+      cmds.params.USERNAME,
+      cmds.params.NUMBER
+   ],
+   call (player: PlayerMp, targetSearch: string, adminLevel: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      target.account.setAdministrator(target, Number(adminLevel));
+   }
+};
+
+
 Commands[cmds.names.CREATE_ACCOUNT] = {
    description: cmds.descriptions.CREATE_ACCOUNT,
    admin: rank.SENIOR_ADMINISTRATOR,
@@ -576,10 +601,10 @@ Commands[cmds.names.FLIP] = {
    call (player: PlayerMp) {
       if (player.vehicle) {
          player.sendNotification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
-         player.vehicle.rotation = new mp.Vector3(0, 0, 0);
+         player.vehicle.rotation = new mp.Vector3(0, 0, player.vehicle.heading);
       } else if (mp.vehicles.getClosest(player.position)) { 
-         const closesVehicle = mp.vehicles.getClosest(player.position);
-         closesVehicle.rotation = new mp.Vector3(0, 0, 0);
+         const closestVehicle = mp.vehicles.getClosest(player.position);
+         closestVehicle.rotation = new mp.Vector3(0, 0, closestVehicle.heading);
       }
    }
 }

@@ -1,5 +1,6 @@
 
 import { Browser } from '../browser';
+import { entityType } from '../enums/entity';
 import { getStreetZone } from '../utils';
 import { gameInterface } from './game.UI';
 
@@ -9,13 +10,15 @@ const Player = mp.players.local;
 export const screenResolution = mp.game.graphics.getScreenActiveResolution(100, 100);
 
 
-mp.events.addDataHandler({
-   'MONEY': (entity: EntityMp, value: any, oldValue: any) => { 
-      if (entity == mp.players.local && value != oldValue) {
-         gameInterface.updateMoney(value);
+mp.events.addDataHandler(
+   {
+      'MONEY': (entity: EntityMp, value: any, oldValue: any) => { 
+         if (entity.type == entityType.PLAYER && entity.id == mp.players.local.id) {
+            gameInterface.updateMoney(value);
+         }
       }
    }
-})
+)
 
 mp.events.add(
    {

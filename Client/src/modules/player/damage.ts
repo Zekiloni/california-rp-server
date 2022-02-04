@@ -1,3 +1,4 @@
+import { entityType } from '../../enums/entity';
 
 
 
@@ -5,41 +6,36 @@
 let SendToServer = true;
 
 
-mp.events.add(
-   {
+mp.events.add(RageEnums.EventKey.OUTGOING_DAMAGE, outgoingDamageHandler);
 
-      'outgoingDamage': (sourceEntity: EntityMp, targetEntity: EntityMp, sourcePlayer: PlayerMp, weapon: number, boneIndex: number, damage: number) => {
-         mp.gui.chat.push(JSON.stringify(sourcePlayer.name))
-         if (sourceEntity.type == 'player' && sourcePlayer == mp.players.local) { 
-            
-            // if (Player.getVariable('Wounded')) {
-            //    mp.gui.chat.push('wounded');
 
-            // } else { 
-            //    let Injury = { Weapon: weapon, Bone: boneIndex };
+function outgoingDamageHandler (sourceEntity: EntityMp, targetEntity: EntityMp, sourcePlayer: PlayerMp, weapon: number, boneIndex: number, damage: number) {
+   // mp.gui.chat.push(JSON.stringify(sourcePlayer.name))
+   if (sourceEntity.type == entityType.PLAYER && sourcePlayer == mp.players.local) { 
       
-            //    PlayerDamage.Effect(boneIndex);
+      // if (Player.getVariable('Wounded')) {
+      //    mp.gui.chat.push('wounded');
 
-            //    mp.gui.chat.push('Nije wounded');
+      // } else { 
+      //    let Injury = { Weapon: weapon, Bone: boneIndex };
 
-            //    if (SendToServer) {
-            //       mp.events.callRemote('server:character.injuries:add', JSON.stringify(Injury));
-            //       SendToServer = false;
-            //       setTimeout(() => { SendToServer = true; }, 1000);
-            //    }
-      
-            // //    if (Player.getHealth() - damage < damage) {
-            // //       mp.gui.chat.push('Zadnji hitac')
-            // //       return true;
-            // //    }
-            // }
-         }
-      },
+      //    PlayerDamage.Effect(boneIndex);
 
-      'incomingDamage': () => { return true; }
+      //    mp.gui.chat.push('Nije wounded');
 
+      //    if (SendToServer) {
+      //       mp.events.callRemote('server:character.injuries:add', JSON.stringify(Injury));
+      //       SendToServer = false;
+      //       setTimeout(() => { SendToServer = true; }, 1000);
+      //    }
+
+      // //    if (Player.getHealth() - damage < damage) {
+      // //       mp.gui.chat.push('Zadnji hitac')
+      // //       return true;
+      // //    }
+      // }
    }
-);
+};
 
 
 class PlayerDamage {

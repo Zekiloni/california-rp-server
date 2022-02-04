@@ -248,16 +248,12 @@ mp.Player.prototype.sendMessage = function (message: string, color: string) {
 
 mp.players.find = (searchQuery: any): PlayerMp => {
    if (!isNaN(searchQuery)) {
-      console.log(2)
       return mp.players.at(searchQuery)
    } else { 
-      console.log(3)
       const found = mp.players.toArray().find(player => player.name.toLowerCase() == searchQuery.toLowerCase());
       if (found) {
-         console.log(4)
          return found;
       } else { 
-         console.log(5)
          return mp.players.toArray().find(player => player.name.toLowerCase().includes(searchQuery.toLowerCase()))!;
       }
    }
