@@ -202,6 +202,10 @@ Commands[cmds.names.REVIVE] = {
          // PORUKA: Nije pronadjen
       }
       
+      clearTimeout(target?.character.respawnTimer!);
+      target?.call('CLIENT::DEATHSCREEN', [false])
+      target?.setVariable(shared_Data.INJURIES, []);
+      target?.setVariable(shared_Data.WOUNDED, false);
       target?.spawn(player.position);
    }
 };

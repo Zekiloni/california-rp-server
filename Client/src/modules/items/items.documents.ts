@@ -15,7 +15,7 @@ mp.events.add(
 
 function showIdentityDocument (info?: object) {
    active.document = !active.document;
-   Browser.call(active.document ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'id_Document');
+   Browser.call(active.document ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'idDocument');
 
    if (active.document) {
       Browser.call('BROWSER::IDENTITY:INFO', info!);

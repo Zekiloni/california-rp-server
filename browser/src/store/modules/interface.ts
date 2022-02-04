@@ -15,10 +15,12 @@ const InitialState = {
    characterCreator: false,
 
    gameInterface: false,
+   deathScreen: false,
+
    inventory: false,
    phone: false,
-   handheld_Radio: false,
-   id_Document: false,
+   handheldRadio: false,
+   idDocument: false,
    licenses: false,
    
    banking: false,

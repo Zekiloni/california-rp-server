@@ -9,6 +9,8 @@
       <GameInterface v-if="interfaces.gameInterface" />
       <Notifications v-if="interfaces.notifications" />
 
+      <DeathScreen v-if="interfaces.deathScreen" />
+
 
       <Chat v-if="interfaces.chat" />
 
@@ -18,7 +20,7 @@
       </transition>
       
       <transition name="fade">
-         <Document v-if="interfaces.id_Document" />
+         <Document v-if="interfaces.idDocument" />
       </transition>
       
       <transition> 
@@ -34,8 +36,7 @@
    
 
       <!-- [ITEMS] -->
-      <HandheldRadio v-if="interfaces.handheld_Radio" />
-
+      <HandheldRadio v-if="interfaces.handheldRadio" />
 
       <!-- [HOUSES] -->
       <transition name="fade"> 
@@ -73,11 +74,12 @@
    import './assets/styles/font-awesome.css';
 
    import Lobby from '@/components/lobby.vue';
-   import Creator from './components/creator.vue';
-   import Notifications from './components/notifications.hints.vue';
-   import GameInterface from './components/game.interface.vue';
-   import Playerlist from './components/misc/playerlist.vue';
-   import Chat from './components/chat';
+   import Creator from '@/components/creator.vue';
+   import Notifications from '@/components/Notifications.vue';
+   import Chat from '@/components/TextChat';
+   import GameInterface from '@/components/GameInterface.vue';
+   import DeathScreen from '@/components/player/DeathScreen.vue';
+   import Playerlist from '@/components/misc/Playerlist.vue';
    import Inventory from './components/items/inventory.vue';
    import Document from './components/misc/id.document.vue';
    import Banking from './components/other/banking.vue';
@@ -87,13 +89,13 @@
    import HouseInfo from './components/houses/house.info.vue';
    import Phone from './components/phone.vue';
    import HandheldRadio from './components/misc/handheld.radio.vue';
-
+   
    export default { 
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Playerlist,
          Inventory, Chat, Banking, ATM, JobOffer, Market, HouseInfo, 
-         Phone, Document, HandheldRadio
+         Phone, Document, HandheldRadio, DeathScreen
       },
 
       data () { 

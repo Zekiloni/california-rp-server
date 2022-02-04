@@ -181,6 +181,8 @@ export class characters extends Model {
 
    freezed: boolean = false;
 
+   respawnTimer: ReturnType<typeof setTimeout> | undefined = undefined;
+
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances) { 
 
       player.account.last_character = this.id;
@@ -324,13 +326,21 @@ export class characters extends Model {
    }
    
 
-   onDeath (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) { 
-      const { position } = player;
-      // setTimeout(() => {
-      //    if (player && position) {
-      //       player.spawn(position);
-      //    }
-      // }, 5000);
+   onWound (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) { 
+      player.setVariable(shared_Data.WOUNDED, true);
+
+      player.call('CLIENT::DEATHSCREEN', [Date.now() + playerConfig.respawnTimer])
+
+      this.respawnTimer = setTimeout(() => {
+         if (player) {
+            player.call('CLIENT::DEATHSCREEN', [false])
+            player.setVariable(shared_Data.INJURIES, []);
+            player.setVariable(shared_Data.WOUNDED, false);
+         }
+
+         clearTimeout(this.respawnTimer!);
+      }, playerConfig.respawnTimer);
+
    }
 
    isUnemployed () {

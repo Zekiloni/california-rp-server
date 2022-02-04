@@ -202,7 +202,7 @@ function playerSelectCharacter (player: PlayerMp, characterId: number, point: sp
 
 
 function playerDeathHandler (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) {
-   player.character!.onDeath(player, reason, killer);
+   player.character!.onWound(player, reason, killer);
 }
 
 

@@ -8,6 +8,7 @@ export enum shared_Data {
    SPAWNED = 'SPAWNED',
    MUTED = 'MUTED',
    JOB = 'JOB',
+   WOUNDED = 'WOUNDED',
    FACTION = 'FACTION',
    FACTION_DUTY = 'FACTION_DUTY',
    JOB_DUTY = 'JOB_DUTY',

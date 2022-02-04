@@ -26,5 +26,6 @@ export namespace playerConfig {
       EQUIPMENT: 4,
    }
 
+   export const respawnTimer = 8 * 60 * 1000;
 
 }

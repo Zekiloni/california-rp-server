@@ -48,6 +48,8 @@ export const Messages = {
    PAYCHECK: 'Plata',
    ACCEPT: 'Prihvati',
    WELCOME: 'Dobrodošli',
+   YOU_ARE_BRUTALLY_WOUNDEND: 'Brutalno ste povredjeni.',
+   DEATH_KEEP_ROLEPLAYING_OR_ACCEPT_DEATH: 'Povredjeni ste na zemlji, nastavite roleplay, ili prihvatite smrt nakon 4 minute.',
    MAZE_BANK: 'Maze Banka',
    CANCEL: 'Odustani',
    CLICK_ON_BOX: 'kliknite na kutiju kako bi odabrali karaktera ili započeli kreiranje novog.',

@@ -26,7 +26,6 @@ declare global {
    }
 
    interface PlayerMp { 
-      RespawnTimer: any;
       character: characters;
       account: accounts;
 
