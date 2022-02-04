@@ -22,14 +22,22 @@
    export default class DeathScreen extends Vue {
       
       timer: number | null = null;
-      minutes: string = '';
-      seconds: string = '';
+      minutes: string =  '0';
+      seconds: string = '0';
 
       Messages = Messages;
 
       countdown () {
-         const seconds = Math.floor((this.timer! - Date.now()) / 1000);
-         const minutes = Math.floor(seconds / 60);
+         let seconds = Math.floor((this.timer! - (Date.now())) / 1000);
+         let minutes = Math.floor(seconds / 60);
+         let hours = Math.floor(minutes / 60);
+         let days = Math.floor(hours / 24);
+         
+         hours = hours - (days * 24);
+         minutes = minutes - (days * 24 * 60) - (hours * 60);
+         seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+
+         console.log('Minuta ' + minutes + ', sekundi ' + seconds);
          
          this.minutes = minutes.toString();
          this.seconds = seconds < 10 ? '0' + seconds.toString() : seconds.toString();
@@ -38,9 +46,7 @@
       }
 
       mounted () {
-         //@ts-ignore
-         mp.events.add('BROWSER::DEATHSCREEN', (time: number) => this.timer = time);
-
+         this.timer = Date.now() + (8 * 60 * 1000);
          this.countdown();
       }
 
@@ -58,7 +64,7 @@
       bottom: 100px;
       left: 0;
       display: grid;
-      animation: fade 1.45s ease;
+      animation: fade 2s ease;
    }
 
    .death-screen * {
@@ -71,7 +77,7 @@
    }
    
    h3.title { 
-      color: tomato;
+      color: rgb(255, 99, 71);
       font-size: 1.35em;
       font-weight: 550;
       width: 285px;
@@ -83,16 +89,16 @@
    
    p.hint {
       padding: 15px 0;
-      width: 280px;
-      font-size: 0.75rem;
+      width: 300px;
+      font-size: 0.9rem;
       text-align: center;
       margin: 0 auto;
       color: #cdcdcd;
    }
 
-   h1.timeout { color: white; text-align: center; }
+   h1.timeout { color: white; text-align: center; margin: 5px 0; font-size: 1.8rem; }
 
    @keyframes fade {
-      from { opacity: 0; transform: translateY(-35px); }
+      from { opacity: 0; transform: translateY(45px); }
    }
 </style>

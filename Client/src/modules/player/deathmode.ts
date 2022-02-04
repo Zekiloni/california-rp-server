@@ -10,8 +10,4 @@ function toggleDeathscreen (toggle: number | false){
 
    active = toggle ? true : false;
    Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'deathScreen');
-
-   if (active) {
-      Browser.call('BROWSER::DEATHSCREEN', toggle);
-   }
 }

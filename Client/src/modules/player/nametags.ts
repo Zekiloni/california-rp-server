@@ -39,27 +39,50 @@ function nametags () {
                y -= (scale * (0.005 * (screenResolution.y / 1080))) - parseInt('0.010');
 
                if (target.isTypingInTextChat) {
-                  mp.game.graphics.drawText('...', [x, y + 1.4], 
+                  mp.game.graphics.drawText('[...]', [x, y - 0.017], 
                      {
                         centre: true,
                         font: 4,
                         color: [255, 204, 69, 200],
+                        scale: [0.325, 0.325],
+                        outline: false
+                     }
+                  );
+               }
+
+               if (target.getVariable('WOUNDED')) {
+                  mp.game.graphics.drawText('* THIS PLAYER IS BRUTALLY WOUNDED *', [x, y - 0.0345], 
+                     {
+                        centre: true,
+                        font: 4,
+                        color: [255, 99, 71, 220],
                         scale: [0.335, 0.335],
                         outline: false
                      }
                   );
                }
 
-               mp.game.graphics.drawText(target.name + ' [' + target.remoteId + ']', [x, y], 
+               if (target.getVariable('BUBBLE')) {
+                  mp.game.graphics.drawText('**' + target.getVariable('BUBBLE') + ' **', [x, y - 0.0515], 
                   {
                      centre: true,
                      font: 4,
-                     color: [132, 142, 156, 200],
+                     color: [179, 128, 196, 225],
                      scale: [0.335, 0.335],
                      outline: false
                   }
                );
-            
+               }
+
+               mp.game.graphics.drawText(target.name + ' [' + target.remoteId + ']', [x, y], 
+                  {
+                     centre: true,
+                     font: 4,
+                     color: [198, 198, 198, 225],
+                     scale: [0.345, 0.345],
+                     outline: false
+                  }
+               );
             }
          }
       }
