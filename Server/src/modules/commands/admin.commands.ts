@@ -38,6 +38,11 @@ Commands[cmds.names.GOTO] = {
       const target = mp.players.find(targetSearch);
 
       if (target && target.id != player.id) {
+
+         if (!target.account) {
+            return;
+         }
+
          if (player.vehicle) {
 
             const { seat, vehicle } = player;

@@ -197,7 +197,7 @@ Commands[cmds.names.OOC_CHAT] = {
 
       player.sendProximityMessage(
          distances.OOC, 
-         '(( ' + player.name + '[' + player.id + ']: ' + text + ' ))',
+         '(( ' + player.name + ' [' + player.id + ']: ' + text + ' ))',
          colors.hex.OOC
       );
    }

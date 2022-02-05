@@ -16,6 +16,16 @@ export function isInRangeOfPoint (first: Vector3Mp, range: number, second: Vecto
    return distanceBetweenVectors(first, second) < range ? true : false;
 }
 
+
+// export function getForwardVector (player: PlayerMp, offset: number): Vector3Mp {
+//    const { position, heading } = player;
+//    const z = -rotation.z;
+//    const x = rotation.x;
+//    const num = Math.abs(Math.cos(x));
+//    const forward = new mp.Vector3(-Math.sin(z) * num, Math.cos(z) * num, Math.sin(x));
+//    return new mp.Vector3()
+// }
+
 export function isAnyVehicleAtPosition (position: Vector3Mp, radius: number = 2, dimension = gDimension): VehicleMp | undefined {
    for (const vehicle of mp.vehicles.toArray()) { 
       if (vehicle.dist(position) < radius && vehicle.dimension == dimension) {

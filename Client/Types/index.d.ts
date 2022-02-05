@@ -21,39 +21,15 @@ declare global {
 
    interface PlayerMp {
       /* Variables */
-      Logged: boolean;
-      Spawned: boolean;
-      Cuffed: boolean = false;
-      Cuffs: ObjectMp;
-      Money: number;
-      Job: number;
-      Wounded: boolean;
-      Seatbelt: boolean;
-      Attachment: ObjectMp;
-      Crouching: boolean = false;
       /* Functions */
-      
-      /* Finger pointing */
-      LastReceivedPointing: any;
-      PointingInterval: Timer;
-   }
-
-   interface CheckpointMp {
-      Station: number = -1;
    }
 
    interface VehicleMp {
-      Fuel: number;
-      Mileage: number;
       doNotChangeAlpha: boolean;
    }
 
    interface EventMpPool {
       addDataHandler (param: any): void;
-   }
-
-   interface ObjectMp {
-      Hits: number;
    }
 }
 

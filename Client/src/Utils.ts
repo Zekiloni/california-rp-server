@@ -70,13 +70,16 @@ export function removeClothing (Entity: PlayerMp) {
    }
 };
 
+
 export function CompareVectors (i: Vector3Mp, x: Vector3Mp) { 
    return i.x == x.x && i.y == x.y && i.z == x.z;
 };
 
+
 export function distanceBetweenVectors (first: Vector3Mp, second: Vector3Mp) {
    return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(second.x, second.y, second.z)).length();
 }
+
 
 export function loadAnimation (i: string): Promise<boolean> { 
    if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve(true);
@@ -89,6 +92,7 @@ export function loadAnimation (i: string): Promise<boolean> {
    })
 };
 
+
 export function loadMovementClipset (Clipset: string): Promise<boolean> { 
    if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve(true);
    return new Promise(async resolve => { 
@@ -100,16 +104,19 @@ export function loadMovementClipset (Clipset: string): Promise<boolean> {
    })
 }
 
-export function WaitEntity (Entity: EntityMp) {
-   return new Promise(resolve => {
-      let wait = setInterval(() => {
-         if (mp.game.entity.isAnEntity(Entity.handle)) {
-            clearInterval(wait);
-            resolve(true);
+export function waitForEntity (entity: EntityMp) {
+   if (mp.game.entity.isAnEntity(entity.handle)) {
+      Promise.resolve(true);
+   } else { 
+      return new Promise(async resolve => {
+         while (!mp.game.entity.isAnEntity(entity.handle)) {
+            await mp.game.waitAsync(0);
          }
-      }, 1);
-   });
-}
+         resolve(true)
+      });
+   }
+};
+
 
 export function WeaponString (Weapon: number) {
 	if (typeof Weapon !== 'undefined')

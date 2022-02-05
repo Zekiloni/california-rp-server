@@ -2,11 +2,11 @@ import { spawnPointTypes } from '@enums';
 
 
 export interface playerInjury { 
-   weapon: string
+   weapon: number
    damage: number
    bone: number
+   times: number
 };
-
 
 
 export interface hairStyle { 

@@ -6,17 +6,19 @@ import { spawnPoint } from '@interfaces';
 import { shared_Data } from '@shared';
 
 
-
 mp.events.add(
    {
       'playerJoin': playerJoinHandler,
       'playerReady': playerReadyHandler,
       'playerQuit': playerQuitHadnler,
       'playerChat': playerChatHandler,
-      'playerDeath': playerDeathHandler,
       'entityModelChange': playerModelChange,
       'SERVER::CHARACTER:PLAY': playerSelectCharacter,
-      'SERVER::ANIMATION:STOP': stopPlayeranimation
+      'SERVER::ANIMATION:STOP': stopPlayeranimation,
+
+      'SERVER:INJURIES': playerOnInjury,
+      'SERVER::DEAD': playerDeathHandler,
+      'SERVER::WOUNDED': playerWoundHandler
    }
 );
 
@@ -201,10 +203,17 @@ function playerSelectCharacter (player: PlayerMp, characterId: number, point: sp
 }
 
 
-function playerDeathHandler (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) {
-   player.character!.onWound(player, reason, killer);
+function playerOnInjury (player: PlayerMp, bone: number, weapon: number, damage: number) {
+   player.character.injury(player, bone, weapon, damage);
 }
 
+function playerDeathHandler (player: PlayerMp, killer: EntityMp | null | undefined) {
+   player.character!.onDead(player, killer);
+}
+
+function playerWoundHandler (player: PlayerMp, by: EntityMp | null | undefined) {
+   player.character!.onWound(player, by);
+}
 
 async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: string | null) {
    const leavingPlayer = player;

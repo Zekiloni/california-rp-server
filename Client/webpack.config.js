@@ -20,27 +20,27 @@ module.exports = {
       }),
     ],
   },
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-    fallback: { crypto: false },
-  },
-  output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-  plugins: [
-    // new BundleAnalyzerPlugin(),
-    new DefinePlugin({
+   module: {
+      rules: [
+         {
+            test: /\.tsx?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/,
+         }
+      ]
+   },
+   resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+      fallback: { crypto: false },
+   },
+   output: {
+      filename: 'index.js',
+      path: path.resolve(__dirname, 'dist'),
+   },
+   plugins: [
+      // new BundleAnalyzerPlugin(),
+      new DefinePlugin({
       'process.env': JSON.stringify(dotenv.parsed),
-    }),
-  ],
+      })
+   ]
 };

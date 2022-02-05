@@ -90,6 +90,10 @@ export class characters extends Model {
    @Column(DataType.BOOLEAN)
    wounded: boolean;
 
+   @Default(false)
+   @Column(DataType.BOOLEAN)
+   dead: boolean;
+
    @Default(null)
    @Column(
       {
@@ -324,11 +328,46 @@ export class characters extends Model {
       const has = await inventories.findOne({ where: { name: item?.name } });
       return has ? has : false;
    }
-   
 
-   onWound (player: PlayerMp, reason: number, killer: PlayerMp | null | undefined) { 
+
+   async injury (player: PlayerMp, bone: number, weapon: number, damage: number) {
+      let injuries = this.injuries;
+      
+      const alreadyInjured = injuries.find(injury => injury.bone == bone && injury.weapon == weapon);
+
+      if (alreadyInjured) { 
+         console.log('aready injured i that place');
+         alreadyInjured.times ++;
+         alreadyInjured.damage += damage;
+      } else {
+         console.log('added new injury')
+         const injury: playerInjury = {
+            bone: bone,
+            weapon: weapon,
+            damage: damage,
+            times: 1
+         };
+   
+         injuries.push(injury);
+      }
+
+      console.log(injuries);
+
+      player.setVariable(shared_Data.INJURIES, injuries);
+
+      this.update( { injuries: injuries } );
+   }
+   
+   async clearInjuries (player: PlayerMp) { 
+      player.setVariable(shared_Data.INJURIES, []);
+      await this.update( { injuries: [] } );
+   }
+
+   onWound (player: PlayerMp, by: PlayerMp | null | EntityMp | undefined) { 
       player.setVariable(shared_Data.WOUNDED, true);
 
+      player.health = 45;
+      
       player.call('CLIENT::DEATHSCREEN', [Date.now() + playerConfig.respawnTimer])
 
       this.respawnTimer = setTimeout(async () => {
@@ -338,6 +377,10 @@ export class characters extends Model {
 
          clearTimeout(this.respawnTimer!);
       }, playerConfig.respawnTimer);
+   }
+   
+   onDead (player: PlayerMp, killer: PlayerMp | EntityMp | null | undefined) {
+      console.log(killer);
 
    }
 

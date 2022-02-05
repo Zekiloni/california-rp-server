@@ -54,7 +54,8 @@ export async function playAnimation (
    dict: string,
    name: string,
    flag: animationFlags = animationFlags.CANCELABLE,
-   duration: number = -1
+   duration: number = -1,
+   allowDead?: boolean
 ): Promise<void> {
 
    if (entity.type == entityType.PLAYER && (<PlayerMp>entity).vehicle) {
@@ -66,9 +67,11 @@ export async function playAnimation (
       return;
    }
 
-   // if (mp.players.local.getVariable('DEAD') || mp.players.local.getVariable('WOUNDED')) {
-   //    return;
-   // }
+   if (allowDead == false) {
+      if (mp.players.local.getVariable('DEAD') || mp.players.local.getVariable('WOUNDED')) {
+         return;
+      }
+   }
 
    if (mp.players.local.isPlayingAnim(dict, name, 3)) {
       return;

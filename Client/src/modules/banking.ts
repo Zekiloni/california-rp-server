@@ -23,7 +23,7 @@ mp.events.addProc(
          const response = await mp.events.callRemoteProc('SERVER::BANKING:CREATE');
          mp.console.logInfo(JSON.stringify(response))
          return response;
-      },
+      }
    }
 );
 
