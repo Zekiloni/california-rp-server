@@ -1,7 +1,7 @@
 import { logs, bans, characters, accounts, inventories, appearances, banks } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { itemEnums, logging, notifications, spawnPointTypes } from '@enums';
-import { itemNames, lang } from '@constants';
+import { gDimension, itemNames, lang } from '@constants';
 import { spawnPoint } from '@interfaces';
 import { shared_Data } from '@shared';
 
@@ -18,7 +18,9 @@ mp.events.add(
 
       'SERVER::INJURIES': playerOnInjury,
       'SERVER::DEATH': playerDeathHandler,
-      'SERVER::WOUNDED': playerWoundHandler
+      'SERVER::WOUNDED': playerWoundHandler,
+
+      'SERVER::PLAYER:POSITION': setPlayerPosition,
    }
 );
 
@@ -63,6 +65,11 @@ function playerReadyHandler (player: PlayerMp) {
    player.dimension = mp.players.length + 1;
 }
 
+
+function setPlayerPosition (player: PlayerMp, position: Vector3Mp) {
+   player.position = position;
+   player.dimension = gDimension;
+} 
 
 async function characterFinish (player: PlayerMp, characterInfo: string, characterAppearance: string) { 
 
