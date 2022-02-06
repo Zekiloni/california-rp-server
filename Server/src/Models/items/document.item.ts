@@ -17,8 +17,6 @@ export class documentItem extends items {
    constructor (name: string, model: string, special: number, type?: itemEnums.type[], weight?: number, description?: string) { 
       super (name, type ? documentType.concat(type) : documentType, model, weight, description);
       this.specialType = special;
-
-      console.log(this)
       
       this.use = function (player: PlayerMp, item: inventories) {
          console.log(item.data)

@@ -81,12 +81,14 @@ export class inventories extends Model {
 
 
    @AfterSync
-   static loading () {
+   static async loading () {
       inventories.findAll( { where: { on_ground: true } } ).then(items => {
          items.forEach(item => {
             item.refresh();
          })
       });
+
+      logs.info(await inventories.count() + ' items loaded !');
    }
 
    @AfterCreate

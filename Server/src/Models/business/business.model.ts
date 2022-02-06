@@ -102,6 +102,8 @@ export class business extends Model {
          businesses.forEach(business => {
             business.refresh();
          });
+         
+         logs.info(businesses.length + ' business loaded !');
       });
    }
 
@@ -120,27 +122,6 @@ export class business extends Model {
          this.objects.delete(business.id);
       }
    }
-
-
-   static async createBusiness (player: PlayerMp, type: number, walkIn: number, price: number) {
-      const name = '';
-
-      business.create( 
-         { 
-            name: name, 
-            type: Number(type), 
-            price: Number(price), 
-            Walk_in: walkIn == 1 ? true : false,
-            position: player.position, 
-            dimension: player.dimension 
-         }
-      ).then(createdBusinenss => {
-
-      }).catch(e => {
-         logs.error('creatingBusiness: ' + e);
-      })
-   };
-
    
    static async getNearestGasStation (player: PlayerMp)  {
       return business.findAll( { where: { type: businessConfig.type.GAS_STATION } } ).then(gasStations => {
@@ -159,16 +140,16 @@ export class business extends Model {
       } else {
          const { name, position, sprite, dimension, sprite_color } = this;
 
-         this.object = { 
-            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
-            blip: mp.blips.new(sprite, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: name, color: sprite_color, shortRange: true, scale: 0.85 }),
-            marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
-               color: businessConfig.markerColor,
-               rotation: new mp.Vector3(0, 0, 90),
-               visible: true,
-               dimension: dimension
-            })
-         }; 
+         // this.object = { 
+         //    colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
+         //    blip: mp.blips.new(sprite, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: name, color: sprite_color, shortRange: true, scale: 0.85 }),
+         //    marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
+         //       color: businessConfig.markerColor,
+         //       rotation: new mp.Vector3(0, 0, 90),
+         //       visible: true,
+         //       dimension: dimension
+         //    })
+         // }; 
       }
    }
 

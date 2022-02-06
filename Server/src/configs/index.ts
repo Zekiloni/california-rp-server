@@ -3,7 +3,7 @@
 
 export * from './database.config';
 export * from './server.config';
-
+export * from './admin.accounts';
 export * from './player.config';
 export * from './bank.config';
 export * from './economy.config';

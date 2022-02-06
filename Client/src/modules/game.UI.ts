@@ -28,23 +28,34 @@ class gameUI {
    status: UI_Status = UI_Status.HIDDEN;
 
    constructor () { 
+
+      this.status = UI_Status.HIDDEN;
+
       mp.events.add('render', this.GTA_HUD);
 
       mp.game.gameplay.setFadeOutAfterDeath(false); 
 
       mp.keys.bind(controls.F7, true, () => { 
+         mp.gui.chat.push('F7')
          this.mainInterface(this.status ++);
       });
    }
 
    mainInterface (i: UI_Status) { 
       
-      if (this.status > UI_Status.HIDDEN) this.status = UI_Status.HIDDEN;
+      mp.gui.chat.push('status ' + JSON.stringify(i));
+
+      if (this.status > UI_Status.HIDDEN) {
+         this.status = UI_Status.HIDDEN;
+      }
+
+      mp.gui.chat.push('this.status ' + JSON.stringify(this.status));
 
       this.status = i;
 
       switch (this.status) { 
          case UI_Status.VISIBLE: {
+            mp.gui.chat.push('visible');
             Browser.call('BROWSER::SHOW', 'gameInterface');
             Browser.call('BROWSER::SHOW', 'chat');
             Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
@@ -54,12 +65,15 @@ class gameUI {
          }
 
          case UI_Status.ONLY_CHAT: { 
+            mp.gui.chat.push('only chat');
             Browser.call('BROWSER::HIDE', 'gameInterface');
             mp.events.remove('render', this.updateMain);
+            mp.game.ui.displayRadar(false);
             break;
          }
 
          case UI_Status.HIDDEN: { 
+            mp.gui.chat.push('hide all');
             Browser.call('BROSER::HIDE', 'chat');
             break;
          }

@@ -189,8 +189,8 @@ export class characters extends Model {
 
       // loading money and health
       this.setHealth(player, this.health);
-      this.setMoney(player, this.money);
 
+      player.setVariable(shared_Data.MONEY, this.money);
       player.setVariable(shared_Data.JOB, this.job);
       player.setVariable(shared_Data.FACTION, this.faction);
 

@@ -13,7 +13,7 @@ export const screenResolution = mp.game.graphics.getScreenActiveResolution(100, 
 mp.events.addDataHandler(
    {
       'MONEY': (entity: EntityMp, value: any, oldValue: any) => { 
-         if (entity.type == entityType.PLAYER && entity.id == mp.players.local.id) {
+         if (entity.type == entityType.PLAYER && entity.remoteId == mp.players.local.remoteId) {
             gameInterface.updateMoney(value);
          }
       }

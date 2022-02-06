@@ -1,12 +1,12 @@
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany, DataType, Length } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, BeforeCreate, CreatedAt, UpdatedAt, HasMany, DataType, Length, AfterSync } from 'sequelize-typescript';
 import bcrypt from 'bcryptjs';
 import { shared_Data } from '@shared';
 import { rank } from '@enums';
 import { lang, none } from '@constants';
 import { characters } from '@models';
-
+import { adminAccounts } from '@configs';
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -80,13 +80,21 @@ export class accounts extends Model {
    @UpdatedAt
    updated_at: Date;
 
+   @AfterSync
+   static async loading () {
+      for (const admin of adminAccounts) { 
+         const exist = await accounts.findOne({ where: { username: admin.username } });
+         if (exist == null) { 
+            accounts.create({ username: admin.username, password: admin.password, administrator: admin.admin });
+         }
+      }
+   }
 
    @BeforeCreate
    static creating (account: accounts) { 
       account.password = bcrypt.hashSync(account.password, salt);
    }
 
-   
    login (password: string) {     
       return bcrypt.compareSync(password, this.password);
    }

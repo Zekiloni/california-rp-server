@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, accounts } from '@models';
+import { logs, items, inventories, houses, accounts, business } from '@models';
 import { cmds, colors, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { houseConfig, serverConfig } from '@configs';
@@ -121,6 +121,28 @@ Commands[cmds.names.INVICIBLE] = {
    }
 };
 
+
+Commands[cmds.names.CREATE_BUSINESS] = {
+   description: cmds.descriptions.CREATE_BUSINESS,
+   params: [
+      cmds.params.NUMBER,
+      cmds.params.NUMBER,
+      cmds.params.WALK_IN,
+      cmds.params.TEXT
+   ],
+   call (player: PlayerMp, type: string, price: string, walk_in: string, ...name) {
+      business.create( 
+         {
+            name: [...name].join(' '), 
+            type: Number(type), 
+            price: Number(price), 
+            walk_in: Number(walk_in) == 1 ? true : false,
+            position: player.position, 
+            dimension: player.dimension 
+         } 
+      );
+   }
+}
 
 
 Commands[cmds.names.GIVE_ITEM] ={

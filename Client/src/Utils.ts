@@ -102,6 +102,8 @@ export function loadMovementClipset (Clipset: string): Promise<boolean> {
       }
       resolve(true);
    })
+
+
 }
 
 export function waitForEntity (entity: EntityMp) {
