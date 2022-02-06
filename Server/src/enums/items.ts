@@ -25,6 +25,32 @@ export namespace itemEnums {
    export enum status { 
       NONE, RAW, COOKED, BROKEN, FURNITURE_PLACED
    }
+
+
+   export namespace components {
+      export enum props {
+         HAT,
+         GLASSES,
+         EAR_ACCESSORY,
+         WATCH,
+         BRACELET
+      }
+
+      export enum clothings {
+         HEAD,
+         MASK,
+         HAIR,
+         TORSO,
+         LEGS,
+         BAG,
+         SHOES,
+         ACCESSORIES,
+         UNDERSHIRT,
+         BODY_ARMOUR,
+         DECALS,
+         TOP
+      }
+   }
 }
 
 

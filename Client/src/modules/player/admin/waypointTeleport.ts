@@ -24,7 +24,7 @@ function waypointCheck (position: Vector3Mp)  {
 
    const z = mp.game.gameplay.getGroundZFor3dCoord(position.x, position.y, position.z + 100, 0.0, false);
 
-   waypoint = new mp.Vector3(position.x, position.y, z + 1);
+   waypoint!.z = z +1;
 };
 
 mp.keys.bind(controls.KEY_E, true, function () {

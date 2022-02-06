@@ -21,6 +21,8 @@ export interface itemExtra  {
    power?: boolean
    slot?: number
    frequency?: string
+   drawable?: number
+   texture?: number
 };
 
 

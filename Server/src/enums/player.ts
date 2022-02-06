@@ -19,3 +19,4 @@ export enum rank {
    COMMUNITY_MANAGER = 6,
    OWNER = 7 
 }
+
