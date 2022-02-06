@@ -1,9 +1,11 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
-import { gDimension } from '@constants';
+import { gDimension, lang, none, offerExpire } from '@constants';
 import { characters, logs } from '@models';
 import { businessConfig } from '@configs';
+import { notifications, offerStatus, offerTypes } from '@enums';
+import { dollars } from '@shared';
 
 
 @Table
@@ -137,7 +139,6 @@ export class business extends Model {
       });
    };
 
-
    refresh () {
       if (this.object) { 
 
@@ -161,34 +162,97 @@ export class business extends Model {
    }
 
 
+   async edit (player: PlayerMp, property: string, value: string) {
+      switch (property) {
+         case 'price': 
+            this.price = Number(value); break;
+         case 'name':
+            this.name = value; break;
+         case 'sprite':
+            this.sprite = Number(value); break;
+         case 'spriteColor':
+            this.sprite_color = Number(value); break;
+         case 'owner':
+            this.owner = Number(value); break;
+         default: 
+            return;
+      }
+
+      await this.save();
+      this.refresh();
+   }
+
    async buy (player: PlayerMp) {
       const character = player.character;
 
-      if (this.owner != 0) return; // PORUKA: Neko vec poseduje ovaj biznis
-      if (this.price > character.money) return; // PORUKA: Nemate dovoljno novca
+      if (this.owner != none) {
+         player.sendNotification(lang.busiensAlreadyOwner, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }; 
+
+      if (this.price > character.money) {
+         player.sendNotification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
+         return;
+      };
 
       this.owner = character.id;
       character.giveMoney(player, -this.price);
-      // PORUKA: Uspesno ste kupili biznis
+
+      player.sendNotification(lang.successfullyBuyedBusiness + this.name + lang.for + dollars(this.price) + '.', notifications.type.SUCCESS, notifications.time.LONG);
       await this.save();
    };
 
    
-   async sell (player: PlayerMp, target: any = 0, price = 0) {
-      let Character = player.character;
-      if (price == 0) price = (this.price / 100) * 65;
+   async sell (player: PlayerMp, sellPrice: string, targetSearch: string | number) {
 
-      Character.giveMoney(player, price);
-      this.owner = target;
+      const price = Number(sellPrice);
 
-      if (target != 0) {
-         let TargetCharacter = await target.Character();
-         TargetCharacter.GiveMoney(player, -price);
-         // PORUKA: targetu Uspesno ste kupiili biznis od player.name za price
+      if (targetSearch != -1) {
+         
+         const target = mp.players.find(targetSearch);
+
+         if (!target) {
+            player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+            return;
+         }
+
+         const { character: character } = player;
+         const { character: tCharacter } = target!;
+
+         if (player.dist(target.position) > 2) {
+            player.sendNotification(lang.playerNotNear, notifications.type.ERROR, notifications.time.SHORT);
+            return;
+         }
+
+         if (tCharacter.money < price) {
+            player.sendNotification(lang.playerDoesntHaveMoney, notifications.type.ERROR, notifications.time.SHORT);
+            return;
+         }
+
+         const offer = {
+            type: offerTypes.BUSINESS_SELL,
+            offeredBy: player,
+            id: this.id,
+            status: offerStatus.NONE,
+            expire: setTimeout(() => {
+               const index = tCharacter.offers.indexOf(offer);
+               tCharacter.offers.splice(index, 1);
+            }, offerExpire)
+         };
+         
+         /// send notify to both
+
+         tCharacter.offers.push(offer);
+         
+      } else { 
+         const cPrice = (this.price / 100) * 65;
+         
+         this.owner = none;
+         player.character.giveMoney(player, cPrice);
+         player.sendNotification(lang.succesfullySoldBizToCountry, notifications.type.INFO, notifications.time.LONG);
+
+         await this.save();
       }
-      // PORUKA: Prodali ste biznis
-      await this.save();
    };
-
 }
 

@@ -8,7 +8,7 @@ import { facial_Moods, gDimension, walking_Styles, lang, colors, none } from '@c
 import { spawnPointTypes, notifications, distances } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
-import { playerInjury } from '@interfaces';
+import { offer, playerInjury } from '@interfaces';
 
 
 @Table
@@ -173,6 +173,8 @@ export class characters extends Model {
    business: business[]
 
    equiped: inventories[] = [];
+
+   offers: offer[] = [];
 
    freezed: boolean = false;
 

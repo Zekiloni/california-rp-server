@@ -10,3 +10,5 @@ export * from './weather';
 export const gDimension = 0;
 
 export const none = 0;
+
+export const offerExpire = 2 * 60 * 1000;
