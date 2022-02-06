@@ -16,8 +16,8 @@ mp.events.add(
       'SERVER::CHARACTER:PLAY': playerSelectCharacter,
       'SERVER::ANIMATION:STOP': stopPlayeranimation,
 
-      'SERVER:INJURIES': playerOnInjury,
-      'SERVER::DEAD': playerDeathHandler,
+      'SERVER::INJURIES': playerOnInjury,
+      'SERVER::DEATH': playerDeathHandler,
       'SERVER::WOUNDED': playerWoundHandler
    }
 );
@@ -213,6 +213,7 @@ function playerDeathHandler (player: PlayerMp, killer: EntityMp | null | undefin
 
 function playerWoundHandler (player: PlayerMp, by: EntityMp | null | undefined) {
    player.character!.onWound(player, by);
+   return true;
 }
 
 async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: string | null) {

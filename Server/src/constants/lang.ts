@@ -36,6 +36,7 @@ export const lang = {
    cannotInVehicle: 'Nije moguće u vozilu.',
    alreadyEmployed: 'Već ste zaposleni.', 
    jobAlreadyStarted: 'Već ste započeli posao.',
+   cannotWhileDead: 'Nije moguće dok ste mrtvi.',
    youHaveMaximumHouses: 'Imate maksimalan broj kuća.',
    thereAreNoOrdersRightNow: 'Trenutno nema porudžbina.',
    youHaveMoreThanHealth: 'Vaš HP je dovoljnno visok za korišćenje medkita.',

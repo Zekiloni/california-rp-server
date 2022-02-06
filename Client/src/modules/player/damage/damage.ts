@@ -32,17 +32,14 @@ function incomingDamageHandler (
 ) {
    if (targetEntity && targetEntity.remoteId == mp.players.local.remoteId) { 
       
-      const { getHealth } = mp.players.local;
-
       mp.events.callRemote('SERVER::INJURIES', boneIndex, weapon, damage);
-
+      
       if (mp.players.local.getVariable('WOUNDED')) {
-         if (damage > getHealth() - damage) {
+         if (damage > mp.players.local.getHealth() - damage) {
             mp.events.callRemote('SERVER::DEATH', sourceEntity);
-
          }
       } else { 
-         if (damage > getHealth()) {
+         if (damage > mp.players.local.getHealth()) {
             mp.events.callRemote('SERVER::WOUNDED');
             return true;
          }
@@ -52,14 +49,14 @@ function incomingDamageHandler (
 
 
 function isCrawlingHandler (entity: EntityMp, value: boolean, oldValue: boolean) {
-   if (entity.type == entityType.PLAYER) {
+   if (entity.type == entityType.PLAYER && entity.remoteId == mp.players.local.remoteId) {
       if (value) { 
          crawling = setInterval(handleCrawling, 0);
-         playAnimation(<PlayerMp>entity, animations.falling.dictionary, animations.falling.name, animationFlags.STOP_LAST_FRAME, -1, true);
+         playAnimation(mp.players.local, animations.falling.dictionary, animations.falling.name, animationFlags.STOP_LAST_FRAME, -1, true);
       } else {
          clearInterval(crawling);
-         (<PlayerMp>entity).clearTasks();
-         (<PlayerMp>entity).clearSecondaryTask()
+         // (<PlayerMp>entity).clearTasks();
+         // (<PlayerMp>entity).clearSecondaryTask();
       }
    }
 }
@@ -90,36 +87,40 @@ function handleCrawling () {
    }
 
    if (mp.game.controls.isDisabledControlPressed(0, 32)) {
-      if (animation) {
-         return;
-      };
+      // if (animation == animations.moving.names.forward) {
+      //    return;
+      // };
 
       animation = animations.moving.names.forward;
 
+      playAnimation(mp.players.local, animations.moving.dictionary, animation, animationFlags.STOP_LAST_FRAME, -1, true);
+      
       let time = mp.game.entity.getEntityAnimDuration(animations.moving.dictionary, animation);
-
-      playAnimation(mp.players.local, animations.moving.dictionary, animation, animationFlags.STOP_LAST_FRAME);
+      mp.gui.chat.push('Time ' + JSON.stringify(time))
 
       animationTimeout = setTimeout(() => {
          animation = null;
          clearTimeout(animationTimeout);
+         mp.gui.chat.push('move again')
       }, (time - 0.1) * 1000);
    }
 
    if (mp.game.controls.isDisabledControlPressed(0, 33)) {
-      if (animation) {
-         return;
-      }
+      // if (animation == animations.moving.names.backward) {
+      //    return;
+      // }
 
       animation = animations.moving.names.backward;
 
+      playAnimation(mp.players.local, animations.moving.dictionary, animation, animationFlags.STOP_LAST_FRAME, -1, true);
+
       let time = mp.game.entity.getEntityAnimDuration(animations.moving.dictionary, animation);
 
-      playAnimation(mp.players.local, animations.moving.dictionary, animation, animationFlags.STOP_LAST_FRAME);
-
+      mp.gui.chat.push('Time ' + JSON.stringify(time))
       animationTimeout = setTimeout(() => {
          animation = null;
-         clearTimeout(animationTimeout);
+         clearTimeout(animationTimeout);         
+         mp.gui.chat.push('move again')
       }, (time - 0.1) * 1000);
    }
 } 

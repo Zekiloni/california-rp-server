@@ -4,7 +4,9 @@ import { screenResolution } from '../core';
 
 mp.nametags.enabled = false;
 
-mp.events.add('render', nametags)
+
+mp.events.add(RageEnums.EventKey.RENDER, nametags);
+
 
 function nametags () {
    if (!mp.players.local.getVariable('LOGGED_IN')) {
@@ -50,8 +52,9 @@ function nametags () {
                   );
                }
 
-               if (target.getVariable('WOUNDED')) {
-                  mp.game.graphics.drawText('* THIS PLAYER IS BRUTALLY WOUNDED *', [x, y - 0.0345], 
+               if (target.getVariable('WOUNDED') || target.getVariable('DEAD')) {
+                  const info = target.getVariable('WOUNDED') ? '* THIS PLAYER IS BRUTALLY WOUNDED *' : '* THIS PLAYER IS DEAD *';
+                  mp.game.graphics.drawText(info, [x, y - 0.0345], 
                      {
                         centre: true,
                         font: 4,

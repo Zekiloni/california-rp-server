@@ -94,16 +94,7 @@ export class characters extends Model {
    @Column(DataType.BOOLEAN)
    dead: boolean;
 
-   @Default(null)
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return JSON.parse(this.getDataValue('injuries')); 
-         }
-      }
-   )    
-   injuries: playerInjury[]
+   injuries: playerInjury[] = [];
 
    @Default(null)
    @Column(
@@ -331,7 +322,7 @@ export class characters extends Model {
 
 
    async injury (player: PlayerMp, bone: number, weapon: number, damage: number) {
-      let injuries = this.injuries;
+      let injuries = this.injuries ? this.injuries : [];
       
       const alreadyInjured = injuries.find(injury => injury.bone == bone && injury.weapon == weapon);
 
@@ -348,6 +339,8 @@ export class characters extends Model {
             times: 1
          };
    
+         console.log(injuries)
+         console.log(injury)
          injuries.push(injury);
       }
 
@@ -358,9 +351,9 @@ export class characters extends Model {
       this.update( { injuries: injuries } );
    }
    
-   async clearInjuries (player: PlayerMp) { 
+   clearInjuries (player: PlayerMp) { 
       player.setVariable(shared_Data.INJURIES, []);
-      await this.update( { injuries: [] } );
+      this.injuries = [];
    }
 
    onWound (player: PlayerMp, by: PlayerMp | null | EntityMp | undefined) { 
@@ -377,23 +370,36 @@ export class characters extends Model {
 
          clearTimeout(this.respawnTimer!);
       }, playerConfig.respawnTimer);
+
+      return true;
    }
    
    onDead (player: PlayerMp, killer: PlayerMp | EntityMp | null | undefined) {
-      console.log(killer);
+      
+      player.setVariable(shared_Data.DEAD, true);
+      player.setVariable(shared_Data.WOUNDED, false);
 
+      console.log(' Killer ' + (<PlayerMp>killer).name);
+
+      return true;
    }
 
    async respawn (player: PlayerMp, inHospital: boolean) {
 
       const position = inHospital ? new mp.Vector3(280.8525, -1432.99853, 29.9649658) : player.position;
 
-      player.call('CLIENT::DEATHSCREEN', [false])
-      player.setVariable(shared_Data.INJURIES, []);
-      player.setVariable(shared_Data.WOUNDED, false);
+      if (this.respawnTimer) {
+         clearTimeout(this.respawnTimer);
+      }
 
+      player.call('CLIENT::DEATHSCREEN', [false])
+      player.setVariable(shared_Data.WOUNDED, false);
+      player.setVariable(shared_Data.DEAD, false);
+
+      this.dead = false;
       this.wounded = false;
-      this.injuries = [];
+
+      this.clearInjuries(player);
 
       player.spawn(position);
 
@@ -407,9 +413,16 @@ export class characters extends Model {
    onChat (player: PlayerMp, content: any) {
       if (player.getVariable(shared_Data.LOGGED) && player.getVariable(shared_Data.SPAWNED)) {
 
-         if (player.getVariable(shared_Data.MUTED)) return; // u are muted
+         if (player.getVariable(shared_Data.MUTED)) {
+            return; // u are muted
+         }; 
 
          const character = player.character;
+
+         if (character.dead) {
+            player.sendNotification(lang.cannotWhileDead, notifications.type.ERROR, notifications.time.SHORT);
+            return;
+         }
 
          player.sendProximityMessage(distances.IC, character.name + lang.personSays + content, colors.hex.White);
       }
