@@ -51,12 +51,7 @@ export class ammoItem extends items {
             };
          }
 
-         if (item.quantity > 1) { 
-            item.increment('quantity', { by: -1 } );
-         } else { 
-            item.destroy();
-         }
-
+         await item.destroy();
          await weaponItem.save()
       };
    }

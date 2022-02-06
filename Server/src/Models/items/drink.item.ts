@@ -19,18 +19,11 @@ export class drinkItem extends items {
       super (name, type ? drinkType.concat(type) : drinkType, model, weight, description);
       this.thirst = thirst;
       this.alcohol = alcohol;
+   }
 
-      this.use = function (player: PlayerMp, item: inventories) {
-         if (item.quantity == 1) {
-            item.destroy()
-         } else { 
-            item.decrement('quantity', { by: 1 } ).then(item => {
-               item.save();
-            });
-         }
-         player.character.thirst += this.thirst;
-      }
-
+   async use (player: PlayerMp, item: inventories) {
+      await item.destroy();
+      player.character.increment('thirst', { by: this.thirst } );
    }
 }
 

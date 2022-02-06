@@ -193,49 +193,4 @@ import './items/med.item';
 // // mp.ItemRegistry = {};
 
 
-// function weaponNameByHash(i) {
-//     let query = "0x" + i.toString(16).toUpperCase();
-//     for (let f in Weapons) {
-//         let w = Weapons[f];
-//         if (w === query) {
-//             return 'weapon_' + f;
-//         }
-//     }
-// }
-
-
-// function isAmmoValid(weapon, ammo) {
-//     let name = weaponNameByHash(weapon);
-//     for (let i in mp.ItemRegistry) {
-//         let item = mp.ItemRegistry[i];
-//         if (item.weapon && item.weapon == name) {
-//             if (item.ammo && item.ammo == ammo) {
-//                 return true;
-//             }
-//             else {
-//                 return false;
-//             }
-//         }
-//     }
-// }
-
-
-// mp.Player.prototype.giveAmmo = function (quantity, catridge) {
-//     let weapon = this.weapon;
-//     if (weapon) {
-//         let valid = isAmmoValid(this.weapon, catridge);
-//         if (valid) {
-//             let ammo = this.getWeaponAmmo(weapon);
-//             this.setWeaponAmmo(weapon, parseInt(ammo + quantity));
-//         }
-//         else {
-//             return false;
-//         }
-//     }
-//     else {
-//         return false;
-//     }
-// };
-
-
 // module.exports = { ItemType, ItemEntities, ItemRegistry };

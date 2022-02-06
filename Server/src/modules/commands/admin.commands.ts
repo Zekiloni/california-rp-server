@@ -126,7 +126,7 @@ Commands[cmds.names.INVICIBLE] = {
 Commands[cmds.names.GIVE_ITEM] ={
    description: cmds.descriptions.GIVE_ITEM,
    admin: rank.SENIOR_ADMINISTRATOR,
-   call (player: PlayerMp, targetSearch: any, quantity: number, ...itemName: any) { 
+   call (player: PlayerMp, targetSearch: any, ...itemName: any) { 
 
       itemName = itemName.join(' ');
 
@@ -140,7 +140,7 @@ Commands[cmds.names.GIVE_ITEM] ={
          }; 
 
          try { 
-            inventories.giveItem(target, foundItem, quantity);
+            inventories.giveItem(target, foundItem);
          } catch(e) { 
             console.log(e)
          }

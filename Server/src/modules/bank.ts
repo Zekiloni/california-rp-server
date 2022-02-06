@@ -85,7 +85,6 @@ mp.events.addProc(
                inventories.create( { name: itemNames.CREDIT_CARD, 
                   entity: itemEnums.entity.PLAYER, 
                   owner: player.character.id, 
-                  quantity: 1,
                   data: {
                      name: player.character.name,
                      bank: bank_Account.number,

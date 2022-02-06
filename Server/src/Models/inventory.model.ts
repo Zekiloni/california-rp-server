@@ -38,10 +38,6 @@ export class inventories extends Model {
 
    @Column(DataType.INTEGER)
    status: itemEnums.status;
-
-   @Default(1)
-   @Column(DataType.INTEGER)
-   quantity: number;
    
    @Default(none)
    @Column
@@ -202,14 +198,8 @@ export class inventories extends Model {
       return player.character?.equiped;
    }
 
-   static giveItem (player: PlayerMp, item: items, quantity: number = 1) { 
-      inventories.doesHaveItem(itemEnums.entity.PLAYER, player.character.id, item.name).then(haveItem => {
-         if (haveItem && item.isStackable()) {
-            haveItem.increment('quantity', { by: quantity } );
-         } else { 
-            inventories.create( { name: item.name, quantity: quantity, entity: itemEnums.entity.PLAYER, owner: player.character.id } );
-         }
-      });
+   static giveItem (player: PlayerMp, item: items) { 
+      inventories.create( { name: item.name, entity: itemEnums.entity.PLAYER, owner: player.character.id } );
    };
 
    static async savePlayerEquipment (character: characters) { 

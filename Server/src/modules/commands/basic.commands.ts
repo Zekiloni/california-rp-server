@@ -1,7 +1,7 @@
 
 import { cmds, colors, lang } from '@constants';
 import { distances } from '@enums';
-import { shared_Data } from '@shared';
+import { checkForDot, shared_Data } from '@shared';
 import { Commands } from '../commands';
 
 
@@ -172,6 +172,8 @@ Commands[cmds.names.ROLEPLAY_AME] = {
       }
 
       player.setVariable(shared_Data.BUBBLE, text);
+      player.sendMessage('> ' + player.name + ' ' + checkForDot(text), colors.hex.Purple[1]);
+
       setTimeout(() => { 
          if (!player) {
             return;

@@ -117,7 +117,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    
    character.spawnPlayer(player, spawnPointTypes.DEFAULT, appearance);
 
-   inventories.create({ name: itemNames.DOCUMENT_ID_CARD, quantity: 1, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
+   inventories.create({ name: itemNames.DOCUMENT_ID_CARD, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
       item!.data = {
          name: character.name,
          birth: character.birth,

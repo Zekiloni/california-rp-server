@@ -30,11 +30,7 @@ export class medItem extends items {
          return;
       }
 
-      if (item.quantity > 1) { 
-         item.increment('quantity', { by: -1 } );
-      } else { 
-         await item.destroy();
-      }
+      await item.destroy();
 
       const animation = { 
          dictionary: animations.medkit.dictionary,
