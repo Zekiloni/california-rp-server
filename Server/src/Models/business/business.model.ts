@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
 import { gDimension } from '@constants';
@@ -95,23 +95,29 @@ export class business extends Model {
       business.objects.set(this.id, object);
    }
 
+
+   @AfterSync
+   static loading () {
+      business.findAll().then(businesses => {
+         businesses.forEach(business => {
+            business.refresh();
+         });
+      });
+   }
+
    @AfterCreate
-   static refresh (business: business) { 
-      if (business.object) { 
+   static creating (business: business) { 
+      business.refresh();
+   }
 
-      } else {
-         const { name, position, sprite, dimension, sprite_color } = business;
 
-         business.object = { 
-            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
-            blip: mp.blips.new(sprite, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: name, color: sprite_color, shortRange: true, scale: 0.85 }),
-            marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
-               color: businessConfig.markerColor,
-               rotation: new mp.Vector3(0, 0, 90),
-               visible: true,
-               dimension: dimension
-            })
-         }; 
+   @AfterDestroy
+   static destroying (business: business) {
+      if (business.object) {
+         business.object.blip?.destroy();
+         business.object.colshape?.destroy();
+         business.object.marker?.destroy();
+         this.objects.delete(business.id);
       }
    }
 
@@ -147,6 +153,26 @@ export class business extends Model {
    };
 
 
+   refresh () {
+      if (this.object) { 
+
+      } else {
+         const { name, position, sprite, dimension, sprite_color } = this;
+
+         this.object = { 
+            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
+            blip: mp.blips.new(sprite, new mp.Vector3(position.x, position.y, position.z), { dimension: dimension, name: name, color: sprite_color, shortRange: true, scale: 0.85 }),
+            marker: mp.markers.new(27, new mp.Vector3(position.x, position.y, position.z - 0.98), 1.8, {
+               color: businessConfig.markerColor,
+               rotation: new mp.Vector3(0, 0, 90),
+               visible: true,
+               dimension: dimension
+            })
+         }; 
+      }
+   }
+
+
    async buy (player: PlayerMp) {
       const character = player.character;
 
@@ -175,7 +201,6 @@ export class business extends Model {
       // PORUKA: Prodali ste biznis
       await this.save();
    };
-
 
 }
 

@@ -1,6 +1,6 @@
 
 
-import { AfterCreate, AfterDestroy, AfterSave, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { itemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { itemExtra } from '@interfaces';
@@ -79,11 +79,21 @@ export class inventories extends Model {
       inventories.objects.set(this.id, object);
    }
 
+
+   @AfterSync
+   static loading () {
+      inventories.findAll( { where: { on_ground: true } } ).then(items => {
+         items.forEach(item => {
+            item.refresh();
+         })
+      });
+   }
+
    @AfterCreate
-   static async creating (inventory: inventories) { 
-      inventories.refresh(inventory);
+   static async creating (item: inventories) { 
+      item.refresh();
       
-      const rItem = items.list[inventory.name];
+      const rItem = items.list[item.name];
 
       if (!rItem) {
          return;
@@ -91,7 +101,7 @@ export class inventories extends Model {
 
       switch (rItem.name) {
          case itemNames.HANDHELD_RADIO: {
-            inventory.data = {
+            item.data = {
                power: true,
                frequency: '000',
                slot: 1
@@ -100,23 +110,30 @@ export class inventories extends Model {
          }
       }
 
-      await inventory.save();
+      await item.save();
    }
 
    @AfterDestroy
    static destroying (item: inventories) { 
-      if (item.object) item.object.destroy();
+      if (item.object) {
+         item.object.destroy();
+         inventories.objects.delete(item.id);
+      }
    }
 
    @AfterSave
-   static refresh (item: inventories) {
-      if (item.on_ground) {
-         item.object = mp.objects.new(items.list[item.name].model, item.position, { alpha: 255, rotation: item.rotation, dimension: item.dimension });
-         item.object.setVariable(shared_Data.ITEM, { name: item.name, id: item.id });
+   static saving (item: inventories) {
+      item.refresh();
+   }
+
+   refresh () {
+      if (this.on_ground) {
+         this.object = mp.objects.new(items.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
+         this.object.setVariable(shared_Data.ITEM, { name: this.name, id: this.id });
       } else { 
-         if (item.object) { 
-            item.object.destroy();
-            inventories.objects.delete(item.id);
+         if (this.object) { 
+            this.object.destroy();
+            inventories.objects.delete(this.id);
          }
       }
    }
