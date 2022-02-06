@@ -1,8 +1,8 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
 import { gDimension, lang, none, offerExpire } from '@constants';
-import { characters, logs } from '@models';
+import { characters, logs, products } from '@models';
 import { businessConfig } from '@configs';
 import { notifications, offerStatus, offerTypes } from '@enums';
 import { dollars } from '@shared';
@@ -89,6 +89,9 @@ export class business extends Model {
    @UpdatedAt
    updated_at: Date;
 
+   @HasMany(() => products)
+   products: products[]
+
    get object (): interactionPoint { 
       return business.objects.get(this.id)!;
    }
@@ -117,7 +120,6 @@ export class business extends Model {
 
       business.refresh();
    }
-
 
    @AfterDestroy
    static destroying (business: business) {
@@ -161,6 +163,10 @@ export class business extends Model {
       }
    }
 
+   async lock (player: PlayerMp, locked: boolean) {
+      await this.update( { locked: locked } );
+      player.sendNotification(locked ? lang.businessLocked : lang.businessUnlocked, notifications.type.INFO, notifications.time.MED);
+   }
 
    async edit (player: PlayerMp, property: string, value: string) {
       switch (property) {
@@ -201,7 +207,6 @@ export class business extends Model {
       player.sendNotification(lang.successfullyBuyedBusiness + this.name + lang.for + dollars(this.price) + '.', notifications.type.SUCCESS, notifications.time.LONG);
       await this.save();
    };
-
    
    async sell (player: PlayerMp, sellPrice: string, targetSearch: string | number) {
 
@@ -254,5 +259,6 @@ export class business extends Model {
          await this.save();
       }
    };
+
 }
 

@@ -3,7 +3,7 @@ import { business } from '@models';
 
 
 @Table
-export class product extends Model {
+export class products extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column

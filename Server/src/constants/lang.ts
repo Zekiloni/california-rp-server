@@ -108,6 +108,8 @@ export const lang = {
    quitjob: 'Uspešno ste dali otkaz na poslu.',
    serverRestart: 'Server restart.',
    orderAlreadyProcessing: 'Dostava je već završena ili je u toku.',
+   businessLocked: 'Zaključali ste biznis.',
+   businessUnlocked: 'Otključali ste biznis.',
    orderSucess: 'Uspešno ste završili dostavu, zaradili ste ',
    successfullyBuyedVehicle: 'Uspešno ste kupili vozilo !', 	
    successfullyBuyedBusiness: 'Uspešno ste kupili biznis ',
