@@ -9,8 +9,6 @@ import { notifications } from '@enums';
 import { business } from '@models';
 
 
-let TemporaryVehicles = [];
-
 @Table
 export class vehicles extends Model {
 
@@ -38,7 +36,10 @@ export class vehicles extends Model {
    locked: boolean;
 
    @AllowNull(false)
-   @Column(DataType.JSON)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('numberPlate')); }
+   })   
    numberPlate: numberPlate;
 
    @AllowNull(false)
@@ -127,24 +128,6 @@ export class vehicles extends Model {
       });
       return Vehicle;
    }
-
-   static async newTemporary (model: string, position: Vector3Mp, rotation: Vector3Mp, color: number[], plate: string, dimension = gDimension) {
-      const [primary, secondary] = color;
-
-      const vehicle = mp.vehicles.new(mp.joaat(model), position, {
-         heading: rotation.z, alpha: 255, locked: false,
-         numberPlate: plate, dimension: dimension, engine: false
-      });
-
-      vehicle.setColor(primary, secondary);
-
-      vehicle.setVariable('Mileage', 0.0);
-      vehicle.setVariable('Fuel', 100.0);
-      vehicle.setVariable('Admin', true);
-
-      TemporaryVehicles.push(vehicle);
-      return vehicle;
-   };
 
 
    static vehicleInstance (vehicle: VehicleMp) {

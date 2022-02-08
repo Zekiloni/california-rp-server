@@ -53,8 +53,8 @@
 </template>
 
 <script>
-   import { Messages } from '../../globals';
-   import Helpers from '../../helpers';
+   import { Messages } from '../../../globals';
+   import Helpers from '../../../helpers';
 
    export default {
       data () { 
@@ -183,8 +183,8 @@
    
    .circle { display: flex; justify-content: center; align-items: center; width: 70px; height: 70px; background: linear-gradient(141deg, rgba(104,69,234,1) 0%, rgba(66,54,128,1) 100%); border-radius: 100%; }
    .icon { width: 35px; height: 35px; mask-size: cover; background: whitesmoke; }
-   .icon.shopping-cart { mask: url('../../assets/images/icons/shopping-cart.svg') no-repeat center; }
-   .icon.products-shelves { mask: url('../../assets/images/icons/products.svg') no-repeat center; }
+   .icon.shopping-cart { mask: url('../../../assets/images/icons/shopping-cart.svg') no-repeat center; }
+   .icon.products-shelves { mask: url('../../../assets/images/icons/products.svg') no-repeat center; }
 
    .cart .circle, .store .circle { margin-top: -30px; }
 

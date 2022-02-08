@@ -29,7 +29,7 @@
 
       <Playerlist v-if="interfaces.playerlist" />
 
-      <transition name="fade"> 
+      <transition name="fade-with-bottom-slide"> 
          <Banking v-if="interfaces.banking" key=banking />\
          <ATM v-if="interfaces.atm" key=atm />
       </transition>
@@ -43,8 +43,15 @@
          <HouseInfo v-if="interfaces.houseInfo" />
       </transition>
 
+
       <!-- [BUSINESSES] -->
-      <Market v-if="interfaces.market" />
+      <transition name="fade-with-bottom-slide">
+         <BusinessInfo v-if="interfaces.businessInfo" />
+
+         <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
+         <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
+      </transition>
+
 
       <transition name="fade"> 
          <JobOffer v-if="interfaces.job_Offer" />
@@ -85,17 +92,23 @@
    import Banking from './components/other/banking.vue';
    import ATM from './components/other/atm.vue';
    import JobOffer from './components/jobs/job.offer.vue';
-   import Market from './components/business/Market.vue';
-   import HouseInfo from './components/houses/house.info.vue';
    import Phone from './components/phone.vue';
    import HandheldRadio from './components/misc/handheld.radio.vue';
+
+
+   import HouseInfo from '@/components/houses/HouseInfo.vue';
+
+   import MarketMenu from '@/components/business/menus/Market.vue';
+   import RentMenu from '@/components/business/menus/RentVehicle.vue';
    
    export default { 
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Playerlist,
-         Inventory, Chat, Banking, ATM, JobOffer, Market, HouseInfo, 
-         Phone, Document, HandheldRadio, DeathScreen
+         Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
+         Phone, Document, HandheldRadio, DeathScreen,
+         MarketMenu,
+         RentMenu
       },
 
       data () { 

@@ -27,6 +27,7 @@ export enum shared_Data {
    MILEAGE = 'MILEAGE',
    DIRT = 'DIRT',
    WINDOWS = 'WINDOWS',
+   INDICATORS = 'INDICATORS',
    HOOD = 'HOOD',
    TRUNK = 'TRUNK',
    DATABASE = 'DATABASE'

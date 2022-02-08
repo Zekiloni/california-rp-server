@@ -10,11 +10,14 @@ export * from './item.model';
 export * from './inventory.model';
 export * from './job.model';
 export * from './misc/channel.model';
-export * from './vehicle.model';
 export * from './properties/house.model';
 export * from './factions/faction.model';
 export * from './factions/rank.model';
 
+
+// @vehicles
+export * from './vehicles/vehicle.model';
+export * from './vehicles/temporaryVehicle.model';
 
 // @business
 export * from './business/business.model';

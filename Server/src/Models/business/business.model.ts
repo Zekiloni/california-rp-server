@@ -2,7 +2,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { interactionPoint } from '@interfaces';
 import { gDimension, lang, none, offerExpire } from '@constants';
-import { characters, logs, products } from '@models';
+import { characters, logs, products, workers } from '@models';
 import { businessConfig } from '@configs';
 import { notifications, offerStatus, offerTypes } from '@enums';
 import { dollars } from '@shared';
@@ -92,6 +92,9 @@ export class business extends Model {
    @HasMany(() => products)
    products: products[]
 
+   @HasMany(() => workers)
+   workers: workers[]
+
    get object (): interactionPoint { 
       return business.objects.get(this.id)!;
    }
@@ -103,7 +106,7 @@ export class business extends Model {
 
    @AfterSync
    static loading () {
-      business.findAll().then(businesses => {
+      business.findAll({ include: [products, workers] }).then(businesses => {
          businesses.forEach(business => {
             business.refresh();
          });
@@ -146,20 +149,33 @@ export class business extends Model {
 
       } else {
          const { name, position, sprite, dimension, sprite_color, type } = this;
+         try { 
+            this.object = {
+               blip: mp.blips.new(sprite!, new mp.Vector3(position.x, position.y, position.z), 
+                  { 
+                     dimension: dimension,
+                     name: name,
+                     color: sprite_color!,
+                     shortRange: true,
+                     scale: 0.85
+                  }
+               ),
+               
+               colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension)
+            }
 
-         this.object = {
-            blip: mp.blips.new(sprite!, new mp.Vector3(position.x, position.y, position.z), 
-               { 
-                  dimension: dimension,
-                  name: name,
-                  color: sprite_color!,
-                  shortRange: true,
-                  scale: 0.85
-               }
-            ),
-            
-            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension)
+            this.object.colshape!.onPlayerEnter = (player: PlayerMp) => {
+               if (player.vehicle) return;
+               player.call('CLIENT::BUSINESS:INFO', [this]);
+            }
+   
+            this.object.colshape!.onPlayerLeave = (player: PlayerMp) => { 
+               player.call('CLIENT::BUSINESS:INFO', [false]);
+            }
+         } catch (e) { 
+            console.log(e)
          }
+         
       }
    }
 

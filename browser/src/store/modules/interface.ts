@@ -11,7 +11,7 @@ const InitialState = {
    notifications: true,
    chat: false,
 
-   lobby: true,
+   lobby: false,
    characterCreator: false,
 
    gameInterface: false,
@@ -33,10 +33,14 @@ const InitialState = {
    Food: false,
    Transit: false,
 
+
+   businessInfo: false,
+   marketMenu: false,
+   rentMenu: false,
+
+   
    clothing_Shop: false,
-   market_Shop: false,
    drinks_Shop: false,
-   rent_Shop: false,
    gas_Station: false,
    dealership: false,
    

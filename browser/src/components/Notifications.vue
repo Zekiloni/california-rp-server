@@ -6,7 +6,7 @@
    <div class="notifications-hints"> 
       <transition-group name="fade-with-bottom-slide" tag="ul" class="hints">
          <li class="hint"  v-for="(hint, i) in hints" :key="'hint-'+i"> 
-            <KeyHint :keyName="hint.key" /> <h4> {{ hint.message }} </h4>
+            <h4> {{ hint.message }} </h4> <KeyHint :keyName="hint.key" />
          </li>
       </transition-group>
 
@@ -57,6 +57,7 @@
             });  
 
             mp.events.add('BROWSER::HINT', (key, message, time = 6) => { 
+               console.log('key is ' + key)
                this.createHint(key, message, time);
             });
          }
@@ -98,9 +99,9 @@
    ul.hints { 
       position: absolute;
       padding: 0;
-      left: 30px;
+      right: 30px;
       list-style: none;
-      top: 480px;
+      top: 180px;
    }
 
    ul.hints li {
@@ -108,16 +109,12 @@
       justify-content: flex-start;
       align-items: center;
       margin: 10px 0;
-      background: rgb(18 20 25 / 85%);
       border-radius: 10px;
-      padding-right: 25px;
-      box-shadow: 0 5px 15px 0 rgb(0 0 0 / 30%);
    }
 
    ul.hints li h4 {
-      color: #adb6c4;
-      font-style: italic;
-      text-shadow: 0 0.7px 1px rgb(0 0 0 / 40%);
+      color: #cdcdcd;
+      text-shadow: 0 0.7px 1px rgb(0 0 0 / 60%);
       font-weight: 450;
       margin: 0 10px;
    }

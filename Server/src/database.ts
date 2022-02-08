@@ -3,7 +3,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { databaseConfig } from '@configs';
-import { logs, accounts, characters, appearances, banks, houses, business, bans, inventories } from '@models';
+import { logs, accounts, characters, appearances, banks, houses, business, bans, inventories, products, workers } from '@models';
 import { lang } from '@constants';
 
 
@@ -22,7 +22,9 @@ const Database = new Sequelize({
       inventories, 
       banks,
       houses,
-      business
+      business,
+      products,
+      workers
    ],
    logging: false
 });

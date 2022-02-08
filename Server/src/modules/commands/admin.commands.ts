@@ -2,11 +2,11 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, accounts, business } from '@models';
-import { cmds, colors, lang, none, ranks, weathers } from '@constants';
+import { logs, items, inventories, houses, accounts, business, temporaryVehicle } from '@models';
+import { cmds, colors, gDimension, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { houseConfig, serverConfig } from '@configs';
-import { checkForDot, shared_Data } from '@shared';
+import { checkForDot, generateString, shared_Data } from '@shared';
 
 
 const savedPositions = 'savedPositions.txt';
@@ -208,15 +208,19 @@ Commands[cmds.names.HEALTH] = {
       cmds.params.PLAYER,
       cmds.params.NUMBER
    ],
-   call (player: PlayerMp, targetSearch: string, hp: string) { 
+   call (player: PlayerMp, targetSearch: string, value: string) { 
       const target = mp.players.find(targetSearch);
 
       if (!target) {
          player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
+
+      if (Number(value) < 0 || Number(value) > 300) {
+         return;
+      }
       
-      target.health = Number(hp);
+      target.health = Number(value);
    }
 };
 
@@ -321,12 +325,34 @@ Commands[cmds.names.CREATE_VEHICLE] = {
    params: [
       cmds.params.VEHICLE_MODEL
    ],
-   call (player: PlayerMp, vName: string, primaryColor: number, secondaryColor: number) { 
+   call (player: PlayerMp, model: string, pColor: string = '0,0,0', sColor: string = '0,0,0', numberPlate?: string) { 
 
-      const vehicle = mp.vehicles.new(mp.joaat(vName), player.position);
-      vehicle.setColor(Number(primaryColor), Number(secondaryColor));
+      const primaryColor = pColor.split(',');
+      const secondaryColor = sColor.split(',');
 
-      player.putIntoVehicle(vehicle, RageEnums.VehicleSeat.DRIVER);
+      const vehicle = new temporaryVehicle(
+         model,
+         player.position,
+         player.heading,
+         [
+            [
+               Number(primaryColor[0]),
+               Number(primaryColor[1]),
+               Number(primaryColor[2])
+            ],
+            [
+               Number(secondaryColor[0]),
+               Number(secondaryColor[1]),
+               Number(secondaryColor[2])
+            ]
+         ],
+         numberPlate ? numberPlate : generateString(6),
+         gDimension,
+         false,
+         false
+      );
+
+      player.putIntoVehicle(vehicle.object, RageEnums.VehicleSeat.DRIVER);
    } 
 };
 
@@ -660,35 +686,42 @@ Commands[cmds.names.DIMENSION] = {
 };
 
 
+Commands[cmds.names.RESPAWN_VEHICLE] = {
+   description: cmds.descriptions.RESPAWN_VEHICLE,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   call (player: PlayerMp) {
 
-// Commands['rtc'] = {
-//    description: 'Specanje igrača',
-//    Admin: 2,
-//    params: ['id vozila'],
-//    call: (Player: PlayerMp, Args: string[]) => {
-//       if (Player.vehicle) {
-//          //provera da li je vlasničko vozilo 
-//       } else {
-//          const Target = parseInt(Args[0]);
-//          const TargetVehicle = mp.vehicles.at(Target);
+      const vehicle = player.vehicle || mp.vehicles.getClosest(player.position);
 
-//          if (Target && TargetVehicle) {
-//             const SpawnData = {
-//                X: 1,
-//                Y: 1,
-//                Z: 1,
-//                Heading: 30
-//             };
-//             //Napraviti da kada se spawna vozilo seta mu se spawn data
-//             const SpawnData = TargetVehicle.data.VEHICLE_SPAWN_DATA;
-//             TargetVehicle.destroy();
-//             TargetVehicle.spawn(new mp.Vector3(SpawnData.X, SpawnData.Y, SpawnData.Z), SpawnData.Heading);
-//             Admin.AdminActionNotify(Player, `je respawnovao vozilo ID: ` + TargetVehicle.id);
-//          }
-//       }
+      if (!vehicle) {
+         player.sendNotification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
+         return;
+      }
+      
+      if (temporaryVehicle.objects.get(vehicle.id)) {
+         if (player.vehicle) {
+            player.removeFromVehicle();
+         }
+         temporaryVehicle.objects.get(vehicle.id)?.respawn();
+      } else {
 
-//    }
-// };
+         // vehicle is in db....
+      }
+   }
+}
+
+Commands[cmds.names.RESPAWN_ALL_VEHICLES] = {
+   description: cmds.descriptions.RESPAWN_ALL_VEHICLES,
+   admin: rank.LEAD_ADMINISTRATOR,
+   call (player: PlayerMp) {
+     temporaryVehicle.objects.forEach(vehicle => {
+         if (vehicle.object.getOccupants().length == 0) {
+            vehicle.respawn();
+         }
+     });
+   }
+};
+
 
 
 // Commands['sethp'] = {

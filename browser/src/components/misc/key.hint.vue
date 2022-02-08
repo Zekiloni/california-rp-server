@@ -67,29 +67,22 @@
 <style scoped>
    .key {
       position: relative;
-      width: 35px;
-      height: 35px;
-      border-radius: 5px;
-      background: #0b0e11;
       display: inline-block;
    }
 
-   .content { 
-      width: 33px; height: 33px; margin: auto; 
-   }
-
    .content.keyboard {
-      box-shadow: 0 0.2em 0 0.05em #07090b;
-      border-radius: 5px;
-      background:#21252f;
+      padding: 0px 5px;
+      border-radius: 2px;
+      background: rgb(11 14 17 / 45%);
    }
 
    .content.keyboard h3 {
       margin: 0;
-      padding: 4px 8px;
+      padding: 3px 5px;
       font-size: 1.05rem;
       font-weight: 500;
-      color:#cdcdcd;
+      color:white;
+      text-shadow: 0 0.7px 1px rgb(0 0 0 / 70%);
    }
 
 </style>

@@ -36,6 +36,10 @@ Vue.mixin({
          return /[A-Z]/.test(str[0]);
       },
 
+      capitalize: (text: string) => {
+         return text.charAt(0).toUpperCase() + text.slice(1);
+      },
+
       formatDate (i: Date) { 
          i = new Date(i); 
          return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
