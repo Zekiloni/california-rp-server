@@ -46,7 +46,7 @@
 
       <!-- [BUSINESSES] -->
       <transition name="fade-with-bottom-slide">
-         <BusinessInfo v-if="interfaces.businessInfo" />
+         <BusinessInfo v-if="interfaces.businessInfo" key=businessInfo />
 
          <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
          <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
@@ -97,7 +97,8 @@
 
 
    import HouseInfo from '@/components/houses/HouseInfo.vue';
-
+   
+   import BusinessInfo from '@/components/business/BusinessInfo.vue';
    import MarketMenu from '@/components/business/menus/Market.vue';
    import RentMenu from '@/components/business/menus/RentVehicle.vue';
    
@@ -107,6 +108,7 @@
          Lobby, Creator, Notifications, GameInterface, Playerlist,
          Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
          Phone, Document, HandheldRadio, DeathScreen,
+         BusinessInfo,
          MarketMenu,
          RentMenu
       },

@@ -166,6 +166,7 @@ export class business extends Model {
 
             this.object.colshape!.onPlayerEnter = (player: PlayerMp) => {
                if (player.vehicle) return;
+               console.log(this)
                player.call('CLIENT::BUSINESS:INFO', [this]);
             }
    

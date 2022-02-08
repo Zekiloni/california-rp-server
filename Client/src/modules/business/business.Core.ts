@@ -15,9 +15,10 @@ mp.events.add(
 );
 
 
-
 function showBusinessInfo (info: boolean | object) {
+   mp.gui.chat.push('e bro')
    if (info) { 
+      mp.gui.chat.push('e bro 1')
       active.info = true;
       business = (<Object>info);
 
@@ -28,6 +29,7 @@ function showBusinessInfo (info: boolean | object) {
    } else { 
       active.info = false;
       business = null;
+      mp.gui.chat.push('e bro 2')
 
       Browser.call('BROWSER::HIDE', 'businessInfo');
    }

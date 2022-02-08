@@ -1,8 +1,12 @@
 
 
 <template>
-   <div class="business-info" v-if="business && location">
-
+   <div class="business-info" v-if="business">
+      <h2 class="adress"> 
+         {{ business.location.street }} {{ business.id }}
+         <small> {{ business.location.zone }} </small>
+      </h2>
+      {{ business }}
    </div>
 </template>
 
@@ -11,18 +15,52 @@
    import Component from 'vue-class-component';
 
    @Component
-   export default class BusinesSInfo extends Vue {
+   export default class BusinessInfo extends Vue {
 
       business: object | null = null;
-      location: null | { zone: string, street: string } = null;
 
       mounted () {
          //@ts-ignore
          if (window.mp) {
             //@ts-ignore
-            mp.eventst.add('BROWSER::BUSINESS:INFO', (info, location) => { this.business = JSON.parse(info); this.location = JSON.parse(location); } );
+            mp.events.add('BROWSER::BUSINESS:INFO', (info, location) => { this.business = JSON.parse(info); this.business.location = JSON.parse(location); } );
          }
       }
    }
 
 </script>
+
+<style scoped>
+
+   .business-info { 
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      margin: auto;
+      min-height: 200px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #181a20;
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
+   }
+
+    h2.adress {
+      width: 100%;
+      margin: 0;
+      color: #cdcdcd;
+      font-weight: 450;
+      font-size: 1.15rem;
+      border-top-left-radius: 10px;
+      padding: 10px;
+      background: #181a20;
+   }
+
+   h2.adress small { 
+      display: block;
+      color: #848e9c;
+      font-size: 0.8rem;
+      font-weight: 350;
+   }
+
+</style>

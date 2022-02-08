@@ -376,14 +376,12 @@ export class characters extends Model {
       return true;
    }
    
-   onDead (player: PlayerMp, killer: PlayerMp | EntityMp | null | undefined) {
+   onDead (player: PlayerMp, killer: PlayerMp | EntityMp | null | undefined, reason?: number) {
       
       player.setVariable(shared_Data.DEAD, true);
       player.setVariable(shared_Data.WOUNDED, false);
 
       console.log(' Killer ' + (<PlayerMp>killer).name);
-
-      return true;
    }
 
    async respawn (player: PlayerMp, inHospital: boolean) {

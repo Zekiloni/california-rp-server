@@ -16,6 +16,7 @@ mp.events.add(
       'SERVER::CHARACTER:PLAY': playerSelectCharacter,
       'SERVER::ANIMATION:STOP': stopPlayeranimation,
 
+      'playerDeath': playerRealDeath,
       'SERVER::INJURIES': playerOnInjury,
       'SERVER::DEATH': playerDeathHandler,
       'SERVER::WOUNDED': playerWoundHandler,
@@ -212,6 +213,10 @@ function playerSelectCharacter (player: PlayerMp, characterId: number, point: sp
 
 function playerOnInjury (player: PlayerMp, bone: number, weapon: number, damage: number) {
    player.character.injury(player, bone, weapon, damage);
+}
+
+function playerRealDeath (player: PlayerMp, reason: number, killer: PlayerMp) {
+   player.character!.onDead(player, killer, reason);
 }
 
 function playerDeathHandler (player: PlayerMp, killer: EntityMp | null | undefined) {

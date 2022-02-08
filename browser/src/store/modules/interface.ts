@@ -11,7 +11,7 @@ const InitialState = {
    notifications: true,
    chat: false,
 
-   lobby: false,
+   lobby: true,
    characterCreator: false,
 
    gameInterface: false,
