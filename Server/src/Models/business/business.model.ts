@@ -5,7 +5,7 @@ import { gDimension, lang, none, offerExpire } from '@constants';
 import { characters, logs, products, workers } from '@models';
 import { businessConfig } from '@configs';
 import { notifications, offerStatus, offerTypes } from '@enums';
-import { dollars } from '@shared';
+import { controls, dollars } from '@shared';
 
 
 @Table
@@ -133,6 +133,35 @@ export class business extends Model {
          this.objects.delete(business.id);
       }
    }
+
+   showInfo (player: PlayerMp) {
+      if (player.vehicle) {
+         return;
+      };
+
+      if (this.walk_in && !this.locked) {
+         player.sendHint(controls.KEY_E, lang.toOpenBusinessMenu, 5);
+      }
+      
+      if (!this.walk_in && !this.locked) { 
+         player.sendHint(controls.KEY_E, lang.toEnterBusiness, 5);
+      }
+
+      if (!this.owner) {
+         player.sendHint(controls.KEY_Y, lang.toBuyTheBusinenss, 5);
+      }
+
+      player.call('CLIENT::BUSINESS:INFO', [this]);
+   }
+
+   static getNearest (player: PlayerMp) {
+      return business.findAll().then(businesses => {
+         const nearest = businesses.filter(business => player.dist(business.position) < 20);
+         return nearest.reduce((firstBiz, secondBiz) => {
+            return player.dist(firstBiz.position) < player.dist(secondBiz.position) ? firstBiz : secondBiz;
+         })
+      })
+   }
    
    static async getNearestGasStation (player: PlayerMp)  {
       return business.findAll( { where: { type: businessConfig.type.GAS_STATION } } ).then(gasStations => {
@@ -145,38 +174,29 @@ export class business extends Model {
    };
 
    refresh () {
-      if (this.object) { 
-
-      } else {
+      if (!this.object) {
          const { name, position, sprite, dimension, sprite_color, type } = this;
-         try { 
-            this.object = {
-               blip: mp.blips.new(sprite!, new mp.Vector3(position.x, position.y, position.z), 
-                  { 
-                     dimension: dimension,
-                     name: name,
-                     color: sprite_color!,
-                     shortRange: true,
-                     scale: 0.85
-                  }
-               ),
-               
-               colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension)
-            }
-
-            this.object.colshape!.onPlayerEnter = (player: PlayerMp) => {
-               if (player.vehicle) return;
-               console.log(this)
-               player.call('CLIENT::BUSINESS:INFO', [this]);
-            }
-   
-            this.object.colshape!.onPlayerLeave = (player: PlayerMp) => { 
-               player.call('CLIENT::BUSINESS:INFO', [false]);
-            }
-         } catch (e) { 
-            console.log(e)
+         this.object = {
+            blip: mp.blips.new(sprite!, new mp.Vector3(position.x, position.y, position.z), 
+               { 
+                  dimension: dimension,
+                  name: name,
+                  color: sprite_color!,
+                  shortRange: true,
+                  scale: 0.85
+               }
+            ),
+            
+            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension)
          }
-         
+      }
+
+      this.object.colshape!.onPlayerEnter = (player: PlayerMp) => {
+         this.showInfo(player);
+      }
+
+      this.object.colshape!.onPlayerLeave = (player: PlayerMp) => { 
+         player.call('CLIENT::BUSINESS:INFO', [false]);
       }
    }
 
@@ -190,7 +210,10 @@ export class business extends Model {
          case 'price': 
             this.price = Number(value); break;
          case 'name':
-            this.name = value; break;
+            this.name = value; 
+            break;
+         case 'lock':
+            this.locked = Number(value) == 1 ? true : false;
          case 'sprite':
             this.sprite = Number(value); break;
          case 'spriteColor':
@@ -203,6 +226,7 @@ export class business extends Model {
 
       await this.save();
       this.refresh();
+      player.call('CLIENT::BUSINESS:INFO', [this]);
    }
 
    async buy (player: PlayerMp) {

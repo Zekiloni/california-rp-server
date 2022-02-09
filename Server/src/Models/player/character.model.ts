@@ -329,24 +329,17 @@ export class characters extends Model {
       const alreadyInjured = injuries.find(injury => injury.bone == bone && injury.weapon == weapon);
 
       if (alreadyInjured) { 
-         console.log('aready injured i that place');
          alreadyInjured.times ++;
          alreadyInjured.damage += damage;
       } else {
-         console.log('added new injury')
          const injury: playerInjury = {
             bone: bone,
             weapon: weapon,
             damage: damage,
             times: 1
          };
-   
-         console.log(injuries)
-         console.log(injury)
          injuries.push(injury);
       }
-
-      console.log(injuries);
 
       player.setVariable(shared_Data.INJURIES, injuries);
 

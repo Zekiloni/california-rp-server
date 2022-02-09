@@ -25,7 +25,7 @@ Vue.mixin({
       },
 
       onSale (property: any) { 
-         return property.owner == 0 ? true : false;
+         return property.owner == null || property.owner == 0 ? true : false;
       },
 
       truncate (str: string, n: number) { 

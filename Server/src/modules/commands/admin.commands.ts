@@ -144,6 +144,17 @@ Commands[cmds.names.CREATE_BUSINESS] = {
    }
 }
 
+Commands[cmds.names.EDIT_BUSINESS] = {
+   description: cmds.descriptions.EDIT_BUSINESS,
+   admin: rank.LEAD_ADMINISTRATOR,
+   call (player: PlayerMp, property: string, ...newValue) {
+      const value = [...newValue].join(' ');
+      business.getNearest(player).then(nearest => {
+         nearest.edit(player, property, value);
+      })
+   }
+}
+
 
 Commands[cmds.names.GIVE_ITEM] ={
    description: cmds.descriptions.GIVE_ITEM,

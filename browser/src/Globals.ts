@@ -72,6 +72,8 @@ export const Messages = {
    WEIGHT_KG: 'kg',
    HOUSE_FOR_SALE: 'Ova kuća je na prodaju !',
    HOUSE_NOT_FOR_SALE: 'Ova kuća nije na prodaju.',
+   BUSINESS_FOR_SALE: 'Ovaj biznis je na prodaju !',
+   BUSINESS_NOT_FOR_SALE: 'Ovaj biznis nije na prodaju.',
    ARTICLE: 'Artikal',
    QUANTITY: 'Količina',
    PRICE: 'Cena',

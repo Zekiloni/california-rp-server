@@ -46,10 +46,10 @@
 
 <script>
 
-   import Offer from './offer.vue';
-   import { Messages } from '../globals';
-   import Helpers from '../helpers';
-   import VehicleInterface from './vehicles/vehicle.main.vue';
+   import Offer from '@/components/offer.vue';
+   import { Messages } from '@/globals';
+   import Helpers from '@/helpers';
+   import VehicleInterface from '@/components/vehicles/VehicleDashboard.vue';
 
    export default { 
 

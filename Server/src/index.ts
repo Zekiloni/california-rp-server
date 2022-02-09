@@ -10,7 +10,8 @@ import './modules/minute';
 import './modules/bank'
 import './modules/vehicles';
 import './modules/jobs';
-import './modules/houses';
+import './modules/houses.manager';
+import './modules/business.manager';
 
 import { sleep } from '@shared';
 import { logs } from'@models';

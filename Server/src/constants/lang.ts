@@ -79,6 +79,7 @@ export const lang = {
    notReadyForHarvest: 'Još nije vreme za branje.',
    notFactionLeader: 'Niste lider ove fakcije.',
    unsuccessfulAuth: 'Neuspešna prijava',
+   thisBusinessIsLocked: 'Biznis je zaključan, zavoren.',
 
 
    // help messages
@@ -89,6 +90,9 @@ export const lang = {
    cmdSyntax: '<b>[KOMANDA]</b> ',
    press: 'Pritisnite',
    pleaseReconnect: 'Rekontektuje se na F1.',
+   toOpenBusinessMenu: 'Da otvorie meni biznisa',
+   toEnterBusiness: 'Da udjete u biznis',
+   toBuyTheBusinenss: 'Da kupite biznis',
 
 
    // info messages

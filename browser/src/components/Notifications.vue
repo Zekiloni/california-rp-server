@@ -4,18 +4,18 @@
 <template>
    
    <div class="notifications-hints"> 
-      <transition-group name="fade-with-bottom-slide" tag="ul" class="hints">
-         <li class="hint"  v-for="(hint, i) in hints" :key="'hint-'+i"> 
-            <h4> {{ hint.message }} </h4> <KeyHint :keyName="hint.key" />
-         </li>
-      </transition-group>
-
       <transition-group name="notification" tag="ul" class="notifications">
          <li v-for="(notification, i) in notifications" v-bind:key="'n' + i" class="notification" :class="notificationTypes[notification.type].Class"> 
             <div class="type">
                <i aria-hidden="true" :class="notificationTypes[notification.type].Icon"> </i>
             </div>
             <h4> {{ notification.message }} </h4>
+         </li>
+      </transition-group>
+
+      <transition-group name="fade-with-bottom-slide" tag="ul" class="hints">
+         <li class="hint"  v-for="(hint, i) in hints" :key="'hint-'+i"> 
+            <h4> {{ hint.message }} </h4> <KeyHint :keyName="hint.key" />
          </li>
       </transition-group>
    </div>
@@ -57,7 +57,6 @@
             });  
 
             mp.events.add('BROWSER::HINT', (key, message, time = 6) => { 
-               console.log('key is ' + key)
                this.createHint(key, message, time);
             });
          }
@@ -96,17 +95,22 @@
 
 <style scoped>
 
-   ul.hints { 
+
+   .notifications-hints {
       position: absolute;
+      right: 15px;
+      top: 200px;
+   }
+
+   ul.hints { 
+      position: relative;
       padding: 0;
-      right: 30px;
       list-style: none;
-      top: 180px;
    }
 
    ul.hints li {
       display: flex;
-      justify-content: flex-start;
+      justify-content: flex-end;
       align-items: center;
       margin: 10px 0;
       border-radius: 10px;
@@ -123,14 +127,12 @@
       padding: 0;
       list-style: none;
       margin: 0;
-      position: absolute;
-      right: 15px;
-      top: 200px;
       width: 325px;
       min-height: 100px;
+      max-height: 325px;
       padding: 0;
       z-index: 101;
-      height: 275px;
+      height: auto;
       overflow: hidden;
    }
 
@@ -140,7 +142,7 @@
       border-bottom-right-radius: 20px;
       padding: 10px;
       margin: 7px 0;
-      box-shadow: 0 17px 28px 0 rgb(0 0 0 / 30%);
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
       display: flex;
       border-bottom: 3px solid transparent;
    }

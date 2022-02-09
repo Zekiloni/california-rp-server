@@ -92,9 +92,9 @@
    import Banking from './components/other/banking.vue';
    import ATM from './components/other/atm.vue';
    import JobOffer from './components/jobs/job.offer.vue';
-   import Phone from './components/phone.vue';
-   import HandheldRadio from './components/misc/handheld.radio.vue';
 
+   import Phone from '@/components/phone.vue';
+   import HandheldRadio from '@/components/misc/HandheldRadio.vue';
 
    import HouseInfo from '@/components/houses/HouseInfo.vue';
    

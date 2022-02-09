@@ -57,24 +57,20 @@
 
    .driving-info {
       width: 200px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
    }
 
    .driving-info h2 { position: relative; width: 120px; margin: 0 10px; text-align: center; color: #cdcdcd; font-weight: 450; }
    .driving-info h2 small { font-size: 0.75rem; color: #959eaa; text-transform: uppercase; display: block; letter-spacing: 1px; }
 
-   .driving-info h2.speed::after { 
-      position: absolute;
-      right: -12px;
-      top: -5px;
-      content: '';
-      height: 55px;
-      width: 3px;
-      border-radius: 10px;
-      background: rgb(132 142 156 / 45%);
+
+   h2.speed {
+      font-family: 'digital-7', sans-serif;
+      font-weight: 800;
+      font-size: 3.2rem;
+      opacity: 0.85;
+      color: #cdcdcd;
    }
+
 
    h4.vehicle-name { text-align: center; margin: 25px 0 0 0; font-size: 0.8rem; font-weight: 350; color: #ffcc45; letter-spacing: 1.05px; }
 
