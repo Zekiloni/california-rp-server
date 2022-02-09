@@ -2,9 +2,9 @@ import { factionConfig } from '@configs';
 import { shared_Data, sleep } from '@shared';
 
 
-export class temporaryVehicle {
+export class temporaryVehicles {
 
-   static objects = new Map<number, temporaryVehicle>();
+   static objects = new Map<number, temporaryVehicles>();
 
    id: number;
    model: string;
@@ -46,7 +46,7 @@ export class temporaryVehicle {
       this.spawnRotation = vehicle.rotation;
       this.object = vehicle;
 
-      temporaryVehicle.objects.set(vehicle.id, this);
+      temporaryVehicles.objects.set(vehicle.id, this);
    }
 
 
@@ -64,13 +64,13 @@ export class temporaryVehicle {
 
 
    static create (model: string, position: Vector3Mp, heading: number, color: [RGB, RGB], numberPlate: string, dimension: number, locked?: boolean, engine?: boolean) {
-      const vehicle = new temporaryVehicle(model, position, heading, color, numberPlate, dimension, locked ? locked : false, engine ? engine : false);
+      const vehicle = new temporaryVehicles(model, position, heading, color, numberPlate, dimension, locked ? locked : false, engine ? engine : false);
       return vehicle;
    };
 
 
    static destroy (vehicle: VehicleMp) {
-      const temporary = temporaryVehicle.objects.get(vehicle.id);
+      const temporary = temporaryVehicles.objects.get(vehicle.id);
 
       if (!temporary) {
          return;
@@ -84,6 +84,6 @@ export class temporaryVehicle {
          vehicle.destroy();
       });
       
-      temporaryVehicle.objects.delete(temporary.id);
+      temporaryVehicles.objects.delete(temporary.id);
    }
 }

@@ -237,7 +237,7 @@ async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: st
          leavingPlayer.character.last_dimension = leavingPlayer.dimension;
 
          await leavingPlayer.character.save();
-         
+         console.log('playerquidhandler')
          inventories.savePlayerEquipment(leavingPlayer.character);
       }
    } catch (e) { 

@@ -25,7 +25,8 @@ export class inventories extends Model {
    @Column(DataType.INTEGER)
    entity: itemEnums.entity;
 
-   @Column
+   @Default(none)
+   @Column(DataType.INTEGER)
    owner: number;
 
    @Default(false)
@@ -36,11 +37,12 @@ export class inventories extends Model {
    @Column(DataType.BOOLEAN)
    equiped: boolean;
 
+   @Default(itemEnums.status.NONE)
    @Column(DataType.INTEGER)
    status: itemEnums.status;
    
    @Default(none)
-   @Column
+   @Column(DataType.INTEGER)
    fingerprint: number; 
 
    @Column({
@@ -163,9 +165,9 @@ export class inventories extends Model {
    async equipItem (player: PlayerMp) {
       const rItem = items.list[this.name!];
 
-      let { equiped: equipment } = player.character;
+      const equipped = await inventories.findAll( { where: { equiped: true, owner: player.character.id } });
       
-      if (equipment.length > playerConfig.max.EQUIPMENT) {
+      if (equipped.length > playerConfig.max.EQUIPMENT) {
          player.sendNotification(lang.youReachedMaxEquipemnt + playerConfig.max.EQUIPMENT + '.', notifications.type.ERROR, notifications.time.MED);
          return;
       }
@@ -175,12 +177,11 @@ export class inventories extends Model {
          return;
       }
 
-      if (equipment.find(alreadyEquiped => alreadyEquiped.name == this.name)) {
+      if (equipped.find(alreadyEquiped => alreadyEquiped.name == this.name)) {
          player.sendNotification(lang.youAlreadyEquiped + ' ' + this.name + '.', notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
-      equipment.push(this);
       this.equiped = true;
       await this.save();
    }
@@ -198,23 +199,15 @@ export class inventories extends Model {
    }
 
    static hasEquiped (player: PlayerMp, itemName: string) {
-      return player.character.equiped.find(item => item.name == itemName);
+      return inventories.findOne( { where: { name: itemName, equiped: true, owner: player.character.id }})
    }
 
-   static getEntityItems (entity: itemEnums.entity, owner: number, includeEquiped?: boolean)  { 
+   static getEntityItems (entity: itemEnums.entity, owner: number)  { 
       return inventories.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
-         if (includeEquiped) {
-            return items;
-         } else {
-            return items.filter(item => item.equiped != true);
-         }
+         return items;
       }).catch(e => {
          logs.error('ctchingPlyerItems: ' + e);
       });
-   }
-
-   static getEquipedItems (player: PlayerMp) {
-      return player.character?.equiped;
    }
 
    static giveItem (player: PlayerMp, item: items) { 
@@ -222,14 +215,12 @@ export class inventories extends Model {
    };
 
    static async savePlayerEquipment (character: characters) { 
-      character.equiped.forEach(async item => {
-         item.equiped = false;
-         await item.save();
-      });
-
-      character.equiped = [];
-
-      await character.save();
+      inventories.findAll( { where: { owner: character.id, equiped: true } }).then(equipedItems => { 
+         equipedItems.forEach(async item => {
+            item.equiped = false;
+            await item.save();
+         });
+      })
    }
 
 }

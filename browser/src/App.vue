@@ -87,11 +87,12 @@
    import GameInterface from '@/components/GameInterface.vue';
    import DeathScreen from '@/components/player/DeathScreen.vue';
    import Playerlist from '@/components/misc/Playerlist.vue';
-   import Inventory from './components/items/inventory.vue';
    import Document from './components/misc/id.document.vue';
    import Banking from './components/other/banking.vue';
    import ATM from './components/other/atm.vue';
    import JobOffer from './components/jobs/job.offer.vue';
+
+   import Inventory from '@/components/items/Items.vue';
 
    import Phone from '@/components/phone.vue';
    import HandheldRadio from '@/components/misc/HandheldRadio.vue';

@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, accounts, business, temporaryVehicle } from '@models';
+import { logs, items, inventories, houses, accounts, business, temporaryVehicles } from '@models';
 import { cmds, colors, gDimension, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { houseConfig, serverConfig } from '@configs';
@@ -271,15 +271,14 @@ Commands[cmds.names.DISARM] = {
       target.removeAllWeapons();
 
       if (target.character) {
-         target.character.equiped.forEach(async equipment => {
-            const item = items.list[equipment.name];
-            const index = target.character.equiped.indexOf(equipment);
-
-            if (item.isWeapon()) {
-               equipment.equiped = false;
-               target.character.equiped.splice(index, 1);
-               await equipment.save();
-            }
+         inventories.findAll( { where: { owner: target.character.id, equiped: true } } ).then(equipment => {
+            equipment.forEach(async equipedItem => {
+               const item = items.list[equipedItem.name];
+               if (item.isWeapon()) {
+                  equipedItem.equiped = false;
+                  await equipedItem.save();
+               }
+            })
          })
       }
 
@@ -341,7 +340,7 @@ Commands[cmds.names.CREATE_VEHICLE] = {
       const primaryColor = pColor.split(',');
       const secondaryColor = sColor.split(',');
 
-      const vehicle = new temporaryVehicle(
+      const vehicle = new temporaryVehicles(
          model,
          player.position,
          player.heading,
@@ -709,11 +708,11 @@ Commands[cmds.names.RESPAWN_VEHICLE] = {
          return;
       }
       
-      if (temporaryVehicle.objects.get(vehicle.id)) {
+      if (temporaryVehicles.objects.get(vehicle.id)) {
          if (player.vehicle) {
             player.removeFromVehicle();
          }
-         temporaryVehicle.objects.get(vehicle.id)?.respawn();
+         temporaryVehicles.objects.get(vehicle.id)?.respawn();
       } else {
 
          // vehicle is in db....
@@ -725,7 +724,7 @@ Commands[cmds.names.RESPAWN_ALL_VEHICLES] = {
    description: cmds.descriptions.RESPAWN_ALL_VEHICLES,
    admin: rank.LEAD_ADMINISTRATOR,
    call (player: PlayerMp) {
-     temporaryVehicle.objects.forEach(vehicle => {
+      temporaryVehicles.objects.forEach(vehicle => {
          if (vehicle.object.getOccupants().length == 0) {
             vehicle.respawn();
          }

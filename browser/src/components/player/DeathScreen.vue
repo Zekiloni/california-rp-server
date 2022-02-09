@@ -36,8 +36,6 @@
          hours = hours - (days * 24);
          minutes = minutes - (days * 24 * 60) - (hours * 60);
          seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
-
-         console.log('Minuta ' + minutes + ', sekundi ' + seconds);
          
          this.minutes = minutes.toString();
          this.seconds = seconds < 10 ? '0' + seconds.toString() : seconds.toString();

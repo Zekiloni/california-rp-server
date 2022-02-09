@@ -2,78 +2,142 @@
 
 <template>
    <div class="vehicle-info">
-      <div class="driving-info"> 
-         <h2 class="speed"> {{ speed }} <small> kmh </small> </h2>
-         <h2 class="rpm"> {{ rpm }} <small> rpm </small> </h2>
+      <div class="main">
+         <h1> {{ vehicleName }} </h1>
+         <div class="speed">
+            <h2 class="number"> {{ speed }} </h2>
+            <small> km/h</small>
+         </div>
+         <div class="fuel-bar">
+            <div class="bar" :style="{ width: fuel + '%' }" > </div>
+         </div>
+         <h4> {{ rpm }} </h4>
+         <h4> {{ mileage }} </h4>
       </div>
-
-      <h4 class="vehicle-name" v-if="vehicleName"> {{ vehicleName }} </h4>
    </div>
 </template>
 
-<script>
-   export default {
-      data () { 
-         return {
-            vehicleName: null,
-            seatbelt: false,
-            speed: 0,
-            maxSpeed: 300,
-            rpm: 0,
-            indicators: [true, false],
-            lights: { daylights: true, highbeams: true },
-            fuel: 0,
-            gear: 'N',
-            failures: { Engine: false },
-            mileage: 0.00
-         }
-      },
+<script lang="ts">
+   import Vue from 'vue'
+   import Component from 'vue-class-component';
+   
+   interface VehicleLights {
+      daylights: boolean
+      highbeams: boolean
+   };
 
-      methods: { 
+   @Component
+   export default class VehicleDashboard extends Vue {
 
-         update: function (speed, rpm, gear) { 
-            this.speed = speed;
-            this.rpm = rpm;
-            this.gear = gear;
-         }
-      },
+      vehicleName: string | null = null;
+      
+      maxSpeed: number = 200;
+      maxFuel: number = 100;
+      speed: number = 0;
+      rpm: number = 0;
+      fuel: number = 5;
+      mileage: number = 0.0;
+      gear: string = 'N';
+      
+      seatbelt: boolean = false;
+      indicators: boolean[] = [false, false];
+      lights: VehicleLights = { 
+         daylights: false,
+         highbeams: false
+      };
 
-      mounted () { 
-         if (window.mp) { 
+
+      update (speed: number, rpm: number, gear: string, mileage: number) {
+         this.speed = speed;
+         this.rpm =rpm;
+         this.gear = gear;
+         this.mileage = mileage;
+      }
+      
+      mounted () {
+         //@ts-ignore
+         if (window.mp) {
+            //@ts-ignore
             mp.events.add('BROWSER::GAME_UI:VEHICLE:NAME', name => this.vehicleName = name);
+            //@ts-ignore
             mp.events.add('BROWSER::GAME_UI:VEHICLE:UPDATE', this.update)
          }
       }
    }
+
 </script>
 
 <style scoped>
 
-   .vehicle-info { 
-      position: absolute; bottom: 20px; padding: 15px 10px; right: 30px;
-      display: flex; justify-content: center; flex-direction: column;
-      text-shadow: 0 0.7px 1px rgb(0 0 0 / 90%);
+   .vehicle-info {
+      position: absolute;
+      bottom: 30px;
+      right: 20px;
+      width: 250px;
+      min-height: 100px;
+      height: auto;
    }
 
-   .driving-info {
-      width: 200px;
+   .main {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
    }
-
-   .driving-info h2 { position: relative; width: 120px; margin: 0 10px; text-align: center; color: #cdcdcd; font-weight: 450; }
-   .driving-info h2 small { font-size: 0.75rem; color: #959eaa; text-transform: uppercase; display: block; letter-spacing: 1px; }
-
-
-   h2.speed {
-      font-family: 'digital-7', sans-serif;
+   
+   .speed h2.number {
+      width: 150px;
+      margin: auto;
+      font-size: 5rem;
       font-weight: 800;
-      font-size: 3.2rem;
-      opacity: 0.85;
+      margin: 10px 0;
+      color: whitesmoke;
+      letter-spacing: 0.35rem;
+      text-shadow: 0 1px 1.5px rgb(0 0 0 / 45%);
+      position: relative;
+      text-align: right;
+      z-index: 1;
+      font-family: 'digital-7', sans-serif;
+   }
+
+   h2.speed small { 
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      background: red;
+      font-weight: 300;
+      letter-spacing: 0;
+   }
+   
+   .speed h2.number::after {
+      width: 150px;
+      font-size: 5rem;
+      font-weight: 800;
+      letter-spacing: 0.35rem;
+      z-index: -1;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      opacity: 0.35;
+      right: 0;
+      content: '888';
       color: #cdcdcd;
    }
 
 
-   h4.vehicle-name { text-align: center; margin: 25px 0 0 0; font-size: 0.8rem; font-weight: 350; color: #ffcc45; letter-spacing: 1.05px; }
+   .fuel-bar {
+      width: 125px;
+      height: 6px;
+      border-radius: 5px;
+      overflow: hidden;
+      background: rgb(0 0 0 / 45%);
+   }
 
+   .fuel-bar .bar {
+      height: 100%;
+      transition: all .3s ease;
+      background: #ffcc45;
+   }
 
    @keyframes blinking {
       50% { background: #00d474; }

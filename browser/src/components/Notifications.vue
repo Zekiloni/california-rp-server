@@ -137,6 +137,7 @@
    }
 
    ul.notifications li.notification { 
+      position: relative;
       background: rgb(11 14 17 / 60%);
       border-top-left-radius: 20px;
       border-bottom-right-radius: 20px;
@@ -144,7 +145,17 @@
       margin: 7px 0;
       box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
       display: flex;
-      border-bottom: 3px solid transparent;
+      /* border-bottom: 3px solid transparent; */
+   }
+
+    ul.notifications li.notification::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 225px;
+      height: 2.5px;
+      bottom: 0;
+      background: transparent;
    }
 
    li.notification .type { 
@@ -163,9 +174,12 @@
    }
    
 
-   li.notification.success, li.notification.success .type { border-color: rgb(65 216 136 / 70%) !important; color: #41d888; }
-   li.notification.error, li.notification.error .type { border-color: rgb(255 58 65 / 70%) !important; color: #ff3a41; }
-   li.notification.info, li.notification.info .type { border-color: rgb(250 184 10 / 70%) !important; color: #fab80a; }
+   li.notification.success, li.notification.success .type {color: #41d888; }
+   li.notification.error, li.notification.error .type { color: #ff3a41; }
+   li.notification.info, li.notification.info .type { color: #fab80a; }
+   li.notification.info::after { background: #fab80a !important; }
+   li.notification.error::after { background: #ff3a41 !important; }
+   li.notification.success::after { background: #41d888 !important; }
 
    .notification-enter-active { animation: notification-in 0.65s; }
    .notification-leave-active { animation: notification-in 0.55s reverse; }

@@ -90,7 +90,6 @@ export class appearances extends Model {
    updated_at: Date;
    
    apply (player: PlayerMp, gender: number) {
-      console.log(this)
       const genders = [ 
          mp.joaat(playerModels.MALE),
          mp.joaat(playerModels.FEMALE)

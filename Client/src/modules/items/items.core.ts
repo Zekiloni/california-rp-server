@@ -42,7 +42,7 @@ mp.events.add(
             position.y + Math.sin(((heading + 90) * Math.PI) / 180) * 0.6,
             position.z,
          );
-      
+
          let object = mp.objects.new(mp.game.joaat(itemInfo.model), new mp.Vector3(newPos.x, newPos.y, newPos.z), 
             { alpha: 255, rotation: new mp.Vector3(rotation.x, rotation.y, rotation.z), dimension: mp.players.local.dimension }
          );
@@ -57,19 +57,11 @@ mp.events.add(
             position: object.getCoords(false),
             rotation: object.getRotation(2),
          };
-      
-         object.destroy();
-      
-         const inventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', JSON.parse(item).id, JSON.stringify(fixedPosition));
-         if (inventory) {
-            Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
-         }
-      
-         // mp.game.streaming.requestAnimDict('random@domestic');
 
-         // // mp.players.forEachInStreamRange((_player) => {
-         // //    _player.call('')
-         // // });
+         object.destroy();
+
+         const inventory = await mp.events.callRemoteProc('SERVER::ITEM:DROP', JSON.parse(item).id, JSON.stringify(fixedPosition));
+         Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
 
          playAnimation(mp.players.local, 'random@domestic', 'pickup_low', animationFlags.NORMAL);
          // mp.players.local.taskPlayAnim('random@domestic', 'pickup_low', 8.0, -8, -1, 48, 0, false, false, false);
@@ -77,9 +69,7 @@ mp.events.add(
 
       'CLIENT::ITEM:USE': async (item: any) => { 
          const inventory = await mp.events.callRemoteProc('SERVER::ITEM:USE', JSON.parse(item).id);
-         if (inventory) {
-            Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
-         }
+         Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
       },
 
       'CLIENT::ITEM:EQUIP': async (item: string) => {

@@ -16,7 +16,6 @@ Commands[cmds.names.RADIO] = {
       const radio = player.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
 
       mp.players.forEach(target => {
-         
          const equiped = target.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
 
          if (equiped?.data.frequency == radio?.data.frequency) {

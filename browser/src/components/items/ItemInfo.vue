@@ -3,17 +3,16 @@
 <template>
 
    <div class="item-info" 
-      v-if="position.top && position.left && itemInfo" 
-      v-bind:style="{ left: position.left + 'px', top: position.top + 'px' }"
-      @mouseenter="$parent.hoverBox = true" 
+      v-if="position.x && position.y && item" 
+      v-bind:style="{ left: position.x + 'px', top: position.y + 'px' }"
    >
 
-      <h2 class="name"> {{ itemInfo.name }} </h2>
-      <p class="description" v-html="itemInfo.description"> </p>
+      <h2 class="name"> {{ info.name }} </h2>
+      <p class="description" v-html="info.description"> </p>
 
 
-      <ul class="actions" v-if="itemActions.length > 0"> 
-         <li v-for="action in itemActions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
+      <ul class="actions" v-if="actions.length > 0"> 
+         <li v-for="action in actions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
             <div class="icon" :class="action.icon"> </div>
             <!-- {{ action.name }}  -->
          </li>
@@ -23,45 +22,45 @@
 
 </template>
 
-<script>
+<script lang="ts">
+   import Vue from 'vue';
+   import Component from 'vue-class-component';
    import { Messages } from '@/globals';
+   import { itemAction, rItem } from '@/interfaces';
 
-   export default { 
-
+   const ItemInfoProps = Vue.extend({
       props: {
          item: Object,
          position: Object
-      },
-      
-      data () {
-         return { 
-            itemInfo: null,
+      }
+   });
 
-            itemActions: null,
+   @Component
+   export default class ItemInfo extends ItemInfoProps {
 
-            desiredAmount: null,
+      info: rItem | null = null;
+      actions: itemAction[] = [];
 
-            Messages
-         }
-      },
+      Messages = Messages;
 
-      methods: { 
-         call: function (event) {
-            mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.itemInfo), this.desiredAmount ? this.desiredAmount : this.item.quantity);
-            this.$parent.hoverBox = false;
-         }
-      },
+      call (event: string) {
+         //@ts-ignore
+         mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.info), this.item.quantity);
+         //@ts-ignore
+         this.$parent.position = null;
+      }
 
       async mounted () {
-
+         //@ts-ignore     
          if (window.mp) { 
-            let itemData = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
+            //@ts-ignore     
+            let item = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
 
-            itemData = JSON.parse(itemData);
+            item = JSON.parse(item);
 
-            if (itemData) {
-               this.itemInfo = itemData.info;
-               this.itemActions = itemData.actions;
+            if (item) {
+               this.info = item.info;
+               this.actions = item.actions;
             }
          }
       }

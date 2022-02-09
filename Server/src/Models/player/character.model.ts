@@ -172,8 +172,6 @@ export class characters extends Model {
    @HasMany(() => business)
    business: business[]
 
-   equiped: inventories[] = [];
-
    offers: offer[] = [];
 
    freezed: boolean = false;

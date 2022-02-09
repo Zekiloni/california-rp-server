@@ -3,7 +3,6 @@ import weaponData from '../configs/weapon.data.json';
 import { itemNames } from '@constants';
 import { itemEnums } from '@enums';
 import { items, inventories, logs } from '@models';
-import { itemExtra } from '@interfaces';
 
 
 mp.events.addProc(
@@ -54,17 +53,15 @@ function onItemEquip (player:  PlayerMp, itemId: number) {
 }
 
 
-async function onItemUse (player: PlayerMp, itemId: number): Promise < inventories[] >  { 
-   return new Promise((resolve) => { 
-      inventories.findOne({ where: { id: itemId } }).then(async item => { 
-         const rItem = items.list[item?.name!];
+async function onItemUse (player: PlayerMp, itemId: number)  { 
+   return inventories.findOne({ where: { id: itemId } }).then(async item => { 
+      const rItem = items.list[item?.name!];
 
-         await rItem?.use!(player, item);
+      await rItem?.use!(player, item);
 
-         const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
-         resolve(inventory!)
-      })
-   });
+      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      return inventory;
+   })
 };
 
 
@@ -73,26 +70,28 @@ function useEquiped (player: PlayerMp, index: number) {
    if (player.weapon) {
       player.removeAllWeapons();
    }
-
-   const item = player.character.equiped[index];
    
-   if (!item) {
-      return;
-   }
-
-   const rItem = items.list[item.name];
-
-   rItem.use!(player, item);
+   inventories.findAll( { where: { owner: player.character.id, equiped: true } } ).then(equipment => { 
+      const item = equipment[index];
+   
+      if (!item) {
+         return;
+      }
+   
+      const rItem = items.list[item.name];
+   
+      rItem.use!(player, item);
+   })
 };
 
 
 async function onItemDrop (player: PlayerMp, itemId: number, positionString: string) { 
-   inventories.findOne({ where: { id: itemId } }).then(async item => { 
+   return inventories.findOne({ where: { id: itemId } }).then(async item => { 
       const groundPosition = JSON.parse(positionString);
       const { position, rotation } = groundPosition;
 
       await item?.dropItem(player, new mp.Vector3(position.x, position.y, position.z), new mp.Vector3(rotation.x, rotation.y, rotation.z));
-         
+
       const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
       return inventory;
    });
@@ -147,10 +146,7 @@ async function updateHandheldRadio (player: PlayerMp, newInfo: any) {
 
    newInfo = JSON.parse(newInfo);
 
-   console.log(newInfo)
-
-   const item = player.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
-   const index = player.character.equiped.indexOf(item!);
+   const item = await inventories.hasEquiped(player, itemNames.HANDHELD_RADIO);
    
    let newData = item?.data;
    
@@ -162,7 +158,5 @@ async function updateHandheldRadio (player: PlayerMp, newInfo: any) {
 
    item!.data = newData;
    await item!.save();
-
-   player.character.equiped[index] = item!;
 
 }

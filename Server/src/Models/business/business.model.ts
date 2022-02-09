@@ -121,6 +121,7 @@ export class business extends Model {
       business.sprite_color = businessConfig.blipColors[business.type];
       await business.save();
 
+      console.log(business)
       business.refresh();
    }
 
