@@ -33,21 +33,22 @@ export default class channels extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   static async createFrequency (player: PlayerMp, frequency: number, password: string| null) {
-      const channel = await channels.create({ frequency: frequency, password: password, Owner: player.character.id });
-      return channel;
+   static createFrequency (player: PlayerMp, frequency: number, password: string| null) {
+      return channels.create( { frequency: frequency, password: password, owner: player.character.id } ).then(channel => {
+         return channel;
+      })
    }
 
-   static async doesExist (frequency: number) {
-      const exist = await channels.findOne({ where: { frequency: frequency } });
-      return exist ? exist : null;
+   static doesExist (frequency: number) {
+      return channels.findOne( { where: { frequency: frequency } } ).then(channel => {
+         return channel ? channel : null;
+      });
    }
 
    async changePassword (password: string) {
-     this.update('password', password);
+     await this.update('password', password);
    }
-
-
+   
    async join (player: PlayerMp, radioItem: inventories, frequency: string, password: string | null) {
       if (this.password != password) {
          // PORUKA: Pogresna sifra frekvencije
@@ -100,8 +101,8 @@ export default class channels extends Model {
       const by = sender ? sender.character.name : lang.dispatcher;
       const freq = this.frequency.toString();
       
-      mp.players.forEach(player => {
-         const equiped = inventories.hasEquiped(player, itemNames.HANDHELD_RADIO);
+      mp.players.forEach(async player => {
+         const equiped = await inventories.hasEquiped(player, itemNames.HANDHELD_RADIO);
          if (equiped) {
             if (equiped.data.power && equiped.data.frequency == this.frequency) {
                player.sendMessage('[CH: ' + freq + '] ' + by + ': ' + message, colors.hex.RADIO);

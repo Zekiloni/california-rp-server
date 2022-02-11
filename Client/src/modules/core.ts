@@ -1,7 +1,7 @@
 
 import { Browser } from '../browser';
 import { entityType } from '../enums/entity';
-import { getStreetZone } from '../utils';
+import { getBestTorso, getStreetZone } from '../utils';
 import { gameInterface } from './game.UI';
 
 const Player = mp.players.local;
@@ -39,8 +39,7 @@ mp.events.add(
 
 
 mp.events.addProc({
-   'CLIENT::GET:STREET_ZONE': (position: Vector3Mp) => { 
-      return getStreetZone(position);
-   }
+   'CLIENT::GET:STREET_ZONE': getStreetZone,
+   'CLIENT::GET:BEST_TORSO': getBestTorso,
 })
 

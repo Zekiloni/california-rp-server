@@ -22,7 +22,20 @@ export const itemNames = {
    FOOD_TACO : 'Taco',
    SMART_PHONE: 'Smartphone',
 
-   // Weapons
+
+   // @clothing_props
+   CLOTHING_MASK : 'Mask',
+   CLOTHING_LEGS : 'Pants',
+   CLOTHING_BAG : 'Bag',
+   CLOTHING_SHOES : 'Shoes',
+   CLOTHING_ACCESSORIES : 'Accessories',
+   CLOTHING_UNDERSHIRT : 'Undershirt',
+   CLOTHING_BODY_ARMOUR : 'Body Armour',
+   CLOTHING_DECAL : 'Decal',
+   CLOTHING_TOP : 'Top',
+
+
+   // @weapons
    WEAPON_KNIFE : 'Knife',
    WEAPON_CROWBAR : 'Crowbar',
    WEAPON_HAMMER : 'Hammer',

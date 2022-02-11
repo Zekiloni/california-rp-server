@@ -1,4 +1,5 @@
 import { cmds, colors, itemNames } from '@constants';
+import { inventories } from '@models';
 import { Commands } from '../commands';
 
 Commands[cmds.names.RADIO] = {
@@ -13,14 +14,18 @@ Commands[cmds.names.RADIO] = {
          return;
       };
 
-      const radio = player.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
 
-      mp.players.forEach(target => {
-         const equiped = target.character.equiped.find(item => item.name == itemNames.HANDHELD_RADIO);
-
-         if (equiped?.data.frequency == radio?.data.frequency) {
-            target.sendMessage('[CH ' + radio?.data.frequency + '] ' + player.name + ' : ' + text, colors.hex.RADIO);
+      inventories.hasEquiped(player, itemNames.HANDHELD_RADIO).then(radio => { 
+         if (!radio) {
+            return;
          }
-      });
+
+         mp.players.forEach(async target => {
+            const equiped = await inventories.hasEquiped(target, itemNames.HANDHELD_RADIO);
+            if (equiped && equiped.data.frequency == radio.data.frequency) {
+               target.sendMessage('[CH ' + radio?.data.frequency + '] ' + player.name + ' : ' + text, colors.hex.RADIO);
+            }
+         })
+      })
    }
 }

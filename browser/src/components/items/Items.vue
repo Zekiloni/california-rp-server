@@ -4,28 +4,34 @@
 <template>
    <div class="wrapper" v-on:click="deselect()">
 
-      <div class="equiped">
-         <div class="item" v-for="(item, i) in equiped" :key="item.id" > 
-            {{ i + 1 }}
-            {{ item.name }} 
-         </div>
-      </div>
+      <div class="holder">
+         <div class="inventory" v-on:click="deselect()">
 
-      <div class="inventory" v-on:click="deselect()">
-
-         <div class="item-holder" v-for="item in available" :key="item.id" @contextmenu="select($event, item)" > 
-            <div class="item">
-               <h3 class="quantity"> {{ item.quantity }} </h3>
-               <h3 class="item-name"> {{ item.name }} </h3>
-               <!-- <img class="item-icon" :src="require('@/assets/images/items/' +  item.name.replace(/ /g, '_').toLowerCase() + '.png')" >  -->
+            <div class="item-holder" v-for="item in available" :key="item.id" @contextmenu="select($event, item)" > 
+               <div class="item">
+                  <h3 class="quantity"> {{ item.quantity }} </h3>
+                  <h3 class="item-name"> {{ item.name }} </h3>
+                  <!-- <img class="item-icon" :src="require('@/assets/images/items/' +  item.name.replace(/ /g, '_').toLowerCase() + '.png')" >  -->
+               </div>
             </div>
          </div>
-      </div>
 
-      <transition name="fade">
-         <ItemInfo v-if="selected && position" :item="selected" :position="position" key=itemInfo />
-         <!-- <GiveItem v-if="selectedItem" :item="selectedItem" key=giveItem /> -->
-      </transition>
+         <div class="clothing">
+
+         </div>
+
+         <div class="equiped">
+            <div class="item" v-for="(item, i) in equiped" :key="item.id" > 
+               <h2 class="slot"> {{ i + 1 }} </h2>
+               {{ item.name }} 
+            </div>
+         </div>
+
+         <transition name="fade">
+            <ItemInfo v-if="selected && position" :item="selected" :position="position" key=itemInfo />
+            <!-- <GiveItem v-if="selectedItem" :item="selectedItem" key=giveItem /> -->
+         </transition>
+      </div>
    </div>
 </template>
 
@@ -177,39 +183,68 @@
       background: radial-gradient(rgb(71 77 87 / 55%), rgb(11 14 17 / 85%));
    }
 
-   .equiped { 
-      height: 480px;
-      width: 110px;
-      padding: 15px;
+   .holder { 
+      width: 750px;
       display: flex;
-      margin: 0 15px;
-      justify-content: flex-start;
-      border-radius: 10px;
-      background: rgb(11 14 17 / 20%);
+      justify-content: center;
       align-items: center;
-      flex-direction: column;
+      flex-wrap: wrap;
    }
 
-   .equiped .item { 
-      width: 100px;
-      margin: 20px 0;
-      height: 100px;
-      background: #181a20;
-      border-radius: 10px;
+   .clothing { 
+      width: 150px;
+      height: 470px;
+      display: flex;
+      justify-content: flex-start;   
+      flex-direction: column;
+      align-items: center;   
+      padding: 10px;
+      background: red;
+   }
+
+   .clothing .item { 
+      margin: 15px 0;
    }
 
    .inventory { 
       padding: 15px;
-      width: auto;
+      width: 470px;
       border-radius: 10px;
-      height: 480px;
+      height: 470px;
       background: rgb(11 14 17 / 20%);
       display: grid;
       grid-gap: 0.7rem;
       margin: 0 15px;
       grid-template-columns: repeat(3, 150px);
       grid-template-rows: repeat(3, 150px);
-      /* border: 1.5px solid rgb(128 128 128 / 45%); */
+   }
+
+   .equiped { 
+      height: 110px;
+      width: 480px;
+      padding: 10px;
+      display: flex;
+      margin: 15px 0;
+      justify-content: flex-start;
+      border-radius: 10px;
+      background: rgb(11 14 17 / 20%);
+      align-items: center;
+   }
+
+   .equiped .item { 
+      width: 100px;
+      position: relative;
+      margin: 0 10px;
+      height: 100px;
+      background: #181a20;
+      border-radius: 10px;
+   }
+
+   .item h2.slot {
+      position: absolute;
+      right: 5px;
+      color: white;
+      margin: 0;
    }
 
    .item-holder { 

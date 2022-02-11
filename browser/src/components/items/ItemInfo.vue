@@ -10,7 +10,6 @@
       <h2 class="name"> {{ info.name }} </h2>
       <p class="description" v-html="info.description"> </p>
 
-
       <ul class="actions" v-if="actions.length > 0"> 
          <li v-for="action in actions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
             <div class="icon" :class="action.icon"> </div>
@@ -47,7 +46,8 @@
          //@ts-ignore
          mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.info), this.item.quantity);
          //@ts-ignore
-         this.$parent.position = null;
+         this.item = null;
+         this.position = null;
       }
 
       async mounted () {

@@ -3,7 +3,7 @@
 import { Browser } from '../../browser';
 import { Genders, playerModels } from '../../data/Player';
 import { lobby } from './lobby';
-import { disableMoving, playerPreviewCamera, removeClothing } from '../../utils';
+import { disableMoving, getBestTorso, playerPreviewCamera, removeClothing } from '../../utils';
 import femaleTorsos from '../player/clothing/female.torsos';
 import maleTorsos from '../player/clothing/male.torsos';
 import { gameInterface, UI_Status } from '../game.UI';
@@ -85,27 +85,11 @@ class characterCreator {
          mp.players.local.setComponentVariation(component, parseInt(outfit[i]), 0, 2);
       });
 
-      const drawable = mp.players.local.getDrawableVariation(clothingComponents.TOP);
-
-      const gender = Genders[mp.players.local.model];
-      switch (gender) { 
-         case pedGender.MALE: { 
-            if (maleTorsos[String(drawable) as keyof typeof maleTorsos] != undefined || maleTorsos[String(drawable) as keyof typeof maleTorsos][0] != undefined) {
-               const Torso = maleTorsos[String(drawable) as keyof typeof maleTorsos][0].BestTorsoDrawable;
-               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.TORSO, Torso, 0, 2);
-            }
-            break;
-         }
-
-         case pedGender.FEMALE: {
-            if (femaleTorsos[String(drawable) as keyof typeof femaleTorsos] != undefined || femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0] != undefined) {
-               const Torso = femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0].BestTorsoDrawable;
-               if (Torso != -1) mp.players.local.setComponentVariation(clothingComponents.TORSO, Torso, 0, 2);
-            }
-            break;
-         }
+      const bestTorso = getBestTorso();
+      
+      if (bestTorso && bestTorso != -1) {
+         mp.players.local.setComponentVariation(clothingComponents.TORSO, bestTorso!, 0, 2);
       }
-
    }
 };
 

@@ -4,11 +4,12 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max } from 'sequelize-typescript';
 
 import { accounts, appearances, banks, houses, business, inventories, items } from '@models';
-import { facial_Moods, gDimension, walking_Styles, lang, colors, none } from '@constants';
-import { spawnPointTypes, notifications, distances } from '@enums';
+import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
+import { spawnPointTypes, notifications, distances, itemEnums } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, playerInjury } from '@interfaces';
+import { clothingItem } from '@models/items/clothing.item';
 
 
 @Table
@@ -216,7 +217,17 @@ export class characters extends Model {
       if (appearance) {
          appearance.apply(player, this.gender);
       }
-
+      
+      clothingItem._list.forEach(item => {
+         inventories.findOne( { where: { name: item.name, owner: this.id , entity: itemEnums.entity.PLAYER } } ).then(clothed => {
+            if (clothed) {
+               item.use(player, clothed);
+            } else { 
+               player.setClothes(item.component, item.naked[this.gender], 0, 2);
+            }
+         })
+      });
+      
       player.setVariable(shared_Data.INJURIES, this.injuries ? this.injuries : []);
 
       switch (point) { 

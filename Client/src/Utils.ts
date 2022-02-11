@@ -1,5 +1,9 @@
 import {Genders } from './data/Player';
 import { clothingComponents } from './enums/clothing';
+import { pedGender } from './enums/ped';
+import femaleTorsos from './modules/player/clothing/female.torsos';
+import maleTorsos from './modules/player/clothing/male.torsos';
+
 
 const ATMS = [ 
    3424098598, 3168729781, 2930269768, 506770882
@@ -16,6 +20,29 @@ export function IsNearATM (Position: Vector3Mp) {
    }
 };
 
+
+export function getBestTorso () {
+   const drawable = mp.players.local.getDrawableVariation(clothingComponents.TOP);
+
+   const gender = Genders[mp.players.local.model];
+   switch (gender) { 
+      case pedGender.MALE: { 
+         if (maleTorsos[String(drawable) as keyof typeof maleTorsos] != undefined || maleTorsos[String(drawable) as keyof typeof maleTorsos][0] != undefined) {
+            const Torso = maleTorsos[String(drawable) as keyof typeof maleTorsos][0].BestTorsoDrawable;
+            return Torso;
+         }
+         break;
+      }
+
+      case pedGender.FEMALE: {
+         if (femaleTorsos[String(drawable) as keyof typeof femaleTorsos] != undefined || femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0] != undefined) {
+            const Torso = femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0].BestTorsoDrawable;
+            return Torso;
+         }
+         break;
+      }
+   }
+}
 
 
 export const getNormalizedVector = function(vector: Vector3Mp) {

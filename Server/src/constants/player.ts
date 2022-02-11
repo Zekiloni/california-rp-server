@@ -42,3 +42,4 @@ export const walking_Styles = {
    'Sad': 'move_m@sad@a',
    'Tough': 'move_m@tool_belt@a',
 };
+
