@@ -5,7 +5,7 @@ import { Commands } from '../commands';
 import { logs, items, inventories, houses, accounts, business, temporaryVehicles } from '@models';
 import { cmds, colors, gDimension, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
-import { houseConfig, serverConfig } from '@configs';
+import { businessConfig, houseConfig, serverConfig } from '@configs';
 import { checkForDot, generateString, shared_Data } from '@shared';
 
 
@@ -125,8 +125,8 @@ Commands[cmds.names.INVICIBLE] = {
 Commands[cmds.names.CREATE_BUSINESS] = {
    description: cmds.descriptions.CREATE_BUSINESS,
    params: [
-      cmds.params.NUMBER,
-      cmds.params.NUMBER,
+      cmds.params.TYPE,
+      cmds.params.PRICE,
       cmds.params.WALK_IN,
       cmds.params.TEXT
    ],
@@ -141,6 +141,20 @@ Commands[cmds.names.CREATE_BUSINESS] = {
             dimension: player.dimension 
          } 
       );
+   }
+}
+
+Commands[cmds.names.BUSINESS_TYPES] = {
+   description: cmds.descriptions.BUSINESS_TYPES,
+   admin: rank.LEAD_ADMINISTRATOR,
+   call (player: PlayerMp) {
+      let message = '';
+
+      businessConfig.typeNames.forEach(type => {
+         const index = businessConfig.typeNames.indexOf(type);
+         message += '[' + index + '] ' + type + ', ';
+      });
+      player.sendMessage(message, colors.hex.Help);
    }
 }
 

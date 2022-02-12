@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import { shared_Data } from '@shared';
 import { rank } from '@enums';
 import { lang, none } from '@constants';
-import { characters } from '@models';
+import { characters, logs } from '@models';
 import { adminAccounts } from '@configs';
 
 const salt = bcrypt.genSaltSync(10);
@@ -88,6 +88,8 @@ export class accounts extends Model {
             accounts.create({ username: admin.username, password: admin.password, administrator: admin.admin });
          }
       }
+
+      logs.info(await accounts.count() + ' accounts loaded !');
    }
 
    @BeforeCreate

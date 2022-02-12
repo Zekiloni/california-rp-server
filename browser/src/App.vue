@@ -100,7 +100,7 @@
    import HouseInfo from '@/components/houses/HouseInfo.vue';
    
    import BusinessInfo from '@/components/business/BusinessInfo.vue';
-   import MarketMenu from '@/components/business/menus/Market.vue';
+   import MarketMenu from '@/components/business/menus/MarketMenu.vue';
    import RentMenu from '@/components/business/menus/RentVehicle.vue';
    
    export default { 

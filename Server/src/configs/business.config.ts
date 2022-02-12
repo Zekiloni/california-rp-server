@@ -20,4 +20,11 @@ export namespace businessConfig {
       AMMUNATION, PAWN_SHOP, FURNITURE_SHOP, CAR_PARTS, JEWELRY_SHOP, TATTO_SHOP,
       BARBER_SHOP
    }
+   
+   export const typeNames = [
+      'Market', 'Gas station', 'Electronic Shop', 'Rent', 'Vehicle Dealership',
+      'Classic Clothing', 'Luxury Clothing', 'Restaurant', 'Cafe Bar', 'Night Club',
+      'Ammunation', 'Pawn Shop', 'Furniture Shop', 'Car parts', 'Jewelry Shop', 'Tatto Shop',
+      'Barber Shop'
+   ]
 };

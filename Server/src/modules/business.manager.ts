@@ -1,3 +1,4 @@
+import { businessConfig } from '@configs/business.config';
 import { lang } from '@constants';
 import { notifications } from '@enums';
 import { business } from '@models';
@@ -16,13 +17,16 @@ function openBusinessMenu (player: PlayerMp, bizId: number) {
          return;
       }
 
-      console.log(biz)
-
       if (biz.locked) {
          player.sendNotification(lang.thisBusinessIsLocked, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
-      console.log('e')
+      switch (biz.type) {
+         case businessConfig.type.MARKET || businessConfig.type.GAS_STATION: {
+            player.call('CLIENT::MARKET:MENU', [biz]);
+         }
+      }
+
    })
 }

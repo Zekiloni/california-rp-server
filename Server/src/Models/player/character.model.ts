@@ -1,9 +1,9 @@
 
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max, AfterSync } from 'sequelize-typescript';
 
-import { accounts, appearances, banks, houses, business, inventories, items } from '@models';
+import { accounts, appearances, banks, houses, business, inventories, items, logs } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
 import { spawnPointTypes, notifications, distances, itemEnums } from '@enums';
 import { playerConfig } from '@configs';
@@ -179,6 +179,11 @@ export class characters extends Model {
 
    respawnTimer: ReturnType<typeof setTimeout> | undefined = undefined;
 
+   @AfterSync
+   static async loading () {
+      logs.info(await characters.count() + ' characters loaded !');
+   }
+
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances) { 
 
       player.account.last_character = this.id;
@@ -222,13 +227,11 @@ export class characters extends Model {
          inventories.findOne( { where: { name: item.name, owner: this.id, entity: itemEnums.entity.PLAYER } } ).then(clothed => {
             if (clothed && clothed.equiped) {
                item.use(player, clothed);
-               console.log(item.name + ' je ' + clothed.equiped)
             } else { 
                player.setClothes(item.component, item.naked[this.gender], 0, 2);
             }
          })
       });
-
 
       const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');
       player.setClothes(itemEnums.components.clothings.TORSO, bestTorso, 0, 2);      

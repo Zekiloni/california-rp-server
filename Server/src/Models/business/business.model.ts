@@ -62,7 +62,7 @@ export class business extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('position')); }
+         get () { return JSON.parse(this.getDataValue('position')); },
       }
    )       
    position: Vector3Mp
@@ -70,7 +70,7 @@ export class business extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('vehicle_point')); }
+         get () { return JSON.parse(this.getDataValue('vehicle_point')); },
       }
    )
    vehicle_point: Vector3Mp
@@ -78,7 +78,7 @@ export class business extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('interior_position')); }
+         get () { return JSON.parse(this.getDataValue('interior_position')); },
       }
    )
    interior_position: Vector3Mp
@@ -102,7 +102,6 @@ export class business extends Model {
    set object (object: interactionPoint) { 
       business.objects.set(this.id, object);
    }
-
 
    @AfterSync
    static loading () {
