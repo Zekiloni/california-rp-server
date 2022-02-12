@@ -134,7 +134,6 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    
    character.spawnPlayer(player, spawnPointTypes.DEFAULT, appearance);
 
-
    inventories.create({ name: itemNames.DOCUMENT_ID_CARD, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
       item!.data = {
          name: character.name,
@@ -254,7 +253,6 @@ async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: st
          leavingPlayer.character.last_dimension = leavingPlayer.dimension;
 
          await leavingPlayer.character.save();
-         console.log('playerquidhandler')
          inventories.savePlayerEquipment(leavingPlayer.character);
       }
    } catch (e) { 

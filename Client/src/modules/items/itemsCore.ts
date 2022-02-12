@@ -79,6 +79,11 @@ mp.events.add(
          }     
       },
 
+      'CLIENT::ITEM:UNEQUIP': async (item: string) => {
+         const inventory = await mp.events.callRemoteProc('SERVER::ITEM:UNEQUIP', JSON.parse(item).id);
+         Browser.call('BROWSER::INVENTORY:ITEMS', inventory);
+      },
+
       'CLIENT::ITEM:GIVE': (item, iteminfo, quantity) => { Browser.call('BROWSER::INVENTORY:GIVE_ITEM', item); },
 
       'render': () => { 

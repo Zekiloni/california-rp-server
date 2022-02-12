@@ -1,25 +1,25 @@
 
-
-
 <template>
    <div class="wrapper" v-on:click="deselect()">
 
       <div class="holder">
          <div class="inventory" v-on:click="deselect()">
-
-            <div class="item-holder" v-for="item in available" :key="item.id" @contextmenu="select($event, item)" > 
+            <div class="item-holder" v-for="(item, i) in available" :key="item.id" @contextmenu="select($event, item)" > 
                <div class="item">
-                  <h3 class="quantity"> {{ item.quantity }} </h3>
+                  <h3 class="quantity"> {{ i + 1 }} </h3>
                   <h3 class="item-name"> {{ item.name }} </h3>
-                  <!-- <img class="item-icon" :src="require('@/assets/images/items/' +  item.name.replace(/ /g, '_').toLowerCase() + '.png')" >  -->
+                  <img class="item-icon" :src="require('@/assets/images/items/' +  item.name.toLowerCase().replace(' ', '_') + '.png')" > 
                </div>
             </div>
          </div>
 
          <div class="attachments">
             <div class="clothing" v-for="name in attachments" :key="name">
-               <div class="info" v-if="clothing(name)">
-
+               <div class="info" v-if="clothing(name)"  @click="call('CLIENT::ITEM:UNEQUIP', JSON.stringify(clothing(name)))">
+                  {{ name }}
+               </div>
+               <div v-else class="no-attachment"> 
+                  <h2> {{ name }} </h2>
                </div>
             </div>
          </div>
@@ -84,11 +84,16 @@
       }
 
       get available () {
-         return this.items.filter(item => item.equiped != true);
+         return this.items.filter(item => item.equiped == false);
       }
 
       get equiped () {
          return this.items.filter(item => item.equiped == true && !this.attachments.includes(item.name));
+      }
+
+      call (event: string, item: InventoryItem) {
+         //@ts-ignore
+         mp.events.call(event, item);
       }
 
       select (event: MouseEvent, item: InventoryItem) {
@@ -126,65 +131,6 @@
          mp.invoke('focus', false)
       };
    }
-
-
-
-   // export default { 
-      
-   //    components: {
-   //       ItemInfo, GiveItem
-   //    },
-
-   //    data () { 
-   //       return {
-   //          hoverBox: false,
-   //          hoveredItem: null,
-   //          hoveredPosition: null,
-   //          selectedItem: null,
-
-   //          items: [],
-   //          equiped: [],
-
-   //          Messages, Item_Entity
-   //       }
-   //    },
-
-   //    methods: { 
-
-   //       // Weight: function (Items) {
-   //       //    let Total = 0;
-   //       //    Items.forEach(Item => { if (Item.id) Total += Item.Weight; });
-   //       //    return Total.toFixed(2);
-   //       // },
- 
-
-   //       // Item_Info: (Item) => { 
-   //       //    return Item.Name + ', ' + Messages.ITEM_WEIGHT + Item.Weight.toFixed(2) + Messages.WEIGHT_KG;
-   //       // },
-         
-   //       // Which_Environment: (i) => { 
-   //       //    return ENVIRONMENT_TYPES[i];
-   //       // }, 
-
-   //       // Use: function (Item) {
-   //       //    mp.trigger('CLIENT::ITEM:USE', Item);
-   //       // },
-
-   //       // Take: function (Item) {
-   //       //    console.log(Item);
-   //       //    switch (Item.Entity) { 
-   //       //       case Item_Entity.Ground: mp.trigger('CLIENT::ITEM:PICKUP', Item.id); break;
-   //       //       case Item_Entity.Vehicle: mp.trigger('CLIENT::ITEM:TRUNK:TAKE', Item.id); break;
-   //       //       default:  {
-   //       //          console.log('def')
-   //       //       }
-   //       //    }
-   //       // }
-   //    },
-
-
-
-   // }
    
 </script>
 
@@ -211,34 +157,39 @@
    }
 
    .attachments { 
-      width: 150px;
-      height: 500px;
+      width: auto;
+      height: 470px;
       display: flex;
       justify-content: flex-start;   
+      align-items: flex-start;  
       flex-direction: column;
-      align-items: center;   
+      flex-wrap: wrap;
       padding: 10px;
-      background: red;
    }
+
+   .attachments .clothing { margin: 10px; }
 
    .attachments .clothing .info { 
-      width: 60px;
-      height: 60px; 
-      background: black;
+      width: 90px;
+      height: 90px; 
+      background: rgb(0 0 0 / 25%);
+      border-radius: 10px;
+      transition: all .3s ease;
    }
 
-   .inventory { 
-      padding: 15px;
-      width: 470px;
-      border-radius: 10px;
-      height: 470px;
-      background: rgb(11 14 17 / 20%);
-      display: grid;
-      grid-gap: 0.7rem;
-      margin: 0 15px;
-      grid-template-columns: repeat(3, 150px);
-      grid-template-rows: repeat(3, 150px);
+   .attachments .clothing .info:hover {
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
    }
+
+   .attachments .clothing .no-attachment {
+      width: 90px;
+      height: 90px;
+      display: flex;
+      border-radius: 10px;
+      display: grid;
+      background: rgb(24 26 32 / 35%);
+   }
+   .no-attachment h2 { margin: auto; width: 80px; font-size: 0.55rem; text-transform: uppercase; color: #848e9c; text-align: center;}
 
    .equiped { 
       height: 110px;
@@ -248,7 +199,7 @@
       margin: 15px 0;
       justify-content: flex-start;
       border-radius: 10px;
-      background: rgb(11 14 17 / 20%);
+      background: rgb(11 14 17 / 35%);
       align-items: center;
    }
 
@@ -259,6 +210,20 @@
       height: 100px;
       background: #181a20;
       border-radius: 10px;
+   }
+   
+   
+   .inventory { 
+      padding: 15px;
+      width: 470px;
+      border-radius: 10px;
+      height: 470px;
+      background: rgb(11 14 17 / 35%);
+      display: grid;
+      grid-gap: 0.7rem;
+      margin: 0 15px;
+      grid-template-columns: repeat(4, 110px);
+      grid-template-rows: repeat(4, 110px);
    }
 
    .item h2.slot {
@@ -275,18 +240,18 @@
    }
 
    .item { 
-      width: 145px;
+      width: 105px;
       position: relative;
       overflow: hidden;
       border-radius: 10px;
-      height: 145px;
+      height: 105px;
       background: #181a20;
       transition: all .3s ease;
       display: grid;
    }
 
    img.item-icon { 
-      width: 80px;
+      width: 60px;
       margin: auto;
    }
 
@@ -299,16 +264,16 @@
    
    .item h3.quantity { 
       position: absolute;
-      width: 25px;
-      height: 25px;
+      width: 20px;
+      height: 20px;
       transition: all .3s ease;
       background: #2a303c;
       color: #848e9c;
       display: flex;
       justify-content: center;
       align-items: center;
-      top: 10px;
-      right: 10px;
+      top: 7px;
+      right: 8px;
       margin: 0;
       border-radius: 100%;
    }
@@ -317,7 +282,7 @@
       position: absolute;
       bottom: 0;
       width: 100%;
-      padding: 7px 0 7px 10px;
+      padding: 5px 0 5px 10px;
       background: #21252f;
       color: #a9b1bb;
       margin: 0;

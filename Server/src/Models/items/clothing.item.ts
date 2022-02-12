@@ -5,6 +5,10 @@ import { inventories  } from '@models';
 import { itemEnums } from "@enums";
 import { itemNames } from '@constants/items';
 
+const clothingType = [
+   itemEnums.type.CLOTHING,
+   itemEnums.type.USABLE,
+]
 
 
 export class clothingItem extends items {
@@ -26,6 +30,7 @@ export class clothingItem extends items {
       } else {
          clothingItem.props.push(this);
       }
+      
    }
 
    async use (player: PlayerMp, item: inventories) {
@@ -33,8 +38,6 @@ export class clothingItem extends items {
          if (!already) {
             return;
          }
-         
-        await already.update( { equiped: false } );
       });
 
       if (this.prop) { 
@@ -50,15 +53,36 @@ export class clothingItem extends items {
 
       await item.update( { equiped: true } );
    };
+
+   async unequip (player: PlayerMp) {
+      player.setClothes(this.component, this.naked[player.character.gender], 0, 2);    
+
+      if (this.component == itemEnums.components.clothings.TOP) {
+         
+         inventories.findOne( { where: { entity: itemEnums.entity.PLAYER, owner: player.character.id, equiped: true, name: itemNames.CLOTHING_UNDERSHIRT } } ).then(async undershirt => {
+            if (!undershirt) {
+               return;
+            }
+
+            undershirt.equiped = false;
+            await undershirt.save();
+            
+            items.list[undershirt.name].unequip!(player);
+         })
+
+         const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');
+         player.setClothes(itemEnums.components.clothings.TORSO, bestTorso, 0, 2);
+      }    
+   }
 };
 
-new clothingItem(itemNames.CLOTHING_MASK, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.MASK, [0, 0], 0.125, 'Mask.');
-new clothingItem(itemNames.CLOTHING_LEGS, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.LEGS, [18, 15], 0.125, 'Legs.');
-new clothingItem(itemNames.CLOTHING_BAG, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.BAG, [0, 0], 0.125, 'Bag.');
-new clothingItem(itemNames.CLOTHING_SHOES, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.SHOES, [34, 35], 0.125, 'Shoes.');
-new clothingItem(itemNames.CLOTHING_ACCESSORIES, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.ACCESSORIES, [0, 0], 0.125, 'acc.');
-new clothingItem(itemNames.CLOTHING_UNDERSHIRT, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.UNDERSHIRT, [15, 15], 0.125, 'undershirt.');
-new clothingItem(itemNames.CLOTHING_BODY_ARMOUR, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.BODY_ARMOUR,[0, 0],  0.125, 'body armour.');
-new clothingItem(itemNames.CLOTHING_DECAL, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.DECALS, [0, 0], 0.125, 'decal.');
-new clothingItem(itemNames.CLOTHING_TOP, [itemEnums.type.CLOTHING], 'a', itemEnums.components.clothings.TOP, [15, 15], 0.125, 'top');
+new clothingItem(itemNames.CLOTHING_MASK, clothingType, 'a', itemEnums.components.clothings.MASK, [0, 0], 0.125, 'Mask.');
+new clothingItem(itemNames.CLOTHING_LEGS, clothingType, 'a', itemEnums.components.clothings.LEGS, [18, 15], 0.125, 'Legs.');
+new clothingItem(itemNames.CLOTHING_BAG, clothingType, 'a', itemEnums.components.clothings.BAG, [0, 0], 0.125, 'Bag.');
+new clothingItem(itemNames.CLOTHING_SHOES, clothingType, 'a', itemEnums.components.clothings.SHOES, [34, 35], 0.125, 'Shoes.');
+new clothingItem(itemNames.CLOTHING_ACCESSORIES, clothingType, 'a', itemEnums.components.clothings.ACCESSORIES, [0, 0], 0.125, 'acc.');
+new clothingItem(itemNames.CLOTHING_UNDERSHIRT, clothingType, 'a', itemEnums.components.clothings.UNDERSHIRT, [15, 15], 0.125, 'undershirt.');
+new clothingItem(itemNames.CLOTHING_BODY_ARMOUR, clothingType, 'a', itemEnums.components.clothings.BODY_ARMOUR,[0, 0],  0.125, 'body armour.');
+new clothingItem(itemNames.CLOTHING_DECAL, clothingType, 'a', itemEnums.components.clothings.DECALS, [0, 0], 0.125, 'decal.');
+new clothingItem(itemNames.CLOTHING_TOP, clothingType, 'a', itemEnums.components.clothings.TOP, [15, 15], 0.125, 'top');
 

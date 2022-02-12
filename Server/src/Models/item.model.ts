@@ -14,7 +14,8 @@ export class items {
    description?: string;
    carryModel?: string;
    extraActions?: itemAction[];
-   use? (Player: PlayerMp, ...params: any): void | any;
+   use? (player: PlayerMp, ...params: any): void | any;
+   unequip? (player: PlayerMp): void ;
 
    static list: { [key:string] : items } = {};
 
@@ -47,6 +48,14 @@ export class items {
 
    isUsable () {
       return this.type.includes(itemEnums.type.USABLE);
+   }
+
+   isClothing () {
+      return this.type.includes(itemEnums.type.CLOTHING);
+   }
+
+   isProp () {
+      return this.type.includes(itemEnums.type.PROP);
    }
 
    availableActions () {
@@ -91,7 +100,9 @@ import './items/handheld.radio.item';
 import './items/cooker.item';
 import './items/med.item';
 
-
+for (const name in items.list) {
+   console.log(name.toLowerCase().replace(' ', '_'))
+}
 
 
 // new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);

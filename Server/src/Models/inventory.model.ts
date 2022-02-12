@@ -186,6 +186,22 @@ export class inventories extends Model {
       await this.save();
    }
 
+   async unequip (player: PlayerMp) {
+      const item = items.list[this.name];
+
+      if (!item) {
+         return;
+      }
+
+      this.equiped = false;
+
+      if (item.unequip) {
+         item.unequip(player);
+      }
+
+      await this.save();
+   }
+
    async useItem (player: PlayerMp) { 
       const Character = player.character;
       
@@ -215,10 +231,12 @@ export class inventories extends Model {
    };
 
    static async savePlayerEquipment (character: characters) { 
-      inventories.findAll( { where: { owner: character.id, equiped: true } }).then(equipedItems => { 
+      inventories.findAll( { where: { entity: itemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
          equipedItems.forEach(async item => {
-            item.equiped = false;
-            await item.save();
+            if (!items.list[item.name].isClothing() && !items.list[item.name].isProp()) {
+               item.equiped = false;
+               await item.save();
+            }
          });
       })
    }

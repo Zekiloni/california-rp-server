@@ -17,7 +17,7 @@ const InitialState = {
    gameInterface: false,
    deathScreen: false,
 
-   inventory: true,
+   inventory: false,
    phone: false,
    handheldRadio: false,
    idDocument: false,

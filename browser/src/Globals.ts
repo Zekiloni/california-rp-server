@@ -25,6 +25,7 @@ export const Messages = {
    ID: 'ID',
    ONLINE_PLAYERS: 'Online igrači',
    YOUR_ID: 'Vaš ID',
+   YOU_DONT_HAVE: 'Nemate',
    E_MAIL: 'E-Adresa',
    REGISTER_DATE: 'Datum registracije',
    LAST_LOGIN: 'Prethodna prijava',

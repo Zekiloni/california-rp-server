@@ -220,9 +220,9 @@ export class characters extends Model {
       
       clothingItem.clothings.forEach(item => {
          inventories.findOne( { where: { name: item.name, owner: this.id, entity: itemEnums.entity.PLAYER } } ).then(clothed => {
-            console.log(clothed)
-            if (clothed) {
+            if (clothed && clothed.equiped) {
                item.use(player, clothed);
+               console.log(item.name + ' je ' + clothed.equiped)
             } else { 
                player.setClothes(item.component, item.naked[this.gender], 0, 2);
             }
@@ -231,7 +231,6 @@ export class characters extends Model {
 
 
       const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');
-      console.log('btorso ' + bestTorso)
       player.setClothes(itemEnums.components.clothings.TORSO, bestTorso, 0, 2);      
       
       player.setVariable(shared_Data.INJURIES, this.injuries ? this.injuries : []);

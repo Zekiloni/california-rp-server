@@ -1,7 +1,7 @@
 
 import { Browser } from '../browser';
 import controls from '../enums/controls';
-import { IsNearATM } from '../utils';
+import { isNearATM } from '../utils';
 
 const Player = mp.players.local;
 
@@ -33,7 +33,7 @@ mp.events.add(
 mp.keys.bind(controls.KEY_E, false, function () {
    if (Player.vehicle || Player.isTypingInTextChat || Player.getVariable('Cuffed') || !Player.getVariable('Logged') || Active) return;
 
-   if (IsNearATM(Player.position)) { 
+   if (isNearATM(Player.position)) { 
       mp.events.call('CLIENT::BANKING:TOGGLE')
    }
 });

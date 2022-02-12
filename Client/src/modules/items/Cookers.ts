@@ -1,4 +1,4 @@
-import { entityType } from "../../enums/entity";
+import { entityType } from '../../enums/entity';
 
 
 const objects = [

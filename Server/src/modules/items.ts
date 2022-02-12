@@ -13,6 +13,7 @@ mp.events.addProc(
       'SERVER::ITEM:PICKUP': onItemPickup,
       'SERVER::ITEM:EQUIP': onItemEquip,
       'SERVER::ITEM:USE': onItemUse,
+      'SERVER::ITEM:UNEQUIP': onItemUnequip
    }
 );
 
@@ -53,7 +54,23 @@ function onItemEquip (player:  PlayerMp, itemId: number) {
 }
 
 
-async function onItemUse (player: PlayerMp, itemId: number)  { 
+function onItemUnequip (player: PlayerMp, itemId: number) {
+   return inventories.findOne( { where: { id: itemId } } ).then(async item => {
+
+      if (!item) {
+         logs.error('equipItem: onItemUnequip');
+         return;
+      }
+
+      await item.unequip(player);
+
+      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      return inventory;
+   });
+}
+
+
+function onItemUse (player: PlayerMp, itemId: number)  { 
    return inventories.findOne({ where: { id: itemId } }).then(async item => { 
       const rItem = items.list[item?.name!];
 
@@ -66,7 +83,6 @@ async function onItemUse (player: PlayerMp, itemId: number)  {
 
 
 function useEquiped (player: PlayerMp, index: number) {
-
    if (player.weapon) {
       player.removeAllWeapons();
    }
@@ -83,6 +99,7 @@ function useEquiped (player: PlayerMp, index: number) {
       rItem.use!(player, item);
    })
 };
+
 
 
 async function onItemDrop (player: PlayerMp, itemId: number, positionString: string) { 

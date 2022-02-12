@@ -11,7 +11,7 @@ const ATMS = [
 
 
 
-export function IsNearATM (Position: Vector3Mp) { 
+export function isNearATM (Position: Vector3Mp) { 
    for (const ATM of ATMS) { 
       const Nearby = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 1.8, ATM, false, true, true);
       if (Nearby) {
@@ -31,7 +31,6 @@ export function getBestTorso () {
             const Torso = maleTorsos[String(drawable) as keyof typeof maleTorsos][0].BestTorsoDrawable;
             return Torso;
          }
-         break;
       }
 
       case pedGender.FEMALE: {
@@ -39,7 +38,6 @@ export function getBestTorso () {
             const Torso = femaleTorsos[String(drawable) as keyof typeof femaleTorsos][0].BestTorsoDrawable;
             return Torso;
          }
-         break;
       }
    }
 }
