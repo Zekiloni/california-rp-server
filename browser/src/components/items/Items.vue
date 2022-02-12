@@ -16,8 +16,12 @@
             </div>
          </div>
 
-         <div class="clothing">
+         <div class="attachments">
+            <div class="clothing" v-for="name in attachments" :key="name">
+               <div class="info" v-if="clothing(name)">
 
+               </div>
+            </div>
          </div>
 
          <div class="equiped">
@@ -57,19 +61,34 @@
       position: { x: MouseEvent['clientX'], y: MouseEvent['clientY'] } | null = null;
 
       Messages = Messages;
+      attachments: string[] = [
+         'Mask',
+         'Pants',
+         'Bag',
+         'Shoes',
+         'Accessories',
+         'Undershirt',
+         'Body Armour',
+         'Decal',
+         'Top',
+      ];
 
       selected: InventoryItem | null = null;
 
       items: InventoryItem[] = [
-         { id: 0, name: 'Zeki', entity: 1, owner: 1, equiped: false, status: 0, fingerprint: 0 }
+         { id: 0, name: 'Mask', entity: 1, owner: 1, equiped: true, status: 0, fingerprint: 0 }
       ];
+      
+      clothing (name: string) {
+         return this.items.find(item => item.name == name && item.equiped == true);
+      }
 
       get available () {
          return this.items.filter(item => item.equiped != true);
       }
 
       get equiped () {
-         return this.items.filter(item => item.equiped == true);
+         return this.items.filter(item => item.equiped == true && !this.attachments.includes(item.name));
       }
 
       select (event: MouseEvent, item: InventoryItem) {
@@ -191,9 +210,9 @@
       flex-wrap: wrap;
    }
 
-   .clothing { 
+   .attachments { 
       width: 150px;
-      height: 470px;
+      height: 500px;
       display: flex;
       justify-content: flex-start;   
       flex-direction: column;
@@ -202,8 +221,10 @@
       background: red;
    }
 
-   .clothing .item { 
-      margin: 15px 0;
+   .attachments .clothing .info { 
+      width: 60px;
+      height: 60px; 
+      background: black;
    }
 
    .inventory { 

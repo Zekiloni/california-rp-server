@@ -1,4 +1,4 @@
-import { logs, bans, characters, accounts, inventories, appearances, banks } from '@models';
+import { logs, bans, characters, accounts, inventories, appearances, banks, items } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { itemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, lang } from '@constants';
@@ -115,8 +115,25 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
          overlays: cAppearance.overlays, 
       }
    );
+
+   const components = [
+      itemNames.CLOTHING_TOP, itemNames.CLOTHING_UNDERSHIRT, 
+      itemNames.CLOTHING_LEGS, itemNames.CLOTHING_SHOES
+   ];
+
+   cAppearance.clothing.forEach(async (element: number) => {
+      const index = cAppearance.clothing.indexOf(element);
+      inventories.create( { name: components[index], entity: itemEnums.entity.PLAYER, owner: character.id, equiped: true }).then(async item => {
+         item.data = {
+            drawable: element,
+            texture: 0
+         }
+         await item.save();
+      })
+   });
    
    character.spawnPlayer(player, spawnPointTypes.DEFAULT, appearance);
+
 
    inventories.create({ name: itemNames.DOCUMENT_ID_CARD, entity: itemEnums.entity.PLAYER, owner: character.id }).then(async item => {
       item!.data = {

@@ -88,4 +88,6 @@ export const itemDescriptions = {
    AMMO_357 : ' .Pakovanje metaka .357 koji služe za oružje koje prima ovaj kalibar.',
    AMMO_12GAUGE : ' .Pakovanje metaka 12 Gauge koji služe za oružje koje prima ovaj kalibar.',
    AMMO_50CAL : ' .Pakovanje metaka kalibar .50 koji služe za oružje koje prima ovaj kalibar.',
-}
+}   
+
+

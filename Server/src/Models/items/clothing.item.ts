@@ -9,7 +9,8 @@ import { itemNames } from '@constants/items';
 
 export class clothingItem extends items {
 
-   static _list: clothingItem[] = [];
+   static clothings: clothingItem[] = [];
+   static props: clothingItem[] = [];
 
    component: itemEnums.components.clothings | itemEnums.components.props;
    naked: number[] = [0, 0];
@@ -20,7 +21,11 @@ export class clothingItem extends items {
       this.component = component;
       this.naked = naked;
       
-      clothingItem._list.push(this);
+      if (!this.prop) {
+         clothingItem.clothings.push(this);
+      } else {
+         clothingItem.props.push(this);
+      }
    }
 
    async use (player: PlayerMp, item: inventories) {

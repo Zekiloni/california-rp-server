@@ -38,7 +38,7 @@ async function getItemInfo (player: PlayerMp, itemName: string) {
 
 
 function onItemEquip (player:  PlayerMp, itemId: number) {
-   inventories.findOne( { where: { id: itemId } } ).then(async item => {
+   return inventories.findOne( { where: { id: itemId } } ).then(async item => {
 
       if (!item) {
          logs.error('equipItem: itemNotFound');

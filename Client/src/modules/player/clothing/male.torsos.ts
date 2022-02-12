@@ -1,6 +1,6 @@
 export default {
    '0': {
-      '0': { BestTorsoDrawable: 0, BestTorsoTexture: -1 },
+      '0': { BestTorsoDrawable: 15, BestTorsoTexture: -1 },
       '1': { BestTorsoDrawable: -1, BestTorsoTexture: -1 },
       '2': { BestTorsoDrawable: -1, BestTorsoTexture: -1 },
       '3': { BestTorsoDrawable: -1, BestTorsoTexture: -1 },

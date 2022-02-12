@@ -218,8 +218,9 @@ export class characters extends Model {
          appearance.apply(player, this.gender);
       }
       
-      clothingItem._list.forEach(item => {
-         inventories.findOne( { where: { name: item.name, owner: this.id , entity: itemEnums.entity.PLAYER } } ).then(clothed => {
+      clothingItem.clothings.forEach(item => {
+         inventories.findOne( { where: { name: item.name, owner: this.id, entity: itemEnums.entity.PLAYER } } ).then(clothed => {
+            console.log(clothed)
             if (clothed) {
                item.use(player, clothed);
             } else { 
@@ -227,6 +228,11 @@ export class characters extends Model {
             }
          })
       });
+
+
+      const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');
+      console.log('btorso ' + bestTorso)
+      player.setClothes(itemEnums.components.clothings.TORSO, bestTorso, 0, 2);      
       
       player.setVariable(shared_Data.INJURIES, this.injuries ? this.injuries : []);
 
