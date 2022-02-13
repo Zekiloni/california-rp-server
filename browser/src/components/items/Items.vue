@@ -225,7 +225,7 @@
       /* border-radius: 10px; */
       height: 470px;
       /* background: rgb(11 14 17 / 35%); */
-      border-right: 2px solid grey;
+      border-right: 2px solid #0b0e11;
       display: grid;
       grid-gap: 0.7rem;
       margin: 0 15px;

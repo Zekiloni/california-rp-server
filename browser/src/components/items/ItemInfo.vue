@@ -9,6 +9,12 @@
 
       <h2 class="name"> {{ info.name }} </h2>
       <p class="description" v-html="info.description"> </p>
+      
+      <ul class="additional">
+         <li> <b> {{ Messages.WEIGHT_OF_ITEM }} </b> {{ info.weight }}kg </li>
+         <li v-if="info.thirst"> <b> {{ Messages.THIRST_UP }} </b> {{ info.thirst }}% </li>
+         <li v-if="info.alcohol"> <b> {{ Messages.ALCOHOL_PERCENTAGE }} </b> {{ info.alcohol }}% </li>
+      </ul>
 
       <ul class="actions" v-if="actions.length > 0"> 
          <li v-for="action in actions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
@@ -102,7 +108,6 @@
       margin: 0;
    }
 
-   .model-preview { width: 500px; height: 400px; }
 
    ul.actions { 
       position: absolute;
@@ -134,6 +139,23 @@
       width: 30px;
       height: 30px;
       background-color: #848e9c;
+   }
+
+   ul.additional {
+      list-style: none;
+      color: #cdcdcd;
+      margin: 0;
+      padding: 10px;
+   }
+
+   ul.additional li {
+      margin: 2px 0;
+   }
+
+   ul.additional li b { 
+      color: #848e9c;
+      font-weight: 300;
+      margin-right: 5px;
    }
 
    ul.actions li .icon.use { mask: url('../../assets/images/icons/use-icon.svg') no-repeat center; mask-size: cover; }

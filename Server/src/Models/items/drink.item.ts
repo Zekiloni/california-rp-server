@@ -2,23 +2,24 @@
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { itemEnums } from '@enums';
+import { itemDescriptions, itemNames } from '@constants/items';
 
 
 const drinkType = [
    itemEnums.type.DRINK, 
    itemEnums.type.CONSUMABLE, 
-   itemEnums.type.STACKABLE
 ];
 
 
 export class drinkItem extends items {
    thirst: number;
-   alcohol?: number;
+   alcohol: number | null;
    
-   constructor (name: string, model: string, thirst: number, alcohol: number = 0, type?: itemEnums.type[], weight?: number, description?: string) { 
-      super (name, type ? drinkType.concat(type) : drinkType, model, weight, description);
+   constructor (name: string, model: string, thirst: number, alcohol: number | null, type: itemEnums.type[], weight?: number, description?: string) { 
+      super (name, type, model, weight, description);
       this.thirst = thirst;
       this.alcohol = alcohol;
+      console.log(this.name.toLowerCase().replace(' ', '_'))
    }
 
    async use (player: PlayerMp, item: inventories) {
@@ -27,28 +28,20 @@ export class drinkItem extends items {
    }
 }
 
+new drinkItem(itemNames.DRINK_MILK, 'v_res_tt_milk', 15, null, drinkType, 1, itemDescriptions.DRINK_MILK);
+new drinkItem(itemNames.DRINK_COFFE, 'prop_fib_coffee', 4, null, drinkType, 0.25, itemDescriptions.DRINK_COFFE);
+new drinkItem(itemNames.DRINK_SODA_CAN, 'ng_proc_sodacan_01b', 35, null, drinkType, 0.33, itemDescriptions.DRINK_SODA_CAN);
+new drinkItem(itemNames.DRINK_COLA_CAN, 'ng_proc_sodacan_01a', 35, null, drinkType, 0.33, itemDescriptions.DRINK_COLA_CAN);
+new drinkItem(itemNames.DRINK_WATER, 'prop_ld_flow_bottle', 25, null, drinkType, 0.3, itemDescriptions.DRINK_WATER);
+new drinkItem(itemNames.DRINK_ENERGY, 'prop_energy_drink', 65, null, drinkType, 0.25, itemDescriptions.DRINK_ENERGY);
+new drinkItem(itemNames.DRINK_JUICE_CUP, 'ng_proc_sodacup_01c', 30, null, drinkType, 0.2, itemDescriptions.DRINK_JUICE_CUP);
+new drinkItem(itemNames.DRINK_BEER_BOTTLE, 'prop_cs_beer_bot_02', 50, 5, drinkType, 0.33, itemDescriptions.DRINK_BEER_BOTTLE);
+new drinkItem(itemNames.DRINK_WHISKEY_BOTTLE, 'prop_whiskey_bottle', 4, 40, drinkType, 0.7, itemDescriptions.DRINK_WHISKEY_BOTTLE);
+new drinkItem(itemNames.DRINK_VODKA_BOTTLE, 'prop_vodka_bottle', 4, 40, drinkType, 0.7, itemDescriptions.DRINK_VODKA_BOTTLE);
+new drinkItem(itemNames.DRINK_TEQUILA_BOTTLE, 'prop_tequila_bottle', 4, 50, drinkType, 0.7, itemDescriptions.DRINK_TEQUILA_BOTTLE);
+new drinkItem(itemNames.DRINK_GIN_BOTTLE, 'prop_bottle_macbeth', 4, 40, drinkType, 0.5, itemDescriptions.DRINK_GIN_BOTTLE);
+new drinkItem(itemNames.DRINK_BRANDY_BOTTLE, 'prop_bottle_brandy', 4, 50, drinkType, 0.5, itemDescriptions.DRINK_BRANDY_BOTTLE);
+new drinkItem(itemNames.DRINK_WHITE_WINE_BOTTLE, 'prop_bottle_richard', 70, 15, drinkType, 0.5, itemDescriptions.DRINK_WHITE_WINE_BOTTLE);
+new drinkItem(itemNames.DRINK_BLACK_WINE_BOTTLE, 'prop_bottle_richard', 70, 15, drinkType, 0.5, itemDescriptions.DRINK_BLACK_WINE_BOTTLE);
+new drinkItem(itemNames.DRINK_RUM_BOTTLE, 'prop_bottle_cognac', 90, 60, drinkType, 0.5, itemDescriptions.DRINK_RUM_BOTTLE);
 
-new drinkItem('Coffe', 'prop_fib_coffee', 0.3, 3);
-new drinkItem('Beer Bottle', 'ng_proc_sodacan_01b', 0.3, 3);
-new drinkItem('Cola Can', 'ng_proc_sodacan_01a', 0.3, 3);
-
-
-
-
-// /* Drinks */
-// new Items('Coffe', [Items.Type.Drink, Items.Type.Consumable], 'prop_fib_coffee', 0.1);
-// new Items('Soda Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01b', 0.3);
-// new Items('Cola Can', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacan_01a', 0.3);
-// new Items('Water Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_ld_flow_bottle', 0.25);
-// new Items('Energy Drink', [Items.Type.Drink, Items.Type.Consumable], 'prop_energy_drink', 0.2);
-// new Items('Juice Cup', [Items.Type.Drink, Items.Type.Consumable], 'ng_proc_sodacup_01c', 0.15);
-// new Items('Beer Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_beer_bot_02', 0.3);
-// new Items('Whiskey Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_whiskey_bottle', 0.6);
-// new Items('Vodka Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_vodka_bottle', 0.5);
-// new Items('Tequila Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_tequila_bottle', 0.45);
-// new Items('Gin Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_macbeth', 0.4);
-// new Items('Brandy Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_brandy', 0.5);
-// new Items('Rum Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_rum_bottle', 0.4);
-// new Items('Cognac Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_cognac', 0.6);
-// new Items('Wine Bottle', [Items.Type.Drink, Items.Type.Consumable], 'prop_bottle_richard', 0.7);
-// new Items('Milk', [Items.Type.Drink, Items.Type.Consumable], 'prop_cs_milk_01', 0.6);

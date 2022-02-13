@@ -2,9 +2,8 @@ import { Browser } from '../../browser';
 import controls from '../../enums/controls';
 import { playAnimation } from '../player/animation';
 import { animationFlags } from '../../enums/animations.flags';
+import { distanceBetweenVectors } from '../../utils';
 
-
-const player = mp.players.local;
 
 let active: boolean = false;
 
@@ -86,17 +85,17 @@ mp.events.add(
 
       'CLIENT::ITEM:GIVE': (item, iteminfo, quantity) => { Browser.call('BROWSER::INVENTORY:GIVE_ITEM', item); },
 
-      'render': () => { 
-         if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
-            mp.objects.forEach((object) => { 
-               if (player.hasClearLosTo(object.handle, 17)) {
-                  if (object.getVariable('ITEM')) {
+      // 'render': () => { 
+      //    if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
+      //       mp.objects.forEach((object) => { 
+      //          if (player.hasClearLosTo(object.handle, 17)) {
+      //             if (object.getVariable('ITEM')) {
 
-                  }
-               }
-            });
-         }
-      }
+      //             }
+      //          }
+      //       });
+      //    }
+      // }
    }
 );
 
@@ -120,15 +119,35 @@ mp.keys.bind(controls.KEY_I, true, function() {
    mp.events.call('CLIENT::INVENTORY:TOGGLE');
 });
 
-mp.keys.bind(controls.KEY_E, true, function() {
-   if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
-      if (player.isTypingInTextChat || player.getVariable('CUFFED') ) return;
-      mp.objects.forEachInRange(player.position, 2, async object => { 
-         if (object.getVariable('ITEM')) {
-            const newInventory = await mp.events.callRemoteProc('SERVER::ITEM:PICKUP', object.getVariable('ITEM').id);
-            if (active && newInventory) Browser.call('BROWSER::INVENTORY:ITEMS', newInventory);
-            return;
-         }
-      });
+mp.keys.bind(controls.KEY_E, true, async function() {
+
+   if (!mp.players.local.getVariable('LOGGED_IN') || !mp.players.local.getVariable('SPAWNED')) {
+      return;
+   }
+
+   if (mp.players.local.isTypingInTextChat) {
+      return;
+   }
+
+   if (mp.players.local.getVariable('WOUNDED') || mp.players.local.getVariable('DEAD') || mp.players.local.getVariable('CUFFED')) {
+      return;
+   }
+
+   const object = mp.objects.getClosest(mp.players.local.position);
+
+   if (!object) {
+      return;
+   }
+
+   if (object.getVariable('ITEM')) {
+
+      if (distanceBetweenVectors(mp.players.local.position, object.position) > 2) {
+         return;
+      }
+
+      const response = await mp.events.callRemoteProc('SERVER::ITEM:PICKUP', object.getVariable('ITEM').id);
+      if (active && response) {
+         Browser.call('BROWSER::INVENTORY:ITEMS', response);
+      }
    }
 });

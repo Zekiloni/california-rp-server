@@ -23,6 +23,26 @@ export const itemNames = {
    SMART_PHONE: 'Smartphone',
 
 
+   // @drinks
+   DRINK_COFFE: 'Coffe',
+   DRINK_SODA_CAN: 'Soda Can',
+   DRINK_COLA_CAN: 'Cola Can',
+   DRINK_WATER: 'Water Bottle',
+   DRINK_ENERGY: 'Energy Drink',
+   DRINK_JUICE_CUP: 'Juice Cup',
+   DRINK_BEER_BOTTLE: 'Beer Bottle',
+   DRINK_WHISKEY_BOTTLE: 'Whiskey Bottle',
+   DRINK_VODKA_BOTTLE: 'Vodka Bottle',
+   DRINK_TEQUILA_BOTTLE: 'Tequila Bottle',
+   DRINK_GIN_BOTTLE: 'Gin Bottle',
+   DRINK_BRANDY_BOTTLE: 'Brandy Bottle',
+   DRINK_RUM_BOTTLE: 'Rum Bottle',
+   DRINK_COGNAC_BOTTLE: 'Cognac Bottle',
+   DRINK_WHITE_WINE_BOTTLE: 'White Wine Bottle',
+   DRINK_BLACK_WINE_BOTTLE: 'White Wine Bottle',
+   DRINK_MILK: 'Milk',
+
+
    // @clothing_props
    CLOTHING_MASK : 'Mask',
    CLOTHING_LEGS : 'Pants',
@@ -80,6 +100,26 @@ export const itemDescriptions = {
    WEAPON_FIREEXSTINGUISHER: 'PP aparat',
    WEAPON_FLASHLIGHT: 'Lampa',
    WEAPON_STUNGUN : 'Tazer, elektrošoker, slui kao omamljivač.',
+
+   // @drinks
+   DRINK_COFFE: 'Kafa za nošenje u plastičnoj čaši.',
+   DRINK_SODA_CAN: 'Soda u limenci za nošenje.',
+   DRINK_COLA_CAN: 'Kola u limenci za nošenje.',
+   DRINK_WATER: 'Voda u plastičnoj flaši za osvežavanje.',
+   DRINK_ENERGY: 'Energetsko piće u limenci, osvežava i daje snagu.',
+   DRINK_JUICE_CUP: ' Sok u plastičnoj čaši za nošenje.',
+   DRINK_BEER_BOTTLE: 'Pivo, alkoholno piće koje se ubraja u slabije kategorije.',
+   DRINK_WHISKEY_BOTTLE: 'Viski, žestoko alkoholno piće u staklenoj flaši.',
+   DRINK_VODKA_BOTTLE: 'Vodka, žestoko alkoholno piće u staklenoj flašici.',
+   DRINK_TEQUILA_BOTTLE: 'Tekila, žestoko alkoholno piće u staklenoj flaši.',
+   DRINK_GIN_BOTTLE: 'Dzin, žestoko alkoholno piće u staklenoj flaši, spada u kategoriju jačih alkohola.',
+   DRINK_BRANDY_BOTTLE: 'Brendi, žestoko alkoholno piće, neka vrsta rakije.',
+   DRINK_RUM_BOTTLE: 'Rum, destilovano alkoholno piće, najbolji je za pravljenje koktela.',
+   DRINK_COGNAC_BOTTLE: 'Konjak, alkoholno piće vrsta brendija.',
+   DRINK_WHITE_WINE_BOTTLE: 'Vino, alkoholno u staklenoj flaši, bezbojno.',
+   DRINK_BLACK_WINE_BOTTLE: 'Vino, alkoholno u staklenoj flaši, crne boje.',
+   DRINK_MILK: 'Mleko, tečnost bele boje koja se nalazi u tetrapaku.' ,
+
 
    // @ammunition
    AMMO_9MM : ' .Pakovanje metaka od 9mm koji služe za oružje koje prima ovaj kalibar.',

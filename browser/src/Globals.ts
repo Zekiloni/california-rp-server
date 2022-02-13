@@ -122,6 +122,8 @@ export const Messages = {
    MONEY_AMOUNT: 'Količina novca',
    TRANSFER_THE_MONEY: 'Pošalji Novac',
    MONEY_TARGET: 'Primalac',
+   ALCOHOL_PERCENTAGE: 'Procenat alkohola',
+   THIRST_UP: 'Umanjuje žeđ za ',
    NOT_AVAILABLE: 'Nije dostupno',
    STORAGE_ITEMS: 'Torba',
    HAIR_HIGHLIGHT: 'Presijavanje kose',
