@@ -8,6 +8,8 @@ mp.nametags.enabled = false;
 mp.events.add(RageEnums.EventKey.RENDER, nametags);
 
 
+
+
 function nametags () {
    if (!mp.players.local.getVariable('LOGGED_IN')) {
       return;

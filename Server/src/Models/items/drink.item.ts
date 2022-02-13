@@ -2,7 +2,7 @@
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { itemEnums } from '@enums';
-import { itemDescriptions, itemNames } from '@constants/items';
+import { itemDescriptions, itemNames } from '@constants';
 
 
 const drinkType = [
@@ -14,6 +14,7 @@ const drinkType = [
 export class drinkItem extends items {
    thirst: number;
    alcohol: number | null;
+   energy?: number;
    
    constructor (name: string, model: string, thirst: number, alcohol: number | null, type: itemEnums.type[], weight?: number, description?: string) { 
       super (name, type, model, weight, description);
@@ -28,7 +29,7 @@ export class drinkItem extends items {
    }
 }
 
-new drinkItem(itemNames.DRINK_MILK, 'v_res_tt_milk', 15, null, drinkType, 1, itemDescriptions.DRINK_MILK);
+new drinkItem(itemNames.DRINK_MILK, 'prop_cs_milk_01', 15, null, drinkType, 1, itemDescriptions.DRINK_MILK);
 new drinkItem(itemNames.DRINK_COFFE, 'prop_fib_coffee', 4, null, drinkType, 0.25, itemDescriptions.DRINK_COFFE);
 new drinkItem(itemNames.DRINK_SODA_CAN, 'ng_proc_sodacan_01b', 35, null, drinkType, 0.33, itemDescriptions.DRINK_SODA_CAN);
 new drinkItem(itemNames.DRINK_COLA_CAN, 'ng_proc_sodacan_01a', 35, null, drinkType, 0.33, itemDescriptions.DRINK_COLA_CAN);

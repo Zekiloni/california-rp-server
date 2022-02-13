@@ -10,7 +10,6 @@ const ATMS = [
 ];
 
 
-
 export function isNearATM (Position: Vector3Mp) { 
    for (const ATM of ATMS) { 
       const Nearby = mp.game.object.getClosestObjectOfType(Position.x, Position.y, Position.z, 1.8, ATM, false, true, true);
@@ -19,6 +18,28 @@ export function isNearATM (Position: Vector3Mp) {
       }
    }
 };
+
+
+function getLookEntity (distance: number) {
+   const camera = mp.cameras.new("gameplay"); 
+
+   const position = camera.getCoord();
+   const direction = camera.getDirection();
+
+   let farAway = new mp.Vector3(
+      (direction.x * distance) + (position.x), 
+      (direction.y * distance) + (position.y), 
+      (direction.z * distance) + (position.z)
+   ); 
+
+   const result = mp.raycasting.testPointToPoint(position, farAway); 
+
+   return result; 
+};
+
+mp.events.add(RageEnums.EventKey.RENDER, () => {
+   
+})
 
 
 export function getBestTorso () {

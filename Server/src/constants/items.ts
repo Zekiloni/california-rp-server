@@ -23,6 +23,13 @@ export const itemNames = {
    SMART_PHONE: 'Smartphone',
 
 
+   // @misc
+   CIGARETTES: 'Cigarettes',
+   LIGHTER: 'Lighter',
+   ROPE: 'Rope',
+   BUBBLEGUMS: 'Bubblegums',
+
+
    // @drinks
    DRINK_COFFE: 'Coffe',
    DRINK_SODA_CAN: 'Soda Can',

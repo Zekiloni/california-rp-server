@@ -82,7 +82,8 @@
       min-height: 120px;
       height: auto;
       border-radius: 10px;
-      background: #181a20;
+      background: rgb(24 26 32 / 45%);
+      backdrop-filter: blur(5px);
       padding-bottom: 60px;
       overflow: hidden;
       box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);

@@ -58,6 +58,10 @@ export class items {
       return this.type.includes(itemEnums.type.PROP);
    }
 
+   isConsumable () {
+      return this.type.includes(itemEnums.type.CONSUMABLE);
+   }
+
    availableActions () {
       let actions: itemAction[] = [];
 
@@ -67,10 +71,14 @@ export class items {
       );
 
       if (this.isEquipable()) {
-         actions.push( { name: lang.itemAction.equip, event: 'CLIENT::ITEM:EQUIP', icon: 'use' } )
+         actions.push( { name: lang.itemAction.EQUIP, event: 'CLIENT::ITEM:EQUIP', icon: 'use' } )
       }
 
-      if (this.isUsable() && !actions.find(action => action.name == lang.itemAction.equip)) {
+      if (this.isConsumable()) {
+         actions.push( { name: lang.itemAction.CONSUME, event: 'CLIENT::ITEM:USE', icon: 'use' } )
+      }
+
+      if (this.isUsable() && !actions.find(action => action.name == lang.itemAction.EQUIP)) {
          actions.push( { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' } )
       }
 

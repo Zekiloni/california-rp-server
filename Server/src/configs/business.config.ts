@@ -32,6 +32,8 @@ export namespace businessConfig {
 
    export const defaultProducts = {
       [businessConfig.type.MARKET]: [
+         itemNames.DRINK_BEER_BOTTLE, itemNames.DRINK_COLA_CAN, itemNames.DRINK_SODA_CAN, itemNames.FOOD_CHIPS, itemNames.FOOD_DONUT,
+         itemNames.FOOD_SANDWICH
       ]
    }
 };
