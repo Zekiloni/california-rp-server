@@ -20,7 +20,7 @@ export class workers extends Model {
    business: business
 
    @Column(DataType.INTEGER)
-   price: number
+   salary: number
 
    @Column(DataType.INTEGER)
    hired_By: number

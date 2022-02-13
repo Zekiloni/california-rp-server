@@ -25,7 +25,7 @@
    import Vue from 'vue';
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
-   import { itemAction, rItem } from '@/interfaces';
+   import { itemAction, rItem } from '@/models';
 
    const ItemInfoProps = Vue.extend({
       props: {
@@ -54,7 +54,7 @@
          //@ts-ignore     
          if (window.mp) { 
             //@ts-ignore     
-            let item = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
+            let item: strng = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
 
             item = JSON.parse(item);
 

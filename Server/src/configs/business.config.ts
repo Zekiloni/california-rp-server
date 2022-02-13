@@ -1,3 +1,4 @@
+import { itemNames } from "@constants/items";
 
 
 export namespace businessConfig { 
@@ -24,7 +25,13 @@ export namespace businessConfig {
    export const typeNames = [
       'Market', 'Gas station', 'Electronic Shop', 'Rent', 'Vehicle Dealership',
       'Classic Clothing', 'Luxury Clothing', 'Restaurant', 'Cafe Bar', 'Night Club',
-      'Ammunation', 'Pawn Shop', 'Furniture Shop', 'Car parts', 'Jewelry Shop', 'Tatto Shop',
+      'Ammunation', 'Pawn Shop', 'Furniture Shop', 'Car Parts', 'Jewelry Shop', 'Tatto Shop',
       'Barber Shop'
    ]
+   
+
+   export const defaultProducts = {
+      [businessConfig.type.MARKET]: [
+      ]
+   }
 };

@@ -16,7 +16,7 @@
          <div class="attachments">
             <div class="clothing" v-for="name in attachments" :key="name">
                <div class="info" v-if="clothing(name)"  @click="call('CLIENT::ITEM:UNEQUIP', JSON.stringify(clothing(name)))">
-                  {{ name }}
+                  <img class="item-icon" :src="require('@/assets/images/items/' +  name.toLowerCase().replace(' ', '_') + '.png')" > 
                </div>
                <div v-else class="no-attachment"> 
                   <h2> {{ name }} </h2>
@@ -27,7 +27,7 @@
          <div class="equiped">
             <div class="item" v-for="(item, i) in equiped" :key="item.id" > 
                <h2 class="slot"> {{ i + 1 }} </h2>
-               {{ item.name }} 
+               <img class="item-icon" :src="require('@/assets/images/items/' +  item.name.toLowerCase().replace(' ', '_') + '.png')" > 
             </div>
          </div>
 
@@ -44,7 +44,7 @@
    import Vue from 'vue';
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
-   import { InventoryItem } from '@/interfaces';
+   import { InventoryItem } from '@/models';
    
    import ItemInfo from '@/components/items/ItemInfo.vue';
    import GiveItem from '@/components/items/GiveItem.vue';
@@ -175,6 +175,12 @@
       background: rgb(0 0 0 / 25%);
       border-radius: 10px;
       transition: all .3s ease;
+      display: grid;
+   }
+
+   .attachments .clothing .info img { 
+      margin: auto;
+      width: 50px;
    }
 
    .attachments .clothing .info:hover {
@@ -208,7 +214,7 @@
       position: relative;
       margin: 0 10px;
       height: 100px;
-      background: #181a20;
+      background: #21252f;
       border-radius: 10px;
    }
    
@@ -216,9 +222,10 @@
    .inventory { 
       padding: 15px;
       width: 470px;
-      border-radius: 10px;
+      /* border-radius: 10px; */
       height: 470px;
-      background: rgb(11 14 17 / 35%);
+      /* background: rgb(11 14 17 / 35%); */
+      border-right: 2px solid grey;
       display: grid;
       grid-gap: 0.7rem;
       margin: 0 15px;
@@ -229,7 +236,9 @@
    .item h2.slot {
       position: absolute;
       right: 5px;
-      color: white;
+      bottom: -5px;
+      font-size: 3.5rem;
+      color: rgb(11 14 17 / 45%);
       margin: 0;
    }
 

@@ -52,6 +52,8 @@ export const Messages = {
    YOU_ARE_BRUTALLY_WOUNDEND: 'Brutalno ste povredjeni.',
    DEATH_KEEP_ROLEPLAYING_OR_ACCEPT_DEATH: 'Povredjeni ste na zemlji, nastavite roleplay, ili prihvatite smrt nakon 4 minute.',
    MAZE_BANK: 'Maze Banka',
+   SAVE: 'Sačuvaj',
+   THERE_ARE_CHANGES: 'Nesačuvane promene',
    CANCEL: 'Odustani',
    CLICK_ON_BOX: 'kliknite na kutiju kako bi odabrali karaktera ili započeli kreiranje novog.',
    TRANSFER_PAGE: 'Transfer Novca',

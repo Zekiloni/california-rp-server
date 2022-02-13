@@ -68,3 +68,46 @@ export interface itemExtra  {
    drawable?: number
    texture?: number
 };
+
+export interface Business {
+   [key: string]: string | boolean | number | Date | BusinesWorker[] | BusinessProduct[]
+}
+
+export interface Business { 
+   id: number
+   name: string
+   type: number
+   locked: boolean
+   walk_in: boolean
+   price: number
+   owner: number
+   budget: number
+   ipl: string
+   sprite: number
+   sprite_color: number
+   created_at: Date;
+   updated_at: Date;
+   products: BusinessProduct[]
+   workers: BusinesWorker[]
+}
+
+export interface BusinessProduct {
+   id: number
+   product: string
+   business_id: number
+   business: Business
+   price: number
+   created_At: Date
+   updated_At: Date
+}
+
+export interface BusinesWorker {
+   id: number
+   character: number
+   business_id: number
+   business: Business
+   salary: number
+   hired_By: number
+   created_At: Date
+   updated_At: Date
+}

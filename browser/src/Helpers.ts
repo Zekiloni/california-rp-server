@@ -19,10 +19,6 @@ const Helpers = {
       return Groups[i];
    },
 
-   isDonator (i: number) { 
-      return i > 0 ? 'Donator ' + i : 'Ne';
-   },
-
    Sleep (Seconds: number) {
       return new Promise(resolve => setTimeout(resolve, Seconds * 1000));
    }

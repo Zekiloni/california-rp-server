@@ -47,7 +47,8 @@
       <!-- [BUSINESSES] -->
       <transition name="fade-with-bottom-slide">
          <BusinessInfo v-if="interfaces.businessInfo" key=businessInfo />
-
+         <BusinessManagement v-if="interfaces.businessManagement" key=businessManagement />
+         
          <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
          <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
       </transition>
@@ -100,6 +101,7 @@
    import HouseInfo from '@/components/houses/HouseInfo.vue';
    
    import BusinessInfo from '@/components/business/BusinessInfo.vue';
+   import BusinessManagement from '@/components/business/BusinessManagement.vue';
    import MarketMenu from '@/components/business/menus/MarketMenu.vue';
    import RentMenu from '@/components/business/menus/RentVehicle.vue';
    
@@ -109,6 +111,7 @@
          Lobby, Creator, Notifications, GameInterface, Playerlist,
          Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
          Phone, Document, HandheldRadio, DeathScreen,
+         BusinessManagement,
          BusinessInfo,
          MarketMenu,
          RentMenu
