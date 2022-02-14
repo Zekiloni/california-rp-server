@@ -1,5 +1,5 @@
 import { entityType } from '../../enums/entity';
-import { markedEntity } from '../../interfaces/mark.entity';
+import { markedEntity } from '../../interfaces/mark.Entity';
 
 
 let marked:  markedEntity | null = null;

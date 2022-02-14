@@ -36,4 +36,8 @@ export namespace businessConfig {
          itemNames.FOOD_SANDWICH
       ]
    }
+   
+   export const defaultPrices = {
+      [itemNames.DRINK_BEER_BOTTLE]: 2
+   }
 };

@@ -1,4 +1,4 @@
-import { businessConfig } from '@configs/business.config';
+import { businessConfig } from '@configs';
 import { lang } from '@constants';
 import { notifications } from '@enums';
 import { business } from '@models';

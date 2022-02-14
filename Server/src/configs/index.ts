@@ -10,7 +10,7 @@ export * from './economy.config';
 export * from './jobs.config';
 export * from './faction.config';
 export * from './vehicle.config';
-export * from './business.config';
+export * from './business.Config';
 export * from './house.config';
 export * from './animations';
 
