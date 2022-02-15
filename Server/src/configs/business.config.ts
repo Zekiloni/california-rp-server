@@ -1,4 +1,4 @@
-import { itemNames } from "@constants/items";
+import { itemNames } from '@constants';
 
 
 export namespace businessConfig { 

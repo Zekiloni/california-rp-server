@@ -11,6 +11,13 @@ mp.events.add(
    }
 );
 
+mp.events.addProc(
+   {
+      'SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS': getAvailableProducts
+   }
+)
+
+
 function openBusinessMenu (player: PlayerMp, bizId: number) {
    business.findOne( { where: { id: bizId } } ).then(biz => {
       if (!biz) {
@@ -29,4 +36,8 @@ function openBusinessMenu (player: PlayerMp, bizId: number) {
       }
 
    })
+}
+
+function getAvailableProducts (type: string) {
+   return businessConfig.defaultProducts[type];
 }

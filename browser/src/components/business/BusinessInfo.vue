@@ -10,7 +10,7 @@
       <ul class="info">
          <li :class="{ sale: onSale(business) }"> {{ onSale(business) ? Messages.BUSINESS_FOR_SALE : Messages.BUSINESS_NOT_FOR_SALE }} </li>
          <li> <b> {{ Messages.LOCKED }}: </b> {{ business.locked ? Messages.YES : Messages.NO }} </li>
-         <li> <b> {{ Messages.PRICE }}: </b> {{ formatDollars(business.price) }} </li>
+         <li> <b> {{ Messages.PRICE }}: </b> {{ dollars(business.price) }} </li>
       </ul>
    </div>
 </template>

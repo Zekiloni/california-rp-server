@@ -9,9 +9,9 @@
       <ul class="info">
          <li :class="{ sale: onSale(house) }"> {{ onSale(house) ? Messages.HOUSE_FOR_SALE : Messages.HOUSE_NOT_FOR_SALE }} </li>
          <li> <b> {{ Messages.LOCKED }}: </b> {{ house.locked ? Messages.YES : Messages.NO }} </li>
-         <li> <b> {{ Messages.PRICE }}: </b> {{ formatDollars(house.price) }} </li>
+         <li> <b> {{ Messages.PRICE }}: </b> {{ dollars(house.price) }} </li>
          <li> <b> {{ Messages.HOUSE_RENTABLE }}: </b> {{ house.rentable ? Messages.YES : Messages.NO }} </li>
-         <li v-if="house.rentable"> <b> {{ Messages.HOUSE_RENT_PRICE }}: </b> {{ formatDollars(house.rent) }} </li>
+         <li v-if="house.rentable"> <b> {{ Messages.HOUSE_RENT_PRICE }}: </b> {{ dollars(house.rent) }} </li>
       </ul>
    </div>
 </template>

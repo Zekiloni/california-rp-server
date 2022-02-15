@@ -28,3 +28,12 @@
    opacity: 0;
    transform: translateY(20px);
 }
+
+
+.border-warning {
+   animation: warning-border 2s ease;
+}
+
+@keyframes warning-border {
+   from { border-color: tomato; }
+}

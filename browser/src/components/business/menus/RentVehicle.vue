@@ -8,7 +8,7 @@
             <transition-group name="list" appear tag="ul" class="vehicles"> 
                <li v-for="(product, i) in business.products" :key="product.name" @click="selected = i"> 
                   <h2 class="name"> {{ capitalize(product.name) }} </h2>
-                  <h2 class="price"> {{ formatDollars(product.price) }} </h2>
+                  <h2 class="price"> {{ dollars(product.price) }} </h2>
                </li>
             </transition-group>
             

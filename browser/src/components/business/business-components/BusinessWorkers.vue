@@ -2,7 +2,7 @@
 
 <template>
    <div class="products">
-      <h2> {{ Messages.BUSINESS_PRODUCTS }} </h2>
+      <h2> {{ Messages.BUSINESS_WORKERS }} </h2>
       <table>
          <tr class="head">
             <th> {{ Messages.PRODUCT_NAME }} </th>
@@ -39,37 +39,16 @@
 
    @Component({
       props: {
-         products: Array
+         workers: Array
       }
    })
-   export default class BusinessProducts extends Vue {
+   export default class BusinessWorkers extends Vue {
       
       Messages = Messages;
-
-      available: string[] = [
-         'Coffe',
-         'Milk',
-         'Water Bottle',
-         'Brandy Bottle',
-         'White Wine Bottle',
-         'Gin Bottle',
-         'Bubblegums',
-         'Cigarettes',
-         'Lighter',
-      ];
-
-      get availableItems () {
-         if (this.input.name!.length > 1) {
-            return this.available.filter(e => e.toLowerCase().indexOf(this.input.name!.toLowerCase()) !== -1)
-         } else {
-            return this.available;
-         }
-      }
       
-      input: { focused: boolean, name: string | null, price: number | null } = {
-         focused: false,
+      input: { name: string | null, salary: number } = {
          name: null,
-         price: null
+         salary: 1
       }
 
 
@@ -79,31 +58,22 @@
 
       add () {
 
-         if (!this.input.name || !this.available.includes(this.input.name)) {
+         if (!this.input.name || !this.$props.workers.includes(this.input.name)) {
             // @ts-ignore
             this.borderWarning(this.$refs.product_name);
             return;
          }
 
-         if (this.input.price! < 0.2) {
+         if (this.input.salary! < 0.2) {
             // @ts-ignore
             this.borderWarning(this.$refs.product_price);
             return;
          }
          
-         this.$props.products.push({ id: Math.random() + 59, name: this.input.name, price: this.input.price, quantity: 0 })
+         this.$props.products.push({ id: Math.random() + 59, name: this.input.name, price: this.input.salary, quantity: 0 })
          
          this.input.name = null;
-         this.input.price = null;
-      }
-
-      async mounted () {
-         if (window.mp) {
-            const response: string = await mp.events.callProc('CLIENT::BUSINESS:GET_AVAILABLE_PRODUCTS');
-            if (response) {
-               this.available = JSON.parse(response);
-            }
-         }
+         this.input.salary = 0;
       }
    }
 </script>

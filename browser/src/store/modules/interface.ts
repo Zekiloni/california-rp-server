@@ -11,7 +11,7 @@ const InitialState = {
    notifications: true,
    chat: false,
 
-   lobby: true,
+   lobby: false,
    characterCreator: false,
 
    gameInterface: false,
@@ -35,7 +35,7 @@ const InitialState = {
 
 
    businessInfo: false,
-   businessManagement: false,
+   businessManagement: true,
    marketMenu: false,
    rentMenu: false,
 

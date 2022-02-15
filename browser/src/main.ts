@@ -20,7 +20,7 @@ Vue.mixin({
          audio.play();
       },
       
-      formatDollars (i: number) { 
+      dollars (i: number) { 
          return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); 
       },
 
@@ -43,6 +43,11 @@ Vue.mixin({
       formatDate (i: Date) { 
          i = new Date(i); 
          return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
+      },
+
+      borderWarning (element: Element) {
+         element.classList.add('border-warning');
+         setTimeout(() => { element.classList.remove('border-warning'); }, 2500);
       }
    }
  })

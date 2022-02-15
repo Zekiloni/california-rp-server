@@ -31,7 +31,7 @@
                
                <ul class="info">
 
-                  <li class="money"> {{ Messages.CASH }} <b>  {{ formatDollars(account.characters[i].money) }} </b> </li>
+                  <li class="money"> {{ Messages.CASH }} <b>  {{ dollars(account.characters[i].money) }} </b> </li>
                   <li> {{ Messages.ORIGIN }}: <b> {{ account.characters[i].origin }} </b> </li>
                   <li> {{ Messages.BIRTH }}: <b> {{ account.characters[i].birth }} </b> </li>
                   <li> {{ Messages.REGISTER_DATE }}: <b> {{ formatDate(account.characters[i].created_at) }} </b> </li>

@@ -93,12 +93,11 @@ export interface Business {
 
 export interface BusinessProduct {
    id: number
-   product: string
-   business_id: number
-   business: Business
+   name: string
+   quantity: number;
    price: number
-   created_At: Date
-   updated_At: Date
+   created_At?: Date
+   updated_At?: Date
 }
 
 export interface BusinesWorker {

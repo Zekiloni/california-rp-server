@@ -10,7 +10,7 @@
          </ul>
          <div class="page-holder">
             <transition name="fade" mode="out-in"> 
-               <div class="main" v-if="currentPage == 0" key=mainPage >
+               <div class="main" v-if="currentPage == 0" key=bMain >
                   <div class="business-name" :class="{ error: errors.name }">
                      <input 
                         type="text" 
@@ -31,9 +31,9 @@
 
                </div>
 
-               <div class="products" v-if="currentPage == 1" key=productsPage >
-                  <h1> adawda da</h1>
-               </div>
+               <BusinessProducts v-if="currentPage == 1" key=bProducts :products="business.products" />
+               <BusinessWorkers v-if="currentPage == 2" key=bWorkers :workers="business.workers" />
+               
             </transition>
          </div>
       </div>
@@ -45,9 +45,14 @@
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
    import { Business } from '@/models';
+   import BusinessProducts from './business-components/BusinessProducts.vue';
+   import BusinessWorkers from './business-components/BusinessWorkers.vue';
 
-
-   @Component
+   @Component({
+      components: {
+         BusinessProducts, BusinessWorkers
+      }
+   })
    export default class BusinessManagement extends Vue {
       pages = ['main', 'products', 'workers', 'history', 'budget', 'orders'];
       currentPage = 0;
@@ -72,7 +77,11 @@
          sprite_color: 2,
          owner: 0,
          ipl: '',
-         products: [],
+         products: [
+            { id: 0, name: 'Coffe', quantity: 35, price: 3 },
+            { id: 1, name: 'Lighter', quantity: 125, price: 0.75 },
+            { id: 2, name: 'Cigarettes', quantity: 125, price: 2.75 }
+         ],
          workers: [],
          created_at: new Date(),
          updated_at: new Date()
@@ -167,6 +176,7 @@
       margin: auto;
       background: rgb(11 14 17 / 70%);
       display: flex;
+      overflow: hidden;
    }
 
    ul.navigation {
@@ -177,6 +187,7 @@
       height: 100%;
       display: flex;
       justify-content: space-between;
+      background: rgb(11 14 17 / 45%);
       flex-direction: column;
       align-items: center;
    }
@@ -201,6 +212,7 @@
       height: 100%;
       width: 100%;
       margin-left: 20px;
+      overflow: auto;
    }
 
    .business-name {

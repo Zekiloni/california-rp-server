@@ -14,7 +14,7 @@
                <!-- <img :src="require('../../assets/images/items/' + Item.Model + '.png')" /> -->
                <div class="info"> 
                   <small> {{ i }} </small>
-                  <h3 class="price"> {{ formatDollars(Business.Multiplier * Item.Multiplier) }} </h3>
+                  <h3 class="price"> {{ dollars(Business.Multiplier * Item.Multiplier) }} </h3>
                </div>
             </li>
          </ul>
@@ -39,13 +39,13 @@
                         <h2 v-on:click="Decrease(Item)"> - </h2>
                      </div>
                   </td>
-                  <td width="60"> {{ formatDollars(Business.Multiplier * Item.Multiplier * Item.Quantity ) }} </td>
+                  <td width="60"> {{ dollars(Business.Multiplier * Item.Multiplier * Item.Quantity ) }} </td>
                </tr>
             </table>
             <!-- <li v-for="Item in Cart" :key=Item > {{ Item }} </li> -->
          </div>
          <div class="bill">
-            <h2> Total {{ formatDollars(Total) }} </h2>
+            <h2> Total {{ dollars(Total) }} </h2>
             <button class=""> </button>
          </div>
       </div>

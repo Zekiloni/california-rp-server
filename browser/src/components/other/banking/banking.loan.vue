@@ -22,9 +22,9 @@
          :dotOptions=slider.dotOptions
       />
       
-      <h2> kredit: {{ formatDollars(amount) }} </h2>
+      <h2> kredit: {{ dollars(amount) }} </h2>
       <h2> dana {{ days }} </h2>
-      <h1> return {{ formatDollars(repayment()) }} </h1>
+      <h1> return {{ dollars(repayment()) }} </h1>
    </div>
 </template>
 

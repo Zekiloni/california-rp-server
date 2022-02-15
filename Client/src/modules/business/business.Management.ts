@@ -26,7 +26,7 @@ function openBusinessManagement () {
 
 
 async function getAvailableProducts (type: number) {
-   return mp.events.callRemoteProc('SERVER::BUSINESS:GET_AVAILABLE:PRODUCTS', type);
+   return mp.events.callRemoteProc('SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS', type);
 }
 
 

@@ -11,7 +11,7 @@ import './modules/bank'
 import './modules/jobs';
 import './modules/vehicles.manager';
 import './modules/houses.manager';
-import './modules/business.manager';
+import './modules/business.Manager';
 
 import { sleep } from '@shared';
 import { logs } from'@models';

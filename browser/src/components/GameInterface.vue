@@ -38,7 +38,7 @@
       </div>
 
       <div class="player"> 
-         <h2 class="money"> {{ formatDollars(money) }} </h2>
+         <h2 class="money"> {{ dollars(money) }} </h2>
       </div>
    </div>
 

@@ -1,5 +1,5 @@
 import { Table, Model, PrimaryKey, AutoIncrement, Column, Default, BelongsTo, DataType, CreatedAt, UpdatedAt, ForeignKey } from 'sequelize-typescript';
-import { business } from '@models';
+import { business, items } from '@models';
 
 
 @Table
@@ -10,7 +10,7 @@ export class products extends Model {
    id: number
 
    @Column
-   product: string
+   name: keyof typeof items.list
 
    @ForeignKey(() => business)
    @Column(DataType.INTEGER)
