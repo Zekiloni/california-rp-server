@@ -25,7 +25,7 @@ function openBusinessMenu (player: PlayerMp, bizId: number) {
       }
 
       if (biz.locked) {
-         player.sendNotification(lang.thisBusinessIsLocked, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.thisBusinessIsLocked, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
@@ -39,5 +39,5 @@ function openBusinessMenu (player: PlayerMp, bizId: number) {
 }
 
 function getAvailableProducts (type: string) {
-   return businessConfig.defaultProducts[type];
+  // return businessConfig.defaultProducts[type];
 }

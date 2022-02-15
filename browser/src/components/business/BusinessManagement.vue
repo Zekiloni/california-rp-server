@@ -82,7 +82,10 @@
             { id: 1, name: 'Lighter', quantity: 125, price: 0.75 },
             { id: 2, name: 'Cigarettes', quantity: 125, price: 2.75 }
          ],
-         workers: [],
+         workers: [
+            { id: 1, name: 'Deker gey', salary: 33, hired_By: 'Zachary Parker' },
+            { id: 2, name: 'Adada gey', salary: 65, hired_By: 'Zachary Parker' }
+         ],
          created_at: new Date(),
          updated_at: new Date()
       }

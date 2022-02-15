@@ -80,7 +80,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    const alreadyExist = await characters.findOne( { where: { name: cInfo.name + ' ' + cInfo.lastName } } );
 
    if (alreadyExist) {
-      player.sendNotification(lang.characterAlreadyExist, notifications.type.ERROR, notifications.time.SHORT);
+      player.notification(lang.characterAlreadyExist, notifications.type.ERROR, notifications.time.SHORT);
       return;
    } 
 
@@ -145,7 +145,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    });
 
 
-   player.sendNotification(lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
+   player.notification(lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
 
    return true;
 }
@@ -195,14 +195,14 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
    return accounts.findOne( { where: { username: username }, include: [characters] } ).then(account => {
 
       if (!account) {
-         player.sendNotification(lang.userDoesntExist, notifications.type.ERROR, 5);
+         player.notification(lang.userDoesntExist, notifications.type.ERROR, 5);
          return;
       }
 
       const logged = account.login(password);
 
       if (!logged) { 
-         player.sendNotification(lang.incorrectPassword, notifications.type.ERROR, 5);
+         player.notification(lang.incorrectPassword, notifications.type.ERROR, 5);
 
          logs.discord(
             lang.unsuccessfulAuth, 
@@ -268,14 +268,19 @@ function playerModelChange (entity: EntityMp, oldModel: number) {
    }
 }
 
-mp.Player.prototype.sendNotification = function (message: string, type: number, time: number = 4) {
+mp.Player.prototype.notification = function (message: string, type: number, time: number = 4) {
    this.call('CLIENT::NOTIFICATION', [message, type, time]);
 };
 
 
-mp.Player.prototype.sendHint = function (key: string, message: string, time: number) {
+mp.Player.prototype.hint = function (key: string, message: string, time: number) {
    this.call('CLIENT::HINT', [key, message, time]);
 };
+
+
+mp.Player.prototype.help = function (message: string, time: number) {
+   this.call('CLIENT::HELP', [message, time]);
+}
 
 
 mp.Player.prototype.sendMessage = function (message: string, color: string) {

@@ -20,6 +20,7 @@ export * from './vehicles/vehicle.model';
 export * from './vehicles/temporaryVehicle.model';
 
 // @business
-export * from './business/business.model';
 export * from './business/product.model';
 export * from './business/worker.model';
+export * from './business/business.model';
+

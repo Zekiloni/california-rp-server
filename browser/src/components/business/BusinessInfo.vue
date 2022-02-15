@@ -49,8 +49,9 @@
       min-height: 200px;
       overflow: hidden;
       border-radius: 10px;
-      background: #181a20;
-      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
+      background: radial-gradient(rgb(33 37 47 / 25%), rgb(11 14 17 / 55%));
+      border: 1.25px solid rgb(120 120 120 / 10%);      
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
    }
 
     h2.adress {
@@ -61,7 +62,7 @@
       font-size: 1.15rem;
       border-top-left-radius: 10px;
       padding: 10px;
-      background: #181a20;
+      background: rgb(11 14 17 / 46%);
    }
 
    h2.adress small { 

@@ -140,15 +140,20 @@ export class business extends Model {
       };
 
       if (this.walk_in && !this.locked) {
-         player.sendHint(controls.KEY_E, lang.toOpenBusinessMenu, 5);
+         player.hint(controls.KEY_E, lang.toOpenBusinessMenu, 5);
       }
       
       if (!this.walk_in && !this.locked) { 
-         player.sendHint(controls.KEY_E, lang.toEnterBusiness, 5);
+         player.hint(controls.KEY_E, lang.toEnterBusiness, 5);
       }
 
       if (!this.owner) {
-         player.sendHint(controls.KEY_Y, lang.toBuyTheBusinenss, 5);
+         console.log('help')
+         player.help('/buy da kupite biznis', 4);
+      }
+
+      if (this.owner == player.character.id) {
+         player.hint(controls.KEY_B, lang.businessManagement, 5);
       }
 
       player.call('CLIENT::BUSINESS:INFO', [this]);
@@ -202,7 +207,7 @@ export class business extends Model {
 
    async lock (player: PlayerMp, locked: boolean) {
       await this.update( { locked: locked } );
-      player.sendNotification(locked ? lang.businessLocked : lang.businessUnlocked, notifications.type.INFO, notifications.time.MED);
+      player.notification(locked ? lang.businessLocked : lang.businessUnlocked, notifications.type.INFO, notifications.time.MED);
    }
 
    async edit (player: PlayerMp, property: string, value: string) {
@@ -233,19 +238,19 @@ export class business extends Model {
       const character = player.character;
 
       if (this.owner != none) {
-         player.sendNotification(lang.busiensAlreadyOwner, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.busiensAlreadyOwner, notifications.type.ERROR, notifications.time.MED);
          return;
       }; 
 
       if (this.price > character.money) {
-         player.sendNotification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
          return;
       };
 
       this.owner = character.id;
       character.giveMoney(player, -this.price);
 
-      player.sendNotification(lang.successfullyBuyedBusiness + this.name + lang.for + dollars(this.price) + '.', notifications.type.SUCCESS, notifications.time.LONG);
+      player.notification(lang.successfullyBuyedBusiness + this.name + lang.for + dollars(this.price) + '.', notifications.type.SUCCESS, notifications.time.LONG);
       await this.save();
    };
    
@@ -258,7 +263,7 @@ export class business extends Model {
          const target = mp.players.find(targetSearch);
 
          if (!target) {
-            player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
@@ -266,12 +271,12 @@ export class business extends Model {
          const { character: tCharacter } = target!;
 
          if (player.dist(target.position) > 2) {
-            player.sendNotification(lang.playerNotNear, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
          if (tCharacter.money < price) {
-            player.sendNotification(lang.playerDoesntHaveMoney, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(lang.playerDoesntHaveMoney, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
@@ -295,7 +300,7 @@ export class business extends Model {
          
          this.owner = none;
          player.character.giveMoney(player, cPrice);
-         player.sendNotification(lang.succesfullySoldBizToCountry, notifications.type.INFO, notifications.time.LONG);
+         player.notification(lang.succesfullySoldBizToCountry, notifications.type.INFO, notifications.time.LONG);
 
          await this.save();
       }

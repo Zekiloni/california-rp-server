@@ -22,9 +22,9 @@ const Database = new Sequelize({
       inventories, 
       banks,
       houses,
-      business,
       products,
-      workers
+      workers,
+      business
    ],
    logging: false
 });

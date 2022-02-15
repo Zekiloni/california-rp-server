@@ -24,7 +24,7 @@ import { itemEnums } from '@enums';
          }
 
          player.call('CLIENT::BANKING:MENU', [true]);
-         player.sendHint(controls.KEY_E, lang.toOpenBankMenu, 6);
+         player.hint(controls.KEY_E, lang.toOpenBankMenu, 6);
       }
 
       colshape.onPlayerLeave = (player) => {
@@ -69,7 +69,7 @@ mp.events.addProc(
    {
       'SERVER::BANKING:CREATE': async (player: PlayerMp): Promise<inventories> => {
          // if (player.character.bank) {
-         //    player.sendNotification('vec imate racun', notifications.type.ERROR, 7);
+         //    player.notification('vec imate racun', notifications.type.ERROR, 7);
          //    return;
          // }
 

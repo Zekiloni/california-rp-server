@@ -56,7 +56,7 @@ Commands[cmds.names.GOTO] = {
             player.dimension = target.dimension;
          }
 
-         player.sendNotification('SUCCES TELEPORT', notifications.type.SUCCESS, 4);
+         player.notification('SUCCES TELEPORT', notifications.type.SUCCESS, 4);
       }
    }
 };
@@ -91,7 +91,7 @@ Commands[cmds.names.GET_HERE] = {
             target.dimension = player.dimension;
          }
 
-         player.sendNotification('SUCCES TELEPORT', notifications.type.SUCCESS, 4);
+         player.notification('SUCCES TELEPORT', notifications.type.SUCCESS, 4);
       }
    }
 };
@@ -208,7 +208,7 @@ Commands[cmds.names.FREEZE] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
 
@@ -237,7 +237,7 @@ Commands[cmds.names.HEALTH] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
 
@@ -278,7 +278,7 @@ Commands[cmds.names.DISARM] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
       
@@ -296,8 +296,8 @@ Commands[cmds.names.DISARM] = {
          })
       }
 
-      target.sendNotification(lang.admin + ' ' + player.name + lang.disarmedYou, notifications.type.INFO, notifications.time.MED);
-      player.sendNotification(lang.youDisarmedPlayer + ' ' + target.name + '.', notifications.type.SUCCESS, notifications.time.MED);
+      target.notification(lang.admin + ' ' + player.name + lang.disarmedYou, notifications.type.INFO, notifications.time.MED);
+      player.notification(lang.youDisarmedPlayer + ' ' + target.name + '.', notifications.type.SUCCESS, notifications.time.MED);
    }
 };
 
@@ -334,7 +334,7 @@ Commands[cmds.names.GIVE_GUN] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT)
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT)
          return;
       }
 
@@ -459,7 +459,7 @@ Commands[cmds.names.GIVE_MONEY] =  {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
          return;
       };
 
@@ -479,7 +479,7 @@ Commands[cmds.names.SET_MONEY] =  {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
          return;
       }; 
 
@@ -534,7 +534,7 @@ Commands[cmds.names.KICK] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -555,14 +555,14 @@ Commands[cmds.names.SLAP] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
       }
 
       const { position } = target!;
       
       if (target) {
          target.position = new mp.Vector3(position.x, position.y, position.z + 2);
-         target.sendNotification(lang.admin + ' ' + player.character.name + ' ' + lang.adminWarnedYou + '.', notifications.type.ERROR, notifications.time.SHORT);
+         target.notification(lang.admin + ' ' + player.character.name + ' ' + lang.adminWarnedYou + '.', notifications.type.ERROR, notifications.time.SHORT);
       }
    }
 };
@@ -643,7 +643,7 @@ Commands[cmds.names.MAKE_ADMIN] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -663,7 +663,7 @@ Commands[cmds.names.CREATE_ACCOUNT] = {
    call (player: PlayerMp, username: string, password: string, mail: string) {
       accounts.create( { username: username, password: password, email: mail } ).catch(e => logs.error('creatingAccount: ' + e) );
       // LOGS
-      player.sendNotification(lang.accountCreated + ' (' + username + ', ' + password + ')', notifications.type.SUCCESS, notifications.time.LONG);
+      player.notification(lang.accountCreated + ' (' + username + ', ' + password + ')', notifications.type.SUCCESS, notifications.time.LONG);
    }
 };
 
@@ -673,7 +673,7 @@ Commands[cmds.names.FLIP] = {
    admin: rank.ADMINISTRATOR_2,
    call (player: PlayerMp) {
       if (player.vehicle) {
-         player.sendNotification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
          player.vehicle.rotation = new mp.Vector3(0, 0, player.vehicle.heading);
       } else if (mp.vehicles.getClosest(player.position)) { 
          const closestVehicle = mp.vehicles.getClosest(player.position);
@@ -694,7 +694,7 @@ Commands[cmds.names.DIMENSION] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -718,7 +718,7 @@ Commands[cmds.names.RESPAWN_VEHICLE] = {
       const vehicle = player.vehicle || mp.vehicles.getClosest(player.position);
 
       if (!vehicle) {
-         player.sendNotification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
       

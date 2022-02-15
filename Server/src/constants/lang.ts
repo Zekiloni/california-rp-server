@@ -93,6 +93,7 @@ export const lang = {
    toOpenBusinessMenu: 'Da otvorie meni biznisa',
    toEnterBusiness: 'Da udjete u biznis',
    toBuyTheBusinenss: 'Da kupite biznis',
+   businessManagement: 'Opcije vašeg biznisa',
 
 
    // info messages

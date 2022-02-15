@@ -54,22 +54,15 @@
       },
       
       mounted () {
-         //@ts-ignore
          if (window.mp) {
-            
-            //@ts-ignore
             mp.invoke('focus', true);
-            
-            //@ts-ignore
-            mp.events.add('BROWSER::PLAYERLIST', players => this.players = JSON.parse(players) );
+
+            mp.events.add('BROWSER::PLAYERLIST', (players: string) => this.players = JSON.parse(players) );
          }
       },
 
       beforeDestroy () {
-         //@ts-ignore
          if (window.mp) {
-            
-            //@ts-ignore
             mp.invoke('focus', false);
          }
       }

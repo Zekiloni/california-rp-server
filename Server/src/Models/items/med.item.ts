@@ -21,12 +21,12 @@ export class medItem extends items {
    async use (player: PlayerMp, item: inventories) {
 
       if (player.health > playerConfig.main.healthRegeneration) {
-         player.sendNotification(lang.youHaveMoreThanHealth, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.youHaveMoreThanHealth, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (player.vehicle) {
-         player.sendNotification(lang.cannotInVehicle, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.cannotInVehicle, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

@@ -22,17 +22,17 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       const { account, character } = player;
 
       if (command.admin && account.administrator < command.admin) {
-         player.sendNotification(lang.notAllowed, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.notAllowed, notifications.type.ERROR, notifications.time.SHORT);
          return;
       } 
 
       if (command.job && character.job != command.job) {
-         player.sendNotification(lang.notSpecificJob, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.notSpecificJob, notifications.type.ERROR, notifications.time.SHORT);
          return;
       } 
 
       if (command.position && player.dist(command.position) > 2.25) {
-         player.sendNotification(lang.notOnPosition, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.SHORT);
          return;
       } 
 
@@ -41,7 +41,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
          // } else
 
          if (command.faction.id && command.faction.id != character.faction) {
-            player.sendNotification(lang.notInSpecFaction, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(lang.notInSpecFaction, notifications.type.ERROR, notifications.time.SHORT);
             return;
          };
       }
@@ -53,7 +53,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       if (command.params && command.params.length > params.length) return player.sendMessage('Komanda: /' + commandName + ' [' + command.params.join('] [') + '] ', colors.hex.Help);
       command.call(player, ...params);
    } else {
-      player.sendNotification(lang.cmdDoesntExist, notifications.type.ERROR, 4);
+      player.notification(lang.cmdDoesntExist, notifications.type.ERROR, 4);
    }
 });
 

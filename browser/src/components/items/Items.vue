@@ -76,7 +76,6 @@
       selected: InventoryItem | null = null;
 
       items: InventoryItem[] = [
-         { id: 0, name: 'Mask', entity: 1, owner: 1, equiped: true, status: 0, fingerprint: 0 }
       ];
       
       clothing (name: string) {
@@ -92,7 +91,6 @@
       }
 
       call (event: string, item: InventoryItem) {
-         //@ts-ignore
          mp.events.call(event, item);
       }
 
@@ -112,22 +110,17 @@
       }
 
       mounted () {   
-         //@ts-ignore     
          if (window.mp) { 
-            //@ts-ignore     
             mp.invoke('focus', true);
-            //@ts-ignore     
 
             mp.events.add('BROWSER::INVENTORY:ITEMS', (items: string) => this.items = JSON.parse(items) );
-            //@ts-ignore     
-            mp.events.add('BROWSER::INVENTORY:GIVE_ITEM', (item) => { 
+            mp.events.add('BROWSER::INVENTORY:GIVE_ITEM', (item: string) => { 
                console.log(JSON.stringify(item));
             })
          }   
       }
 
       beforeDestroy () {
-         //@ts-ignore
          mp.invoke('focus', false)
       };
    }
@@ -184,7 +177,8 @@
    }
 
    .attachments .clothing .info:hover {
-      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
+      opacity: 0.7;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
    }
 
    .attachments .clothing .no-attachment {
@@ -198,34 +192,36 @@
    .no-attachment h2 { margin: auto; width: 80px; font-size: 0.55rem; text-transform: uppercase; color: #848e9c; text-align: center;}
 
    .equiped { 
-      height: 110px;
-      width: 480px;
-      padding: 10px;
+      height: 80px;
+      width: 520px;
       display: flex;
+      padding: 10px 0;
       margin: 15px 0;
       justify-content: flex-start;
-      border-radius: 10px;
-      background: rgb(11 14 17 / 35%);
+      border-radius: 5px;
+      background: radial-gradient(rgb(33 37 47 / 25%), rgb(11 14 17 / 45%));
+      border: 1.25px solid rgb(120 120 120 / 10%);      
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
       align-items: center;
    }
 
    .equiped .item { 
-      width: 100px;
+      width: 80px;
       position: relative;
       margin: 0 10px;
-      height: 100px;
-      background: #21252f;
+      height: 80px;
+      overflow:unset;
+      background: #181a20;
       border-radius: 10px;
    }
-   
    
    .inventory { 
       padding: 15px;
       width: 470px;
-      /* border-radius: 10px; */
       height: 470px;
-      /* background: rgb(11 14 17 / 35%); */
-      border-right: 2px solid #0b0e11;
+      border-radius: 5px;
+      background: radial-gradient(rgb(33 37 47 / 45%), rgb(11 14 17 / 25%));
+      border: 1.25px solid rgb(120 120 120 / 10%);
       display: grid;
       grid-gap: 0.7rem;
       margin: 0 15px;
@@ -235,10 +231,15 @@
 
    .item h2.slot {
       position: absolute;
-      right: 5px;
+      right: 10px;
+      width: 20px;
+      padding: 1px 0;
+      background: whitesmoke;
       bottom: -5px;
-      font-size: 3.5rem;
-      color: rgb(11 14 17 / 45%);
+      color: #0b0e11;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 1.0rem;
       margin: 0;
    }
 
@@ -266,7 +267,7 @@
 
    .item:hover { 
       background: #2a303c;
-      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
    }
 
    .item:hover h3.quantity { background: #181a20; }

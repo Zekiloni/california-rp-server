@@ -143,22 +143,22 @@ export class houses extends Model {
    }
 
    async buy (player: PlayerMp) {
-      if (this.owner != 0) return player.sendNotification(lang.houseAlreadyOwner, notifications.type.ERROR, 5);
+      if (this.owner != 0) return player.notification(lang.houseAlreadyOwner, notifications.type.ERROR, 5);
 
       const character = player.character;
 
       if (character.houses.length == character.max_houses) {
-         player.sendNotification(lang.youHaveMaximumHouses, notifications.type.ERROR, 5);
+         player.notification(lang.youHaveMaximumHouses, notifications.type.ERROR, 5);
          return;
       }
 
       if (this.price > character.money) {
-         player.sendNotification(lang.notEnoughMoney, notifications.type.ERROR, 5);
+         player.notification(lang.notEnoughMoney, notifications.type.ERROR, 5);
          return;
       } 
 
       character.giveMoney(player, -this.price);
-      player.sendNotification(lang.successfullyBuyedHouse, notifications.type.SUCCESS, 7);
+      player.notification(lang.successfullyBuyedHouse, notifications.type.SUCCESS, 7);
 
       this.owner = character.id;
 
@@ -170,7 +170,7 @@ export class houses extends Model {
          this.locked = !this.locked;
          await this.save();
       } else { 
-         player.sendNotification(lang.youDontHaveHouseKeys, notifications.type.ERROR, 5);
+         player.notification(lang.youDontHaveHouseKeys, notifications.type.ERROR, 5);
       }
    }
 

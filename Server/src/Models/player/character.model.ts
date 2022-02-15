@@ -196,6 +196,8 @@ export class characters extends Model {
       // loading money and health
       this.setHealth(player, this.health);
 
+      player.setVariable(shared_Data.CHARACTER_ID, this.id);
+
       player.setVariable(shared_Data.MONEY, this.money);
       player.setVariable(shared_Data.JOB, this.job);
       player.setVariable(shared_Data.FACTION, this.faction);
@@ -213,7 +215,7 @@ export class characters extends Model {
       player.setVariable('Phone_Ringing', false);
       player.setVariable('Ragdoll', false);
 
-      player.sendNotification(lang.welcomeToServer, notifications.type.INFO, 4);
+      player.notification(lang.welcomeToServer, notifications.type.INFO, 4);
 
       this.setWalkingStyle(player, this.walking_style);
       this.setMood(player, this.facial_mood);
@@ -430,7 +432,7 @@ export class characters extends Model {
          const character = player.character;
 
          if (character.dead) {
-            player.sendNotification(lang.cannotWhileDead, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(lang.cannotWhileDead, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 

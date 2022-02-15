@@ -18,6 +18,10 @@ mp.events.add(
 
       'CLIENT::HINT': (key: string, message: string, time: number) => {
          Browser.call('BROWSER::HINT', key, message, time);
+      },
+
+      'CLIENT::HELP': (message: string, time: number) => {
+         Browser.call('BROWSER::HELP', message, time);
       }
    }
 );

@@ -75,7 +75,7 @@ export class bans extends Model {
             if (OfflineAcc) {
                bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             } else {
-               player.sendNotification(lang.userNotFound, notifications.type.ERROR, 5);
+               player.notification(lang.userNotFound, notifications.type.ERROR, 5);
             }
          }
       }

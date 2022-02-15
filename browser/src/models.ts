@@ -102,11 +102,9 @@ export interface BusinessProduct {
 
 export interface BusinesWorker {
    id: number
-   character: number
-   business_id: number
-   business: Business
+   name: string
    salary: number
-   hired_By: number
-   created_At: Date
-   updated_At: Date
+   hired_By: string
+   created_At?: Date
+   updated_At?: Date
 }

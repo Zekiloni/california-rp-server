@@ -228,7 +228,7 @@ export class vehicles extends Model {
          }
 
          case vehicleConfig.entity.FACTION: {
-            if (this.owner != character.faction) return player.sendNotification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, 6);
+            if (this.owner != character.faction) return player.notification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, 6);
 
             this.object.locked = !this.object.locked;
             this.locked = this.object.locked;

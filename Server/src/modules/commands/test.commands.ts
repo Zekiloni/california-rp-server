@@ -48,27 +48,27 @@ Commands['firstaid'] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) { 
-         player.sendNotification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
       console.log(2)
 
 
       if (target.dist(player.position) > 3) {
-         player.sendNotification(lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
+         player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
          return;
       }
       console.log(3)
 
       const nearest = mp.objects.getClosest(player.position);
       if (!nearest || nearest!.getVariable(shared_Data.ITEM).name != 'First Aid') {
-         player.sendNotification(lang.noFirstAidNearby, notifications.type.ERROR, notifications.time.MED)
+         player.notification(lang.noFirstAidNearby, notifications.type.ERROR, notifications.time.MED)
          return;
       }
       console.log(4)
 
       if (player.dist(nearest.position) > 2.5) {
-         player.sendNotification(lang.aidKitMustBeNear, notifications.type.ERROR, notifications.time.MED)
+         player.notification(lang.aidKitMustBeNear, notifications.type.ERROR, notifications.time.MED)
          return;
       }
 

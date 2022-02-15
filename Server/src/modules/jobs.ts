@@ -24,7 +24,7 @@ mp.events.add(
          }
          
          player.character.setJob(player, job?.id!);
-         player.sendNotification('uspesno ste se zaposlili', notifications.type.SUCCESS, 4);
+         player.notification('uspesno ste se zaposlili', notifications.type.SUCCESS, 4);
          player.call('CLIENT::JOB:OFFER', [false]);
       }
    }

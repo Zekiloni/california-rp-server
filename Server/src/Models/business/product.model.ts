@@ -9,7 +9,7 @@ export class products extends Model {
    @Column
    id: number
 
-   @Column
+   @Column(DataType.TEXT)
    name: keyof typeof items.list
 
    @ForeignKey(() => business)

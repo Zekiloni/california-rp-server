@@ -30,7 +30,7 @@ mp.events.add(
       },
       
       'CLIENT::ITEM:DROP': async (item: any, itemInfo: any) => { 
-         let { position } = player;
+         let { position } = mp.players.local;
          let heading = mp.players.local.getHeading();
          let rotation = mp.players.local.getRotation(2);
 

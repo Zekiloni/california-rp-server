@@ -1,6 +1,7 @@
 
 
 export enum shared_Data { 
+   CHARACTER_ID = 'CHARACTER_ID',
    MONEY = 'MONEY',
    LOGGED = 'LOGGED_IN',
    ADMIN = 'ADMINISTRATOR',
@@ -59,6 +60,8 @@ export enum controls {
    KEY_S = 's',
    KEY_D = 'd',
    KEY_C = 'c',
+   KEY_B = 'b',
    KEY_Y = 'y',
-   KEY_Z = 'z'
+   KEY_Z = 'z',
+   KEY_L = 'l'
 }

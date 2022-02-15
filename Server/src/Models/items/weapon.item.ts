@@ -26,21 +26,25 @@ export class weaponItem extends items {
       this.weapon_hash = weapHash;
       this.caliber = cal;
       this.ammo = ammo;
+   }
+   
+   async use (player: PlayerMp, item: inventories) {
+      console.log(1)
+      if (this.caliber) {
+         player.giveWeapon(
+            mp.joaat(this.weapon_hash),
+            item.data.ammo ? item.data.ammo : 0
+         );
+      } else { 
+         console.log(2)
 
-      this.use = async function (player: PlayerMp, item: inventories) { 
-         if (this.caliber) {
-            player.giveWeapon(
-               mp.joaat(this.weapon_hash),
-               item.data.ammo ? item.data.ammo : 0
-            );
-         } else { 
-            player.giveWeapon(
-               mp.joaat(this.weapon_hash),
-               this.ammo ? this.ammo : 1
-            );
-         }
-         await item.save();
+         player.giveWeapon(
+            mp.joaat(this.weapon_hash),
+            this.ammo ? this.ammo : 1
+         );
+         console.log(3)
       }
+      await item.save();
    }
 }
 

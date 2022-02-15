@@ -165,10 +165,13 @@ export class inventories extends Model {
    async equipItem (player: PlayerMp) {
       const rItem = items.list[this.name!];
 
-      const equipped = await inventories.findAll( { where: { equiped: true, owner: player.character.id } });
+      const equipment = await inventories.findAll( { where: { equiped: true, owner: player.character.id, entity: itemEnums.entity.PLAYER } });
+      const equiped = equipment.filter(
+         item => !items.list[item.name].type.includes(itemEnums.type.CLOTHING) && !items.list[item.name].type.includes(itemEnums.type.PROP)
+      );
       
-      if (equipped.length > playerConfig.max.EQUIPMENT) {
-         player.sendNotification(lang.youReachedMaxEquipemnt + playerConfig.max.EQUIPMENT + '.', notifications.type.ERROR, notifications.time.MED);
+      if (equiped.length > playerConfig.max.EQUIPMENT) {
+         player.notification(lang.youReachedMaxEquipemnt + playerConfig.max.EQUIPMENT + '.', notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -177,8 +180,8 @@ export class inventories extends Model {
          return;
       }
 
-      if (equipped.find(alreadyEquiped => alreadyEquiped.name == this.name)) {
-         player.sendNotification(lang.youAlreadyEquiped + ' ' + this.name + '.', notifications.type.ERROR, notifications.time.MED);
+      if (equiped.find(alreadyEquiped => alreadyEquiped.name == this.name)) {
+         player.notification(lang.youAlreadyEquiped + ' ' + this.name + '.', notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

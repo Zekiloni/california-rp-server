@@ -5,27 +5,29 @@
       <h2> {{ Messages.BUSINESS_WORKERS }} </h2>
       <table>
          <tr class="head">
-            <th> {{ Messages.PRODUCT_NAME }} </th>
-            <th class="quantity"> {{ Messages.PRODUCT_QUANTITY }} </th>
-            <th class="price"> {{ Messages.PRODUCT_PRICE }} </th>
+            <th> {{ Messages.WORKER_NAME }} </th>
+            <th class="quantity"> {{ Messages.SALARY }} </th>
+            <th class="price"> {{ Messages.HIRED_BY }} </th>
+            <th class="actions">  {{ Messages.ACTIONS }} </th>
          </tr>
-         <tr v-for="product in products" :key="product.id" >
-            <td> {{ product.name }} </td>
-            <td> {{ product.quantity }} </td>
-            <td> {{ dollars(product.price) }} </td>
+         <tr v-for="(worker, i) in workers" :key="worker.id">
+            <td> {{ worker.name }} </td>
+            <td> {{ dollars(worker.salary) }} <small> / h</small></td>
+            <td> {{ worker.hired_By }} </td>
+            <td>
+               <button @click="remove(i, worker.id)"> a </button>
+            </td>
          </tr>
          <tr class="add-product">
             <td> 
-               <input type="text" v-model="input.name" :placeholder="Messages.PRODUCT_NAME" ref="product_name">
-               <ul v-if="input.name && !available.includes(input.name)" class="prediction" >
-                  <li v-for="item in availableItems" :key="item" @click="input.name = item">{{ item }}</li>
-               </ul>
+               <input type="text" v-model="input.name" :placeholder="Messages.PERSON_NAME" ref="worker_name">
             </td>
             <td> 
-               <input type="number" v-model="input.price" ref="product_price" :placeholder="Messages.PRODUCT_PRICE" >
+               <input type="number" v-model="input.price" ref="worker_salary" :placeholder="Messages.SALARY + ' / h'"  min="0">
             </td>
+            <td> </td>
             <td> 
-               <button class="save" @click="add()"> Dodaj produkt </button>
+               <button class="save" @click="add()"> {{ Messages.ADD_WORKER }} </button>
             </td>
          </tr>
       </table>
@@ -48,28 +50,23 @@
       
       input: { name: string | null, salary: number } = {
          name: null,
-         salary: 1
+         salary: 0
       }
 
 
-      remove (id: number) {
-
+      remove (index: number, id: number) {
+         console.log('remove')
+         this.$props.workers.splice(index, 1);
       }
 
       add () {
 
-         if (!this.input.name || !this.$props.workers.includes(this.input.name)) {
+         if (!this.input.name) {
             // @ts-ignore
             this.borderWarning(this.$refs.product_name);
             return;
          }
 
-         if (this.input.salary! < 0.2) {
-            // @ts-ignore
-            this.borderWarning(this.$refs.product_price);
-            return;
-         }
-         
          this.$props.products.push({ id: Math.random() + 59, name: this.input.name, price: this.input.salary, quantity: 0 })
          
          this.input.name = null;
@@ -182,9 +179,14 @@
       box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
       background: #2b2f36;
    }
+   
+   td small {
+      font-weight: 900;
+      font-size: 0.5rem;
+   }
 
    input[type=number] {
-      width: 120px;
+      width: 60px;
    }
 
 </style>

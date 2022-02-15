@@ -9,8 +9,8 @@ export class workers extends Model {
    @Column
    id: number
 
-   @Column(DataType.INTEGER)
-   character: number
+   @Column(DataType.TEXT)
+   name: string
 
    @ForeignKey(() => business)
    @Column(DataType.INTEGER)
@@ -22,8 +22,8 @@ export class workers extends Model {
    @Column(DataType.INTEGER)
    salary: number
 
-   @Column(DataType.INTEGER)
-   hired_By: number
+   @Column(DataType.TEXT)
+   hired_By: string
 
    @CreatedAt
    created_At: Date

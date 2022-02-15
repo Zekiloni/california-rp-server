@@ -2,8 +2,17 @@
 
 
 <template>
-   
    <div class="notifications-hints"> 
+
+      <transition name="fade">
+         <div class="help" v-if="help">
+            <div class="message">
+               <div class="icon-mark"> </div>
+               <p v-html="help"> </p>
+            </div>
+         </div>
+      </transition>
+
       <transition-group name="notification" tag="ul" class="notifications">
          <li v-for="(notification, i) in notifications" v-bind:key="'n' + i" class="notification" :class="notificationTypes[notification.type].Class"> 
             <div class="type">
@@ -14,12 +23,11 @@
       </transition-group>
 
       <transition-group name="fade-with-bottom-slide" tag="ul" class="hints">
-         <li class="hint"  v-for="(hint, i) in hints" :key="'hint-'+i"> 
+         <li class="hint"  v-for="(hint, i) in hints" :key="'hint-' + i"> 
             <h4> {{ hint.message }} </h4> <KeyHint :keyName="hint.key" />
          </li>
       </transition-group>
    </div>
-
 </template>
 
 <script>
@@ -44,7 +52,7 @@
                { Icon: 'fa fa-info', Class: 'info', Sound: new Audio(info_Sound) }
             ],
 
-            help: null,
+            help: 'wdawdawdaw dawd wad awd awdaw dawdawdawdaw daw dawdaw',
             hints: [],
             notifications: [],
          }
@@ -59,10 +67,21 @@
             mp.events.add('BROWSER::HINT', (key, message, time = 6) => { 
                this.createHint(key, message, time);
             });
+
+            mp.events.add('BROWSER::HELP', (message, time = 4) => {
+               this.createHelp(message, time);
+            })
          }
       },
 
       methods: { 
+
+         createHelp: function (message, time) {
+            this.help = message;
+            setTimeout(() => {
+               this.help = null;
+            }, time * 1000);
+         },
 
          createHint: function (key, message, time) {
             const alreadyExist = this.hints.find(hint => hint.message == message);
@@ -96,6 +115,32 @@
 <style scoped>
 
 
+   .help { 
+      position: fixed;
+      display: grid;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      height: auto;
+      min-height: 100px;
+   }
+
+   .help .message { 
+      margin: auto;
+      display: flex;
+      align-items: center;
+      width: 350px;
+   }
+
+   .help .message p {
+      color: rgb(204, 204, 204);
+      text-align: left;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      margin: 0 15px;
+      font-weight: 600;
+   }
+
    .notifications-hints {
       position: absolute;
       right: 15px;
@@ -121,6 +166,7 @@
       text-shadow: 0 0.7px 1px rgb(0 0 0 / 60%);
       font-weight: 450;
       margin: 0 10px;
+      font-size: 0.9rem;
    }
 
    ul.notifications { 
@@ -131,21 +177,21 @@
       min-height: 100px;
       max-height: 325px;
       padding: 0;
-      z-index: 101;
+      z-index: 9999;
       height: auto;
       overflow: hidden;
    }
 
    ul.notifications li.notification { 
       position: relative;
-      background: rgb(11 14 17 / 60%);
-      border-top-left-radius: 20px;
-      border-bottom-right-radius: 20px;
+      background: radial-gradient(rgb(33 37 47 / 35%), rgb(11 14 17 / 55%));
+      border-top-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      z-index: 999;
       padding: 10px;
       margin: 7px 0;
-      box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 15px -3px, rgba(0, 0, 0, 0.15) 0px 4px 6px -2px;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;      
       display: flex;
-      /* border-bottom: 3px solid transparent; */
    }
 
     ul.notifications li.notification::after {
@@ -170,9 +216,13 @@
       margin-left: 10px;
       font-weight: 300;
       width: 100%;
-      color: rgb(230, 230, 230);
+      color: rgb(219, 219, 219);
    }
    
+   .icon-mark {
+      width: 65px; height: 65px; background: whitesmoke; mask-size: cover;
+      mask: url('../assets/images/icons/question-mark.svg') no-repeat center;
+   }
 
    li.notification.success, li.notification.success .type {color: #41d888; }
    li.notification.error, li.notification.error .type { color: #ff3a41; }
