@@ -488,6 +488,58 @@ Commands[cmds.names.SET_MONEY] =  {
 }
 
 
+Commands[cmds.names.TELEPORT] = {
+   description: cmds.descriptions.TELEPORT,
+   admin: rank.ADMINISTRATOR_2,
+   params: [
+      cmds.params.TP_TYPE
+   ],
+   async call (player: PlayerMp, type: string, id: string) {
+      switch (type) {
+         case cmds.actions.vehicle: {
+            const vehicle = mp.vehicles.at(Number(id));
+
+            if (!vehicle) {
+               // vehicle not found
+               return;
+            }
+
+            player.position = new mp.Vector3(vehicle.position.x + 1, vehicle.position.y + 2, vehicle.position.z);
+            player.dimension = vehicle.dimension;
+
+            break;
+         }
+
+         case cmds.actions.business: {
+            business.findOne( { where: { id: Number(id) } } ).then(busines => {
+               if (!busines) {
+                  return;
+               }
+
+               player.position = busines.position!;
+               player.dimension = busines.dimension!;
+            });
+
+            break;
+         }
+
+         case cmds.actions.house: {
+            houses.findOne( { where: { id: Number(id) } } ).then(house => {
+               if (!house) {
+                  return;
+               }
+
+               player.position = house.position;
+               player.dimension = house.dimension;
+            })
+
+            break;
+         }
+      }
+   }
+}
+
+
 Commands[cmds.names.CREATE_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',

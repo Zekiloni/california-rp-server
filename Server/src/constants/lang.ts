@@ -60,6 +60,7 @@ export const lang = {
    aidKitMustBeNear: 'Prva pomoć mora biti bliža.',
    youDontHaveVehicleKeys: 'Nemate ključeve od ovog vozila.',
    youDontHaveHouseKeys: 'Nemate ključeve od ove kuće.',
+   youDontHaveBusinesKeys: 'Nemate ključeve od ovog biznisa.',
    youDontOwnAHouse: 'Ne posedujete ni jednu kuću.',
    alreadyWorking: 'Već radite.',
    invalidBussinesType: 'Nepoznat tip biznisa',

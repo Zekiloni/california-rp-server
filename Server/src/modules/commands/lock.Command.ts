@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { houses } from '@models';
+import { business, houses } from '@models';
 import { getNearest } from '@shared';
 import { Commands } from '../commands';
 
@@ -9,13 +9,19 @@ Commands[cmds.names.LOCK] = {
    async call (player: PlayerMp) {
       
       const nearest = await getNearest(player, 2.25);
+
+      if (!nearest) {
+         return;
+      }
       
-      console.log(nearest);
-
-
       switch (true) {
+
+         case nearest instanceof business: {
+            (<business>nearest).lock(player, !nearest.locked);
+            break;
+         }
+
          case nearest instanceof houses: {
-            console.log('kuca')
             break;
          }
 

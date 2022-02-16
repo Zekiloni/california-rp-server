@@ -203,6 +203,11 @@ export class business extends Model {
    }
 
    async lock (player: PlayerMp, locked: boolean) {
+      if (this.owner != player.character.id) {
+         player.notification(lang.youDontHaveBusinesKeys, notifications.type.ERROR, notifications.time.MED);
+         return;
+      } 
+
       await this.update( { locked: locked } );
       player.notification(locked ? lang.businessLocked : lang.businessUnlocked, notifications.type.INFO, notifications.time.MED);
    }
@@ -303,7 +308,6 @@ export class business extends Model {
          await this.save();
       }
    };
-
 
    menu (player: PlayerMp) {
       

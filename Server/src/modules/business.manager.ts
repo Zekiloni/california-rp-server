@@ -7,7 +7,8 @@ import { business } from '@models';
 
 mp.events.add(
    {
-      'SERVER::BUSINESS:MENU': openBusinessMenu
+      'SERVER::BUSINESS:MENU': openBusinessMenu,
+      'SERVER::BUSINESS:LOCK': lockBusiness,
    }
 );
 
@@ -15,7 +16,7 @@ mp.events.addProc(
    {
       'SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS': getAvailableProducts
    }
-)
+);
 
 
 function openBusinessMenu (player: PlayerMp, bizId: number) {
@@ -37,6 +38,14 @@ function openBusinessMenu (player: PlayerMp, bizId: number) {
 
    })
 }
+
+
+function lockBusiness (player: PlayerMp, bizId: number, locked: boolean) {
+   business.findOne( { where: { id: bizId } } ).then(busines => {
+      busines?.lock(player, locked);
+   });
+}
+
 
 function getAvailableProducts (type: string) {
   // return businessConfig.defaultProducts[type];

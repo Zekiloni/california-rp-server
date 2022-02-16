@@ -19,6 +19,7 @@ export namespace cmds {
       CREATE_ACCOUNT: 'createaccount',
       REVIVE: 'revive',
       ITEMS: 'items',
+      TELEPORT: 'teleport',
       KICK: 'kick',
       BAN: 'ban',
       LOCK: 'lock',
@@ -66,6 +67,7 @@ export namespace cmds {
    export const actions = {
       business: 'business',
       house: 'house',
+      vehicle: 'vehicle'
    }
    
    export const params = { 
@@ -78,6 +80,7 @@ export namespace cmds {
       AMMO: 'municija',
       TYPE: 'tip',
       PRICE: 'cena',
+      TP_TYPE: 'tip [vehicle, business, house]',
       WEATHER: 'ime vremena / id',
       COORD: 'koordinata',
       WALK_IN: 'otvorenog tipa 0 / 1',
@@ -127,6 +130,7 @@ export namespace cmds {
       ROLEPLAY_DO: 'Stanje, status.',
       SLAP: 'Upozorenje / skretanje pažnje igraču na određenu stvar.',
       ROLEPLAY_TRY: 'Pokušaj radnje.',
+      TELEPORT: 'Teleportovanje do biznisa / kuće / vozila.',
       ROLEPLAY_AME: 'Opis, ekspresija.',
       DISARM: 'Oduzimanje oružija igraču.',
       FREEZE: 'Zamrzavanje igrača na trenutnu poziciji.',
