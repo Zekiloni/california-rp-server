@@ -49,18 +49,15 @@
       Messages = Messages;
 
       call (event: string) {
-         //@ts-ignore
          mp.events.call(event, JSON.stringify(this.item), JSON.stringify(this.info), this.item.quantity);
-         //@ts-ignore
          this.item = null;
          this.position = null;
       }
 
       async mounted () {
-         //@ts-ignore     
          if (window.mp) { 
             //@ts-ignore     
-            let item: strng = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
+            let item = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
 
             item = JSON.parse(item);
 

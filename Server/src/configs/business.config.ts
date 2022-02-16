@@ -19,15 +19,14 @@ export namespace businessConfig {
 
    export enum type { 
       MARKET, GAS_STATION, ELECTRONIC_SHOP, RENT, VEHICLE_DEALERSHIP,
-      CLASSIC_CLOTHING, LUXURY_CLOTHING, RESTAURANT, CAFE_BAR, NIGHT_CLUB,
-      AMMUNATION, PAWN_SHOP, FURNITURE_SHOP, CAR_PARTS, JEWELRY_SHOP, TATTO_SHOP,
-      BARBER_SHOP
+      CLOTHING, RESTAURANT, CAFE_BAR, NIGHT_CLUB, AMMUNATION, PAWN_SHOP,
+      FURNITURE_SHOP, CAR_PARTS, JEWELRY_SHOP, TATTO_SHOP, BARBER_SHOP
    }
    
    export const typeNames = [
       'Market', 'Gas station', 'Electronic Shop', 'Rent', 'Vehicle Dealership',
-      'Classic Clothing', 'Luxury Clothing', 'Restaurant', 'Cafe Bar', 'Night Club',
-      'Ammunation', 'Pawn Shop', 'Furniture Shop', 'Car Parts', 'Jewelry Shop', 'Tatto Shop',
+      'Clothing Shop', 'Restaurant', 'Cafe Bar', 'Night Club', 'Ammunation',
+      'Pawn Shop', 'Furniture Shop', 'Car Parts', 'Jewelry Shop', 'Tatto Shop',
       'Barber Shop'
    ]
    
@@ -36,7 +35,27 @@ export namespace businessConfig {
       [businessConfig.type.MARKET]: [
          itemNames.DRINK_BEER_BOTTLE, itemNames.DRINK_COLA_CAN, itemNames.DRINK_SODA_CAN, itemNames.FOOD_CHIPS, itemNames.FOOD_DONUT,
          itemNames.FOOD_SANDWICH
-      ]
+      ],
+      
+      [businessConfig.type.GAS_STATION]: [
+         itemNames.DRINK_BEER_BOTTLE, itemNames.DRINK_COLA_CAN, itemNames.DRINK_SODA_CAN, itemNames.FOOD_CHIPS, itemNames.FOOD_DONUT,
+         itemNames.FOOD_SANDWICH
+      ],
+
+      [businessConfig.type.ELECTRONIC_SHOP]: [],
+      [businessConfig.type.RENT]: [],
+      [businessConfig.type.VEHICLE_DEALERSHIP]: [],
+      [businessConfig.type.CLOTHING]: [],
+      [businessConfig.type.RESTAURANT]: [],
+      [businessConfig.type.CAFE_BAR]: [],
+      [businessConfig.type.NIGHT_CLUB]: [],
+      [businessConfig.type.AMMUNATION]: [],
+      [businessConfig.type.PAWN_SHOP]: [],
+      [businessConfig.type.FURNITURE_SHOP]: [],
+      [businessConfig.type.CAR_PARTS]: [],
+      [businessConfig.type.JEWELRY_SHOP]: [],
+      [businessConfig.type.TATTO_SHOP]: [],
+      [businessConfig.type.BARBER_SHOP]: []
    }
    
    export const defaultPrices = {

@@ -68,6 +68,7 @@ function lockBusiness (player: PlayerMp, bizId: number, locked: boolean) {
 }
 
 
-function getAvailableProducts (type: string) {
-  // return businessConfig.defaultProducts[type];
+function getAvailableProducts (player: PlayerMp, type: businessConfig.type) {
+   console.log(businessConfig.defaultProducts[type])
+   return businessConfig.defaultProducts[type];
 }

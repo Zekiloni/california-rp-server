@@ -17,7 +17,7 @@
          <tr class="add-product">
             <td> 
                <input type="text" v-model="input.name" :placeholder="Messages.PRODUCT_NAME" ref="product_name">
-               <ul v-if="input.name && !available.includes(input.name)" class="prediction" >
+               <ul v-if="input.name.length > 0 && !available.includes(input.name)" class="prediction" >
                   <li v-for="item in availableItems" :key="item" @click="input.name = item">{{ item }}</li>
                </ul>
             </td>
@@ -39,6 +39,7 @@
 
    @Component({
       props: {
+         business_type: Number,
          busines_id: Number,
          products: Array
       }
@@ -47,29 +48,19 @@
       
       Messages = Messages;
 
-      available: string[] = [
-         'Coffe',
-         'Milk',
-         'Water Bottle',
-         'Brandy Bottle',
-         'White Wine Bottle',
-         'Gin Bottle',
-         'Bubblegums',
-         'Cigarettes',
-         'Lighter',
-      ];
+      available: string[] = [];
 
       get availableItems () {
-         if (this.input.name!.length > 1) {
+         if (this.input.name.length > 1) {
             return this.available.filter(e => e.toLowerCase().indexOf(this.input.name!.toLowerCase()) !== -1)
          } else {
             return this.available;
          }
       }
       
-      input: { focused: boolean, name: string | null, price: number | null } = {
+      input: { focused: boolean, name: string, price: number | null } = {
          focused: false,
-         name: null,
+         name: '',
          price: null
       }
 
@@ -94,14 +85,16 @@
          
          this.$props.products.push({ id: Math.random() + 59, name: this.input.name, price: this.input.price, quantity: 0 })
          
-         this.input.name = null;
+         this.input.name = '';
          this.input.price = null;
       }
 
       async mounted () {
          if (window.mp) {
-            const response: string = await mp.events.callProc('CLIENT::BUSINESS:GET_AVAILABLE_PRODUCTS');
+            const response: string = await mp.events.callProc('CLIENT::BUSINESS:GET_AVAILABLE_PRODUCTS', this.$props.business_type);
+            console.log(JSON.stringify(response))
             if (response) {
+               console.log(JSON.stringify(response))
                this.available = JSON.parse(response);
             }
          }

@@ -2,7 +2,8 @@
 
 <template>
    <div class="wrapper">
-      <div class="business">
+      <div class="business" v-if="business">
+         <div class="close" @click="close()"> x </div>
          <ul class="navigation">
             <li v-for="(page, i) in pages" :key="page" :class=" { active: currentPage == i }" @click="currentPage = i"> 
                <div class="icon" :class="page" v-tooltip.left="page"> </div>   
@@ -31,7 +32,7 @@
 
                </div>
 
-               <BusinessProducts v-if="currentPage == 1" key=bProducts :busines_id="business.id" :products="business.products" />
+               <BusinessProducts v-if="currentPage == 1" key=bProducts :business_type="business.type" :busines_id="business.id" :products="business.products" />
                <BusinessWorkers v-if="currentPage == 2" key=bWorkers :busines_id="business.id" :workers="business.workers" />
                
             </transition>
@@ -82,6 +83,9 @@
          }
       }
 
+      close () {
+         mp.events.call('CLIENT::BUSINES:MANAGEMENT');
+      }
 
       isSave () {
          for (const i in this.settings!) {
@@ -157,7 +161,19 @@
       margin: auto;
       background: rgb(11 14 17 / 70%);
       display: flex;
+      position: relative;
       overflow: hidden;
+   }
+
+
+   .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px;
+      font-size: 3rem;
+      color: red;
+      z-index: 1111;
    }
 
    ul.navigation {

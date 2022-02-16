@@ -18,7 +18,7 @@ mp.events.addProc(
    {
       'CLIENT::BUSINESS:UPDATE': updateBusiness,
       'CLIENT::BUSINESS:WORKER_ADD': addWorker,
-      'CLIENT::BUSINES:GET_AVAILABLE:PRODUCTS': getAvailableProducts
+      'CLIENT::BUSINESS:GET_AVAILABLE_PRODUCTS': getAvailableProducts
    }
 )
 
@@ -35,7 +35,11 @@ function openBusinessManagement (info: boolean | business) {
 
 
 async function getAvailableProducts (type: number) {
-   return mp.events.callRemoteProc('SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS', type);
+   const response = await mp.events.callRemoteProc('SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS', type);
+   if (response) {
+      mp.gui.chat.push(JSON.stringify(response))
+      return response;
+   }
 }
 
 
