@@ -9,7 +9,17 @@ Commands[cmds.names.BUY] = {
 
       switch (action) {
          case cmds.actions.business: {
-            console.log('biz')
+            const nearest = await business.getNearest(player);
+
+            if (!nearest) {
+               return;
+            }
+
+            if (player.dist(nearest.position) > 2) {
+               return;
+            }
+
+            nearest.buy(player);
             break;
          }
 
@@ -24,6 +34,11 @@ Commands[cmds.names.BUY] = {
             if (!nearest) {
                return;
             }
+
+            if (player.dist(nearest.position) > 2) {
+               return;
+            }
+
             nearest.menu(player);
             break;
          }

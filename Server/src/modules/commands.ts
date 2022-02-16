@@ -61,7 +61,8 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 import './commands/basic.commands';
 import './commands/admin.commands';
 import './commands/buy.Command';
-import './commands/vehicle.commands';
+import './commands/vehicle.Commands';
+import './commands/property.Commands';
 import './commands/lock.Command';
 import './commands/channel.commands';
 import './commands/test.commands';

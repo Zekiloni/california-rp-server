@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany, BelongsTo } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
 import { cmds, gDimension, lang, none, offerExpire } from '@constants';
@@ -39,7 +39,7 @@ export class business extends Model {
 
    @ForeignKey(() => characters)
    @Default(null)
-   @Column
+   @Column(DataType.INTEGER)
    owner: number
 
    @Default(0)
@@ -152,8 +152,6 @@ export class business extends Model {
          availableCommands.push(cmds.names.BUY + ' business');
       }
       
-      console.log(this.position)
-
       player.call('CLIENT::BUSINESS:INFO', [JSON.stringify(this), availableCommands]);
    }
 
@@ -236,10 +234,11 @@ export class business extends Model {
    async buy (player: PlayerMp) {
       const character = player.character;
 
-      if (this.owner != none) {
+      if (this.owner) {
          player.notification(lang.busiensAlreadyOwner, notifications.type.ERROR, notifications.time.MED);
          return;
       }; 
+      
 
       if (this.price > character.money) {
          player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
@@ -307,7 +306,12 @@ export class business extends Model {
 
 
    menu (player: PlayerMp) {
-      console.log('menu')
+      
+      if (this.locked) {
+         player.notification(lang.thisBusinessIsLocked, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
       switch (this.type) {
 
          case businessConfig.type.MARKET || businessConfig.type.GAS_STATION: {
