@@ -147,6 +147,7 @@
             mp.invoke('focus', true);
 
             mp.events.add('BROWSER::BUSINESS:MANAGEMENT', (business: string) => this.business = JSON.parse(business) );
+            console.log(JSON.stringify(this.business));
          }
 
          this.settings = {
