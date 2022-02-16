@@ -9,12 +9,12 @@ let business: business | null = null;
 
 mp.events.add(
    {
-      'CLIENT::BUSINESS:INFO': showBusinessInfo
+      'CLIENT::BUSINESS:INFO': toggleBusinesInfo
    }
 );
 
 
-export function showBusinessInfo (info: boolean | business, cmds?: string[]) {
+export function toggleBusinesInfo (info: boolean | business, cmds?: string[]) {
    if (info) { 
       active = true;
       business = (<business>info);
