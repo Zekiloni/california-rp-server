@@ -52,7 +52,7 @@
                { Icon: 'fa fa-info', Class: 'info', Sound: new Audio(info_Sound) }
             ],
 
-            help: 'wdawdawdaw dawd wad awd awdaw dawdawdawdaw daw dawdaw',
+            help: null,
             hints: [],
             notifications: [],
          }

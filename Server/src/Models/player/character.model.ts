@@ -436,7 +436,7 @@ export class characters extends Model {
             return;
          }
 
-         player.sendProximityMessage(distances.IC, character.name + lang.personSays + content, colors.hex.White);
+         player.proximityMessage(distances.IC, character.name + lang.personSays + content, colors.hex.White);
       }
 
       //    if (Player.getVariable('Muted')) return;
@@ -753,7 +753,7 @@ export class characters extends Model {
 
 
 
-mp.Player.prototype.sendProximityMessage = function (radius: number, message: string, colors: string[]) {
+mp.Player.prototype.proximityMessage = function (radius: number, message: string, colors: string[]) {
    mp.players.forEachInRange(this.position, radius, (target) => {
       const distanceGap = radius / 5;
       const distance = target.dist(this.position)

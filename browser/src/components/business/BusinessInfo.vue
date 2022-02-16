@@ -12,6 +12,13 @@
          <li> <b> {{ Messages.LOCKED }}: </b> {{ business.locked ? Messages.YES : Messages.NO }} </li>
          <li> <b> {{ Messages.PRICE }}: </b> {{ dollars(business.price) }} </li>
       </ul>
+
+      <div class="commands">
+         <h4> {{ Messages.AVAILABLE_COMMANDS }} </h4>
+         <p> 
+            {{ commands.map(cmd => '/' + cmd).join(' ') }}
+         </p>
+      </div>
    </div>
 </template>
 
@@ -24,12 +31,13 @@
    export default class BusinessInfo extends Vue {
 
       business: object | null = null;
+      commands: string[] = [];
+
 
       mounted () {
-         //@ts-ignore
          if (window.mp) {
-            //@ts-ignore
-            mp.events.add('BROWSER::BUSINESS:INFO', (info, location) => { this.business = JSON.parse(info); this.business.location = JSON.parse(location); } );
+            // @ts-ignore
+            mp.events.add('BROWSER::BUSINESS:INFO', (info, location, commands) => { this.business = JSON.parse(info); this.business.location = JSON.parse(location); this.commands = JSON.parse(commands); } );
          }
       }
 
@@ -50,7 +58,6 @@
       overflow: hidden;
       border-radius: 10px;
       background: radial-gradient(rgb(33 37 47 / 25%), rgb(11 14 17 / 55%));
-      border: 1.25px solid rgb(120 120 120 / 10%);      
       box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
    }
 
@@ -70,6 +77,17 @@
       color: #848e9c;
       font-size: 0.8rem;
       font-weight: 350;
+   }
+
+   .commands {
+      margin: 0;
+      padding:  10px;
+      color: #848e9c;
+   }
+
+   .commands h4 {
+      color: #ffcc45;
+      margin: 0;
    }
 
    .business-name { color: whitesmoke; margin: 10px 10px; font-weight: 500; }

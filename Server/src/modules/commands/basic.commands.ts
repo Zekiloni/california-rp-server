@@ -1,6 +1,6 @@
 
 import { cmds, colors, lang } from '@constants';
-import { distances } from '@enums';
+import { distances, notifications } from '@enums';
 import { checkForDot, shared_Data } from '@shared';
 import { Commands } from '../commands';
 
@@ -29,7 +29,7 @@ Commands[cmds.names.ROLEPLAY_ME] = {
          return;
       };
 
-      player.sendProximityMessage(distances.ROLEPLAY, '** ' + player.name + ' ' + text, colors.hex.Purple);
+      player.proximityMessage(distances.ROLEPLAY, '** ' + player.name + ' ' + text, colors.hex.Purple);
    }
 };
 
@@ -46,9 +46,52 @@ Commands[cmds.names.ROLEPLAY_DO] = {
          return;
       };
 
-      player.sendProximityMessage(distances.ROLEPLAY, '** ' + text + ' (( ' + player.name + ' ))', colors.hex.Purple);
+      player.proximityMessage(distances.ROLEPLAY, '** ' + text + ' (( ' + player.name + ' ))', colors.hex.Purple);
    }
 };
+
+
+Commands[cmds.names.PAY] = {
+   description: cmds.descriptions.PAY,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.NUMBER
+   ],
+   async call (player: PlayerMp, targetSearch: string, value: string) {
+
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (player.dist(target.position) > 2 || player.dimension != target.dimension) {
+         player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (target.id == player.id) {
+         player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
+         return;
+      } 
+
+      if (Number(value) > player.character.money) {
+         player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (Number(value) < 1) {
+         player.notification('pa zeki nije budala :)', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      player.character.giveMoney(player, Number(-value));
+      target.character.giveMoney(target, Number(value));
+
+      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + ' ' + lang.givesSomeMoney + ' ' + target.name, colors.hex.Purple);
+   }
+}
 
 
 Commands[cmds.names.ROLEPLAY_TRY] = {
@@ -65,7 +108,7 @@ Commands[cmds.names.ROLEPLAY_TRY] = {
 
       const tryResult = lang.tryEnd[Math.floor(Math.random() * lang.tryEnd.length)];     
 
-      player.sendProximityMessage(
+      player.proximityMessage(
          distances.ROLEPLAY, 
          '* ' + player.name + lang.tiresTo + text + lang.and + tryResult + '.', 
          colors.hex.Purple
@@ -86,7 +129,7 @@ Commands[cmds.names.LOW_CHAT] = {
          return;
       };
 
-      player.sendProximityMessage(
+      player.proximityMessage(
          distances.LOW, 
          player.name + ' ' + lang.quetly + ': ' + text, 
          colors.hex.Low
@@ -107,7 +150,7 @@ Commands[cmds.names.SHOUT_CHAT] = {
          return;
       };
 
-      player.sendProximityMessage(
+      player.proximityMessage(
          distances.SHOUT, 
          player.name + ' ' + lang.isShouting + ': ' + text, 
          colors.hex.White
@@ -197,7 +240,7 @@ Commands[cmds.names.OOC_CHAT] = {
          return;
       };
 
-      player.sendProximityMessage(
+      player.proximityMessage(
          distances.OOC, 
          '(( ' + player.name + ' [' + player.id + ']: ' + text + ' ))',
          colors.hex.OOC
@@ -261,7 +304,7 @@ Commands[cmds.names.COIN] = {
 
       const coinResult = lang.coinResult[Math.floor(Math.random() * lang.coinResult.length)];   
 
-      player.sendProximityMessage(
+      player.proximityMessage(
          distances.ROLEPLAY, 
          '* ' + player.name + lang.dropsCoin + coinResult + '.', 
          colors.hex.Purple

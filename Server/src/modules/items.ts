@@ -86,22 +86,19 @@ function useEquiped (player: PlayerMp, index: number) {
    if (player.weapon) {
       player.removeAllWeapons();
    }
-   
-   console.log(0.1)
+     
    inventories.findAll( { where: { owner: player.character.id, equiped: true } } ).then(attachments => { 
       const equipment = attachments.filter(
          attachment => !items.list[attachment.name].type.includes(itemEnums.type.CLOTHING) && !items.list[attachment.name].type.includes(itemEnums.type.PROP)
       );
+      
       const item = equipment[index];
 
       if (!item) {
          return;
       }
-
    
       const rItem = items.list[item.name];
-
-      console.log(rItem)
 
       rItem.use!(player, item);
    })

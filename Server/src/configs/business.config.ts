@@ -3,9 +3,11 @@ import { itemNames } from '@constants';
 
 export namespace businessConfig { 
 
+   export const marker: number = 3;
+
    export const supplies: number = 125;
 
-   export const markerColor: RGBA = [253, 201, 41, 185];
+   export const markerColor: RGBA = [205, 205, 205, 55];
 
    export const sprites = [
       52, 361, 619, 810, 669, 73, 73, 739, 93, 614, 110, 628, 776, 782, 617, 75, 71

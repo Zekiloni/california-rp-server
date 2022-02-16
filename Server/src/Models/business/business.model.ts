@@ -1,7 +1,7 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
-import { gDimension, lang, none, offerExpire } from '@constants';
+import { cmds, gDimension, lang, none, offerExpire } from '@constants';
 import { characters, logs, products, workers } from '@models';
 import { businessConfig } from '@configs';
 import { notifications, offerStatus, offerTypes } from '@enums';
@@ -118,10 +118,7 @@ export class business extends Model {
    static async creating (business: business) { 
       business.sprite = businessConfig.sprites[business.type];
       business.sprite_color = businessConfig.blipColors[business.type];
-      await business.save();
-
-      console.log(business)
-      business.refresh();
+      (await business.save()).refresh();
    }
 
    @AfterDestroy
@@ -139,24 +136,25 @@ export class business extends Model {
          return;
       };
 
-      if (this.walk_in && !this.locked) {
-         player.hint(controls.KEY_E, lang.toOpenBusinessMenu, 5);
-      }
-      
-      if (!this.walk_in && !this.locked) { 
-         player.hint(controls.KEY_E, lang.toEnterBusiness, 5);
-      }
-
-      if (!this.owner) {
-         console.log('help')
-         player.help('/buy da kupite biznis', 4);
-      }
+      let availableCommands: string[] = [];
 
       if (this.owner == player.character.id) {
-         player.hint(controls.KEY_B, lang.businessManagement, 5);
+         availableCommands.push(cmds.names.LOCK, cmds.names.BUSINESS);
       }
 
-      player.call('CLIENT::BUSINESS:INFO', [this]);
+      if (this.walk_in) {
+         availableCommands.push(cmds.names.ENTER);
+      } else {
+         availableCommands.push(cmds.names.BUY);
+      }
+      
+      if (!this.owner) {
+         availableCommands.push(cmds.names.BUY + ' business');
+      }
+      
+      console.log(this.position)
+
+      player.call('CLIENT::BUSINESS:INFO', [JSON.stringify(this), availableCommands]);
    }
 
    static getNearest (player: PlayerMp) {
@@ -192,7 +190,8 @@ export class business extends Model {
                }
             ),
             
-            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension)
+            colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
+            marker: mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 0.95), 0.95, { color: businessConfig.markerColor, dimension: this.dimension, visible: true })
          }
       }
 
@@ -305,6 +304,18 @@ export class business extends Model {
          await this.save();
       }
    };
+
+
+   menu (player: PlayerMp) {
+      console.log('menu')
+      switch (this.type) {
+
+         case businessConfig.type.MARKET || businessConfig.type.GAS_STATION: {
+            player.call('CLIENT::MARKET:MENU', [this]);
+            break;
+         }
+      }
+   }
 
 }
 

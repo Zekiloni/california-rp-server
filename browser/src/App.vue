@@ -45,13 +45,13 @@
 
 
       <!-- [BUSINESSES] -->
-      <transition name="fade-with-bottom-slide">
+      <transition-group name="fade-with-bottom-slide">
          <BusinessInfo v-if="interfaces.businessInfo" key=businessInfo />
          <BusinessManagement v-if="interfaces.businessManagement" key=businessManagement />
          
          <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
          <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
-      </transition>
+      </transition-group>
 
 
       <transition name="fade"> 

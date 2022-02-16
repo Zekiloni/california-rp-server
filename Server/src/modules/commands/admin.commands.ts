@@ -497,12 +497,31 @@ Commands[cmds.names.CREATE_HOUSE] =  {
 }
 
 
+Commands[cmds.names.DESTROY_BUSINESS] = {
+   admin: rank.LEAD_ADMINISTRATOR,
+   description: cmds.descriptions.DESTROY_BUSINESS,
+   async call (player: PlayerMp) {
+      const nearest = await business.getNearest(player);
+
+      if (!nearest) {
+         return;
+      }
+      
+      nearest.destroy();
+   }
+}
+
 Commands[cmds.names.DESTROY_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: 'opis napisati',
    async call (player: PlayerMp, id?: number) { 
-      const nearestHouse = await houses.getNearest(player);
-      if (nearestHouse) nearestHouse.destroy();
+      const nearest = await houses.getNearest(player);
+
+      if (!nearest) {
+         return;
+      }
+
+      nearest.destroy();
    }
 }
 

@@ -37,7 +37,7 @@ function businessMenuOrEnter () {
    }
 }
 
-function showBusinessInfo (info: boolean | business) {
+function showBusinessInfo (info: boolean | business, cmds: string[]) {
    if (info) { 
       active.info = true;
       business = (<business>info);
@@ -45,7 +45,7 @@ function showBusinessInfo (info: boolean | business) {
       const location = getStreetZone(mp.players.local.position);
 
       Browser.call('BROWSER::SHOW', 'businessInfo');
-      Browser.call('BROWSER::BUSINESS:INFO', info, location);
+      Browser.call('BROWSER::BUSINESS:INFO', info, location, cmds);
    } else { 
       active.info = false;
       business = null;

@@ -1,5 +1,7 @@
 import { gDimension } from "@constants";
 import { notifications } from "@enums";
+import { business } from "@models";
+import { houses } from "@models";
 
 
 export function randomInteger (min: number, max: number) {
@@ -84,6 +86,29 @@ export function dollars (i: number) {
 export function timeDate () {
    const now = new Date(), time = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(), date = [now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate()].join('-');
    return date + ' ' + time;
+}
+
+
+export async function getNearest (player: PlayerMp, distance: number) {
+   for (const house of await houses.findAll()) {
+      if (player.dist(house.position) < distance) {
+         return house;
+      }
+   }
+
+   for (const busines of await business.findAll()) {
+      if (player.dist(busines.position) < distance) {
+         return busines;
+      }
+   }
+
+   if (mp.vehicles.getClosest(player.position)) {
+      if (player.dist(mp.vehicles.getClosest(player.position).position) < distance) {
+         return mp.vehicles.getClosest(player.position);
+      }
+   } 
+
+   return;
 }
 
 

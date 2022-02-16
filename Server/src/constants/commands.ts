@@ -9,6 +9,8 @@ export namespace cmds {
       INVICIBLE: 'invicible',
       ROLEPLAY_DO: 'do',
       OOC_CHAT: 'b',
+      ENTER: 'enter',
+      BUY: 'buy',
       PM: 'pm',
       LOW_CHAT: 'l',
       WHISPER: 'w',
@@ -19,6 +21,8 @@ export namespace cmds {
       ITEMS: 'items',
       KICK: 'kick',
       BAN: 'ban',
+      BUSINESS: 'business',
+      LOCK: 'lock',
       RESPAWN_VEHICLE: 'respawnvehicle',
       RESPAWN_ALL_VEHICLES: 'respawnvehicles',
       HEALTH: 'health',
@@ -30,6 +34,7 @@ export namespace cmds {
       RADIO: 'r',
       WEATHER: 'weather',
       MAKE_ADMIN: 'makeadmin',
+      PAY: 'pay',
       FIX_VEH: 'fixveh',
       GIVE_MONEY: 'givemoney',
       SET_MONEY: 'setmoney',
@@ -44,6 +49,7 @@ export namespace cmds {
       CREATE_BUSINESS: 'createbiz',
       EDIT_BUSINESS: 'editbiz',
       BUSINESS_TYPES: 'biztypes',
+      DESTROY_BUSINESS: 'destroybiz',
       FLY: 'fly',
       FREEZE: 'freeze',
       ROLEPLAY_TRY: 'try',
@@ -55,6 +61,12 @@ export namespace cmds {
       COIN: 'coin',
       ANNOUNCEMENT: 'ao',
    };
+
+
+   export const actions = {
+      business: 'business',
+      house: 'house',
+   }
    
    export const params = { 
       PLAYER: 'id / ime igrača',
@@ -84,6 +96,7 @@ export namespace cmds {
       CREATE_VEHICLE: 'Kreiranje vozila.',
       DESTROY_VEHICLE: 'Brisanje najbližeg vozila ili odredjenog id-a.',
       CREATE_BUSINESS: 'Kreiranje biznisa na trenutnoj poziciji.',
+      DESTROY_BUSINESS: 'Brisanje najbližeg biznisa.',
       EDIT_BUSINESS: 'Podešavanje najbližeg biznisa.',
       BUSINESS_TYPES: 'Spisak dostupnih tipova bizinsa.',
       RESPAWN_VEHICLE: 'Respavn obližnjeg vozila ili vozila u kojem se nalazite.',
@@ -101,6 +114,8 @@ export namespace cmds {
       GOTO: 'Teleport do igrača.',
       MAKE_ADMIN: 'Davanje admin permisija',
       GET_HERE: 'Teleportovanje igrača do sebe.',
+      PAY: 'Davanje novca osobi.',
+      LOCK: 'Zaključavanje - otključavanje obližnjeg objekta, vozila.',
       REVIVE: 'Oživljavanje igrača.',
       HEALTH: 'Podešavanje HP-a igrača.',
       SET_MONEY: 'Podešavanje novca igrača.',
@@ -120,6 +135,7 @@ export namespace cmds {
       PM_CHAT:'Privatna poruka.',
       WHISPER: 'Šaputanje.',
       A_CHAT: 'Admin komunikacija.',
+      BUY: 'Kupovina.',
       CREATE_ACCOUNT: 'Kreiranje računa.',
       ANNOUNCEMENT: 'Emitovanje igračima.',
    };

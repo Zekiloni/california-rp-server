@@ -16,6 +16,7 @@ export const Messages = {
    PLAY: 'Započni Igru',
    CREATE_CHARACTER: 'Kreiraj Karaktera',
    HOURS_PLAYED: 'Sati igre',
+   AVAILABLE_COMMANDS: 'Dostupne komande',
    NO_NO: 'Nema',
    EMPTY_CHARACTER_SLOT: 'Nema karaktera',
    GO_BACK: 'Nazad',
