@@ -246,19 +246,18 @@ function playerWoundHandler (player: PlayerMp, by: EntityMp | null | undefined) 
 
 async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: string | null) {
    const leavingPlayer = player;
-
    try { 
-      if (leavingPlayer.character) {
-         leavingPlayer.character.last_position = leavingPlayer.position;
-         leavingPlayer.character.last_dimension = leavingPlayer.dimension;
-
-         await leavingPlayer.character.save();
-         inventories.savePlayerEquipment(leavingPlayer.character);
+      if (leavingPlayer && leavingPlayer.character) {
+         leavingPlayer.character.onQuit(
+            leavingPlayer.position,
+            leavingPlayer.dimension,
+            exitType,
+            reason
+         );
       }
    } catch (e) { 
       logs.error('playerQuitHadnler: ' + e);
    }
-
 }
 
 

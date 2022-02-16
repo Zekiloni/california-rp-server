@@ -19,7 +19,7 @@ Commands[cmds.names.BUSINESS] = {
          return;
       }
 
-      player.call('CLIENT::BUSINES:MANAGEMENT', [this]);
+      player.call('CLIENT::BUSINES:MANAGEMENT', [nearest]);
    }
 }
 

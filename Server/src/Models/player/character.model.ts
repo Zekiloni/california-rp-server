@@ -1,11 +1,11 @@
 
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, IsUUID, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max, AfterSync } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max, AfterSync } from 'sequelize-typescript';
 
 import { accounts, appearances, banks, houses, business, inventories, items, logs } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
-import { spawnPointTypes, notifications, distances, itemEnums } from '@enums';
+import { spawnPointTypes, notifications, distances, itemEnums, offerTypes } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, playerInjury } from '@interfaces';
@@ -336,6 +336,10 @@ export class characters extends Model {
       player.setVariable(shared_Data.CUFFED, toggle);
    }
 
+   isUnemployed () {
+      return this.job == 0 ? true : false;
+   }
+
    async hasLicense (item?: inventories) {
       const has = await inventories.findOne({ where: { name: item?.name } });
       return has ? has : false;
@@ -396,6 +400,14 @@ export class characters extends Model {
       console.log(' Killer ' + (<PlayerMp>killer).name);
    }
 
+   async onQuit (position: Vector3Mp, dimension: number, exitType: string, reason: string | null) {
+      this.last_position = position;
+      this.last_dimension = dimension;
+
+      await this.save();
+      inventories.savePlayerEquipment(this);
+   }
+
    async respawn (player: PlayerMp, inHospital: boolean) {
 
       const position = inHospital ? new mp.Vector3(280.8525, -1432.99853, 29.9649658) : player.position;
@@ -416,10 +428,6 @@ export class characters extends Model {
       player.spawn(position);
 
       await this.save();
-   }
-
-   isUnemployed () {
-      return this.job == 0 ? true : false;
    }
 
    onChat (player: PlayerMp, content: any) {
@@ -468,6 +476,25 @@ export class characters extends Model {
       //    }
 
       // }
+   }
+
+
+   // pushOffer (player: PlayerMp, type: offerTypes, offeredBy: PlayerMp, id?: ) {
+   //    const offer: offer = {
+         
+   //    }
+   // }
+
+   removeOffer (offer: offer) {
+      clearTimeout(offer.expire);
+      const index = this.offers.indexOf(offer);
+      this.offers.splice(index, 1);
+   }   
+
+   clearOffers () {
+      this.offers.forEach(offer => {
+         this.removeOffer(offer);
+      });
    }
 }
 
@@ -539,96 +566,6 @@ export class characters extends Model {
 // };
 
 
-// frp.Characters.prototype.Wound = function (Player, Toggle, Position = null) { 
-//    console.log('Wounded ' + Player.name);
-//    return new Promise (async (resolve) => { 
-//       if (Toggle) { 
-//          let Start = new Date();
-   
-//          Player.spawn(Player.position);
-//          //Player.health = frp.Settings.default.Wound.health;
-//          Player.RespawnTimer = setTimeout(() => { this.Wound(Player, false); }, frp.Settings.default.Wound.Respawn_Time)
-   
-//          Injuries = Player.getVariable('Injuries');
-   
-//          const Content = { Text: frp.Globals.messages.PERSON_IS_INJURED + Injuries.length + frp.Globals.messages.TIMES, Color: frp.Globals.Colors.Injured };
-   
-//          Player.setVariable('Wounded', Content);
-//          Player.setVariable('Injuries', Injuries);
-//          Player.setVariable('Ragdoll', { Time: frp.Settings.default.Wound.Respawn_Time });
-         
-//          this.Injuries = Injuries;
-//          this.Wounded = true;   
-      
-//          resolve(true);
-//       }  else { 
-//          if (Player) { 
-//             if (Player.RespawnTimer) clearTimeout(Player.RespawnTimer);
-   
-//             Player.setVariable('Injuries', []);
-//             Player.spawn(Position ? Position : Player.position);     
-//             Player.setVariable('Wounded', false);
-//          }
-   
-//          this.Injuries = [];
-//          this.Wounded = false;     
-//          resolve(false);
-//          // await this.save();
-//       }
-//    });  
-// };
-
-
-
-
-// frp.Characters.prototype.Buy = async function (Player, Nearest, action) { 
-
-//    if (action) { 
-
-
-//    } else { 
-
-//       switch (true) { 
-//          case Nearest instanceof frp.Business: {
-//             Nearest.Menu(Player);
-//             break;
-//          }
-   
-//          case Nearest instanceof frp.Houses: { 
-//             Nearest.Buy(Player);
-//             break;
-//          }
-   
-//          default: console.log('nidje');
-//       }
-//    }
-
-// };
-
-
-
-// frp.Characters.prototype.GiveLicense = async function (license) {
-//    let Licenses = this.Licenses;
-//    Licenses.push(license);
-//    this.Licenses = Licenses;
-//    await this.save();
-// };
-
-
-// frp.Characters.prototype.RemoveLicense = async function (license) {
-//    let Licenses = this.Licenses;
-//    let x = Licenses.find(name => name === license);
-//    let i = Licenses.indexOf(x);
-//    Licenses.splice(i, 1);
-//    this.Licenses = Licenses;
-//    await this.save();
-// };
-
-
-// frp.Characters.prototype.HasLicense = function (i) { 
-//    return this.Licenses.includes(name => name === i);
-// };
-
 
 // frp.Characters.prototype.Payment = async function (Amount) { 
 //    this.increment('Salary', { by: Amount });
@@ -660,60 +597,6 @@ export class characters extends Model {
 //       Player.setVariable('Working_Uniform', false);
 //    }
 // };
-
-
-// frp.Characters.afterCreate(async (Character, Options) => {
-//    const Appearance = await frp.Appearances.findOne({ where: { Character: Character.id }});
-//    if (Appearance) { 
-//       Appearance.destroy();
-//    }
-// });
-
-
-// frp.Characters.New = async function (player, Character) { 
-//    // const Bank = await frp.Bank.New(player);
-
-//    const Created = await frp.Characters.create({
-//       Account: player.account, Name: Character.First_Name + ' ' + Character.Last_Name,
-//       Birth: Character.Birth, Origin: Character.Origin, Gender: Character.Gender, 
-//       Armour: 0, Health: 100
-//    });
-
-//    const Appearance = await frp.Appearances.create({
-//       Character: Created.id, Blend_Data: Character.Blend, Overlays: Character.Overlays, 
-//       Overlays_Colors: Character.Overlays_Colors, Hair: Character.Hair, Beard: Character.Beard, 
-//       Eyes: Character.Eyes, Face_Features: Character.Face
-//    });
-
-//    player.character = Created.id;
-
-//    Character.Clothing.forEach(async (Clothing) => { 
-//       const [item, value] = Clothing;
-//       const Cloth = await frp.Items.New(item, 1, ItemEntities.Player, Created.id, null, null, 0, 0, { Drawable: value, Texture: 0 });
-//       Cloth.Equip(player);
-//    })
-
-//    if (Created) return Created;
-
-// };
-
-
-
-
-
-// mp.Player.prototype.Instructions = function (content, time) {
-//    this.call('client:player.interface:instructions', [content, time]);
-// };
-
-
-
-// mp.Player.prototype.Account = async function () {
-//    const account = await frp.Accounts.findOne({ where: { id: this.account } });
-//    return account ? account : null;
-// };
-
-
-
 
 
 // mp.Player.prototype.IsNear = function (target) {

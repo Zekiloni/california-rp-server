@@ -5,7 +5,7 @@ import { cmds, gDimension, lang, none, offerExpire } from '@constants';
 import { characters, logs, products, workers } from '@models';
 import { businessConfig } from '@configs';
 import { notifications, offerStatus, offerTypes } from '@enums';
-import { controls, dollars } from '@shared';
+import { dollars } from '@shared';
 
 
 @Table
@@ -258,7 +258,6 @@ export class business extends Model {
    };
    
    async sell (player: PlayerMp, sellPrice: string, targetSearch: string | number) {
-
       const price = Number(sellPrice);
 
       if (targetSearch != -1) {
@@ -325,5 +324,18 @@ export class business extends Model {
       }
    }
 
+
+   addWorker (player: PlayerMp, character: characters, salary: number) {
+      return workers.findOne( { where: { name: character.name } }).then(worker => {
+         if (worker) {
+
+            return false;
+         }
+
+
+         return true;
+      })
+
+   }
 }
 

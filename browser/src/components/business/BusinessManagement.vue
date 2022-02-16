@@ -31,8 +31,8 @@
 
                </div>
 
-               <BusinessProducts v-if="currentPage == 1" key=bProducts :products="business.products" />
-               <BusinessWorkers v-if="currentPage == 2" key=bWorkers :workers="business.workers" />
+               <BusinessProducts v-if="currentPage == 1" key=bProducts :busines_id="business.id" :products="business.products" />
+               <BusinessWorkers v-if="currentPage == 2" key=bWorkers :busines_id="business.id" :workers="business.workers" />
                
             </transition>
          </div>
@@ -65,30 +65,7 @@
          name: false,
       }
 
-      business: Business | null = {
-         id: 0,
-         name: 'Zeki',
-         type: 0,
-         locked: false,
-         walk_in: true,
-         price: 3000,
-         budget: 300,
-         sprite: 0,
-         sprite_color: 2,
-         owner: 0,
-         ipl: '',
-         products: [
-            { id: 0, name: 'Coffe', quantity: 35, price: 3 },
-            { id: 1, name: 'Lighter', quantity: 125, price: 0.75 },
-            { id: 2, name: 'Cigarettes', quantity: 125, price: 2.75 }
-         ],
-         workers: [
-            { id: 1, name: 'Deker gey', salary: 33, hired_By: 'Zachary Parker' },
-            { id: 2, name: 'Adada gey', salary: 65, hired_By: 'Zachary Parker' }
-         ],
-         created_at: new Date(),
-         updated_at: new Date()
-      }
+      business: Business | null = null;
 
       Messages = Messages;
 
@@ -146,12 +123,12 @@
          if (window.mp) {
             mp.invoke('focus', true);
 
-            mp.events.add('BROWSER::BUSINESS:MANAGEMENT', (business: string) => this.business = JSON.parse(business) );
-            console.log(JSON.stringify(this.business));
-         }
-
-         this.settings = {
-            name: this.business?.name!
+            mp.events.add('BROWSER::BUSINESS:MANAGEMENT', (business: string) => { 
+               this.business = JSON.parse(business);
+               this.settings = {
+                  name: this.business?.name
+               }
+            } );
          }
       }
 

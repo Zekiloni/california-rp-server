@@ -1,7 +1,7 @@
 import { businessConfig } from '@configs';
 import { lang } from '@constants';
 import { notifications } from '@enums';
-import { business } from '@models';
+import { business, characters } from '@models';
 
 
 
@@ -14,6 +14,7 @@ mp.events.add(
 
 mp.events.addProc(
    {
+      'SERVER::BUSINESS:WORKER_ADD': addBusinesWorker,
       'SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS': getAvailableProducts
    }
 );
@@ -36,6 +37,26 @@ function openBusinessMenu (player: PlayerMp, bizId: number) {
          }
       }
 
+   })
+}
+
+
+function addBusinesWorker (player: PlayerMp, bizId: number, name: string, salary: number) {
+   return business.findOne( { where: { id: bizId } } ).then(async busines => {
+      const target = mp.players.find(name);
+
+      if (!target) {
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return false;
+      }
+
+      if (target.id == player.id) {
+         // PORUKA: ne mozete sami sebe
+         return;
+      }
+
+
+      
    })
 }
 

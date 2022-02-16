@@ -41,6 +41,7 @@
 
    @Component({
       props: {
+         busines_id: Number,
          workers: Array
       }
    })
@@ -55,11 +56,10 @@
 
 
       remove (index: number, id: number) {
-         console.log('remove')
          this.$props.workers.splice(index, 1);
       }
 
-      add () {
+      async add () {
 
          if (!this.input.name) {
             // @ts-ignore
@@ -67,10 +67,12 @@
             return;
          }
 
-         this.$props.products.push({ id: Math.random() + 59, name: this.input.name, price: this.input.salary, quantity: 0 })
-         
-         this.input.name = null;
-         this.input.salary = 0;
+         const response: string = await mp.events.callProc('CLIENT::BUSINESS:WORKER_ADD', this.$props.busines_id, this.input.name, this.input.salary);
+         if (response) {
+            this.$props.worers = JSON.parse(response);
+            this.input.name = null;
+            this.input.salary = 0;
+         }
       }
    }
 </script>

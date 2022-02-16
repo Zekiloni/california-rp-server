@@ -495,6 +495,11 @@ Commands[cmds.names.TELEPORT] = {
       cmds.params.TP_TYPE
    ],
    async call (player: PlayerMp, type: string, id: string) {
+
+      if (!id) {
+         return;
+      }
+
       switch (type) {
          case cmds.actions.vehicle: {
             const vehicle = mp.vehicles.at(Number(id));
@@ -533,6 +538,11 @@ Commands[cmds.names.TELEPORT] = {
                player.dimension = house.dimension;
             })
 
+            break;
+         }
+
+         default: {
+            
             break;
          }
       }

@@ -80,7 +80,7 @@ export namespace cmds {
       AMMO: 'municija',
       TYPE: 'tip',
       PRICE: 'cena',
-      TP_TYPE: 'tip [vehicle, business, house]',
+      TP_TYPE: 'tip: vehicle, business, house',
       WEATHER: 'ime vremena / id',
       COORD: 'koordinata',
       WALK_IN: 'otvorenog tipa 0 / 1',

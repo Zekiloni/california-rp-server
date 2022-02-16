@@ -9,7 +9,7 @@ let active: boolean = false;
 mp.events.add(
    {
       'CLIENT::BUSINES:MANAGEMENT': openBusinessManagement,
-      'CLIENT::BUSINESS:WORKER:REMOVE': removeWorker,
+      'CLIENT::BUSINESS:WORKER_REMOVE': removeWorker,
       'CLIENT::BUSINESS:LOCK': lock
    }
 )
@@ -17,7 +17,7 @@ mp.events.add(
 mp.events.addProc(
    {
       'CLIENT::BUSINESS:UPDATE': updateBusiness,
-      'CLIENT::BUSINESS:WORKER:ADD': addWorker,
+      'CLIENT::BUSINESS:WORKER_ADD': addWorker,
       'CLIENT::BUSINES:GET_AVAILABLE:PRODUCTS': getAvailableProducts
    }
 )
@@ -39,9 +39,9 @@ async function getAvailableProducts (type: number) {
 }
 
 
-async function addWorker (name: string, salary: number) {
-   const response = await mp.events.callRemoteProc('SERVER::BUSINESS:WORKER:ADD', name, salary);
-   Browser.call('BROWSER::BUSINESS:MANAGEMENT', response);
+async function addWorker (bizId: number, name: string, salary: number) {
+   const response = await mp.events.callRemoteProc('SERVER::BUSINESS:WORKER_ADD', bizId, name, salary);
+   return response;
 }
 
 

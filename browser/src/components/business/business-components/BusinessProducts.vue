@@ -39,6 +39,7 @@
 
    @Component({
       props: {
+         busines_id: Number,
          products: Array
       }
    })
