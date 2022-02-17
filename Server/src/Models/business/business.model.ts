@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany, BelongsTo, AfterSave, AfterFind } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
 import { cmds, gDimension, lang, none, offerExpire } from '@constants';
@@ -106,8 +106,8 @@ export class business extends Model {
    @AfterSync
    static loading () {
       business.findAll({ include: [products, workers] }).then(businesses => {
-         businesses.forEach(business => {
-            business.refresh();
+         businesses.forEach(busines => {
+            busines.refresh();
          });
          
          logs.info(businesses.length + ' business loaded !');
@@ -129,6 +129,12 @@ export class business extends Model {
          business.object.marker?.destroy();
          this.objects.delete(business.id);
       }
+   }
+
+   
+   @AfterSave
+   static saving (busines: business) {
+      busines.refresh();
    }
 
    showInfo (player: PlayerMp) {
@@ -156,7 +162,7 @@ export class business extends Model {
    }
 
    static getNearest (player: PlayerMp) {
-      return business.findAll().then(businesses => {
+      return business.findAll( { include: [products, workers] } ).then(businesses => {
          const nearest = businesses.filter(business => player.dist(business.position) < 20);
          return nearest.reduce((firstBiz, secondBiz) => {
             return player.dist(firstBiz.position) < player.dist(secondBiz.position) ? firstBiz : secondBiz;
@@ -232,7 +238,6 @@ export class business extends Model {
       }
 
       await this.save();
-      this.refresh();
       player.call('CLIENT::BUSINESS:INFO', [this]);
    }
 
@@ -245,7 +250,7 @@ export class business extends Model {
       }; 
       
 
-      if (this.price > character.money) {
+      if (character.money < this.price) {
          player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
          return;
       };

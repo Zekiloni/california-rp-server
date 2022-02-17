@@ -1,27 +1,27 @@
 import { businessConfig } from '@configs';
 import { lang } from '@constants';
 import { notifications } from '@enums';
-import { business, characters } from '@models';
+import { business, characters, items, products, workers } from '@models';
 
 
 
 mp.events.add(
    {
-      'SERVER::BUSINESS:MENU': openBusinessMenu,
-      'SERVER::BUSINESS:LOCK': lockBusiness,
+      'SERVER::BUSINESS:MENU': openBusinesMenu,
+      'SERVER::BUSINESS:LOCK': lockBusines,
    }
 );
 
 mp.events.addProc(
    {
-      'SERVER::BUSINESS:WORKER_ADD': addBusinesWorker,
-      'SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS': getAvailableProducts
+      'SERVER::BUSINES:PRODUCT_ADD': createBusinesProduct,
+      'SERVER::BUSINESS:WORKER_ADD': createBusinesWorker,
    }
 );
 
 
-function openBusinessMenu (player: PlayerMp, bizId: number) {
-   business.findOne( { where: { id: bizId } } ).then(biz => {
+function openBusinesMenu (player: PlayerMp, bizId: number) {
+   business.findOne( { where: { id: bizId }, include: [products] } ).then(biz => {
       if (!biz) {
          return;
       }
@@ -41,8 +41,28 @@ function openBusinessMenu (player: PlayerMp, bizId: number) {
 }
 
 
-function addBusinesWorker (player: PlayerMp, bizId: number, name: string, salary: number) {
-   return business.findOne( { where: { id: bizId } } ).then(async busines => {
+function createBusinesProduct (player: PlayerMp, businesID: number, productName: string, productPrice: number) {
+   return business.findOne( { where: { id: businesID }, include: [products, workers] } ).then(busines => {
+
+      if (!items.list[productName]) {
+         return;
+      }
+
+      return products.create( { 
+         name: productName,
+         businesID: busines!.id,
+         busines: busines!,
+         price: productPrice
+      }).then(() => {
+         return busines;
+      })
+
+   });
+}
+
+
+function createBusinesWorker (player: PlayerMp, bizId: number, name: string, salary: number) {
+   return business.findOne( { where: { id: bizId }, include: [products, workers] } ).then(async busines => {
       const target = mp.players.find(name);
 
       if (!target) {
@@ -55,20 +75,14 @@ function addBusinesWorker (player: PlayerMp, bizId: number, name: string, salary
          return;
       }
 
-
-      
    })
 }
 
 
-function lockBusiness (player: PlayerMp, bizId: number, locked: boolean) {
+function lockBusines (player: PlayerMp, bizId: number, locked: boolean) {
    business.findOne( { where: { id: bizId } } ).then(busines => {
       busines?.lock(player, locked);
    });
 }
 
 
-function getAvailableProducts (player: PlayerMp, type: businessConfig.type) {
-   console.log(businessConfig.defaultProducts[type])
-   return businessConfig.defaultProducts[type];
-}

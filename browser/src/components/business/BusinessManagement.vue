@@ -32,7 +32,7 @@
 
                </div>
 
-               <BusinessProducts v-if="currentPage == 1" key=bProducts :business_type="business.type" :busines_id="business.id" :products="business.products" />
+               <BusinessProducts v-if="currentPage == 1" key=bProducts :available="available" :busines_id="business.id" :products="business.products" />
                <BusinessWorkers v-if="currentPage == 2" key=bWorkers :busines_id="business.id" :workers="business.workers" />
                
             </transition>
@@ -65,6 +65,8 @@
       errors = {
          name: false,
       }
+
+      available: string[] = [];
 
       business: Business | null = null;
 
@@ -127,8 +129,13 @@
          if (window.mp) {
             mp.invoke('focus', true);
 
-            mp.events.add('BROWSER::BUSINESS:MANAGEMENT', (business: string) => { 
+            mp.events.add('BROWSER::BUSINESS:MANAGEMENT', (business: string, availableItems?: string) => { 
                this.business = JSON.parse(business);
+
+               if (availableItems) {
+                  this.available = JSON.parse(availableItems);
+               }
+               
                this.settings = {
                   name: this.business?.name
                }

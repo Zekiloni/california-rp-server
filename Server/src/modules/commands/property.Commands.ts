@@ -1,3 +1,4 @@
+import { businessConfig } from '@configs/business.Config';
 import { cmds, lang } from '@constants';
 import { notifications } from '@enums';
 import { business } from "@models";
@@ -19,7 +20,9 @@ Commands[cmds.names.BUSINESS] = {
          return;
       }
 
-      player.call('CLIENT::BUSINES:MANAGEMENT', [nearest]);
+      console.log(nearest.products)
+
+      player.call('CLIENT::BUSINES:MANAGEMENT', [nearest, businessConfig.defaultProducts[nearest.type]]);
    }
 }
 

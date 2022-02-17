@@ -39,7 +39,7 @@
 
    @Component({
       props: {
-         business_type: Number,
+         available: Array,
          busines_id: Number,
          products: Array
       }
@@ -48,22 +48,18 @@
       
       Messages = Messages;
 
-      available: string[] = [];
-
       get availableItems () {
          if (this.input.name.length > 1) {
-            return this.available.filter(e => e.toLowerCase().indexOf(this.input.name!.toLowerCase()) !== -1)
+            return this.$props.available.filter((e: string) => e.toLowerCase().indexOf(this.input.name!.toLowerCase()) !== -1)
          } else {
-            return this.available;
+            return this.$props.available;
          }
       }
       
-      input: { focused: boolean, name: string, price: number | null } = {
-         focused: false,
+      input: { name: string, price: number | null } = {
          name: '',
          price: null
       }
-
 
       remove (id: number) {
 
@@ -71,7 +67,7 @@
 
       add () {
 
-         if (!this.input.name || !this.available.includes(this.input.name)) {
+         if (!this.input.name || !this.$props.available.includes(this.input.name)) {
             // @ts-ignore
             this.borderWarning(this.$refs.product_name);
             return;
@@ -83,21 +79,13 @@
             return;
          }
          
-         this.$props.products.push({ id: Math.random() + 59, name: this.input.name, price: this.input.price, quantity: 0 })
+         mp.events.call('CLIENT::BUSINESS:PRODUCT_ADD', this.$props.busines_id, this.input.name, this.input.price);
          
          this.input.name = '';
          this.input.price = null;
       }
 
       async mounted () {
-         if (window.mp) {
-            const response: string = await mp.events.callProc('CLIENT::BUSINESS:GET_AVAILABLE_PRODUCTS', this.$props.business_type);
-            console.log(JSON.stringify(response))
-            if (response) {
-               console.log(JSON.stringify(response))
-               this.available = JSON.parse(response);
-            }
-         }
       }
    }
 </script>

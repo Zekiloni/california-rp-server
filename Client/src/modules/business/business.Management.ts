@@ -10,7 +10,8 @@ mp.events.add(
    {
       'CLIENT::BUSINES:MANAGEMENT': openBusinessManagement,
       'CLIENT::BUSINESS:WORKER_REMOVE': removeWorker,
-      'CLIENT::BUSINESS:LOCK': lock
+      'CLIENT::BUSINESS:LOCK': lock,
+      'CLIENT::BUSINESS:PRODUCT_ADD': addProduct
    }
 )
 
@@ -18,27 +19,25 @@ mp.events.addProc(
    {
       'CLIENT::BUSINESS:UPDATE': updateBusiness,
       'CLIENT::BUSINESS:WORKER_ADD': addWorker,
-      'CLIENT::BUSINESS:GET_AVAILABLE_PRODUCTS': getAvailableProducts
    }
 )
 
 
-function openBusinessManagement (info: boolean | business) {
+function openBusinessManagement (info: boolean | business, availableItems: string) {
    active = !active;
    Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'businessManagement')
 
    if (active) {
       toggleBusinesInfo(false);
-      Browser.call('BROWSER::BUSINESS:MANAGEMENT', info);
+      Browser.call('BROWSER::BUSINESS:MANAGEMENT', info, availableItems);
    }
 }
 
 
-async function getAvailableProducts (type: number) {
-   const response = await mp.events.callRemoteProc('SERVER::BUSINESS:GET_AVAILABLE_PRODUCTS', type);
-   if (response) {
-      mp.gui.chat.push(JSON.stringify(response))
-      return response;
+async function addProduct (businesID: number, name: string, price: number) {
+   const isAdded = await mp.events.callRemoteProc('SERVER::BUSINES:PRODUCT_ADD', businesID, name, price);
+   if (isAdded) {
+      Browser.call('BROWSER::BUSINESS:MANAGEMENT', isAdded);
    }
 }
 
