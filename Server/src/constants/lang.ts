@@ -14,6 +14,7 @@ export const lang = {
    characterCreated: 'Uspešno ste kreirali karaktera.',
    welcomeToRegister: 'Dobrodošli na Midnight Roleplay, uživajte u igri.',
    accountCreated: 'Račun uspešno kreiran !',
+   addedSuccesfully: ' je uspešno dodan.',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -24,6 +25,7 @@ export const lang = {
    userAlreadyExist: 'Korisnik sa tim serijskim brojem već postoji.',
    notAllowed: 'Niste ovlašteni za korišćenje ove komande.',
    notInVehicle: 'Niste se u vozilu.',
+   productAlreadyExist: 'Produkat već postoji.',
    notInSpecFaction: 'Niste član odredjene fakcije.',
    notInAnyFaction: 'Niste član ni jedne fakcije.',
    notInYourFaction: 'Igrač nije član Vaše fakcije.',
@@ -180,6 +182,7 @@ export const lang = {
    social: 'RGSC',
    hardwer: 'Hardver',
    IP: 'IP Adresa',
+   product: 'Produkat ',
    whispering: 'Šapućete',
    admin: 'Admin',
    isWhisperingU: 'vam šapuće',

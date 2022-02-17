@@ -103,23 +103,7 @@
       },
 
       methods: { 
-         Add: function (Item) { 
-            const Exist = this.Cart.find(eItem => eItem.Name == Item.Name);
-            if (Exist) 
-               Exist.Quantity ++;
-            else
-               this.Cart.push({ Name: Item.Name, Quantity: 1, Multiplier: Item.Multiplier });
-         },
 
-         Decrease: function (Item) {
-            if (Item.Quantity == 1) this.Remove(Item);
-            Item.Quantity --;
-         },
-
-         Remove: function (Item) { 
-            const Index = this.Cart.indexOf(Item);
-            this.Cart.splice(Index, 1);
-         },
 
    
 
@@ -182,9 +166,7 @@
    }
    
    .circle { display: flex; justify-content: center; align-items: center; width: 70px; height: 70px; background: linear-gradient(141deg, rgba(104,69,234,1) 0%, rgba(66,54,128,1) 100%); border-radius: 100%; }
-   .icon { width: 35px; height: 35px; mask-size: cover; background: whitesmoke; }
-   .icon.shopping-cart { mask: url('../../../assets/images/icons/shopping-cart.svg') no-repeat center; }
-   .icon.products-shelves { mask: url('../../../assets/images/icons/products.svg') no-repeat center; }
+
 
    .cart .circle, .store .circle { margin-top: -30px; }
 

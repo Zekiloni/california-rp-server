@@ -42,21 +42,31 @@ function openBusinesMenu (player: PlayerMp, bizId: number) {
 
 
 function createBusinesProduct (player: PlayerMp, businesID: number, productName: string, productPrice: number) {
-   return business.findOne( { where: { id: businesID }, include: [products, workers] } ).then(busines => {
+   return business.findOne( { where: { id: businesID }, include: [products, workers] } ).then(async busines => {
 
       if (!items.list[productName]) {
          return;
       }
 
-      return products.create( { 
-         name: productName,
-         businesID: busines!.id,
-         busines: busines!,
-         price: productPrice
-      }).then(() => {
-         return busines;
-      })
+      const alreadyExist = await products.findOne( { where: { businesID: busines!.id, name: productName } } );
 
+      if (alreadyExist) {
+         player.notification(lang.productAlreadyExist, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      await products.create(
+         { 
+            name: productName,
+            businesID: busines!.id,
+            busines: busines!,
+            price: productPrice
+         }
+      );
+
+      player.notification(lang.product + productName + ' ' + lang.addedSuccesfully, notifications.type.SUCCESS, notifications.time.MED);
+
+      return busines;
    });
 }
 
@@ -80,8 +90,9 @@ function createBusinesWorker (player: PlayerMp, bizId: number, name: string, sal
 
 
 function lockBusines (player: PlayerMp, bizId: number, locked: boolean) {
-   business.findOne( { where: { id: bizId } } ).then(busines => {
-      busines?.lock(player, locked);
+   business.findOne( { where: { id: bizId } } ).then(
+      busines => {
+         busines?.lock(player, locked);
    });
 }
 

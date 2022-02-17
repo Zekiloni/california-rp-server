@@ -114,6 +114,7 @@ export class business extends Model {
       });
    }
 
+
    @AfterCreate
    static async creating (business: business) { 
       business.sprite = businessConfig.sprites[business.type];
@@ -322,7 +323,12 @@ export class business extends Model {
 
       switch (this.type) {
 
-         case businessConfig.type.MARKET || businessConfig.type.GAS_STATION: {
+         case businessConfig.type.MARKET: {
+            player.call('CLIENT::MARKET:MENU', [this]);
+            break;
+         }
+
+         case businessConfig.type.GAS_STATION: {
             player.call('CLIENT::MARKET:MENU', [this]);
             break;
          }

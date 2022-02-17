@@ -37,6 +37,7 @@ function openBusinessManagement (info: boolean | business, availableItems: strin
 async function addProduct (businesID: number, name: string, price: number) {
    const isAdded = await mp.events.callRemoteProc('SERVER::BUSINES:PRODUCT_ADD', businesID, name, price);
    if (isAdded) {
+      mp.gui.chat.push(JSON.stringify(isAdded.products))
       Browser.call('BROWSER::BUSINESS:MANAGEMENT', isAdded);
    }
 }

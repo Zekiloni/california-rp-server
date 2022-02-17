@@ -24,6 +24,13 @@ export namespace itemEnums {
 }
 
 
+
+export interface CartItem {
+   name: string
+   quantity: number
+   price: number
+}
+
 export interface InventoryItem {
    id: number
    name: string
