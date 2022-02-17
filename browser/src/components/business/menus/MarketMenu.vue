@@ -26,10 +26,15 @@
          <div class="cart">
             <div class="items">
                <transition-group name="list" tag="div" class="items">
-                  <div class="item" v-for="item in cart" :key=item.name >
+                  <div class="item" v-for="(item, i) in cart" :key=item.name >
                      <h4 class="name"> {{ item.name }} </h4>
                      <h4 class="price"> <small> {{ item.quantity }} x </small> {{ dollars(item.price) }} </h4>
-                     
+                     <ul class="actions">
+                        <li @click="decrease(item, i)"> <div class="icon minus"> </div> </li>
+                        <transition name="fade"> 
+                           <li v-if="item.quantity > 1" @click="remove(i)"> <div class="icon delete"> </div> </li>
+                        </transition>
+                     </ul>
                   </div>
                </transition-group>
             </div>
@@ -94,7 +99,7 @@
 
 
       buy () {
-         mp.events.call('', this.busines!.id, JSON.stringify(this.cart));
+         mp.events.call('CLIENT::MARKET:BUY', this.busines!.id, JSON.stringify(this.cart));
       }
 
       close () {
@@ -109,7 +114,6 @@
                this.busines = JSON.parse(busines);
             });
 
-            mp.events.add('BROWSER::MARKET:CLEAR_CART', () => this.cart = []);
          }
       }
 
@@ -228,6 +232,7 @@
       backdrop-filter: brightness(1.1);
       border-radius: 5px;
       transition: all .3s ease;
+      border: 1px solid transparent;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -235,6 +240,7 @@
    }
 
    .product:hover {
+      border-color: rgb(205 205 205 / 45%);
       backdrop-filter: brightness(1.8);
       box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
    }
@@ -260,7 +266,7 @@
    }
 
    .cart { 
-      width: 250px;
+      width: 350px;
       height: auto;
       margin: 0 20px;
       float: right;
@@ -273,7 +279,41 @@
       overflow-y: auto;
       overflow-x: hidden;
    }
+
+   .cart .items ul.actions {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      transition: all .3s ease;
+      margin: 0;
+   }
    
+   ul.actions li {
+      margin: 0 10px;
+      transition: all .3s ease;
+   }
+   
+   ul.actions li:hover {
+      opacity: 0.5;
+   }
+
+   ul.actions li .icon {
+      width: 20px;
+      height: 20px;
+      background: whitesmoke;
+   }
+
+   li .icon.minus {
+      mask-size: cover; 
+      mask: url('../../../assets/images/icons/minus.svg') no-repeat center;
+   }
+
+   li .icon.delete {
+      mask-size: cover; 
+      background: #ff463d !important;
+      mask: url('../../../assets/images/icons/delete.svg') no-repeat center;
+   }
+
    .cart .items .item { 
       margin: 6px 0;
       padding: 15px;
@@ -325,6 +365,7 @@
       background: linear-gradient(120deg, #6d4edb, #4c318e);
       transition: all .3s ease;
       text-transform: uppercase;
+      border-radius: 5px;
       letter-spacing: 0.2rem;
       transition: all .3s ease;
       color: white;
@@ -354,6 +395,6 @@
    }
 
    button:disabled:hover {
-      /* */
+      color: inherit;
    }
 </style>

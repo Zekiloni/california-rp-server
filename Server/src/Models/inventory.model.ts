@@ -1,7 +1,7 @@
 
 
 import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
-import { itemEnums, notifications } from '@enums';
+import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { itemExtra } from '@interfaces';
 import { items, logs, characters } from '@models';
@@ -23,7 +23,7 @@ export class inventories extends Model {
    name: string;
 
    @Column(DataType.INTEGER)
-   entity: itemEnums.entity;
+   entity: ItemEnums.entity;
 
    @Default(none)
    @Column(DataType.INTEGER)
@@ -37,9 +37,9 @@ export class inventories extends Model {
    @Column(DataType.BOOLEAN)
    equiped: boolean;
 
-   @Default(itemEnums.status.NONE)
+   @Default(ItemEnums.status.NONE)
    @Column(DataType.INTEGER)
-   status: itemEnums.status;
+   status: ItemEnums.status;
    
    @Default(none)
    @Column(DataType.INTEGER)
@@ -146,7 +146,7 @@ export class inventories extends Model {
       if (this.on_ground) {
          this.on_ground = false;
          this.owner = player.character.id;
-         this.entity = itemEnums.entity.PLAYER;
+         this.entity = ItemEnums.entity.PLAYER;
          player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 } );
          await this.save();
       }
@@ -165,9 +165,9 @@ export class inventories extends Model {
    async equipItem (player: PlayerMp) {
       const rItem = items.list[this.name!];
 
-      const equipment = await inventories.findAll( { where: { equiped: true, owner: player.character.id, entity: itemEnums.entity.PLAYER } });
+      const equipment = await inventories.findAll( { where: { equiped: true, owner: player.character.id, entity: ItemEnums.entity.PLAYER } });
       const equiped = equipment.filter(
-         item => !items.list[item.name].type.includes(itemEnums.type.CLOTHING) && !items.list[item.name].type.includes(itemEnums.type.PROP)
+         item => !items.list[item.name].type.includes(ItemEnums.type.CLOTHING) && !items.list[item.name].type.includes(ItemEnums.type.PROP)
       );
       
       if (equiped.length > playerConfig.max.EQUIPMENT) {
@@ -211,7 +211,7 @@ export class inventories extends Model {
       const rItem = items.list[this.name];
    }
 
-   static async doesHaveItem (entity: itemEnums.entity, owner: number, itemName: string) {
+   static async doesHaveItem (entity: ItemEnums.entity, owner: number, itemName: string) {
       return inventories.findOne( { where: { entity: entity, owner: owner, name: itemName } } ).then(haveItem => {
          return haveItem ? haveItem : false;
       });
@@ -221,7 +221,7 @@ export class inventories extends Model {
       return inventories.findOne( { where: { name: itemName, equiped: true, owner: player.character.id }})
    }
 
-   static getEntityItems (entity: itemEnums.entity, owner: number)  { 
+   static getEntityItems (entity: ItemEnums.entity, owner: number)  { 
       return inventories.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
          return items;
       }).catch(e => {
@@ -230,11 +230,11 @@ export class inventories extends Model {
    }
 
    static giveItem (player: PlayerMp, item: items) { 
-      inventories.create( { name: item.name, entity: itemEnums.entity.PLAYER, owner: player.character.id } );
+      inventories.create( { name: item.name, entity: ItemEnums.entity.PLAYER, owner: player.character.id } );
    };
 
    static async savePlayerEquipment (character: characters) { 
-      inventories.findAll( { where: { entity: itemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
+      inventories.findAll( { where: { entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
          equipedItems.forEach(async item => {
             if (!items.list[item.name].isClothing() && !items.list[item.name].isProp()) {
                item.equiped = false;
@@ -244,52 +244,17 @@ export class inventories extends Model {
       })
    }
 
+
+   static async itemsWeight (player: PlayerMp) {
+      return inventories.findAll( { where: { owner: player.character.id, entity: ItemEnums.entity.PLAYER } } ).then(playerItems => {
+         let weight: number = 0;
+
+         playerItems.forEach(item => {
+            weight += items.list[item.name].weight;
+         });
+
+         return weight;
+      })
+   }
+
 }
-
-
-
-
-
-// frp.Items.Equipment = async function (player, gender) { 
-
-//    const Clothings = [
-//       'Pants', 'Bag', 'Shoes', 'Accesories', 'Undershirt', 'Armour',
-//       'Tops', 'Hat', 'Glasses', 'Ears', 'Mask',  'Watch',  'Bracelet'
-//    ];
-
-//    let items = {};
-
-//    for (const clothing of Clothings) { 
-//       const item = await frp.Items.HasItem(player.character, clothing);
-//       if (item && item.Entity == ItemEntities.Equiped) { 
-//          items[clothing] = item;
-//       } else { 
-//          items[clothing] = null;
-//       }
-//    }
-
-//    for (const name in items) { 
-//       const item = items[name];
-//       const info = ItemRegistry[name];
-
-//       if (item) { 
-//          info.prop ? 
-//             player.setProp(info.component, parseInt(item.Extra.Drawable), parseInt(item.Extra.Texture)) : player.setClothes(info.component, parseInt(item.Extra.Drawable), parseInt(item.Extra.Texture), 2);
-//       } else { 
-//          info.prop ? 
-//             player.setProp(info.component, 0, 255) : player.setClothes(info.component, Clothing.Naked[gender][name], 0, 2);
-//       }
-//    }
-
-//    let BestTorso = 0
-//    if (items['Tops']) { 
-//       BestTorso = Torsos[gender][items['Tops'].Extra.Drawable];
-//    } else { 
-//       BestTorso = Torsos[gender][Clothing.Naked[gender]['Tops']];
-//    }
-
-//    player.setClothes(Clothing.Components.Torso, BestTorso, 0, 2);
-// };
-
-
-

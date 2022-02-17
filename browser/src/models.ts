@@ -1,4 +1,4 @@
-export namespace itemEnums { 
+export namespace ItemEnums { 
    export enum type { 
       EQUIPABLE, CONSUMABLE, OPENABLE, 
       DRINK, FOOD, DRUG, WEAPON, AMMO,
@@ -50,7 +50,7 @@ export interface itemAction {
 
 export interface rItem {
    name: string;
-   type: itemEnums.type[];
+   type: ItemEnums.type[];
    model: string;
    weight: number;
    description?: string;

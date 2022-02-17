@@ -25,4 +25,8 @@ export interface itemExtra  {
    texture?: number
 };
 
-
+export interface CartItem {
+   name: string
+   quantity: number
+   price: number
+}

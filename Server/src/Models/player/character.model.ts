@@ -5,7 +5,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, Creat
 
 import { accounts, appearances, banks, houses, business, inventories, items, logs } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
-import { spawnPointTypes, notifications, distances, itemEnums, offerTypes } from '@enums';
+import { spawnPointTypes, notifications, distances, ItemEnums, offerTypes } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, playerInjury } from '@interfaces';
@@ -226,7 +226,7 @@ export class characters extends Model {
       }
       
       clothingItem.clothings.forEach(item => {
-         inventories.findOne( { where: { name: item.name, owner: this.id, entity: itemEnums.entity.PLAYER } } ).then(clothed => {
+         inventories.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
             if (clothed && clothed.equiped) {
                item.use(player, clothed);
             } else { 
@@ -236,7 +236,7 @@ export class characters extends Model {
       });
 
       const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');
-      player.setClothes(itemEnums.components.clothings.TORSO, bestTorso, 0, 2);      
+      player.setClothes(ItemEnums.components.clothings.TORSO, bestTorso, 0, 2);      
       
       player.setVariable(shared_Data.INJURIES, this.injuries ? this.injuries : []);
 

@@ -2,7 +2,7 @@
 
 
 
-export interface business {
+export interface Business {
    id: number
    name: string
    type: number;
@@ -19,3 +19,11 @@ export interface business {
    vehicle_point: Vector3Mp
    interior_position: Vector3Mp
 };
+
+
+
+export interface CartItem {
+   name: string
+   quantity: number
+   price: number
+}

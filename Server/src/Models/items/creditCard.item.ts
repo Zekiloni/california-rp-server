@@ -2,12 +2,12 @@
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { itemDescriptions, itemNames } from '@constants';
-import { itemEnums } from '@enums';
+import { ItemEnums } from '@enums';
 
 
 
 export default class creditCardTime extends items {
-   constructor (name: string, model: string, type: itemEnums.type[], weight: number = 0.1, description?: string) { 
+   constructor (name: string, model: string, type: ItemEnums.type[], weight: number = 0.1, description?: string) { 
       
       super (name, type, model, weight, description);
 
@@ -27,9 +27,9 @@ new creditCardTime (
    itemNames.CREDIT_CARD,
    'prop_cs_credit_card', 
    [
-      itemEnums.type.USABLE, 
-      itemEnums.type.DOCUMENT, 
-      itemEnums.type.CREDIT_CARD
+      ItemEnums.type.USABLE, 
+      ItemEnums.type.DOCUMENT, 
+      ItemEnums.type.CREDIT_CARD
    ],
    0.05, 
    itemDescriptions.CREDIT_CARD

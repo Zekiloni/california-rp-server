@@ -1,13 +1,13 @@
 
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
-import { itemEnums } from "@enums";
+import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 
 
 const phoneType = [
-   itemEnums.type.USABLE,
-   itemEnums.type.MISC,
+   ItemEnums.type.USABLE,
+   ItemEnums.type.MISC,
 ];
 
 

@@ -1,14 +1,14 @@
 
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
-import { itemEnums } from "@enums";
+import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 
 
 const licenseTypes = [
-   itemEnums.type.MISC, 
-   itemEnums.type.LEGAL, 
-   itemEnums.type.LICENSE,
+   ItemEnums.type.MISC, 
+   ItemEnums.type.LEGAL, 
+   ItemEnums.type.LICENSE,
 ];
 
 

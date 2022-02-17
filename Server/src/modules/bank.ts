@@ -3,7 +3,7 @@ import { bankConfig } from '@configs';
 import { gDimension, lang, itemNames } from '@constants';
 import { banks, inventories, items } from '@models';
 import { controls, generateNumber } from '@shared';
-import { itemEnums } from '@enums';
+import { ItemEnums } from '@enums';
 
 
 
@@ -73,7 +73,7 @@ mp.events.addProc(
          //    return;
          // }
 
-         // const hasCreditCard = await Items.hasItem(itemEnums.entity.PLAYER, player.character.id, itemNames.CREDIT_CARD);
+         // const hasCreditCard = await Items.hasItem(ItemEnums.entity.PLAYER, player.character.id, itemNames.CREDIT_CARD);
 
          // if (hasCreditCard) {
          //    // PORUKA: vec imate kreditnu karticu
@@ -83,7 +83,7 @@ mp.events.addProc(
          return new Promise(resolve => {
             banks.create( { number: Math.floor(generateNumber(300, 666) * 859305).toString(), character_id: player.character.id, character: player.character } ).then(bank_Account => {
                inventories.create( { name: itemNames.CREDIT_CARD, 
-                  entity: itemEnums.entity.PLAYER, 
+                  entity: ItemEnums.entity.PLAYER, 
                   owner: player.character.id, 
                   data: {
                      name: player.character.name,

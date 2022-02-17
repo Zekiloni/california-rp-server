@@ -1,10 +1,10 @@
 import { Browser } from '../../browser';
-import { business } from '../../interfaces/business';
+import { Business } from '../../interfaces/business';
 import { getStreetZone } from '../../utils';
 
 
 let active: boolean = false;
-let business: business | null = null;
+let business: Business | null = null;
 
 
 mp.events.add(
@@ -14,10 +14,10 @@ mp.events.add(
 );
 
 
-export function toggleBusinesInfo (info: boolean | business, cmds?: string[]) {
+export function toggleBusinesInfo (info: boolean | Business, cmds?: string[]) {
    if (info) { 
       active = true;
-      business = (<business>info);
+      business = (<Business>info);
 
       const location = getStreetZone(mp.players.local.position);
 

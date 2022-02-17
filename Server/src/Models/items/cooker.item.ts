@@ -3,7 +3,7 @@
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { itemDescriptions } from "@constants";
-import { itemEnums } from "@enums";
+import { ItemEnums } from "@enums";
 
 
 
@@ -12,7 +12,7 @@ export class cookerItem extends items {
    offsets: Vector3Mp[];
    
    constructor (name: string, model: string, slots: number, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
-      super (name, [itemEnums.type.HEAVY, itemEnums.type.COOKER], model, weight, description);
+      super (name, [ItemEnums.type.HEAVY, ItemEnums.type.COOKER], model, weight, description);
       this.slots = slots;
       this.use = function (player: PlayerMp, drawable: number, palette: number) {
          // .... todo

@@ -1,7 +1,7 @@
 
 import weaponData from '../configs/weapon.data.json';
 import { itemNames } from '@constants';
-import { itemEnums } from '@enums';
+import { ItemEnums } from '@enums';
 import { items, inventories, logs } from '@models';
 
 
@@ -28,7 +28,7 @@ mp.events.add(
 
 
 function getPlayerItems (player: PlayerMp) { 
-   return inventories.getEntityItems(itemEnums.entity.PLAYER, player.character!.id);
+   return inventories.getEntityItems(ItemEnums.entity.PLAYER, player.character!.id);
 };
 
 
@@ -48,7 +48,7 @@ function onItemEquip (player:  PlayerMp, itemId: number) {
 
       await item.equipItem(player);
 
-      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      const inventory = await inventories.getEntityItems(ItemEnums.entity.PLAYER, player.character.id);
       return inventory;
    });
 }
@@ -64,7 +64,7 @@ function onItemUnequip (player: PlayerMp, itemId: number) {
 
       await item.unequip(player);
 
-      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      const inventory = await inventories.getEntityItems(ItemEnums.entity.PLAYER, player.character.id);
       return inventory;
    });
 }
@@ -76,7 +76,7 @@ function onItemUse (player: PlayerMp, itemId: number)  {
 
       await rItem?.use!(player, item);
 
-      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      const inventory = await inventories.getEntityItems(ItemEnums.entity.PLAYER, player.character.id);
       return inventory;
    })
 };
@@ -89,7 +89,7 @@ function useEquiped (player: PlayerMp, index: number) {
      
    inventories.findAll( { where: { owner: player.character.id, equiped: true } } ).then(attachments => { 
       const equipment = attachments.filter(
-         attachment => !items.list[attachment.name].type.includes(itemEnums.type.CLOTHING) && !items.list[attachment.name].type.includes(itemEnums.type.PROP)
+         attachment => !items.list[attachment.name].type.includes(ItemEnums.type.CLOTHING) && !items.list[attachment.name].type.includes(ItemEnums.type.PROP)
       );
       
       const item = equipment[index];
@@ -113,7 +113,7 @@ async function onItemDrop (player: PlayerMp, itemId: number, positionString: str
 
       await item?.dropItem(player, new mp.Vector3(position.x, position.y, position.z), new mp.Vector3(rotation.x, rotation.y, rotation.z));
 
-      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      const inventory = await inventories.getEntityItems(ItemEnums.entity.PLAYER, player.character.id);
       return inventory;
    });
 };
@@ -123,7 +123,7 @@ async function onItemPickup (player: PlayerMp, itemId: number) {
    return inventories.findOne( { where: { id: itemId } } ).then(async item => {
       await item?.pickupItem(player);      
 
-      const inventory = await inventories.getEntityItems(itemEnums.entity.PLAYER, player.character.id);
+      const inventory = await inventories.getEntityItems(ItemEnums.entity.PLAYER, player.character.id);
       return inventory;  
    })
 };

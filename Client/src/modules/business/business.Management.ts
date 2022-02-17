@@ -1,5 +1,5 @@
 import { Browser } from '../../browser';
-import { business } from '../../interfaces/business';
+import { Business } from '../../interfaces/business';
 import { toggleBusinesInfo } from './business.Core';
 
 
@@ -23,7 +23,7 @@ mp.events.addProc(
 )
 
 
-function openBusinessManagement (info: boolean | business, availableItems: string) {
+function openBusinessManagement (info: boolean | Business, availableItems: string) {
    active = !active;
    Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'businessManagement')
 

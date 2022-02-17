@@ -1,14 +1,14 @@
 
 
 import { itemDescriptions, lang } from '@constants';
-import { itemEnums } from '@enums';
+import { ItemEnums } from '@enums';
 import { itemAction } from '@interfaces';
 
 
 export class items {
 
    name: string;
-   type: itemEnums.type[];
+   type: ItemEnums.type[];
    model: string;
    weight: number;
    description?: string;
@@ -19,7 +19,7 @@ export class items {
 
    static list: { [key:string] : items } = {};
 
-   constructor (name: string, type: itemEnums.type[], model: string, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
+   constructor (name: string, type: ItemEnums.type[], model: string, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
       this.name = name;
       this.type = type;
       this.model = model;
@@ -31,35 +31,35 @@ export class items {
 
 
    isWeapon () { 
-      return this.type.includes(itemEnums.type.WEAPON);
+      return this.type.includes(ItemEnums.type.WEAPON);
    }
 
    isCookable () {
-      return this.type.includes(itemEnums.type.COOKABLE);
+      return this.type.includes(ItemEnums.type.COOKABLE);
    }
 
    isStackable () { 
-      return this.type.includes(itemEnums.type.STACKABLE);
+      return this.type.includes(ItemEnums.type.STACKABLE);
    }
 
    isEquipable () {
-      return this.type.includes(itemEnums.type.EQUIPABLE);
+      return this.type.includes(ItemEnums.type.EQUIPABLE);
    }
 
    isUsable () {
-      return this.type.includes(itemEnums.type.USABLE);
+      return this.type.includes(ItemEnums.type.USABLE);
    }
 
    isClothing () {
-      return this.type.includes(itemEnums.type.CLOTHING);
+      return this.type.includes(ItemEnums.type.CLOTHING);
    }
 
    isProp () {
-      return this.type.includes(itemEnums.type.PROP);
+      return this.type.includes(ItemEnums.type.PROP);
    }
 
    isConsumable () {
-      return this.type.includes(itemEnums.type.CONSUMABLE);
+      return this.type.includes(ItemEnums.type.CONSUMABLE);
    }
 
    availableActions () {

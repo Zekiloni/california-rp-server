@@ -13,8 +13,9 @@ mp.events.add(
 );
 
 
-async function buyItemFromMarket (businesID: number, cart: string[]) {
+async function buyItemFromMarket (businesID: number, cart: string) {
    const buyed: boolean = await mp.events.callRemoteProc('SERVER::MARKET:BUY', businesID, cart);
+   mp.gui.chat.push('buyed ' + JSON.stringify(buyed))
    if (buyed && active) {
       Browser.call('BROWSER::MARKET:CLEAR_CART');
    }

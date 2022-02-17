@@ -2,7 +2,7 @@
 
 import { items } from '../item.model';
 import { inventories, logs} from '@models';
-import { itemEnums } from '@enums';
+import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
 import weaponData from '../../configs/weapon.data.json';
 
@@ -12,7 +12,7 @@ export class ammoItem extends items {
    clipSize: number;
    
    constructor (name: string, model: string, bullets: number, weight: number = 0.1, description?: string) { 
-      super (name, [itemEnums.type.USABLE, itemEnums.type.STACKABLE, itemEnums.type.AMMO, itemEnums.type.MISC], model, weight, description);
+      super (name, [ItemEnums.type.USABLE, ItemEnums.type.STACKABLE, ItemEnums.type.AMMO, ItemEnums.type.MISC], model, weight, description);
       this.clipSize = bullets;
       
       this.use = async function (player: PlayerMp, item: inventories) {

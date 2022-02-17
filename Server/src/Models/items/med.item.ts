@@ -1,11 +1,11 @@
 import { items } from '../item.model';
 import { animations, playerConfig } from '@configs';
 import { inventories } from '@models';
-import { itemEnums, notifications } from '@enums';
+import { ItemEnums, notifications } from '@enums';
 import { lang } from '@constants';
 
 
-const medType = [itemEnums.type.USABLE, itemEnums.type.MEDIC_KIT]
+const medType = [ItemEnums.type.USABLE, ItemEnums.type.MEDIC_KIT]
 
 export class medItem extends items {
    regeneration: number;

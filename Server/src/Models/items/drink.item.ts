@@ -1,13 +1,13 @@
 
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
-import { itemEnums } from '@enums';
+import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
 
 
 const drinkType = [
-   itemEnums.type.DRINK, 
-   itemEnums.type.CONSUMABLE, 
+   ItemEnums.type.DRINK, 
+   ItemEnums.type.CONSUMABLE, 
 ];
 
 
@@ -16,7 +16,7 @@ export class drinkItem extends items {
    alcohol: number | null;
    energy?: number;
    
-   constructor (name: string, model: string, thirst: number, alcohol: number | null, type: itemEnums.type[], weight?: number, description?: string) { 
+   constructor (name: string, model: string, thirst: number, alcohol: number | null, type: ItemEnums.type[], weight?: number, description?: string) { 
       super (name, type, model, weight, description);
       this.thirst = thirst;
       this.alcohol = alcohol;

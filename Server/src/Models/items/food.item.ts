@@ -2,13 +2,13 @@
 
 import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
-import { itemEnums } from "@enums";
+import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 
 
 const foodType = [
-   itemEnums.type.FOOD, 
-   itemEnums.type.CONSUMABLE
+   ItemEnums.type.FOOD, 
+   ItemEnums.type.CONSUMABLE
 ];
 
 
@@ -16,7 +16,7 @@ export class foodItem extends items {
    hunger: number;
    snacks: number;
    
-   constructor (name: string, model: string, hunger: number, snacks: number, type?: itemEnums.type[], weight?: number, description?: string) { 
+   constructor (name: string, model: string, hunger: number, snacks: number, type?: ItemEnums.type[], weight?: number, description?: string) { 
       super (name, type ? foodType.concat(type) : foodType, model, weight, description);
       this.hunger = hunger;
       this.snacks = snacks;

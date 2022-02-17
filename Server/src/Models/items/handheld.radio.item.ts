@@ -3,7 +3,7 @@
 import { items } from '../item.model';
 import { inventories  } from '@models';
 import { itemDescriptions, itemNames } from "@constants";
-import { itemEnums } from "@enums";
+import { ItemEnums } from "@enums";
 import { shared_Data } from '@shared';
 import { animations } from '@configs';
 
@@ -11,7 +11,7 @@ import { animations } from '@configs';
 export class handheldRadioItem extends items {
    
    constructor (name: string, model: string, weight: number = 0.1) { 
-      super (name, [itemEnums.type.EQUIPABLE, itemEnums.type.MISC, itemEnums.type.ELECTRONIC_DEVICE], model, weight, itemDescriptions.HANDHELD_RADIO);
+      super (name, [ItemEnums.type.EQUIPABLE, ItemEnums.type.MISC, ItemEnums.type.ELECTRONIC_DEVICE], model, weight, itemDescriptions.HANDHELD_RADIO);
 
       this.use = async function (player: PlayerMp, item: inventories) {
          player.call('CLIENT::ITEMS:RADIO:TOGGLE', [item.data]);
