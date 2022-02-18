@@ -52,6 +52,7 @@
       
       <transition name="fade"> 
          <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
+         <ClothingMenu v-if="interfaces.clothingMenu" key=clothingMenu />
          <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
       </transition>
 

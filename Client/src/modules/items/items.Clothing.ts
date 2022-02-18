@@ -13,6 +13,35 @@
 // SET_PED_HELMET_PROP_INDEX(Ped ped, int propIndex)
 
 
+const componentIndex: { [key: string]: number } = {
+   'Mask': 1,
+   'Pants': 2,
+   'Bag': 2,
+   'Shoes': 2,
+   'Accessories': 2,
+   'Undershirt': 2,
+   'Body Armour': 2,
+   'Decal': 2,
+   'Top': 2,
+   'Hat': 2,
+   'Glasses': 2,
+   'Ears': 2,
+   'Watch': 2, 
+   'Bracelet': 2,
+}
+
+const clothingProps: string[] = ['hat', 'glasses', 'ears', 'watch', 'bracelet']
+
+
+export function getClothingItemComponent (name: string) {
+   return componentIndex[name.toLowerCase().replace(' ', '_')];
+}
+
+export function isClothingItemProp (name: string): boolean {
+   return clothingProps.includes(name.toLowerCase());
+}
+
+
 export function getComponentTexture (component: number) { 
    return mp.game.invoke(RageEnums.Natives.Ped.GET_PED_PROP_TEXTURE_INDEX, component);
 }

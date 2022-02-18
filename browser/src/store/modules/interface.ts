@@ -23,6 +23,7 @@ const InitialState = {
    idDocument: false,
    licenses: false,
    
+   // banking
    banking: false,
    atm: false,
 

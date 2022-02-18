@@ -15,6 +15,7 @@ const propType = [
    ItemEnums.type.USABLE
 ];
 
+
 export class ClothingItem extends items {
 
    static clothings: ClothingItem[] = [];
@@ -33,7 +34,6 @@ export class ClothingItem extends items {
       } else {
          ClothingItem.props.push(this);
       }
-      
    }
 
    async use (player: PlayerMp, item: inventories) {
@@ -78,6 +78,7 @@ export class ClothingItem extends items {
       }    
    }
 };
+
 
 new ClothingItem(itemNames.CLOTHING_MASK, clothingType, 'prop_michael_balaclava', ItemEnums.components.clothings.MASK, 0.125, 'Mask.', [0, 0]);
 new ClothingItem(itemNames.CLOTHING_LEGS, clothingType, 'prop_ld_jeans_01', ItemEnums.components.clothings.LEGS, 0.125, 'Legs.', [18, 15]);

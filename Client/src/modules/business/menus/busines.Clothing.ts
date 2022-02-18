@@ -1,58 +1,63 @@
 import { Browser } from '../../../browser';
-
+import { getClothingItemComponent, isClothingItemProp } from '../../items/items.Clothing';
+import getPreviousClothing from '../../utils/previous.Clothing';
 
 
 let active: boolean = false;
+let previous: ReturnType<typeof getPreviousClothing> | null = null;
 
 
 mp.events.add(
    {
       'CLIENT::CLOTHING:MENU': toggleClothingMenu,
-      'CLIENT::CLOTHING:BUY': buyClothingItem
+      'CLIENT::CLOTHING:BUY': buyClothingItem,
+      'CLIENT::CLOTHNG:PREVIEW': clothingItemPreview
    }
 )
 
 
 function toggleClothingMenu (info: string) {
    active = !active;
-   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', )
-
+   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'clothingMenu');
+   
+   if (active) {
+      previous = getPreviousClothing(mp.players.local);
+   } else {
+      applyPreviousClothing()
+   }
 }
 
 
 function buyClothingItem (items: string) {
-
+   
 }
 
 
-// mp.events.add({
-//    'CLIENT::BUSINESS:CLOTHING:MENU': () => {
-//       Active = !Active;
-//       if (Active) { 
-//          Browser.call('BROWSER::SHOW', 'ClothingMenu');
-//       } else { 
-//          Browser.call('BROWSER::HIDE', 'ClothingMenu');
-//          mp.events.callRemote('server:character.clothing:restart');
-//       }
-//    },
-      
-//    'CLIENT::BUSINESS:CLOTHING:MODEL:PREVIEW': (x: number, Component: number, Variation: number) => { 
-//       Player.setComponentVariation(Component, Variation, 0, 2);
-//    },
+function clothingItemPreview (name: string, drawable: number, texture: number) {
+   const isProp: boolean = isClothingItemProp(name);
+   const component: number = getClothingItemComponent(name);
 
-//    'CLIENT::BUSINESS:CLOTHING:PREVIEW': (x, Component: number, Texture: number) => { 
-//       // RageEnums.Natives.Ped.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS
-//       // RageEnums.Natives.Ped.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS
-//       const Variation = Player.getDrawableVariation(Component);
-//       Player.setComponentVariation(Component, Variation, Texture, 2);
-//    },
+   if (isProp) {
+      mp.players.local.setPropIndex(component, drawable, texture, drawable > 0 ? true : false);
+   } else { 
+      mp.players.local.setComponentVariation(component, drawable, texture, 2);
+   }
+}
+
+
+function applyPreviousClothing () {
+   if (previous) {
+      for (const i in previous.clothing) {
+         const value = previous.clothing[i];
+         mp.players.local.setComponentVariation(Number(i), value.drawable, value.texture, 2);
+      }
    
-//    'CLIENT::BUSINESS:CLOTHING:BUY': (Total: number, Items: any, Biz: number) => { 
-//       mp.events.call('client:business.clothing:menu');
-//       mp.events.callRemote('server:business.clothing:buy', Total, Items, Biz);
-//    }
-// })
-
+      for (const i in previous.props) {
+         const value = previous.props[i];
+         mp.players.local.setPropIndex(Number(i), value.drawable, value.texture, true);
+      }
+   }
+}
 
 
 

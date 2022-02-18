@@ -3,7 +3,7 @@
 <template>
    <div class="wrapper" v-if="busines">
       <div class="clothing-shop">
-
+         <h2> cclothgn </h2>
       </div>
    </div>
 </template>

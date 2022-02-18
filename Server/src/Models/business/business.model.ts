@@ -322,7 +322,6 @@ export class business extends Model {
       }
 
       switch (this.type) {
-
          case businessConfig.type.MARKET: {
             player.call('CLIENT::MARKET:MENU', [this]);
             break;
@@ -330,6 +329,11 @@ export class business extends Model {
 
          case businessConfig.type.GAS_STATION: {
             player.call('CLIENT::MARKET:MENU', [this]);
+            break;
+         }
+
+         case businessConfig.type.CLOTHING: {
+            player.call('CLIENT::CLOTHING:MENU', [this]);
             break;
          }
       }
