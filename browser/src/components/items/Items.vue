@@ -223,7 +223,8 @@
       background: radial-gradient(rgb(33 37 47 / 45%), rgb(11 14 17 / 25%));
       border: 1.25px solid rgb(120 120 120 / 10%);
       display: grid;
-      grid-gap: 0.7rem;
+      grid-gap: 0.45rem;
+      overflow: auto;
       margin: 0 15px;
       grid-template-columns: repeat(4, 110px);
       grid-template-rows: repeat(4, 110px);

@@ -107,7 +107,7 @@ function buyItemsMarket (player: PlayerMp, businesID: number, cartItems: string)
       let total: number = 0;
       
       const inventoryWeight: number = await inventories.itemsWeight(player);
-      const cartWeight: number = cart.reduce((sum, item) => sum + (items.list[item.name].weight * item.quantity), 0)
+      const cartWeight: number = cart.reduce((sum, item) => sum + (items.list[item.name].weight), 0)
       
       console.log('inv with cart ' + (inventoryWeight + cartWeight));
 
@@ -116,19 +116,26 @@ function buyItemsMarket (player: PlayerMp, businesID: number, cartItems: string)
          return;
       }
 
-      busines?.products.forEach(product => {
+      busines!.products.forEach(product => {
          cart.forEach(async item => {
             if (item.name == product.name) {
                if (product.quantity == none) {
                   player.notification(lang.weAreSoryBut + lang.product.toLocaleLowerCase() + ' ' + product.name  + lang.productNotAvailable, notifications.type.ERROR, notifications.time.MED);
                   return; 
                }
-               
-               total += product.price * product.quantity;
+
+               total += product.price;
                await product.decrement('quantity', { by: 1 } );
-               return true;
+
+               inventories.giveItem(player, items.list[product.name]!);
             }
          })
       })
+      
+      await busines!.increment('budget', { by: total } );
+
+      player.character.giveMoney(player, -total);
+      
+      return true;
    })
 }

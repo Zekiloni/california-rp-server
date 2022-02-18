@@ -28,12 +28,9 @@
                <transition-group name="list" tag="div" class="items">
                   <div class="item" v-for="(item, i) in cart" :key=item.name >
                      <h4 class="name"> {{ item.name }} </h4>
-                     <h4 class="price"> <small> {{ item.quantity }} x </small> {{ dollars(item.price) }} </h4>
+                     <h4 class="price"> {{ dollars(item.price) }} </h4>
                      <ul class="actions">
-                        <li @click="decrease(item, i)"> <div class="icon minus"> </div> </li>
-                        <transition name="fade"> 
-                           <li v-if="item.quantity > 1" @click="remove(i)"> <div class="icon delete"> </div> </li>
-                        </transition>
+                        <li @click="remove(i)"> <div class="icon delete"> </div> </li>
                      </ul>
                   </div>
                </transition-group>
@@ -64,39 +61,25 @@
 
       Messages = Messages;
       
-      add (name: string, price: number) { 
-         let alreadyInCart = this.cart.find(cItem => cItem.name == name);
-         if (alreadyInCart) {
-            alreadyInCart.quantity ++;
-         } else {
-            this.cart.push(
-               { name: name, quantity: 1, price: price }
-            );
-         }
+      add (name: string, price: number) {
+         this.cart.push(
+            { name: name, price: price }
+         );
       }
 
       get bill () {
          let total: number = 0;
 
          this.cart.forEach(item => {
-            total += item.quantity * item.price
+            total += item.price
          });
          
          return total;
       }
 
-      decrease (item: CartItem, index: number) {
-         if (item.quantity == 1) {
-            this.remove(index);
-         } else {
-            item.quantity --;
-         }
-      }
-
       remove (index: number) { 
          this.cart.splice(index, 1);
       };
-
 
       buy () {
          mp.events.call('CLIENT::MARKET:BUY', this.busines!.id, JSON.stringify(this.cart));
@@ -113,6 +96,8 @@
             mp.events.add('BROWSER::MARKET:MENU', (busines: string) => {
                this.busines = JSON.parse(busines);
             });
+            
+            mp.events.add('BROWSER::MARKET:CLEAR_CART', () => this.cart = []);
 
          }
       }

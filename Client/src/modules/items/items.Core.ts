@@ -84,18 +84,6 @@ mp.events.add(
       },
 
       'CLIENT::ITEM:GIVE': (item, iteminfo, quantity) => { Browser.call('BROWSER::INVENTORY:GIVE_ITEM', item); },
-
-      // 'render': () => { 
-      //    if (player.getVariable('LOGGED_IN') && player.getVariable('SPAWNED')) { 
-      //       mp.objects.forEach((object) => { 
-      //          if (player.hasClearLosTo(object.handle, 17)) {
-      //             if (object.getVariable('ITEM')) {
-
-      //             }
-      //          }
-      //       });
-      //    }
-      // }
    }
 );
 
@@ -119,8 +107,8 @@ mp.keys.bind(controls.KEY_I, true, function() {
    mp.events.call('CLIENT::INVENTORY:TOGGLE');
 });
 
-mp.keys.bind(controls.KEY_E, true, async function() {
 
+mp.keys.bind(controls.KEY_E, true, async function() {
    if (!mp.players.local.getVariable('LOGGED_IN') || !mp.players.local.getVariable('SPAWNED')) {
       return;
    }
@@ -139,12 +127,11 @@ mp.keys.bind(controls.KEY_E, true, async function() {
       return;
    }
 
+   if (distanceBetweenVectors(mp.players.local.position, object.position) > 2) {
+      return;
+   }
+
    if (object.getVariable('ITEM')) {
-
-      if (distanceBetweenVectors(mp.players.local.position, object.position) > 2) {
-         return;
-      }
-
       const response = await mp.events.callRemoteProc('SERVER::ITEM:PICKUP', object.getVariable('ITEM').id);
       if (active && response) {
          Browser.call('BROWSER::INVENTORY:ITEMS', response);

@@ -1,13 +1,11 @@
 
-
 <template>
    <transition name="fade" appear> 
       <div class="playerlist">
          <div class="header">
-            <h4> {{ Messages.ONLINE_PLAYERS }} </h4>
+            <h4> {{ Messages.ONLINE_PLAYERS }} <b> {{ players.length }} </b></h4> 
             <input class="search" type="text" v-model="search" :placeholder="Messages.SEARCH">
          </div>
-
          <table class="players">
             <thead>
                <tr>
@@ -34,7 +32,7 @@
 
       data () {
          return {
-            players: [ ],
+            players: [],
 
             search: '',
 
@@ -57,7 +55,7 @@
          if (window.mp) {
             mp.invoke('focus', true);
 
-            mp.events.add('BROWSER::PLAYERLIST', (players: string) => this.players = JSON.parse(players) );
+            mp.events.add('BROWSER::PLAYERLIST', (players: string) => this.players = JSON.parse(players));
          }
       },
 
@@ -91,10 +89,20 @@
    }
 
    .header h4 { 
-      font-size: 1.3rem;
-      font-weight: 450;
+      font-size: 1.45rem;
+      font-weight: 550;
+      font-family: 'Montserrat Light', sans-serif;
+      letter-spacing: 0.6rem;
       margin: 0;
-      color: #cdcdcd;
+      text-transform: uppercase;
+      color: #848e9c;
+   }
+
+   .header h4 b { 
+      position: relative;
+      font-weight: 650;
+      margin: 0;
+      color: whitesmoke;
    }
 
    input.search {
@@ -116,35 +124,41 @@
       width: 800px;
       display: block;
       height: 415px;
-      overflow-y: scroll;
+      overflow-y: auto;
       border-radius: 5px;
-      background: rgb(11 14 17 / 20%);
    }
 
    .players td, .players th {
       padding: 8px;
    }
 
-   .players tr { 
-      background: #181a20;
+   .players tr td { 
+      background: rgb(255 255 255 / 5%);
+      backdrop-filter: brightness(1.1);
+      border: 1px solid transparent;
       color: #acacad;
       margin: 5px 0;
+      border-radius: 2px;
       transition: all .3s ease;
    }
 
-   .players tr:nth-child(even) {
-      background-color: rgb(24 26 32 / 65%);
+   .players tr:nth-child(even) td {
+      background: rgb(255 255 255 / 10%);
       color: #cdcdcd;
    }
 
-   .players tr:hover {
-      background-color: #7454e5;
+   .players tr:hover td {
+      border-color: rgb(205 205 205 / 45%);
+      backdrop-filter: brightness(1.8);
+      box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
+      border-color: rgb(205 205 205 / 25%);
       color: whitesmoke;
    }
    
    .players tbody tr { height: 50px; }
 
-   .players tr.joining:hover {
+   .players tr.joining:hover td {
+      backdrop-filter: none;
       background: none;
    }
 
@@ -157,7 +171,7 @@
       padding-bottom: 12px;
       width: 760px;
       text-align: left;
-      background-color: #0b0e11;
+      background: linear-gradient(120deg, rgb(11 14 17 / 55%), rgb(11 14 17 / 55%));
       color: #cdcdcd;
    }
 
