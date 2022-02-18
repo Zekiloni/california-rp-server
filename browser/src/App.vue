@@ -48,10 +48,12 @@
       <transition-group name="fade-with-bottom-slide">
          <BusinessInfo v-if="interfaces.businessInfo" key=businessInfo />
          <BusinessManagement v-if="interfaces.businessManagement" key=businessManagement />
-         
-         <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
-         <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
       </transition-group>
+      
+      <transition name="fade"> 
+         <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
+         <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
+      </transition>
 
 
       <transition name="fade"> 
@@ -103,6 +105,7 @@
    import BusinessInfo from '@/components/business/BusinessInfo.vue';
    import BusinessManagement from '@/components/business/BusinessManagement.vue';
    import MarketMenu from '@/components/business/menus/MarketMenu.vue';
+   import ClothingMenu from '@/components/business/menus/ClothingMenu.vue';
    import RentMenu from '@/components/business/menus/RentVehicle.vue';
    
    export default { 
@@ -111,10 +114,8 @@
          Lobby, Creator, Notifications, GameInterface, Playerlist,
          Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
          Phone, Document, HandheldRadio, DeathScreen,
-         BusinessManagement,
-         BusinessInfo,
-         MarketMenu,
-         RentMenu
+         
+         BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu
       },
 
       data () { 

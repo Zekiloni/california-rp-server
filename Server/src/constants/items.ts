@@ -50,7 +50,7 @@ export const itemNames = {
    DRINK_MILK: 'Milk',
 
 
-   // @clothing_props
+   // @clothings
    CLOTHING_MASK : 'Mask',
    CLOTHING_LEGS : 'Pants',
    CLOTHING_BAG : 'Bag',
@@ -60,6 +60,13 @@ export const itemNames = {
    CLOTHING_BODY_ARMOUR : 'Body Armour',
    CLOTHING_DECAL : 'Decal',
    CLOTHING_TOP : 'Top',
+
+   // @props
+   PROP_HAT: 'Hat',
+   PROP_GLASSES: 'Glasses',
+   PROP_EARS: 'Ears', 
+   PROP_WATCH: 'Watch', 
+   PROP_BRACELET: 'Bracelet',
 
 
    // @weapons

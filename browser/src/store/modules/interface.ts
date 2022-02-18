@@ -28,19 +28,19 @@ const InitialState = {
 
    playerlist: false,
 
+   // jobs interfaces
    job_Offer: false,
    Miner: false,
    Food: false,
    Transit: false,
 
-
+   // busines interfaces
    businessInfo: false,
    businessManagement: false,
    marketMenu: false,
+   clothingMenu: false,
    rentMenu: false,
 
-   
-   clothing_Shop: false,
    drinks_Shop: false,
    gas_Station: false,
    dealership: false,

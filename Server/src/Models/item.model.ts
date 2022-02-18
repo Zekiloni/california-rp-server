@@ -6,7 +6,6 @@ import { itemAction } from '@interfaces';
 
 
 export class items {
-
    name: string;
    type: ItemEnums.type[];
    model: string;
@@ -99,6 +98,7 @@ export class items {
 
 import './items/document.item';
 import './items/creditCard.item';
+import './items/clothing.Item';
 import './items/drink.item';
 import './items/food.item';
 import './items/ammo.item';
@@ -124,22 +124,7 @@ import './items/med.item';
 
 
 // /* Clothing */
-// new Items('Mask', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_balaclava', 0.3, 'Mask for Head');
-// new Items('Pants', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_jeans_01', 0.2, 'Pants for legs');
-// new Items('Bag', [Items.Type.Equipable, Items.Type.Clothing], 'prop_michael_backpack', 0.45, '');
-// new Items('Shoes', [Items.Type.Equipable, Items.Type.Clothing], 'v_ret_ps_shoe_01', 0.15);
-// new Items('Accesories', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_box_clothes', 0.3);
-// new Items('Undershirt', [Items.Type.Equipable, Items.Type.Clothing], 'prop_cs_tshirt_ball_01', 0.1);
-// new Items('Armour', [Items.Type.Equipable, Items.Type.Clothing], 'prop_bodyarmour_03', 1.25);
-// new Items('Tops', [Items.Type.Equipable, Items.Type.Clothing], 'prop_ld_shirt_01', 0.2); 
 
-
-// /* Props */
-// new Items('Hat', [Items.Type.Equipable, Items.Type.Prop], 'prop_ld_hat_01', 0.05);
-// new Items('Glasses', [Items.Type.Equipable, Items.Type.Prop], 'xm_prop_x17_b_glasses_01', 0.05);
-// new Items('Ears', [Items.Type.Equipable, Items.Type.Prop], 'v_ret_gc_ear01', 0.05);
-// new Items('Watch', [Items.Type.Equipable, Items.Type.Prop], 'p_watch_01', 0.1);
-// new Items('Bracelet', [Items.Type.Equipable, Items.Type.Prop], 'h4_prop_h4_bracelet_01a', 0.2);
 
 
 

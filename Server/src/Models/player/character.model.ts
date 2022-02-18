@@ -9,7 +9,7 @@ import { spawnPointTypes, notifications, distances, ItemEnums, offerTypes } from
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, playerInjury } from '@interfaces';
-import { clothingItem } from '@models/items/clothing.item';
+import { ClothingItem } from '@models/items/clothing.Item';
 
 
 @Table
@@ -225,7 +225,7 @@ export class characters extends Model {
          appearance.apply(player, this.gender);
       }
       
-      clothingItem.clothings.forEach(item => {
+      ClothingItem.clothings.forEach(item => {
          inventories.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
             if (clothed && clothed.equiped) {
                item.use(player, clothed);

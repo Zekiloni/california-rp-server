@@ -45,7 +45,13 @@ export namespace businessConfig {
       [businessConfig.type.ELECTRONIC_SHOP]: [],
       [businessConfig.type.RENT]: [],
       [businessConfig.type.VEHICLE_DEALERSHIP]: [],
-      [businessConfig.type.CLOTHING]: [],
+
+      [businessConfig.type.CLOTHING]: [
+         itemNames.CLOTHING_MASK, itemNames.CLOTHING_LEGS, itemNames.CLOTHING_BAG, itemNames.CLOTHING_SHOES, itemNames.CLOTHING_ACCESSORIES,
+         itemNames.CLOTHING_UNDERSHIRT, itemNames.CLOTHING_BODY_ARMOUR, itemNames.CLOTHING_DECAL, itemNames.CLOTHING_TOP, itemNames.PROP_HAT,
+         itemNames.PROP_GLASSES, itemNames.PROP_EARS, itemNames.PROP_WATCH, itemNames.PROP_BRACELET           
+      ],
+      
       [businessConfig.type.RESTAURANT]: [],
       [businessConfig.type.CAFE_BAR]: [],
       [businessConfig.type.NIGHT_CLUB]: [],
