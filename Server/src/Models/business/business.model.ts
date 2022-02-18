@@ -196,7 +196,7 @@ export class business extends Model {
             ),
             
             colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
-            marker: mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 0.98), 0.94, { color: businessConfig.markerColor, dimension: this.dimension, visible: true })
+            marker: mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 1), 1, { color: businessConfig.markerColor, dimension: this.dimension, visible: true })
          }
       }
 
