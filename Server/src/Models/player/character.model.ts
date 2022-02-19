@@ -210,10 +210,12 @@ export class characters extends Model {
       player.setVariable(shared_Data.FREEZED, false);
       player.setVariable(shared_Data.BUBBLE, null);
       player.setVariable(shared_Data.ANIMATION, null);
+      player.setVariable(shared_Data.BEANBAG, false);
       player.setVariable('Working_Uniform', false);
       player.setVariable('Attachment', null);
       player.setVariable('Phone_Ringing', false);
       player.setVariable('Ragdoll', false);
+      
 
       player.notification(lang.welcomeToServer, notifications.type.INFO, 4);
 
