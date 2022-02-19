@@ -7,11 +7,7 @@ let previousHair: { style: number, color: number } | null;
 let camera: CameraMp | null = null;
 
 
-mp.events.add('CLIENT::BARBER:MENU', openBarberShop);
-mp.events.add('CLIENT::BARBER:HAIR_PREVIEW', previewHairstyle);
-
-
-function openBarberShop(info: string) {
+const openBarberShop = (info: string) => {
    active = !active;
 
    Browser.call(
@@ -36,6 +32,13 @@ function openBarberShop(info: string) {
 }
 
 
-function previewHairstyle (style: number, color: number, highlight: number) {
+const previewHair = (style: number, color: number, highlight: number) => {
    mp.players.local.setComponentVariation(clothingComponents.HAIR_STYLE, style, color, highlight);
+
 }
+
+
+mp.events.add('CLIENT::BARBER:MENU', openBarberShop);
+mp.events.add('CLIENT::BARBER:HAIR_PREVIEW', previewHair);
+
+

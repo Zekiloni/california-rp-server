@@ -5,15 +5,18 @@ import { toggleBusinesInfo } from '../business.Core';
 let active: boolean = false;
 
 
-mp.events.add(
-   {
-      'CLIENT::MARKET:MENU': toggleMarketMenu,
-      'CLIENT::MARKET:BUY': buyItemFromMarket
+const openMarketMenu = (info: string) => {
+   active = !active;
+   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'marketMenu');
+   if (active) {
+      mp.gui.chat.push(JSON.stringify(info))
+      toggleBusinesInfo(false);
+      Browser.call('BROWSER::MARKET:MENU', info);
    }
-);
+}
 
 
-async function buyItemFromMarket (businesID: number, cart: string) {
+const buyMarketItem = async (businesID: number, cart: string) => {
    const buyed: boolean = await mp.events.callRemoteProc('SERVER::MARKET:BUY', businesID, cart);
    if (buyed && active) {
       Browser.call('BROWSER::MARKET:CLEAR_CART');
@@ -21,12 +24,8 @@ async function buyItemFromMarket (businesID: number, cart: string) {
 }
 
 
-function toggleMarketMenu (busines: string) { 
-   active = !active;
-   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'marketMenu');
-   if (active) {
-      mp.gui.chat.push(JSON.stringify(busines))
-      toggleBusinesInfo(false);
-      Browser.call('BROWSER::MARKET:MENU', busines);
-   }
-};
+mp.events.add('CLIENT::MARKET:MENU', openMarketMenu);
+mp.events.add('CLIENT::MARKET:BUY', buyMarketItem);
+
+
+
