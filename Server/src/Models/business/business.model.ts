@@ -62,7 +62,9 @@ export class business extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('position')); },
+         get () { 
+            return this.getDataValue('position') ? JSON.parse(this.getDataValue('position')) : null;
+         },
       }
    )       
    position: Vector3Mp
@@ -70,7 +72,9 @@ export class business extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('vehicle_point')); },
+         get () { 
+            return this.getDataValue('vehicle_point') ? JSON.parse(this.getDataValue('vehicle_point')) : null;
+         },
       }
    )
    vehicle_point: Vector3Mp
@@ -78,7 +82,9 @@ export class business extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('interior_position')); },
+         get () {
+            return this.getDataValue('interior_position') ? JSON.parse(this.getDataValue('interior_position')) : null;
+         },
       }
    )
    interior_position: Vector3Mp
@@ -146,7 +152,7 @@ export class business extends Model {
       let availableCommands: string[] = [];
 
       if (this.owner == player.character.id) {
-         availableCommands.push(cmds.names.LOCK, cmds.names.BUSINESS);
+         availableCommands.push(cmds.names.LOCK, cmds.names.BUSINES);
       }
 
       if (this.walk_in) {
@@ -156,7 +162,7 @@ export class business extends Model {
       }
       
       if (!this.owner) {
-         availableCommands.push(cmds.names.BUY + ' business');
+         availableCommands.push(cmds.names.BUY + ' busines');
       }
       
       player.call('CLIENT::BUSINESS:INFO', [JSON.stringify(this), availableCommands]);
@@ -334,6 +340,11 @@ export class business extends Model {
 
          case businessConfig.type.CLOTHING: {
             player.call('CLIENT::CLOTHING:MENU', [this]);
+            break;
+         }
+
+         case businessConfig.type.BARBER_SHOP: {
+            player.call('CLIENT::BARBER:MENU', [this]);
             break;
          }
       }

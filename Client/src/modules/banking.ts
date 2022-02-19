@@ -1,6 +1,6 @@
 import { Browser } from '../browser';
 import controls from '../enums/controls';
-import { gameInterface, UI_Status } from './game.UI';
+import { toggleGameInterface, UI_Status, gameIStatus } from './game.UI';
 
 
 let inBank: boolean = false;
@@ -50,11 +50,11 @@ function openMenu () {
    Browser.call(active.menu ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'banking');
 
    if (active.menu) { 
-      UIstatus = gameInterface.status;
-      gameInterface.mainInterface(UI_Status.HIDDEN);
+      UIstatus = gameIStatus;
+      toggleGameInterface(UI_Status.HIDDEN);
       mp.game.graphics.transitionToBlurred(1000);
    } else { 
-      gameInterface.mainInterface(UIstatus!);
+      toggleGameInterface(UIstatus!);
       mp.game.graphics.transitionFromBlurred(1000);
    }
 }

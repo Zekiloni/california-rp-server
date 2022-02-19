@@ -1,5 +1,5 @@
 import { Browser } from '../../browser';
-import { gameInterface, UI_Status } from "../game.UI";
+import { vehicleInterface, UI_Status, gameIStatus } from "../game.UI";
 
 
 
@@ -41,7 +41,7 @@ function playerEnterVehicle (vehicle: VehicleMp, seat: number) {
    temporary.mileage = vehicle.getVariable('MILEAGE');
    temporary.calculateDistance = Date.now();
 
-   gameInterface.vehicleInterface(true);
+   vehicleInterface(true);
    
    const vehicleName = mp.game.ui.getLabelText(mp.game.vehicle.getDisplayNameFromVehicleModel(vehicle.model));
    Browser.call('BROWSER::GAME_UI:VEHICLE:NAME', vehicleName);
@@ -65,7 +65,7 @@ function playerLeaveVehicle (vehicle: VehicleMp, seat: number) {
       mp.events.callRemote('SERVER::VEHICLE:UPDATE', vehicle.remoteId, temporary.mileage, temporary.fuel);
    }
 
-   gameInterface.vehicleInterface(false);
+   vehicleInterface(false);
    mp.events.remove('render', driving);
 };
 
@@ -86,7 +86,7 @@ function driving () {
          temporary.calculateDistance = Date.now();
       }   
 
-      if (gameInterface.status == UI_Status.VISIBLE) {
+      if (gameIStatus == UI_Status.VISIBLE) {
          Browser.call('BROWSER::GAME_UI:VEHICLE:UPDATE', Math.round(speed), Math.round(vehicle.rpm * 1000), vehicle.gear, temporary.mileage.toFixed(2))
       } 
 

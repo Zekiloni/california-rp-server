@@ -125,6 +125,7 @@ export const lang = {
    businessLocked: 'Zaključali ste biznis.',
    givesSomeMoney: 'daje nešto novca',
    businessUnlocked: 'Otključali ste biznis.',
+   chatIsClearedBy: 'Čet očišćen od strane administratora ',
    orderSucess: 'Uspešno ste završili dostavu, zaradili ste ',
    successfullyBuyedVehicle: 'Uspešno ste kupili vozilo !', 	
    successfullyBuyedBusiness: 'Uspešno ste kupili biznis ',

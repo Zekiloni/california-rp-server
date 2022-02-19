@@ -15,30 +15,29 @@
 
 const componentIndex: { [key: string]: number } = {
    'Mask': 1,
-   'Pants': 2,
-   'Bag': 2,
-   'Shoes': 2,
-   'Accessories': 2,
-   'Undershirt': 2,
-   'Body Armour': 2,
-   'Decal': 2,
-   'Top': 2,
-   'Hat': 2,
-   'Glasses': 2,
+   'Pants': 4,
+   'Shoes': 6,
+   'Accessories': 7,
+   'Undershirt': 8,
+   'Body Armour': 9,
+   'Decal': 10,
+   'Top': 11,
+   'Hat': 0,
+   'Glasses': 1,
    'Ears': 2,
-   'Watch': 2, 
-   'Bracelet': 2,
+   'Watch': 6, 
+   'Bracelet': 7,
 }
 
-const clothingProps: string[] = ['hat', 'glasses', 'ears', 'watch', 'bracelet']
+const clothingProps: string[] = ['Hat', 'Glasses', 'Ears', 'Watch', 'Bracelet']
 
 
 export function getClothingItemComponent (name: string) {
-   return componentIndex[name.toLowerCase().replace(' ', '_')];
+   return componentIndex[name];
 }
 
 export function isClothingItemProp (name: string): boolean {
-   return clothingProps.includes(name.toLowerCase());
+   return clothingProps.includes(name);
 }
 
 

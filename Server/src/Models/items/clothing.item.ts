@@ -82,7 +82,6 @@ export class ClothingItem extends items {
 
 new ClothingItem(itemNames.CLOTHING_MASK, clothingType, 'prop_michael_balaclava', ItemEnums.components.clothings.MASK, 0.125, 'Mask.', [0, 0]);
 new ClothingItem(itemNames.CLOTHING_LEGS, clothingType, 'prop_ld_jeans_01', ItemEnums.components.clothings.LEGS, 0.125, 'Legs.', [18, 15]);
-new ClothingItem(itemNames.CLOTHING_BAG, clothingType, 'prop_michael_backpack', ItemEnums.components.clothings.BAG, 0.125, 'Bag.', [0, 0]);
 new ClothingItem(itemNames.CLOTHING_SHOES, clothingType, 'v_ret_ps_shoe_01', ItemEnums.components.clothings.SHOES, 0.125, 'Shoes.', [34, 35]);
 new ClothingItem(itemNames.CLOTHING_ACCESSORIES, clothingType, 'prop_cs_box_clothes', ItemEnums.components.clothings.ACCESSORIES, 0.125, 'acc.', [0, 0]);
 new ClothingItem(itemNames.CLOTHING_UNDERSHIRT, clothingType, 'prop_cs_tshirt_ball_01', ItemEnums.components.clothings.UNDERSHIRT, 0.125, 'undershirt.', [15, 15]);

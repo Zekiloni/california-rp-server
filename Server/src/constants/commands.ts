@@ -15,6 +15,7 @@ export namespace cmds {
       LOW_CHAT: 'l',
       WHISPER: 'w',
       FLIP: 'flip',
+      CLEAR_CHAT: 'clearchat',
       DISARM: 'disarm',
       CREATE_ACCOUNT: 'createaccount',
       REVIVE: 'revive',
@@ -49,7 +50,7 @@ export namespace cmds {
       CREATE_BUSINESS: 'createbusines',
       EDIT_BUSINESS: 'editbusines',
       BUSINESS_TYPES: 'businestypes',
-      BUSINESS: 'business',
+      BUSINES: 'busines',
       DESTROY_BUSINESS: 'destroybusines',
       FLY: 'fly',
       FREEZE: 'freeze',
@@ -65,7 +66,7 @@ export namespace cmds {
 
 
    export const actions = {
-      business: 'business',
+      busines: 'busines',
       house: 'house',
       vehicle: 'vehicle'
    }
@@ -114,6 +115,7 @@ export namespace cmds {
       SET_TIME: 'Promena vremena, stavite sate na 666 da se vreme automatski menja.',
       SET_WEATHER: 'Vremenske prilike.',
       FIX_VEH: 'Popravka vozila.',
+      CLEAR_CHAT: 'Čišćenje četa svim igračima.',
       FLIP: 'Normala.',
       GOTO: 'Teleport do igrača.',
       MAKE_ADMIN: 'Davanje admin permisija',

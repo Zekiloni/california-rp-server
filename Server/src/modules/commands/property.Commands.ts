@@ -5,7 +5,7 @@ import { business } from "@models";
 import { Commands } from '../commands';
 
 
-Commands[cmds.names.BUSINESS] = {
+Commands[cmds.names.BUSINES] = {
    description: cmds.descriptions.BUSINESS,
    async call (player: PlayerMp) {
       const nearest = await business.getNearest(player);

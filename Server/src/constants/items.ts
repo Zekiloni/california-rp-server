@@ -53,7 +53,6 @@ export const itemNames = {
    // @clothings
    CLOTHING_MASK : 'Mask',
    CLOTHING_LEGS : 'Pants',
-   CLOTHING_BAG : 'Bag',
    CLOTHING_SHOES : 'Shoes',
    CLOTHING_ACCESSORIES : 'Accessories',
    CLOTHING_UNDERSHIRT : 'Undershirt',

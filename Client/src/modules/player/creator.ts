@@ -1,21 +1,18 @@
 
 
 import { Browser } from '../../browser';
-import { Genders, playerModels } from '../../data/Player';
+import { playerModels } from '../../data/Player';
 import { lobby } from './lobby';
 import { disableMoving, getBestTorso, playerPreviewCamera, removeClothing } from '../../utils';
-import femaleTorsos from '../player/clothing/female.torsos';
-import maleTorsos from '../player/clothing/male.torsos';
-import { gameInterface, UI_Status } from '../game.UI';
+import { toggleGameInterface, UI_Status } from '../game.UI';
 import { clothingComponents } from '../../enums/clothing';
-import { pedGender } from '../../enums/ped';
 
 
-class characterCreator {
+class CharacterCreator {
    static active: boolean = false;
 
    static start () { 
-      characterCreator.active = true;
+      CharacterCreator.active = true;
       mp.events.callRemoteProc('SERVER::CREATOR:INFO').then(async (info) => { 
          lobby(false);
          Browser.call('BROWSER::SHOW', 'characterCreator');
@@ -34,11 +31,11 @@ class characterCreator {
       const isCreated = await mp.events.callRemoteProc('SERVER::CREATOR:FINISH', character, appearance);
 
       if (isCreated) { 
-         characterCreator.active = false;
+         CharacterCreator.active = false;
          
          mp.events.remove('render', disableMoving);
          mp.players.local.freezePosition(false);
-         gameInterface.mainInterface(UI_Status.VISIBLE);
+         toggleGameInterface(UI_Status.VISIBLE);
          playerPreviewCamera(false);
          Browser.call('BROWSER::HIDE', 'characterCreator');
       } 
@@ -96,16 +93,16 @@ class characterCreator {
 
 mp.events.add(
    {
-      'CLIENT::CREATOR:START': characterCreator.start,
-      'CLIENT::CREATOR:FINISH': characterCreator.finish,
-      'CLIENT::CREATOR:BLEND': characterCreator.changeBlend,
-      'CLIENT::CREATOR:GENDER': characterCreator.changeGender,
-      'CLIENT::CREATOR:HAIR': characterCreator.changeHair,
-      'CLIENT::CREATOR:FACE': characterCreator.changeFaceStructure,
-      'CLIENT::CREATOR:OVERLAY': characterCreator.changeOverlay,
-      'CLIENT::CREATOR:CLOTHING': characterCreator.changeClothing,
-      'CLIENT::CREATOR:EYES_COLOR': characterCreator.changeEyeColor,
-      'CLIENT::CREATOR:BEARD': characterCreator.changeBeard
+      'CLIENT::CREATOR:START': CharacterCreator.start,
+      'CLIENT::CREATOR:FINISH': CharacterCreator.finish,
+      'CLIENT::CREATOR:BLEND': CharacterCreator.changeBlend,
+      'CLIENT::CREATOR:GENDER': CharacterCreator.changeGender,
+      'CLIENT::CREATOR:HAIR': CharacterCreator.changeHair,
+      'CLIENT::CREATOR:FACE': CharacterCreator.changeFaceStructure,
+      'CLIENT::CREATOR:OVERLAY': CharacterCreator.changeOverlay,
+      'CLIENT::CREATOR:CLOTHING': CharacterCreator.changeClothing,
+      'CLIENT::CREATOR:EYES_COLOR': CharacterCreator.changeEyeColor,
+      'CLIENT::CREATOR:BEARD': CharacterCreator.changeBeard
    }
 );
 

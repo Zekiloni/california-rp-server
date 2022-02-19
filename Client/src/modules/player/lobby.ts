@@ -1,5 +1,5 @@
 import { Browser } from '../../browser';
-import { gameInterface, UI_Status } from '../game.UI';
+import { toggleGameInterface, UI_Status } from '../game.UI';
 
 
 let Camera: CameraMp;
@@ -15,7 +15,7 @@ mp.events.add(
       'CLIENT::CHARACTER:PLAY': (character: number, spawnPoint: number) => { 
          lobby(false);
          mp.events.callRemote('SERVER::CHARACTER:PLAY', character, spawnPoint);
-         gameInterface.mainInterface(UI_Status.VISIBLE);
+         toggleGameInterface(UI_Status.VISIBLE);
       }
    }
 );

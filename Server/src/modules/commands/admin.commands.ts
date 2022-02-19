@@ -105,6 +105,18 @@ Commands[cmds.names.ITEMS] = {
 };
 
 
+Commands[cmds.names.CLEAR_CHAT] = {
+   description: cmds.descriptions.CLEAR_CHAT,
+   admin: rank.LEAD_ADMINISTRATOR,
+   call (player: PlayerMp) {
+      mp.players.forEach(target => {
+         target.call('CLIENT::CHAT_CLEAR');
+         target.notification(lang.chatIsClearedBy + player.character.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
+      })
+   }
+}
+
+
 Commands[cmds.names.INVICIBLE] = { 
    description: cmds.descriptions.INVICIBLE,
    admin: rank.ADMINISTRATOR_2,
@@ -143,6 +155,7 @@ Commands[cmds.names.CREATE_BUSINESS] = {
       );
    }
 }
+
 
 Commands[cmds.names.BUSINESS_TYPES] = {
    description: cmds.descriptions.BUSINESS_TYPES,
@@ -515,7 +528,7 @@ Commands[cmds.names.TELEPORT] = {
             break;
          }
 
-         case cmds.actions.business: {
+         case cmds.actions.busines: {
             business.findOne( { where: { id: Number(id) } } ).then(busines => {
                if (!busines) {
                   return;

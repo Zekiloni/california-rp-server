@@ -2,42 +2,45 @@
 
 import { Sequelize } from 'sequelize-typescript';
 
-import { databaseConfig } from '@configs';
-import { logs, accounts, characters, appearances, banks, houses, business, bans, inventories, products, workers } from '@models';
+import { DatabaseConfig } from '@configs';
+import * as models from '@models';
 import { lang } from '@constants';
 
 
 const Database = new Sequelize({
-   database: databaseConfig.name,
+   database: DatabaseConfig.name,
    dialect: 'mysql',
-   username: databaseConfig.user,
-   password: databaseConfig.password,
+   dialectOptions: {
+      charset: 'UTF8_GENERAL_CI'
+   },
+   username: DatabaseConfig.user,
+   password: DatabaseConfig.password,
    storage: ':memory:',
    models: [ 
-      bans,
-      logs, 
-      accounts, 
-      characters, 
-      appearances,
-      inventories, 
-      banks,
-      houses,
-      products,
-      workers,
-      business
+      models.bans,
+      models.logs, 
+      models.accounts, 
+      models.characters, 
+      models.appearances,
+      models.inventories, 
+      models.banks,
+      models.houses,
+      models.products,
+      models.workers,
+      models.business
    ],
    logging: false
 });
 
 Database.authenticate()
    .then(() => { 
-      logs.succes(lang.successDbConnection);
+      models.logs.succes(lang.successDbConnection);
    })
    .then(() => { 
       return Database.sync()
    })
    .catch((error: any) => { 
-      logs.error(error);
+      models.logs.error(error);
    });
 
 

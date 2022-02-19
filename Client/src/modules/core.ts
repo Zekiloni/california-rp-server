@@ -2,7 +2,7 @@
 import { Browser } from '../browser';
 import { entityType } from '../enums/entity';
 import { getBestTorso, getStreetZone } from '../utils';
-import { gameInterface } from './game.UI';
+import { updatePlayerMoney } from './game.UI';
 
 const Player = mp.players.local;
 
@@ -14,7 +14,7 @@ mp.events.addDataHandler(
    {
       'MONEY': (entity: EntityMp, value: any, oldValue: any) => { 
          if (entity.type == entityType.PLAYER && entity.remoteId == mp.players.local.remoteId) {
-            gameInterface.updateMoney(value);
+            updatePlayerMoney(value);
          }
       }
    }

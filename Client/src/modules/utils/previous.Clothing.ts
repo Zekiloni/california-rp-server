@@ -1,4 +1,3 @@
-import { Clothing } from "../../interfaces/clothing";
 
 export default function getPreviousClothing (player: PlayerMp) {
    let previous: { 

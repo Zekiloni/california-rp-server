@@ -2,13 +2,14 @@ import { cmds } from '@constants/commands';
 import { business } from '@models';
 import { Commands } from '../commands';
 
+
 Commands[cmds.names.BUY] = {
    description: cmds.descriptions.BUY,
    async call (player: PlayerMp, action?: string) {
 
 
       switch (action) {
-         case cmds.actions.business: {
+         case cmds.actions.busines: {
             const nearest = await business.getNearest(player);
 
             if (!nearest) {

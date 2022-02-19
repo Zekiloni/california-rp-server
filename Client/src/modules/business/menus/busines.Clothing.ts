@@ -1,11 +1,14 @@
 import { Browser } from '../../../browser';
+import { playerPreviewCamera } from '../../../utils';
+import { gameIStatus, toggleGameInterface, UI_Status } from '../../game.UI';
 import { getClothingItemComponent, isClothingItemProp } from '../../items/items.Clothing';
 import getPreviousClothing from '../../utils/previous.Clothing';
+import { toggleBusinesInfo } from '../business.Core';
 
 
 let active: boolean = false;
 let previous: ReturnType<typeof getPreviousClothing> | null = null;
-
+let UIstatus: number | null = null;
 
 mp.events.add(
    {
@@ -21,9 +24,18 @@ function toggleClothingMenu (info: string) {
    Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'clothingMenu');
    
    if (active) {
+      Browser.call('BROWSER::MARKET:MENU', info);
       previous = getPreviousClothing(mp.players.local);
+      playerPreviewCamera(true);
+      UIstatus = gameIStatus;
+      toggleGameInterface(UI_Status.HIDDEN);
+      toggleBusinesInfo(false);
    } else {
-      applyPreviousClothing()
+      applyPreviousClothing();
+      playerPreviewCamera(false);
+      toggleGameInterface(UIstatus!);
+      UIstatus = null;
+      previous = null;
    }
 }
 
@@ -38,7 +50,11 @@ function clothingItemPreview (name: string, drawable: number, texture: number) {
    const component: number = getClothingItemComponent(name);
 
    if (isProp) {
-      mp.players.local.setPropIndex(component, drawable, texture, drawable > 0 ? true : false);
+      if (drawable == 0) {
+         mp.players.local.clearProp(component);
+      } else { 
+         mp.players.local.setPropIndex(component, drawable, texture, drawable > 0 ? true : false);
+      }
    } else { 
       mp.players.local.setComponentVariation(component, drawable, texture, 2);
    }
@@ -54,7 +70,12 @@ function applyPreviousClothing () {
    
       for (const i in previous.props) {
          const value = previous.props[i];
-         mp.players.local.setPropIndex(Number(i), value.drawable, value.texture, true);
+         if (value.drawable == -1) {
+            mp.players.local.clearProp(Number(i));
+         } else {
+            mp.players.local.setPropIndex(Number(i), value.drawable == -1 ? 255 : value.drawable, value.texture, true);
+         }
+
       }
    }
 }
