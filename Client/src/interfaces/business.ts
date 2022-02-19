@@ -21,6 +21,16 @@ export interface Business {
 };
 
 
+export interface DealershipTestDrve {
+   previous: {
+      position: Vector3Mp | null,
+      dimension: number | null
+   }
+   active: boolean
+   vehicle: VehicleMp | null
+   timer: ReturnType<typeof setTimeout> | null
+}
+
 
 export interface CartItem {
    name: string

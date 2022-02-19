@@ -10,3 +10,4 @@ const openTattoShop = (info: string) => {
 
 mp.events.add('CLIENT::TATTO:MENU', openTattoShop);
 
+export {};

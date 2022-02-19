@@ -69,6 +69,17 @@ export class business extends Model {
    )       
    position: Vector3Mp
 
+
+   @Column(
+      {
+         type: DataType.JSON,
+         get () {
+            return this.getDataValue('spawn_point') ? JSON.parse(this.getDataValue('spawn_point')) : null;
+         }
+      }
+   )
+   spawn_point: Vector3Mp
+
    @Column(
       {
          type: DataType.JSON,
