@@ -22,6 +22,12 @@ export namespace businessConfig {
       CLOTHING, RESTAURANT, CAFE_BAR, NIGHT_CLUB, AMMUNATION, PAWN_SHOP,
       FURNITURE_SHOP, CAR_PARTS, JEWELRY_SHOP, TATTO_SHOP, BARBER_SHOP
    }
+
+
+   const rentableVehicles = [
+      'asbo', 'dilettante', 'asea', 'emperor', 'faction', 'regina', 'picador', 'rancherxl', 'faggio', 'bagger', 'previon',
+      'bobcatxl', 'bison', 'rumpo', 
+   ]
    
    export const typeNames = [
       'Market', 'Gas station', 'Electronic Shop', 'Rent', 'Vehicle Dealership',
@@ -42,9 +48,12 @@ export namespace businessConfig {
          itemNames.FOOD_SANDWICH
       ],
 
-      [businessConfig.type.ELECTRONIC_SHOP]: [],
-      [businessConfig.type.RENT]: [],
+
+      [businessConfig.type.RENT]: rentableVehicles,
+
       [businessConfig.type.VEHICLE_DEALERSHIP]: [],
+      
+      [businessConfig.type.ELECTRONIC_SHOP]: [],
 
       [businessConfig.type.CLOTHING]: [
          itemNames.CLOTHING_MASK, itemNames.CLOTHING_LEGS, itemNames.CLOTHING_SHOES, itemNames.CLOTHING_ACCESSORIES,
