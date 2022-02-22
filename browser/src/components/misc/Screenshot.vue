@@ -13,7 +13,6 @@
    @Component
    export default class Screenshot extends Vue {
 
-
       imageTo64 (url: string) {
          const image = new Image();
          image.crossOrigin = 'Anonymous';

@@ -62,6 +62,9 @@
       </transition>
 
 
+      <!-- [BUILDER] -->
+      <ObjectEditor v-if="interfaces.objectEditor" />
+
       <!-- <transition name="bounce">
          <Lobby v-if="interfaces.Lobby" />
       </transition>      -->
@@ -108,13 +111,17 @@
    import MarketMenu from '@/components/business/menus/MarketMenu.vue';
    import ClothingMenu from '@/components/business/menus/ClothingMenu.vue';
    import RentMenu from '@/components/business/menus/RentVehicle.vue';
-   
+
+   import ObjectEditor from '@/components/builder/ObjectEditor.vue';
+      
    export default { 
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Playerlist,
          Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
          Phone, Document, HandheldRadio, DeathScreen,
+
+         ObjectEditor,
          
          BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu
       },

@@ -50,7 +50,10 @@ const InitialState = {
 
    DMV: false,
       
-   houseInfo: false
+   houseInfo: false,
+
+   // builder
+   objectEditor: true
 }
 
 export const InterfaceStore = {

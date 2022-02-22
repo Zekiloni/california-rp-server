@@ -234,26 +234,26 @@ function ZoomCamera (Delta: number) {
 let [PrevX, PrevY] = mp.gui.cursor.position;
 
 
-export function CursorData () { 
+export function getCursorData () { 
    const x = PrevX, y = PrevY;
    PrevX = mp.gui.cursor.position[0];
    PrevY = mp.gui.cursor.position[1];
-   return { DeltaX: mp.gui.cursor.position[0] - x, DeltaY: mp.gui.cursor.position[1] - y };
+   return { deltaX: mp.gui.cursor.position[0] - x, deltaY: mp.gui.cursor.position[1] - y };
 }
 
 
 export function MoveCamera () { 
    const Player = mp.players.local;
-   const Data = CursorData();
+   const Data = getCursorData();
 
    if (!mp.keys.isDown(0x02)) return;
-   const newHeading = Player.getHeading() + Data.DeltaX * 0.15;
+   const newHeading = Player.getHeading() + Data.deltaX * 0.15;
    Player.setHeading(newHeading);
 
    let { x: camPosX, y: camPosY, z: camPosZ } = MovableCamera.getCoord();
    //let { X: camPointX, Y: camPointY, Z: camPointZ } = MovableCamera.getDirection();
 
-   camPosZ = camPosZ + Data.DeltaY * 0.001;
+   camPosZ = camPosZ + Data.deltaY * 0.001;
    const { x: charPosX, y: charPosY, z: charPosZ } = Player.getCoords(true);
 
    if (camPosZ < charPosZ + 0.7 && camPosZ > charPosZ - 0.8) { 

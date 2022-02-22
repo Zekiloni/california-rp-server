@@ -18,13 +18,13 @@ interface PostalPoint {
 };
 
 
-mp.keys.bind(controls.F2, true, function () {
-   startPostal([
-      new mp.Vector3(-1368.91003417968, -556.82287597656, 30.2354869), 
-      new mp.Vector3(-1382.18603515625, -568.44696044921, 30.2278385), 
-      new mp.Vector3(-1390.91760253906, -562.28271484375, 30.2288379)
-   ])
-})
+// mp.keys.bind(controls.F2, true, function () {
+//    startPostal([
+//       new mp.Vector3(-1368.91003417968, -556.82287597656, 30.2354869), 
+//       new mp.Vector3(-1382.18603515625, -568.44696044921, 30.2278385), 
+//       new mp.Vector3(-1390.91760253906, -562.28271484375, 30.2288379)
+//    ])
+// })
 
 
 const startPostal = (positions: Vector3Mp[]) => {
