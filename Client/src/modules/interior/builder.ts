@@ -12,6 +12,9 @@ enum Movements {
    MOVING, ROTATION
 }
 
+enum Directions { 
+   X, Y, Z
+}
 
 enum PropertyType { 
    HOUSE = 1, BUSINES = 2
@@ -24,26 +27,25 @@ interface Property {
 
 interface BuilderConfig {
    active: boolean
-   moveSensitivity: number
-   rotateSensitivity: number
+   object: ObjectMp | null
    movement: Movements
+   direction: Directions
    automaticGround: boolean
    clickSelectMode: boolean
-   object: ObjectMp | null
 };
 
 
 let property: Property | null = null;
 let newObject: boolean = false;
 
+
 let editing: BuilderConfig = {
    active: false,
-   moveSensitivity: 50,
-   rotateSensitivity: 800,
-   movement: Movements.MOVING,
-   clickSelectMode: false,
    object: null,
-   automaticGround: false
+   movement: Movements.MOVING,
+   direction: Directions.X,
+   automaticGround: false,
+   clickSelectMode: false
 }
 
 
