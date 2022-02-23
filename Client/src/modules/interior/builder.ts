@@ -1,9 +1,8 @@
 
 
 import { Browser } from '../../browser';
-import controls from '../../enums/controls';
 import clickEntity from '../utils/click.Entity';
-import { interiorObjects } from './loader';
+import { objects } from './loader';
 
 
 enum Movements {
@@ -32,13 +31,11 @@ interface BuilderConfig {
    clickSelectMode: boolean
    positionSensitivity: number
    rotationSensitivity: number
-   temporaryObjects: ObjectMp[]
 };
 
 
 const resolution = mp.game.graphics.getScreenActiveResolution(0, 0);
 
-let property: Property | null = null;
 
 let editing: BuilderConfig = {
    active: false,
@@ -49,25 +46,19 @@ let editing: BuilderConfig = {
    clickSelectMode: false,
    positionSensitivity: 50,
    rotationSensitivity: 800,
-   temporaryObjects: []
 }
 
 
-export const toggleBuilder = (toggle: boolean, type?: PropertyType, id?: number, objectModel?: string) => {
+export const toggleBuilder = (toggle: boolean, objectModel?: string) => {
    editing.active = toggle;
 
-   if (editing.active && type && id && objectModel) { 
+   if (editing.active && objectModel) { 
       mp.events.add('render', editor);
       mp.events.add(RageEnums.EventKey.CLICK, click);
       Browser.call('BROWSER::SHOW', 'objectEditor');
-
-      property = {
-         type: type,
-         id: id
-      };
       
       const created = createObject(objectModel);
-      select(created);
+      select(created!);
 
    } else { 
       mp.events.remove('render', editor);
@@ -78,15 +69,15 @@ export const toggleBuilder = (toggle: boolean, type?: PropertyType, id?: number,
 
       Browser.call('BROWSER::HIDE', 'objectEditor');
 
-      editing.temporaryObjects.forEach(object => {
-         object.destroy();
+      objects.forEach(object => { 
+         if (object.temporary && object.gameObject) {
+            const index = objects.indexOf(object);
+            object.gameObject.destroy();
+            objects.splice(index, 1);
+         }
       })
 
-      editing.temporaryObjects = [];
-      
-      if (editing.object) {
-         editing.object.destroy();
-      }
+      editing.object = null;
    }
 }
 
@@ -195,6 +186,8 @@ const editor = () => {
             oldCursorPosition = [cursorPositionX, cursorPositionY];
 
             Browser.call('BROWSER::BUILDER:UPDATE_POSITION', editing.object.position);
+            Browser.call('BROWSER::BUILDER:UPDATE_ROTATION', editing.object.rotation);
+
          }
       }
    }
@@ -204,13 +197,17 @@ const editor = () => {
 const createObject = (model: string) => {
    const { position, dimension } = mp.players.local;
 
-   const createdObject = mp.objects.new(mp.game.joaat(model), new mp.Vector3(position.x + 2, position.y + 2, position.z), {
-         alpha: 255, dimension: dimension
+   const created = objects.push( 
+      { 
+         temporary: true, 
+         model: model, 
+         gameObject: mp.objects.new(mp.game.joaat(model), new mp.Vector3(position.x + 2, position.y + 2, position.z), {
+            alpha: 255, dimension: dimension
+         })
       }
    );
 
-   editing.temporaryObjects.push(createdObject);
-   return createdObject;
+   return objects[created].gameObject;
 };
 
 
@@ -220,19 +217,41 @@ export const changeModel = (model: string) => {
    }
 }
 
-const removeObject = (object: ObjectMp) => {
-   if (!object) {
+
+export const save = async (name?: string) => {
+   if (!editing.object) {
+      return;
+   }
+   
+   const object = objects.find(object => object.gameObject?.id == editing.object!.id);
+
+   if (object?.temporary) {
+      const response = await mp.events.callRemoteProc('SERVER::BUILDER:OBJECT_CREATE', editing.object.model, editing.object.position, editing.object.rotation, name);
+      if (response) {
+         object.temporary = false;
+         object.databaseID = response.id;
+      }
+   } else { 
+      mp.events.callRemote('SERVER::BUILDER:OBJECT_SAVE', object?.databaseID, editing.object.position, editing.object.rotation, name);
+   }
+
+}
+
+const removeObject = () => {
+   if (!editing.object) {
       return;
    }
 
-   const rObject = interiorObjects.get(object.id);
+   const object = objects.find(object => object.gameObject!.id == editing.object!.id);
 
-   if (rObject) {
-      interiorObjects.delete(rObject.id);
-      // update interior ....
+   if (object?.temporary) { 
+      const index = objects.indexOf(object);
+      objects.splice(index, 1);
+   } else { 
+      mp.events.callRemote('SERVER::BUILDER:OBJECT_DELETE', object?.databaseID); 
    }
 
-   object.destroy();
+   object?.gameObject?.destroy();
 };
 
 
@@ -247,15 +266,20 @@ const setProperlyOnGround = (object: ObjectMp) => {
 };
 
 
-const select = (object: ObjectMp | null) => {
-   if (!object) {
+const select = (gameObject: ObjectMp | null) => {
+   if (!gameObject) {
       editing.active = false;
       editing.object = null;
    } else { 
       editing.active = true;
-      editing.object = object;
+      editing.object = gameObject;
+
       Browser.call('BROWSER::BUILDER:UPDATE_POSITION', editing.object.position);
       Browser.call('BROWSER::BUILDER:UPDATE_ROTATION', editing.object.rotation);
+
+      const object = objects.find(object => object.gameObject!.id == gameObject.id); 
+
+      Browser.call('BROWSER::BUILDER:UPDATE_OBJECT_STATUS', object?.temporary);
    }
 }
 
@@ -286,16 +310,7 @@ const setDirection = (i: Directions) => {
 mp.events.add('CLIENT::BUILDER:SET_MOVEMENT', setMovement);
 mp.events.add('CLIENT::BUILDER:SET_AUTOMATIC_GROUND', automaticGround);
 mp.events.add('CLIENT::BUILDER:SET_DIRECTION', setDirection);
-
-
-mp.keys.bind(controls.F2, true, function () {
-   if (editing.active) {
-      toggleBuilder(false);
-   } else { 
-      toggleBuilder(true, 1, 1);
-   }
-})
-
-
+mp.events.add('CLIENT::BUILDER:OBJECT_SAVE', save);
+mp.events.add('CLIENT::BUILDER:OBJECT_DELETE', removeObject);
 
 export {}

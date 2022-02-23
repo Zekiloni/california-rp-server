@@ -63,9 +63,10 @@
 
 
       <!-- [BUILDER] -->
-      <transition name="fade-with-bottom-slide"> 
-         <ObjectEditor v-if="interfaces.objectEditor" />
-      </transition>
+      <transition-group name="fade-with-bottom-slide"> 
+         <ObjectsMenu v-if="interfaces.objectsMenu" key=objectsMenu />
+         <ObjectEditor v-if="interfaces.objectEditor" key=objectEditor />
+      </transition-group>
 
       <!-- <transition name="bounce">
          <Lobby v-if="interfaces.Lobby" />
@@ -114,6 +115,7 @@
    import ClothingMenu from '@/components/business/menus/ClothingMenu.vue';
    import RentMenu from '@/components/business/menus/RentVehicle.vue';
 
+   import ObjectsMenu from '@/components/builder/ObjectsMenu.vue';
    import ObjectEditor from '@/components/builder/ObjectEditor.vue';
       
    export default { 
@@ -123,7 +125,8 @@
          Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
          Phone, Document, HandheldRadio, DeathScreen,
 
-         ObjectEditor,
+
+         ObjectsMenu, ObjectEditor,
          
          BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu
       },

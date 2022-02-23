@@ -1,38 +1,45 @@
 
 
 
-export let interiorObjects = new Map<number, ObjectMp>();
+export let objects: InteriorObject[] = [];
 
 
 interface InteriorObject { 
-   model: string,
-   position: Vector3Mp,
-   rotation: Vector3Mp
+   databaseID?: number
+   name?: string
+   model?: string
+   gameObject?: ObjectMp
+   temporary?: boolean
 }
 
 
-const loadObjects = (loadObjects: InteriorObject[], dimension: number) => {
-   for (const i of loadObjects) {
-      const object = mp.objects.new(mp.game.joaat(i.model), i.position, { 
-            rotation: i.rotation,
-            alpha: 255,
-            dimension: dimension
-         }
-      );
+const loadObjects = (loadObjects: { name: string, id: number, model: string, position: Vector3Mp, rotation: Vector3Mp }[], dimension: number) => {
+   for (const object of loadObjects) {
 
-      if (!object.doesExist()) {
-         interiorObjects.set(object.id, object);
-      }
+      const gameObject = mp.objects.new(mp.game.joaat(object.model), object.position!, { 
+         rotation: object.rotation,
+         alpha: 255,
+         dimension: dimension
+      });
+
+      objects.push(
+         {
+            databaseID: object.id, name: object.name, model: object.model, gameObject: gameObject
+         }
+      )
    }   
 }
 
 
 const unloadObjects = () => {
-   interiorObjects.forEach(object => {
-      const { id } = object;
-      object.destroy();
-      interiorObjects.delete(id);
-   });
+
+   objects.forEach(object => {
+      if (object.gameObject) {
+         object.gameObject.destroy();
+      }
+   })
+
+   objects = [];
 }
 
 

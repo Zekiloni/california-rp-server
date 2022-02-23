@@ -53,6 +53,7 @@ const InitialState = {
    houseInfo: false,
 
    // builder
+   objectsMenu: false,
    objectEditor: false
 }
 

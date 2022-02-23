@@ -87,9 +87,6 @@ export class houses extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @HasMany(() => objects)
-   interiorObjects: objects[]
-
    get object (): interactionPoint { 
       return houses.objects.get(this.id)!;
    }
@@ -258,9 +255,10 @@ export class houses extends Model {
       player.position = this.interior_position;
       player.dimension = this.id;
 
-      if (this.interiorObjects.length > 0) {
-         player.call('CLIENT::INTERIOR:OBJECTS_LOAD', [this.interiorObjects])
-      }
+      objects.findAll( { where: { property: 'house', property_id: this.id } } ).then(objects => {
+         player.call('CLIENT::INTERIOR:OBJECTS_LOAD', [objects, this.id])
+      })
+
 
       player.character.inside = this;
       player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [this.interior_position, 30, this.object.marker?.getColor()])

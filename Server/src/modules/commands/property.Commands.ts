@@ -27,7 +27,18 @@ Commands[cmds.names.BUSINES] = {
 }
 
 
-// Commands[cmds.names.HOUSE] = {
+Commands[cmds.names.BUILDER] = {
+   description: cmds.names.BUILDER,
+   call (player: PlayerMp) {
+      if (!player.character.inside) {
+         return;
+      }
 
+      if (player.character.inside.owner != player.character.id) {
+         return;
+      }
 
-// }
+      player.call('CLIENT::BUILDER:MENU_TOGGLE');
+   }
+
+}

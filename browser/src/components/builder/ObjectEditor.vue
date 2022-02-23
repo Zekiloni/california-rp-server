@@ -6,6 +6,7 @@
          <button @click="setMovement(0)" :class="{ active: movement == 0 }"> <div class="icon position"> </div> </button>
          <button @click="setMovement(1)" :class="{ active: movement == 1 }"> <div class="icon rotation"> </div> </button>
          <button @click="setAutomatiGround()" :class="{ active: automaticGround }"> <div class="icon grounding"> </div> </button>
+         <button @click="save()"> {{ newObject ? 'purchase' : 'save' }} </button>
       </div>
 
       <div class="values" v-if="activeMovement">
@@ -53,6 +54,8 @@
 
       direction: Direction = Direction.X;
 
+      newObject: boolean = true;
+
       automaticGround: boolean = false;
 
       position: Vector3 | null = null;
@@ -68,7 +71,6 @@
       }
 
       changePosition (i: number) {
-         console.log('change pos')
          console.log(JSON.stringify(i))
       }
 
@@ -79,7 +81,6 @@
 
       setDirection (i: Direction) {
          this.direction = i;
-         console.log(this.direction)
          mp.events.call('CLIENT::BUILDER:SET_DIRECTION',i);
       }
 
@@ -88,11 +89,15 @@
          mp.events.call('CLIENT::BUILDER:SET_MOVEMENT', i);
       }
 
+      save () {
+         mp.events.call('CLIENT::BUILDER:OBJECT_SAVE');
+      }
+
       mounted () {
          if (window.mp) {
             mp.events.add('BROWSER::BUILDER:UPDATE_POSITION', (position: string) => this.position = JSON.parse(position));
             mp.events.add('BROWSER::BUILDER:UPDATE_ROTATION', (rotation: string) => this.rotation = JSON.parse(rotation));
-
+            mp.events.add('BROWSER::BUILDER:UPDATE_OBJECT_STATUS', (status: boolean) => this.newObject = status);
             console.log(JSON.stringify(this.rotation))
          }
       }
