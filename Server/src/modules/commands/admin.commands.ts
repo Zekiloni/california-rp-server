@@ -591,6 +591,26 @@ Commands[cmds.names.DESTROY_HOUSE] =  {
 }
 
 
+Commands[cmds.names.EDIT_HOUSE] =  {
+   admin: rank.LEAD_ADMINISTRATOR,
+   description: cmds.descriptions.EDIT_HOUSE,
+   params: [
+      cmds.params.HOUSE_ID,
+      cmds.params.FIELD,
+      cmds.params.VALUE
+   ],
+   call (player: PlayerMp, id: string, property: string, value: string) { 
+      houses.findOne( { where: { id: id } } ).then(house => { 
+         if (!house) {
+            return;
+         }
+         
+         house.edit(player, property, value);
+      })
+   }
+}
+
+
 Commands[cmds.names.DESTROY_BUSINESS] = {
    admin: rank.LEAD_ADMINISTRATOR,
    description: cmds.descriptions.DESTROY_BUSINESS,

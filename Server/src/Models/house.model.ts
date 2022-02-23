@@ -1,10 +1,10 @@
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType, ForeignKey, AfterSync, AfterSave } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType, ForeignKey, AfterSync, AfterSave, HasMany } from 'sequelize-typescript';
 import { interactionPoint } from '@interfaces';
-import { notifications } from '@enums';
+import { notifications, rank } from '@enums';
 import { cmds, gDimension, lang } from '@constants';
 import { houseConfig } from '@configs';
-import { characters } from '@models';
+import { characters, objects } from '@models';
 import { logs } from './log.model';
 
 
@@ -86,6 +86,9 @@ export class houses extends Model {
 
    @UpdatedAt
    updated_at: Date;
+
+   @HasMany(() => objects)
+   interiorObjects: objects[]
 
    get object (): interactionPoint { 
       return houses.objects.get(this.id)!;
@@ -237,7 +240,7 @@ export class houses extends Model {
    }
 
    static async getNearest (player: PlayerMp): Promise<houses | void> {
-      return houses.findAll( { include: [] } ).then(houses => {
+      return houses.findAll( { include: [ objects ] } ).then(houses => {
          const nearest = houses.filter(house => player.dist(house.position) < 20);
 
          return nearest.reduce((firstHouse, secondHouse) => {
@@ -255,7 +258,12 @@ export class houses extends Model {
       player.position = this.interior_position;
       player.dimension = this.id;
 
+      if (this.interiorObjects.length > 0) {
+         player.call('CLIENT::INTERIOR:OBJECTS_LOAD', [this.interiorObjects])
+      }
+
       player.character.inside = this;
+      player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [this.interior_position, 30, this.object.marker?.getColor()])
    }
 
 
@@ -273,7 +281,11 @@ export class houses extends Model {
       player.position = this.position;
       player.dimension = this.dimension;
 
+      player.call('CLIENT::INTERIOR:OBJECTS_UNLOAD');
+
       player.character.inside = null;
+
+      player.call('CLIENT::INTERIOR:DESTROY_EXIT_POINT', [this.interior_position]);
    }
 }
 

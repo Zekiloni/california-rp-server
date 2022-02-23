@@ -3,7 +3,7 @@
 import { Browser } from '../../browser';
 import controls from '../../enums/controls';
 import clickEntity from '../utils/click.Entity';
-import { objects } from './loader';
+import { interiorObjects } from './loader';
 
 
 enum Movements {
@@ -32,16 +32,13 @@ interface BuilderConfig {
    clickSelectMode: boolean
    positionSensitivity: number
    rotationSensitivity: number
+   temporaryObjects: ObjectMp[]
 };
 
 
 const resolution = mp.game.graphics.getScreenActiveResolution(0, 0);
 
-
-
 let property: Property | null = null;
-let newObject: boolean = false;
-
 
 let editing: BuilderConfig = {
    active: false,
@@ -51,14 +48,15 @@ let editing: BuilderConfig = {
    automaticGround: false,
    clickSelectMode: false,
    positionSensitivity: 50,
-   rotationSensitivity: 800
+   rotationSensitivity: 800,
+   temporaryObjects: []
 }
 
 
-const toggleBuilder = (toggle: boolean, type?: PropertyType, id?: number) => {
+export const toggleBuilder = (toggle: boolean, type?: PropertyType, id?: number, objectModel?: string) => {
    editing.active = toggle;
 
-   if (editing.active && type && id) { 
+   if (editing.active && type && id && objectModel) { 
       mp.events.add('render', editor);
       mp.events.add(RageEnums.EventKey.CLICK, click);
       Browser.call('BROWSER::SHOW', 'objectEditor');
@@ -68,19 +66,24 @@ const toggleBuilder = (toggle: boolean, type?: PropertyType, id?: number) => {
          id: id
       };
       
-      const created = createObject('prop_patio_lounger1_table');
+      const created = createObject(objectModel);
       select(created);
 
    } else { 
       mp.events.remove('render', editor);
       mp.events.remove(RageEnums.EventKey.CLICK, click);
 
-      newObject = false;
       mp.gui.cursor.show(false, false);
       editing.active = false;
 
       Browser.call('BROWSER::HIDE', 'objectEditor');
 
+      editing.temporaryObjects.forEach(object => {
+         object.destroy();
+      })
+
+      editing.temporaryObjects = [];
+      
       if (editing.object) {
          editing.object.destroy();
       }
@@ -200,29 +203,32 @@ const editor = () => {
 
 const createObject = (model: string) => {
    const { position, dimension } = mp.players.local;
-   mp.gui.chat.push('Created Object')
 
    const createdObject = mp.objects.new(mp.game.joaat(model), new mp.Vector3(position.x + 2, position.y + 2, position.z), {
          alpha: 255, dimension: dimension
       }
    );
 
-   newObject = true;
-   mp.gui.chat.push('Created Object 2')
-
+   editing.temporaryObjects.push(createdObject);
    return createdObject;
 };
 
+
+export const changeModel = (model: string) => {
+   if (editing.object) {
+      editing.object.model = mp.game.joaat(model);
+   }
+}
 
 const removeObject = (object: ObjectMp) => {
    if (!object) {
       return;
    }
 
-   const rObject = objects.get(object.id);
+   const rObject = interiorObjects.get(object.id);
 
    if (rObject) {
-      objects.delete(rObject.id);
+      interiorObjects.delete(rObject.id);
       // update interior ....
    }
 
@@ -254,13 +260,6 @@ const select = (object: ObjectMp | null) => {
 }
 
 
-const changeModel = (model: string) => {
-   if (editing.object) {
-      editing.object.model = mp.game.joaat(model);
-   }
-}
-
-
 const click = (x: number, y: number, upOrDown: string, leftOrRight: string, relativeX: number, relativeY: number, worldPosition: Vector3Mp, hitEntity: number) => {
    if (editing.active && editing.clickSelectMode) {
       const hitedObject = clickEntity(worldPosition, mp.players.local);
@@ -284,7 +283,6 @@ const setDirection = (i: Directions) => {
 }
 
 
-mp.events.add('CLIENT::INTERIOR:BUILDER:TOGGLE', toggleBuilder)
 mp.events.add('CLIENT::BUILDER:SET_MOVEMENT', setMovement);
 mp.events.add('CLIENT::BUILDER:SET_AUTOMATIC_GROUND', automaticGround);
 mp.events.add('CLIENT::BUILDER:SET_DIRECTION', setDirection);

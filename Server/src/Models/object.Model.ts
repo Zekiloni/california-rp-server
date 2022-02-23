@@ -1,6 +1,7 @@
-import { Model, PrimaryKey, Column, AutoIncrement, AllowNull, DataType, CreatedAt, UpdatedAt, Default } from 'sequelize-typescript';
+import { Model, PrimaryKey, Column, AutoIncrement, AllowNull, DataType, CreatedAt, UpdatedAt, Default, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { business, houses } from '.';
 
-export class bObject extends Model {
+export class objects extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
@@ -9,6 +10,13 @@ export class bObject extends Model {
    @AllowNull(false)
    @Column
    model: number
+
+   @ForeignKey(() => houses || business)
+   @Column
+   property_id: number
+ 
+   @BelongsTo(() => houses || business)
+   property: houses | business
 
    @Column({ 
       type: DataType.JSON,

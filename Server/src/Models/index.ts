@@ -10,10 +10,14 @@ export * from './item.model';
 export * from './inventory.model';
 export * from './job.model';
 export * from './misc/channel.model';
-export * from './house.model';
 export * from './factions/faction.model';
 export * from './factions/rank.model';
 
+// @builder
+export * from './object.Model';
+
+// @house
+export * from './house.model';
 
 // @vehicles
 export * from './vehicles/vehicle.model';

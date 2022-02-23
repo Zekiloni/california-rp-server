@@ -1,7 +1,7 @@
 
 
 
-export let objects = new Map<number, ObjectMp>();
+export let interiorObjects = new Map<number, ObjectMp>();
 
 
 interface InteriorObject { 
@@ -11,7 +11,7 @@ interface InteriorObject {
 }
 
 
-const load = (loadObjects: InteriorObject[], dimension: number) => {
+const loadObjects = (loadObjects: InteriorObject[], dimension: number) => {
    for (const i of loadObjects) {
       const object = mp.objects.new(mp.game.joaat(i.model), i.position, { 
             rotation: i.rotation,
@@ -21,20 +21,20 @@ const load = (loadObjects: InteriorObject[], dimension: number) => {
       );
 
       if (!object.doesExist()) {
-         objects.set(object.id, object);
+         interiorObjects.set(object.id, object);
       }
    }   
 }
 
 
-const unload = () => {
-   objects.forEach(object => {
+const unloadObjects = () => {
+   interiorObjects.forEach(object => {
       const { id } = object;
       object.destroy();
-      objects.delete(id);
+      interiorObjects.delete(id);
    });
 }
 
 
-mp.events.add('CLIENT::INTERIOR:LOAD', load);
-mp.events.add('CLIENT::INTERIOR:UNLOAD', unload);
+mp.events.add('CLIENT::INTERIOR:OBJECTS_LOAD', loadObjects);
+mp.events.add('CLIENT::INTERIOR:OBJECTS_UNLOAD', unloadObjects);

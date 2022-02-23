@@ -272,7 +272,6 @@ mp.Player.prototype.notification = function (message: string, type: number, time
 };
 
 
-
 mp.Player.prototype.hint = function (key: string, message: string, time: number) {
    this.call('CLIENT::HINT', [key, message, time]);
 };
