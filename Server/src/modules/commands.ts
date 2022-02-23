@@ -63,6 +63,7 @@ import './commands/admin.Commands';
 import './commands/buy.Command';
 import './commands/vehicle.Commands';
 import './commands/property.Commands';
+import './commands/interior.Commands';
 import './commands/lock.Command';
 import './commands/channel.commands';
 import './commands/test.commands';

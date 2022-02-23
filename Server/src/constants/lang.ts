@@ -33,6 +33,7 @@ export const lang = {
    notInAnyFaction: 'Niste član ni jedne fakcije.',
    notInYourFaction: 'Igrač nije član Vaše fakcije.',
    notOnDuty: 'Niste na dužnosti.',
+   notNearbyExit: 'Ne nalazite se u blizini vrata za izlazak.',
    busiensAlreadyOwner: 'Ovaj biznis je već u nečijem vlasništvu.',
    notNearJob: 'Ne nalazite se u blizini posla',
    cannotToYourself: 'Ne možete saMI sebi.',
@@ -89,6 +90,7 @@ export const lang = {
    notFactionLeader: 'Niste lider ove fakcije.',
    unsuccessfulAuth: 'Neuspešna prijava',
    thisBusinessIsLocked: 'Biznis je zaključan, zavoren.',
+   thisHouseIsLocked: 'Ova kuća je zaključana.',
 
 
    // help messages

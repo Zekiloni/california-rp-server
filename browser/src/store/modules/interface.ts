@@ -53,7 +53,7 @@ const InitialState = {
    houseInfo: false,
 
    // builder
-   objectEditor: true
+   objectEditor: false
 }
 
 export const InterfaceStore = {

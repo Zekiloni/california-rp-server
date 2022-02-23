@@ -81,10 +81,3 @@ export class Ticket extends Model {
    @UpdatedAt
    Updated_At: Date;
 }
-
-(async () => { 
-
-   await Warrant.sync();
-   await Ticket.sync();
-
-})();

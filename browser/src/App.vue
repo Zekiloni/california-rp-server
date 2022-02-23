@@ -63,7 +63,9 @@
 
 
       <!-- [BUILDER] -->
-      <ObjectEditor v-if="interfaces.objectEditor" />
+      <transition name="fade-with-bottom-slide"> 
+         <ObjectEditor v-if="interfaces.objectEditor" />
+      </transition>
 
       <!-- <transition name="bounce">
          <Lobby v-if="interfaces.Lobby" />

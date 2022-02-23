@@ -182,6 +182,7 @@ export class business extends Model {
    static getNearest (player: PlayerMp) {
       return business.findAll( { include: [products, workers] } ).then(businesses => {
          const nearest = businesses.filter(business => player.dist(business.position) < 20);
+
          return nearest.reduce((firstBiz, secondBiz) => {
             return player.dist(firstBiz.position) < player.dist(secondBiz.position) ? firstBiz : secondBiz;
          })

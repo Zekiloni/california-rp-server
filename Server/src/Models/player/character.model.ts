@@ -111,15 +111,6 @@ export class characters extends Model {
    @Default(null)
    @Column
    last_dimension: number;
-   
-   @Default(null)
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('inside')); }
-      }
-   )    
-   inside: { position: Vector3Mp, type: number }
 
    @Default(none)
    @Column(DataType.INTEGER( { length: 3 } ))
@@ -174,6 +165,8 @@ export class characters extends Model {
    business: business[]
 
    offers: offer[] = [];
+   
+   inside: houses | business | null = null;
 
    freezed: boolean = false;
 

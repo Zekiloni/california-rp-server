@@ -565,9 +565,28 @@ Commands[cmds.names.TELEPORT] = {
 
 Commands[cmds.names.CREATE_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
-   description: 'opis napisati',
-   call (player: PlayerMp, type: houseConfig.type, price: number) { 
-      houses.new(player, type, price);
+   description: cmds.descriptions.CREATE_HOUSE,
+   params: [
+      cmds.params.HOUSE_TYPE,
+      cmds.params.PRICE
+   ],
+   call (player: PlayerMp, type: string, price: string) { 
+      houses.new(player, Number(type), Number(price));
+   }
+}
+
+
+Commands[cmds.names.DESTROY_HOUSE] =  {
+   admin: rank.LEAD_ADMINISTRATOR,
+   description: cmds.descriptions.DESTROY_HOUSE,
+   async call (player: PlayerMp, id?: number) { 
+      const nearest = await houses.getNearest(player);
+
+      if (!nearest) {
+         return;
+      }
+
+      nearest.destroy();
    }
 }
 
@@ -586,19 +605,7 @@ Commands[cmds.names.DESTROY_BUSINESS] = {
    }
 }
 
-Commands[cmds.names.DESTROY_HOUSE] =  {
-   admin: rank.LEAD_ADMINISTRATOR,
-   description: 'opis napisati',
-   async call (player: PlayerMp, id?: number) { 
-      const nearest = await houses.getNearest(player);
 
-      if (!nearest) {
-         return;
-      }
-
-      nearest.destroy();
-   }
-}
 
 
 Commands[cmds.names.FLY] =  {

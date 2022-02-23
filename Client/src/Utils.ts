@@ -20,6 +20,18 @@ export function isNearATM (Position: Vector3Mp) {
 };
 
 
+export function getForwardVector (rotation: Vector3Mp) {
+   const z = -rotation.z;
+   const x = rotation.x;
+   const num = Math.abs(Math.cos(x));
+   return {
+      x: -Math.sin(z) * num,
+      y: Math.cos(z) * num,
+      z: Math.sin(x)
+   };
+}
+
+
 function getLookEntity (distance: number) {
    const camera = mp.cameras.new("gameplay"); 
 

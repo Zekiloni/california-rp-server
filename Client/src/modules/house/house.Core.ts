@@ -17,7 +17,7 @@ mp.events.add(
 mp.keys.bind(controls.KEY_E, true, enterHouse);
 
 
-function showHouseInfo (info: boolean | object) {
+function showHouseInfo (info: boolean | object, availableCommands?: string[]) {
    if (info) { 
       active = true;
       house = (<Object>info);
@@ -25,7 +25,7 @@ function showHouseInfo (info: boolean | object) {
       const location = getStreetZone(mp.players.local.position);
 
       Browser.call('BROWSER::SHOW', 'houseInfo');
-      Browser.call('BROWSER::HOUSE:INFO', info, location);
+      Browser.call('BROWSER::HOUSE:INFO', info, location, availableCommands);
    } else { 
       active = false;
       house = null;

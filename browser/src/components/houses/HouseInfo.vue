@@ -13,6 +13,12 @@
          <li> <b> {{ Messages.HOUSE_RENTABLE }}: </b> {{ house.rentable ? Messages.YES : Messages.NO }} </li>
          <li v-if="house.rentable"> <b> {{ Messages.HOUSE_RENT_PRICE }}: </b> {{ dollars(house.rent) }} </li>
       </ul>
+      <div class="commands" v-if="commands">
+         <h4> {{ Messages.AVAILABLE_COMMANDS }} </h4>
+         <p> 
+            {{ commands.map(cmd => '/' + cmd).join(' ') }}
+         </p>
+      </div>
    </div>
 </template>
 
@@ -23,13 +29,14 @@
       data () { 
          return {
             house: null,
+            commands: null,
 
             Messages
          }
       },
       
       mounted () { 
-         if (window.mp) mp.events.add('BROWSER::HOUSE:INFO', (info, location) => { this.house = JSON.parse(info); this.house.location = JSON.parse(location); });
+         if (window.mp) mp.events.add('BROWSER::HOUSE:INFO', (info, location, commands) => { this.house = JSON.parse(info); this.house.location = JSON.parse(location); this.commands = JSON.parse(commands) });
       }
    }
 </script>
@@ -45,8 +52,8 @@
       min-height: 200px;
       overflow: hidden;
       border-radius: 10px;
-      background: rgb(11 14 17 / 75%);
-      box-shadow: 0 7px 15px 0 rgb(0 0 0 / 61%);
+      background: radial-gradient(rgb(33 37 47 / 25%), rgb(11 14 17 / 55%));
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
    }
 
    h2.adress {
@@ -57,7 +64,7 @@
       font-size: 1.15rem;
       border-top-left-radius: 10px;
       padding: 10px;
-      background: #181a20;
+      background: rgb(11 14 17 / 46%);
    }
 
    h2.adress small { 
@@ -75,4 +82,14 @@
    ul.info li.sale { color: #78cd78; font-weight: 500; font-size: 1.05rem; }
 
 
+   .commands {
+      margin: 0;
+      padding:  10px;
+      color: #848e9c;
+   }
+
+   .commands h4 {
+      color: #ffcc45;
+      margin: 0;
+   }
 </style>

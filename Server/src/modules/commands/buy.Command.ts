@@ -1,13 +1,11 @@
 import { cmds } from '@constants/commands';
-import { business } from '@models';
+import { business, houses } from '@models';
 import { Commands } from '../commands';
 
 
 Commands[cmds.names.BUY] = {
    description: cmds.descriptions.BUY,
    async call (player: PlayerMp, action?: string) {
-
-
       switch (action) {
          case cmds.actions.busines: {
             const nearest = await business.getNearest(player);
@@ -25,7 +23,17 @@ Commands[cmds.names.BUY] = {
          }
 
          case cmds.actions.house: {
-            console.log('kuca')
+            const nearest = await houses.getNearest(player);
+
+            if (!nearest) {
+               return;
+            }
+
+            if (player.dist(nearest.position) > 2) {
+               return;
+            }
+
+            nearest.buy(player);            
             break;
          }
 

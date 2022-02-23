@@ -10,7 +10,7 @@ export * from './item.model';
 export * from './inventory.model';
 export * from './job.model';
 export * from './misc/channel.model';
-export * from './properties/house.model';
+export * from './house.model';
 export * from './factions/faction.model';
 export * from './factions/rank.model';
 
