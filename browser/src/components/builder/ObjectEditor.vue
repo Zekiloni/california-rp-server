@@ -50,6 +50,8 @@
    @Component
    export default class ObjectEditor extends Vue {
 
+      objects: { id: number, name: string, model: string }[] = [];
+
       movement: Movement = Movement.POSITION;
 
       direction: Direction = Direction.X;
@@ -95,6 +97,7 @@
 
       mounted () {
          if (window.mp) {
+            mp.events.add('BROWSER::BUILDER:OBJECTS', (objects: string) => this.objects = JSON.parse(objects))
             mp.events.add('BROWSER::BUILDER:UPDATE_POSITION', (position: string) => this.position = JSON.parse(position));
             mp.events.add('BROWSER::BUILDER:UPDATE_ROTATION', (rotation: string) => this.rotation = JSON.parse(rotation));
             mp.events.add('BROWSER::BUILDER:UPDATE_OBJECT_STATUS', (status: boolean) => this.newObject = status);

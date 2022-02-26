@@ -1,5 +1,5 @@
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType, ForeignKey, AfterSync, AfterSave, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType, ForeignKey, AfterSync, AfterSave, HasMany, BelongsTo } from 'sequelize-typescript';
 import { interactionPoint } from '@interfaces';
 import { notifications, rank } from '@enums';
 import { cmds, gDimension, lang } from '@constants';
@@ -21,6 +21,9 @@ export class houses extends Model {
    @ForeignKey(() => characters)
    @Column
    owner: number;
+
+   @BelongsTo(() => characters)
+   character: characters | null
 
    @Default(houseConfig.type.APARTMENT)
    @Column
@@ -237,7 +240,7 @@ export class houses extends Model {
    }
 
    static async getNearest (player: PlayerMp): Promise<houses | void> {
-      return houses.findAll( { include: [ objects ] } ).then(houses => {
+      return houses.findAll( { } ).then(houses => {
          const nearest = houses.filter(house => player.dist(house.position) < 20);
 
          return nearest.reduce((firstHouse, secondHouse) => {

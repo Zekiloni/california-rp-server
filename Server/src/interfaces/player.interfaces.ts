@@ -26,4 +26,5 @@ export interface spawnPoint {
    type: spawnPointTypes
    position: Vector3Mp
    heading: number
+   id?: number
 };

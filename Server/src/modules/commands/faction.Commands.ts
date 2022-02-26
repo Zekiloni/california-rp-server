@@ -1,16 +1,13 @@
-// import { Colors } from "../../Global/Colors";
-// import { Globals } from "../../Global/Globals";
-// import { Messages } from "../../Global/Messages";
-// import { Commands } from "../commands";
+import { Commands } from '../commands';
 
-// Commands["f"] = {
-//     Faction: 1,
-//     description: 'Faction chat',
-//     Call: async (Player: PlayerMp, Args: string[]) => {
-//         if (Player.character.Faction == 0) return Player.Notification(Messages.NOT_IN_ANY_FACTION, notifications.type.ERROR, 5);
-//         // FactionChat
-//     }
-// };
+
+Commands["f"] = {
+   faction: { },
+   description: 'Faction chat',
+   call (player: PlayerMp, ...text: any) {
+
+   }
+};
 
 // Commands["invite"] = {
 //     Leader: true,

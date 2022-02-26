@@ -3,13 +3,13 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max, AfterSync } from 'sequelize-typescript';
 
-import { accounts, appearances, banks, houses, business, inventories, items, logs } from '@models';
+import { accounts, appearances, banks, houses, business, inventories, items, logs, objects } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums, offerTypes } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, playerInjury } from '@interfaces';
-import { ClothingItem } from '@models/items/clothing.Item';
+import { ClothingItem } from '../items/clothing.Item';
 
 
 @Table
@@ -177,7 +177,7 @@ export class characters extends Model {
       logs.info(await characters.count() + ' characters loaded !');
    }
 
-   async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances) { 
+   async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances, id?: number) { 
 
       player.account.last_character = this.id;
       player.character = this;
@@ -247,48 +247,27 @@ export class characters extends Model {
             player.dimension = this.last_dimension ? this.last_dimension : gDimension;
             break;
          }
-      }
 
-      //    Player.RespawnTimer = null;
-      //    Player.setVariable('Wounded', this.Wounded);
-      //    if (this.Wounded) { 
-      //       // ciba na pod...
-      //    }
+         case spawnPointTypes.HOUSE: {
+            houses.findOne( { where: { id: id } } ).then(house => {
+               if (!house) {
+                  return;
+               }               
+
+               player.position = house.interior_position;
+               player.dimension = house.id;
+
+               objects.findAll( { where: { property: 'house', property_id: house.id } } ).then(objects => {
+                  player.call('CLIENT::INTERIOR:OBJECTS_LOAD', [objects, house.id])
+               })
+
+               player.character.inside = house;
          
-      //    Player.setVariable('Bubble', null);
-      //    Player.setVariable('Seatbelt', false);
-   
-   
-      //    // Applying appearance & clothing
-      //    // const Appearance = await Appearances.findOne({ where: { Character: this.id } });
-      //    // if (Appearance) Appearance.Apply(Player, this.Gender);
-   
-      //    // frp.Items.Equipment(Player, this.Gender);
-      //             console.log('Spawn', 3);
-
-      //    // spawning player on desired point
-      //    switch (this.Spawn_Point) {
-      //       case 0: {
-      //          console.log('Spawn', 4);
-      //          Player.position = Config.Default.Spawn;
-      //          Player.heading = Config.Default.Heading;
-      //          Player.dimension = Global_Dimension;
-      //          break;
-      //       }
-      //       case 1: {
-      //             Player.position = this.Last_Position;
-      //             Player.dimension = Global_Dimension;
-      //          break;
-      //       }
-      //       case 2: {
-      //          break;
-      //       }
-      //    }
-   
-      // } catch (e) { 
-      //    console.log(e)
-      // }
-
+               player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [house.interior_position, 30, house.object.marker?.getColor()])
+            })
+            break;
+         }
+      }
 
       await player.account.save();
    }
@@ -388,11 +367,18 @@ export class characters extends Model {
    }
    
    onDead (player: PlayerMp, killer: PlayerMp | EntityMp | null | undefined, reason?: number) {
-      
       player.setVariable(shared_Data.DEAD, true);
       player.setVariable(shared_Data.WOUNDED, false);
 
-      console.log(' Killer ' + (<PlayerMp>killer).name);
+      if (killer && (<PlayerMp>killer).name) {
+         console.log(' Killer ' + (<PlayerMp>killer).name);
+
+      }
+
+      if (reason) {
+         
+      }
+
    }
 
    async onQuit (position: Vector3Mp, dimension: number, exitType: string, reason: string | null) {

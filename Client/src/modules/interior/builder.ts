@@ -187,7 +187,6 @@ const editor = () => {
 
             Browser.call('BROWSER::BUILDER:UPDATE_POSITION', editing.object.position);
             Browser.call('BROWSER::BUILDER:UPDATE_ROTATION', editing.object.rotation);
-
          }
       }
    }
@@ -197,17 +196,21 @@ const editor = () => {
 const createObject = (model: string) => {
    const { position, dimension } = mp.players.local;
 
-   const created = objects.push( 
+   const object = mp.objects.new(mp.game.joaat(model), new mp.Vector3(position.x + 2, position.y + 2, position.z), {
+      alpha: 255, dimension: dimension
+   });
+
+   objects.push( 
       { 
          temporary: true, 
          model: model, 
-         gameObject: mp.objects.new(mp.game.joaat(model), new mp.Vector3(position.x + 2, position.y + 2, position.z), {
-            alpha: 255, dimension: dimension
-         })
+         gameObject: object
       }
    );
 
-   return objects[created].gameObject;
+   Browser.call('BROWSER::BUILDER:OBJECTS', objects);
+
+   return object;
 };
 
 
@@ -228,6 +231,7 @@ export const save = async (name?: string) => {
    if (object?.temporary) {
       const response = await mp.events.callRemoteProc('SERVER::BUILDER:OBJECT_CREATE', editing.object.model, editing.object.position, editing.object.rotation, name);
       if (response) {
+         mp.gui.chat.push('SAVED')
          object.temporary = false;
          object.databaseID = response.id;
       }
@@ -277,7 +281,7 @@ const select = (gameObject: ObjectMp | null) => {
       Browser.call('BROWSER::BUILDER:UPDATE_POSITION', editing.object.position);
       Browser.call('BROWSER::BUILDER:UPDATE_ROTATION', editing.object.rotation);
 
-      const object = objects.find(object => object.gameObject!.id == gameObject.id); 
+      const object = objects.find(object => object.gameObject?.doesExist() && object.gameObject!.id == gameObject.id); 
 
       Browser.call('BROWSER::BUILDER:UPDATE_OBJECT_STATUS', object?.temporary);
    }
@@ -288,6 +292,15 @@ const click = (x: number, y: number, upOrDown: string, leftOrRight: string, rela
    if (editing.active && editing.clickSelectMode) {
       const hitedObject = clickEntity(worldPosition, mp.players.local);
       mp.gui.chat.push(JSON.stringify(hitedObject));
+   }
+};
+
+
+const selectById = (id: number) => {
+   const object = objects.find(object => object.gameObject!.id == id);
+
+   if (object) {
+      select(object.gameObject!);
    }
 };
 
@@ -312,5 +325,6 @@ mp.events.add('CLIENT::BUILDER:SET_AUTOMATIC_GROUND', automaticGround);
 mp.events.add('CLIENT::BUILDER:SET_DIRECTION', setDirection);
 mp.events.add('CLIENT::BUILDER:OBJECT_SAVE', save);
 mp.events.add('CLIENT::BUILDER:OBJECT_DELETE', removeObject);
+mp.events.add('CLIENT::BUILDER:OBJECT_SELECT_BY_ID', selectById);
 
 export {}

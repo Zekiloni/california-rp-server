@@ -1,9 +1,9 @@
 import { logs, bans, characters, accounts, inventories, appearances, banks, items, houses, business, temporaryVehicles } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
-import { gDimension, itemNames, lang } from '@constants';
+import { gDimension, itemNames, lang, none } from '@constants';
 import { spawnPoint } from '@interfaces';
-import { shared_Data } from '@shared';
+import { distanceBetweenVectors, shared_Data } from '@shared';
 
 
 mp.events.add(
@@ -156,7 +156,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
 
       let spawnPoints: spawnPoint[] = [];
 
-      characters.findOne({ where: { id: id } }).then((character) => { 
+      characters.findOne({ where: { id: id }, include: [houses] }).then((character) => { 
 
          const defaultSpawn: spawnPoint = {
             name: lang.defaultSpawn,
@@ -171,19 +171,43 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
          if (character?.faction) {
             // push factionn spawn
          }
+         console.log(character?.houses)
+
+         if (character?.houses && character.houses.length > none) { 
+            for (const i in character.houses) {
+               const house = character.houses[i];
+               if (house.id) {
+                  spawnPoints.push(
+                     {
+                        name: lang.ownedHouse + (i + 1),
+                        type: spawnPointTypes.HOUSE,
+                        position: house.position,
+                        description: lang.yourHouse,
+                        heading: 0,
+                        id: house.id
+                     }
+                  )
+               }
          
-         // if (character?.houses) { }
+            }
+         }
 
          if (character?.last_position) { 
-            spawnPoints.push(
-               {
-                  name: lang.lastPosition,
-                  type: spawnPointTypes.LAST_POSITION,
-                  description: lang.lastPositionDescription,
-                  position: new mp.Vector3(character.last_position.x, character.last_position.y, character.last_position.z),
-                  heading: 0
-               }
-            )
+            const position = new mp.Vector3(character.last_position.x, character.last_position.y, character.last_position.z);
+
+            const lastPositionFarAway = character.houses.every(house => distanceBetweenVectors(position, house.position) > 200);
+
+            if (lastPositionFarAway) {
+               spawnPoints.push(
+                  {
+                     name: lang.lastPosition,
+                     type: spawnPointTypes.LAST_POSITION,
+                     description: lang.lastPositionDescription,
+                     position: position,
+                     heading: 0
+                  }
+               )
+            }
          }
          resolve(spawnPoints);
       });
@@ -220,9 +244,9 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 }
 
 
-function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes) {
+function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes, id?: number) {
    characters.findOne( { where: { id: characterId }, include: [appearances, banks] } ).then(character => {
-      character!.spawnPlayer(player, point, character?.appearance!);
+      character!.spawnPlayer(player, point, character?.appearance!, id);
    });
 }
 

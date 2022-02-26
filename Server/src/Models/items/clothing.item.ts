@@ -3,7 +3,7 @@
 import { items } from '../item.model';
 import { inventories  } from '@models';
 import { ItemEnums } from "@enums";
-import { itemNames } from '@constants/items';
+import { itemNames } from '@constants';
 
 const clothingType = [
    ItemEnums.type.CLOTHING,

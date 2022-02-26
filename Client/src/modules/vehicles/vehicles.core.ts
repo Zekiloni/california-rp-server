@@ -1,4 +1,5 @@
 import { Browser } from '../../browser';
+import { entityType } from '../../enums/entity';
 import { vehicleInterface, UI_Status, gameIStatus } from "../game.UI";
 
 
@@ -96,3 +97,48 @@ function driving () {
       
    }
 }
+
+
+
+// // Left Indicator
+// // mp.keys.bind(Controls.LEFT_ARROW, false, () => {
+// //    if (!Player.Logged) return;
+// //    if (mp.players.local.isTypingInTextChat) return;
+// //    let vehicle = mp.players.local.vehicle;
+// //    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 1);
+// // });
+
+
+// // // Right Indicator
+// // mp.keys.bind(Controls.RIGHT_ARROW, false, () => {
+// //    if (!Player.Logged) return;
+// //    if (mp.players.local.isTypingInTextChat) return;
+// //    let vehicle = mp.players.local.vehicle;
+// //    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 0);
+// // });
+
+
+
+
+const indicators = (entity: EntityMp, value?: boolean[], oldValue?: boolean[]) => {
+   if (entity.type != entityType.VEHICLE) {
+      return;
+   }
+
+   if (blockedClasses.indexOf((<VehicleMp>entity).getClass()) == -1) {
+      return;
+   }
+
+   if (!value) {
+      value = entity.getVariable('INDICATORS');
+   }
+   
+   const [left, right] = value!;
+
+   (<VehicleMp>entity)?.setIndicatorLights(0, right);
+   (<VehicleMp>entity)?.setIndicatorLights(1, left);
+}
+
+
+mp.events.add(RageEnums.EventKey.ENTITY_STREAM_IN, indicators);
+mp.events.addDataHandler('INDICATORS', indicators);

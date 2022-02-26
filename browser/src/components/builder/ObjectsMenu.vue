@@ -14,6 +14,12 @@
          </li>
       </ul>
 
+      <ul class="owned" v-if="menu.length > 0">
+         <li v-for="(object, i) in objects" :key="object.gameObject.id" @click="select(object.gameObject.id)">
+            {{ i }}
+         </li>
+      </ul>
+
    </div>
 </template>
 
@@ -30,6 +36,8 @@
 
       menu: object[] = [];
 
+      object: number | null = null;
+
       selectCategory (i: number) {
          this.category = i;
          mp.events.call('CLIENT::BUILDER:MODEL_PREVIEW', this.category, this.item);
@@ -38,6 +46,10 @@
       selectItem (i: number) {
          this.item = i;
          mp.events.call('CLIENT::BUILDER:MODEL_PREVIEW', this.category, this.item);
+      }
+
+      select (id: number) {
+         mp.events.call('CLIENT::BUILDER:OBJECT_SELECT_BY_ID', id);
       }
 
       mounted () {

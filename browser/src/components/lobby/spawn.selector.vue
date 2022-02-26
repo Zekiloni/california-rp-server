@@ -63,8 +63,8 @@
             this.map.flyTo([Coords.lat, Coords.lng], 0);
          },
 
-         play: function (spawnType) { 
-            mp.events.call('CLIENT::CHARACTER:PLAY', this.$parent.selectedCharacter, spawnType);
+         play: function (spawnType, id = 0) { 
+            mp.events.call('CLIENT::CHARACTER:PLAY', this.$parent.selectedCharacter, spawnType, id);
          },
 
          init: function () { 
@@ -105,7 +105,7 @@
                const coords = this.convertToMap(this.layer, point.position.x, point.position.y);
                point.marker = L.marker(new L.LatLng(coords.lat, coords.lng), { icon: smallIcon }).addTo(this.map)
                   .on('click', e => { 
-                     this.play(point.type);
+                     this.play(point.type, point.id);
 
                   })
                   .on('mouseover', async e => {

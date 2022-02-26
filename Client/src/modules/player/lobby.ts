@@ -12,9 +12,9 @@ mp.events.add(
          lobby(true, info.position, info.look_At);
       },
 
-      'CLIENT::CHARACTER:PLAY': (character: number, spawnPoint: number) => { 
+      'CLIENT::CHARACTER:PLAY': (character: number, spawnPoint: number, id?: number) => { 
          lobby(false);
-         mp.events.callRemote('SERVER::CHARACTER:PLAY', character, spawnPoint);
+         mp.events.callRemote('SERVER::CHARACTER:PLAY', character, spawnPoint, id);
          toggleGameInterface(UI_Status.VISIBLE);
       }
    }

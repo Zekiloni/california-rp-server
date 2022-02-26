@@ -1,4 +1,4 @@
-import { cmds } from '@constants/commands';
+import { cmds } from '@constants';
 import { Model, PrimaryKey, Column, AutoIncrement, AllowNull, DataType, CreatedAt, UpdatedAt, Default } from 'sequelize-typescript';
 import { houses } from './house.model';
 

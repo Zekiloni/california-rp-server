@@ -1,4 +1,4 @@
-import { offerTypes, offerStatus } from '@enums';
+import { offerTypes, offerStatus, factionPermissions } from '@enums';
 
 
 
@@ -23,9 +23,10 @@ export type commands = {
 };
 
 
-interface factionTypeCmd  {
+export interface factionTypeCmd  {
+   required?: boolean
    type?: number
-   id?: number
+   permissions?: factionPermissions[]
 }
 
 export interface command {

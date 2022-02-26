@@ -274,4 +274,18 @@ export class vehicles extends Model {
          this.object.setMod(component.component, component.value);
       });
    }
+
+   
+   static indicators (player:PlayerMp, left: boolean, right: boolean) {
+      if (!player.vehicle) {
+         return;
+      }
+      
+      player.vehicle.setVariable(shared_Data.INDICATORS, [left, right]);
+   }
 }
+
+
+
+
+mp.events.add('SERVER::VEHICLE:INDICATORS', vehicles.indicators);
