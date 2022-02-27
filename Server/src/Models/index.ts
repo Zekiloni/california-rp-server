@@ -10,6 +10,8 @@ export * from './item.model';
 export * from './inventory.model';
 export * from './job.model';
 export * from './misc/channel.model';
+
+// @factions
 export * from './factions/faction.model';
 export * from './factions/rank.model';
 

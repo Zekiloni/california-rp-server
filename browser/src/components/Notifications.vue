@@ -214,7 +214,7 @@
       align-items: center;
       font-size: 13.5px;
       margin-left: 10px;
-      font-weight: 300;
+      font-weight: 500;
       width: 100%;
       color: rgb(219, 219, 219);
    }

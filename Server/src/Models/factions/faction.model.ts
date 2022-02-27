@@ -1,8 +1,12 @@
 
 import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, Unique, UpdatedAt } from 'sequelize-typescript';
-
 import { factionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
+import { cmds, colors, lang, none } from '@constants';
+import { notifications } from '@enums';
+import { ranks } from '@models';
+import { checkForDot } from '@shared';
+
 
 @Table
 export class factions extends Model {
@@ -24,6 +28,9 @@ export class factions extends Model {
 
    @Column
    description: string
+
+   @Column
+   leader: number
 
    @Column({
       type: DataType.JSON,
@@ -59,6 +66,8 @@ export class factions extends Model {
    )   
    equipment: string[]
 
+   ranks: ranks[]
+
    @CreatedAt
    created_At: Date
 
@@ -93,5 +102,144 @@ export class factions extends Model {
       }
    }
 
-}
 
+   async edit (player: PlayerMp, property: string, ...value: any) {
+      switch (property) {
+         case cmds.actions.name: {
+            this.name = [...value].join(' ');
+            break;
+         }
+         case cmds.actions.spawn: {
+            this.spawn_Point = player.position;
+            break;
+         }
+      }
+
+      await this.save();
+   }
+   
+
+   async leave (player: PlayerMp) {
+      player.character.faction = none;
+      player.character.rank = none;
+
+      if (this.leader == player.character.id) {
+         this.leader = none;
+         player.notification(lang.uLeaveFactionLeaderPosition + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
+         await this.save();
+      } else { 
+         player.notification(lang.uLeavedFaction + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
+      }
+
+      await player.character.save()
+   }
+
+   async removeLeader () {
+      this.leader = none;
+      await this.save();
+   }
+
+   async makeLeader (player: PlayerMp, target: PlayerMp) {
+      target.character.faction = this.id;
+      this.leader = target.character.id;
+
+      target.notification(lang.uAreNowLeaderOf + this.name + lang.fromAdmin + player.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
+
+      // PORUKA: u set leader of ... to ...
+      // LOGS: setted leader
+
+      await this.save();
+      await target.character.save();
+   }
+
+
+   async kick (player: PlayerMp, target: PlayerMp) {
+      if (target.character.faction != player.character.faction) {
+         // PORUKA: Not in same faction
+         return;
+      }
+
+      if (this.leader == target.character.id) {
+         // PORUKA: Cannot that palyer, he is leader muharem horsman
+         return;
+      }
+
+      target.character.faction = none;
+      target.character.rank = none;
+
+      target.notification('', notifications.type.INFO, notifications.time.LONG); /// to target that he is kicked
+      player.notification('', notifications.type.SUCCESS, notifications.time.MED); // to player u succes kicked target.name...
+
+      await target.character.save();
+   }
+
+
+   invite (player: PlayerMp, target: PlayerMp) {
+      if (target.character.faction != none) {
+         // PORUKA: Already in faction
+         return;
+      }
+
+      if (target.character.offer) {
+         // PORUKA: Player already has some offer
+         return;
+      }
+
+      if (player.id == target.id) {
+         // PORUKA: Cannot yourself
+         return;
+      }
+
+      target.character.offer = {
+         title: lang.factionInvite,
+         description: player.name + lang.toJoinFaction + this.name + '.',
+         offerer: player,
+         faction: this.id,
+         async respond (player: PlayerMp, respond: boolean) {
+            const result: string = respond ? lang.accepted : lang.declined;
+
+            if (respond) {
+               player.character.faction = this.faction!;
+               
+               await player.character.save();
+            } else { 
+
+            }
+            
+            if (this.offerer) {
+               this.offerer.notification(player.name + result + lang.yourFactionInvite, notifications.type.INFO, notifications.time.MED);
+            }
+            
+            player.character.offer = null;
+         }
+      }
+   }
+   
+
+  async rank (player: PlayerMp, target: PlayerMp, rankName: string) {
+      const rank = await ranks.findOne( { where: { faction_id: this.id, name: rankName } } );
+
+      if (!rank) {
+         // PORUKA: That rank doesnt exist
+         return;
+      }
+
+      target.character.rank = rank.id;
+
+      await target.character.save();
+
+      player.notification('u have rank to ' + target.name, notifications.type.SUCCESS, notifications.time.LONG);
+   }
+
+
+   async chat (player: PlayerMp, message: string) { 
+      const rank = await ranks.findOne( { where: { id: player.character.rank } } );
+      
+      mp.players.forEach(target => {
+         if (target.character.faction == this.id) {
+            target.sendMessage('(( ' + (rank ? rank?.name : lang.unranked) + ' ' + player.name + ': ' + checkForDot(message) + ' ))', colors.hex.FACTION);
+         }
+      })
+   }
+
+}

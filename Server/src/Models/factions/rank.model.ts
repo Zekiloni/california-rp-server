@@ -1,6 +1,6 @@
 import { Table, Column, PrimaryKey, AutoIncrement, Model, Unique, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
 import { characters, factions } from '@models';
-import { factionPermissions } from '@enums';
+import { FactionsPermissions } from '@enums';
 import { none } from '@constants';
 
 
@@ -29,28 +29,28 @@ export class ranks extends Model {
    @Column(
       {
          type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('spawn_Point')); }
+         get () { return JSON.parse(this.getDataValue('permissions')) ? JSON.parse(this.getDataValue('permissions')) : []; }
       }
    )   
-   permissions: factionPermissions[]
+   permissions: FactionsPermissions[]
 
-   async edit (player: PlayerMp, name: string, permissions: factionPermissions[]) {
+   async edit (player: PlayerMp, name: string, permissions: FactionsPermissions[]) {
       this.name = name;
       this.permissions = permissions;
       await this.save();
    }
 
    delete (player: PlayerMp) {
-      ranks.findOne( { where: { id: player.character.faction_rank } } ).then(rank => {
-         if (!rank?.permissions.includes(factionPermissions.UPDATE_RANK)) {
+      ranks.findOne( { where: { id: player.character.rank } } ).then(rank => {
+         if (!rank?.permissions.includes(FactionsPermissions.UPDATE_RANK)) {
             // PORUKA: Nemas permisiju
             return;
          }
       
          characters.findAll().then(characters => {
-            const members = characters.filter(character => character.faction_rank == this.id);
+            const members = characters.filter(character => character.rank == this.id);
             members.forEach(async member => { 
-               member.faction_rank = none;
+               member.rank = none;
                await member.save();
             })
          });

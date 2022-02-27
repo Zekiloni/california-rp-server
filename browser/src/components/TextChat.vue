@@ -38,7 +38,7 @@
 
             Settings: { 
                Active: true,
-               Fontsize: 15.5,
+               Fontsize: 14.5,
                Fonweight: 450,
                Width: 300,
                Height: 200,
@@ -272,7 +272,7 @@
    }
 
    ul.messages li.message {
-      font-weight: 450;
+      font-weight: 550;
       font-size: 14px;
       letter-spacing: 0.3px;
       color: white;

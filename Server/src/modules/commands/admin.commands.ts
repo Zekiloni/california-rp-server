@@ -2,10 +2,10 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, accounts, business, temporaryVehicles } from '@models';
+import { logs, items, inventories, houses, accounts, business, temporaryVehicles, factions, characters } from '@models';
 import { cmds, colors, gDimension, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
-import { businessConfig, houseConfig, serverConfig } from '@configs';
+import { businessConfig, serverConfig } from '@configs';
 import { checkForDot, generateString, shared_Data } from '@shared';
 
 
@@ -752,6 +752,120 @@ Commands[cmds.names.ANNOUNCEMENT] = {
    }
 };
 
+
+Commands[cmds.names.CREATE_FACTION] = {
+   admin: rank.SENIOR_ADMINISTRATOR,
+   description: cmds.descriptions.CREATE_FACTION,
+   params: [
+      cmds.params.TYPE,
+      cmds.params.FACTION_NAME
+   ],
+   async call (player: PlayerMp, type: number, ...name) {
+      const factionName = [...name].join(' ');
+
+      if (type < 0 || type > 14)
+
+      if (!factionName.trim()) {
+         return;
+      }
+
+      const faction = await factions.create(
+         {
+            type: type,
+            name: factionName,
+            description: '',
+            leader: none,
+
+         }
+      ).catch(e => logs.error(e));
+      
+      if (faction) {
+         player.notification(lang.succesfullyCreatedFaction + faction.name + lang.underId + faction.id + '.', notifications.type.SUCCESS, notifications.time.MED);
+      }
+   }
+}
+
+
+Commands[cmds.names.EDIT_FACTION] = {
+   description: cmds.descriptions.EDIT_FACTION,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.FACTION_ID
+   ],
+   async call (player: PlayerMp, factionID: string, property: string, ...value) {
+      const faction = await factions.findOne( { where: { id: factionID} } );
+
+      if (!faction) {
+         // PORUKA: Faction not found
+         return;
+      }
+
+      faction.edit(player, property, value);
+   }
+}
+
+
+Commands[cmds.names.MAKE_LEADER] = {
+   description: cmds.descriptions.MAKE_LEADER,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.FACTION_ID
+   ],
+   async call (player: PlayerMp, targetSearch: string, factionID: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         return;
+      };
+
+      if (Number(factionID) == 0) {
+         const characterFaction = await factions.findOne( { where: { id: target.character.id } } );
+
+         target.character.faction = none;
+
+         if (characterFaction) {
+            characterFaction.removeLeader();
+         }        
+         
+         target.notification(lang.uAreNotLeaderAnymore + characterFaction?.name + '.', notifications.type.INFO, notifications.time.LONG);
+
+         await target.character.save();
+         return;
+      }
+
+      const faction = await factions.findOne( { where: { id: Number(factionID) } } );
+
+      if (!faction) {
+         player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.LONG);
+         return;
+      }
+      
+      faction.makeLeader(player, target);
+   }
+}
+
+
+Commands[cmds.names.FACTIONS] = {
+   description: cmds.descriptions.FACTIONS,
+   admin: rank.ADMINISTRATOR_2,
+   async call (player: PlayerMp) {
+      factions.findAll().then(factions => {
+         if (factions.length < 1) {
+            player.sendMessage(lang.thereIsNoFactionsRn, colors.hex.Info);
+            return;
+         }
+
+         factions.forEach(async faction => {
+            const members = await characters.count( { where: { faction: faction.id } } );
+            const leader = await characters.findOne( { where: { id: faction.leader } } );
+            
+            player.sendMessage('[' + faction.id + '] ' + faction.name + ', Lider ' + (leader ? leader?.name : 'Niko') + ', clanova ' + members + '.', colors.hex.Info); // PORUKA
+         })
+      })
+   }
+}
 
 Commands[cmds.names.MAKE_ADMIN] = {
    description: cmds.descriptions.MAKE_ADMIN,

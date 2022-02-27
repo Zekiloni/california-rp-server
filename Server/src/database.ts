@@ -28,7 +28,9 @@ const Database = new Sequelize({
       models.houses,
       models.products,
       models.workers,
-      models.business
+      models.business,
+      models.factions,
+      models.ranks,
    ],
    logging: false
 });

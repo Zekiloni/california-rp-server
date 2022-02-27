@@ -1,5 +1,4 @@
-import { offerTypes, offerStatus, factionPermissions } from '@enums';
-
+import { FactionsPermissions } from '@enums';
 
 
 export interface interactionPoint {
@@ -11,11 +10,11 @@ export interface interactionPoint {
 
 
 export interface offer {
-   type: offerTypes
-   offeredBy: PlayerMp
-   expire: ReturnType <typeof setTimeout>
-   status: offerStatus
-   id?: number
+   title: string
+   description: string
+   offerer: PlayerMp
+   respond (player: PlayerMp, respond: boolean): void;
+   faction?: number
 }
 
 export type commands = {
@@ -26,7 +25,7 @@ export type commands = {
 export interface factionTypeCmd  {
    required?: boolean
    type?: number
-   permissions?: factionPermissions[]
+   permissions?: FactionsPermissions[]
 }
 
 export interface command {

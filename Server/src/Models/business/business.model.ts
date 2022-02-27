@@ -4,7 +4,7 @@ import { interactionPoint } from '@interfaces';
 import { cmds, gDimension, lang, none, offerExpire } from '@constants';
 import { characters, logs, products, workers } from '@models';
 import { businessConfig } from '@configs';
-import { notifications, offerStatus, offerTypes } from '@enums';
+import { notifications } from '@enums';
 import { dollars } from '@shared';
 
 
@@ -306,20 +306,19 @@ export class business extends Model {
             return;
          }
 
-         const offer = {
-            type: offerTypes.BUSINESS_SELL,
-            offeredBy: player,
-            id: this.id,
-            status: offerStatus.NONE,
-            expire: setTimeout(() => {
-               const index = tCharacter.offers.indexOf(offer);
-               tCharacter.offers.splice(index, 1);
-            }, offerExpire)
-         };
+         // const offer = {
+         //    type: offerTypes.BUSINESS_SELL,
+         //    offeredBy: player,
+         //    id: this.id,
+         //    status: offerStatus.NONE,
+         //    expire: setTimeout(() => {
+   
+         //    }, offerExpire)
+         // };
          
-         /// send notify to both
+         // /// send notify to both
 
-         tCharacter.offers.push(offer);
+         // tCharacter.offer = offer;
          
       } else { 
          const cPrice = (this.price / 100) * 65;

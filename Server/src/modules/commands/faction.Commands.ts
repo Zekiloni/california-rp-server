@@ -1,13 +1,42 @@
+import { cmds } from '@constants';
+import { factions } from '@models';
 import { Commands } from '../commands';
 
 
-Commands["f"] = {
-   faction: { },
-   description: 'Faction chat',
+Commands[cmds.names.FACTION_CHAT] = {
+   description: cmds.descriptions.FACTION_CHAT,
+   faction: { required: true },
    call (player: PlayerMp, ...text: any) {
+      const message = [...text].join(' ');
 
+      if (!message.trim()) {
+         return;
+      };
+
+      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         faction.chat(player, message);
+      })
    }
 };
+
+
+Commands[cmds.names.FACTION_LEAVE] = {
+   description: cmds.descriptions.FACTION_LEAVE,
+   faction: { required: true },
+   call (player: PlayerMp) {
+      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         faction.leave(player);
+      })
+   }
+}
 
 // Commands["invite"] = {
 //     Leader: true,

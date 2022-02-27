@@ -9,16 +9,6 @@ export enum spawnPointTypes {
 }
 
 
-export enum offerTypes {
-   HANDSHAKE, FACTION_INVITE, TAKE_JOB,
-   BUSINESS_WORKER, BUSINESS_SELL,
-   HOUSE_SELL, VEHICLE_SELL, FRISK 
-}
-
-export enum offerStatus {
-   NONE, ACCEPTED, REJECTED
-}
-
 
 export enum rank {
    NONE = 0,

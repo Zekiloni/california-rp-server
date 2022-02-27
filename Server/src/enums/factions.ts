@@ -1,6 +1,6 @@
 
 
-export enum factionPermissions { 
+export enum FactionsPermissions { 
    BASIC = 10,
    INVITE_PLAYER = 20,
    KICK_PLAYER = 30,

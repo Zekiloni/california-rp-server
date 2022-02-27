@@ -13,6 +13,7 @@ export namespace cmds {
       EXIT: 'exit',
       BUY: 'buy',
       PM: 'pm',
+      FACTIONS: 'factions',
       LOW_CHAT: 'l',
       WHISPER: 'w',
       HOUSE: 'house',
@@ -58,6 +59,11 @@ export namespace cmds {
       BUSINES: 'busines',
       DESTROY_BUSINESS: 'destroybusines',
       FLY: 'fly',
+      CREATE_FACTION: 'createfaction',
+      EDIT_FACTION: 'editfaction',
+      MAKE_LEADER: 'makeleader',
+      FACTION_LEAVE: 'leave',
+      FACTION_CHAT: 'f',
       FREEZE: 'freeze',
       ROLEPLAY_TRY: 'try',
       SLAP: 'slap',
@@ -73,7 +79,9 @@ export namespace cmds {
    export const actions = {
       busines: 'busines',
       house: 'house',
-      vehicle: 'vehicle'
+      vehicle: 'vehicle',
+      name: 'name',
+      spawn: 'spawn',
    }
    
    export const params = { 
@@ -100,6 +108,8 @@ export namespace cmds {
       PASSWORD: 'šifra',
       E_MAIL: 'e-mail',
       VEHICLE_MODEL: 'model vozila',
+      FACTION_NAME: 'ime fakcije',
+      FACTION_ID: 'id fakcije',
    };
    
    export const descriptions = { 
@@ -119,6 +129,13 @@ export namespace cmds {
       BUILDER: 'Graditelj.',
       RESPAWN_VEHICLE: 'Respavn obližnjeg vozila ili vozila u kojem se nalazite.',
       RESPAWN_ALL_VEHICLES: 'Respavn svih vozila.',
+      CREATE_FACTION: 'Kreiranje fakcije.',
+      FACTION_LEAVE: 'Da napustite trenutnu fakciju.',
+      FACTIONS: 'Lista fakcija.',
+      EDIT_FACTION: 'Podešavanje fakcija.',
+      FACTION_CHAT: 'OOC komunikacija fakcije.',
+      DESTROY_FACTION: 'Brisanje fakcije.',
+      MAKE_LEADER: 'Postavljanje igrača na mesto lidera fakcije.',
       ITEMS: 'Lista svih predmeta.',
       COP: 'Milicajac.',
       INVICIBLE: 'Entitet vidljiv / nevidljiv.',

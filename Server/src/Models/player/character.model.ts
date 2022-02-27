@@ -1,11 +1,11 @@
 
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, Max, AfterSync } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, AfterSync } from 'sequelize-typescript';
 
 import { accounts, appearances, banks, houses, business, inventories, items, logs, objects } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
-import { spawnPointTypes, notifications, distances, ItemEnums, offerTypes } from '@enums';
+import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, playerInjury } from '@interfaces';
@@ -60,11 +60,7 @@ export class characters extends Model {
 
    @Default(null)
    @Column(DataType.INTEGER)
-   faction_rank: number;
-
-   @Default(none)
-   @Column(DataType.INTEGER)
-   faction_perms: number;
+   rank: number;
 
    @Default(none)
    @Length( { min: none, max : 30 })
@@ -164,7 +160,7 @@ export class characters extends Model {
    @HasMany(() => business)
    business: business[]
 
-   offers: offer[] = [];
+   offer: offer | null = null;
    
    inside: houses | business | null = null;
 
@@ -465,18 +461,6 @@ export class characters extends Model {
          
    //    }
    // }
-
-   removeOffer (offer: offer) {
-      clearTimeout(offer.expire);
-      const index = this.offers.indexOf(offer);
-      this.offers.splice(index, 1);
-   }   
-
-   clearOffers () {
-      this.offers.forEach(offer => {
-         this.removeOffer(offer);
-      });
-   }
 }
 
 
