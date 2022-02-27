@@ -389,9 +389,24 @@ Commands[cmds.names.CREATE_VEHICLE] = {
          false
       );
 
+      vehicle.object.setVariable(shared_Data.ALARM, false);
+
       player.putIntoVehicle(vehicle.object, RageEnums.VehicleSeat.DRIVER);
    } 
 };
+
+
+
+Commands['alarm'] = {
+   description: 'aa',
+   call (player: PlayerMp) {
+      if (!player.vehicle) {
+         return;
+      }
+      const status = player.vehicle.getVariable(shared_Data.ALARM);
+      player.vehicle.setVariable(shared_Data.ALARM, !status);
+   }
+}
 
 Commands[cmds.names.DESTROY_VEHICLE] = {
    description: cmds.descriptions.DESTROY_VEHICLE,
@@ -788,18 +803,20 @@ Commands[cmds.names.CREATE_FACTION] = {
 
 Commands[cmds.names.EDIT_FACTION] = {
    description: cmds.descriptions.EDIT_FACTION,
-   admin: rank.SENIOR_ADMINISTRATOR,
+   admin: rank.LEAD_ADMINISTRATOR,
    params: [
       cmds.params.FACTION_ID,
       cmds.params.FIELD
    ],
-   async call (player: PlayerMp, factionID: string, property: string, ...value) {
-      const faction = await factions.findOne( { where: { id: factionID} } );
+   async call (player: PlayerMp, factionID: string, property: string, ...newValue) {
+      const faction = await factions.findOne( { where: { id: factionID } } );
 
       if (!faction) {
-         // PORUKA: Faction not found
+         player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
+
+      const value = [...newValue].join(' ');
 
       faction.edit(player, property, value);
    }

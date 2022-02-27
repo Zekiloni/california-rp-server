@@ -47,6 +47,7 @@ export namespace cmds {
       CREATE_HOUSE: 'createhouse',
       EDIT_HOUSE: 'edithouse',
       DESTROY_HOUSE: 'destroyhouse',
+      VEHICLE_CALLSIGN: 'callsign',
       SAVE_POS: 'position',
       XYZ: 'xyz',
       GOTO: 'goto',
@@ -84,6 +85,7 @@ export namespace cmds {
       vehicle: 'vehicle',
       name: 'name',
       spawn: 'spawn',
+      description: 'description',
    }
    
    export const params = { 
@@ -133,6 +135,8 @@ export namespace cmds {
       RESPAWN_ALL_VEHICLES: 'Respavn svih vozila.',
       CREATE_FACTION: 'Kreiranje fakcije.',
       FACTION_LEAVE: 'Da napustite trenutnu fakciju.',
+      VEHICLE_CALLSIGN: 'Pozivni znak vašeg vozila.',
+      ENGINE: 'Motor vozila.',
       FACTIONS: 'Lista fakcija.',
       EDIT_FACTION: 'Podešavanje fakcija.',
       FACTION_INVITE: 'Pozivanje igrača da se pridruži vašoj fakciji.',

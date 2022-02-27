@@ -1,10 +1,10 @@
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType, AfterSync } from 'sequelize-typescript';
 
-import { numberPlate, vehicleComponent } from '@interfaces';
+import { numberPlate, VehicleComponent, VehiclePoint } from '@interfaces';
 import { gDimension, lang } from '@constants';
-import { generateNumber, generateString, shared_Data } from '@shared';
-import { vehicleConfig } from '@configs';
+import { distanceBetweenVectors, generateNumber, generateString, shared_Data } from '@shared';
+import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
 import { business } from '@models';
 
@@ -25,14 +25,18 @@ export class vehicles extends Model {
 
    @AllowNull(false)
    @Column
-   entity: vehicleConfig.entity;
+   type: VehicleConfig.type;
+
+   @Default(false)
+   @Column(DataType.BOOLEAN)
+   temporary: boolean
 
    @AllowNull(false)
    @Column
    owner: number;
 
    @AllowNull(false)
-   @Column
+   @Column(DataType.BOOLEAN)
    locked: boolean;
 
    @AllowNull(false)
@@ -57,27 +61,16 @@ export class vehicles extends Model {
    @AllowNull(false)
    @Column({
       type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('color')); }
+      get () { return JSON.parse(this.getDataValue('color')) ? JSON.parse(this.getDataValue('color')) : []; }
    })   
-   color: RGB[]
+   color: [RGB, RGB]
 
    @Default([])
    @Column({
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('components')); }
    })     
-   components: vehicleComponent[]
-
-   @AllowNull(false)
-   @Column({
-      type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('parking')); }
-   })       
-   parking: Vector3Mp;
-
-   @AllowNull(false)
-   @Column
-   parked: boolean;
+   components: VehicleComponent[]
 
    @AllowNull(false)
    @Column({
@@ -93,11 +86,28 @@ export class vehicles extends Model {
    })  
    rotation: Vector3Mp;
 
+   @AllowNull(false)
+   @Column(DataType.BOOLEAN)
+   spawned: boolean;
+
+   @AllowNull(false)
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('spawn')) ? JSON.parse(this.getDataValue('spawn')) : {}; }
+   })  
+   spawn: VehiclePoint;
+
    @CreatedAt
    created_at: Date;
 
    @UpdatedAt
    updated_at: Date;
+
+   job: number;
+   
+   faction: number;
+
+   rent: ReturnType<typeof setTimeout>;
 
    get object (): VehicleMp { 
       return vehicles.objects.get(this.id)!;
@@ -106,71 +116,53 @@ export class vehicles extends Model {
    set object (vehicle: VehicleMp) { 
       vehicles.objects.set(this.id, vehicle);
    }
+   
+
+   @AfterSync
+   static loading () {
+      vehicles.findAll( { where: { spawned: true } } ).then(spawnedVehicles => {
+         spawnedVehicles.forEach(vehicle => {
+            vehicle.load();
+         })
+      });
+   }
 
    @AfterCreate
-   static async creating (vehicle: vehicles) {  }
+   static async creating (vehicle: vehicles, options: { parking: boolean } ) {
+      if (vehicle.spawned) {
+         vehicle.load(options.parking);
+      }
+   }
 
    @AfterDestroy
-   static async destroying (vehicle: vehicles, options: any) {
+   static async destroying (vehicle: vehicles) {
       if (vehicle.object) { 
          vehicle.object.destroy();
       }
    }
 
-   static async new (model: string, entity: any, owner: number, position: Vector3Mp, rotation: number) {
-      const Vehicle = await vehicles.create({
-         Model: model,
-         Entity: entity,
-         Owner: owner,
-         Position: position,
-         Rotation: rotation,
-         Fuel: 100
-      });
-      return Vehicle;
-   }
-
-
-   static vehicleInstance (vehicle: VehicleMp) {
-      vehicles.findOne({ where: { id: vehicle.getVariable(shared_Data.DATABASE) } }).then(vehicles => { 
-         return vehicle;
-      });
-   };
-
    static getNearest (position: Vector3Mp, radius: number) {
-      let Result = null;
-      mp.vehicles.forEachInRange(position, radius, (Vehicle) => {
-         if (Vehicle) {
-            Result = Vehicle;
-            return;
-         }
-      });
-      return Result;
-   }
+      const vehicle = mp.vehicles.getClosest(position);
 
-   async newParking (position: Vector3Mp, rotation: Vector3Mp, garage?: any) {
-      if (this.object) {
-         this.position = position;
-         this.rotation = rotation;
-
-         this.object.position = position;
-         this.object.rotation = rotation;
-
-         await this.save();
+      if (!vehicle) {
+         return;
       }
-   };
 
-   setDimension (i: number) {
-      this.object.dimension = i;
+      return vehicle.dist(position) < radius ? vehicle : null;
    }
 
-   spawn () {
-      if (this.object) return;
+   load (parking?: boolean) {
+      if (this.object) {
+         return;
+      };
 
-      const { position, rotation, numberPlate, locked, color } = this;
+      const { spawn, position, rotation, numberPlate, locked, color } = this;
       const [ primary, secondary ] = color;
+
+      const model = mp.joaat(this.model);
       
-      const vehicle = mp.vehicles.new(mp.joaat(this.model), new mp.Vector3(position.x, position.y, position.z), {
-         heading: this.rotation.z,
+      const vehicle = mp.vehicles.new(model, parking ? spawn.position : position, {
+         heading: parking ? this.spawn.rotation.z : this.rotation.z,
          numberPlate: numberPlate.plate,
          color: [primary, secondary],
          alpha: 255,
@@ -179,37 +171,86 @@ export class vehicles extends Model {
          dimension: gDimension
       });
 
-
       vehicle.setVariable(shared_Data.DATABASE, this.id);
+      vehicle.DATABASE = this.id;
 
       vehicle.setVariable(shared_Data.FUEL, this.fuel);
       vehicle.setVariable(shared_Data.MILEAGE, this.mileage);
       vehicle.setVariable(shared_Data.DIRT, this.dirt);
       vehicle.setVariable(shared_Data.TRUNK, false);
       vehicle.setVariable(shared_Data.HOOD, false);
+      vehicle.setVariable(shared_Data.ALARM, false);
       vehicle.setVariable(shared_Data.WINDOWS, [false, false, false, false]);
       
       this.object = vehicle;
    }
 
+   unload () {
+      if (this.object) {
+         this.object.destroy();
+         vehicles.objects.delete(this.id);
+      }
+   }
+
+   async park (player: PlayerMp, newParking: boolean) {
+      if (this.type != VehicleConfig.type.DEFAULT) {
+         // PORUKA: Cannot this vehicle
+         return;
+      }
+
+      if (this.owner != player.character.id) {
+         // PORUKA: Not your vehicle
+         return;
+      }
+
+      if (this.object) {
+         if (newParking) {
+            this.spawn = { position: player.vehicle.position, rotation: player.vehicle.rotation };
+            this.position = player.vehicle.position;
+            this.rotation = player.vehicle.rotation;
+            
+            // new parking message
+            // take player money
+         }
+
+         if (!newParking && player.vehicle.dist(this.spawn.position) > 5) {
+            // PORUKA: Not on parking position
+            return;
+         }
+
+         this.object.getOccupants().forEach(occupant => {
+            occupant.removeFromVehicle();
+         });
+
+         this.spawned = false;
+         this.unload();
+
+         await this.save();
+      }
+   };
+
    respawn () {
       if (this.object) {
-         this.object.position = this.parking;
-         this.object.rotation = this.rotation;
+         this.object.position = this.spawn.position;
+         this.object.rotation = this.spawn.rotation;
       }
    }
 
    async paint (primary: RGB, secondary: RGB) {
       this.color = [primary, secondary];
-      if (this.object) this.object.setColorRGB(primary[0], primary[1], primary[2], secondary[0], secondary[1], secondary[2]);
+
+      if (this.object) {
+         this.object.setColorRGB(primary[0], primary[1], primary[2], secondary[0], secondary[1], secondary[2]);
+      }
+      
       await this.save();
    }
 
    async lock (player: PlayerMp) {
       const character = player.character;
 
-      switch (this.entity) {
-         case vehicleConfig.entity.PLAYER: {
+      switch (this.type) {
+         case VehicleConfig.type.DEFAULT: {
             // if (this.Owner != Character.id) return Player.Notification(Messages.YOU_DONT_HAVE_VEHICLE_KEYS, notifications.type.ERROR, 6);
 
             this.object.locked = !this.object.locked;
@@ -219,7 +260,7 @@ export class vehicles extends Model {
             break;
          }
 
-         case vehicleConfig.entity.BUSINESS: {
+         case VehicleConfig.type.BUSINESS: {
             business.findOne(({ where: { owner: this.owner } })).then(business => {
 
             });
@@ -227,7 +268,7 @@ export class vehicles extends Model {
             break;
          }
 
-         case vehicleConfig.entity.FACTION: {
+         case VehicleConfig.type.FACTION: {
             if (this.owner != character.faction) return player.notification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, 6);
 
             this.object.locked = !this.object.locked;
@@ -250,16 +291,6 @@ export class vehicles extends Model {
 
       this.numberPlate = numberPlate;
       this.object.numberPlate = numberPlate.plate;
-      await this.save();
-   }
-
-   async updateData (fuel: number, mileage: number, position?: Vector3Mp) {
-      this.fuel = fuel;
-      this.object.setVariable('Fuel', this.fuel);
-      this.dirt = mileage;
-      this.object.setVariable('Dirt', this.dirt);
-      
-      this.position = position!;
       await this.save();
    }
 

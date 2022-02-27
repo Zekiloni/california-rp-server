@@ -24,7 +24,7 @@ export type commands = {
 
 export interface factionTypeCmd  {
    required?: boolean
-   type?: number
+   type?: number[] | null
    permission?: FactionsPermissions
 }
 

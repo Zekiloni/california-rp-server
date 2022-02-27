@@ -1,11 +1,11 @@
 
 
-export interface vehicleComponent { 
+export interface VehicleComponent { 
    component: number
    value: number
 };
 
-export interface vehiclePoint { 
+export interface VehiclePoint { 
    position: Vector3Mp
    rotation: Vector3Mp
 };

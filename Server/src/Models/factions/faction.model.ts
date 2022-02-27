@@ -103,12 +103,18 @@ export class factions extends Model {
    }
 
 
-   async edit (player: PlayerMp, property: string, ...value: any) {
+   async edit (player: PlayerMp, property: string, value: string) {
       switch (property) {
          case cmds.actions.name: {
-            this.name = [...value].join(' ');
+            this.name = value;
             break;
          }
+
+         case cmds.actions.description: {
+            this.description = value;
+            break;
+         }
+
          case cmds.actions.spawn: {
             this.spawn_Point = player.position;
             break;

@@ -1,14 +1,17 @@
 import { cmds } from '@constants';
 import { Commands } from '../commands';
 
+
+
 Commands[cmds.names.ENGINE] = { 
-   description: 'Kontrola motora vozila',
+   description: cmds.descriptions.ENGINE,
    vehicle: true,
-   call: (player: PlayerMp, vName: string) => { 
+   call: (player: PlayerMp) => { 
 		const Vehicle = player.vehicle;
 		Vehicle.engine = !Vehicle.engine;
    } 
 }
+
 
 // Commands['seatbelt'] = { 
 //    description: 'Vezanje pojasa',

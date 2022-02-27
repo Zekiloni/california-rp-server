@@ -1,6 +1,6 @@
 import { gDimension } from '@constants';
 import { jobsConfig } from '@configs';
-import { vehiclePoint } from '@interfaces';
+import { VehiclePoint } from '@interfaces';
 
 
 
@@ -13,7 +13,7 @@ export class jobs {
    description?: string;
    position: Vector3Mp;
    equipPosition?: Vector3Mp;
-   vehiclePoint?: vehiclePoint | vehiclePoint[];
+   vehiclePoint?: VehiclePoint | VehiclePoint[];
    blip: BlipMp;
    colshape: ColshapeMp;
    marker: MarkerMp;

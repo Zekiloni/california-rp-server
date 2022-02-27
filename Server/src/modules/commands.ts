@@ -54,14 +54,14 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
          }
 
          if (command.faction.type) {
-            if (faction && faction.type != command.faction.type) {
+            if (faction && !command.faction.type.includes(faction.type)) {
                player.notification(lang.notInSpecFaction, notifications.type.ERROR, notifications.time.SHORT);
                return;
             }
          };
       }
 
-      if (command.vehicle && player.vehicle) {
+      if (command.vehicle && !player.vehicle) {
          player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
@@ -96,6 +96,7 @@ import './commands/interior.Commands';
 import './commands/lock.Command';
 import './commands/channel.commands';
 import './commands/faction.Commands';
+import './commands/law.Commands';
 import './commands/test.commands';
 
 

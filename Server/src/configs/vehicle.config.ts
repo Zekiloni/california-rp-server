@@ -1,12 +1,10 @@
 
 
-export namespace vehicleConfig {
-   export enum type { 
-      TEMPORARY, PERMANENT
-   }
 
-   export enum entity { 
-      PLAYER, FACTION, BUSINESS
+export namespace VehicleConfig {
+
+   export enum type { 
+      DEFAULT, ADMIN, FACTION, BUSINESS, JOB, DMV
    }
 
    export enum category {
