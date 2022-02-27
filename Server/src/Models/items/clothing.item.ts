@@ -23,11 +23,12 @@ export class ClothingItem extends items {
 
    component: ItemEnums.components.clothings | ItemEnums.components.props;
    naked: number[] = [0, 0];
-   prop?: boolean;
+   prop: boolean;
    
-   constructor (name: string, type: ItemEnums.type[], model: string, component: number, weight: number = 0.1, description?: string, naked?: number[]) { 
+   constructor (name: string, type: ItemEnums.type[], model: string, component: number, weight: number = 0.1, description: string, prop: boolean, naked?: number[]) { 
       super (name, [...type], model, weight, description);
       this.component = component;
+      this.prop = prop;
       
       if (!this.prop) {
          ClothingItem.clothings.push(this);
@@ -80,18 +81,18 @@ export class ClothingItem extends items {
 };
 
 
-new ClothingItem(itemNames.CLOTHING_MASK, clothingType, 'prop_michael_balaclava', ItemEnums.components.clothings.MASK, 0.125, 'Mask.', [0, 0]);
-new ClothingItem(itemNames.CLOTHING_LEGS, clothingType, 'prop_ld_jeans_01', ItemEnums.components.clothings.LEGS, 0.125, 'Legs.', [18, 15]);
-new ClothingItem(itemNames.CLOTHING_SHOES, clothingType, 'v_ret_ps_shoe_01', ItemEnums.components.clothings.SHOES, 0.125, 'Shoes.', [34, 35]);
-new ClothingItem(itemNames.CLOTHING_ACCESSORIES, clothingType, 'prop_cs_box_clothes', ItemEnums.components.clothings.ACCESSORIES, 0.125, 'acc.', [0, 0]);
-new ClothingItem(itemNames.CLOTHING_UNDERSHIRT, clothingType, 'prop_cs_tshirt_ball_01', ItemEnums.components.clothings.UNDERSHIRT, 0.125, 'undershirt.', [15, 15]);
-new ClothingItem(itemNames.CLOTHING_BODY_ARMOUR, clothingType, 'prop_bodyarmour_03', ItemEnums.components.clothings.BODY_ARMOUR, 0.125, 'body armour.', [0, 0]);
-new ClothingItem(itemNames.CLOTHING_DECAL, clothingType, 'hei_prop_drug_statue_base_01', ItemEnums.components.clothings.DECALS, 0.025, 'decal.', [0, 0]);
-new ClothingItem(itemNames.CLOTHING_TOP, clothingType, 'prop_ld_shirt_01', ItemEnums.components.clothings.TOP, 0.225, 'top', [15, 15]);
+new ClothingItem(itemNames.CLOTHING_MASK, clothingType, 'prop_michael_balaclava', ItemEnums.components.clothings.MASK, 0.125, 'Mask.', false, [0, 0]);
+new ClothingItem(itemNames.CLOTHING_LEGS, clothingType, 'prop_ld_jeans_01', ItemEnums.components.clothings.LEGS, 0.125, 'Legs.', false, [18, 15]);
+new ClothingItem(itemNames.CLOTHING_SHOES, clothingType, 'v_ret_ps_shoe_01', ItemEnums.components.clothings.SHOES, 0.125, 'Shoes.', false, [34, 35]);
+new ClothingItem(itemNames.CLOTHING_ACCESSORIES, clothingType, 'prop_cs_box_clothes', ItemEnums.components.clothings.ACCESSORIES, 0.125, 'acc.', false, [0, 0]);
+new ClothingItem(itemNames.CLOTHING_UNDERSHIRT, clothingType, 'prop_cs_tshirt_ball_01', ItemEnums.components.clothings.UNDERSHIRT, 0.125, 'undershirt.', false, [15, 15]);
+new ClothingItem(itemNames.CLOTHING_BODY_ARMOUR, clothingType, 'prop_bodyarmour_03', ItemEnums.components.clothings.BODY_ARMOUR, 0.125, 'body armour.', false, [0, 0]);
+new ClothingItem(itemNames.CLOTHING_DECAL, clothingType, 'hei_prop_drug_statue_base_01', ItemEnums.components.clothings.DECALS, 0.025, 'decal.', false, [0, 0]);
+new ClothingItem(itemNames.CLOTHING_TOP, clothingType, 'prop_ld_shirt_01', ItemEnums.components.clothings.TOP, 0.225, 'top', false, [15, 15]);
 
 
-new ClothingItem(itemNames.PROP_HAT, propType, 'prop_ld_hat_01', ItemEnums.components.props.HAT, 0.3, '').prop = true;
-new ClothingItem(itemNames.PROP_GLASSES, propType, 'xm_prop_x17_b_glasses_01', ItemEnums.components.props.GLASSES, 0.3, '').prop = true;
-new ClothingItem(itemNames.PROP_EARS, propType, 'v_ret_gc_ear01', ItemEnums.components.props.EAR_ACCESSORY, 0.3, '').prop = true;
-new ClothingItem(itemNames.PROP_WATCH, propType, 'p_watch_01', ItemEnums.components.props.WATCH, 0.3, '').prop = true;
-new ClothingItem(itemNames.PROP_BRACELET, propType, 'h4_prop_h4_bracelet_01a', ItemEnums.components.props.BRACELET, 0.3, '').prop = true;
+new ClothingItem(itemNames.PROP_HAT, propType, 'prop_ld_hat_01', ItemEnums.components.props.HAT, 0.3, '', true);
+new ClothingItem(itemNames.PROP_GLASSES, propType, 'xm_prop_x17_b_glasses_01', ItemEnums.components.props.GLASSES, 0.3, '', true);
+new ClothingItem(itemNames.PROP_EARS, propType, 'v_ret_gc_ear01', ItemEnums.components.props.EAR_ACCESSORY, 0.3, '', true);
+new ClothingItem(itemNames.PROP_WATCH, propType, 'p_watch_01', ItemEnums.components.props.WATCH, 0.3, '', true);
+new ClothingItem(itemNames.PROP_BRACELET, propType, 'h4_prop_h4_bracelet_01a', ItemEnums.components.props.BRACELET, 0.3, '', true);

@@ -49,7 +49,7 @@ export class jobs {
       this.activeWorkers = 0;
 
       this.colshape.onPlayerEnter = (player: PlayerMp) => { 
-         if (player.character?.isUnemployed()) {
+         if (player.character?.isUnemployed) {
             player.call('CLIENT::JOB:OFFER', [this]);
          } else { 
             player.outputChatBox('show cmds');

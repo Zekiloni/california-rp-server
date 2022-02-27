@@ -13,7 +13,7 @@ mp.events.add(
    {
       'SERVER::JOB:ACCEPT': (player: PlayerMp, id: number) => { 
 
-         if (!player.character.isUnemployed()) { 
+         if (!player.character.isUnemployed) { 
             return;
          }
 

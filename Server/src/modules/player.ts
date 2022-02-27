@@ -311,7 +311,31 @@ mp.Player.prototype.sendMessage = function (message: string, color: string) {
 };
 
 
-mp.players.find = (searchQuery: any): PlayerMp => {
+mp.Player.prototype.proximityMessage = function (radius: number, message: string, colors: string[]) {
+   mp.players.forEachInRange(this.position, radius, (target) => {
+      const distanceGap = radius / 5;
+      const distance = target.dist(this.position)
+      let color = null;
+
+      switch (true) {
+         case (distance < distanceGap): color = colors[0]; break;
+         case (distance < distanceGap * 2): color = colors[1]; break;
+         case (distance < distanceGap * 3): color = colors[2]; break;
+         case (distance < distanceGap * 4): color = colors[3]; break;
+         default: color = colors[0]; break;
+      }
+      
+      target.outputChatBox('!{' + color + '}' + message);
+   });
+};
+
+
+mp.players.find = (searchQuery: any): PlayerMp | null => {
+
+   if (!searchQuery || !searchQuery.trim()) {
+      return null;
+   };
+
    if (!isNaN(searchQuery)) {
       return mp.players.at(searchQuery)
    } else { 

@@ -790,7 +790,8 @@ Commands[cmds.names.EDIT_FACTION] = {
    description: cmds.descriptions.EDIT_FACTION,
    admin: rank.SENIOR_ADMINISTRATOR,
    params: [
-      cmds.params.FACTION_ID
+      cmds.params.FACTION_ID,
+      cmds.params.FIELD
    ],
    async call (player: PlayerMp, factionID: string, property: string, ...value) {
       const faction = await factions.findOne( { where: { id: factionID} } );

@@ -19,6 +19,7 @@ export enum shared_Data {
    BEANBAG = 'BEANBAG',
    ADMIN_DUTY = 'ADMIN_DUTY',
    WALKING_STYLE = 'WALKING_STYLE',
+   OFFER = 'OFFER',
    FACIAL_MOOD = 'FACIAL_MOOD',
    CUFFED = 'CUFFED',
    MASKED = 'MASKED',

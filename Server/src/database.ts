@@ -30,7 +30,7 @@ const Database = new Sequelize({
       models.workers,
       models.business,
       models.factions,
-      models.ranks,
+      models.factionsRanks,
    ],
    logging: false
 });

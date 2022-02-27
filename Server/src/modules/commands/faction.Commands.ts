@@ -1,4 +1,5 @@
-import { cmds } from '@constants';
+import { cmds, lang } from '@constants';
+import { FactionsPermissions, notifications } from '@enums';
 import { factions } from '@models';
 import { Commands } from '../commands';
 
@@ -24,6 +25,62 @@ Commands[cmds.names.FACTION_CHAT] = {
 };
 
 
+Commands[cmds.names.FACTION_INVITE] = {
+   description: cmds.descriptions.FACTION_INVITE,
+   faction: { 
+      required: true, 
+      permission: FactionsPermissions.INVITE_PLAYER 
+   },
+   params: [
+      cmds.params.PLAYER
+   ],
+   call (player: PlayerMp, targetSearch: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         faction?.invite(player, target);
+      })
+   }
+}
+
+
+Commands[cmds.names.FACTION_KICK] = {
+   description: cmds.descriptions.FACTION_KICK,
+   faction: { 
+      required: true, 
+      permission: FactionsPermissions.KICK_PLAYER
+   },
+   params: [
+      cmds.params.PLAYER
+   ],
+   call (player: PlayerMp, targetSearch: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         faction.kick(player, target);
+      });
+   }
+}
+
+
 Commands[cmds.names.FACTION_LEAVE] = {
    description: cmds.descriptions.FACTION_LEAVE,
    faction: { required: true },
@@ -34,7 +91,7 @@ Commands[cmds.names.FACTION_LEAVE] = {
          }
 
          faction.leave(player);
-      })
+      });
    }
 }
 

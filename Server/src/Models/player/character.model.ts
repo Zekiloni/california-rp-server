@@ -1,7 +1,7 @@
 
 
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, AfterSync } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, AfterSync, IsUUID } from 'sequelize-typescript';
 
 import { accounts, appearances, banks, houses, business, inventories, items, logs, objects } from '@models';
 import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
@@ -147,6 +147,10 @@ export class characters extends Model {
    @Default(false)
    @Column(DataType.BOOLEAN)
    cuffed: boolean
+
+   @IsUUID(4)
+   @Column
+   stranger: string
 
    @CreatedAt
    created_at: Date;
@@ -306,15 +310,19 @@ export class characters extends Model {
       player.setVariable(shared_Data.CUFFED, toggle);
    }
 
-   isUnemployed () {
+   get isUnemployed () {
       return this.job == 0 ? true : false;
+   }
+
+   setOffer (player: PlayerMp, value: offer | null) {
+      this.offer = value;
+      player.setVariable(shared_Data.OFFER, value);
    }
 
    async hasLicense (item?: inventories) {
       const has = await inventories.findOne({ where: { name: item?.name } });
       return has ? has : false;
    }
-
 
    async injury (player: PlayerMp, bone: number, weapon: number, damage: number) {
       let injuries = this.injuries ? this.injuries : [];
@@ -374,7 +382,6 @@ export class characters extends Model {
       if (reason) {
          
       }
-
    }
 
    async onQuit (position: Vector3Mp, dimension: number, exitType: string, reason: string | null) {
@@ -408,10 +415,13 @@ export class characters extends Model {
    }
 
    onChat (player: PlayerMp, content: any) {
+
+      let sender: string;
+
       if (player.getVariable(shared_Data.LOGGED) && player.getVariable(shared_Data.SPAWNED)) {
 
          if (player.getVariable(shared_Data.MUTED)) {
-            return; // u are muted
+            return;
          }; 
 
          const character = player.character;
@@ -421,195 +431,26 @@ export class characters extends Model {
             return;
          }
 
-         player.proximityMessage(distances.IC, character.name + lang.personSays + content, colors.hex.White);
+         if (player.getVariable(shared_Data.MASKED)) {
+            sender = player.character.stranger;
+         } else {
+            sender = player.name;
+         }
+
+         player.proximityMessage(distances.IC, sender + lang.personSays + content, colors.hex.White);
       }
-
-      //    if (Player.getVariable('Muted')) return;
-
-      //    const Character = await Player.character();
-
-      //    const Name = Player.getVariable('Masked') ? Character.Stranger : Player.name;
-
-      //    if (Player.vehicle) { 
-
-      //       const vClass = await Player.callProc('client:player.vehicle:class');
-      //       if (vClass == 14 || vClass == 13 || vClass == 8) { 
-      //          Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
-      //       } else { 
-
-      //          const Seat = Player.seat;
-      //          let Windows = Player.vehicle.getVariable('Windows');
-
-      //          if (Windows[Seat]) { 
-      //             Player.ProximityMessage(Distances.VEHICLE, Name + Messages.PERSON_SAYS + Content, Colors.White);
-
-      //          } else { 
-      //             Player.VehicleMessage(Name + Messages.PERSON_SAYS_IN_VEHICLE + Content, Colors.Vehicle);
-      //          }
-      //       }
-
-      //    } else { 
-      //       Player.ProximityMessage(Distances.IC, Name + Messages.PERSON_SAYS + Content, Colors.White);
-      //    }
-
-      // }
    }
-
-
-   // pushOffer (player: PlayerMp, type: offerTypes, offeredBy: PlayerMp, id?: ) {
-   //    const offer: offer = {
-         
-   //    }
-   // }
 }
 
 
 
+const offerRespond = (player: PlayerMp, respond: boolean) => {
+   if (!player.character.offer) {
+      return;
+   }
 
-// frp.Characters.prototype.Attachment = async function (player, model, bone, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0) {
-//    if (model) { 
-//       const Offset = { X: x, Y: y, Z: z, rX: rx, rY: ry, rZ: rz };
-//       player.setVariable('Attachment', { Model: model, Bone: bone, Offset: Offset });
-//    } else { 
-//       player.setVariable('Attachment', null);
-//    }
-// };
+   player.character.offer.respond(player, respond);
+}
 
 
-
-// frp.Characters.prototype.SetSpawn = async function (point) {
-//    this.Spawn_Point = point;
-//    await this.save();
-// };
-
-
-// frp.Characters.prototype.QuitGame = function (player) { 
-
-// };
-
-
-// frp.Characters.prototype.Injury = async function (Player, Injury) {
-
-//    Injuries = Player.getVariable('Injuries');
-
-//    const AlreadyExist = Injuries.find(Element => Element.Weapon == Injury.Weapon && Element.Bone == Injury.Bone);
-//    if (AlreadyExist) { 
-//       if (AlreadyExist.Times) { 
-//          AlreadyExist.Times ++;
-//       } else { 
-//          AlreadyExist.Times = 2;
-//       }
-//    } else { 
-//       Injuries.push(Injury);
-//    }
-
-//    if (Injuries.length > 0) { 
-//       const LastInjury = Injuries[Injuries.length - 1];
-
-//       switch (LastInjury.Bone) { 
-//          case Enums.Player.Body_Bones.Torso: { 
-//             this.SetWalkingStyle(Player, Enums.Player.Walking_Styles['DeadlyWound']);
-//             break;
-//          } 
-
-//          case Enums.Player.Body_Bones.Leg: { 
-//             this.SetWalkingStyle(Player, Enums.Player.Walking_Styles['MediumWound']);
-//          }
-
-//          default: {
-//             this.SetWalkingStyle(Player, 'Wounded');
-//          }
-//       }
-//    }
-
-//    this.Injuries = Injuries;
-//    Player.setVariable('Injuries', Injuries);
-
-//    await this.save();
-//    return true;
-  
-// };
-
-
-
-mp.Player.prototype.proximityMessage = function (radius: number, message: string, colors: string[]) {
-   mp.players.forEachInRange(this.position, radius, (target) => {
-      const distanceGap = radius / 5;
-      const distance = target.dist(this.position)
-      let color = null;
-
-      switch (true) {
-         case (distance < distanceGap): color = colors[0]; break;
-         case (distance < distanceGap * 2): color = colors[1]; break;
-         case (distance < distanceGap * 3): color = colors[2]; break;
-         case (distance < distanceGap * 4): color = colors[3]; break;
-         default: color = colors[0]; break;
-      }
-      
-      target.outputChatBox('!{' + color + '}' + message);
-   });
-};
-
-
-// mp.Player.prototype.VehicleMessage = function (message, colors) {
-//    const Radius = 8;
-//    mp.players.forEachInRange(this.position, Radius, (target) => {
-//       if (this.vehicle == target.vehicle) { 
-//          const distanceGap = Radius / 5;
-//          const distance = target.dist(this.position)
-//          let color = null;
-   
-//          switch (true) {
-//             case (distance < distanceGap): color = colors[0]; break;
-//             case (distance < distanceGap * 2): color = colors[1]; break;
-//             case (distance < distanceGap * 3): color = colors[2]; break;
-//             case (distance < distanceGap * 4): color = colors[3]; break;
-//             default: color = colors[0]; break;
-//          }
-         
-//          target.outputChatBox('!{' + color + '}' + message);
-//       }
-//    });
-// };
-
-
-
-
-// mp.players.find = (playerName) => {
-//    let foundPlayer = null;
-//    if (playerName == parseInt(playerName)) {
-//       foundPlayer = mp.players.at(playerName);
-//    }
-//    if (!foundPlayer) {
-//       mp.players.forEach((target) => {
-//          if (target.name === playerName) {
-//             foundPlayer = target;
-//          }
-//          else if (target.name.includes(playerName)) {
-//             foundPlayer = target;
-//          }
-//       });
-//    }
-//    return foundPlayer;
-// };
-
-
-
-// (async () => {
-//    frp.Characters.sync({ force: true });
-
-//    // await frp.Characters.create({ Name: 'Zachary Parker', Account: 1 });
-//    // await frp.Characters.create({ Name: 'Tester 1', Account: 2 });
-//    // await frp.Characters.create({ Name: 'Tester Dva', Account: 3 });
-//    // await frp.Characters.create({ Name: 'Tester Tri', Account: 4 });
-//    // await frp.Characters.create({ Name: 'Tester Cetri', Account: 5 });
-//    // await frp.Characters.create({ Name: 'Tester Pet', Account: 6 });
-//    // await frp.Characters.create({ Name: 'Tester Sest', Account: 7 });
-//    // await frp.Characters.create({ Name: 'Tester Sedam', Account: 8 });
-//    // await frp.Characters.create({ Name: 'Tester Osam', Account: 9 });
-//    // await frp.Characters.create({ Name: 'Tester Devet', Account: 10 });
-//    // await frp.Characters.create({ Name: 'Tester Deset', Account: 11 });
-
-// })();
-
-
+mp.events.add('SERVER::OFFER:RESPONSE', offerRespond);

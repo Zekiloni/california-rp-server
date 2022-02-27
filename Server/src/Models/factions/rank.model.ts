@@ -5,7 +5,7 @@ import { none } from '@constants';
 
 
 @Table
-export class ranks extends Model {
+export class factionsRanks extends Model {
 
    @PrimaryKey
    @AutoIncrement
@@ -41,7 +41,7 @@ export class ranks extends Model {
    }
 
    delete (player: PlayerMp) {
-      ranks.findOne( { where: { id: player.character.rank } } ).then(rank => {
+      factionsRanks.findOne( { where: { id: player.character.rank } } ).then(rank => {
          if (!rank?.permissions.includes(FactionsPermissions.UPDATE_RANK)) {
             // PORUKA: Nemas permisiju
             return;

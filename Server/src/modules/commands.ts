@@ -1,8 +1,8 @@
-import { colors, lang, none } from '@constants';
+import { colors, lang, none, ranks } from '@constants';
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { commands } from '@interfaces';
-import { factions, inventories } from '@models';
+import { factions, inventories, factionsRanks } from '@models';
 
 
 export let Commands: commands = {};
@@ -39,12 +39,21 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
       if (command.faction) {
          if (command.faction.required && character.faction == none) {
+            player.notification(lang.notInAnyFaction, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
+         const faction = await factions.findOne( { where: { id: character.faction } } );
+         const rank = await factionsRanks.findOne( { where: { id: player.character.rank } } );
+
+         if (command.faction.permission) {
+            if (!rank?.permissions.includes(command.faction.permission) && faction?.leader != player.character.id) {
+               player.notification(lang.noFactionPermissions, notifications.type.ERROR, notifications.time.SHORT);
+               return;
+            }
+         }
+
          if (command.faction.type) {
-            const faction = await factions.findOne( { where: { id: character.faction } } );
-            
             if (faction && faction.type != command.faction.type) {
                player.notification(lang.notInSpecFaction, notifications.type.ERROR, notifications.time.SHORT);
                return;
@@ -52,7 +61,10 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
          };
       }
 
-      //if (cmd.vehicle && !Player.vehicle) return Player.Notification(Messages.NOT_IN_VEHICLE, notifications.type.ERROR, 5);
+      if (command.vehicle && player.vehicle) {
+         player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.MED);
+         return;
+      } 
 
       if (command.item) {
          const item = await inventories.findOne( { where: { name: command.item, owner: character.id, entity: ItemEnums.entity.PLAYER } } );

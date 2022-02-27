@@ -4,7 +4,7 @@ import { factionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
 import { cmds, colors, lang, none } from '@constants';
 import { notifications } from '@enums';
-import { ranks } from '@models';
+import { factionsRanks } from '@models';
 import { checkForDot } from '@shared';
 
 
@@ -66,7 +66,7 @@ export class factions extends Model {
    )   
    equipment: string[]
 
-   ranks: ranks[]
+   ranks: factionsRanks[]
 
    @CreatedAt
    created_At: Date
@@ -155,20 +155,20 @@ export class factions extends Model {
 
    async kick (player: PlayerMp, target: PlayerMp) {
       if (target.character.faction != player.character.faction) {
-         // PORUKA: Not in same faction
+         player.notification(lang.notInYourFaction, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (this.leader == target.character.id) {
-         // PORUKA: Cannot that palyer, he is leader muharem horsman
+         player.notification(lang.cannotLeader, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       target.character.faction = none;
       target.character.rank = none;
 
-      target.notification('', notifications.type.INFO, notifications.time.LONG); /// to target that he is kicked
-      player.notification('', notifications.type.SUCCESS, notifications.time.MED); // to player u succes kicked target.name...
+      target.notification(player.name + lang.hasKickedYouFromFaction + checkForDot(this.name), notifications.type.INFO, notifications.time.LONG);
+      player.notification(lang.uKickedFromFaction + target.name + lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED); // to player u succes kicked target.name...
 
       await target.character.save();
    }
@@ -176,21 +176,21 @@ export class factions extends Model {
 
    invite (player: PlayerMp, target: PlayerMp) {
       if (target.character.faction != none) {
-         // PORUKA: Already in faction
+         player.notification(lang.playerAlreadyInFaction, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (target.character.offer) {
-         // PORUKA: Player already has some offer
+         player.notification(lang.playerAlreadyHasOffer, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (player.id == target.id) {
-         // PORUKA: Cannot yourself
+         player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
-      target.character.offer = {
+      const offer = {
          title: lang.factionInvite,
          description: player.name + lang.toJoinFaction + this.name + '.',
          offerer: player,
@@ -210,17 +210,19 @@ export class factions extends Model {
                this.offerer.notification(player.name + result + lang.yourFactionInvite, notifications.type.INFO, notifications.time.MED);
             }
             
-            player.character.offer = null;
+            player.character.setOffer(player, null);
          }
       }
+
+      player.character.setOffer(player, offer);
    }
    
 
   async rank (player: PlayerMp, target: PlayerMp, rankName: string) {
-      const rank = await ranks.findOne( { where: { faction_id: this.id, name: rankName } } );
+      const rank = await factionsRanks.findOne( { where: { faction_id: this.id, name: rankName } } );
 
       if (!rank) {
-         // PORUKA: That rank doesnt exist
+         player.notification(lang.rankDoesntExist, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -233,7 +235,7 @@ export class factions extends Model {
 
 
    async chat (player: PlayerMp, message: string) { 
-      const rank = await ranks.findOne( { where: { id: player.character.rank } } );
+      const rank = await factionsRanks.findOne( { where: { id: player.character.rank } } );
       
       mp.players.forEach(target => {
          if (target.character.faction == this.id) {
