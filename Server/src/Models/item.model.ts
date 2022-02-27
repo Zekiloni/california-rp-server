@@ -1,6 +1,6 @@
 
 
-import { itemDescriptions, lang } from '@constants';
+import { itemDescriptions, itemNames, lang } from '@constants';
 import { ItemEnums } from '@enums';
 import { itemAction } from '@interfaces';
 
@@ -96,6 +96,14 @@ export class items {
 }
 
 
+
+new items(itemNames.HANDCUFFS, [ItemEnums.type.MISC] ,'prop_cs_cuffs_01', 0.35, itemDescriptions.HANDCUFFS);
+
+
+
+
+
+
 import './items/document.item';
 import './items/creditCard.item';
 import './items/clothing.Item';
@@ -156,7 +164,6 @@ import './items/med.item';
 // new Item('Jerrycan', ItemType.Misc, 'w_am_jerrycan', 0.4, false, function (player) { });
 // new Item('Papers', ItemType.Misc, 'p_cs_papers_01', 0.01, false, function (player) { });
 // new Item('Medkit', ItemType.Misc, 'prop_ld_health_pack', 0.6, false, function (player) { });
-// new Item('Handcuffs', ItemType.Misc, 'prop_cs_cuffs_01', 0.2, false, function (player) { });
 // new Item('Toolbox', ItemType.Misc, 'v_ind_cs_toolbox2', 0.8, false, function (player) { });
 // new Item('Fishing Rod', ItemType.Misc, 'prop_fishing_rod_01', 0.5, false, function (player) { });
 // new Item('Fish Bait', ItemType.Misc, 'ng_proc_paintcan02a', 0.3, false, function (player) { });

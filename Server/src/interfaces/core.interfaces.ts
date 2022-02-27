@@ -32,7 +32,7 @@ export interface command {
    description: string
    params?: any[]
    faction?: factionTypeCmd
-   item?: any
+   item?: string
    vehicle?: boolean
    job?: number
    position?: Vector3Mp

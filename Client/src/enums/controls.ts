@@ -7,6 +7,7 @@ enum controls {
    KEY_L = 0x4C,
    KEY_Y = 0x59,
    KEY_N = 0x4E,
+   KEY_M = 0x4D,
    KEY_P = 0x50,
    F2 = 0x71,
    F7 = 0x76,

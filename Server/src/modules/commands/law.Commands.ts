@@ -1,6 +1,7 @@
 import { factionConfig } from '@configs';
-import { cmds } from '@constants';
-import { shared_Data } from '@shared/shared.enums';
+import { cmds, colors, itemNames, lang } from '@constants';
+import { distances, notifications } from '@enums';
+import { shared_Data } from '@shared';
 import { Commands } from '../commands';
 
 
@@ -28,5 +29,28 @@ Commands[cmds.names.VEHICLE_CALLSIGN] = {
       } else { 
          player.vehicle.setVariable(shared_Data.CALLSIGN, sign);
       }
+   }
+}
+
+
+Commands[cmds.names.CUFF] = {
+   description: cmds.descriptions.CUFF,
+   faction: {
+      required: true,
+      type: [ factionConfig.type.LEO ]
+   },
+   item: itemNames.HANDCUFFS,
+   async call (player: PlayerMp, targetSearch: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      const cuffed = player.getVariable(shared_Data.CUFFED);
+
+      target.character.setCuffs(target, !cuffed);
+      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + (!cuffed ? lang.putCuffs : lang.removeCuffs) + target.name, colors.hex.Purple);
    }
 }

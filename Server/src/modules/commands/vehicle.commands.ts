@@ -7,8 +7,8 @@ Commands[cmds.names.ENGINE] = {
    description: cmds.descriptions.ENGINE,
    vehicle: true,
    call: (player: PlayerMp) => { 
-		const Vehicle = player.vehicle;
-		Vehicle.engine = !Vehicle.engine;
+		const vehicle = player.vehicle;
+		vehicle.engine = !vehicle.engine;
    } 
 }
 

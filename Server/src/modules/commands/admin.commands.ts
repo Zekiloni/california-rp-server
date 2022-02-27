@@ -186,8 +186,11 @@ Commands[cmds.names.EDIT_BUSINESS] = {
 Commands[cmds.names.GIVE_ITEM] ={
    description: cmds.descriptions.GIVE_ITEM,
    admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.PLAYER,
+      cmds.params.TEXT
+   ],
    call (player: PlayerMp, targetSearch: any, ...itemName: any) { 
-
       itemName = itemName.join(' ');
 
       if (items.list[itemName]) {
@@ -195,7 +198,7 @@ Commands[cmds.names.GIVE_ITEM] ={
          const target = mp.players.find(targetSearch);
 
          if (!target) {
-            // PORUKA: igrac nije
+            player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
             return;
          }; 
 
@@ -206,7 +209,7 @@ Commands[cmds.names.GIVE_ITEM] ={
          }
 
       } else { 
-         // PORUKA: Predmet ne postoji
+         player.notification(lang.itemDoesntExist, notifications.type.ERROR, notifications.time.MED);
       }
    }
 }

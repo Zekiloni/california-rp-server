@@ -154,9 +154,9 @@
    .online-players { margin: 0 25px; }
    .player-id { margin: 0 25px; }
 
-   h3, h2 { margin: 0; text-shadow: 0 0.7px 1px rgb(0 0 0 / 70%); }
+   h3, h2 { margin: 0; text-shadow: 0 0.7px 1px rgb(0 0 0 / 45%); }
 
-   .online-players h3, .player-id h3 { font-weight: 450; color: #959eac; font-size: 0.8rem; }
+   .online-players h3, .player-id h3 { font-weight: 550; color: #959eac; font-size: 0.8rem; }
    .player-id h2 { color: #cdcdcd; font-weight: 350; }
 
    .online-players .online { position: relative; font-weight: 350; padding-left: 25px; color: #00d474; }
@@ -181,14 +181,14 @@
       font-weight: 700;
    }
 
-   .info { position: absolute; bottom: 20px; padding: 15px 10px; left: 315px; width: 300px; height: auto; }
+   .info { position: absolute; bottom: 25px; padding: 15px 10px; left: 325px; width: 300px; height: auto; }
 
    .date-time { margin-bottom: 25px; }
-   .date-time h2 { color: #cdcdcd; font-weight: 350; }
-   .date-time h3 { font-weight: 450; color: #959fae; font-size: 0.9rem; }
+   .date-time h2 { color: #cdcdcd; font-weight: 450; }
+   .date-time h3 { font-weight: 550; color: #959fae; font-size: 0.9rem; }
 
-   .location h2 { color: #ffcc45; font-weight: 500; }
-   .location h3.street { color: #e2e2e2; font-weight: 350; }
-   .location h3.zone { font-weight: 450; color: #959fae; font-size: 0.9rem; }
+   .location h2 { color: #ffcc45; font-weight: 600; }
+   .location h3.street { color: #e2e2e2; font-weight: 450; }
+   .location h3.zone { font-weight: 550; color: #959fae; font-size: 0.9rem; }
    
 </style>

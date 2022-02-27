@@ -38,7 +38,7 @@
 
             Settings: { 
                Active: true,
-               Fontsize: 14.5,
+               Fontsize: 14.85,
                Fonweight: 450,
                Width: 300,
                Height: 200,

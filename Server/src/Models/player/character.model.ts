@@ -305,9 +305,15 @@ export class characters extends Model {
       player.setVariable(shared_Data.FACIAL_MOOD, mood);
    };
 
-   setCuffs (player: PlayerMp, toggle: boolean) {
+   async setCuffs (player: PlayerMp, toggle: boolean) {
       this.cuffed = toggle;
       player.setVariable(shared_Data.CUFFED, toggle);
+
+      if (player.weapon) {
+         player.removeWeapon(player.weapon);
+      }
+
+      await this.save();
    }
 
    get isUnemployed () {
@@ -320,7 +326,7 @@ export class characters extends Model {
    }
 
    async hasLicense (item?: inventories) {
-      const has = await inventories.findOne({ where: { name: item?.name } });
+      const has = await inventories.findOne( { where: { name: item?.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } );
       return has ? has : false;
    }
 

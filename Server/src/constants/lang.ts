@@ -203,6 +203,8 @@ export const lang = {
    underId: ' pod brojem ',
    declined: ' je odbio ',
    isShouting: 'se dere',
+   putCuffs: ' stavlja lisice ',
+   removeCuffs: ' skida lisice ',
    fromAdmin: ' od strane administratora ',
    ownedHouse: 'Kuća ',
    account: 'Račun',
