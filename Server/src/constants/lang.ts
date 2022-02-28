@@ -16,6 +16,7 @@ export const lang = {
    accountCreated: 'Račun uspešno kreiran !',
    addedSuccesfully: ' je uspešno dodan.',
    succesfullyCreatedFaction: 'Uspešno ste kreirali fakciju ',
+   rankSuccessfullyUpdated: 'Rank je uspešno ažuriran.',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -30,6 +31,7 @@ export const lang = {
    playerAlreadyInFaction: 'Igrač je već u nekoj fakciji.',
    playerAlreadyHasOffer: 'Igrač već ima neku ponudu.',
    weAreSoryBut: 'Žao nam je, ali ',
+   rankNameCannotBeLessThenTreeSamirGey: 'Ime ranka ne sme biti kraće od 3 karaktera.',
    notInVehicle: 'Niste se u vozilu.',
    productAlreadyExist: 'Produkat već postoji.',
    notInSpecFaction: 'Niste član odredjene fakcije.',
@@ -183,6 +185,7 @@ export const lang = {
    minimumPayAmount: 'Minimum 1$.',
    invitedToFaction: 'Pozvani ste da se pridružite fakciji ',
    toOpenBankMenu: 'Bankovne opcije',
+   factionRankDelete: 'Rank uspešno izbrisan.',
 
    // warnings
    adminWarnedYou: 'vas je upozorio',

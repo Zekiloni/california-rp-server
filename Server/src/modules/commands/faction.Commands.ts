@@ -25,6 +25,15 @@ Commands[cmds.names.FACTION_CHAT] = {
 };
 
 
+Commands[cmds.names.FACTION_PANEL] = {
+   description: cmds.descriptions.FACTION_PANEL,
+   faction: { required: true },
+   call (player: PlayerMp) {
+      player.call('CLIENT::FACTION:PANEL');
+   }
+};
+
+
 Commands[cmds.names.FACTION_INVITE] = {
    description: cmds.descriptions.FACTION_INVITE,
    faction: { 

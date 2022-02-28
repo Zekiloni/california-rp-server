@@ -1,7 +1,7 @@
-import { Table, Column, PrimaryKey, AutoIncrement, Model, Unique, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
+import { Table, Column, PrimaryKey, AutoIncrement, Model, Unique, ForeignKey, BelongsTo, DataType, CreatedAt, UpdatedAt, Max, Min } from 'sequelize-typescript';
 import { characters, factions } from '@models';
-import { FactionsPermissions } from '@enums';
-import { none } from '@constants';
+import { FactionsPermissions, notifications } from '@enums';
+import { lang, none } from '@constants';
 
 
 @Table
@@ -9,7 +9,7 @@ export class factionsRanks extends Model {
 
    @PrimaryKey
    @AutoIncrement
-   @Column
+   @Column(DataType.INTEGER)
    id: number
 
    @ForeignKey(() => factions)
@@ -20,11 +20,16 @@ export class factionsRanks extends Model {
    faction: factions
 
    @Unique(true)
-   @Column
+   @Column(DataType.STRING)
    name: string
 
-   @Column
+   @Column(DataType.TEXT)
    description: string
+
+   @Min(0)
+   @Max(50)
+   @Column(DataType.INTEGER)
+   salary: number
 
    @Column(
       {
@@ -33,6 +38,12 @@ export class factionsRanks extends Model {
       }
    )   
    permissions: FactionsPermissions[]
+
+   @CreatedAt
+   created_at: Date
+
+   @UpdatedAt
+   updated_at: Date
 
    async edit (player: PlayerMp, name: string, permissions: FactionsPermissions[]) {
       this.name = name;
@@ -59,3 +70,43 @@ export class factionsRanks extends Model {
       })
    }
 }
+
+
+
+const deleteRank = (player: PlayerMp, rankID: number) => {
+   return factionsRanks.findOne( { where: { id: rankID } } ).then(rank => {
+      if (!rank) {
+         return;
+      }
+
+      rank.destroy();
+      player.notification(lang.factionRankDelete, notifications.type.SUCCESS, notifications.time.MED);
+      return true;
+   })
+}
+
+const updateRank = (player: PlayerMp, rankID: number, name: string, description: string, salary: number) => {
+   return factionsRanks.findOne( { where: { id: rankID }}).then(async rank => {
+      if (!rank) {
+         return;
+      }
+
+      if (name.length < 3) {
+         player.notification(lang.rankNameCannotBeLessThenTreeSamirGey, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }  
+
+      rank.name = name;
+      rank.description = description;
+      rank.salary = salary;
+
+      player.notification(lang.rankSuccessfullyUpdated, notifications.type.ERROR, notifications.time.MED);
+
+      await rank.save();
+      return true;
+   })
+};
+
+
+mp.events.addProc('SERVER::RANK:DELETE', deleteRank);
+mp.events.addProc('SERVER::RANK:UPDATE', updateRank);

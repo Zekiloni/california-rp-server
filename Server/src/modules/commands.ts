@@ -17,7 +17,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
    const params = content.split(/ +/);
    
    const commandName = params.splice(0, 1)[0];
-   const command = Commands[commandName];
+   const command = Commands[commandName.toLowerCase()];
 
    if (command) {
       const { account, character } = player;

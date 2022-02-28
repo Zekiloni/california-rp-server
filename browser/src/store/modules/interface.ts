@@ -54,7 +54,10 @@ const InitialState = {
 
    // builder
    objectsMenu: false,
-   objectEditor: false
+   objectEditor: false,
+
+   // faction
+   factionPanel: false
 }
 
 export const InterfaceStore = {

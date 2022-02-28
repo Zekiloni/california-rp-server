@@ -68,6 +68,12 @@
          <ObjectEditor v-if="interfaces.objectEditor" key=objectEditor />
       </transition-group>
 
+
+
+      <!-- [FACTION] -->
+      <transition name="fade">
+         <FactionPanel v-if="interfaces.factionPanel" />
+      </transition>
       <!-- <transition name="bounce">
          <Lobby v-if="interfaces.Lobby" />
       </transition>      -->
@@ -117,6 +123,8 @@
 
    import ObjectsMenu from '@/components/builder/ObjectsMenu.vue';
    import ObjectEditor from '@/components/builder/ObjectEditor.vue';
+
+   import FactionPanel from './components/faction/FactionPanel.vue';
       
    export default { 
 
@@ -128,7 +136,9 @@
 
          ObjectsMenu, ObjectEditor,
          
-         BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu
+         BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu,
+
+         FactionPanel
       },
 
       data () { 

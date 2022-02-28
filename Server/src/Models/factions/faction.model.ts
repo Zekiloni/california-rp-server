@@ -1,11 +1,11 @@
 
-import { AfterCreate, AfterDestroy, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, Unique, UpdatedAt } from 'sequelize-typescript';
+import { AfterCreate, AfterDestroy, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, HasMany, Model, PrimaryKey, Table, Unique, UpdatedAt } from 'sequelize-typescript';
 import { factionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
 import { cmds, colors, lang, none } from '@constants';
 import { notifications } from '@enums';
-import { factionsRanks } from '@models';
-import { checkForDot } from '@shared';
+import { characters, factionsRanks, logs } from '@models';
+import { checkForDot, shared_Data } from '@shared';
 
 
 @Table
@@ -31,6 +31,10 @@ export class factions extends Model {
 
    @Column
    leader: number
+
+   @Default(none)
+   @Column(DataType.INTEGER)
+   budget: number
 
    @Column({
       type: DataType.JSON,
@@ -66,13 +70,14 @@ export class factions extends Model {
    )   
    equipment: string[]
 
+   @HasMany(() => factionsRanks)
    ranks: factionsRanks[]
 
    @CreatedAt
-   created_At: Date
+   created_at: Date
 
    @UpdatedAt
-   updated_At: Date
+   updated_at: Date
 
    get object (): factionPoints | never { 
       return factions.objects.get(this.id)!;
@@ -82,13 +87,22 @@ export class factions extends Model {
       factions.objects.set(this.id, object);
    }
 
+
+   @AfterSync
+   static async loading () {
+      factions.findAll().then(factions => {
+         
+         logs.info(factions.length + ' factions loaded !');
+      });
+   }
+
    @AfterCreate
-   static afterCreating (faction: factions) {
+   static creating (faction: factions) {
       faction.refresh();
    }
 
    @AfterDestroy
-   static afterDestroying (faction: factions) {
+   static destroying (faction: factions) {
 
    }
 
@@ -128,6 +142,7 @@ export class factions extends Model {
    async leave (player: PlayerMp) {
       player.character.faction = none;
       player.character.rank = none;
+      player.setVariable(shared_Data.FACTION, none);
 
       if (this.leader == player.character.id) {
          this.leader = none;
@@ -148,6 +163,7 @@ export class factions extends Model {
    async makeLeader (player: PlayerMp, target: PlayerMp) {
       target.character.faction = this.id;
       this.leader = target.character.id;
+      target.setVariable(shared_Data.FACTION, this.id);
 
       target.notification(lang.uAreNowLeaderOf + this.name + lang.fromAdmin + player.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
 
@@ -172,6 +188,7 @@ export class factions extends Model {
 
       target.character.faction = none;
       target.character.rank = none;
+      target.setVariable(shared_Data.FACTION, none);
 
       target.notification(player.name + lang.hasKickedYouFromFaction + checkForDot(this.name), notifications.type.INFO, notifications.time.LONG);
       player.notification(lang.uKickedFromFaction + target.name + lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED); // to player u succes kicked target.name...
@@ -206,7 +223,8 @@ export class factions extends Model {
 
             if (respond) {
                player.character.faction = this.faction!;
-               
+               player.setVariable(shared_Data.FACTION, this.faction);
+
                await player.character.save();
             } else { 
 
@@ -251,3 +269,15 @@ export class factions extends Model {
    }
 
 }
+
+
+
+const getFaction = (player: PlayerMp) => {
+   return factions.findOne( { where: { id: player.character.faction }, include: [factionsRanks] } ).then(async faction => {
+      const members = await characters.findAll( { where: { faction: player.character.faction } } );
+      return [ faction, members ];
+   })
+}
+
+
+mp.events.addProc('SERVER::FACTION:INFO', getFaction);
