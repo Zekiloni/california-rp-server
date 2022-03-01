@@ -15,6 +15,7 @@
     "vue": "^2.6.11",
     "vue-cli": "^2.9.6",
     "vue-router": "^3.2.0",
+    "vue-select": "^3.18.3",
     "vue-slider-component": "^3.2.14",
     "vuex": "^3.4.0"
   },
@@ -22,6 +23,7 @@
     "@ragemp/types-cef": "github:leonardssh/ragemp-types#types-cef",
     "@types/leaflet": "^1.7.8",
     "@types/three": "^0.136.1",
+    "@types/vue-select": "^3.16.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",

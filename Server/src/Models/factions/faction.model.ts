@@ -280,4 +280,34 @@ const getFaction = (player: PlayerMp) => {
 }
 
 
+const kickMember = (player: PlayerMp, characterID: number) => {
+   return factions.findOne( { where: { id: player.character.faction } } ).then(async faction => {
+      if (!faction) {
+         return;
+      }
+
+      const targetCharacter = await characters.findOne( { where: { id: characterID } } );
+
+      if (!targetCharacter) {
+         return;
+      }
+
+      const isOnline = mp.players.toArray().find(target => target.character.id == targetCharacter.id);
+
+      if (isOnline) {
+         faction.kick(player, isOnline);
+      } else {
+         targetCharacter.faction = none;
+         targetCharacter.rank = none
+         await targetCharacter.save();
+
+         player.notification(lang.uKickedFromFaction + targetCharacter.name + lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED);
+      }
+
+      return true;
+   });
+}
+
+
 mp.events.addProc('SERVER::FACTION:INFO', getFaction);
+mp.events.addProc('SERVER::FACTION:KICK_MEMBER', kickMember);

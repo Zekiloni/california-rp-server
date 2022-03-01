@@ -32,10 +32,9 @@
                <input type="text" v-model="input.name" :placeholder="Messages.FACTION_RANK_NAME">
                <input type="text" v-model="input.description" :placeholder="Messages.FACTION_RANK_DESCRIPTION">
 
-               <button @click="save()"> {{ Messages.SAVE }} </button>
+               <button @click="save()" class="save"> {{ Messages.SAVE }} </button>
+               <button @click="remove(selectedRank)" class="delete"> {{ Messages.DELETE_RANK }} </button>
             </div>
-
-            <button @click="remove(selectedRank)" class="delete"> {{ Messages.DELETE_RANK }} </button>
          </div>
       </transition>
 
@@ -104,7 +103,7 @@
             
             const index = this.$props.ranks.indexOf(rank);
             this.$props.ranks.splice(index, 1);
-         })
+         });
       }
 
       create () {
@@ -184,7 +183,7 @@
    }
 
    .rank-settings .edit {
-      max-width: 505px;
+      width: 100%;
       display: flex;
       justify-content: space-between;
    }
@@ -198,29 +197,26 @@
       transition: all .3s ease;
    }
 
-   .rank-settings .edit button {
+   .rank-settings .edit button.save {
       background: #ffcc45;
       width: 80px;
       color: #0b0e11;
    }
 
-   button.delete { 
-      margin: 10px 0;
+    .rank-settings .edit button.delete { 
       background: #ff463d;
       color: whitesmoke;
    }
 
    input {
-      border: 1px solid #474d57;
+      border: 1px solid rgb(71 77 87 / 80%);
       color: #cdcdcd;
-      border-radius: 5px;
-      box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
-      background: #2b2f36;
+      border-radius: 4px;
+      background: transparent;
       position: relative;
-      padding: 10px 10px;
-      outline: none;
+      padding: 10px;
       font-size: 13px !important;
-      font-weight: 300;
+      font-weight: 100;
       transition: all 0.45s ease;
    }
 </style>

@@ -37,3 +37,12 @@
 @keyframes warning-border {
    from { border-color: tomato; }
 }
+
+
+.popup-enter-active, .popup-leave-active {
+   transition: all 1.25s;
+}
+
+.popup-enter, .popup-leave-to {
+   transform: scale(0.5);
+}

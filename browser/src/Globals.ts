@@ -127,6 +127,7 @@ export const Messages = {
    DELETE_RANK: 'Izbriši rank',
    MEMBER_NAME: 'Ime člana',
    MEMBER_RANK: 'Rank člana',
+   FACTION_MEMBER_SETTINGS: 'Opcije člana',
 
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',

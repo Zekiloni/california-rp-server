@@ -8,12 +8,26 @@
                <th width="100"> {{ Messages.MEMBER_NAME }} </th>
                <th> {{ Messages.MEMBER_RANK }} </th>
             </tr>
-            <tr v-for="member in members" :key="member.name">
+            <tr v-for="member in members" :key="member.name" @click="selectedMember ? selectedMember = null : selectedMember = member">
                <td> {{ member.name }} </td>
-               <td> {{ rank(member.rank) ? rank(member.rank) : 'x' }} </td>
+               <td> {{ rank(member.rank) ? rank(member.rank).name : 'x' }} </td>
             </tr>
          </table>
       </div>
+      
+      <transition name="fade"> 
+         <div class="member-settings" v-if="selectedMember">
+            <h3> {{ Messages.FACTION_MEMBER_SETTINGS }} </h3>
+            <h2> {{ selectedMember.id }}. {{ selectedMember.name }} </h2>
+            
+            <div class="edit">
+               <v-select :options="rankup" class="select-rank"></v-select>
+
+               <button @click="kick(selectedMember)" class="delete"> {{ Messages.DELETE_RANK }} </button>
+               <button @click="save()" class="save"> {{ Messages.SAVE }} </button>
+            </div>
+         </div>
+      </transition>
    </div>
 </template>
 
@@ -21,6 +35,12 @@
    import Vue from 'vue';
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
+
+   //@ts-ignore
+   import vSelect from 'vue-select';
+   import 'vue-select/dist/vue-select.css';
+
+   Vue.component('v-select', vSelect);
 
    interface Rank { 
       id: number
@@ -32,6 +52,16 @@
       updated_at: Date
    }
 
+   interface Member { 
+      id: number
+      name: string
+      rank: number
+      gender: number
+      birth: number
+      origin: string
+   }
+
+
    @Component({
       props: {
          members: Array,
@@ -41,22 +71,47 @@
    export default class FactionMembers extends Vue {
 
       Messages = Messages;
+      
+      selectedMember: Member | null = null;
 
       rank (id: number) {
          return this.$props.ranks.find((rank: Rank) => rank.id == id);
       }
  
+      get rankup () {
+         return this.$props.ranks.map((rank: Rank) => rank.name);
+      }
+
+      kick (member: Member | null) {
+         mp.events.callProc('CLIENT::FACTION:KICK_MEMBER', member!.id).then((isKicked: boolean) => {
+            if (!isKicked) {
+               return;
+            }
+            
+            const index = this.$props.members.indexOf(member);
+            this.$props.members.splice(index, 1);
+         });
+      }
+
    }
 </script>
 
 <style scoped>
 
-.list {
-     margin-top: 15px;
-     height: 300px;
-     overflow-x: hidden;
-     overflow-y: auto;
-  }
+   h2 {
+      margin: 0;
+      color: #cdcdcd;
+      font-weight: 350;
+   }
+
+   small.edit-rank-help { color: #848e9c; font-size: 0.7rem; font-weight: 600;}
+
+   .list {
+      margin-top: 15px;
+      height: 300px;
+      overflow-x: hidden;
+      overflow-y: auto;
+   }
 
    table {
       border-collapse: collapse;
@@ -92,6 +147,46 @@
    tr.selected {
       backdrop-filter: brightness(1.3);
       box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
+      color: whitesmoke;
+   }
+
+   .member-settings h3 { 
+      color: #848e9c;
+      margin: 0;
+      font-weight: 450;
+   }
+
+   .member-settings h2 { 
+      margin: 10px 0;
+   }
+
+   .member-settings .edit {
+      max-width: 505px;
+      display: flex;
+      justify-content: space-between;
+   }
+
+   .edit .select-rank {
+      width: 250px;
+   }
+
+   button { 
+      font-size: 0.75rem;
+      padding: 10px 10px;
+      font-weight: 550;
+      margin-left: 0;
+      border-radius: 3px;
+      transition: all .3s ease;
+   }
+
+   .member-settings .edit button.save {
+      background: #ffcc45;
+      width: 80px;
+      color: #0b0e11;
+   }
+
+   button.delete { 
+      background: #ff463d;
       color: whitesmoke;
    }
 
