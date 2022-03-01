@@ -4,7 +4,11 @@
 export namespace VehicleConfig {
 
    export enum type { 
-      DEFAULT, ADMIN, FACTION, BUSINESS, JOB, DMV
+      OWNED, FACTION, BUSINES, JOB, DMV, ADMIN
+   }
+
+   export enum fuelType {
+      NONE, DIESEL, PETROL, HIBRYD, ELECTRONIC
    }
 
    export enum category {
@@ -33,7 +37,4 @@ export namespace VehicleConfig {
       OPEN_WHEELS
    }
 
-   export const fuelTanks = {
-      
-   }
 }

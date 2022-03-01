@@ -19,8 +19,8 @@ export namespace notifications {
    }
 
    export enum time { 
-      SHORT = 4,
-      MED = 6,
+      SHORT = 5,
+      MED = 7,
       LONG = 10
    }
 };

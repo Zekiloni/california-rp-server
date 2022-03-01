@@ -10,7 +10,7 @@ export interface VehiclePoint {
    rotation: Vector3Mp
 };
 
-export interface numberPlate { 
+export interface NumberPlate { 
    plate: string
    issued: number
    expiring: number

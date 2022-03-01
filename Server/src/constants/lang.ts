@@ -138,6 +138,7 @@ export const lang = {
    hasKickedYouFromFaction: ' vas je izbacio iz fakcije ',
    orderAlreadyProcessing: 'Dostava je već završena ili je u toku.',
    toJoinFaction: ' vas je pozvao da se pridružite fakciji ',
+   uSetLeaderOf: 'Dali ste lidera fakcije ',
    businessLocked: 'Zaključali ste biznis.',
    uAreNowLeaderOf: 'Postavljeni ste za lidera ',
    givesSomeMoney: 'daje nešto novca',

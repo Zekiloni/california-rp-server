@@ -1,5 +1,5 @@
 
-import { accounts, characters } from '@models';
+import { accounts, characters, vehicles } from '@models';
 
 
 declare global { 
@@ -17,12 +17,12 @@ declare global {
    }
 
    interface ColshapeMp { 
-      onPlayerEnter (player: PlayerMp): void;    
-      onPlayerLeave (player: PlayerMp): void; 
+      onPlayerEnter (player: PlayerMp): void
+      onPlayerLeave (player: PlayerMp): void
    }
 
    interface VehicleMp { 
-      DATABASE: number;
+      instance: vehicles
    }
 
    interface PlayerMp { 

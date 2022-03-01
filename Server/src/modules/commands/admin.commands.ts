@@ -2,10 +2,10 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, accounts, business, temporaryVehicles, factions, characters } from '@models';
+import { logs, items, inventories, houses, accounts, business, factions, characters, vehicles } from '@models';
 import { cmds, colors, gDimension, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
-import { businessConfig, serverConfig } from '@configs';
+import { businessConfig, serverConfig, VehicleConfig } from '@configs';
 import { checkForDot, generateString, shared_Data } from '@shared';
 
 
@@ -370,31 +370,36 @@ Commands[cmds.names.CREATE_VEHICLE] = {
       const primaryColor = pColor.split(',');
       const secondaryColor = sColor.split(',');
 
-      const vehicle = new temporaryVehicles(
-         model,
-         player.position,
-         player.heading,
+      const color: [RGB, RGB] = [
          [
-            [
-               Number(primaryColor[0]),
-               Number(primaryColor[1]),
-               Number(primaryColor[2])
-            ],
-            [
-               Number(secondaryColor[0]),
-               Number(secondaryColor[1]),
-               Number(secondaryColor[2])
-            ]
+            Number(primaryColor[0]), 
+            Number(primaryColor[1]), 
+            Number(primaryColor[2])
          ],
-         numberPlate ? numberPlate : generateString(6),
-         gDimension,
-         false,
-         false
-      );
+         [
+            Number(secondaryColor[0]),
+            Number(secondaryColor[1]), 
+            Number(secondaryColor[2])
+         ]
+      ];
 
-      vehicle.object.setVariable(shared_Data.ALARM, false);
+      const rotation = new mp.Vector3(0, 0, player.heading);
 
-      player.putIntoVehicle(vehicle.object, RageEnums.VehicleSeat.DRIVER);
+      vehicles.new(model, VehicleConfig.type.ADMIN, true, player.character.id, color, player.position, rotation, {
+         locked: false, spawned: false
+      }).then(createdVehicle => {
+         if (!createdVehicle) {
+            return;
+         }
+
+         const vehicle = createdVehicle.load();
+
+         if (!vehicle) {
+            return;
+         }
+         
+         player.putIntoVehicle(vehicle, RageEnums.VehicleSeat.DRIVER);
+      })
    } 
 };
 
@@ -970,22 +975,13 @@ Commands[cmds.names.RESPAWN_VEHICLE] = {
    description: cmds.descriptions.RESPAWN_VEHICLE,
    admin: rank.SENIOR_ADMINISTRATOR,
    call (player: PlayerMp) {
-
-      const vehicle = player.vehicle || mp.vehicles.getClosest(player.position);
-
-      if (!vehicle) {
+      if (player.vehicle) {
+         player.vehicle.instance.respawn(player.vehicle);
+      } else if (player.dist(mp.vehicles.getClosest(player.position).position) < 10) {
+         const vehicle = mp.vehicles.getClosest(player.position);
+         vehicle.instance.respawn(vehicle);
+      } else { 
          player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
-         return;
-      }
-      
-      if (temporaryVehicles.objects.get(vehicle.id)) {
-         if (player.vehicle) {
-            player.removeFromVehicle();
-         }
-         temporaryVehicles.objects.get(vehicle.id)?.respawn();
-      } else {
-
-         // vehicle is in db....
       }
    }
 }
@@ -994,11 +990,13 @@ Commands[cmds.names.RESPAWN_ALL_VEHICLES] = {
    description: cmds.descriptions.RESPAWN_ALL_VEHICLES,
    admin: rank.LEAD_ADMINISTRATOR,
    call (player: PlayerMp) {
-      temporaryVehicles.objects.forEach(vehicle => {
-         if (vehicle.object.getOccupants().length == 0) {
-            vehicle.respawn();
+      mp.vehicles.forEach(vehicle => {
+         if (vehicle.getOccupants().length == 0) {
+            if (vehicle.instance) {
+               vehicle.instance.respawn(vehicle);
+            }
          }
-     });
+      })
    }
 };
 

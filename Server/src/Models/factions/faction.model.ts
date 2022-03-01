@@ -167,7 +167,7 @@ export class factions extends Model {
 
       target.notification(lang.uAreNowLeaderOf + this.name + lang.fromAdmin + player.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
 
-      // PORUKA: u set leader of ... to ...
+      player.notification(lang.uSetLeaderOf + this.name + target.name, notifications.type.SUCCESS, notifications.time.MED);
       // LOGS: setted leader
 
       await this.save();

@@ -23,7 +23,6 @@ export * from './house.model';
 
 // @vehicles
 export * from './vehicle.Model';
-export * from './vehicles/temporaryVehicle.model';
 
 // @business
 export * from './business/product.model';
