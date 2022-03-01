@@ -280,23 +280,23 @@ const getFaction = (player: PlayerMp) => {
 }
 
 
-const kickMember = (player: PlayerMp, characterID: number) => {
+const kickMember = (player: PlayerMp, targetCharacterID: number) => {
    return factions.findOne( { where: { id: player.character.faction } } ).then(async faction => {
       if (!faction) {
          return;
       }
 
-      const targetCharacter = await characters.findOne( { where: { id: characterID } } );
-
-      if (!targetCharacter) {
-         return;
-      }
-
-      const isOnline = mp.players.toArray().find(target => target.character.id == targetCharacter.id);
+      const isOnline = mp.players.toArray().find(target => target.character.id == targetCharacterID);
 
       if (isOnline) {
          faction.kick(player, isOnline);
       } else {
+         const targetCharacter = await characters.findOne( { where: { id: targetCharacterID } } );
+
+         if (!targetCharacter) {
+            return;
+         }
+
          targetCharacter.faction = none;
          targetCharacter.rank = none
          await targetCharacter.save();
@@ -309,5 +309,23 @@ const kickMember = (player: PlayerMp, characterID: number) => {
 }
 
 
+const updateMemberRank = (player: PlayerMp, targetCharacterID: number, rankName: string) => {
+   return factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+      if (!faction) {
+         return;
+      }
+
+      const isOnline = mp.players.toArray().find(target => target.character.id == targetCharacterID);
+
+      if (isOnline) {
+         faction.rank(player, isOnline, rankName);
+      } else { 
+
+      }
+   })
+};
+
+
 mp.events.addProc('SERVER::FACTION:INFO', getFaction);
 mp.events.addProc('SERVER::FACTION:KICK_MEMBER', kickMember);
+mp.events.addProc('SERVER::FACTION:RANKUP_MEMBER', updateMemberRank);

@@ -72,7 +72,6 @@ export class factionsRanks extends Model {
 }
 
 
-
 const deleteRank = (player: PlayerMp, rankID: number) => {
    return factionsRanks.findOne( { where: { id: rankID } } ).then(rank => {
       if (!rank) {
@@ -84,6 +83,7 @@ const deleteRank = (player: PlayerMp, rankID: number) => {
       return true;
    })
 }
+
 
 const updateRank = (player: PlayerMp, rankID: number, name: string, description: string, salary: number) => {
    return factionsRanks.findOne( { where: { id: rankID }}).then(async rank => {
