@@ -20,6 +20,7 @@
                maxlength="200"
                @keyup.esc="Close"
                @keydown.enter="Send"
+               spellcheck="false"
                @blur="Close"
                @keyup.up="shiftHistory(1)"
                @keyup.down="shiftHistory(0)"
@@ -246,16 +247,15 @@
 
    input {
       width: 100%;
-      border: 1px solid #474d57;
-      color: #cdcdcd;
-      border-radius: 5px;
-      box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
-      background: #2b2f36;
+      border: 1px solid rgb(71 77 87 / 40%);
+      color: whitesmoke;
+      border-radius: 4px;
+      background: rgb(50 50 50 / 35%);
       position: relative;
       padding: 10px 10px;
       outline: none;
-      font-size: 13px !important;
-      font-weight: 300;
+      font-size: 13.25px !important;
+      font-weight: 500;
       transition: all 0.45s ease;
    }
 

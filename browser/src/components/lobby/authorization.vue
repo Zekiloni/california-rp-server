@@ -66,7 +66,7 @@
       color: whitesmoke;
       align-items: center;
       transition: all .3s ease;
-      background: linear-gradient(0deg, #0b0e11, transparent);
+      background: linear-gradient(0deg, rgb(11 14 17 / 85%), transparent);
       flex-direction: column;
       animation: slide-from-bottom 1.3s ease-in-out;
    }
@@ -89,14 +89,14 @@
       width: 270px;
       padding: 15px 10px;
       transition: all .3s ease;
-      border: 1px solid #0b0e11;
       color: #cdcdcd;
-      border-radius: 5px;
-      box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
-      background: #2b2f36;
+      border-radius: 4px;
+      box-shadow: rgb(0 0 0 / 5%) 0px 1px 20px 0px;
+      border: 1px solid rgb(150 150 150 / 40%);
+      background: rgb(150 150 150 / 5%);
    }
 
-   .form input:focus { color: white; transform: scale(1.05); border-color: #474d57; }
+   .form input:focus { color: white; border-color: #474d57; }
    .form .input-container { position: relative; margin: 10px 0; }
 
    button.play { 
@@ -105,7 +105,7 @@
       margin-top: 15px;
       padding: 20px 10px;
       background: linear-gradient(45deg, #7c5bf1, #20143f);
-      box-shadow: 25px 15px 25px -5px rgb(37 24 71 / 10%), 0 15px 25px -5px rgb(117 85 226 / 15%);
+      box-shadow: 25px 15px 25px -5px rgb(37 24 71 / 5%), 0 15px 25px -5px rgb(117 85 226 / 10%);
       border-radius: 5px;
       transition: all .3s ease;
       font-weight: 500;
@@ -114,7 +114,7 @@
 
    button.play:hover { 
       color: white;
-      box-shadow: 15px 15px 35px -5px rgb(37 24 71 / 35%), 0 15px 25px -5px rgb(117 85 226 / 25%);
+      box-shadow: 15px 15px 35px -5px rgb(37 24 71 / 10%), 0 15px 25px -5px rgb(117 85 226 / 15%);
       filter: brightness(1.2);
    }
 

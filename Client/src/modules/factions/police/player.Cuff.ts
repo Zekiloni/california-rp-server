@@ -1,12 +1,14 @@
 import { animationFlags } from '../../../enums/animations.flags';
+import { clothingComponents } from '../../../enums/clothing';
 import { entityType } from '../../../enums/entity';
-import { waitForEntity } from '../../../utils';
 import { playAnimation } from '../../player/animation';
 
 
-
 const config = {
-   object: mp.game.joaat('p_cs_cuffs_02_s'),
+   accessory: {
+      drawable: 41,
+      texture: 0
+   },
    animation: {
       dictionary: 'mp_arresting',
       name: 'idle',
@@ -15,8 +17,14 @@ const config = {
 }
 
 
+interface Cuffed { 
+   [key: number]: {
+      drawable: number
+      texture: number
+   }
+}
 
-let cuffed: { [key: number]: ObjectMp } = {};
+let cuffed: Cuffed = {};
 
 
 const checkMoving = () => {
@@ -56,26 +64,21 @@ const cuff = (entity: EntityMp, value: boolean, oldValue?: boolean) => {
    if (value) { 
       target.setEnableHandcuffs(true);
 
-      const cuffObject = mp.objects.new(config.object, target.position, {
-         rotation: new mp.Vector3(0, 0, 0),
-         alpha: 255,
-         dimension: target.dimension
-      });
+      playAnimation(target, config.animation.dictionary, config.animation.name, config.animation.flag, -1, false);
+      target.setComponentVariation(clothingComponents.ACCESSORIE, config.accessory.drawable, config.accessory.texture, 0);
 
-      waitForEntity(cuffObject)?.then(() => {
-         const bone = mp.players.local.getBoneIndex(6286);
-         cuffObject.attachTo(entity.handle, bone, -0.02, 0.06, 0.0, 75.0, 0.0, 76.0, true, true, false, false, 0, true);
-      });
+      cuffed[target.remoteId] = {
+         drawable: target.getDrawableVariation(clothingComponents.ACCESSORIE),
+         texture: target.getTextureVariation(clothingComponents.ACCESSORIE)
+      };
 
-      playAnimation(target, config.animation.dictionary, config.animation.name, config.animation.flag, -1, false)
-
-      cuffed[target.remoteId] = cuffObject;
+      mp.gui.chat.push(JSON.stringify(cuffed[target.remoteId]))
    } else {
-      const object = cuffed[target.remoteId];
+      const isCuffed = cuffed[target.remoteId];
 
-      if (object) {
+      if (isCuffed) {
          target.clearTasks();
-         object.destroy();
+         target.setComponentVariation(clothingComponents.ACCESSORIE, isCuffed.drawable, isCuffed.texture, 2);
          delete cuffed[target.remoteId];
       }
    }

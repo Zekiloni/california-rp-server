@@ -2,78 +2,78 @@
 
    <div id="app">
 
-      <Lobby v-if="interfaces.lobby" />
+      <Lobby v-if="interfaces.lobby.toggle" />
 
-      <Creator v-if="interfaces.characterCreator" />
+      <Creator v-if="interfaces.characterCreator.toggle" />
 
-      <GameInterface v-if="interfaces.gameInterface" />
-      <Notifications v-if="interfaces.notifications" />
+      <GameInterface v-if="interfaces.gameInterface.toggle" />
+      <Notifications v-if="interfaces.notifications.toggle" />
 
-      <DeathScreen v-if="interfaces.deathScreen" />
+      <DeathScreen v-if="interfaces.deathScreen.toggle" />
 
 
-      <Chat v-if="interfaces.chat" />
+      <Chat v-if="interfaces.chat.toggle" />
 
       <!-- [MISC] -->
       <transition name="fade"> 
-         <Inventory v-if="interfaces.inventory" /> 
+         <Inventory v-if="interfaces.inventory.toggle" /> 
       </transition>
       
       <transition name="fade">
-         <Document v-if="interfaces.idDocument" />
+         <Document v-if="interfaces.idDocument.toggle" />
       </transition>
       
       <transition> 
-         <Phone v-if="interfaces.phone" />
+         <Phone v-if="interfaces.phone.toggle" />
       </transition>
 
-      <Playerlist v-if="interfaces.playerlist" />
+      <Playerlist v-if="interfaces.playerlist.toggle" />
 
       <transition name="fade-with-bottom-slide"> 
-         <Banking v-if="interfaces.banking" key=banking />\
-         <ATM v-if="interfaces.atm" key=atm />
+         <Banking v-if="interfaces.banking.toggle" key=banking />\
+         <ATM v-if="interfaces.atm.toggle" key=atm />
       </transition>
    
 
       <!-- [ITEMS] -->
-      <HandheldRadio v-if="interfaces.handheldRadio" />
+      <HandheldRadio v-if="interfaces.handheldRadio.toggle" />
 
       <!-- [HOUSES] -->
       <transition name="fade"> 
-         <HouseInfo v-if="interfaces.houseInfo" />
+         <HouseInfo v-if="interfaces.houseInfo.toggle" />
       </transition>
 
 
       <!-- [BUSINESSES] -->
       <transition-group name="fade-with-bottom-slide">
-         <BusinessInfo v-if="interfaces.businessInfo" key=businessInfo />
-         <BusinessManagement v-if="interfaces.businessManagement" key=businessManagement />
+         <BusinessInfo v-if="interfaces.businessInfo.toggle" key=businessInfo />
+         <BusinessManagement v-if="interfaces.businessManagement.toggle" key=businessManagement />
       </transition-group>
       
       <transition name="fade"> 
-         <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
-         <ClothingMenu v-if="interfaces.clothingMenu" key=clothingMenu />
-         <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
-         <VehicleDealership v-if="interfaces.dealershipMenu" key=dealershipMenu />
+         <MarketMenu v-if="interfaces.marketMenu.toggle" key=marketMenu />
+         <ClothingMenu v-if="interfaces.clothingMenu.toggle" key=clothingMenu />
+         <RentMenu v-if="interfaces.rentMenu.toggle" key=rentMenu />
+         <VehicleDealership v-if="interfaces.dealershipMenu.toggle" key=dealershipMenu />
       </transition>
 
 
       <transition name="fade"> 
-         <JobOffer v-if="interfaces.job_Offer" />
+         <JobOffer v-if="interfaces.job_Offer.toggle" />
       </transition>
 
 
       <!-- [BUILDER] -->
       <transition-group name="fade-with-bottom-slide"> 
-         <ObjectsMenu v-if="interfaces.objectsMenu" key=objectsMenu />
-         <ObjectEditor v-if="interfaces.objectEditor" key=objectEditor />
+         <ObjectsMenu v-if="interfaces.objectsMenu.toggle" key=objectsMenu />
+         <ObjectEditor v-if="interfaces.objectEditor.toggle" key=objectEditor />
       </transition-group>
 
 
 
       <!-- [FACTION] -->
       <transition name="fade">
-         <FactionPanel v-if="interfaces.factionPanel" />
+         <FactionPanel v-if="interfaces.factionPanel.toggle" />
       </transition>
       <!-- <transition name="bounce">
          <Lobby v-if="interfaces.Lobby" />

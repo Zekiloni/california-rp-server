@@ -7,58 +7,67 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+
+interface uInterface {
+   toggle: false,
+   mouse: boolean
+   hideChat?: boolean
+   disableChat: boolean
+   hideUI?: boolean
+}
+
 const InitialState = {
-   notifications: true,
-   chat: false,
+   notifications: { toggle: true },
+   chat: { toggle: false },
 
-   lobby: true,
-   characterCreator: false,
+   lobby: { toggle: true, mouse: true },
+   characterCreator: { toggle: false, mouse: true },
 
-   gameInterface: false,
-   deathScreen: false,
+   gameInterface: { toggle: false },
+   deathScreen: { toggle: false },
 
-   inventory: false,
-   phone: false,
-   handheldRadio: false,
-   idDocument: false,
-   licenses: false,
+   inventory: { toggle: false, mouse: true, },
+   phone: { toggle: false, mouse: true },
+   handheldRadio: { toggle: false, mouse: true },
+   idDocument: { toggle: false, mouse: true },
+   licenses: { toggle: false, mouse: true },
    
    // banking
-   banking: false,
-   atm: false,
+   banking: { toggle: false, mouse: true },
+   atm: { toggle: false, mouse: true },
 
-   playerlist: false,
+   playerlist: { toggle: false, mouse: true },
 
    // jobs interfaces
-   job_Offer: false,
-   Miner: false,
-   Food: false,
-   Transit: false,
+   job_Offer: { toggle: false, mouse: true },
+   Miner: { toggle: false },
+   Food: { toggle: false },
+   Transit: { toggle: false },
 
    // busines interfaces
-   businessInfo: false,
-   businessManagement: false,
-   marketMenu: false,
-   clothingMenu: false,
-   dealershipMenu: false,
-   rentMenu: false,
+   businessInfo: { toggle: false, mouse: true },
+   businessManagement: { toggle: false, mouse: true },
+   marketMenu: { toggle: false, mouse: true },
+   clothingMenu: { toggle: false, mouse: true },
+   dealershipMenu: { toggle: false, mouse: true },
+   rentMenu: { toggle: false, mouse: true },
 
-   drinks_Shop: false,
-   gas_Station: false,
-   dealership: false,
+   drinks_Shop: { toggle: false, mouse: true },
+   gas_Station: { toggle: false, mouse: true },
+   dealership: { toggle: false, mouse: true },
    
-   House: false,
+   House: { toggle: false, mouse: true },
 
-   DMV: false,
+   DMV: { toggle: false, mouse: true },
       
-   houseInfo: false,
+   houseInfo: { toggle: false },
 
    // builder
-   objectsMenu: false,
-   objectEditor: false,
+   objectsMenu: { toggle: false },
+   objectEditor: { toggle: false },
 
    // faction
-   factionPanel: false
+   factionPanel: { toggle: false, mouse: true }
 }
 
 export const InterfaceStore = {
@@ -71,11 +80,11 @@ export const InterfaceStore = {
 
    mutations: {
       show: function (state: typeof InitialState, payload: keyof typeof InitialState) { 
-         state[payload] = true;
+         state[payload].toggle = true;
       },
 
       hide: function (state: typeof InitialState, payload: keyof typeof InitialState) {
-         state[payload] = false;
+         state[payload].toggle = false;
       }
    },
 
