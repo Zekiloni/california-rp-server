@@ -54,6 +54,7 @@
          <MarketMenu v-if="interfaces.marketMenu" key=marketMenu />
          <ClothingMenu v-if="interfaces.clothingMenu" key=clothingMenu />
          <RentMenu v-if="interfaces.rentMenu" key=rentMenu />
+         <VehicleDealership v-if="interfaces.dealershipMenu" key=dealershipMenu />
       </transition>
 
 
@@ -119,6 +120,7 @@
    import BusinessManagement from '@/components/business/BusinessManagement.vue';
    import MarketMenu from '@/components/business/menus/MarketMenu.vue';
    import ClothingMenu from '@/components/business/menus/ClothingMenu.vue';
+   import VehicleDealership from '@/components/business/menus/VehicleDealership.vue';
    import RentMenu from '@/components/business/menus/RentVehicle.vue';
 
    import ObjectsMenu from '@/components/builder/ObjectsMenu.vue';
@@ -136,7 +138,7 @@
 
          ObjectsMenu, ObjectEditor,
          
-         BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu,
+         BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
 
          FactionPanel
       },

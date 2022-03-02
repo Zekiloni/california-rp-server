@@ -3,7 +3,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 import { interactionPoint } from '@interfaces';
 import { cmds, gDimension, lang, none, offerExpire } from '@constants';
 import { characters, logs, products, workers } from '@models';
-import { businessConfig } from '@configs';
+import { BusinesConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
 
@@ -21,9 +21,9 @@ export class business extends Model {
    @Column
    name: string
 
-   @Default(businessConfig.type.MARKET)
+   @Default(BusinesConfig.type.MARKET)
    @Column
-   type: businessConfig.type
+   type: BusinesConfig.type
 
    @Default(false)
    @Column(DataType.BOOLEAN)
@@ -74,11 +74,11 @@ export class business extends Model {
       {
          type: DataType.JSON,
          get () {
-            return this.getDataValue('spawn_point') ? JSON.parse(this.getDataValue('spawn_point')) : null;
+            return this.getDataValue('previewPoint') ? JSON.parse(this.getDataValue('previewPoint')) : null;
          }
       }
    )
-   spawn_point: Vector3Mp
+   previewPoint: Vector3Mp
 
    @Column(
       {
@@ -122,7 +122,7 @@ export class business extends Model {
 
    @AfterSync
    static loading () {
-      business.findAll({ include: [products, workers] }).then(businesses => {
+      business.findAll( ).then(businesses => {
          businesses.forEach(busines => {
             busines.refresh();
          });
@@ -134,8 +134,8 @@ export class business extends Model {
 
    @AfterCreate
    static async creating (business: business) { 
-      business.sprite = businessConfig.sprites[business.type];
-      business.sprite_color = businessConfig.blipColors[business.type];
+      business.sprite = BusinesConfig.sprites[business.type];
+      business.sprite_color = BusinesConfig.blipColors[business.type];
       (await business.save()).refresh();
    }
 
@@ -167,9 +167,9 @@ export class business extends Model {
       }
 
       if (this.walk_in) {
-         availableCommands.push(cmds.names.ENTER);
-      } else {
          availableCommands.push(cmds.names.BUY);
+      } else {
+         availableCommands.push(cmds.names.ENTER);
       }
       
       if (!this.owner) {
@@ -190,7 +190,7 @@ export class business extends Model {
    }
    
    static async getNearestGasStation (player: PlayerMp)  {
-      return business.findAll( { where: { type: businessConfig.type.GAS_STATION } } ).then(gasStations => {
+      return business.findAll( { where: { type: BusinesConfig.type.GAS_STATION } } ).then(gasStations => {
          gasStations.forEach(gasStation => {
             if (player.dist(gasStation.position) < 45) {
                return gasStation;
@@ -214,7 +214,7 @@ export class business extends Model {
             ),
             
             colshape: mp.colshapes.newSphere(position.x, position.y, position.z, 1.8, dimension),
-            marker: mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 1), 1, { color: businessConfig.markerColor, dimension: this.dimension, visible: true })
+            marker: mp.markers.new(1, new mp.Vector3(position.x, position.y, position.z - 1), 1, { color: BusinesConfig.markerColor, dimension: this.dimension, visible: true })
          }
       }
 
@@ -252,6 +252,8 @@ export class business extends Model {
             this.sprite_color = Number(value); break;
          case 'owner':
             this.owner = Number(value); break;
+         case 'previewPoint':
+            this.previewPoint = player.position; break;
          default: 
             return;
       }
@@ -339,23 +341,33 @@ export class business extends Model {
       }
 
       switch (this.type) {
-         case businessConfig.type.MARKET: {
+         case BusinesConfig.type.MARKET: {
             player.call('CLIENT::MARKET:MENU', [this]);
             break;
          }
 
-         case businessConfig.type.GAS_STATION: {
+         case BusinesConfig.type.GAS_STATION: {
             player.call('CLIENT::MARKET:MENU', [this]);
             break;
          }
 
-         case businessConfig.type.CLOTHING: {
+         case BusinesConfig.type.CLOTHING: {
             player.call('CLIENT::CLOTHING:MENU', [this]);
             break;
          }
 
-         case businessConfig.type.BARBER_SHOP: {
+         case BusinesConfig.type.BARBER_SHOP: {
             player.call('CLIENT::BARBER:MENU', [this]);
+            break;
+         }
+
+         case BusinesConfig.type.VEHICLE_DEALERSHIP: {
+            if (this.products.length == none) {
+               // poruka: no products
+               return;
+            }
+
+            player.call('CLIENT::DEALERSHIP:MENU', [this]);
             break;
          }
       }

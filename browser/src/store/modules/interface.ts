@@ -40,6 +40,7 @@ const InitialState = {
    businessManagement: false,
    marketMenu: false,
    clothingMenu: false,
+   dealershipMenu: false,
    rentMenu: false,
 
    drinks_Shop: false,

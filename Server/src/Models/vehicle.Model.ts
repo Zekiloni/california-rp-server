@@ -9,7 +9,7 @@ import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { jobs, factions } from '@models';
+import { jobs, factions, logs } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
@@ -125,11 +125,15 @@ export class vehicles extends Model {
 
    @AfterSync
    static loading () {
-      vehicles.findAll( { where: { spawned: true } } ).then(spawnedVehicles => {
+      vehicles.findAll().then(vehicles => {
+         const spawnedVehicles = vehicles.filter(vehicle =>  vehicle.spawned == true);
          spawnedVehicles.forEach(vehicle => {
-            console.log(vehicle.model + ' spawned')
-            vehicle.load();
+            if (vehicle.spawned) {
+               vehicle.load();
+            }
          })
+
+         logs.info(vehicles.length + ' vehicles loaded, ' + spawnedVehicles.length + ' spawned !');
       });
    }
 
@@ -313,7 +317,7 @@ export class vehicles extends Model {
       }
    }
 
-   static async vehicleInfo (player: PlayerMp, vehicleID: number, mileage: number, fuel: number) {
+   static async data (player: PlayerMp, vehicleID: number, mileage: number, fuel: number) {
       const vehicle = mp.vehicles.at(vehicleID);
    
       if (!vehicle) {
@@ -343,7 +347,7 @@ export class vehicles extends Model {
 
 
 mp.events.add('playerExitVehicle', vehicles.exit);
-mp.events.add('SERVER::VEHICLE:UPDATE', vehicles.vehicleInfo);
+mp.events.add('SERVER::VEHICLE:UPDATE', vehicles.data);
 mp.events.add('SERVER::VEHICLE:INDICATORS', vehicles.indicators);
 
 

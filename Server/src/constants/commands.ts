@@ -102,7 +102,7 @@ export namespace cmds {
       AMMO: 'municija',
       TYPE: 'tip',
       PRICE: 'cena',
-      TP_TYPE: 'tip: vehicle, business, house',
+      TP_TYPE: 'tip: vehicle, busines, house',
       WEATHER: 'ime vremena / id',
       HOUSE_ID: 'id kuće',
       COORD: 'koordinata',

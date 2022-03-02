@@ -1,4 +1,4 @@
-import { businessConfig } from '@configs';
+import { BusinesConfig } from '@configs';
 import { lang, none } from '@constants';
 import { ItemEnums, notifications } from '@enums';
 import { CartItem } from '@interfaces';
@@ -34,7 +34,7 @@ function openBusinesMenu (player: PlayerMp, bizId: number) {
       } 
 
       switch (biz.type) {
-         case businessConfig.type.MARKET || businessConfig.type.GAS_STATION: {
+         case BusinesConfig.type.MARKET || BusinesConfig.type.GAS_STATION: {
             player.call('CLIENT::MARKET:MENU', [biz]);
          }
       }

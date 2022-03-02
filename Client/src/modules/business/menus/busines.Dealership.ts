@@ -1,8 +1,10 @@
 import { Browser } from "../../../browser";
 import { DealershipTestDrve } from "../../../interfaces/business";
+import { vehiclePreviewCamera } from "../../utils/vehicle.pCamera";
+import { businesInfo, toggleBusinesInfo } from "../business.Core";
 
 
-let active: boolean = false;
+let dealershipMenu: boolean = false;
 let vehicle: VehicleMp | null = null;
 let testPoint: Vector3Mp | null = null;
 
@@ -19,30 +21,36 @@ let testing: DealershipTestDrve = {
 };
 
 
-const openDealership = (info: string) => {
-   active = !active;
+const openDealership = (info: any) => {
+   dealershipMenu = !dealershipMenu;
    
    Browser.call(
-      active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'dealershipMennu'
+      dealershipMenu ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'dealershipMenu'
    );
    
-   if (active) {
-      const position = JSON.parse(info).vehicle_point;
-      const firstModel = JSON.parse(info).products[0].name;
+   if (dealershipMenu) {
+      const position = new mp.Vector3(info.previewPoint.x, info.previewPoint.y, info.previewPoint.z);
    
-      const spawnPoint = JSON.parse(info).spawn_point;
-      testPoint = new mp.Vector3(spawnPoint.x, spawnPoint.y, spawnPoint.z);
+      if (businesInfo) {
+         toggleBusinesInfo(false);
+      }
 
-      vehicle = mp.vehicles.new(
-         mp.game.joaat(firstModel), new mp.Vector3(position.x, position.y, position.z), {
-            alpha: 255, engine: false, numberPlate: 'dealership'
-         }
-      );
+      if (info.spawnPoint) {
+         testPoint = new mp.Vector3(info.spawnPoint.x, info.spawnPoint.y, info.spawnPoint.z);
+      }
+
+      const createdVehicle = modelPreview(info.products[0].name, new mp.Vector3(position.x, position.y, position.z));
+
+      if (createdVehicle) {
+         vehiclePreviewCamera(true, createdVehicle!);
+      }
 
    } else { 
       if (vehicle) {
          vehicle.destroy();
       }
+      
+      vehiclePreviewCamera(false);
    }
 
 };
@@ -75,7 +83,7 @@ const testingDrive = (toggle: boolean, model?: string) => {
 
 
 const changeColor = (primaryColor: RGB, secondaryColor: RGB) => {
-   if (active && vehicle) {
+   if (dealershipMenu && vehicle) {
       const [primaryR, primaryG, primaryB] = primaryColor;
       const [secondaryR, secondaryG, secondaryB] = secondaryColor;
 
@@ -85,14 +93,39 @@ const changeColor = (primaryColor: RGB, secondaryColor: RGB) => {
 }
 
 
-const modelPreview = (model: string) => {
+const modelPreview = (model: string, position?: Vector3Mp) => {
    if (vehicle) {
       vehicle.model = mp.game.joaat(model);
-   }
+   } else {
+      vehicle = mp.vehicles.new(
+         mp.game.joaat(model), position!, {
+            alpha: 255, engine: false, numberPlate: 'dealership'
+         }
+      );
+   } 
+
+   vehicleInfo(
+      mp.game.joaat(model)
+   );
+
+   return vehicle;
 }
 
 
-mp.events.add('CLIENT::DEALERSHIP:COLOR', changeColor);
+const vehicleInfo = (model: number) => {
+   Browser.call(
+      'BROWSER::DEALERSHIP:VEHICLE_INFO',
+      mp.game.ui.getLabelText(mp.game.vehicle.getDisplayNameFromVehicleModel(model)),
+      mp.game.vehicle.getVehicleClassFromName(model),
+      ((mp.game.vehicle.getVehicleModelMaxSpeed(model) * 3.6).toFixed(0)),
+      mp.game.vehicle.getVehicleModelMaxBraking(model),
+      mp.game.vehicle.getVehicleModelAcceleration(model),
+      mp.game.vehicle.getVehicleModelMaxTraction(model),
+      mp.game.vehicle.getVehicleModelMaxNumberOfPassengers(model)
+   );
+}
+
 mp.events.add('CLIENT::DEALERSHIP:MENU', openDealership);
+mp.events.add('CLIENT::DEALERSHIP:COLOR', changeColor);
 mp.events.add('CLIENT::DEALERSHIP:TEST_DRIVE', testingDrive);
 mp.events.add('CLIENT::DEALERSHIP:PREVIEW', modelPreview);

@@ -5,7 +5,7 @@ import { Commands } from '../commands';
 import { logs, items, inventories, houses, accounts, business, factions, characters, vehicles } from '@models';
 import { cmds, colors, gDimension, lang, none, ranks, weathers } from '@constants';
 import { rank, notifications } from '@enums';
-import { businessConfig, serverConfig, VehicleConfig } from '@configs';
+import { BusinesConfig, serverConfig, VehicleConfig } from '@configs';
 import { checkForDot, generateString, shared_Data } from '@shared';
 
 
@@ -163,8 +163,8 @@ Commands[cmds.names.BUSINESS_TYPES] = {
    call (player: PlayerMp) {
       let message = '';
 
-      businessConfig.typeNames.forEach(type => {
-         const index = businessConfig.typeNames.indexOf(type);
+      BusinesConfig.typeNames.forEach(type => {
+         const index = BusinesConfig.typeNames.indexOf(type);
          message += '[' + index + '] ' + type + ', ';
       });
       player.sendMessage(message, colors.hex.Help);

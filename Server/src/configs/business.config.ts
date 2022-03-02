@@ -1,7 +1,7 @@
 import { itemNames } from '@constants';
 
 
-export namespace businessConfig { 
+export namespace BusinesConfig { 
 
    export const marker: number = 3;
 
@@ -38,39 +38,41 @@ export namespace businessConfig {
    
 
    export const defaultProducts = {
-      [businessConfig.type.MARKET]: [
+      [BusinesConfig.type.MARKET]: [
          itemNames.DRINK_BEER_BOTTLE, itemNames.DRINK_COLA_CAN, itemNames.DRINK_SODA_CAN, itemNames.FOOD_CHIPS, itemNames.FOOD_DONUT,
          itemNames.FOOD_SANDWICH
       ],
       
-      [businessConfig.type.GAS_STATION]: [
+      [BusinesConfig.type.GAS_STATION]: [
          itemNames.DRINK_BEER_BOTTLE, itemNames.DRINK_COLA_CAN, itemNames.DRINK_SODA_CAN, itemNames.FOOD_CHIPS, itemNames.FOOD_DONUT,
          itemNames.FOOD_SANDWICH
       ],
 
 
-      [businessConfig.type.RENT]: rentableVehicles,
+      [BusinesConfig.type.RENT]: rentableVehicles,
 
-      [businessConfig.type.VEHICLE_DEALERSHIP]: [],
+      [BusinesConfig.type.VEHICLE_DEALERSHIP]: [
+         'elegy', 'sultan', 'weevil', 'panto', 'dominator'
+      ],
       
-      [businessConfig.type.ELECTRONIC_SHOP]: [],
+      [BusinesConfig.type.ELECTRONIC_SHOP]: [],
 
-      [businessConfig.type.CLOTHING]: [
+      [BusinesConfig.type.CLOTHING]: [
          itemNames.CLOTHING_MASK, itemNames.CLOTHING_LEGS, itemNames.CLOTHING_SHOES, itemNames.CLOTHING_ACCESSORIES,
          itemNames.CLOTHING_UNDERSHIRT, itemNames.CLOTHING_BODY_ARMOUR, itemNames.CLOTHING_DECAL, itemNames.CLOTHING_TOP, itemNames.PROP_HAT,
          itemNames.PROP_GLASSES, itemNames.PROP_EARS, itemNames.PROP_WATCH, itemNames.PROP_BRACELET           
       ],
       
-      [businessConfig.type.RESTAURANT]: [],
-      [businessConfig.type.CAFE_BAR]: [],
-      [businessConfig.type.NIGHT_CLUB]: [],
-      [businessConfig.type.AMMUNATION]: [],
-      [businessConfig.type.PAWN_SHOP]: [],
-      [businessConfig.type.FURNITURE_SHOP]: [],
-      [businessConfig.type.CAR_PARTS]: [],
-      [businessConfig.type.JEWELRY_SHOP]: [],
-      [businessConfig.type.TATTO_SHOP]: [],
-      [businessConfig.type.BARBER_SHOP]: []
+      [BusinesConfig.type.RESTAURANT]: [],
+      [BusinesConfig.type.CAFE_BAR]: [],
+      [BusinesConfig.type.NIGHT_CLUB]: [],
+      [BusinesConfig.type.AMMUNATION]: [],
+      [BusinesConfig.type.PAWN_SHOP]: [],
+      [BusinesConfig.type.FURNITURE_SHOP]: [],
+      [BusinesConfig.type.CAR_PARTS]: [],
+      [BusinesConfig.type.JEWELRY_SHOP]: [],
+      [BusinesConfig.type.TATTO_SHOP]: [],
+      [BusinesConfig.type.BARBER_SHOP]: []
    }
    
    export const defaultPrices = {
