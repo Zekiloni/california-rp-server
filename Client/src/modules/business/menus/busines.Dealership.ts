@@ -21,7 +21,7 @@ let testing: DealershipTestDrve = {
 };
 
 
-const openDealership = (info: any) => {
+const openDealership = (info?: any) => {
    dealershipMenu = !dealershipMenu;
    
    Browser.call(
@@ -29,7 +29,7 @@ const openDealership = (info: any) => {
    );
    
    if (dealershipMenu) {
-      const position = new mp.Vector3(info.previewPoint.x, info.previewPoint.y, info.previewPoint.z);
+      const position = new mp.Vector3(info.preview_Point.x, info.preview_Point.y, info.preview_Point.z);
 
       if (businesInfo) {
          toggleBusinesInfo(false);
@@ -55,6 +55,18 @@ const openDealership = (info: any) => {
       vehiclePreviewCamera(false);
    }
 
+};
+
+
+const buyVehicle = (businesID: number, productID: number) => {
+   const color = [vehicle?.getColor(0, 0, 0), vehicle?.getColor(1, 1, 1)];
+   mp.gui.chat.push(JSON.stringify(color))
+
+   mp.events.callRemoteProc('SERVER::DEALERSHIP:BUY', businesID, productID, JSON.stringify(color)).then((isPurchased: boolean) => { 
+      if (isPurchased) {
+         openDealership();
+      }
+   })
 };
 
 
@@ -84,13 +96,9 @@ const testingDrive = (toggle: boolean, model?: string) => {
 };
 
 
-const changeColor = (primaryColor: RGB, secondaryColor: RGB) => {
+const changeColor = (primaryColor: number, secondaryColor: number) => {
    if (dealershipMenu && vehicle) {
-      const [primaryR, primaryG, primaryB] = primaryColor;
-      const [secondaryR, secondaryG, secondaryB] = secondaryColor;
-
-      vehicle.setCustomPrimaryColour(primaryR, primaryG, primaryB);
-      vehicle.setCustomSecondaryColour(secondaryR, secondaryG, secondaryB);
+      vehicle.setColours(primaryColor, secondaryColor);
    }
 }
 
@@ -131,3 +139,4 @@ mp.events.add('CLIENT::DEALERSHIP:MENU', openDealership);
 mp.events.add('CLIENT::DEALERSHIP:COLOR', changeColor);
 mp.events.add('CLIENT::DEALERSHIP:TEST_DRIVE', testingDrive);
 mp.events.add('CLIENT::DEALERSHIP:PREVIEW', modelPreview);
+mp.events.add('CLIENT::DEALERSHIP:BUY', buyVehicle)

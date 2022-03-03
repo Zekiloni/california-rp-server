@@ -174,11 +174,20 @@ Commands[cmds.names.BUSINESS_TYPES] = {
 Commands[cmds.names.EDIT_BUSINESS] = {
    description: cmds.descriptions.EDIT_BUSINESS,
    admin: rank.LEAD_ADMINISTRATOR,
-   call (player: PlayerMp, property: string, ...newValue) {
+   params: [
+      cmds.params.BUSINES_ID,
+      cmds.params.FIELD
+   ],
+   call (player: PlayerMp, id: string, property: string, ...newValue) {
       const value = [...newValue].join(' ');
-      business.getNearest(player).then(nearest => {
-         nearest.edit(player, property, value);
-      })
+      
+      business.findOne( { where: { id: Number(id) } } ).then(busines => {
+         if (!busines) {
+            return;
+         }
+
+         busines.edit(player, property, value);
+      });
    }
 }
 

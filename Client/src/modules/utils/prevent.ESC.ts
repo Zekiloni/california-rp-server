@@ -3,7 +3,12 @@
 
 
 const disableESCMenu = (toggle: boolean) =>  {
-   toggle ? mp.events.add(RageEnums.EventKey.RENDER, preventESC) : mp.events.remove(RageEnums.EventKey.RENDER, preventESC);
+   if (toggle) {
+      mp.events.add(RageEnums.EventKey.RENDER, preventESC);
+   } else { 
+      mp.game.wait(100);
+      mp.events.remove(RageEnums.EventKey.RENDER, preventESC)
+   }
 }
 
 

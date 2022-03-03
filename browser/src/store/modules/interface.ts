@@ -28,7 +28,11 @@ const InitialState:uInterface = {
    gameInterface: { toggle: false },
    deathScreen: { toggle: false },
 
-   inventory: { toggle: false, mouse: true, },
+   inventory: { 
+      toggle: false, 
+      mouse: true, 
+      escClose: 'CLIENT::INVENTORY:TOGGLE'
+   },
    phone: { toggle: false, mouse: true },
    handheldRadio: { toggle: false, mouse: true },
    idDocument: { toggle: false, mouse: true },
@@ -38,7 +42,10 @@ const InitialState:uInterface = {
    banking: { toggle: false, mouse: true },
    atm: { toggle: false, mouse: true },
 
-   playerlist: { toggle: false, mouse: true },
+   playerlist: { 
+      toggle: false, 
+      mouse: true 
+   },
 
    // jobs interfaces
    job_Offer: { toggle: false, mouse: true },
@@ -100,12 +107,15 @@ export const InterfaceStore = {
 
          if (state[payload].escClose) {
             mp.events.call('CLIENT::PREVENT_ESC', true);
+            document.onkeydown = close;
 
-            document.onkeydown = function (event) {
+            function close (event: KeyboardEvent) {
                if (event.key == 'Escape') {
                   mp.events.call(state[payload].escClose!);
+                  document.onkeydown = null;
                }
             }
+
          }
       },
 
@@ -122,6 +132,7 @@ export const InterfaceStore = {
 
          if (state[payload].escClose) {
             mp.events.call('CLIENT::PREVENT_ESC', false);
+            document.onkeydown = null;
          }
       },
 

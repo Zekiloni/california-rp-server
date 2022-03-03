@@ -94,7 +94,7 @@
       color: #cdcdcd;
       border-radius: 4px;
       box-shadow: rgb(0 0 0 / 5%) 0px 1px 20px 0px;
-      border: 1px solid rgb(150 150 150 / 40%);
+      border: 1px solid rgb(150 150 150 / 20%);
       background: rgb(150 150 150 / 5%);
    }
 

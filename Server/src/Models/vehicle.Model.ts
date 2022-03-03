@@ -38,7 +38,7 @@ export class vehicles extends Model {
    @Column
    owner: number
 
-   @AllowNull(false)
+   @Default(false)
    @Column(DataType.BOOLEAN)
    spawned: boolean;
 

@@ -1,11 +1,12 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany, BelongsTo, AfterSave, AfterFind } from 'sequelize-typescript';
 
 import { interactionPoint } from '@interfaces';
-import { cmds, gDimension, lang, none, offerExpire } from '@constants';
+import { cmds, gDimension, lang, none } from '@constants';
 import { characters, logs, products, workers } from '@models';
-import { BusinesConfig } from '@configs';
+import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
+import { vehicles } from '@models/vehicle.Model';
 
 
 @Table
@@ -74,11 +75,11 @@ export class business extends Model {
       {
          type: DataType.JSON,
          get () {
-            return this.getDataValue('previewPoint') ? JSON.parse(this.getDataValue('previewPoint')) : null;
+            return this.getDataValue('preview_Point') ? JSON.parse(this.getDataValue('preview_Point')) : null;
          }
       }
    )
-   previewPoint: Vector3Mp
+   preview_Point: Vector3Mp
 
    @Column(
       {
@@ -88,7 +89,7 @@ export class business extends Model {
          },
       }
    )
-   vehicle_point: Vector3Mp
+   vehicle_point: [Vector3Mp, number]
 
    @Column(
       {
@@ -181,7 +182,11 @@ export class business extends Model {
 
    static getNearest (player: PlayerMp) {
       return business.findAll( { include: [products, workers] } ).then(businesses => {
-         const nearest = businesses.filter(business => player.dist(business.position) < 20);
+         const nearest = businesses.filter(business => player.dist(business.position) < 35);
+
+         if (!nearest) {
+            return;
+         }
 
          return nearest.reduce((firstBiz, secondBiz) => {
             return player.dist(firstBiz.position) < player.dist(secondBiz.position) ? firstBiz : secondBiz;
@@ -239,23 +244,55 @@ export class business extends Model {
 
    async edit (player: PlayerMp, property: string, value: string) {
       switch (property) {
-         case 'price': 
-            this.price = Number(value); break;
-         case 'name':
+         case 'price': {
+            this.price = Number(value); 
+            break;
+         }
+
+         case 'name':{
             this.name = value; 
             break;
-         case 'lock':
+         }
+
+         case 'lock':{
             this.locked = Number(value) == 1 ? true : false;
-         case 'sprite':
-            this.sprite = Number(value); break;
-         case 'spriteColor':
-            this.sprite_color = Number(value); break;
-         case 'owner':
-            this.owner = Number(value); break;
-         case 'previewPoint':
-            this.previewPoint = player.position; break;
-         default: 
+            break;
+         }
+
+         case 'sprite':{
+            this.sprite = Number(value); 
+            break;
+         }
+
+         case 'spriteColor': {
+            this.sprite_color = Number(value); 
+            break;
+         }
+
+         case 'owner': {
+            this.owner = Number(value); 
+            break;
+         }
+
+         case 'previewpoint': {
+            this.preview_Point = player.position;
+             break;
+         }
+
+         case 'vehiclepoint': {
+            if (!player.vehicle) {
+               player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.MED);
+               return;
+            }
+
+            this.vehicle_point = [player.vehicle.position, player.vehicle.heading];
+            break;
+         }
+
+         default: {
+            // PORUKA: Actions
             return;
+         }
       }
 
       await this.save();
@@ -363,7 +400,12 @@ export class business extends Model {
 
          case BusinesConfig.type.VEHICLE_DEALERSHIP: {
             if (this.products.length == none) {
-               // poruka: no products
+               player.notification(lang.businesNoVehiclesToSell, notifications.type.INFO, notifications.time.LONG);
+               return;
+            }
+
+            if (!this.preview_Point) {
+               player.notification(lang.dealershipNoPreview, notifications.type.INFO, notifications.time.LONG);
                return;
             }
 
@@ -384,7 +426,72 @@ export class business extends Model {
 
          return true;
       })
+   }
 
+   static vehicleBuy (player: PlayerMp, businesID: number, productID: number, color: string) {
+      return business.findOne( { where: { id: businesID }, include: [products] } ).then(busines => {
+         if (!busines) {
+            return;
+         }
+
+         const product = busines.products.find(_product => _product.id == productID);
+
+         if (!product) {
+            return;
+         }
+
+
+         if (product.quantity == none) {
+            return;
+         }
+
+         if (product.price > player.character.money) {
+            player.notification(lang.notEnoughtMoneyForVehicle, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+         
+         if (player.character.vehicles.length > player.character.max_vehicles) {
+            return;
+         }
+
+         const [ position, heading ] = busines.vehicle_point;
+
+         console.log('Vehicle Point ' + position)
+         console.log('Heading ' + heading);
+
+         if (!position) {
+            return;
+         }
+
+         const model = (<string>product.name).toLocaleLowerCase();
+         const [primaryColor, secondaryColor]: [RGB, RGB] = JSON.parse(color);
+         
+         vehicles.new(
+            model, 
+            VehicleConfig.type.OWNED, 
+            false, 
+            player.character.id,
+            [primaryColor, secondaryColor],
+            position, new mp.Vector3(0, 0, heading), {
+               locked: false, spawned: false
+            }
+         ).then(vehicle => {
+            if (!vehicle) {
+               return;
+            }
+
+            vehicle.load();
+         });
+
+         player.character.giveMoney(player, -product.price);
+         
+         player.notification('kupia si vozilo', notifications.type.INFO, notifications.time.MED);
+
+         return true;
+      })
    }
 }
 
+
+
+mp.events.addProc('SERVER::DEALERSHIP:BUY', business.vehicleBuy);

@@ -56,15 +56,14 @@
 
       async mounted () {
          if (window.mp) { 
-            //@ts-ignore     
-            let item = await mp.events.callProc('CLIENT::ITEM:INFO', this.item.name);
-
-            item = JSON.parse(item);
-
-            if (item) {
-               this.info = item.info;
-               this.actions = item.actions;
-            }
+            mp.events.callProc('CLIENT::ITEM:INFO', this.item.name).then((item: string) => {
+               const info: { info: rItem, actions: itemAction[] } = JSON.parse(item);
+               
+               if (item) {
+                  this.info = info.info;
+                  this.actions = info.actions;
+               }
+            })
          }
       }
    }

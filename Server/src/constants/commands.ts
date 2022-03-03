@@ -116,6 +116,7 @@ export namespace cmds {
       VEHICLE_MODEL: 'model vozila',
       FACTION_NAME: 'ime fakcije',
       FACTION_ID: 'id fakcije',
+      BUSINES_ID: 'id biznisa',
    };
    
    export const descriptions = { 

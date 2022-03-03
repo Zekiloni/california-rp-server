@@ -13,7 +13,7 @@ export function vehiclePreviewCamera (active: boolean, pVehicle?: VehicleMp) {
 
       vpCamera = mp.cameras.new('default', new mp.Vector3(0, 0, 0), new mp.Vector3(0, 0, 0), 40);
       vpCamera.setActive(true);
-      vpCamera.setCoord(position.x + 6, position.y + 3.5, position.z);
+      vpCamera.setCoord(position.x + 7, position.y + 6.5, position.z);
       vpCamera.pointAtCoord(position.x, position.y, position.z);
 
       mp.game.cam.renderScriptCams(true, false, 0, true, false);

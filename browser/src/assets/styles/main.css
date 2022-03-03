@@ -40,7 +40,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
    -webkit-appearance: none;
 }
 
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track {background: rgb(0 0 0 / 60%);}
 ::-webkit-scrollbar-thumb { background: #6845ea; }
 

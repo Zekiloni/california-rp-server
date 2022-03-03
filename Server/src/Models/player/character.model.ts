@@ -1,15 +1,24 @@
 
+import { 
+   Table, Column, Model, PrimaryKey, AutoIncrement,
+   Unique, Default, CreatedAt, UpdatedAt, Length,
+   DataType, BelongsTo, ForeignKey, HasOne, HasMany,
+   AfterSync, IsUUID 
+} from 'sequelize-typescript';
 
+import { 
+   accounts, appearances, banks, houses,
+   business, inventories, items, logs,
+   objects, vehicles 
+} from '@models';
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, CreatedAt, UpdatedAt, Length, DataType, BelongsTo, ForeignKey, HasOne, HasMany, AfterSync, IsUUID } from 'sequelize-typescript';
-
-import { accounts, appearances, banks, houses, business, inventories, items, logs, objects } from '@models';
-import { facial_Moods, gDimension, walking_Styles, lang, colors, none, itemNames } from '@constants';
+import { facial_Moods, gDimension, walking_Styles, lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, playerInjury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
+
 
 
 @Table
@@ -163,6 +172,8 @@ export class characters extends Model {
 
    @HasMany(() => business)
    business: business[]
+
+   vehicles: vehicles[] = [];
 
    offer: offer | null = null;
    
