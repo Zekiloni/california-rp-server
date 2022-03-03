@@ -32,22 +32,22 @@
 
             <li> 
                <b> ubrzanje </b>
-               <div class="bars">
-                  <div class="bar" v-for="(box, i) in bars" :key="'box'-i" :class="{ meanwhile: bar(i, vehicleInfo.maxAcceleration) }"> </div>
+               <div class="bar">
+                  <div class="fill" :style="{ width: (vehicleInfo.maxAcceleration * 10) + '%' }"> </div>
                </div>
             </li>
 
             <li> 
                <b> kocenje </b>
-               <div class="bars">
-                  <div class="bar" v-for="(box, i) in bars" :key="'box'-i" :class="{ meanwhile: bar(i, vehicleInfo.maxBraking)}"> </div>
+               <div class="bar">
+                  <div class="fill" :style="{ width: (vehicleInfo.maxBraking * 10) + '%' }"> </div>
                </div>
             </li>
 
             <li> 
-               <b> traction </b>
-               <div class="bars">
-                  <div class="bar" v-for="(box, i) in bars" :key="'box'-i" :class="{ meanwhile: bar(i, vehicleInfo.maxTraction)}"> </div>
+               <b> maxTraction </b>
+               <div class="bar">
+                  <div class="fill" :style="{ width: (vehicleInfo.maxTraction * 10) + '%' }"> </div>
                </div>
             </li>
 
@@ -86,11 +86,6 @@
       vehicleInfo: VehicleInfo | null = null;
 
       Messages = Messages;
-      
-      bars: number = 10;
-      bar (index: number, value: number) {
-         return index < value ? true : false;
-      }
 
       select (i: number) {
          this.selected = i;
@@ -248,24 +243,28 @@
 
    .info ul li h3.price { 
       color: #0db87c;
-      font-size: 2.75rem;
+      font-size: 2.55rem;
       font-weight: 600;
    }
 
-   .bars { 
+   .bar { 
       margin: 5px 0;
-      display: flex; 
-      justify-content: space-between; 
       width: 100%; 
-   }
-
-   .bars .bar { 
-      width: 30px; 
-      height: 15px; 
-      margin: 0 5px;
-      border-radius: 2px;
+      height: 10px;
       background: rgb(100 100 100 / 75%);
+      position: relative;
+      border-radius: 2px;
+      overflow: hidden;
    }
 
-   .bar.meanwhile { background: #ffb901; }
+   .bar .fill { 
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: #ffcc45;
+      transition: all 0.5s ease;
+   }
+
 </style>
