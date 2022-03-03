@@ -23,6 +23,7 @@ export const Messages = {
    FACTION_PANEL: 'Faction Panel',
    CLOTHING_SHOP: 'Clothing Shop',
    EMPTY_CHARACTER_SLOT: 'Nema karaktera',
+   VEHICLE_INFO: 'Vehicle Info',
    GO_BACK: 'Nazad',
    JOINING_THE_GAME: 'pridružuje se igri...',
    SEARCH: 'Pretraga...',
@@ -35,6 +36,7 @@ export const Messages = {
    E_MAIL: 'E-Adresa',
    REGISTER_DATE: 'Datum registracije',
    MARKET: 'Market',
+   VEHICLE_DEALERSHIP: 'Vehicle Dealership',
    LAST_LOGIN: 'Prethodna prijava',
    MAX_WARNS: 'Možete imati maksimalno 3 upozorenja.',
    WARNS: 'Upozorenja',
@@ -128,6 +130,11 @@ export const Messages = {
    MEMBER_NAME: 'Ime člana',
    MEMBER_RANK: 'Rank člana',
    FACTION_MEMBER_SETTINGS: 'Opcije člana',
+
+   VEHICLE_NAME: 'Ime vozila',
+   NUMBER_OF_PASSENGERS: 'Broj sedišta',
+   MAX_SPEED: 'Maksimalna brzina',
+
 
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',

@@ -87,6 +87,8 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 });
 
 
+
+
 import './commands/basic.commands';
 import './commands/admin.Commands';
 import './commands/buy.Command';

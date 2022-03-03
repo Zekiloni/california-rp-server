@@ -30,7 +30,7 @@ const openDealership = (info: any) => {
    
    if (dealershipMenu) {
       const position = new mp.Vector3(info.previewPoint.x, info.previewPoint.y, info.previewPoint.z);
-   
+
       if (businesInfo) {
          toggleBusinesInfo(false);
       }
@@ -39,7 +39,8 @@ const openDealership = (info: any) => {
          testPoint = new mp.Vector3(info.spawnPoint.x, info.spawnPoint.y, info.spawnPoint.z);
       }
 
-      const createdVehicle = modelPreview(info.products[0].name, new mp.Vector3(position.x, position.y, position.z));
+      Browser.call('BROWSER::DEALERSHIP:MENU', info);
+      const createdVehicle = modelPreview(info.products[0].name, new mp.Vector3(position.x, position.y, position.z), info.name);
 
       if (createdVehicle) {
          vehiclePreviewCamera(true, createdVehicle!);
@@ -48,8 +49,9 @@ const openDealership = (info: any) => {
    } else { 
       if (vehicle) {
          vehicle.destroy();
+         vehicle = null;
       }
-      
+
       vehiclePreviewCamera(false);
    }
 
@@ -93,13 +95,13 @@ const changeColor = (primaryColor: RGB, secondaryColor: RGB) => {
 }
 
 
-const modelPreview = (model: string, position?: Vector3Mp) => {
+const modelPreview = (model: string, position?: Vector3Mp, numberPlate?: string) => {
    if (vehicle) {
       vehicle.model = mp.game.joaat(model);
    } else {
       vehicle = mp.vehicles.new(
          mp.game.joaat(model), position!, {
-            alpha: 255, engine: false, numberPlate: 'dealership'
+            alpha: 255, engine: false, numberPlate: numberPlate
          }
       );
    } 
