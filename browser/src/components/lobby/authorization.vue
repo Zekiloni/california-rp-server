@@ -49,6 +49,8 @@
       },
 
       mounted ()  {
+         mp.invoke('focus', true);
+
          this.$refs.usernameInput.focus();
       }
       

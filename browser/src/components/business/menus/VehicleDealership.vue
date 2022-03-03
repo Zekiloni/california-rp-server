@@ -27,7 +27,9 @@
 
             <li>
                <b> {{ Messages.NUMBER_OF_PASSENGERS }} </b>
-               <h3> {{ vehicleInfo.maxPassengers }} </h3>
+               <div class="passengers"  > 
+                  <img v-for="passenger in vehicleInfo.maxPassengers" :key="passenger" src="https://i.imgur.com/M7j0tac.png" width="30" >
+               </div>
             </li>
 
             <li> 
@@ -95,7 +97,6 @@
 
       mounted () {
          if (window.mp) {
-            mp.invoke('focus', true);
 
             mp.events.add('BROWSER::DEALERSHIP:MENU', (info: string) => { 
                this.busines = JSON.parse(info);
@@ -115,11 +116,6 @@
          }
       }
 
-      beforeDestroy () {
-         if (window.mp) {
-            mp.invoke('focus', false);
-         }
-      }
    }
 </script>
 
@@ -212,6 +208,11 @@
       margin: auto;
       width: 420px;
       border-top: 1px solid rgb(132 142 156 / 15%);
+   }
+
+   .passengers img {
+      display: inline;
+      margin: 5px 10px;
    }
 
    .info ul {

@@ -48,7 +48,6 @@ export function toggleGameInterface (i: UI_Status) {
 
    switch (gameIStatus) { 
       case UI_Status.VISIBLE: {
-         mp.console.logError(JSON.stringify('i je visible ' + i))
          Browser.call('BROWSER::SHOW', 'gameInterface');
          Browser.call('BROWSER::SHOW', 'chat');
          Browser.call('BROWSER::GAME_UI:PLAYER_ID', mp.players.local.remoteId);
@@ -112,7 +111,6 @@ function hideCrosshair () {
 }
 
 
-
 export function vehicleInterface (toggle: boolean) { 
    Browser.call('BROWSER::GAME_UI:VEHICLE:TOGGLE', toggle);
 }
@@ -120,6 +118,15 @@ export function vehicleInterface (toggle: boolean) {
 export function updatePlayerMoney (i: number) { 
    Browser.call('BROWSER::GAME_UI:UPDATE_MONEY', i);
 }
+
+
+export function temporaryHideInterface (hide: boolean) {
+   mp.game.ui.displayRadar(!hide);
+   mp.gui.chat.activate(!hide);
+   Browser.call('BROWSER::GAME_UI:HIDDEN', hide);
+}
+
+mp.events.add('CLIENT::GAME_UI:HIDDEN', temporaryHideInterface);
 
 function getHeading (h: number) { 
    switch (true) {

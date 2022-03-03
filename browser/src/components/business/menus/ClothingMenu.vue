@@ -85,7 +85,6 @@
       }
 
       mounted () {
-         mp.invoke('focus', true);
          mp.events.add('BROWSER::MARKET:MENU', (busines: string) => this.busines = JSON.parse(busines) );
 
          this.busines?.products.forEach(product => {
@@ -95,10 +94,6 @@
          window.addEventListener('wheel', (e) => { 
             mp.trigger('CLIENT::PLAYER_CAMERA:ZOOM', e.deltaY);
          });
-      }
-
-      beforeDestroy () {
-         mp.invoke('focus', false);
       }
 
       slider = { 

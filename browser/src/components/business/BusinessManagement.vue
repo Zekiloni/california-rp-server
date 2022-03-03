@@ -127,7 +127,6 @@
 
       mounted () {
          if (window.mp) {
-            mp.invoke('focus', true);
 
             mp.events.add('BROWSER::BUSINESS:MANAGEMENT', (business: string, availableItems?: string) => { 
                this.business = JSON.parse(business);
@@ -140,12 +139,6 @@
                   name: this.business?.name
                }
             } );
-         }
-      }
-
-      beforeDestroy () {
-         if (window.mp) {
-            mp.invoke('focus', false);
          }
       }
    }

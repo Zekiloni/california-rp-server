@@ -29,18 +29,6 @@
             application.toggle = true;
 
          }
-      },
-
-      mounted () { 
-         if (window.mp) { 
-            mp.invoke('focus', true); 
-         }
-      },
-
-      beforeDestroy () { 
-         if (window.mp){
-            mp.invoke('focus', false);
-         }
       }
    }
 </script>

@@ -8,15 +8,17 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 
-interface uInterface {
-   toggle: false,
-   mouse: boolean
-   hideChat?: boolean
-   disableChat: boolean
-   hideUI?: boolean
+type uInterface = {
+   [key: string]: {
+      toggle: boolean
+      mouse?: boolean
+      hideUI?: boolean
+      escClose?: string
+   }
 }
 
-const InitialState = {
+
+const InitialState:uInterface = {
    notifications: { toggle: true },
    chat: { toggle: false },
 
@@ -45,16 +47,22 @@ const InitialState = {
    Transit: { toggle: false },
 
    // busines interfaces
-   businessInfo: { toggle: false, mouse: true },
+   businessInfo: { toggle: false },
    businessManagement: { toggle: false, mouse: true },
    marketMenu: { toggle: false, mouse: true },
    clothingMenu: { toggle: false, mouse: true },
-   dealershipMenu: { toggle: false, mouse: true },
+
+   dealershipMenu: { 
+      toggle: false, 
+      mouse: true, 
+      hideUI: true, 
+      escClose: 'CLIENT::DEALERSHIP:MENU' 
+   },
+
    rentMenu: { toggle: false, mouse: true },
 
    drinks_Shop: { toggle: false, mouse: true },
    gas_Station: { toggle: false, mouse: true },
-   dealership: { toggle: false, mouse: true },
    
    House: { toggle: false, mouse: true },
 
@@ -81,11 +89,46 @@ export const InterfaceStore = {
    mutations: {
       show: function (state: typeof InitialState, payload: keyof typeof InitialState) { 
          state[payload].toggle = true;
+
+         if (state[payload].mouse) {
+            mp.invoke('focus', true);
+         }
+
+         if (state[payload].hideUI) {
+            mp.events.call('CLIENT::GAME_UI:HIDDEN', true);
+         }
+
+         if (state[payload].escClose) {
+            mp.events.call('CLIENT::PREVENT_ESC', true);
+
+            document.onkeydown = function (event) {
+               if (event.key == 'Escape') {
+                  mp.events.call(state[payload].escClose!);
+               }
+            }
+         }
       },
 
       hide: function (state: typeof InitialState, payload: keyof typeof InitialState) {
          state[payload].toggle = false;
-      }
+
+         if (state[payload].mouse) {
+            mp.invoke('focus', false);
+         }
+
+         if (state[payload].hideUI) {
+            mp.events.call('CLIENT::GAME_UI:HIDDEN', false);
+         }
+
+         if (state[payload].escClose) {
+            mp.events.call('CLIENT::PREVENT_ESC', false);
+         }
+      },
+
+      canOpenChat: function () {
+         return; 
+      },
+
    },
 
    actions: {

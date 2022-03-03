@@ -129,15 +129,6 @@
             mp.trigger('CLIENT::BANKING:TRANSFER', this.Inputs.Transfer_Target, this.Inputs.Transfer_Amount);
          }
     
-      },
-
-      mounted () {
-         mp.invoke('focus', true);
-
-      },
-
-      beforeDestroy () { 
-         mp.invoke('focus', false);
       }
    }
 

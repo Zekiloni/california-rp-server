@@ -53,15 +53,7 @@
       
       mounted () {
          if (window.mp) {
-            mp.invoke('focus', true);
-
             mp.events.add('BROWSER::PLAYERLIST', (players: string) => this.players = JSON.parse(players));
-         }
-      },
-
-      beforeDestroy () {
-         if (window.mp) {
-            mp.invoke('focus', false);
          }
       }
    });

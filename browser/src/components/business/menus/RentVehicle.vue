@@ -64,18 +64,7 @@
          if (window.mp) {
 
             //@ts-ignore
-            mp.invoke('focus', true);
-            //@ts-ignore
             mp.eventst.add('BROWSER::RENT:MENU', info => this.business = JSON.parse(info));
-         }
-      }
-
-      beforeDestroy () {
-         //@ts-ignore
-         if (window.mp) {
-
-            //@ts-ignore
-            mp.invoke('focus', false);
          }
       }
       

@@ -3,7 +3,7 @@
 
 <template>
    
-   <div class="game-interface">
+   <div class="game-interface" :style="{ opacity: hidden ? '0' : '1' }">
       
       <Offer />
 
@@ -12,7 +12,7 @@
       </transition>
 
 
-      <div class="server-info">
+      <div class="server-info" >
          <div class="player-id"> 
             <h2> # {{ playerId }}</h2>
             <h3> {{ Messages.YOUR_ID }} </h3>
@@ -60,6 +60,7 @@
       data () { 
          return { 
 
+            hidden: false,
             blackScreen: false,
 
             money: 0,
@@ -114,6 +115,9 @@
 
       mounted () { 
          if (window.mp) { 
+
+            mp.events.add('BROWSER::GAME_UI:HIDDEN', hidden => this.hidden = hidden);
+
             mp.events.add('BROWSER::GAME_UI:UPDATE_LOCATION', (street, zone, heading) => { 
                this.location.street = street;
                this.location.zone = zone;

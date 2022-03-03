@@ -111,18 +111,12 @@
 
       mounted () {   
          if (window.mp) { 
-            mp.invoke('focus', true);
-
             mp.events.add('BROWSER::INVENTORY:ITEMS', (items: string) => this.items = JSON.parse(items) );
             mp.events.add('BROWSER::INVENTORY:GIVE_ITEM', (item: string) => { 
                console.log(JSON.stringify(item));
             })
          }   
       }
-
-      beforeDestroy () {
-         mp.invoke('focus', false)
-      };
    }
    
 </script>

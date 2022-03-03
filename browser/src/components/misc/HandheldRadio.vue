@@ -79,22 +79,8 @@
          },
 
          async mounted () {
-            //@ts-ignore
             if (window.mp) {
-               
-               //@ts-ignore
-               mp.invoke('focus', true);
-
-               //@ts-ignore
                mp.events.add('BROWSER::HANDHELD_RADIO', (info: string) => this.info = JSON.parse(info) );
-            }
-         },
-
-         beforeDestroy () {
-            //@ts-ignore
-            if (window.mp) {            
-               //@ts-ignore
-               mp.invoke('focus', false);
             }
          }
       }

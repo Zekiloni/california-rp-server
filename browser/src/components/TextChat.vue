@@ -70,6 +70,7 @@
          },
 
          Show: function (toggle) {
+            console.log('Chat Show ' + toggle);
             this.Settings.Active = toggle;
          },
 

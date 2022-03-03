@@ -42,19 +42,6 @@
       },
 
       mounted () {
-         //@ts-ignore
-         if (window.mp) {
-            //@ts-ignore
-            mp.invoke('focus', true);
-         }
-      },
-      
-      beforeDestroy () {
-         //@ts-ignore
-         if (window.mp) {
-            //@ts-ignore
-            mp.invoke('focus', false);
-         }
       }
    });
 </script>

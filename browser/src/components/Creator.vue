@@ -185,21 +185,10 @@
       },
 
       mounted () { 
-
-         if (window.mp) {
-            mp.invoke('focus', true);
-         }
-
          window.addEventListener('wheel', (e) => { 
             if (!this.scrollDisabled) mp.trigger('CLIENT::PLAYER_CAMERA:ZOOM', e.deltaY);
          });
 
-      }, 
-
-      beforeDestroy () { 
-         if (window.mp) {
-            mp.invoke('focus', false);
-         }
       }
    }
 

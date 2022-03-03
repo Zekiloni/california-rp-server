@@ -87,17 +87,12 @@
 
       mounted () {
          if (window.mp) {
-            mp.invoke('focus', true);
             mp.events.add('BROWSER::FACTION:INFO', (info: string) => {
                const [faction, members] = JSON.parse(info);
                this.faction = faction;
                this.members = members;
             });
          }
-      }
-      
-      beforeDestroy () {
-         mp.invoke('focus', false);
       }
    }
 </script>

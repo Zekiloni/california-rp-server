@@ -91,7 +91,6 @@
 
       mounted () {
          if (window.mp) {
-            mp.invoke('focus', true);
 
             mp.events.add('BROWSER::MARKET:MENU', (busines: string) => {
                this.busines = JSON.parse(busines);
@@ -102,11 +101,6 @@
          }
       }
 
-      beforeDestroy () {
-         if (window.mp) {
-            mp.invoke('focus', false);
-         }
-      }
    }
 </script>
 
