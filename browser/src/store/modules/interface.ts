@@ -82,7 +82,11 @@ const InitialState:uInterface = {
    objectEditor: { toggle: false },
 
    // faction
-   factionPanel: { toggle: false, mouse: true }
+   factionPanel: { toggle: false, mouse: true },
+
+
+   // vehicles menu
+   vehiclesMenu: { toggle: false }
 }
 
 export const InterfaceStore = {

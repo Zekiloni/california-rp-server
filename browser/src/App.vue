@@ -62,6 +62,10 @@
          <JobOffer v-if="interfaces.job_Offer.toggle" />
       </transition>
 
+      <!-- [VEHICLES MENU] -->
+      <transition name="fade-with-bottom-slide"> 
+         <VehiclesMenu v-if="interfaces.vehiclesMenu.toggle" />
+      </transition>
 
       <!-- [BUILDER] -->
       <transition-group name="fade-with-bottom-slide"> 
@@ -111,6 +115,8 @@
 
    import Inventory from '@/components/items/Items.vue';
 
+   import VehiclesMenu from '@/components/vehicles/VehiclesMenu.vue';
+
    import Phone from '@/components/phone.vue';
    import HandheldRadio from '@/components/misc/HandheldRadio.vue';
 
@@ -135,6 +141,7 @@
          Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
          Phone, Document, HandheldRadio, DeathScreen,
 
+         VehiclesMenu,
 
          ObjectsMenu, ObjectEditor,
          

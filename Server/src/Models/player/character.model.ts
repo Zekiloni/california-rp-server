@@ -173,7 +173,8 @@ export class characters extends Model {
    @HasMany(() => business)
    business: business[]
 
-   vehicles: vehicles[] = [];
+   @HasMany(() => vehicles)
+   vehicles: vehicles[]
 
    offer: offer | null = null;
    

@@ -17,6 +17,7 @@ export const lang = {
    addedSuccesfully: ' je uspešno dodan.',
    succesfullyCreatedFaction: 'Uspešno ste kreirali fakciju ',
    rankSuccessfullyUpdated: 'Rank je uspešno ažuriran.',
+   vehicleLoaded: 'Vozilo uspešno učitano.',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -25,6 +26,8 @@ export const lang = {
    minTwoHours: 'Potrebno vam je minimum dva sata igre.',
    productNotAvailable: ' nije dostupan',
    itemDoesntExist: 'Taj predmet ne postoji.',
+   noVehicleFound: 'Vozilo nije pronadjeno.',
+   vehicleAlreadySpawned: 'Vozilo sa tim ID-om je već učitano.',
    userAlreadyExist: 'Korisnik sa tim serijskim brojem već postoji.',
    notAllowed: 'Niste ovlašteni za korišćenje ove komande.',
    noInventorySpaceForItems: 'Nemate dovoljno prostora u inventaru.',
@@ -135,6 +138,8 @@ export const lang = {
    personSays: ' kaže: ', 
    personSaysInVehicle: ' [vozilo] kaže: ',
    personIsInjured: 'Ova osoba je ranjena ',
+   uUnlockedVehicle: 'Vozilo otključano.',
+   uLockedVehicle: 'Vozilo zaključano.',
    quitjob: 'Uspešno ste dali otkaz na poslu.',
    serverRestart: 'Server restart.',
    hasKickedYouFromFaction: ' vas je izbacio iz fakcije ',

@@ -65,7 +65,7 @@ export class business extends Model {
          type: DataType.JSON,
          get () { 
             return this.getDataValue('position') ? JSON.parse(this.getDataValue('position')) : null;
-         },
+         }
       }
    )       
    position: Vector3Mp
@@ -86,7 +86,7 @@ export class business extends Model {
          type: DataType.JSON,
          get () { 
             return this.getDataValue('vehicle_point') ? JSON.parse(this.getDataValue('vehicle_point')) : null;
-         },
+         }
       }
    )
    vehicle_point: [Vector3Mp, number]
@@ -96,7 +96,7 @@ export class business extends Model {
          type: DataType.JSON,
          get () {
             return this.getDataValue('interior_position') ? JSON.parse(this.getDataValue('interior_position')) : null;
-         },
+         }
       }
    )
    interior_position: Vector3Mp
@@ -456,9 +456,6 @@ export class business extends Model {
 
          const [ position, heading ] = busines.vehicle_point;
 
-         console.log('Vehicle Point ' + position)
-         console.log('Heading ' + heading);
-
          if (!position) {
             return;
          }
@@ -472,8 +469,8 @@ export class business extends Model {
             false, 
             player.character.id,
             [primaryColor, secondaryColor],
-            position, new mp.Vector3(0, 0, heading), {
-               locked: false, spawned: false
+            new mp.Vector3(position.x, position.y, position.z), new mp.Vector3(0, 0, heading), {
+               locked: false, spawned: false, price: product.price
             }
          ).then(vehicle => {
             if (!vehicle) {

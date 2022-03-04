@@ -21,6 +21,22 @@ Commands[cmds.names.LOCK] = {
             break;
          }
 
+         case nearest?.type == RageEnums.EntityType.VEHICLE: {
+            const vehicle = <VehicleMp>nearest;
+
+            if (!vehicle.instance) {
+               return;
+            }
+
+            vehicle.instance.lock(vehicle, player);
+            break;
+         }
+
+         case player.vehicle != null: { 
+            player.vehicle.instance.lock(player.vehicle, player);
+            break;
+         }
+
          case nearest instanceof houses: {
             break;
          }

@@ -113,7 +113,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(rgb(71 77 87 / 65%), rgb(11 14 17 / 85%));
+      background: radial-gradient(rgb(71 77 87 / 45%), rgb(11 14 17 / 85%));
       display: grid;
    }
 

@@ -414,6 +414,30 @@ Commands[cmds.names.CREATE_VEHICLE] = {
 
 
 
+Commands[cmds.names.SPAWN_VEHICLE] = {
+   description: cmds.descriptions.SPAWN_VEHICLE,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.VEHICLE_ID,
+   ],
+   call (player: PlayerMp, vehicleID: string) {
+      vehicles.findOne( { where: { id: Number(vehicleID) } } ).then(vehicle => {
+         if (!vehicle) {
+            player.notification(lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+
+         if (vehicle.spawned) {
+            player.notification(lang.vehicleAlreadySpawned, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+
+         vehicle.load();
+         player.notification(lang.vehicleLoaded, notifications.type.SUCCESS, notifications.time.MED);
+      })
+   }
+}
+
 Commands['alarm'] = {
    description: 'aa',
    call (player: PlayerMp) {

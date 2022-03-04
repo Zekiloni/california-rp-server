@@ -2,14 +2,14 @@
 import { 
    Table, Column, Model, PrimaryKey, AutoIncrement, 
    Default, CreatedAt, UpdatedAt, AllowNull, 
-   AfterCreate, AfterDestroy, DataType, AfterSync 
+   AfterCreate, AfterDestroy, DataType, AfterSync, ForeignKey, BelongsTo 
 } from 'sequelize-typescript';
 
 import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { jobs, factions, logs } from '@models';
+import { jobs, factions, logs, characters } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
@@ -34,9 +34,15 @@ export class vehicles extends Model {
    temporary: boolean
 
    @Default(none)
-   @AllowNull(false)
+   @Column(DataType.INTEGER)
+   price: number
+
+   @ForeignKey(() => characters)
    @Column
    owner: number
+
+   @BelongsTo(() => characters)
+   character: characters
 
    @Default(false)
    @Column(DataType.BOOLEAN)
@@ -149,7 +155,7 @@ export class vehicles extends Model {
    }
 
 
-   static new (model: string, type: VehicleConfig.type, temporary: boolean, owner: number,  color: [RGB, RGB], position: Vector3Mp, rotation: Vector3Mp, options?: { locked?: boolean, spawned?: boolean, faction?: factions, job?: jobs, rent?: number } ) {
+   static new (model: string, type: VehicleConfig.type, temporary: boolean, owner: number,  color: [RGB, RGB], position: Vector3Mp, rotation: Vector3Mp, options?: { price?: number, locked?: boolean, spawned?: boolean, faction?: factions, job?: jobs, rent?: number } ) {
       return vehicles.create( 
          { 
             model: model, 
@@ -160,7 +166,8 @@ export class vehicles extends Model {
             locked: options?.locked || false, 
             position: position, 
             rotation: rotation, 
-            color: color 
+            color: color,
+            price: options!.price ? options?.price : none
          } 
       ).then(vehicle => {
          return vehicle;
@@ -279,6 +286,7 @@ export class vehicles extends Model {
          }
       }
 
+      player.notification(vehicle.locked ? lang.uUnlockedVehicle : lang.uLockedVehicle, notifications.type.INFO, notifications.time.MED);
       vehicle.locked = !vehicle.locked;
       this.locked = vehicle.locked;
       await this.save();

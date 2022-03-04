@@ -131,6 +131,10 @@ export const Messages = {
    MEMBER_RANK: 'Rank člana',
    FACTION_MEMBER_SETTINGS: 'Opcije člana',
 
+   YOUR_VEHICLES: 'Vaša vozila',
+   VEHICLES_PANEL: 'Kontrola vaših vozila',
+   MILEAGE: 'Kilometraža vozila',
+
    PRIMARY_COLOR: 'Primarna boja',
    SECONDARY_COLOR: 'Sekundarna boja',
    VEHICLE_NAME: 'Ime vozila',
