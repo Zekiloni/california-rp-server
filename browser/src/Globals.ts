@@ -80,6 +80,7 @@ export const Messages = {
    YES: 'Da',
    NO: 'Ne',
    LOCKED: 'Zaključano',
+   UNLOCKED: 'Otključano',
    HOUSE_RENT_PRICE: 'Kirija',
    WEIGHT_KG: 'kg',
    HOUSE_FOR_SALE: 'Ova kuća je na prodaju !',
@@ -131,9 +132,20 @@ export const Messages = {
    MEMBER_RANK: 'Rank člana',
    FACTION_MEMBER_SETTINGS: 'Opcije člana',
 
+   VEHICLE_ID: 'ID vozila',
    YOUR_VEHICLES: 'Vaša vozila',
+   VEHICLE_FUEL_LEVEL: 'Rezervoar',
    VEHICLES_PANEL: 'Kontrola vaših vozila',
    MILEAGE: 'Kilometraža vozila',
+   VEHICLE_MODEL: 'Model',
+   VEHICLE_STATUS: 'Status',
+   VEHICLE_LOADED: 'Stvoreno',
+   VEHICLE_ENGINE_LEVEL: 'Stage Motora',
+   VEHICLE_LOCK_LEVEL: 'Brava',
+   VEHICLE_SUSPENSION_LEVEL: 'Suspenzija',
+   VEHICLE_TURBO: 'Turbo',
+   VEHICLE_TRANSMISSION_LEVEL: 'Transmisija',
+   VEHICLE_TINT: 'Zatamnjena stakla',
 
    PRIMARY_COLOR: 'Primarna boja',
    SECONDARY_COLOR: 'Sekundarna boja',
@@ -214,9 +226,6 @@ export const Notification = {
    Succes: 0, Error: 1, Info: 2
 }
 
-export const ENVIRONMENT_TYPES = { 
-   '0': 'Zemlja', '6': 'Vozilo', '7': 'Vozilo', '8': 'Kuća - Apartman', '9': 'Biznis'
-}
 
 export enum Item_Type {
    Equipable, Consumable, Openable, 
@@ -235,6 +244,10 @@ export enum Item_Entity {
 export enum Item_Status { 
    None, Equiped, Right_Hand, Left_Hand,
 }
+
+export const VehicleTypes = [
+   'Privatno Vozilo', 'Vozilo Fakcije', 'Biznis Vozilo', 'Vozilo za posao', 'DMV', 'Admin Vozilo'
+]
 
 export const Clothing_Components = { 
    Names: ['Gornjak', 'Majca', 'Donji deo', 'Obuća'],

@@ -18,6 +18,7 @@ export const lang = {
    succesfullyCreatedFaction: 'Uspešno ste kreirali fakciju ',
    rankSuccessfullyUpdated: 'Rank je uspešno ažuriran.',
    vehicleLoaded: 'Vozilo uspešno učitano.',
+   uTeleportedVehicleToYou: 'Teleportovali ste vozilo do vas.',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -42,6 +43,7 @@ export const lang = {
    notInYourFaction: 'Igrač nije član vaše fakcije.',
    rankDoesntExist: 'Taj rank nije pronadjen.',
    notOnDuty: 'Niste na dužnosti.',
+   vehicleNotSpawned: 'Vozilo nije stvoren.',
    notNearbyExit: 'Ne nalazite se u blizini vrata za izlazak.',
    factionNotFound: 'Fakcija nije pronadjena.',
    busiensAlreadyOwner: 'Ovaj biznis je već u nečijem vlasništvu.',

@@ -436,6 +436,43 @@ Commands[cmds.names.SPAWN_VEHICLE] = {
          player.notification(lang.vehicleLoaded, notifications.type.SUCCESS, notifications.time.MED);
       })
    }
+};
+
+
+Commands[cmds.names.GET_VEHICLE] = {
+   description: cmds.descriptions.GET_VEHICLE,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.VEHICLE_ID
+   ],
+   call (player: PlayerMp, vehicleID: string) {
+      const vehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.id == Number(vehicleID));
+
+      if (!vehicle) {
+         player.notification(lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (!vehicle.instance.spawned) {
+         player.notification(lang.vehicleNotSpawned, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      const { position, dimension } = player;
+
+      vehicle.position = new mp.Vector3(position.x + 3, position.y + 3, position.z);
+      vehicle.dimension = dimension;
+
+      const occupants = vehicle.getOccupants();
+
+      if (occupants.length > 0) {
+         occupants.forEach(occupant => {
+            occupant.putIntoVehicle(vehicle, occupant.seat);
+         })
+      }
+
+      player.notification(lang.uTeleportedVehicleToYou, notifications.type.SUCCESS, notifications.time.MED);
+   }
 }
 
 Commands['alarm'] = {

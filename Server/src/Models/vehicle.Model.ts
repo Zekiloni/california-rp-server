@@ -78,7 +78,7 @@ export class vehicles extends Model {
 
    @Default(none)
    @Column(DataType.INTEGER)
-   suspensionLeveL: number
+   suspensionLevel: number
 
    @Default(none)
    @Column(DataType.INTEGER)

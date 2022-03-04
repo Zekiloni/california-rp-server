@@ -9,21 +9,49 @@
             </div>
             <div class="text">
                <h4> {{ Messages.VEHICLES_PANEL }} </h4>
-               <h2> {{ title }} </h2>
+               <h2 v-html="title"> </h2>
             </div>
 
          </div>
 
          <ul class="options" v-if="pages.main && !pages.management" >
-            <li class="action" v-for="(vehicle, i) in vehicles" :key="vehicle.id" :class="{ active: isActive(i) }">
-               {{ i + 1 }} {{ vehicle.model }}
+            <li v-for="(vehicle, i) in vehicles" :key="vehicle.id" :class="{ active: isActive(i) }">
+               <h3> {{ i + 1 }} </h3>
+               <h3 class="model"> {{ vehicle.model.toUpperCase() }} </h3>
+               <h3 class="type"> {{ VehicleTypes[vehicle.type] }} </h3>
             </li>
          </ul>
          
-         <ul class="options" v-if="pages.management && vehicle" >
-            <li> <b> {{ Messages.MILEAGE }} </b> <span> {{ vehicle.mileage }}km </span> </li>
-            <li class="action"> lock </li>
-         </ul>
+         <div class="vehicle" v-if="pages.management && vehicle" >
+            <div class="info">
+               <span ><b> {{ Messages.VEHICLE_ID }} </b>  #{{ vehicle.id }} </span>
+               <span class="unlocked" :class="{ locked: vehicle.locked }"> <b> {{ Messages.VEHICLE_STATUS }} </b> {{ vehicle.locked ? Messages.LOCKED : Messages.UNLOCKED }} </span>
+               <span> <b> {{ Messages.VEHICLE_LOADED }} </b> {{ vehicle.spawned ? Messages.YES : Messages.NO }} </span>
+            </div>
+
+            <div class="info">
+               <span> <b> {{ Messages.MILEAGE }} </b> {{ vehicle.mileage }}km </span> 
+               <span> <b> {{ Messages.VEHICLE_FUEL_LEVEL }} </b> {{ vehicle.fuel }}l </span> 
+            </div>
+
+            <div class="info">
+               <span ><b> {{ Messages.VEHICLE_ENGINE_LEVEL }} </b>  {{ vehicle.engineLevel }} / 3 </span>
+               <span> <b> {{ Messages.VEHICLE_TRANSMISSION_LEVEL }} </b> {{ vehicle.transmissionLevel }} / 3 </span> 
+               <span> <b> {{ Messages.VEHICLE_SUSPENSION_LEVEL }} </b> {{ vehicle.suspensionLevel }} / 3</span> 
+            </div>
+
+            <div class="info">
+               <span ><b> {{ Messages.VEHICLE_LOCK_LEVEL }} </b>  {{ vehicle.lockLevel }} / 3 </span>
+               <span> <b> {{ Messages.VEHICLE_TINT }} </b> {{ vehicle.tint }} / 3 </span> 
+               <span> <b> {{ Messages.VEHICLE_TURBO }} </b> {{ vehicle.turbo ? Messages.YES : Messages.NO }} </span> 
+            </div>
+
+            <ul class="options">
+               <li v-for="(action, i) in actions" :key="action.event" :class="{ active: isActive(i) }">
+                  {{ action.name }}
+               </li>
+            </ul>
+         </div>
       </div>
    </div>
 </template>
@@ -31,7 +59,8 @@
 <script lang="ts">
    import Vue from 'vue';
    import Component from 'vue-class-component';
-   import { Messages } from '@/globals';
+   import { Messages, VehicleTypes } from '@/globals';
+
 
    export enum Type {
       OWNED, FACTION, BUSINES, JOB, DMV, ADMIN
@@ -42,11 +71,17 @@
       issued: number
       expiring: number
    }
-   
+
+
+   interface Action {
+      name: string
+      event: string
+   }
 
    interface Vehicle {
       id: number
       type: number
+      name?: string
       model: string
       locked: boolean
       spawned: boolean
@@ -70,9 +105,6 @@
          management: false
       }
 
-      actions = [
-         
-      ]
 
       option: number = 0;
 
@@ -82,28 +114,46 @@
       title: string = Messages.YOUR_VEHICLES;
 
       Messages = Messages;
+      VehicleTypes = VehicleTypes;
+
+      get actions () {
+         let list: Action[] = [];
+
+         if (!this.vehicle) {
+            return;
+         }
+
+         if (!this.vehicle.spawned) {
+            list.push( { name: 'Stvori vozilo', event: 'CLIENT::VEHICLE:SPAWN' } )
+         } else {
+            list.push( { name: 'Parkiraj vozilo', event: 'CLIENT::VEHICLE:PARK' } )
+         }
+
+         list.push( { name: 'Novo parking mesto', event: 'CLIENT::VEHICLE:LOCK' } )
+
+         if (this.vehicle.locked) {
+            list.push( { name: 'Otkljucaj vozilo', event: 'CLIENT::VEHICLE:UNLOCK' } )
+         } else { 
+            list.push( { name: 'Zakljucaj vozilo', event: 'CLIENT::VEHICLE:LOCK' } )
+         }
+
+         return list;
+      }
 
       isActive (index: number) {
-         if (this.pages.main) {
-            return this.option == index ? true : false;
-         } else {
-
-         }
+         return this.option == index ? true : false;
       }
  
       up () {
-         switch (true) {
-            case this.pages.main: {
-               this.option --;
-               if (this.option < 0) {
-                  this.option = this.vehicles!.length - 1;
-               }
-               break;
+         if (this.pages.main) {
+            this.option --;
+            if (this.option < 0) {
+               this.option = this.vehicles!.length - 1;
             }
-
-            case this.pages.management: {
-               this.option --;
-               break;
+         } else if (this.pages.management) {
+            this.option --;
+            if (this.option < 0) {
+               this.option = this.actions!.length - 1;
             }
          }
       }
@@ -114,16 +164,21 @@
             if (this.option >= this.vehicles!.length) {
                this.option = 0;
             }
-         } else {
-
+         } else if (this.pages.management) {
+            this.option ++;
+            if (this.option >= this.actions!.length) {
+               this.option = 0;
+            }
          }
       }
 
       enter () {
          if (this.pages.main) {
             this.vehicle = this.vehicles![this.option];
+            this.title = this.vehicle.model.toUpperCase();
             this.pages.main = false;
             this.pages.management = true;
+            this.option = 0;
          }
       }
 
@@ -131,40 +186,50 @@
          if (this.pages.main) {
             mp.events.call('CLIENT::VEHICLES:MENU');
          } else { 
+            this.title = this.Messages.YOUR_VEHICLES;
             this.vehicle = null;
             this.pages.management = false;
             this.pages.main = true;
+            this.option = 0;
+         }
+      }
+
+      binds (event: KeyboardEventInit) {
+         switch (event.key) {
+            case 'ArrowUp': {
+               this.up();
+               break;
+            }
+
+            case 'ArrowDown': {
+               this.down();
+               break;
+            }
+
+            case 'Backspace': {
+               this.back();
+               break;
+            }
+
+            case 'Enter': {
+               this.enter();
+               break;
+            }
          }
       }
 
       mounted () {
          mp.events.add('BROWSER::VEHICLES:MENU', (info: string) => {
             this.vehicles = JSON.parse(info);
+
          });
 
-         window.onkeydown = (event: KeyboardEvent) => {
-            switch (event.key) {
-               case 'ArrowUp': {
-                  this.up();
-                  break;
-               }
 
-               case 'ArrowDown': {
-                  this.down();
-                  break;
-               }
+         window.addEventListener('keydown', this.binds);
+      }
 
-               case 'Backspace': {
-                  this.back();
-                  break;
-               }
-
-               case 'Enter': {
-                  this.enter();
-                  break;
-               }
-            }
-         }
+      beforeDestroy () {
+         window.removeEventListener('keydown', this.binds);
       }
    }
 
@@ -184,7 +249,7 @@
    }
 
    .box {
-      min-width: 500px;
+      width: 650px;
       height: auto;
       margin: auto;
    }
@@ -214,7 +279,7 @@
       height: 60px;
       margin: auto;
       mask-size: cover; 
-      background: #181a20;
+      background:whitesmoke;
       mask: url('../../assets/images/icons/vehicles.svg') no-repeat center;
    }
 
@@ -250,20 +315,26 @@
    }
 
    ul.options li {
-      padding: 10px 15px;
+      padding: 5px 15px;
       border-radius: 4px;
       transition: all .3s ease;
       border: 1px solid transparent;
-      justify-content: space-between;
       text-align: le;
       margin: 10px 0;
-      flex-direction: column;
       color: rgb(138, 138, 138);
-   }
-
-   ul.options li.action {
+      display: flex;
+      justify-content: space-between;
       background: rgb(255 255 255 / 5%);
       backdrop-filter: brightness(1.1);
+   }
+
+   h3.model {
+      font-weight: 350;
+   }
+   
+   h3.type {
+      font-weight: 350;
+      color: #848e9c;
    }
 
    li b {
@@ -277,11 +348,65 @@
       font-weight: 700;
    }
 
-   ul.options li.action.active {
+   ul.options li.active {
       border-color: rgb(205 205 205 / 25%);
       backdrop-filter: brightness(1.3);
       box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
       color: white;
+   }
+
+   .vehicle { 
+      padding: 0;
+      width: 100%;
+      height: auto;
+      overflow-y: auto;
+      border-radius: 10px;
+      padding: 20px 0;
+      background: linear-gradient(120deg, rgb(11 14 17 / 55%), transparent);
+      display: flex;
+      flex-wrap: wrap;
+   }
+
+   .vehicle .info {
+      width: 275px;
+      margin: 5px 25px;
+   }
+
+   .center { 
+      margin: auto;
+   }
+   
+   .vehicle .info span {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      font-weight: 550;
+      color: whitesmoke;
+   }
+
+   .vehicle .info span b {
+      color: #848e9c;
+      font-weight: 400;
+   }
+
+   .vehicle ul.options {
+      width: 100%;
+      background: transparent;
+   }
+
+   .vehicle ul.options li {
+      height: 35px;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+   }
+
+   .info span.unlocked { 
+      color: #0cbe80;
+   }
+
+   .info span.locked { 
+      color: tomato;
    }
    
 </style>
