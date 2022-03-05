@@ -25,10 +25,9 @@ const moodHandler = (entity: EntityMp, mood: string, oldMood?: string) => {
    const _player = <PlayerMp>entity;
 
    if (mood != 'normal') {
-      _player.setFacialIdleAnimOverride(mood, '');
+      mp.game.invoke(RageEnums.Natives.Ped.SET_FACIAL_IDLE_ANIM_OVERRIDE, _player.handle, mood, 0);
    } else if (mood == 'normal' && mood != oldMood) {
       _player.clearFacialIdleAnimOverride();
-
    }
 };
 

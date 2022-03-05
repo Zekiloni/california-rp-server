@@ -33,12 +33,19 @@
 
                      <WalkingStyles 
                         v-if="activePage == 2" 
-                        :stylesList="walkingStyles"
+                        :styles="walkingStyles"
                         :selectedStyle="player.character.walking_style"
-                        :selectStyle="setWalkingStyle"
+                        :selectStyle="setWalking"
                         key=walkingStyles 
                      />
                      
+                     <FacialMods
+                        v-if="activePage == 3"
+                        :moods="facialMoods"
+                        :selectedMood="player.character.facial_mood"
+                        :selectMood="setFacial"
+                        key=facialMoods
+                     />
                   </transition-group>
                </div>
             </div>
@@ -59,17 +66,17 @@
    import CharacterOverview from './menu-components/CharacterOverview.vue';
    import AccountOverview from './menu-components/AccountOverview.vue'
    import WalkingStyles from './menu-components/WalkingStyles.vue';
-   
+   import FacialMods from './menu-components/FacialMoods.vue';
 
    @Component({
       components: {
-         AccountOverview, CharacterOverview, WalkingStyles
+         AccountOverview, CharacterOverview, WalkingStyles, FacialMods
       }
    })
    export default class PlayerMenu extends Vue {
       time: string = '';
 
-      pages = ['Account Overview', 'Character Overview', 'Walking Style', 'Facial']
+      pages = [Messages.ACCOUNT_OVERVIEW, Messages.CHARACTER_OVERVIEW, Messages.WALKING_STYLE, Messages.FACIAL_MOOD]
       activePage: number = 0;
       hoverAudio = hoverAudio;
 
@@ -86,13 +93,18 @@
          const now = new Date();
          
          this.time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()) + ':' + (now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds());
-
+   
          setTimeout(this.clock, 1000);
       }
 
-      setWalkingStyle (style: string) {
+      setWalking (style: string) {
          this.player!.character.walking_style = style;
          mp.events.call('CLIENT::PLAYER_PANEL:ACTION', 'walkingStyle', style);
+      }
+
+      setFacial (mood: string) {
+         this.player!.character.facial_mood = mood;
+         mp.events.call('CLIENT::PLAYER_PANEL:ACTION', 'facialMood', mood);
       }
 
       mounted () {
@@ -196,7 +208,7 @@
 
    ul.navigation { 
       list-style: none;
-      width: 205px;
+      width: 235px;
       padding: 0;
    }
 

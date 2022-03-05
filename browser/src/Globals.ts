@@ -36,7 +36,6 @@ export const Messages = {
 
    MARKET: 'Market',
    VEHICLE_DEALERSHIP: 'Vehicle Dealership',
-   LAST_LOGIN: 'Prethodna prijava',
    MAX_WARNS: 'Možete imati maksimalno 3 upozorenja.',
    WARNS: 'Upozorenja',
    DONATOR: 'Donator',
@@ -52,7 +51,6 @@ export const Messages = {
    IN: 'u',
    BLENDINGS: 'Genetika',
    WITHDRAW_PAGE: 'Podizanje Novca',
-   PLAYER_MENU: 'Player menu',
    DEPOSIT_PAGE: 'Depozit Novca',
    SAVINGS_PAGE: 'Štedna knjižica',
    PAYCHECK: 'Plata',
@@ -122,12 +120,23 @@ export const Messages = {
 
 
    // player
+   ACCOUNT_OVERVIEW: 'Pregled Računa',
+   CHARACTER_OVERVIEW: 'Pregled Karaktera',
+   WALKING_STYLE: 'Animacije Hodanja',
+   FACIAL_MOOD: 'Animacije Lica',
    YOUR_ACCOUNT: 'Vaš račun',
+   FACIAL_MOOD_TITLE: 'Animacije Lica',
+   FACIAL_MOOD_DESCRIPTION: 'Animacije lica, facijalne ekspresije na licu vašeg karaktera. Birate klikom.',
+   PLAYER_MENU: 'Player menu',
+   AGE_ONLINE: 'Ukupno sati igre',
    E_MAIL: 'E-Adresa',
+   LAST_LOGIN: 'Prethodna prijava',
+   CHARACTERS_NUMBER: 'Broj karaktera',
+   ACCOUNT_RANK: 'Rank',
    REGISTER_DATE: 'Datum registracije',
    YOUR_ACCOUNT_INFO: 'Informacije vašeg računa, master računa.',
    WALKING_STYLE_TITLE: 'Stil hodanja',
-   WALKING_STYLE_DESCRIPTION: 'Stil hodanja kojim vaš karakter hoda. Klikom na neki sa liste birate.',
+   WALKING_STYLE_DESCRIPTION: 'Stil hodanja kojim vaš karakter hoda. Birate klikom.',
 
    // faction menu
    FACTION_RANKS: 'Rankovi fakcije',

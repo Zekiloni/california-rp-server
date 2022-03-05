@@ -309,7 +309,6 @@ export class characters extends Model {
    async setWalkingStyle (player: PlayerMp, style: keyof typeof WalkingStyles) {
       this.walking_style = style;
       player.setVariable(shared_Data.WALKING_STYLE, WalkingStyles[style]);
-      await this.save();
    };
 
    setMood (player: PlayerMp, mood: keyof typeof FacialMoods) { 
@@ -480,8 +479,12 @@ export class characters extends Model {
    static panelAction (player: PlayerMp, action: string, value: keyof typeof WalkingStyles | keyof typeof FacialMoods) {
       switch (action) {
          case 'walkingStyle': {
-            console.log('walkingStyle')
             player.character.setWalkingStyle(player, <keyof typeof WalkingStyles>value);
+            break;
+         }
+
+         case 'facialMood': {
+            player.character.setMood(player, <keyof typeof FacialMoods>value);
             break;
          }
       }

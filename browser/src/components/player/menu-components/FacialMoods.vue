@@ -1,11 +1,11 @@
 
 
 <template>
-   <div class="walking-style">
-      <h2> {{ Messages.WALKING_STYLE_TITLE }} </h2>
-      <small> {{ Messages.WALKING_STYLE_DESCRIPTION }} </small>
-      <ul class="styles">
-         <li class="style" v-for="(style, i) in styles" :key="style" :class="{ selected: i == selectedStyle }" @click="selectStyle(i)">
+   <div class="moods">
+      <h2> {{ Messages.FACIAL_MOOD_TITLE }} </h2>
+      <small> {{ Messages.FACIAL_MOOD_DESCRIPTION }} </small>
+      <ul class="moods">
+         <li v-for="(mood, i) in moods" :key="mood" :class="{ selected: i == selectedMood }" @click="selectMood(i)">
             {{ i }} 
          </li>
       </ul>
@@ -19,18 +19,19 @@
 
    @Component({
       props: {
-         styles: Object,
-         selectedStyle: Number,
-         selectStyle: Function
+         moods: Object,
+         selectedMood: Number,
+         selectMood: Function
       }
    })
-   export default class WalkingStyles extends Vue {
+   export default class FacialMods extends Vue {
+
       Messages = Messages;
    }
 </script>
 
 <style scoped>
-   h2 {
+    h2 {
       margin: 0;
       color: #cdcdcd;
       font-weight: 500;
@@ -42,12 +43,12 @@
       font-weight: 600;
    }
 
-   ul.styles {
+   ul.moods {
       padding: 10px;
       list-style: none; 
    }
 
-   ul.styles li {
+   ul.moods li {
       padding: 10px;
       transition: all .3s ease;
       background: rgb(255 255 255 / 3%);
@@ -56,12 +57,12 @@
       font-weight: 600;
    }
 
-   ul.styles li:hover { 
+   ul.moods li:hover { 
       backdrop-filter: brightness(1.5);
       color: whitesmoke;
    }
 
-   ul.styles li.selected {
+   ul.moods li.selected {
       color: #ffcc45;
    }
 </style>

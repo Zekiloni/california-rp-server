@@ -7,15 +7,15 @@
 
       <div class="info">
          <div class="box">
-            <span> <b> {{ Messages.E_MAIL }}</b>  {{ account.email }} </span>
+            <div class="text"> <b> {{ Messages.E_MAIL }}</b>  {{ account.email }} </div>
+            <div class="text"> <b> {{ Messages.REGISTER_DATE }} </b> {{ formatDate(account.created_at) }} </div>
+            <div class="text" :class="{ admin: account.administrator > 0 }"> <b> {{ Messages.ACCOUNT_RANK }} </b> {{ Ranks[account.administrator] }} </div>
+            <div class="text"> <b> {{ Messages.CHARACTERS_NUMBER }} </b> {{ account.characters.length }} / 3 </div>
          </div>
 
          <div class="box">
-            
-         </div>
-
-         <div class="box">
-
+            <div class="text"> <b> {{ Messages.AGE_ONLINE }} </b> {{ ageOnline }}h </div>
+            <!-- warns, donator, online count -->
          </div>
       </div>
    </div>
@@ -24,15 +24,22 @@
 <script lang="ts">
    import Vue from 'vue';
    import Component from 'vue-class-component';
-   import { Messages } from '@/globals';
-   
+   import { Messages, Ranks } from '@/globals';
+   import { Character } from '@/models';
+
    @Component({
       props: {
          account: Object
       }
    })
    export default class AccountOverview extends Vue { 
+      initial: number = 0;
 
+      get ageOnline () {
+         return this.$props.account.characters.reduce((previousValue: Character, currentValue: Character) => previousValue.hours ? previousValue.hours : 0 + currentValue.hours, 0);
+      }
+
+      Ranks = Ranks;
       Messages = Messages;
    }
 </script>
@@ -46,11 +53,12 @@
 
    small {
       color: #848e9c;
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.75rem;
+      font-weight: 500;
    }
 
    .info {
+      margin-top: 20px;
       width: 100%;
       display: flex;
       justify-content: flex-start;
@@ -58,16 +66,29 @@
    }
 
    .info .box {
-      width: 205px;
+      min-width: 190px;
+      max-width: 210px;
       height: 200px;
       margin: 5px;
       border-radius: 4px;
-      border: 1px solid rgb(71 77 87 / 80%);
-      display: grid;
+      border: 1px solid rgb(71 77 87 / 25%);
       padding: 10px;
    }
 
-   .box span { 
-      margin: 0
+   .box .text { 
+      margin-bottom: 15px;
+      color: #cdcdcd;
+      font-weight: 500;
+   }
+
+   .text.admin {
+      color: #ff2121;
+   }
+
+   .box .text b {
+      color: #848e9c;
+      font-weight: 400;
+      display: block;
+      text-transform: uppercase;
    }
 </style>
