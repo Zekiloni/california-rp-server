@@ -6,7 +6,7 @@ import { characters, logs, products, workers } from '@models';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
-import { vehicles } from '@models/vehicle.Model';
+import { vehicles } from '@models';
 
 
 @Table

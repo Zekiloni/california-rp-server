@@ -146,6 +146,10 @@ export const Messages = {
    VEHICLE_TURBO: 'Turbo',
    VEHICLE_TRANSMISSION_LEVEL: 'Transmisija',
    VEHICLE_TINT: 'Zatamnjena stakla',
+   VEHICLE_REGISTRATION: 'Registracija vozila',
+   VEHICLE_NOT_REGISTERED: 'nije registrovano',
+   VEHICLE_REGISTRATION_EXPIRE: 'Datum isteka registracije',
+   VEHICLE_REGISTRATION_DATE: 'Datum registracije',
 
    PRIMARY_COLOR: 'Primarna boja',
    SECONDARY_COLOR: 'Sekundarna boja',

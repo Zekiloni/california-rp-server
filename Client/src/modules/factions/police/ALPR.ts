@@ -11,7 +11,6 @@ const toggleALPR = () => {
 
    if (ALPREnabled) {
       mp.events.add(RageEnums.EventKey.RENDER, trace);
-      mp.gui.chat.push('active')
    } else { 
       mp.events.remove(RageEnums.EventKey.RENDER, trace);
    }

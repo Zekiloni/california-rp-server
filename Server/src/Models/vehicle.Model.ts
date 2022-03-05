@@ -216,7 +216,7 @@ export class vehicles extends Model {
       vehicle.destroy();
    }
    
-   async park (player: PlayerMp, newParking: boolean) {
+   async park (vehicle: VehicleMp, player: PlayerMp, newParking: boolean) {
       if (this.type != VehicleConfig.type.OWNED) {
          // PORUKA: Cannot this vehicle
          return;
@@ -351,11 +351,53 @@ export class vehicles extends Model {
       
       player.vehicle.setVariable(shared_Data.INDICATORS, [left, right]);
    }
+
+   static async action (player: PlayerMp, vehicleID: number, action: string) {
+      const vehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.id == vehicleID);
+
+      if (!vehicle) {
+         return;
+      }
+
+      if (player.dist(vehicle.position) > 3 || !player.vehicle) {
+         return;
+      }
+
+      switch (action) {
+         case 'lock': {
+            await vehicle.instance.lock(vehicle, player);
+            break;
+         }
+
+         case 'unlock': {
+            await vehicle.instance.lock(vehicle, player);
+            break;
+         }
+
+         case 'park': {
+            await vehicle.instance.park(vehicle, player, false);
+            break;
+         }
+
+         case 'get': {
+            await vehicle.instance.load();
+            break;
+         }
+
+         case 'newparking': {
+            await vehicle.instance.park(vehicle, player, true);
+            break;
+         }
+      }
+
+      return true;
+   }
 }
+
 
 
 mp.events.add('playerExitVehicle', vehicles.exit);
 mp.events.add('SERVER::VEHICLE:UPDATE', vehicles.data);
 mp.events.add('SERVER::VEHICLE:INDICATORS', vehicles.indicators);
-
+mp.events.addProc('SERVER::VEHICLE:MENU_ACTION', vehicles.action);
 

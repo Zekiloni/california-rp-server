@@ -489,18 +489,19 @@ Commands['alarm'] = {
 Commands[cmds.names.DESTROY_VEHICLE] = {
    description: cmds.descriptions.DESTROY_VEHICLE,
    admin: rank.LEAD_ADMINISTRATOR,
-   call (player: PlayerMp) {
-      const vehicle = mp.vehicles.getClosest(player.position);
+   params: [
+      cmds.params.VEHICLE_ID
+   ],
+   call (player: PlayerMp, vehicleID: string) {
+      vehicles.findOne( { where: { id: Number(vehicleID) } } ).then(vehicle => {
+         if (!vehicle) {
+            player.notification(lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+         const gameObject = mp.vehicles.toArray().find(vehicle => vehicle.instance.id == vehicle.id);
 
-      if (!vehicle) {
-         return;
-      }
-
-      if (vehicle.getVariable(shared_Data.DATABASE)) {
-
-      }
-
-      vehicle?.destroy();
+         vehicle?.destroy( { vehicle: gameObject } );
+      })
    }
 }
 

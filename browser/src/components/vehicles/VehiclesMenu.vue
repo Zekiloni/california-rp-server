@@ -11,7 +11,6 @@
                <h4> {{ Messages.VEHICLES_PANEL }} </h4>
                <h2 v-html="title"> </h2>
             </div>
-
          </div>
 
          <ul class="options" v-if="pages.main && !pages.management" >
@@ -45,10 +44,16 @@
                <span> <b> {{ Messages.VEHICLE_TINT }} </b> {{ vehicle.tint }} / 3 </span> 
                <span> <b> {{ Messages.VEHICLE_TURBO }} </b> {{ vehicle.turbo ? Messages.YES : Messages.NO }} </span> 
             </div>
+            
+            <div class="info numberplate">
+               <span ><b> {{ Messages.VEHICLE_REGISTRATION }} </b>  {{ vehicle.numberPlate ? vehicle.numberPlate.plate : Messages.VEHICLE_NOT_REGISTERED }} </span>
+               <span> <b> {{ Messages.VEHICLE_REGISTRATION_DATE }}</b> {{ vehicle.numberPlate ? formatDate(vehicle.numberPlate.issued).split('-')[0] : 'N/A' }} </span>
+               <span> <b> {{ Messages.VEHICLE_REGISTRATION_EXPIRE }} </b> {{ vehicle.numberPlate ? formatDate(vehicle.numberPlate.expiring).split('-')[0] : 'N/A'}} </span>
+            </div>
 
             <ul class="options">
-               <li v-for="(action, i) in actions" :key="action.event" :class="{ active: isActive(i) }">
-                  {{ action.name }}
+               <li v-for="(option, i) in actions" :key="option.event" :class="{ active: isActive(i) }">
+                  {{ option.name }}
                </li>
             </ul>
          </div>
@@ -62,7 +67,7 @@
    import { Messages, VehicleTypes } from '@/globals';
 
 
-   export enum Type {
+   export enum VehicleType {
       OWNED, FACTION, BUSINES, JOB, DMV, ADMIN
    }
 
@@ -75,12 +80,12 @@
 
    interface Action {
       name: string
-      event: string
+      action: string
    }
 
    interface Vehicle {
       id: number
-      type: number
+      type: VehicleType
       name?: string
       model: string
       locked: boolean
@@ -105,7 +110,6 @@
          management: false
       }
 
-
       option: number = 0;
 
       vehicles: Vehicle[] | null = null;
@@ -124,20 +128,27 @@
          }
 
          if (!this.vehicle.spawned) {
-            list.push( { name: 'Stvori vozilo', event: 'CLIENT::VEHICLE:SPAWN' } )
+            list.push( { name: 'Stvori vozilo', action: 'get' } )
          } else {
-            list.push( { name: 'Parkiraj vozilo', event: 'CLIENT::VEHICLE:PARK' } )
+            list.push( { name: 'Parkiraj vozilo', action: 'park' } )
          }
 
-         list.push( { name: 'Novo parking mesto', event: 'CLIENT::VEHICLE:LOCK' } )
+         if (this.vehicle.type == VehicleType.OWNED) {
+            list.push( { name: 'Novo parking mesto', action: 'newparking' } )
+         }
 
          if (this.vehicle.locked) {
-            list.push( { name: 'Otkljucaj vozilo', event: 'CLIENT::VEHICLE:UNLOCK' } )
+            list.push( { name: 'Otkljucaj vozilo', action: 'unlock' } )
          } else { 
-            list.push( { name: 'Zakljucaj vozilo', event: 'CLIENT::VEHICLE:LOCK' } )
+            list.push( { name: 'Zakljucaj vozilo', action: 'lock' } )
          }
 
          return list;
+      }
+
+      dateFormat (i: number) {
+         const date = new Date(i);
+         return date.toLocaleString()
       }
 
       isActive (index: number) {
@@ -156,6 +167,9 @@
                this.option = this.actions!.length - 1;
             }
          }
+
+         const activeElement = document.getElementsByClassName('active')[0];
+         activeElement.scrollIntoView({ behavior: 'smooth', block: 'end'});
       }
 
       down () {
@@ -170,6 +184,8 @@
                this.option = 0;
             }
          }
+         const activeElement = document.getElementsByClassName('active')[0];
+         activeElement.scrollIntoView({ behavior: 'smooth', block: 'end'});
       }
 
       enter () {
@@ -179,6 +195,9 @@
             this.pages.main = false;
             this.pages.management = true;
             this.option = 0;
+         } else { 
+            const selectedOption = this.actions![this.option];
+            this.call(selectedOption.action)
          }
       }
 
@@ -218,10 +237,16 @@
          }
       }
 
+      call (action: string) {
+         mp.events.callProc('CLIENT::VEHICLES:MENU_ACTION', this.vehicle?.id, action).then(nData => {
+            console.log('ndata is ' + JSON.stringify(nData))
+            // this.vehicle = JSON.parse(nData);
+         });
+      }
+
       mounted () {
          mp.events.add('BROWSER::VEHICLES:MENU', (info: string) => {
             this.vehicles = JSON.parse(info);
-
          });
 
 

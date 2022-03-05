@@ -1,4 +1,4 @@
-import { cmds } from '@constants/commands';
+import { cmds } from '@constants';
 import { business, houses } from '@models';
 import { Commands } from '../commands';
 

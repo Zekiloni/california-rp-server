@@ -15,5 +15,12 @@ const toggleVehiclesMenu = (info: string) => {
 };
 
 
+const vehicleMenuAction = (vehicleID: number, action: string) => {
+   return mp.events.callRemoteProc('SERVER::VEHICLE:MENU_ACTION', vehicleID, action).then(info => {
+      return info;
+   });
+}
 
-mp.events.add('CLIENT::VEHICLES:MENU', toggleVehiclesMenu)
+
+mp.events.add('CLIENT::VEHICLES:MENU', toggleVehiclesMenu);
+mp.events.addProc('CLIENT::VEHICLES:MENU_ACTION', vehicleMenuAction);

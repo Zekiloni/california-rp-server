@@ -3,7 +3,19 @@
 <template>
    <div class="vehicle-info">
       <div class="main">
-         <h1> {{ vehicleName }} </h1>
+         <div class="speedo">
+            <div class="speed">
+               <h2> {{ speed }} </h2>
+               <small> kmh </small>
+            </div>
+            <div class="line" :style="{ transform: 'rotate(' + speed + 'deg)'}"> </div>
+            <div class="blinkers">
+               <div class="blinker"> <div class="icon left"> </div> </div>
+               <div class="blinker"> <div class="icon right"> </div> </div>
+            </div>
+         </div>
+            
+         <!-- <h1> {{ vehicleName }} </h1>
          <div class="speed">
             <h2 class="number"> {{ speed }} </h2>
             <small> km/h</small>
@@ -12,7 +24,7 @@
             <div class="bar" :style="{ width: fuel + '%' }" > </div>
          </div>
          <h4> {{ rpm }} </h4>
-         <h4> {{ mileage }} </h4>
+         <h4> {{ mileage }} </h4> -->
       </div>
    </div>
 </template>
@@ -55,11 +67,9 @@
       }
       
       mounted () {
-         //@ts-ignore
          if (window.mp) {
-            //@ts-ignore
-            mp.events.add('BROWSER::GAME_UI:VEHICLE:NAME', name => this.vehicleName = name);
-            //@ts-ignore
+            mp.events.add('BROWSER::GAME_UI:VEHICLE:NAME', (name: string) => this.vehicleName = name);
+
             mp.events.add('BROWSER::GAME_UI:VEHICLE:UPDATE', this.update)
          }
       }
@@ -85,62 +95,74 @@
       justify-content: center;
       align-items: center;
    }
-   
-   .speed h2.number {
-      width: 150px;
-      margin: auto;
-      font-size: 5rem;
-      font-weight: 800;
-      margin: 10px 0;
-      color: whitesmoke;
-      letter-spacing: 0.35rem;
-      text-shadow: 0 1px 1.5px rgb(0 0 0 / 45%);
-      position: relative;
-      text-align: right;
-      z-index: 1;
-      font-family: 'digital-7', sans-serif;
-   }
 
-   h2.speed small { 
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.7rem;
-      background: red;
-      font-weight: 300;
-      letter-spacing: 0;
-   }
-   
-   .speed h2.number::after {
-      width: 150px;
-      font-size: 5rem;
-      font-weight: 800;
-      letter-spacing: 0.35rem;
-      z-index: -1;
-      position: absolute;
-      width: 100%;
-      top: 0;
-      opacity: 0.35;
-      right: 0;
-      content: '888';
-      color: #cdcdcd;
-   }
-
-
-   .fuel-bar {
-      width: 125px;
-      height: 6px;
-      border-radius: 5px;
-      overflow: hidden;
-      background: rgb(0 0 0 / 45%);
-   }
-
-   .fuel-bar .bar {
-      height: 100%;
-      transition: all .3s ease;
-      background: #ffcc45;
-   }
 
    @keyframes blinking {
       50% { background: #00d474; }
+   }
+
+   .speedo {
+      width: 180px;
+      height: 180px;
+      position: relative;
+      border: 1px solid rgb(132 142 156 / 15%);
+      background: linear-gradient(120deg, rgb(11 14 17 / 25%), transparent);
+      border-radius: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+   }
+
+   .speedo .line {
+      position: absolute;
+      top: 90px;
+      height: 8px;
+      width: 180px;
+      background: linear-gradient(90deg, transparent 0%, #ff2121 50%, transparent 55%);
+   }
+
+   .speedo .speed { text-align: center; }
+   .speedo .speed h2 {
+      margin: 0;
+      margin-top: 25px;
+      font-size: 2rem;
+      color: #f6f6f6;
+   }
+   .speedo .speed small {
+      color: #cdcdcd;
+   }
+
+   .blinkers {
+      display: flex;
+      margin-top: 30px;
+      justify-content: center;
+   }
+
+   .blinkers .blinker { 
+      margin: 0 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      background: rgb(11 14 17 / 15%);
+      backdrop-filter: brightness(1.1);
+      display: grid;
+   }
+
+   .icon {
+      margin: auto;
+      mask: url('../../assets/images/icons/arrow-down.svg') no-repeat center; 
+      mask-size: cover; 
+      width: 20px;
+      height: 20px;
+      background: white;
+   }
+
+   .icon.left {
+      transform: rotate(90deg);
+   }
+
+   .icon.right {
+      transform: rotate(-90deg);
    }
 
 </style>
