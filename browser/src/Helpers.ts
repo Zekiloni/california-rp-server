@@ -1,4 +1,4 @@
-import { Groups } from './globals';
+import { Ranks } from './globals';
 
 
 const Helpers = { 
@@ -15,8 +15,8 @@ const Helpers = {
       return i.getDate() + '.' + (i.getMonth() + 1) + '.' + i.getFullYear() + ' - ' + i.getHours() + ':' + i.getMinutes() + ':' + i.getSeconds(); 
    },
 
-   Group (i: keyof typeof Groups) { 
-      return Groups[i];
+   Group (i: keyof typeof Ranks) { 
+      return Ranks[i];
    },
 
    Sleep (Seconds: number) {

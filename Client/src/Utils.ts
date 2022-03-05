@@ -151,17 +151,15 @@ export function loadAnimation (i: string): Promise<boolean> {
 };
 
 
-export function loadMovementClipset (Clipset: string): Promise<boolean> { 
-   if (mp.game.streaming.hasClipSetLoaded(Clipset)) return Promise.resolve(true);
+export function loadMovementClipset (clipset: string): Promise<boolean> { 
+   if (mp.game.streaming.hasClipSetLoaded(clipset)) return Promise.resolve(true);
    return new Promise(async resolve => { 
-      mp.game.streaming.requestClipSet(Clipset);
-      while (!mp.game.streaming.hasClipSetLoaded(Clipset)) { 
+      mp.game.streaming.requestClipSet(clipset);
+      while (!mp.game.streaming.hasClipSetLoaded(clipset)) { 
          await mp.game.waitAsync(10);
       }
       resolve(true);
    })
-
-
 }
 
 export function waitForEntity (entity: EntityMp) {

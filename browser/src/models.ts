@@ -114,3 +114,77 @@ export interface BusinesWorker {
    created_At?: Date
    updated_At?: Date
 }
+
+export interface Player {
+   account: Account
+   character: Character
+}
+
+export interface Account {
+   id: number
+   username: string
+   email: string
+   administrator: number
+   login_date: string
+   ip_adress: string
+   warns: number
+   donator: number
+   coins: number
+   characters: Character[]
+}
+
+
+export interface Character {
+   id: number
+   name: string
+   gender: number
+   birth: string
+   origin: string
+   money: number
+   faction: number
+   rank: number
+   job: number
+   working_hours: number
+   health: number
+   hunger: number
+   thirst: number
+   hours: number
+   minutes: number
+   walking_style: string
+   facial_mood: string
+   max_inventory_weight: number
+   max_houses: number
+   max_business: number
+   max_vehicles: number
+   stranger: number
+   created_at: Date
+   updated_at: Date
+}
+
+export interface FactionRank { 
+   id: number
+   name: string
+   faction_id: number;
+   faction: Faction
+   description: string
+   salary: number
+   permissions: number[]
+   created_at: Date
+   updated_at: Date
+}
+
+export interface Faction { 
+   id: number
+   type: number
+   name: string
+   description: string
+   leader: number
+   created_at: Date
+   budget: number
+   ranks: FactionRank[] | null
+}
+
+
+export type StringIndexString = {
+   [key: string]: string
+}

@@ -11,10 +11,14 @@
 
       <DeathScreen v-if="interfaces.deathScreen.toggle" />
 
-
       <Chat v-if="interfaces.chat.toggle" />
 
       <!-- [MISC] -->
+
+      <transition name="fade"> 
+         <PlayerMenu v-if="interfaces.playerMenu.toggle" />
+      </transition>
+
       <transition name="fade"> 
          <Inventory v-if="interfaces.inventory.toggle" /> 
       </transition>
@@ -106,6 +110,7 @@
    import Notifications from '@/components/Notifications.vue';
    import Chat from '@/components/TextChat';
    import GameInterface from '@/components/GameInterface.vue';
+   import PlayerMenu from '@/components/player/PlayerMenu.vue';
    import DeathScreen from '@/components/player/DeathScreen.vue';
    import Playerlist from '@/components/misc/Playerlist.vue';
    import Document from './components/misc/id.document.vue';
@@ -138,8 +143,8 @@
 
       components: { 
          Lobby, Creator, Notifications, GameInterface, Playerlist,
-         Inventory, Chat, Banking, ATM, JobOffer, HouseInfo, 
-         Phone, Document, HandheldRadio, DeathScreen,
+         PlayerMenu, Inventory, Chat, Banking, ATM, JobOffer,
+         HouseInfo, Phone, Document, HandheldRadio, DeathScreen,
 
          VehiclesMenu,
 

@@ -26,18 +26,27 @@ const InitialState:uInterface = {
    characterCreator: { toggle: false, mouse: true },
 
    gameInterface: { toggle: false },
-   deathScreen: { toggle: false },
+
+   playerMenu: {
+      toggle: false,
+      mouse: true,
+      escClose: 'CLIENT::PLAYER_MENU:TOGGLE',
+      hideUI: true
+   },
 
    inventory: { 
       toggle: false, 
       mouse: true, 
       escClose: 'CLIENT::INVENTORY:TOGGLE'
    },
+
    phone: { toggle: false, mouse: true },
    handheldRadio: { toggle: false, mouse: true },
    idDocument: { toggle: false, mouse: true },
    licenses: { toggle: false, mouse: true },
    
+   deathScreen: { toggle: false },
+
    // banking
    banking: { toggle: false, mouse: true },
    atm: { toggle: false, mouse: true },

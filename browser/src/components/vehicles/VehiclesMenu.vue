@@ -14,6 +14,7 @@
          </div>
 
          <ul class="options" v-if="pages.main && !pages.management" >
+            <h3 v-if="vehicles.length == 0"> ... </h3>
             <li v-for="(vehicle, i) in vehicles" :key="vehicle.id" :class="{ active: isActive(i) }">
                <h3> {{ i + 1 }} </h3>
                <h3 class="model"> {{ vehicle.model.toUpperCase() }} </h3>

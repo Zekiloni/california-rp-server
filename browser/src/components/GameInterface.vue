@@ -140,8 +140,12 @@
 
 <style scoped>
 
-
-   .game-interface { width: 100%; height: 100%; position: absolute; }
+   .game-interface { 
+      width: 100%; 
+      height: 100%; 
+      position: absolute; 
+      transition: all .3s ease;
+   }
 
    .server-info { 
       position: absolute;

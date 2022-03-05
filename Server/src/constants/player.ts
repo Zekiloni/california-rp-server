@@ -11,18 +11,18 @@ export const ranks:string[] = [
 ];
 
 
-export const facial_Moods = {
+export const FacialMoods = {
    'Normal': 'normal',
-   'Zamišljena': 'mood_aiming_1',
-   'Ljutita': 'mood_angry_1',
-   'Pijana': 'mood_drunk_1',
-   'Srećna': 'mood_happy_1' ,
-   'Povredjena': 'mood_injured_1',
-   'Stresirana': 'mood_stressed_1' ,
-   'Uvređena': 'mood_sulk_1',
+   'Confused': 'mood_aiming_1',
+   'Mad': 'mood_angry_1',
+   'Drunk': 'mood_drunk_1',
+   'Happy': 'mood_happy_1' ,
+   'Hurt': 'mood_injured_1',
+   'Stressed': 'mood_stressed_1' ,
+   'Offended': 'mood_sulk_1',
 };
 
-export const walking_Styles = { 
+export const WalkingStyles = { 
    'Normal': 'normal',
    'Brave': 'move_m@brave',
    'Confident': 'move_m@confident',
@@ -30,11 +30,11 @@ export const walking_Styles = {
    'Fat': 'move_m@fat@a',
    'Gangster': 'move_m@shadyped@a',
    'Hurry': 'move_m@hurry@a',
-   'DeadlyWound': 'move_m@injured',
-   'HeavyWound': 'move_m@drunk@verydrunk',
-   'MediumWound': 'move_m@drunk@moderatedrunk',
+   'Deadly Wound': 'move_m@injured',
+   'Heavy Wound': 'move_m@drunk@verydrunk',
+   'Medium Wound': 'move_m@drunk@moderatedrunk',
    'Wounded': 'move_injured_generic',
-   'LegsDamage': 'move_m@drunk@verydrunk',
+   'Legs Damage': 'move_m@drunk@verydrunk',
    'Injured_Ground': 'move_injured_ground',
    'Strafed': 'move_strafe@injured',
    'Intimidated': 'move_m@intimidation@1h',

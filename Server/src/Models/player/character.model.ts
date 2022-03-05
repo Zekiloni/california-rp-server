@@ -8,11 +8,11 @@ import {
 
 import { 
    accounts, appearances, banks, houses,
-   business, inventories, items, logs,
-   objects, vehicles 
+   business, inventories, logs, objects, 
+   vehicles, factions, factionsRanks
 } from '@models';
 
-import { facial_Moods, gDimension, walking_Styles, lang, colors, none } from '@constants';
+import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
@@ -129,13 +129,13 @@ export class characters extends Model {
    @Column(DataType.INTEGER( { length: 3 } ))
    minutes: number
 
-   @Default(walking_Styles.Normal)
+   @Default(WalkingStyles.Normal)
    @Column(DataType.STRING)
-   walking_style: keyof typeof walking_Styles
+   walking_style: keyof typeof WalkingStyles
 
-   @Default(facial_Moods.Normal)
+   @Default(FacialMoods.Normal)
    @Column(DataType.STRING(32))
-   facial_mood: keyof typeof facial_Moods
+   facial_mood: keyof typeof FacialMoods
    
    @Default(playerConfig.max.INVENTORY_WEIGHT)
    @Column(DataType.INTEGER( { length: 2 } ))
@@ -306,15 +306,15 @@ export class characters extends Model {
       await this.save();
    };
 
-   async setWalkingStyle (player: PlayerMp, style: keyof typeof walking_Styles) {
+   async setWalkingStyle (player: PlayerMp, style: keyof typeof WalkingStyles) {
       this.walking_style = style;
-      player.setVariable(shared_Data.WALKING_STYLE, style);
+      player.setVariable(shared_Data.WALKING_STYLE, WalkingStyles[style]);
       await this.save();
    };
 
-   setMood (player: PlayerMp, mood: keyof typeof facial_Moods) { 
+   setMood (player: PlayerMp, mood: keyof typeof FacialMoods) { 
       this.facial_mood = mood;
-      player.setVariable(shared_Data.FACIAL_MOOD, mood);
+      player.setVariable(shared_Data.FACIAL_MOOD, FacialMoods[mood]);
    };
 
    async setCuffs (player: PlayerMp, toggle: boolean) {
@@ -458,17 +458,26 @@ export class characters extends Model {
          player.proximityMessage(distances.IC, sender + lang.personSays + content, colors.hex.White);
       }
    }
-}
-
-
-
-const offerRespond = (player: PlayerMp, respond: boolean) => {
-   if (!player.character.offer) {
-      return;
+   
+   static async panel (player: PlayerMp) {
+      return [
+         player,
+         await factions.findOne( { where: { id: player.character.faction } } ),
+         await factionsRanks.findOne( { where: { id: player.character.rank } } ),
+         WalkingStyles, 
+         FacialMoods
+      ];
    }
 
-   player.character.offer.respond(player, respond);
+   static offerRespond (player: PlayerMp, respond: boolean) {
+      if (!player.character.offer) {
+         return;
+      }
+   
+      player.character.offer.respond(player, respond);
+   }
 }
 
 
-mp.events.add('SERVER::OFFER:RESPONSE', offerRespond);
+mp.events.add('SERVER::OFFER:RESPONSE', characters.offerRespond);
+mp.events.addProc('SERVER::PLAYER_MENU', characters.panel);

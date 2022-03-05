@@ -53,6 +53,7 @@ export const Messages = {
    IN: 'u',
    BLENDINGS: 'Genetika',
    WITHDRAW_PAGE: 'Podizanje Novca',
+   PLAYER_MENU: 'Player menu',
    DEPOSIT_PAGE: 'Depozit Novca',
    SAVINGS_PAGE: 'Štedna knjižica',
    PAYCHECK: 'Plata',
@@ -264,7 +265,16 @@ export const Clothing_Components = {
 
 export const Genders = ['Muško', 'Žensko'];
 
-export const Groups:string[] = ['Korisnik', 'Helper', 'Junior Admin', 'Admin', 'Senior Admin', 'General Admin', 'Lead Admin', 'Leadership', ]
+export const Ranks: string[] = [
+   'Player', 
+   'Game Assistant', 
+   'Administrator', 
+   'Administrator 2',
+   'Senior Administrator', 
+   'Lead Administrator', 
+   'Community Manager', 
+   'Owner'
+]
 
 
 export const vehicleColors = {
