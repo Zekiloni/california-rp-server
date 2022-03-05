@@ -323,6 +323,10 @@ export class vehicles extends Model {
       if (vehicle.engine) {
          vehicle.engine = true;
       }
+
+      if (vehicle.siren) {
+         vehicle.siren = true;
+      }
    }
 
    static async data (player: PlayerMp, vehicleID: number, mileage: number, fuel: number) {
