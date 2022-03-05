@@ -500,7 +500,7 @@ Commands[cmds.names.DESTROY_VEHICLE] = {
          }
          const gameObject = mp.vehicles.toArray().find(vehicle => vehicle.instance.id == vehicle.id);
 
-         vehicle?.destroy( { vehicle: gameObject } );
+         vehicle?.destroy( );
       })
    }
 }

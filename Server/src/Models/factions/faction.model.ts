@@ -218,27 +218,29 @@ export class factions extends Model {
          description: player.name + lang.toJoinFaction + this.name + '.',
          offerer: player,
          faction: this.id,
-         async respond (player: PlayerMp, respond: boolean) {
+         async respond (_target: PlayerMp, respond: boolean) {
             const result: string = respond ? lang.accepted : lang.declined;
 
             if (respond) {
-               player.character.faction = this.faction!;
-               player.setVariable(shared_Data.FACTION, this.faction);
+               _target.character.faction = this.faction!;
+               _target.setVariable(shared_Data.FACTION, this.faction);
 
-               await player.character.save();
+               await _target.character.save();
             } else { 
 
             }
             
             if (this.offerer) {
-               this.offerer.notification(player.name + result + lang.yourFactionInvite, notifications.type.INFO, notifications.time.MED);
+               this.offerer.notification(_target.name + result + lang.yourFactionInvite, notifications.type.INFO, notifications.time.MED);
             }
             
-            player.character.setOffer(player, null);
+            this.offerer.notification(respond ? lang.uAcceptedFactionInvite : lang.uDeclinedFactionInvite, notifications.type.INFO, notifications.time.MED);
+
+            _target.character.setOffer(player, null);
          }
       }
 
-      player.character.setOffer(player, offer);
+      target.character.setOffer(target, offer);
    }
    
 

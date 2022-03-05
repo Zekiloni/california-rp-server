@@ -4,7 +4,7 @@
 export const lang = {
 
    // server back-end
-   successDbConnection: 'Uspesno povezan na databazu.',
+   successDbConnection: 'Successfully connected to database',
    serverIsClosing: 'Server se gasi...',
    defaultSpawn: 'Default Spawn',
    defaultSpawnDescripiton: 'Default spawn pozicija gde se stvvorite pri registracija.',
@@ -197,6 +197,8 @@ export const lang = {
    invitedToFaction: 'Pozvani ste da se pridružite fakciji ',
    toOpenBankMenu: 'Bankovne opcije',
    factionRankDelete: 'Rank uspešno izbrisan.',
+   uDeclinedFactionInvite: 'Odbili ste zahtev za pridruživanje fakciji.',
+   uAcceptedFactionInvite: 'Prihvatili ste zahtev za pridruživanje fakciji.',
 
    // warnings
    adminWarnedYou: 'vas je upozorio',
