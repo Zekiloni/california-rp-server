@@ -1,7 +1,6 @@
 import { loadMovementClipset } from '../../../utils';
 
 
-
 const walkingStyleHandler = async (entity: EntityMp, style: string, oldStyle: string) => {
 
    if (entity.type != RageEnums.EntityType.PLAYER) {
@@ -11,6 +10,9 @@ const walkingStyleHandler = async (entity: EntityMp, style: string, oldStyle: st
    const _player = <PlayerMp>entity;
 
    if (style == 'normal') {
+      _player.resetMovementClipset(0.25);
+
+   } else {
       const clipsetLoaded = await loadMovementClipset(style);
 
       if (!clipsetLoaded) {
@@ -18,10 +20,7 @@ const walkingStyleHandler = async (entity: EntityMp, style: string, oldStyle: st
       }
 
       _player.setMovementClipset(style, 0.25);
-   } else {
-      _player.resetMovementClipset(0.25);
    }
-   
 }
 
 

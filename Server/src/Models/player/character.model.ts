@@ -476,8 +476,19 @@ export class characters extends Model {
    
       player.character.offer.respond(player, respond);
    }
+
+   static panelAction (player: PlayerMp, action: string, value: keyof typeof WalkingStyles | keyof typeof FacialMoods) {
+      switch (action) {
+         case 'walkingStyle': {
+            console.log('walkingStyle')
+            player.character.setWalkingStyle(player, <keyof typeof WalkingStyles>value);
+            break;
+         }
+      }
+   }
 }
 
 
 mp.events.add('SERVER::OFFER:RESPONSE', characters.offerRespond);
+mp.events.add('SERVER::PLAYER_MENU:ACTION', characters.panelAction);
 mp.events.addProc('SERVER::PLAYER_MENU', characters.panel);

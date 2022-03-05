@@ -33,8 +33,7 @@ export const Messages = {
    YOUR_ID: 'Vaš ID',
    FINISH_SHOPPING: 'Kupi',
    YOU_DONT_HAVE: 'Nemate',
-   E_MAIL: 'E-Adresa',
-   REGISTER_DATE: 'Datum registracije',
+
    MARKET: 'Market',
    VEHICLE_DEALERSHIP: 'Vehicle Dealership',
    LAST_LOGIN: 'Prethodna prijava',
@@ -121,6 +120,16 @@ export const Messages = {
    HAIR_MODEL: 'Stil Kose',
    HAIR_COLOR: 'Boja Kose',
 
+
+   // player
+   YOUR_ACCOUNT: 'Vaš račun',
+   E_MAIL: 'E-Adresa',
+   REGISTER_DATE: 'Datum registracije',
+   YOUR_ACCOUNT_INFO: 'Informacije vašeg računa, master računa.',
+   WALKING_STYLE_TITLE: 'Stil hodanja',
+   WALKING_STYLE_DESCRIPTION: 'Stil hodanja kojim vaš karakter hoda. Klikom na neki sa liste birate.',
+
+   // faction menu
    FACTION_RANKS: 'Rankovi fakcije',
    FACTION_RANK_NAME: 'Ime ranka',
    FACTION_RANK_DESCRIPTION: 'Opis ranka',
@@ -133,6 +142,7 @@ export const Messages = {
    MEMBER_RANK: 'Rank člana',
    FACTION_MEMBER_SETTINGS: 'Opcije člana',
 
+   // vehicles menu
    VEHICLE_ID: 'ID vozila',
    YOUR_VEHICLES: 'Vaša vozila',
    VEHICLE_FUEL_LEVEL: 'Rezervoar',

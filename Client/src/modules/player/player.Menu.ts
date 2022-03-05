@@ -28,10 +28,10 @@ const togglePanel = async () => {
 
 
 const panelAction = async (action: string, value: string | number | boolean) => {
-
-   
+   mp.events.callRemote('SERVER::PLAYER_MENU:ACTION', action, value);
 };
 
 
 mp.keys.bind(controls.KEY_M, true, togglePanel);
 mp.events.add('CLIENT::PLAYER_MENU:TOGGLE', togglePanel);
+mp.events.add('CLIENT::PLAYER_PANEL:ACTION', panelAction)

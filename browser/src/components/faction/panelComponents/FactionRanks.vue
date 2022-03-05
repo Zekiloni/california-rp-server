@@ -119,10 +119,10 @@
    h2 {
       margin: 0;
       color: #cdcdcd;
-      font-weight: 350;
+      font-weight: 500;
    }
 
-   small.edit-rank-help { color: #848e9c; font-size: 0.7rem; font-weight: 600;}
+   small.edit-rank-help { color: #848e9c; font-size: 0.7rem; font-weight: 600; }
 
   .list {
      margin-top: 15px;

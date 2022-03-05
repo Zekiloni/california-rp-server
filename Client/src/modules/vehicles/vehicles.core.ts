@@ -18,13 +18,6 @@ let temporary = {
 };
 
 
-mp.events.add(
-   {
-      'playerEnterVehicle': playerEnterVehicle,
-      'playerLeaveVehicle': playerLeaveVehicle,
-   }
-);
-
 
 function playerEnterVehicle (vehicle: VehicleMp, seat: number) {
    if (seat != -1) {
@@ -73,7 +66,6 @@ function playerLeaveVehicle (vehicle: VehicleMp, seat: number) {
 
 function driving () { 
    if (mp.players.local.vehicle && mp.players.local.vehicle.getPedInSeat(-1) === mp.players.local.handle) { 
-
       const vehicle = mp.players.local.vehicle;
 
       const speed = vehicle.getSpeed() * 3.6;
@@ -92,9 +84,8 @@ function driving () {
       } 
 
       if (vehicle.isUpsidedown()) {
-         mp.game.controls.disableControlAction(0, 59, true);
+         mp.game.controls.disableControlAction(RageEnums.InputGroup.INPUTGROUP_MOVE, RageEnums.Controls.INPUT_VEH_MOVE_LR, true);
       }
-      
    }
 }
 
@@ -121,11 +112,12 @@ function driving () {
 
 
 const indicators = (entity: EntityMp, value?: boolean[], oldValue?: boolean[]) => {
+   
    if (entity.type != entityType.VEHICLE) {
       return;
    }
 
-   if (blockedClasses.indexOf((<VehicleMp>entity).getClass()) == -1) {
+   if (blockedClasses.indexOf((<VehicleMp>entity).getClass()) != -1) {
       return;
    }
 
@@ -141,4 +133,6 @@ const indicators = (entity: EntityMp, value?: boolean[], oldValue?: boolean[]) =
 
 
 mp.events.add(RageEnums.EventKey.ENTITY_STREAM_IN, indicators);
+mp.events.add(RageEnums.EventKey.PLAYER_ENTER_VEHICLE, playerEnterVehicle);
+mp.events.add(RageEnums.EventKey.PLAYER_LEAVE_VEHICLE, playerLeaveVehicle);
 mp.events.addDataHandler('INDICATORS', indicators);

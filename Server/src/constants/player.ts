@@ -31,7 +31,6 @@ export const WalkingStyles = {
    'Gangster': 'move_m@shadyped@a',
    'Hurry': 'move_m@hurry@a',
    'Deadly Wound': 'move_m@injured',
-   'Heavy Wound': 'move_m@drunk@verydrunk',
    'Medium Wound': 'move_m@drunk@moderatedrunk',
    'Wounded': 'move_injured_generic',
    'Legs Damage': 'move_m@drunk@verydrunk',

@@ -160,7 +160,8 @@
 
    ul.navigation li { 
       text-align: center;
-      margin: 10px 0;
+      margin: 0;
+      margin-bottom: 10px;
       background: rgb(255 255 255 / 5%);
       backdrop-filter: brightness(1.1);
       padding: 15px 0;

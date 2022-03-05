@@ -23,7 +23,23 @@
                </ul>
 
                <div class="page">
-                  
+                  <transition-group name="fade" mode="out-in"> 
+                     <AccountOverview 
+                        v-if="activePage == 0" key=accountOverview 
+                        :account="player.account"
+                     />
+                     
+                     <CharacterOverview v-if="activePage == 1" key=characterOverview />
+
+                     <WalkingStyles 
+                        v-if="activePage == 2" 
+                        :stylesList="walkingStyles"
+                        :selectedStyle="player.character.walking_style"
+                        :selectStyle="setWalkingStyle"
+                        key=walkingStyles 
+                     />
+                     
+                  </transition-group>
                </div>
             </div>
          </div>
@@ -42,11 +58,12 @@
 
    import CharacterOverview from './menu-components/CharacterOverview.vue';
    import AccountOverview from './menu-components/AccountOverview.vue'
-
+   import WalkingStyles from './menu-components/WalkingStyles.vue';
+   
 
    @Component({
       components: {
-         AccountOverview, CharacterOverview
+         AccountOverview, CharacterOverview, WalkingStyles
       }
    })
    export default class PlayerMenu extends Vue {
@@ -65,16 +82,17 @@
       
       Messages = Messages;
 
-      setWalkingStyle (style: string) {
-         this.player!.character.walking_style = this.walkingStyles![style];
-         //mp.events.callProc('');
-      }
-
       clock () {
          const now = new Date();
+         
          this.time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()) + ':' + (now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds());
 
          setTimeout(this.clock, 1000);
+      }
+
+      setWalkingStyle (style: string) {
+         this.player!.character.walking_style = style;
+         mp.events.call('CLIENT::PLAYER_PANEL:ACTION', 'walkingStyle', style);
       }
 
       mounted () {
@@ -184,7 +202,8 @@
 
    ul.navigation li { 
       text-align: center;
-      margin: 10px 0;
+      margin: 0;
+      margin-bottom: 10px;
       background: rgb(255 255 255 / 5%);
       backdrop-filter: brightness(1.1);
       padding: 15px 0;
@@ -211,6 +230,10 @@
 
    .page { 
       width: 600px;
+      height: 405px;
+      overflow: auto;
+      overflow: auto;
+      padding: 10px 25px;
    }
 
 </style>
