@@ -1,7 +1,7 @@
 import { spawnPointTypes } from '@enums';
 
 
-export interface playerInjury { 
+export interface Injury { 
    weapon: number
    damage: number
    bone: number

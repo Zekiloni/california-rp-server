@@ -3,7 +3,7 @@
 import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
-import { itemExtra } from '@interfaces';
+import { ItemExtra } from '@interfaces';
 import { items, logs, characters } from '@models';
 import { itemNames, lang, none } from '@constants';
 import { playerConfig } from '@configs';
@@ -65,7 +65,7 @@ export class inventories extends Model {
       type: DataType.JSON,
       get () { return JSON.parse(this.getDataValue('data')); }
    })   
-   data: itemExtra;
+   data: ItemExtra;
 
    @CreatedAt
    created_at: Date;

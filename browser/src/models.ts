@@ -38,7 +38,7 @@ export interface InventoryItem {
    equiped: boolean
    status: number
    fingerprint: number
-   data?: itemExtra
+   data?: ItemExtra
 }
 
 export interface itemAction { 
@@ -57,7 +57,7 @@ export interface rItem {
    extraActions?: itemAction[];
 }
 
-export interface itemExtra  {
+export interface ItemExtra  {
    ammo?: number
    serial?: number
    name?: string

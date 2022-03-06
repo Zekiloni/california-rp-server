@@ -16,7 +16,7 @@ import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@con
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
-import { offer, playerInjury } from '@interfaces';
+import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
 
 
@@ -100,7 +100,7 @@ export class characters extends Model {
    @Column(DataType.BOOLEAN)
    dead: boolean;
 
-   injuries: playerInjury[] = [];
+   injuries: Injury[] = [];
 
    @Default(null)
    @Column(
@@ -350,7 +350,7 @@ export class characters extends Model {
          alreadyInjured.times ++;
          alreadyInjured.damage += damage;
       } else {
-         const injury: playerInjury = {
+         const injury: Injury = {
             bone: bone,
             weapon: weapon,
             damage: damage,
