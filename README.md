@@ -1,7 +1,7 @@
 # midnight-rp-server
 
 
-server name: "Midnight Roleplay - discord.gg/mn-rp 🌙 [balkan] [roleplay] [text based]"
+server name: "Midnight Roleplay - discord.gg/mn-rp 🌙 [balkan] [roleplay] [text based]" 
 mysql server: mariadb 10.3 +
 
 {
