@@ -32,10 +32,12 @@ const panelAction = async (action: string, value: string | number | boolean) => 
 };
 
 
-const report = async (action: string, message: string) => {
-   const succes = await mp.events.callRemoteProc('SERVER::PLAYER:REPORT', action, message);
-   mp.gui.chat.push(JSON.stringify(succes))
-   return succes;
+const report = (action: string, message: string) => {
+   mp.events.callRemoteProc('SERVER::PLAYER:REPORT', action, message).then(succes => {
+      if (action == 'send' && succes) {
+         reportResponse(succes);
+      }
+   })
 };
 
 const reportResponse = (answer: string) => {
@@ -46,4 +48,4 @@ mp.keys.bind(controls.KEY_M, true, togglePanel);
 mp.events.add('CLIENT::PLAYER_MENU:TOGGLE', togglePanel);
 mp.events.add('CLIENT::PLAYER_MENU:ACTION', panelAction);
 mp.events.add('CLIENT::PLAYER_MENU:REPORT_RESPONSE', reportResponse);
-mp.events.addProc('CLIENT::PLAYER_MENU:REPORT', report);
+mp.events.add('CLIENT::PLAYER_MENU:REPORT', report);

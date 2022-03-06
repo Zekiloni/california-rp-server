@@ -256,7 +256,7 @@
 
    .page { 
       width: 600px;
-      height: 405px;
+      height: 425px;
       overflow: auto;
       overflow: auto;
       padding: 10px 25px;

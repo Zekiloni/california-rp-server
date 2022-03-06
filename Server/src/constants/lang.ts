@@ -145,6 +145,7 @@ export const lang = {
    personIsInjured: 'Ova osoba je ranjena ',
    uUnlockedVehicle: 'Vozilo otključano.',
    uLockedVehicle: 'Vozilo zaključano.',
+   urReportDeleted: 'Vaša prijava je izbrisana.',
    quitjob: 'Uspešno ste dali otkaz na poslu.',
    serverRestart: 'Server restart.',
    hasKickedYouFromFaction: ' vas je izbacio iz fakcije ',

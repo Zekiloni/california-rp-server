@@ -506,7 +506,7 @@ export class characters extends Model {
          }
 
          case 'delete': {
-            break;
+            return admins.reportDelete(player);
          }
       }
    }

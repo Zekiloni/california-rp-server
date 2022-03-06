@@ -6,13 +6,30 @@
       
       <div class="report">
          <h3> {{ Messages.ACTIVE_REPORT }} </h3>
-         <transition name="fade-with-bottom-slide"> 
+         <transition name="fade-with-bottom-slide" mode="out-in"> 
             <div class="info" v-if="report">
-               <span> 
+               <p> 
                   <b> {{ Messages.REPORT_CONTENT }} </b> 
-                   {{ report.message }} 
-               </span>
+                  {{ report.message }} 
+               </p>
               
+               <p>
+                  <b> {{ Messages.REPORT_TIME }} </b>
+                  {{ formatDate(report.time) }}
+               </p>
+
+                <p>
+                  <b> {{ Messages.REPORT_ANSWER }} </b>
+                  {{ report.answer ? report.answer.message : 'N/A' }}
+               </p>
+
+               <p>
+                  <b> {{ Messages.REPORT_ANSWERED_BY }} </b>
+                  {{ report.answer ? formatDate(report.answer.time) : 'N/A' }}
+                  <small> <b> {{ Messages.REPORT_ANSWER_TIME }} </b> {{ report.answer ? formatDate(report.answer.time) : 'N/A' }} </small>
+               </p>
+
+               <button v-if="report"> {{ Messages.DELETE_REPORT }} </button>
             </div>
 
                <!-- sender: PlayerMp
@@ -27,7 +44,7 @@
       <div class="send-report">
          <h3> {{ Messages.REPORT_SENDING }} </h3>
   
-         <textarea v-model="reportContent" :placeholder="Messages.REPORT_CONTENT" spellcheck="false"> </textarea>
+         <textarea v-model="reportContent" :placeholder="Messages.REPORT_CONTENT" spellcheck="false" :disabled="report"> </textarea>
         
          <button @click="send"> {{ Messages.SEND_REPORT }} </button>
       </div>
@@ -48,12 +65,12 @@
 
       reportContent: string | null = null;
       
-      async send () {
-         const sent: string | null = await mp.events.callProc('CLIENT::PLAYER_MENU:REPORT', 'send', this.reportContent);
-         if (sent) {
-            console.log(JSON.stringify(sent))
-            this.$props.report = JSON.parse(sent);
-         }
+      send () {
+         mp.events.call('CLIENT::PLAYER_MENU:REPORT', 'send', this.reportContent);
+      }
+
+      delete () {
+         
       }
 
       Messages = Messages;
@@ -101,12 +118,15 @@
    .report h3 { 
       color: #0cbe80;
       font-size: 1rem;
+      margin: 10px 0;
+      padding: 0 10px;
       font-weight: 450;
    }
 
    .send-report h3 {
       color: #ffcc45;
       font-size: 1rem;
+      margin: 10px 0;
       font-weight: 450;
    }
 
@@ -115,7 +135,7 @@
       color: #cdcdcd;
       resize: none;
       width: 325px;
-      height: 80px;
+      height: 70px;
       border-radius: 4px;
       background: rgb(255 255 255 / 5%);
       position: relative;
@@ -143,17 +163,31 @@
       filteR: brightness(1.05);
    }
    
+   .info {
+      padding: 0 10px;
+   }
 
-   span { 
+   p { 
       margin-bottom: 15px;
       color: #cdcdcd;
       font-weight: 500;
    }
 
-   span b {
+   p b {
       color: #848e9c;
       font-weight: 400;
       display: block;
       text-transform: uppercase;
+   }
+
+   p small {
+      font-size: 0.7rem;
+      color: whitesmoke;
+      display: flex;
+   }
+
+   p small b {
+      margin-right: 10px;
+      color: #848e9c;
    }
 </style>

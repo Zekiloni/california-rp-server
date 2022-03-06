@@ -40,7 +40,7 @@ export class admins {
          name: player.name,
          username: player.account.username,
          time: Date.now(),
-         answer: response
+         message: response
       }
       
       if (target) {
@@ -54,6 +54,9 @@ export class admins {
       if (report) {
          admins.reports.delete(player.character.id);
       }
+
+      player.notification(lang.urReportDeleted, notifications.type.INFO, notifications.time.MED);
+      return;
    }
 }
 

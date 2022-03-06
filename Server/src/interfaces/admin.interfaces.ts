@@ -3,7 +3,7 @@
 interface ReportAnswer {
    name: string
    username: string
-   answer: string
+   message: string
    time: number
 }
 

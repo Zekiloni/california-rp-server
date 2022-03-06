@@ -178,6 +178,11 @@ export const Messages = {
    VEHICLE_NOT_REGISTERED: 'nije registrovano',
    VEHICLE_REGISTRATION_EXPIRE: 'Datum isteka registracije',
    VEHICLE_REGISTRATION_DATE: 'Datum registracije',
+   REPORT_TIME: 'Datum prijave',
+   REPORT_ANSWER: 'Odgovor',
+   REPORT_ANSWERED_BY: 'Odgovorio',
+   REPORT_ANSWER_TIME: 'Vreme odgovora',
+   DELETE_REPORT: 'Izbriši prijavu',
 
    PRIMARY_COLOR: 'Primarna boja',
    SECONDARY_COLOR: 'Sekundarna boja',
