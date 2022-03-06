@@ -123,6 +123,7 @@ export const lang = {
    toEnterBusiness: 'Da udjete u biznis',
    toBuyTheBusinenss: 'Da kupite biznis',
    businessManagement: 'Opcije vašeg biznisa',
+   usetAdminTo: 'Stavili ste administrator level ',
 
 
    // info messages
@@ -139,6 +140,7 @@ export const lang = {
    businesNoVehiclesToSell: 'Ovaj salon vozila nema trenutno vozila u ponudi.',
    succesfullySoldBizToCountry: 'Uspešno ste pridali biznis državi.',
    youDisarmedPlayer: 'Razoružali ste igrača',
+   setUAdminLevel: ' vam je dao administratora level ',
    uLeaveFactionLeaderPosition: 'Napustili ste fakciju i poziciju lidera fakcije ',
    personSays: ' kaže: ', 
    personSaysInVehicle: ' [vozilo] kaže: ',

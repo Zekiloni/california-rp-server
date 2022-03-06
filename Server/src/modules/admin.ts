@@ -2,14 +2,38 @@
 
 
 
-import { lang } from '@constants';
+import { colors, lang, none, ranks } from '@constants';
 import { notifications } from '@enums';
 import { PlayerReport } from '@interfaces';
+import { checkForDot } from '@shared';
 
 
 export class admins {
    static reports = new Map<number, PlayerReport>();
 
+
+   static chat (player: PlayerMp, message: string) {
+      const rank = ranks[player.account.administrator];
+
+      const admins = mp.players.toArray().filter(player => player.account.administrator > none);
+      admins.forEach(admin => {
+         admin.sendMessage(rank + ' ' + player.name + ': ' + checkForDot(message), colors.hex.BROADCAST);
+      });
+   }
+
+   static broadcast (player: PlayerMp, message: string) {
+      const rank = ranks[player.account.administrator];
+      const name = player.name + ' (' + player.account.username + ')';
+
+      mp.players.forEach(target => {
+         target.sendMessage(rank + ' ' + name + ': ' + checkForDot(message), colors.hex.BROADCAST);
+      });
+   }
+
+   static warning () {
+      
+   }
+   
    static createReport (player: PlayerMp, message: string) { 
       if (admins.reports.get(player.character.id)) {
          player.notification(lang.uAlreadyHaveActiveReport, notifications.type.ERROR, notifications.time.LONG);

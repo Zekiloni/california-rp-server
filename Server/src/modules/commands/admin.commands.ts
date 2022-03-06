@@ -3,10 +3,11 @@ import fs from 'fs';
 
 import { Commands } from '../commands';
 import { logs, items, inventories, houses, accounts, business, factions, characters, vehicles } from '@models';
-import { cmds, colors, gDimension, lang, none, ranks, weathers } from '@constants';
+import { cmds, colors, lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, serverConfig, VehicleConfig } from '@configs';
-import { checkForDot, generateString, shared_Data } from '@shared';
+import { shared_Data } from '@shared';
+import { admins } from '../../modules/admin';
 
 
 const savedPositions = 'savedPositions.txt';
@@ -497,12 +498,11 @@ Commands[cmds.names.DESTROY_VEHICLE] = {
       cmds.params.VEHICLE_ID
    ],
    call (player: PlayerMp, vehicleID: string) {
-      vehicles.findOne( { where: { id: Number(vehicleID) } } ).then(vehicle => {
+      vehicles.findOne( { where: { id: vehicleID } } ).then(vehicle => {
          if (!vehicle) {
             player.notification(lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
             return;
          }
-         const gameObject = mp.vehicles.toArray().find(vehicle => vehicle.instance.id == vehicle.id);
 
          vehicle?.destroy( );
       })
@@ -818,12 +818,7 @@ Commands[cmds.names.A_CHAT] = {
          return;
       }
       
-      const rank = ranks[player.account.administrator];
-
-      const admins = mp.players.toArray().filter(player => player.account.administrator > none);
-      admins.forEach(admin => {
-         admin.sendMessage(rank + ' ' + player.name + ': ' + checkForDot(text), colors.hex.BROADCAST);
-      });
+     admins.chat(player, text);
    }
 };
 
@@ -840,13 +835,8 @@ Commands[cmds.names.ANNOUNCEMENT] = {
       if (!message.trim()) {
          return;
       }
-
-      const rank = ranks[player.account.administrator];
-      const name = player.name + ' (' + player.account.username + ')';
-
-      mp.players.forEach(target => {
-         target.sendMessage(rank + ' ' + name + ': ' + checkForDot(message), colors.hex.BROADCAST);
-      })
+      
+      admins.broadcast(player, message);
    }
 };
 
@@ -984,6 +974,8 @@ Commands[cmds.names.MAKE_ADMIN] = {
       }
 
       target.account.setAdministrator(target, Number(adminLevel));
+      player.notification(lang.usetAdminTo + adminLevel + ' ' + target.name + '.', notifications.type.INFO, notifications.time.MED);
+      target.notification(player.name + lang.setUAdminLevel + adminLevel + '.', notifications.type.INFO, notifications.time.MED);
    }
 };
 

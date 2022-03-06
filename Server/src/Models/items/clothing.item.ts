@@ -61,6 +61,10 @@ export class ClothingItem extends items {
    async unequip (player: PlayerMp) {
       player.setClothes(this.component, this.naked[player.character.gender], 0, 2);    
 
+      console.log('component ' + this.name);
+      console.log('naked ' + this.naked);
+      console.log('gender nake ' + this.naked[player.character.gender]);
+
       if (this.component == ItemEnums.components.clothings.TOP) {
          
          inventories.findOne( { where: { entity: ItemEnums.entity.PLAYER, owner: player.character.id, equiped: true, name: itemNames.CLOTHING_UNDERSHIRT } } ).then(async undershirt => {

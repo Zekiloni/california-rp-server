@@ -1,4 +1,5 @@
 import { Browser } from '../../browser';
+import controls from '../../enums/controls';
 import { entityType } from '../../enums/entity';
 import { vehicleInterface, UI_Status, gameIStatus } from "../game.UI";
 
@@ -91,23 +92,42 @@ function driving () {
 
 
 
-// // Left Indicator
-// // mp.keys.bind(Controls.LEFT_ARROW, false, () => {
-// //    if (!Player.Logged) return;
-// //    if (mp.players.local.isTypingInTextChat) return;
-// //    let vehicle = mp.players.local.vehicle;
-// //    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 1);
-// // });
 
 
-// // // Right Indicator
-// // mp.keys.bind(Controls.RIGHT_ARROW, false, () => {
-// //    if (!Player.Logged) return;
-// //    if (mp.players.local.isTypingInTextChat) return;
-// //    let vehicle = mp.players.local.vehicle;
-// //    if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) mp.events.callRemote('server:vehicle:indicators', 0);
-// // });
+// Left Indicator
+mp.keys.bind(controls.LEFT_ARROW, false, () => {
+   if (mp.players.local.isTypingInTextChat) {
+      return;
+   };
 
+   if (!mp.players.local.vehicle) {
+      return;
+   }
+
+   const vehicle = mp.players.local.vehicle;
+
+   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) {
+      mp.events.callRemote('SERVER::VEHICLE:INDICATORS', 0);
+   }
+});
+
+
+// Right Indicator
+mp.keys.bind(controls.RIGHT_ARROW, false, () => {
+   if (mp.players.local.isTypingInTextChat) {
+      return;
+   };
+
+   if (!mp.players.local.vehicle) {
+      return;
+   }
+
+   const vehicle = mp.players.local.vehicle;
+
+   if (vehicle && vehicle.getPedInSeat(-1) == mp.players.local.handle && blockedClasses.indexOf(vehicle.getClass()) == -1) {
+      mp.events.callRemote('SERVER::VEHICLE:INDICATORS', 1);
+   }
+});
 
 
 
@@ -117,7 +137,7 @@ const indicators = (entity: EntityMp, value?: boolean[], oldValue?: boolean[]) =
       return;
    }
 
-   if (blockedClasses.indexOf((<VehicleMp>entity).getClass()) == -1) {
+   if (blockedClasses.indexOf((<VehicleMp>entity).getClass()) != -1) {
       return;
    }
 
@@ -125,7 +145,7 @@ const indicators = (entity: EntityMp, value?: boolean[], oldValue?: boolean[]) =
       value = entity.getVariable('INDICATORS');
    }
    
-   if (value!.length > 0) {
+   if (value && value!.length > 0) {
       const [left, right] = value!;
 
       (<VehicleMp>entity)?.setIndicatorLights(0, right);

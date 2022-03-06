@@ -148,9 +148,11 @@ export class vehicles extends Model {
    }
 
    @AfterDestroy
-   static async destroying (vehicle: vehicles, options: { vehicle: VehicleMp }) {
-      if (options.vehicle) {
-         options.vehicle.destroy();
+   static async destroying (vehicle: vehicles) {
+      const gameObject = mp.vehicles.toArray().find(gameVehicle => gameVehicle.instance.id == vehicle.id);
+
+      if (gameObject) {
+         gameObject.destroy();
       }
    }
 
@@ -206,6 +208,7 @@ export class vehicles extends Model {
       vehicle.setVariable(shared_Data.HOOD, false);
       vehicle.setVariable(shared_Data.ALARM, false);
       vehicle.setVariable(shared_Data.WINDOWS, [false, false, false, false]);
+      vehicle.setVariable(shared_Data.INDICATORS, [false, false]);
       
       this.spawned = true;
 
@@ -357,12 +360,16 @@ export class vehicles extends Model {
       await vehicle.instance.save();
    }
 
-   static indicators (player: PlayerMp, left: boolean, right: boolean) {
+   static indicators (player: PlayerMp, indicator: number) {
       if (!player.vehicle) {
          return;
       }
       
-      player.vehicle.setVariable(shared_Data.INDICATORS, [left, right]);
+      let indicators = player.vehicle.getVariable(shared_Data.INDICATORS);
+
+      indicators[indicator] = !indicators[indicator];
+      
+      player.vehicle.setVariable(shared_Data.INDICATORS, indicators);
    }
 
    static async action (player: PlayerMp, vehicleID: number, action: string) {
