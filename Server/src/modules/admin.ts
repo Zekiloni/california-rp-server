@@ -3,37 +3,18 @@
 
 
 import { ranks, colors } from '@constants';
-import { playerReport } from '@interfaces';
+import { PlayerReport } from '@interfaces';
 
 
-
-
-
-export class Admin {
-   static Reports = new Map<PlayerMp, playerReport>()
-
-   static sendMessage (player: PlayerMp, message: string) {
-      if (!message.trim()) return;
-
-      mp.players.forEach((target: PlayerMp) => {
-         if (target.account.administrator > 0) {
-            target.sendMessage('(( ' + ranks[target.account.administrator] + ' ' + player.name + ': ' + message + ' ))', colors.hex.Admin);
-         }
-      });
-   }
-
-   static async broadcast (player: PlayerMp, message: string) {
-      if (!message.trim()) return;
-
-      mp.players.forEach((Target: PlayerMp) => {
-         Target.sendMessage('(( [ ! ] ' + ranks[player.account.administrator] + ' ' + player.name + ': ' + message + ' ))', colors.hex.Admin);
-      });
-   }
+export class admins {
+   static Reports = new Map<number, PlayerReport>()
 
    static createReport (player: PlayerMp, message: string) { 
-      if (Admin.Reports.get(player)) return; // already have report
+      if (admins.Reports.get(player.character.id)) {
+         return; 
+      }
 
-      Admin.Reports.set(player, {
+      admins.Reports.set(player.character.id, {
          sender: player,
          message: message,
          time: Date.now(),
@@ -41,19 +22,19 @@ export class Admin {
       });
    }
 
-   static readReport (player: PlayerMp) { 
-      const report = Admin.Reports.get(player);
+   static responseReport (player: PlayerMp) { 
+      const report = admins.Reports.get(player.character.id);
       if (report) {
          // show report
          report.readed = true;
 
-         Admin.deleteReport(player)
+         admins.deleteReport(player)
       }
    }
 
    static deleteReport (player: PlayerMp) { 
-      if (Admin.Reports.get(player)) {
-         Admin.Reports.delete(player);
+      if (admins.Reports.get(player.character.id)) {
+         admins.Reports.delete(player.character.id);
       }
    }
 

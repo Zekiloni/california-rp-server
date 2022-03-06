@@ -120,7 +120,7 @@ function buyItemsMarket (player: PlayerMp, businesID: number, cartItems: string)
          cart.forEach(async item => {
             if (item.name == product.name) {
                if (product.quantity == none) {
-                  player.notification(lang.weAreSoryBut + lang.product.toLocaleLowerCase() + ' ' + product.name  + lang.productNotAvailable, notifications.type.ERROR, notifications.time.MED);
+                  player.notification(lang.weAreSoryBut + lang.product.toLowerCase() + ' ' + product.name  + lang.productNotAvailable, notifications.type.ERROR, notifications.time.MED);
                   return; 
                }
 

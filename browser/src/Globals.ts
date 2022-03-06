@@ -137,6 +137,8 @@ export const Messages = {
    YOUR_ACCOUNT_INFO: 'Informacije vašeg računa, master računa.',
    WALKING_STYLE_TITLE: 'Stil hodanja',
    WALKING_STYLE_DESCRIPTION: 'Stil hodanja kojim vaš karakter hoda. Birate klikom.',
+   REPORT_TITLE: 'Prijava Adminima',
+   
 
    // faction menu
    FACTION_RANKS: 'Rankovi fakcije',

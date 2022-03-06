@@ -1,6 +1,6 @@
 
 
-export interface playerReport {
+export interface PlayerReport {
    sender: PlayerMp
    message: string
    answer?: string | null

@@ -379,6 +379,10 @@ Commands[cmds.names.CREATE_VEHICLE] = {
       const primaryColor = pColor.split(',');
       const secondaryColor = sColor.split(',');
 
+      if (!model.trim()) {
+         return;
+      }
+
       const color: [RGB, RGB] = [
          [
             Number(primaryColor[0]), 
