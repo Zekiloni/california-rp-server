@@ -141,3 +141,5 @@ function getHeading (h: number) {
       default: return 'N';
    }
 }
+
+

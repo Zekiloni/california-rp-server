@@ -50,6 +50,7 @@
                      <PlayerReport 
                         v-if="activePage == 4"
                         :report="report"
+                        @update-report="setReport"
                         key=playerReport
                      />
                   </transition>
@@ -118,6 +119,10 @@
       setFacial (mood: string) {
          this.player!.character.facial_mood = mood;
          mp.events.call('CLIENT::PLAYER_MENU:ACTION', 'facialMood', mood);
+      }
+
+      setReport (report: pReport | null) {
+         this.report = report;
       }
 
       mounted () {

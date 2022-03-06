@@ -499,16 +499,12 @@ export class characters extends Model {
       }
    }
 
-   static report (player: PlayerMp, action: string, message?: string) {
-      switch (action) {
-         case 'send': {
-            return admins.createReport(player, message!);
-         }
+   static report (player: PlayerMp, message: string) {
+      return admins.createReport(player, message);
+   }
 
-         case 'delete': {
-            return admins.reportDelete(player);
-         }
-      }
+   static deleteReport (player: PlayerMp) {
+      return admins.reportDelete(player);
    }
 }
 
@@ -517,3 +513,4 @@ mp.events.add('SERVER::OFFER:RESPONSE', characters.offerRespond);
 mp.events.add('SERVER::PLAYER_MENU:ACTION', characters.panelAction);
 mp.events.addProc('SERVER::PLAYER_MENU', characters.panel);
 mp.events.addProc('SERVER::PLAYER:REPORT', characters.report);
+mp.events.addProc('SERVER::PLAYER:DELETE_REPORT', characters.deleteReport);

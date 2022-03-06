@@ -5,9 +5,9 @@
       <small> {{ Messages.REPORT_DESCRIPTION }} </small>
       
       <div class="report">
-         <h3> {{ Messages.ACTIVE_REPORT }} </h3>
          <transition name="fade-with-bottom-slide" mode="out-in"> 
             <div class="info" v-if="report">
+               <h3> {{ Messages.ACTIVE_REPORT }} </h3>
                <p> 
                   <b> {{ Messages.REPORT_CONTENT }} </b> 
                   {{ report.message }} 
@@ -29,7 +29,7 @@
                   <small> <b> {{ Messages.REPORT_ANSWER_TIME }} </b> {{ report.answer ? formatDate(report.answer.time) : 'N/A' }} </small>
                </p>
 
-               <button v-if="report"> {{ Messages.DELETE_REPORT }} </button>
+               <button @click="remove" class="delete"  v-if="report"> {{ Messages.DELETE_REPORT }} </button>
             </div>
 
                <!-- sender: PlayerMp
@@ -66,20 +66,30 @@
       reportContent: string | null = null;
       
       send () {
-         mp.events.call('CLIENT::PLAYER_MENU:REPORT', 'send', this.reportContent);
+         console.log('sent')
+         mp.events.callProc('CLIENT::PLAYER_MENU:REPORT', this.reportContent).then(created => {
+            console.log('response started')
+            if (created) {
+               console.log('yes created')
+               this.$emit('update-report', JSON.parse(created)); 
+            }
+         })
       }
 
-      delete () {
-         
+      remove () {
+         mp.events.callProc('CLIENT::PLAYER_MENU:DELETE_REPORT').then(deleted => {
+            if (deleted) {
+               this.$emit('update-report', null);
+            }
+         })
       }
 
       Messages = Messages;
 
-
       mounted () {
          if (window.mp) {
-            mp.events.add('BROWSER::PLAYER_PANEL:REPORT_RESPONSE', (answer: string) => {
-               this.$props.report = JSON.parse(answer);
+            mp.events.add('BROWSER::PLAYER_PANEL:REPORT_RESPONSE', (createdReport: string) => {
+               this.$emit('update-report', JSON.parse(createdReport))
             });
          }
       }
@@ -119,7 +129,6 @@
       color: #0cbe80;
       font-size: 1rem;
       margin: 10px 0;
-      padding: 0 10px;
       font-weight: 450;
    }
 

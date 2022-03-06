@@ -32,20 +32,27 @@ const panelAction = async (action: string, value: string | number | boolean) => 
 };
 
 
-const report = (action: string, message: string) => {
-   mp.events.callRemoteProc('SERVER::PLAYER:REPORT', action, message).then(succes => {
-      if (action == 'send' && succes) {
-         reportResponse(succes);
-      }
+const report = (message: string) => {
+   return mp.events.callRemoteProc('SERVER::PLAYER:REPORT', message).then(created => {
+      return created;
    })
-};
+}
+
+const deleteReport = () => {
+   return mp.events.callRemoteProc('SERVER::PLAYER:DELETE_REPORT').then(isDeleted => {
+      return isDeleted;
+   });
+}
 
 const reportResponse = (answer: string) => {
    Browser.call('BROWSER::PLAYER_PANEL:REPORT_RESPONSE', answer);
 }
 
+
+
 mp.keys.bind(controls.KEY_M, true, togglePanel);
 mp.events.add('CLIENT::PLAYER_MENU:TOGGLE', togglePanel);
 mp.events.add('CLIENT::PLAYER_MENU:ACTION', panelAction);
 mp.events.add('CLIENT::PLAYER_MENU:REPORT_RESPONSE', reportResponse);
-mp.events.add('CLIENT::PLAYER_MENU:REPORT', report);
+mp.events.addProc('CLIENT::PLAYER_MENU:REPORT', report);
+mp.events.addProc('CLIENT::PLAYER_MENU:DELETE_REPORT', deleteReport)

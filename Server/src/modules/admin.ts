@@ -51,12 +51,14 @@ export class admins {
    static reportDelete (player: PlayerMp) { 
       const report = admins.reports.get(player.character.id);
 
-      if (report) {
-         admins.reports.delete(player.character.id);
+      if (!report) {
+         return;
       }
 
       player.notification(lang.urReportDeleted, notifications.type.INFO, notifications.time.MED);
-      return;
+      admins.reports.delete(player.character.id);
+      
+      return true;
    }
 }
 

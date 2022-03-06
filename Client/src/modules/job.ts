@@ -41,3 +41,5 @@ mp.keys.bind(controls.KEY_Y, true, function () {
    mp.events.callRemote('SERVER::JOB:ACCEPT', job);
 
 });
+
+
