@@ -19,6 +19,7 @@ export const lang = {
    rankSuccessfullyUpdated: 'Rank je uspešno ažuriran.',
    vehicleLoaded: 'Vozilo uspešno učitano.',
    uTeleportedVehicleToYou: 'Teleportovali ste vozilo do vas.',
+   uSendReport: 'Uspešno ste poslali prijavu, administracija će uskoro odgovoriti.',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -34,9 +35,11 @@ export const lang = {
    noInventorySpaceForItems: 'Nemate dovoljno prostora u inventaru.',
    playerAlreadyInFaction: 'Igrač je već u nekoj fakciji.',
    playerAlreadyHasOffer: 'Igrač već ima neku ponudu.',
+   uAlreadyHaveActiveReport: 'Već imate aktivnu prijavu.',
    weAreSoryBut: 'Žao nam je, ali ',
    rankNameCannotBeLessThenTreeSamirGey: 'Ime ranka ne sme biti kraće od 3 karaktera.',
    notInVehicle: 'Niste se u vozilu.',
+   notinVehicleOrNearby: 'Ne nalazite se u vozili ili njegovoj blizini.',
    productAlreadyExist: 'Produkat već postoji.',
    notInSpecFaction: 'Niste član odredjene fakcije.',
    notInAnyFaction: 'Niste član ni jedne fakcije.',

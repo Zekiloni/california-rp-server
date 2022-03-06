@@ -9,7 +9,6 @@ import './modules/items';
 import './modules/minute';
 import './modules/bank'
 import './modules/jobs';
-import './modules/houses.manager';
 import './modules/business.Manager';
 
 import { sleep } from '@shared';

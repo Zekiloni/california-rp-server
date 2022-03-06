@@ -20,7 +20,7 @@
    @Component({
       props: {
          moods: Object,
-         selectedMood: Number,
+         selectedMood: String,
          selectMood: Function
       }
    })

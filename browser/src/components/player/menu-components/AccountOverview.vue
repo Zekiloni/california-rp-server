@@ -1,7 +1,7 @@
 
 
 <template>
-   <div class="account">
+   <div class="account" v-if="account">
       <h2> {{ Messages.YOUR_ACCOUNT }} </h2>
       <small> {{ Messages.YOUR_ACCOUNT_INFO }} </small>
 
@@ -60,6 +60,7 @@
    .info {
       margin-top: 20px;
       width: 100%;
+      height: 100%;
       display: flex;
       justify-content: flex-start;
       flex-wrap: wrap;

@@ -116,6 +116,9 @@ export interface BusinesWorker {
 }
 
 export interface Player {
+   id: number
+   name: string
+   ip: string
    account: Account
    character: Character
 }
@@ -188,3 +191,14 @@ export interface Faction {
 export type StringIndexString = {
    [key: string]: string
 }
+
+
+export interface pReport {
+   sender: Player
+   message: string
+   time: number
+   readed: boolean
+   answer?: string | null
+   answered_by?: Player | null
+   answer_time?: number
+};

@@ -117,7 +117,7 @@ const indicators = (entity: EntityMp, value?: boolean[], oldValue?: boolean[]) =
       return;
    }
 
-   if (blockedClasses.indexOf((<VehicleMp>entity).getClass()) != -1) {
+   if (blockedClasses.indexOf((<VehicleMp>entity).getClass()) == -1) {
       return;
    }
 
@@ -125,10 +125,12 @@ const indicators = (entity: EntityMp, value?: boolean[], oldValue?: boolean[]) =
       value = entity.getVariable('INDICATORS');
    }
    
-   const [left, right] = value!;
+   if (value!.length > 0) {
+      const [left, right] = value!;
 
-   (<VehicleMp>entity)?.setIndicatorLights(0, right);
-   (<VehicleMp>entity)?.setIndicatorLights(1, left);
+      (<VehicleMp>entity)?.setIndicatorLights(0, right);
+      (<VehicleMp>entity)?.setIndicatorLights(1, left);
+   }
 }
 
 

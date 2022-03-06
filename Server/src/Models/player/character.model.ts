@@ -18,6 +18,7 @@ import { playerConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
+import { admins } from '../../modules/admin';
 
 
 
@@ -410,29 +411,36 @@ export class characters extends Model {
    }
 
    async respawn (player: PlayerMp, inHospital: boolean) {
+      let position: Vector3Mp;
 
-      const position = inHospital ? new mp.Vector3(280.8525, -1432.99853, 29.9649658) : player.position;
+      if (inHospital) {
+         position = new mp.Vector3(280.8525, -1432.99853, 29.9649658);
+      } else { 
+         if (player) {
+            position = player.position;
+         }
+      }
 
       if (this.respawnTimer) {
          clearTimeout(this.respawnTimer);
       }
-
-      player.call('CLIENT::DEATHSCREEN', [false])
-      player.setVariable(shared_Data.WOUNDED, false);
-      player.setVariable(shared_Data.DEAD, false);
 
       this.dead = false;
       this.wounded = false;
 
       this.clearInjuries(player);
 
-      player.spawn(position);
+      if (player) {
+         player.spawn(position!);
+         player.call('CLIENT::DEATHSCREEN', [false])
+         player.setVariable(shared_Data.WOUNDED, false);
+         player.setVariable(shared_Data.DEAD, false);
+      }
 
       await this.save();
    }
 
    onChat (player: PlayerMp, content: any) {
-
       let sender: string;
 
       if (player.getVariable(shared_Data.LOGGED) && player.getVariable(shared_Data.SPAWNED)) {
@@ -464,7 +472,8 @@ export class characters extends Model {
          await factions.findOne( { where: { id: player.character.faction } } ),
          await factionsRanks.findOne( { where: { id: player.character.rank } } ),
          WalkingStyles, 
-         FacialMoods
+         FacialMoods,
+         admins.reports.get(player.character.id)
       ];
    }
 
@@ -489,9 +498,22 @@ export class characters extends Model {
          }
       }
    }
+
+   static report (player: PlayerMp, action: string, message?: string) {
+      switch (action) {
+         case 'send': {
+            return admins.createReport(player, message!);
+         }
+
+         case 'delete': {
+            break;
+         }
+      }
+   }
 }
 
 
 mp.events.add('SERVER::OFFER:RESPONSE', characters.offerRespond);
 mp.events.add('SERVER::PLAYER_MENU:ACTION', characters.panelAction);
 mp.events.addProc('SERVER::PLAYER_MENU', characters.panel);
+mp.events.addProc('SERVER::PLAYER:REPORT', characters.report);

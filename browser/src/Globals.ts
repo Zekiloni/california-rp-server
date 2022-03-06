@@ -138,6 +138,7 @@ export const Messages = {
    WALKING_STYLE_TITLE: 'Stil hodanja',
    WALKING_STYLE_DESCRIPTION: 'Stil hodanja kojim vaš karakter hoda. Birate klikom.',
    REPORT_TITLE: 'Prijava Adminima',
+   REPORT_DESCRIPTION: 'Prijava problema / igrača adminima.',
    
 
    // faction menu
@@ -152,6 +153,11 @@ export const Messages = {
    MEMBER_NAME: 'Ime člana',
    MEMBER_RANK: 'Rank člana',
    FACTION_MEMBER_SETTINGS: 'Opcije člana',
+   REPORT_SENDING: 'Slanje prijave',
+   REPORT_CONTENT: 'Sadržaj prijave',
+   SEND_REPORT: 'Pošalji prijavu',
+   NO_ACTIVE_REPORT_RN: 'Nemate aktivnu prijavu trenutno.',
+   ACTIVE_REPORT: 'Aktivna prijava',
 
    // vehicles menu
    VEHICLE_ID: 'ID vozila',

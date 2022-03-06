@@ -153,10 +153,9 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
 
 function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]> { 
    return new Promise((resolve) => {
-
       let spawnPoints: spawnPoint[] = [];
 
-      characters.findOne({ where: { id: id }, include: [houses, vehicles] }).then((character) => { 
+      characters.findOne({ where: { id: id }, include: [houses, vehicles, business] }).then((character) => { 
 
          const defaultSpawn: spawnPoint = {
             name: lang.defaultSpawn,
@@ -171,7 +170,6 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
          if (character?.faction) {
             // push factionn spawn
          }
-         console.log(character?.houses)
 
          if (character?.houses && character.houses.length > none) { 
             for (const i in character.houses) {
@@ -236,7 +234,7 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
          return;
       }
-
+      
       account.setLogged(player, true);
 
       return account;

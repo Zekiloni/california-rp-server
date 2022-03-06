@@ -1,5 +1,5 @@
 
-import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey, Max } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey, Max, Unique } from 'sequelize-typescript';
 import { characters } from '@models';
 import { playerModels } from '@shared';
 
@@ -11,6 +11,7 @@ export class appearances extends Model {
    @Column(DataType.INTEGER)
    id: number
 
+   @Unique(true)
    @ForeignKey(() => characters)
    @Column(DataType.INTEGER( { length: 11 } ))
    character_id: number
@@ -91,11 +92,13 @@ export class appearances extends Model {
    
    apply (player: PlayerMp, gender: number) {
       const genders = [ 
-         mp.joaat(playerModels.MALE),
-         mp.joaat(playerModels.FEMALE)
+         playerModels.MALE,
+         playerModels.FEMALE
       ];
 
-      player.model = genders[gender];
+      console.log('gender is ' + gender)
+      player.model = mp.joaat(genders[gender]);
+      console.log(genders[gender])
 
       player.setHeadBlend(
          this.shape_First, 

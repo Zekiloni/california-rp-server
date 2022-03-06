@@ -284,7 +284,16 @@ export class vehicles extends Model {
             }
             break;
          }
+
+         case VehicleConfig.type.ADMIN: {
+            if (player.account.administrator < 1) {
+               player.notification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
+               return;
+            }
+            break;
+         }
       }
+      
 
       player.notification(vehicle.locked ? lang.uUnlockedVehicle : lang.uLockedVehicle, notifications.type.INFO, notifications.time.MED);
       vehicle.locked = !vehicle.locked;
@@ -363,7 +372,8 @@ export class vehicles extends Model {
          return;
       }
 
-      if (player.dist(vehicle.position) > 3 || !player.vehicle) {
+      if (player.dist(vehicle.position) > 3.5 || player.vehicle && player.vehicle.id != vehicle.id) {
+         player.notification(lang.notinVehicleOrNearby, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

@@ -5,7 +5,7 @@
       <h2> {{ Messages.WALKING_STYLE_TITLE }} </h2>
       <small> {{ Messages.WALKING_STYLE_DESCRIPTION }} </small>
       <ul class="styles">
-         <li class="style" v-for="(style, i) in styles" :key="style" :class="{ selected: i == selectedStyle }" @click="selectStyle(i)">
+         <li class="style" v-for="(style, i) in styles" :key="i" :class="{ selected: i == selectedStyle }" @click="selectStyle(i)">
             {{ i }} 
          </li>
       </ul>
@@ -20,7 +20,7 @@
    @Component({
       props: {
          styles: Object,
-         selectedStyle: Number,
+         selectedStyle: String,
          selectStyle: Function
       }
    })

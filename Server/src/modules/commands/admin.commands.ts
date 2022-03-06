@@ -759,7 +759,7 @@ Commands[cmds.names.KICK] = {
 
       // LOGS
 
-      player.kick('admin ' + player.account.username + ', reason ' + reason);
+      target.kick('admin ' + player.account.username + ', reason ' + reason);
    }
 }
 

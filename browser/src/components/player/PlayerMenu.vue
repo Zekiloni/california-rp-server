@@ -2,14 +2,14 @@
 <template>
    <div class="panel">
       <transition name="fade-with-bottom-slide" appear> 
-         <div class="menu">
+         <div class="menu" v-if="player">
             <div class="header">
                <div class="logo">
                   <div class="icon"> </div>
                </div>
                <div class="text">
                   <h4> {{ Messages.PLAYER_MENU }} </h4>
-                  <h2> {{ player.account.username }} </h2>
+                  <!-- <h2> {{ player.account.username }} </h2> -->
                </div>
                <div class="date-time">
                   <h5> {{ formatDate(Date.now()).split('-')[0] }} </h5>
@@ -23,7 +23,7 @@
                </ul>
 
                <div class="page">
-                  <transition-group name="fade" mode="out-in"> 
+                  <transition name="fade" mode="out-in"> 
                      <AccountOverview 
                         v-if="activePage == 0" key=accountOverview 
                         :account="player.account"
@@ -46,7 +46,13 @@
                         :selectMood="setFacial"
                         key=facialMoods
                      />
-                  </transition-group>
+
+                     <PlayerReport 
+                        v-if="activePage == 4"
+                        :report="report"
+                        key=playerReport
+                     />
+                  </transition>
                </div>
             </div>
          </div>
@@ -58,7 +64,7 @@
    import Vue from 'vue';
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
-   import { Player, Faction, FactionRank, StringIndexString } from '@/models';
+   import { Player, Faction, FactionRank, StringIndexString, pReport } from '@/models';
 
    // @ts-ignore
    import hoverAudio from '@/assets/sounds/hover.mp3';
@@ -67,20 +73,27 @@
    import AccountOverview from './menu-components/AccountOverview.vue'
    import WalkingStyles from './menu-components/WalkingStyles.vue';
    import FacialMods from './menu-components/FacialMoods.vue';
+   import PlayerReport from './menu-components/PlayerReport.vue';
+
 
    @Component({
       components: {
-         AccountOverview, CharacterOverview, WalkingStyles, FacialMods
+         AccountOverview, CharacterOverview, WalkingStyles, FacialMods, PlayerReport
       }
    })
    export default class PlayerMenu extends Vue {
       time: string = '';
 
-      pages = [Messages.ACCOUNT_OVERVIEW, Messages.CHARACTER_OVERVIEW, Messages.WALKING_STYLE, Messages.FACIAL_MOOD]
+      pages = [
+         Messages.ACCOUNT_OVERVIEW, Messages.CHARACTER_OVERVIEW, Messages.WALKING_STYLE, Messages.FACIAL_MOOD,
+         Messages.REPORT_TITLE
+      ]
+
       activePage: number = 0;
       hoverAudio = hoverAudio;
 
       player: Player | null = null;
+      report: pReport | null = null;
       faction: Faction | null = null;
       factionRank: FactionRank | null = null;
 
@@ -99,23 +112,24 @@
 
       setWalking (style: string) {
          this.player!.character.walking_style = style;
-         mp.events.call('CLIENT::PLAYER_PANEL:ACTION', 'walkingStyle', style);
+         mp.events.call('CLIENT::PLAYER_MENU:ACTION', 'walkingStyle', style);
       }
 
       setFacial (mood: string) {
          this.player!.character.facial_mood = mood;
-         mp.events.call('CLIENT::PLAYER_PANEL:ACTION', 'facialMood', mood);
+         mp.events.call('CLIENT::PLAYER_MENU:ACTION', 'facialMood', mood);
       }
 
       mounted () {
          mp.events.add('BROWSER::PLAYER_MENU:INFO', (info: string) => {
-            const [player, faction, factionRank, WalkingStyles, FacialMods] = JSON.parse(info);
+            const [player, faction, factionRank, WalkingStyles, FacialMods, report] = JSON.parse(info);
 
             this.player = player;
             this.faction = faction;
             this.factionRank = factionRank;
             this.walkingStyles = WalkingStyles;
             this.facialMoods = FacialMods;
+            this.report = report;
          });
 
          this.clock();
@@ -234,7 +248,7 @@
 
    .box {
       height: 100%;
-      background: linear-gradient(120deg, rgb(11 14 17 / 55%), transparent);
+      background: linear-gradient(120deg, rgb(11 14 17 / 55%), rgb(11 14 17 / 0%));
       border-radius: 5px;
       padding: 20px;
       display: flex;

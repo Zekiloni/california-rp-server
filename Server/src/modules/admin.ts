@@ -2,43 +2,59 @@
 
 
 
-import { ranks, colors } from '@constants';
+import { lang } from '@constants';
+import { notifications } from '@enums';
 import { PlayerReport } from '@interfaces';
 
 
 export class admins {
-   static Reports = new Map<number, PlayerReport>()
+   static reports = new Map<number, PlayerReport>();
 
    static createReport (player: PlayerMp, message: string) { 
-      if (admins.Reports.get(player.character.id)) {
+      if (admins.reports.get(player.character.id)) {
+         player.notification(lang.uAlreadyHaveActiveReport, notifications.type.ERROR, notifications.time.LONG);
          return; 
       }
 
-      admins.Reports.set(player.character.id, {
+      const report = {
          sender: player,
          message: message,
          time: Date.now(),
          readed: false
-      });
+      }
+
+      admins.reports.set(player.character.id, report);
+      player.notification(lang.uSendReport, notifications.type.SUCCESS, notifications.time.MED);
+
+      return report;
    }
 
-   static responseReport (player: PlayerMp) { 
-      const report = admins.Reports.get(player.character.id);
+   static reportResponse (player: PlayerMp, target: PlayerMp, response: string) { 
+      const report = admins.reports.get(target.character.id);
+
+      if (report?.answer) {
+         return;
+      }
+      
+      report!.answer = {
+         name: player.name,
+         username: player.account.username,
+         time: Date.now(),
+         answer: response
+      }
+      
+      if (target) {
+         target.call('CLIENT::PLAYER_MENU:REPORT', [report!.answer]);
+      }
+   }
+
+   static reportDelete (player: PlayerMp) { 
+      const report = admins.reports.get(player.character.id);
+
       if (report) {
-         // show report
-         report.readed = true;
-
-         admins.deleteReport(player)
+         admins.reports.delete(player.character.id);
       }
    }
-
-   static deleteReport (player: PlayerMp) { 
-      if (admins.Reports.get(player.character.id)) {
-         admins.Reports.delete(player.character.id);
-      }
-   }
-
-
 }
 
 
