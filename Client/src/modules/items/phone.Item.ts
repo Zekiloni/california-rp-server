@@ -9,16 +9,8 @@ import { inventoryActive } from './items.Core';
 let phoneActive: boolean = false;
 let phoneMouse: boolean = false;
 
-mp.events.addDataHandler(
-   {
-      'PHONE_RING': (entity: EntityMp, value: boolean, oldvValue: boolean) => { 
-         if (entity.type == 'player' && value != oldvValue) { 
-            // turn on ring sound
-         }
-      }
-   }
-)
-
+const phoneModel = 'prop_npc_phone_02';
+let phoneObjects = new Map<number, ObjectMp>();
 
 const togglePhone = (info?: string) => {
    phoneActive = !phoneActive;
@@ -32,9 +24,11 @@ const togglePhone = (info?: string) => {
    if (phoneActive) {
       phoneMouse = true;
       mp.keys.bind(controls.F4, true, togglePhoneMouse);
+      playPhoneAnim(mp.players.local, 'cellphone_text_out');
    } else { 
       phoneMouse = false;
       mp.keys.unbind(controls.F4, true, togglePhoneMouse);
+      mp.events.callRemote('SERVER::PHONE:STOP_USING');
    }
 }
 
@@ -45,51 +39,65 @@ const togglePhoneMouse = () => {
 }
 
 
-const phoneCall = (target: EntityMp, value?: any | null, oldvValue?: any | null) => {
+const phoneCall = (target: EntityMp, value: any | null, oldvValue?: any | null) => {
 
    if (target.type != RageEnums.EntityType.PLAYER) {
       return;
    }
 
-   mp.gui.chat.push('phone Call');
-
    const _player = <PlayerMp>target;
 
-   if (!value) {
-      value = target.getVariable('PHONE_CALL');
-   }
+   mp.gui.chat.push(JSON.stringify(oldvValue))
 
-   const [incoming, number, inCall] = value;
+   
+   if (value == false) {
+      cancelPhoneAnim(_player);
+   } else { 
+      const [incoming, number, inCall] = value;
 
-   if (value && inCall == false) {
-      mp.gui.chat.push('start audio');
-
-      // if (mp.game.invoke(RageEnums.Natives.Audio.IS_PED_RINGTONE_PLAYING), _player.getPed()) {
-      //    mp.game.invoke(RageEnums.Natives.Audio.STOP_PED_RINGTONE, _player.getPed());
-      // }
-   } else if (inCall == true) {
-      mp.gui.chat.push('stop audio');
-      //mp.game.invoke(RageEnums.Natives.Audio.PLAY_PED_RINGTONE, 'Remote_Ring', _player.getPed(), true);
-   }
-      
-   playPhoneAnim(_player, 'cellphone_text_out')
-
-   if (_player.remoteId == mp.players.local.remoteId) {
-
-      if (!phoneActive) {
-         togglePhone();
+      if (value && inCall == false) {
+         mp.gui.chat.push('start audio');
+   
+         // if (mp.game.invoke(RageEnums.Natives.Audio.IS_PED_RINGTONE_PLAYING), _player.getPed()) {
+         //    mp.game.invoke(RageEnums.Natives.Audio.STOP_PED_RINGTONE, _player.getPed());
+         // }
+      } else if (inCall == true) {
+         //mp.game.invoke(RageEnums.Natives.Audio.PLAY_PED_RINGTONE, 'Remote_Ring', _player.getPed(), true);
       }
 
-      Browser.call('BROWSER::PHONE:CALL', value);
+      if (_player.remoteId == mp.players.local.remoteId) {
+
+         if (!phoneActive) {
+            togglePhone();
+         }
+   
+         Browser.call('BROWSER::PHONE:CALL', value);
+      }
    }
 }
 
 
-const phoneModel = 'prop_cs_phone_01';
-let phoneObjects = new Map<number, ObjectMp>();
 
+const usingPhone = (entity: EntityMp, value: boolean, oldValue: boolean) => {
+   if (entity.type != RageEnums.EntityType.PLAYER) {
+      return;
+   }
+   
+   const target = <PlayerMp>entity;
+
+   if (value) { 
+      playPhoneAnim(target, 'cellphone_text_out');
+   } else if (!value && oldValue != false) { 
+      cancelPhoneAnim(target);
+      mp.gui.chat.push('Cancelphoneanim')
+   }
+};
 
 const playPhoneAnim = (target: PlayerMp, animation: string) => {
+   if (!target.handle) {
+      return;
+   }
+
    let animationDicionary = 'cellphone@';
    let animationName = animation;
 
@@ -101,8 +109,10 @@ const playPhoneAnim = (target: PlayerMp, animation: string) => {
    const boneIndex = target.getBoneIndex(28422);
 
    waitForEntity(object)?.then(() => {
-      object.attachTo(target.handle, boneIndex, 0.0, 0.0, 0.0, 50.0, 320.0, 50.0, true, true, false, false, 2, true);
+      object.attachTo(target.handle, boneIndex, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, false, 2, true);
    });
+   
+   phoneObjects.set(target.remoteId, object);
 
    playAnimation(target, animationDicionary, animationName, animationFlags.UPPER_BODY_CONTROLABLE, -1, false);
 };
@@ -110,14 +120,17 @@ const playPhoneAnim = (target: PlayerMp, animation: string) => {
 
 const cancelPhoneAnim = (target: PlayerMp) => {
    target.clearTasks();
-      
+   
    const object = phoneObjects.get(target.remoteId);
-   if (object) {
+
+   if (object && object.doesExist()) {
+      mp.gui.chat.push('object destroy')
       object.destroy();
-      phoneObjects.delete(target.remoteId);
+      //phoneObjects.delete(target.remoteId);
    }
 }
 
 
+mp.events.addDataHandler('USING_PHONE', usingPhone);
 mp.events.addDataHandler('PHONE_CALL', phoneCall);
 mp.events.add('CLIENT::PHONE:TOGGLE', togglePhone);

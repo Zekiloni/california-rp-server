@@ -3,6 +3,7 @@ import { items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
+import { shared_Data } from '@shared';
 
 
 const phoneType = [
@@ -11,19 +12,26 @@ const phoneType = [
 ];
 
 
-export class phoneItem extends items {
+export class PhoneItem extends items {
    
    constructor (name: string, model: string, weight?: number, description?: string) { 
       super (name, phoneType, model, weight, description);
+   }
 
-      this.use = function (player: PlayerMp) {
-         player.call('CLIENT::PHONE:TOGGLE');
+   use (player: PlayerMp) {
+      player.call('CLIENT::PHONE:TOGGLE');
+      player.setVariable(shared_Data.USING_PHONE, true);
+   }
+
+   static stop (player: PlayerMp) {
+      if (player.getVariable(shared_Data.USING_PHONE)) {
+         player.setVariable(shared_Data.USING_PHONE, false);
       }
-
    }
 }
 
 
-new phoneItem(itemNames.SMART_PHONE, 'prop_phone_proto', 0.3, 'telefon');
+new PhoneItem(itemNames.SMART_PHONE, 'prop_phone_proto', 0.3, 'telefon');
 
+mp.events.add('SERVER::PHONE:STOP_USING', PhoneItem.stop);
 
