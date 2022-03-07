@@ -27,7 +27,7 @@
          <Document v-if="interfaces.idDocument.toggle" />
       </transition>
       
-      <transition> 
+      <transition name="fade-with-bottom-slide"> 
          <Phone v-if="interfaces.phone.toggle" />
       </transition>
 
@@ -122,7 +122,7 @@
 
    import VehiclesMenu from '@/components/vehicles/VehiclesMenu.vue';
 
-   import Phone from '@/components/phone.vue';
+   import Phone from '@/components/items/phone/PhoneMain.vue';
    import HandheldRadio from '@/components/misc/HandheldRadio.vue';
 
    import HouseInfo from '@/components/houses/HouseInfo.vue';

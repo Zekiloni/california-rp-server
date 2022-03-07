@@ -5,8 +5,8 @@
       <div class="holder">
          <div class="inventory" v-on:click="deselect()">
             <div class="item-holder" v-for="(item, i) in available" :key="item.id" @contextmenu="select($event, item)" > 
-               <div class="item">
-                  <h3 class="quantity"> {{ i + 1 }} </h3>
+               <div class="item" :id="i">
+                  <!-- <h3 class="quantity"> {{ i + 1 }} </h3> -->
                   <h3 class="item-name"> {{ item.name }} </h3>
                   <img class="item-icon" :src="require('@/assets/images/items/' +  item.name.toLowerCase().replace(' ', '_') + '.png')" > 
                </div>
@@ -132,7 +132,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(rgb(71 77 87 / 55%), rgb(11 14 17 / 85%));
+      background: radial-gradient(rgb(71 77 87 / 45%), rgb(11 14 17 / 85%));
    }
 
    .holder { 
@@ -181,7 +181,7 @@
       display: flex;
       border-radius: 10px;
       display: grid;
-      background: rgb(24 26 32 / 35%);
+      background: linear-gradient(120deg, rgb(11 14 17 / 45%), rgb(11 14 17 / 25%));
    }
    .no-attachment h2 { margin: auto; width: 80px; font-size: 0.55rem; text-transform: uppercase; color: #848e9c; text-align: center;}
 
@@ -193,9 +193,8 @@
       margin: 15px 0;
       justify-content: flex-start;
       border-radius: 5px;
-      background: radial-gradient(rgb(33 37 47 / 25%), rgb(11 14 17 / 45%));
+      background: linear-gradient(120deg, rgb(11 14 17 / 45%), rgb(11 14 17 / 15%));
       border: 1.25px solid rgb(120 120 120 / 10%);      
-      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
       align-items: center;
    }
 
@@ -214,8 +213,7 @@
       width: 470px;
       height: 470px;
       border-radius: 5px;
-      background: radial-gradient(rgb(33 37 47 / 45%), rgb(11 14 17 / 25%));
-      border: 1.25px solid rgb(120 120 120 / 10%);
+      background: linear-gradient(120deg, rgb(11 14 17 / 75%), rgb(11 14 17 / 15%));
       display: grid;
       grid-gap: 0.45rem;
       overflow: auto;
@@ -248,9 +246,11 @@
       width: 105px;
       position: relative;
       overflow: hidden;
-      border-radius: 10px;
+      border-radius: 5px;
       height: 105px;
-      background: #181a20;
+      background: rgb(255 255 255 / 5%);
+      backdrop-filter: brightness(1.05);
+      border: 1px solid transparent;
       transition: all .3s ease;
       display: grid;
    }
@@ -261,8 +261,9 @@
    }
 
    .item:hover { 
-      background: #2a303c;
-      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      border-color: rgb(205 205 205 / 15%);
+      backdrop-filter: brightness(1.8);
+      box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
    }
 
    .item:hover h3.quantity { background: #181a20; }
@@ -288,7 +289,6 @@
       bottom: 0;
       width: 100%;
       padding: 5px 0 5px 10px;
-      background: #21252f;
       color: #a9b1bb;
       margin: 0;
       font-size: 0.65rem;

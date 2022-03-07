@@ -187,11 +187,9 @@ export interface Faction {
    ranks: FactionRank[] | null
 }
 
-
 export type StringIndexString = {
    [key: string]: string
 }
-
 
 export interface pReport {
    sender: Player
@@ -202,3 +200,15 @@ export interface pReport {
    answered_by?: Player | null
    answer_time?: number
 };
+
+
+export interface PhoneContact { 
+   number: number
+   name: string
+}
+
+export interface PhoneMessage { 
+   sender: number
+   recipient: number
+   message: string
+}

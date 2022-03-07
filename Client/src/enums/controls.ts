@@ -10,6 +10,7 @@ enum controls {
    KEY_M = 0x4D,
    KEY_P = 0x50,
    F2 = 0x71,
+   F4 = 0x73,
    F7 = 0x76,
    LEFT_ARROW = 0x25,
    RIGHT_ARROW = 0x27,

@@ -191,6 +191,9 @@ export const Messages = {
    MAX_SPEED: 'Maksimalna brzina',
    BUY_VEHICLE: 'Kupi vozilo',
 
+   // phone
+   PHONE_PAGE_SETTINGS: 'Podešavanja',
+
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',
    SPAWN_SELECTOR_INFO: 'Odabir mesta spawna',

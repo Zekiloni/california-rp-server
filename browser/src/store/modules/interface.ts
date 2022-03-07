@@ -40,7 +40,12 @@ const InitialState:uInterface = {
       escClose: 'CLIENT::INVENTORY:TOGGLE'
    },
 
-   phone: { toggle: false, mouse: true },
+   phone: { 
+      toggle: false, 
+      mouse: true,
+      escClose: 'CLIENT::PHONE:TOGGLE'
+   },
+
    handheldRadio: { toggle: false, mouse: true },
    idDocument: { toggle: false, mouse: true },
    licenses: { toggle: false, mouse: true },

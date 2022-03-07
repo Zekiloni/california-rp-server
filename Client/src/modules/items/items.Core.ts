@@ -5,7 +5,7 @@ import { animationFlags } from '../../enums/animations.flags';
 import { distanceBetweenVectors } from '../../utils';
 
 
-let active: boolean = false;
+export let inventoryActive: boolean = false;
 
 
 mp.events.addProc(
@@ -21,9 +21,9 @@ mp.events.add(
    {
 
       'CLIENT::INVENTORY:TOGGLE': async () => { 
-         active = !active; 
-         Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'inventory');
-         if (active) {
+         inventoryActive = !inventoryActive; 
+         Browser.call(inventoryActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'inventory');
+         if (inventoryActive) {
             const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
             Browser.call('BROWSER::INVENTORY:ITEMS', items);
          }
@@ -133,7 +133,7 @@ mp.keys.bind(controls.KEY_E, true, async function() {
 
    if (object.getVariable('ITEM')) {
       const response = await mp.events.callRemoteProc('SERVER::ITEM:PICKUP', object.getVariable('ITEM').id);
-      if (active && response) {
+      if (inventoryActive && response) {
          Browser.call('BROWSER::INVENTORY:ITEMS', response);
       }
    }

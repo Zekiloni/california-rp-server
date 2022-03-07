@@ -22,13 +22,14 @@ export class ClothingItem extends items {
    static props: ClothingItem[] = [];
 
    component: ItemEnums.components.clothings | ItemEnums.components.props;
-   naked: number[] = [0, 0];
+   naked: number[] | undefined;
    prop: boolean;
    
    constructor (name: string, type: ItemEnums.type[], model: string, component: number, weight: number = 0.1, description: string, prop: boolean, naked?: number[]) { 
       super (name, [...type], model, weight, description);
       this.component = component;
       this.prop = prop;
+      this.naked = naked;
       
       if (!this.prop) {
          ClothingItem.clothings.push(this);
@@ -59,11 +60,8 @@ export class ClothingItem extends items {
    };
 
    async unequip (player: PlayerMp) {
-      player.setClothes(this.component, this.naked[player.character.gender], 0, 2);    
 
-      console.log('component ' + this.name);
-      console.log('naked ' + this.naked);
-      console.log('gender nake ' + this.naked[player.character.gender]);
+      player.setClothes(this.component, this.naked![player.character.gender], 0, 2);    
 
       if (this.component == ItemEnums.components.clothings.TOP) {
          

@@ -238,7 +238,7 @@ export class characters extends Model {
             if (clothed && clothed.equiped) {
                item.use(player, clothed);
             } else { 
-               player.setClothes(item.component, item.naked[this.gender], 0, 2);
+               player.setClothes(item.component, item.naked![this.gender], 0, 2);
             }
          })
       });
