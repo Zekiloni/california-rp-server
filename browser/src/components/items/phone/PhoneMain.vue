@@ -22,23 +22,31 @@
                </ul>
             </div>
          
-            <div class="application" v-else key=openedApplication >
-
+            <div class="application" v-else-if="opened || inCall" key=openedApplication >
                <SettingsApp 
                   v-if="opened.icon == 'settings'" 
                   @brightness="settings.brightness"
                   @update-brightness="brightness"
+                  @update-power="power"
                   
                />
 
                <MessagesApp 
                   v-if="opened.icon == 'messages'" 
+                  @send-message="send"
+               />
+
+               <InCall
+                  v-if="inCall"
+                  :inCall="InCall"
                />
 
                <div class="home-button">
                   <button @click="close(opened)"> H </button>
                </div>
             </div>
+
+
          </transition>
       </div>
    </div>
@@ -52,6 +60,7 @@
 
    import SettingsApp from './SettingsApp.vue';
    import MessagesApp from './MessagesApp.vue';
+   import InCall from './inCall.vue';
 
    interface Application {
       name: string
@@ -60,6 +69,7 @@
    }
 
    interface Settings {
+      power: boolean
       brightness: number
       background?: string | null
       number?: string | null
@@ -67,9 +77,17 @@
       notifications: boolean
    }
 
+   interface Call {
+      incoming: boolean
+      number: number | null
+      started: number | null
+      inCall: boolean
+   }
+
+
    @Component({
       components: {
-         SettingsApp, MessagesApp
+         SettingsApp, MessagesApp, InCall
       }
    })
    export default class Phone extends Vue { 
@@ -77,7 +95,10 @@
       Messages = Messages;
       time: string = '';
 
+      inCall: Call | null = null;
+
       settings: Settings | null = {
+         power: true,
          brightness: 1.0,
          volume: 1,
          background: null,
@@ -131,6 +152,10 @@
          this.settings!.background= url;
       }
       
+      power () {
+         this.settings!.power = !this.settings?.power;
+      }
+
       notifications (toggle: boolean) {
          this.settings!.notifications = toggle;
       }
@@ -143,7 +168,28 @@
          application.opened = false;
       }
 
+      call (incoming: boolean, number: number, inCall: boolean) {
+         this.inCall = {
+            incoming: incoming,
+            number: number,
+            inCall: inCall,
+            started: Date.now()
+         }
+      }
+
+      send (compose: { to: number, message: string } ) {
+         if (!compose.to || !compose.message) {
+            return;
+         }
+      }
+
       mounted () {
+         mp.events.add('BROWSER::PHONE:CALL', (info: string) => {
+            const [incoming, number, inCall] = JSON.parse(info);
+
+            this.call(incoming, number, inCall);
+         });
+
          this.clock();
       }
    }

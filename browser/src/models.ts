@@ -211,4 +211,5 @@ export interface PhoneMessage {
    sender: number
    recipient: number
    message: string
+   contact?: string
 }

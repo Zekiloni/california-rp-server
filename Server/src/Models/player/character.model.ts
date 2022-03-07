@@ -217,6 +217,8 @@ export class characters extends Model {
       player.setVariable(shared_Data.BUBBLE, null);
       player.setVariable(shared_Data.ANIMATION, null);
       player.setVariable(shared_Data.BEANBAG, false);
+      player.setVariable(shared_Data.PHONE_CALL, false);
+      player.setVariable(shared_Data.USING_PHONE, false);
       player.setVariable('Working_Uniform', false);
       player.setVariable('Attachment', null);
       player.setVariable('Phone_Ringing', false);

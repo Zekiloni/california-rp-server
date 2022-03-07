@@ -18,6 +18,19 @@ Commands['uniform'] = {
    }
 }
 
+Commands['ring'] = {
+   description: 'ring',
+   call (player: PlayerMp, targetSearch: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         return;
+      }
+
+      target.setVariable(shared_Data.PHONE_CALL, [true, 324252, false]);
+   } 
+}
+
 Commands['of1'] = {
    description: 'uniforma',
    call (player: PlayerMp) {

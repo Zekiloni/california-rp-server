@@ -29,13 +29,18 @@
          VueSlider
       },
       props: {
-         brightness: Number
+         brightness: Number,
+         power: Boolean,
       }
    })
    export default class SettingsApp extends Vue { 
       
       brighntess (i: number) {
          this.$emit('update-brightness', i);
+      }
+
+      power () {
+         this.$emit('update-power');
       }
 
       Messages = Messages;
