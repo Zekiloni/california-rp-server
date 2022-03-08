@@ -69,7 +69,7 @@ export const itemNames = {
    PROP_BRACELET: 'Bracelet',
 
 
-   // @weapons
+   // @ misc / melee weapons
    WEAPON_KNIFE : 'Knife',
    WEAPON_CROWBAR : 'Crowbar',
    WEAPON_HAMMER : 'Hammer',
@@ -79,10 +79,54 @@ export const itemNames = {
    WEAPON_HATCHET : 'Hatchet',
    WEAPON_SWITCHBLADE : 'Switchblade',
    WEAPON_WRENCH : 'Wrench',
-   WEAPON_COMBAT_PISTOL : 'Combat Pistol',
    WEAPON_FIREEXSTINGUISHER: 'Fire Extinguisher',
-   WEAPON_FLASHLIGHT: 'Flashlight',
-   WEAPON_STUNGUN: 'Stungun',
+   WEAPON_FLASHLIGHT: 'Pelican 7060 Flashlight',
+
+   // @ primary weapons / handguns
+   WEAPON_STUNGUN : 'x26P Taser',
+   WEAPON_FLARE_GUN : 'Flaregun',
+   WEAPON_PISTOL : 'Beretta 92',
+   WEAPON_PISTOL_MK2 : 'Smith & Wesson Model 4566',
+   WEAPON_COMBAT_PISTOL : 'Glock 19',
+   WEAPON_PISTOL_50 : 'Smith & Wesson M&P9',
+   WEAPON_AP_PISTOL : 'Colt SCAMP - .22 SCAMP',
+   WEAPON_SNS_PISTOL : 'Walther PDP',
+   WEAPON_HEAVY_PISTOL : 'Remington 1911 R1',
+   WEAPON_VINTAGE_PISTOL : 'FN Model 1910/22 Browning',
+   WEAPON_REVOLVER : 'Magnum .357',
+
+   // @ secondary weapons / sub-machine guns
+   WEAPON_MICRO_SMG : 'IWI Mini Uzi',
+   WEAPON_SMG : 'H&K MP5A3',
+   WEAPON_ASSAULT_SMG : 'FN P90 TR',
+   WEAPON_COMBAT_PDW : 'SIG-Sauer MPX',
+   WEAPON_MINI_SMG : 'SA Vz. 82 Skorpion',
+
+   // @ secondary weapons / shotguns
+   WEAPON_PUMPSHOTGUN : 'Remington 870',
+   WEAPON_SAWNOFFSHOTGUN : 'Mossberg 500',
+   WEAPON_ASSAULTSHOTGUN: 'UTAS UTS-15',
+   WEAPON_HEAVYSHOTGUN : 'Saiga 12K',
+   WEAPON_MUSKET : 'Winchester Model 1866',
+   WEAPON_DBSHOTGUN : 'Zabala Double Barell',
+   WEAPON_COMBATSHOTGUN : 'SPAS-12',
+
+   // @ secondary weapons / assault rifles
+   WEAPON_ASSAULT_RIFLE : 'AKM',
+   WEAPON_CARBINE_RIFLE : 'M4A4',
+   WEAPON_SPECIAL_CARBINE : 'H&K G36C',
+   WEAPON_COMPACT_RIFLE : 'AKS-74U',
+   WEAPON_HEAVY_RIFLE : 'FN SCAR-H',
+
+   // @ secondary weapons / light machine guns
+   WEAPON_MG : 'PKM',
+   WEAPON_COMBAT_MG : 'FN Mk 48 Mod 1',
+   WEAPON_GUSENBERG : 'M1A1 Thompson',
+
+   // secondary weapons / sniper rifles
+   WEAPON_SNIPER_RIFLE : 'Remington MK21',
+   WEAPON_HEAVY_SNIPER : 'Barrett M82A1',
+   WEAPON_MARKSMAN_RIFLE : 'M110',
 
    // @ammunition
    AMMO_9MM : '9mm Bullets',
@@ -114,6 +158,23 @@ export const itemDescriptions = {
    WEAPON_FIREEXSTINGUISHER: 'PP aparat',
    WEAPON_FLASHLIGHT: 'Lampa',
    WEAPON_STUNGUN : 'Tazer, elektrošoker, slui kao omamljivač.',
+
+   // @ secondary weapons / assault rifles
+   WEAPON_ASSAULT_RIFLE : 'AKM, - AKM,  7.62×39mm. AKM je sovjetska jurišna puška, kapacitet magazina od 10 do 40 metaka.',
+   WEAPON_CARBINE_RIFLE : 'M4A4, - M4 je američki karabin koji je proizveden na temelju ranije karabinske, automatske puške M16 koja se temelji na originalnom AR-15.',
+   WEAPON_SPECIAL_CARBINE : 'H&K G36C, - Heckler & Koch G36 je automatska puška kalibra 5.56mm.',
+   WEAPON_COMPACT_RIFLE : 'AKS-74U, - AKS-74U poznatiji koa Krikov. Ispaljuje metke kalibra 5,45x39 mm',
+   WEAPON_HEAVY_RIFLE : 'FN SCAR-H, SCAR-H (heavy - teži model) koji se koristi kao jurišna puška sa streljivom kalibra 7,62×51mm. SCAR - Special Forces Combat Assault Rifle',
+
+   // @ secondary weapons / light machine guns
+   WEAPON_MG : 'PKM, - PKM je machine gun opće namjene, koristi kalibar 7.62 .',
+   WEAPON_COMBAT_MG : 'FN Mk 48 Mod 1, - je laki mitraljez sa kaišnim napajanjem, koji ispaljuje NATO patrone 7,62×51 mm iz dezintegrirajućeg pojasa municije.',
+   WEAPON_GUSENBERG : 'M1A1 Thompson, - Thompson Submachine Gun, Thompson je američki automat, .45 ACP/Auto (11,43×23mm)',
+
+   // secondary weapons / sniper rifles
+   WEAPON_SNIPER_RIFLE : 'Remington MK21, - Mk 21, 7.62 je Precision Sniper Rifle u američkoj vojnoj službi.', 
+   WEAPON_HEAVY_SNIPER : 'Barrett M82A1, 50 BMG (12,7×99mm NATO), 416 Barrett (10,6×83mm). Barrett M82 je poluautomatska protumaterijalna snajperska puška koju je razvio američki proizvođač Barrett Firearms.',
+   WEAPON_MARKSMAN_RIFLE : 'M110, Poluautomatski snajperski sistem M110 američka je poluautomatska precizna puška koja je komorna za 7,62 × 51 mm NATO krug',
 
    // @drinks
    DRINK_COFFE: 'Kafa za nošenje u plastičnoj čaši.',

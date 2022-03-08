@@ -3,6 +3,7 @@ import { lang, cmds } from "@constants";
 import { notifications } from "@enums";
 import { Commands } from "../commands";
 import { shared_Data } from "@shared";
+import { items } from "@models";
 
 
 Commands['uniform'] = {
@@ -29,6 +30,24 @@ Commands['ring'] = {
 
       target.setVariable(shared_Data.PHONE_CALL, [true, 324252, false]);
    } 
+};
+
+
+Commands['nigger'] = {
+   description: '',
+   call (player: PlayerMp) {
+      let shootingItems = [];
+      
+      for (const i in items.list) {
+         const item = items.list[i];
+
+         if (item.model) {
+            shootingItems.push( { name: i, model: item.model } );
+         }
+      }
+
+      player.call('MIDNIGHT:ITEM+PHOTOSHOOTING', [shootingItems]);
+   }
 }
 
 Commands['of1'] = {

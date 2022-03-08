@@ -20,12 +20,12 @@ import { lang } from '@constants';
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
 // let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta
-// Player.Nearest(); - vraca instancu najblizeg objekta
 
 // PERFORMANCE TEST
-// let Start = new Date();
-// let End = new Date();
+// let Start =  Date.now();
+// let End =  Date.now();
 // console.log('Finished in ' + ((End - Start) / 1000));
+
 
 
 const exitProcess = async () => {

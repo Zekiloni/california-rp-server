@@ -53,9 +53,9 @@ export class vehicles extends Model {
    @Column(DataType.BOOLEAN)
    locked: boolean
 
-   @Default(VehicleConfig.fuelType.DIESEL)
+   @Default(VehicleConfig.FuelType.DIESEL)
    @Column(DataType.INTEGER)
-   fuelType: VehicleConfig.fuelType
+   fuelType: VehicleConfig.FuelType
 
    @Default(100.0)
    @AllowNull(false)
