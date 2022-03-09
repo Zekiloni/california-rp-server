@@ -193,6 +193,10 @@ export const Messages = {
 
    // phone
    PHONE_PAGE_SETTINGS: 'Podešavanja',
+   INCOMING_CALL: 'Nadolazeći poziv',
+   CALLING: 'Pozivanje',
+   ANSWER_CALL: 'Prihvati poziv',
+   HANGUP_CALL: 'Prekini poziv',
 
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',

@@ -12,8 +12,8 @@
 
          </div>
          
-         <transition name="fade" mode="out-in"> 
-            <div class="applications" v-if="!opened" key=applications>
+         <transition-group name="fade" mode="out-in"> 
+            <div class="applications" v-if="!opened && !inCall" key=applications>
                <ul class="list">
                   <li v-for="application in applications" :key="application.name" @click="open(application)"> 
                      <img :src="require('@/assets/images/icons/phone/' + application.icon + '.png')" />
@@ -22,7 +22,7 @@
                </ul>
             </div>
          
-            <div class="application" v-else-if="opened || inCall" key=openedApplication >
+            <div class="application" v-else-if="opened" key=openedApplication >
                <SettingsApp 
                   v-if="opened.icon == 'settings'" 
                   @brightness="settings.brightness"
@@ -36,10 +36,6 @@
                   @send-message="send"
                />
 
-               <InCall
-                  v-if="inCall"
-                  :inCall="InCall"
-               />
 
                <div class="home-button">
                   <button @click="close(opened)"> H </button>
@@ -47,7 +43,14 @@
             </div>
 
 
-         </transition>
+            <InCall
+               v-if="inCall"
+               :inCall="inCall"
+               @on-answer="answer"
+               @on-hangup="hangup"
+               key=inCall
+            />
+         </transition-group>
       </div>
    </div>
 </template>
@@ -94,6 +97,8 @@
 
       Messages = Messages;
       time: string = '';
+
+      focused: boolean = true;
 
       inCall: Call | null = null;
 
@@ -175,6 +180,16 @@
             inCall: inCall,
             started: Date.now()
          }
+      }
+
+      answer () {
+         this.inCall!.inCall = true;
+         this.inCall!.started = Date.now();
+         mp.events.call('CLIENT::PHONE:CALL');
+      }
+
+      hangup () {
+         this.inCall = null;
       }
 
       send (compose: { to: number, message: string } ) {
