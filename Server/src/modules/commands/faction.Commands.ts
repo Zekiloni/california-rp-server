@@ -51,6 +51,10 @@ Commands[cmds.names.FACTION_INVITE] = {
          return;
       }
 
+      if (!target.character) {
+         return;
+      }
+
       factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
          if (!faction) {
             return;

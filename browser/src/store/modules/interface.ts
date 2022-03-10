@@ -19,7 +19,7 @@ type uInterface = {
 
 
 const InitialState:uInterface = {
-   notifications: { toggle: true },
+   hints: { toggle: true },
    chat: { toggle: false },
 
    lobby: { toggle: true, mouse: true },

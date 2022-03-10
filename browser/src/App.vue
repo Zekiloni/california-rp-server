@@ -8,7 +8,8 @@
       <Creator v-if="interfaces.characterCreator.toggle" />
 
       <GameInterface v-if="interfaces.gameInterface.toggle" />
-      <Help v-if="interfaces.help.toggle" />
+      <Offer />
+      <Hints v-if="interfaces.hints.toggle" />
 
       <DeathScreen v-if="interfaces.deathScreen.toggle" />
 
@@ -109,7 +110,8 @@
    import Notifications from '@/components/player/Notifications.vue';
    import Lobby from '@/components/lobby.vue';
    import Creator from '@/components/creator.vue';
-   import Help from '@/components/Help.vue';
+   import Offer from '@/components/player/Offer.vue';
+   import Hints from '@/components/Hints.vue';
    import Chat from '@/components/TextChat';
    import GameInterface from '@/components/GameInterface.vue';
    import PlayerMenu from '@/components/player/PlayerMenu.vue';
@@ -144,8 +146,8 @@
    export default { 
 
       components: { 
-         Lobby, Creator, Notifications, Help, GameInterface, Playerlist,
-         PlayerMenu, Inventory, Chat, Banking, ATM, JobOffer,
+         Lobby, Creator, Notifications, Hints, GameInterface, Playerlist,
+         Offer, PlayerMenu, Inventory, Chat, Banking, ATM, JobOffer,
          HouseInfo, Phone, Document, HandheldRadio, DeathScreen,
 
          VehiclesMenu,

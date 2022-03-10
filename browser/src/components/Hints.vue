@@ -22,8 +22,6 @@
 
 <script>
 
-
-
    import KeyHint from './misc/key.hint.vue';
 
    export default { 

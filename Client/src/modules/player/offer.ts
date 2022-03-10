@@ -1,8 +1,8 @@
+import { Browser } from '../../browser';
 import controls from '../../enums/controls';
-import { entityType } from '../../enums/entity';
 
 
-interface offer {
+interface Offer {
    title: string
    description: string
    offerer: PlayerMp
@@ -11,15 +11,15 @@ interface offer {
 }
 
 
-let offer: offer | null = null;
+let offer: Offer | null = null;
 
 
-const offerHandler = (entity: EntityMp, value: offer | null, oldValue: offer | null) => {
-   if (entity.type == entityType.PLAYER && entity.remoteId == mp.players.local.remoteId) {
+const offerHandler = (entity: EntityMp, value: Offer | null, oldValue: Offer | null) => {
+   if (entity.type == RageEnums.EntityType.PLAYER && entity.remoteId == mp.players.local.remoteId) {
       offer = value;
-      mp.gui.chat.push(' Offer ? ' + JSON.stringify(value ? 'yes' : 'no'));
-      if (offer) {
-         // show...
+
+      Browser.call('BROWSER::OFFER', offer);
+      if (offer) {      
          mp.keys.bind(controls.KEY_Y, true, acceptOffer);
          mp.keys.bind(controls.KEY_N, true, declineOffer);
       } else { 

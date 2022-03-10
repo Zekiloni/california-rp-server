@@ -6,7 +6,6 @@
          <div class="speedo">
             <div class="speed">
                <h2> {{ speed }} </h2>
-               <small> kmh </small>
             </div>
             <div class="line" :style="{ transform: 'rotate(' + speed + 'deg)'}"> </div>
             <div class="blinkers">
@@ -14,17 +13,6 @@
                <div class="blinker"> <div class="icon right"> </div> </div>
             </div>
          </div>
-            
-         <!-- <h1> {{ vehicleName }} </h1>
-         <div class="speed">
-            <h2 class="number"> {{ speed }} </h2>
-            <small> km/h</small>
-         </div>
-         <div class="fuel-bar">
-            <div class="bar" :style="{ width: fuel + '%' }" > </div>
-         </div>
-         <h4> {{ rpm }} </h4>
-         <h4> {{ mileage }} </h4> -->
       </div>
    </div>
 </template>
@@ -125,11 +113,12 @@
    .speedo .speed h2 {
       margin: 0;
       margin-top: 25px;
-      font-size: 2rem;
-      color: #f6f6f6;
-   }
-   .speedo .speed small {
-      color: #cdcdcd;
+      font-size: 3rem;
+      background: -webkit-linear-gradient(whitesmoke, rgb(80, 80, 80));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
    }
 
    .blinkers {

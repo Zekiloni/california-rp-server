@@ -1,8 +1,8 @@
 
 <template>
    <div class="notify">
-      <transition-group name="list" tag="ul" class="notifications">
-         <li v-for="(notification, i) in notifications" :key="i" class="notification" :class="classes[notification.type]"> 
+      <transition-group name="notify" tag="ul" class="notifications">
+         <li v-for="notification in notifications" :key="notification.message" class="notification" :class="classes[notification.type]"> 
             <div class="icon"> </div>
             <h4> {{ notification.message }} </h4>
          </li>
@@ -52,6 +52,7 @@
          if (window.mp) {
             mp.events.add('BROWSER::NOTIFICATION', this.notify);
          }
+
       }
    }
 </script>
@@ -59,15 +60,68 @@
 <style scoped>
    .notify { 
       position: absolute;
-      bottom: 40px;
+      bottom: 75px;
       height: auto;
       width: 100%;
       display: grid;
+      z-index: 9999;
    }
 
    ul.notifications {
       list-style: none;
       padding: 0;
       margin: auto;
+      max-height: 285px;
+      overflow: hidden;
    }
+
+   ul.notifications li {
+      display: flex;
+      align-items: center;
+      padding: 0;
+   }
+   
+   li h4 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: white;
+   }
+
+   li .icon {
+      width: 25px; 
+      height: 25px;
+      margin: 0 15px;
+   }
+
+   li.success .icon {
+      background:#159559;
+      mask: url('../../assets/images/icons/success.svg') no-repeat center; 
+      mask-size: cover;
+   }
+
+   li.error .icon { 
+      background: #d4161b;
+      mask: url('../../assets/images/icons/error.svg') no-repeat center; 
+      mask-size: cover;
+   }
+
+   li.info .icon {
+      background: #ffcc45;
+      mask: url('../../assets/images/icons/info.svg') no-repeat center; 
+      mask-size: cover;
+   }
+
+   .notify-enter-active, .notify-leave-active {
+      transition: all 1s;
+   }
+
+   .notify-enter {
+      opacity: 0;
+      transform: translateY(10px);
+   }
+
+   .notify-leave-to{
+      opacity: 0;
+      transform: translateY(-50px);
+   } 
 </style>

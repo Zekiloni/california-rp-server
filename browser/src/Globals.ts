@@ -17,6 +17,7 @@ export const Messages = {
    CREATE_CHARACTER: 'Kreiraj Karaktera',
    HOURS_PLAYED: 'Sati igre',
    GO_OUT_FROM_MARKET: 'napusti prodavnicu',
+   OFFER: 'Zahtev',
    AVAILABLE_COMMANDS: 'Dostupne komande',
    SELECT_CATEGORY: 'odaberite kategoriju',
    NO_NO: 'Nema',

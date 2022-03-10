@@ -915,6 +915,7 @@ Commands[cmds.names.MAKE_LEADER] = {
          const characterFaction = await factions.findOne( { where: { id: target.character.id } } );
 
          target.character.faction = none;
+         target.setVariable(shared_Data.FACTION, none);
 
          if (characterFaction) {
             characterFaction.removeLeader();

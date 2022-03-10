@@ -5,8 +5,6 @@
    
    <div class="game-interface" :style="{ opacity: hidden ? '0' : '1' }">
       
-      <Offer />
-
       <transition name="fade"> 
          <VehicleInterface v-if="driving" />
       </transition>
@@ -46,7 +44,6 @@
 
 <script>
 
-   import Offer from '@/components/offer.vue';
    import { Messages } from '@/globals';
    import Helpers from '@/helpers';
    import VehicleInterface from '@/components/vehicles/VehicleDashboard.vue';
@@ -54,7 +51,7 @@
    export default { 
 
       components: {
-         Offer, VehicleInterface
+         VehicleInterface
       },
 
       data () { 
@@ -162,9 +159,19 @@
    .online-players { margin: 0 25px; }
    .player-id { margin: 0 25px; }
 
-   h3, h2 { margin: 0; text-shadow: 0 0.7px 1px rgb(0 0 0 / 45%); }
+   h3, h2 { margin: 0; }
 
-   .online-players h3, .player-id h3 { font-weight: 550; color: #959eac; font-size: 0.8rem; }
+   .online-players h3, .player-id h3 { 
+      margin-top: 5px; 
+      font-weight: 550; 
+      color: #959eac; 
+      font-size: 0.8rem; 
+      background: linear-gradient(120deg, rgb(11 14 17 / 35%), rgb(11 14 17 / 5%)); 
+      padding: 3px 10px;
+      border-radius: 4px; 
+      text-shadow: 0 0.7px 1px rgb(0 0 0 / 40%);
+   }
+
    .player-id h2 { color: #cdcdcd; font-weight: 350; }
 
    .online-players .online { position: relative; font-weight: 350; padding-left: 25px; color: #00d474; }
@@ -184,9 +191,13 @@
    .player { position: absolute; top: 70px; right: 10px; padding: 15px 10px; }
 
    .player h2.money { 
-      color: #fffdf6;
       font-size: 1.65rem;
-      font-weight: 700;
+      font-weight: 800;
+      background: -webkit-linear-gradient(-45deg, #67c684, #3b8d59);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
    }
 
    .info { position: absolute; bottom: 25px; padding: 15px 10px; left: 325px; width: 300px; height: auto; }
@@ -195,7 +206,16 @@
    .date-time h2 { color: #cdcdcd; font-weight: 450; }
    .date-time h3 { font-weight: 550; color: #959fae; font-size: 0.9rem; }
 
-   .location h2 { color: #ffcc45; font-weight: 600; }
+   .location h2 { 
+      background: -webkit-linear-gradient(45deg, #f7cc59, #ffb901);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800; 
+      text-shadow: none;
+      font-size: 1.5rem;
+   }
+   
    .location h3.street { color: #e2e2e2; font-weight: 450; }
    .location h3.zone { font-weight: 550; color: #959fae; font-size: 0.9rem; }
    

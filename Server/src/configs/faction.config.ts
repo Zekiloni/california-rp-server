@@ -7,4 +7,10 @@ export namespace factionConfig {
    export enum type { 
       LEO, MEDIC, FIRE_DEPT, MAFIA, GANG, NEWS, PARTY
    }
+
+   export const vehicles = {
+      police: [
+         { name: '', model: '' }
+      ]
+   }
 }
