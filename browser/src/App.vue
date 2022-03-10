@@ -2,12 +2,13 @@
 
    <div id="app">
 
-      <Lobby v-if="interfaces.lobby.toggle" />
+      <Notifications />
 
+      <Lobby v-if="interfaces.lobby.toggle" />
       <Creator v-if="interfaces.characterCreator.toggle" />
 
       <GameInterface v-if="interfaces.gameInterface.toggle" />
-      <Notifications v-if="interfaces.notifications.toggle" />
+      <Help v-if="interfaces.help.toggle" />
 
       <DeathScreen v-if="interfaces.deathScreen.toggle" />
 
@@ -105,9 +106,10 @@
    import './assets/styles/animations.css'
    import './assets/styles/font-awesome.css';
 
+   import Notifications from '@/components/player/Notifications.vue';
    import Lobby from '@/components/lobby.vue';
    import Creator from '@/components/creator.vue';
-   import Notifications from '@/components/Notifications.vue';
+   import Help from '@/components/Help.vue';
    import Chat from '@/components/TextChat';
    import GameInterface from '@/components/GameInterface.vue';
    import PlayerMenu from '@/components/player/PlayerMenu.vue';
@@ -142,7 +144,7 @@
    export default { 
 
       components: { 
-         Lobby, Creator, Notifications, GameInterface, Playerlist,
+         Lobby, Creator, Notifications, Help, GameInterface, Playerlist,
          PlayerMenu, Inventory, Chat, Banking, ATM, JobOffer,
          HouseInfo, Phone, Document, HandheldRadio, DeathScreen,
 

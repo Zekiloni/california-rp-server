@@ -98,7 +98,7 @@ import './commands/interior.Commands';
 import './commands/lock.Command';
 import './commands/channel.commands';
 import './commands/faction.Commands';
-import './commands/law.Commands';
+import './commands/leo.Commands';
 import './commands/test.commands';
 
 

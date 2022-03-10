@@ -23,12 +23,7 @@ Commands[cmds.names.VEHICLE_CALLSIGN] = {
       }
 
       const callsign = player.vehicle.getVariable(shared_Data.CALLSIGN);
-
-      if (callsign) {
-         player.vehicle.setVariable(shared_Data.CALLSIGN, null);
-      } else { 
-         player.vehicle.setVariable(shared_Data.CALLSIGN, sign);
-      }
+      player.vehicle.setVariable(shared_Data.CALLSIGN, callsign ? null : sign);
    }
 }
 

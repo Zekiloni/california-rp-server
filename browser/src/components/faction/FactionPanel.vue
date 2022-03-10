@@ -33,9 +33,9 @@
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
 
-   import FactionOverview from './panelComponents/FactionOverview.vue';
-   import FactionMembers from './panelComponents/FactionMembers.vue';
-   import FactionRanks from './panelComponents/FactionRanks.vue';
+   import FactionOverview from './panel-components/FactionOverview.vue';
+   import FactionMembers from './panel-components/FactionMembers.vue';
+   import FactionRanks from './panel-components/FactionRanks.vue';
    
    interface Rank { 
       id: number
