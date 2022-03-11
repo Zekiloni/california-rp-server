@@ -14,7 +14,7 @@ import {
 
 import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
-import { playerConfig } from '@configs';
+import { playerConfig, VehicleConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
@@ -191,7 +191,6 @@ export class characters extends Model {
    }
 
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances, id?: number) { 
-
       player.account.last_character = this.id;
       player.character = this;
 
@@ -206,7 +205,18 @@ export class characters extends Model {
 
       player.setVariable(shared_Data.MONEY, this.money);
       player.setVariable(shared_Data.JOB, this.job);
+
+      // faction
       player.setVariable(shared_Data.FACTION, this.faction);
+      if (this.faction != none) {
+         factions.findOne( { where: { id: this.faction } } ).then(faction => {
+            if (!faction) {
+               return;
+            }
+            console.log('faction points')
+            faction.points(player);
+         });
+      }
 
       // temporary variables
       player.setVariable(shared_Data.FACTION_DUTY, false);
@@ -309,6 +319,16 @@ export class characters extends Model {
       await this.save();
    };
 
+   async setFaction (player: PlayerMp, factionID: number, rank?: number) {
+      this.faction = factionID;
+
+      if (rank) {
+         this.rank = rank;
+      }
+      
+      player.setVariable(shared_Data.FACTION, factionID);
+   }
+
    async setWalkingStyle (player: PlayerMp, style: keyof typeof WalkingStyles) {
       this.walking_style = style;
       player.setVariable(shared_Data.WALKING_STYLE, WalkingStyles[style]);
@@ -331,7 +351,7 @@ export class characters extends Model {
    }
 
    get isUnemployed () {
-      return this.job == 0 ? true : false;
+      return this.job == none ? true : false;
    }
 
    setOffer (player: PlayerMp, value: offer | null) {
@@ -408,8 +428,25 @@ export class characters extends Model {
       this.last_position = position;
       this.last_dimension = dimension;
 
+      vehicles.findAll({ where: { owner: this.id, temporary: true } } ).then(vehicles => {
+         vehicles.forEach(vehicle => {
+            switch (vehicle.type) {
+               case VehicleConfig.type.ADMIN: {
+                  vehicle.destroy();
+                  break;
+               }
+
+               case VehicleConfig.type.FACTION: {
+                  vehicle.destroy();
+                  break;
+               }
+            }
+         })
+      });
+
       await this.save();
       inventories.savePlayerEquipment(this);
+
    }
 
    async respawn (player: PlayerMp, inHospital: boolean) {

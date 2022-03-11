@@ -1,11 +1,11 @@
 
 import { AfterCreate, AfterDestroy, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, HasMany, Model, PrimaryKey, Table, Unique, UpdatedAt } from 'sequelize-typescript';
-import { factionConfig } from '@configs';
+import { EconomyConfig, FactionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
 import { cmds, colors, lang, none } from '@constants';
 import { notifications } from '@enums';
 import { characters, factionsRanks, logs } from '@models';
-import { checkForDot, shared_Data } from '@shared';
+import { checkForDot, formatCommand, shared_Data } from '@shared';
 
 
 @Table
@@ -18,9 +18,9 @@ export class factions extends Model {
    @Column
    id: number
 
-   @Default(factionConfig.type.LEO)
+   @Default(FactionConfig.type.LEO)
    @Column
-   type: factionConfig.type
+   type: FactionConfig.type
 
    @Unique(true)
    @Column
@@ -38,15 +38,15 @@ export class factions extends Model {
 
    @Column({
       type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('spawn_Point')); }
+      get () { return JSON.parse(this.getDataValue('spawn_point')); }
    })   
-   spawn_Point: Vector3Mp
+   spawn_point: Vector3Mp
 
    @Column({
       type: DataType.JSON,
-      get () { return JSON.parse(this.getDataValue('vehicle_Point')); }
+      get () { return JSON.parse(this.getDataValue('vehicle_point')); }
    })   
-   vehicle_Point: Vector3Mp
+   vehicle_point: Vector3Mp
 
    @Column({
       type: DataType.JSON,
@@ -61,14 +61,6 @@ export class factions extends Model {
       }
    )   
    equipment_point: Vector3Mp
-
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { return JSON.parse(this.getDataValue('equipment')); }
-      }
-   )   
-   equipment: string[]
 
    @HasMany(() => factionsRanks)
    ranks: factionsRanks[]
@@ -116,7 +108,6 @@ export class factions extends Model {
       }
    }
 
-
    async edit (player: PlayerMp, property: string, value: string) {
       switch (property) {
          case cmds.actions.name: {
@@ -130,40 +121,48 @@ export class factions extends Model {
          }
 
          case cmds.actions.spawn: {
-            this.spawn_Point = player.position;
+            this.spawn_point = player.position;
+            break;
+         }
+
+         case cmds.actions.equipment: {
+            this.equipment_point = player.position;
+            break;
+         }
+
+         case cmds.actions.garage: {
+            this.garage_point = player.position;
             break;
          }
       }
 
       await this.save();
+      this.points();
    }
    
 
    async leave (player: PlayerMp) {
-      player.character.faction = none;
-      player.character.rank = none;
-      player.setVariable(shared_Data.FACTION, none);
+      player.character.setFaction(player, none, none);
 
       if (this.leader == player.character.id) {
-         this.leader = none;
+         this.setLeader(none);
          player.notification(lang.uLeaveFactionLeaderPosition + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
-         await this.save();
       } else { 
          player.notification(lang.uLeavedFaction + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
       }
 
-      await player.character.save()
+      await player.character.save();
+      this.points(player);
    }
 
-   async removeLeader () {
-      this.leader = none;
+   async setLeader (leader: number) {
+      this.leader = leader;
       await this.save();
    }
 
    async makeLeader (player: PlayerMp, target: PlayerMp) {
-      target.character.faction = this.id;
+      target.character.setFaction(target, this.id);
       this.leader = target.character.id;
-      target.setVariable(shared_Data.FACTION, this.id);
 
       target.notification(lang.uAreNowLeaderOf + this.name + lang.fromAdmin + player.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
 
@@ -171,7 +170,7 @@ export class factions extends Model {
       // LOGS: setted leader
 
       await this.save();
-      await target.character.save();
+      this.points(player);
    }
 
 
@@ -184,7 +183,7 @@ export class factions extends Model {
       if (this.leader == target.character.id) {
          player.notification(lang.cannotLeader, notifications.type.ERROR, notifications.time.MED);
          return;
-      }
+      }      
 
       target.character.faction = none;
       target.character.rank = none;
@@ -194,6 +193,7 @@ export class factions extends Model {
       player.notification(lang.uKickedFromFaction + target.name + lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED); // to player u succes kicked target.name...
 
       await target.character.save();
+      this.points(player);
    }
 
 
@@ -217,14 +217,15 @@ export class factions extends Model {
          title: lang.factionInvite,
          description: player.name + lang.toJoinFaction + this.name + '.',
          offerer: player,
-         faction: this.id,
+         faction: this,
          async respond (_target: PlayerMp, respond: boolean) {
             const result: string = respond ? lang.accepted : lang.declined;
-
+            
             if (respond) {
-               _target.character.faction = this.faction!;
-               _target.setVariable(shared_Data.FACTION, this.faction);
+               target.character.setFaction(target, this.faction.id);
 
+               this.faction.points(_target);
+               
                await _target.character.save();
             } else { 
 
@@ -259,7 +260,6 @@ export class factions extends Model {
       player.notification('u have rank to ' + target.name, notifications.type.SUCCESS, notifications.time.LONG);
    }
 
-
    async chat (player: PlayerMp, message: string) { 
       const rank = await factionsRanks.findOne( { where: { id: player.character.rank } } );
       
@@ -270,15 +270,106 @@ export class factions extends Model {
       })
    }
 
-}
+   points (player?: PlayerMp) {
+      let factionPoints: [string, Vector3Mp][] = [];
+               
+      if (this?.equipment_point) {
+         factionPoints.push( [formatCommand(cmds.names.FACTION_EQUIPMENT), this.equipment_point] )
+      }
 
+      if (this?.garage_point) {
+         factionPoints.push( [formatCommand(cmds.names.FACTION_GARAGE) + ' ' + formatCommand(cmds.names.FACTION_GOV_REPAIR) + ' ' + formatCommand(cmds.names.FACTION_LIVERY), this.garage_point] );
+      }
 
+      if (player) {
+         if (player.character.faction == none) {
+            player.call('CLIENT::FACTION:POINTS', [null]);
+         } else {
+            factions.findOne( { where: { id: player.character.id } } ).then(faction => {
+   
+               player.call('CLIENT::FACTION:POINTS', [factionPoints]);
+            });
+         }
+      } else {
+         const onlineMembers = mp.players.toArray().filter(target => target.character.faction == this.id);
 
-const getFaction = (player: PlayerMp) => {
-   return factions.findOne( { where: { id: player.character.faction }, include: [factionsRanks] } ).then(async faction => {
-      const members = await characters.findAll( { where: { faction: player.character.faction } } );
-      return [ faction, members ];
-   })
+         onlineMembers.forEach(member => { 
+            member.call('CLIENT::FACTION:POINTS', [factionPoints]);
+         })
+      }
+   }
+
+   static info (player: PlayerMp) {
+      return factions.findOne( { where: { id: player.character.faction }, include: [factionsRanks] } ).then(async faction => {
+         const members = await characters.findAll( { where: { faction: player.character.faction } } );
+         return [ faction, members ];
+      })
+   }
+   
+   isFactionVehicle (vehicle: VehicleMp) {
+      if (!vehicle.instance.faction) { 
+         return false;
+      }
+
+      return vehicle.instance.faction.id == this.id;
+   }
+
+   equipment (player: PlayerMp) {
+
+      player.call('CLIENT::FACTION:EQUIPMENT', [this.name]);
+   }
+
+   garage (player: PlayerMp, action: string) {
+      if (player.dist(this.garage_point) > 3) {
+         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      switch (action) {
+         case cmds.actions.take: {
+            player.call('CLIENT::FACTION:GARAGE', [this.name]);
+            break;
+         }
+
+         case cmds.actions.return: {
+
+            break;
+         }
+      }
+   }
+
+   repairVehicle (player: PlayerMp) {
+      if (player.vehicle.dist(this.garage_point) > 3) {
+         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (!this.isFactionVehicle(player.vehicle)) {
+         player.notification(lang.thisVehicleNotPartOfFaction, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      this.decrement('budget', { by: EconomyConfig.prices.GOV_REPAIR });
+      
+      player.vehicle.repair();
+      
+      player.notification(lang.uGovRepairVehicle, notifications.type.INFO, notifications.time.MED);
+      // logs...
+   }
+
+   livery (player: PlayerMp, livery: number) {
+      if (!this.isFactionVehicle(player.vehicle)) {
+         player.notification(lang.thisVehicleNotPartOfFaction, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (player.vehicle.dist(this.garage_point) > 3) {
+         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      player.vehicle.livery = livery;
+   }
 }
 
 
@@ -328,6 +419,6 @@ const updateMemberRank = (player: PlayerMp, targetCharacterID: number, rankName:
 };
 
 
-mp.events.addProc('SERVER::FACTION:INFO', getFaction);
+mp.events.addProc('SERVER::FACTION:INFO', factions.info);
 mp.events.addProc('SERVER::FACTION:KICK_MEMBER', kickMember);
 mp.events.addProc('SERVER::FACTION:RANKUP_MEMBER', updateMemberRank);

@@ -141,7 +141,9 @@
    import ObjectsMenu from '@/components/builder/ObjectsMenu.vue';
    import ObjectEditor from '@/components/builder/ObjectEditor.vue';
 
-   import FactionPanel from './components/faction/FactionPanel.vue';
+   import FactionPanel from '@/components/faction/FactionPanel.vue';
+   import FactionGarage from '@/components/faction/FactionGarage.vue';
+   
       
    export default { 
 
@@ -156,7 +158,7 @@
          
          BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
 
-         FactionPanel
+         FactionPanel, FactionGarage
       },
 
       data () { 

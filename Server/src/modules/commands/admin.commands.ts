@@ -882,16 +882,16 @@ Commands[cmds.names.EDIT_FACTION] = {
       cmds.params.FIELD
    ],
    async call (player: PlayerMp, factionID: string, property: string, ...newValue) {
-      const faction = await factions.findOne( { where: { id: factionID } } );
-
-      if (!faction) {
-         player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-
-      const value = [...newValue].join(' ');
-
-      faction.edit(player, property, value);
+      factions.findOne( { where: { id: factionID } } ).then(faction => {
+         if (!faction) {
+            player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+   
+         const value = [...newValue].join(' ');
+   
+         faction.edit(player, property, value);
+      });
    }
 }
 
@@ -912,29 +912,26 @@ Commands[cmds.names.MAKE_LEADER] = {
       };
 
       if (Number(factionID) == 0) {
-         const characterFaction = await factions.findOne( { where: { id: target.character.id } } );
+         factions.findOne( { where: { id: target.character.id } } ).then(faction => {
+            target.character.setFaction(target, none);
+   
+            if (faction) {
+               faction.setLeader(none);
+            }        
+            
+            target.notification(lang.uAreNotLeaderAnymore + faction?.name + '.', notifications.type.INFO, notifications.time.LONG);
+         })
 
-         target.character.faction = none;
-         target.setVariable(shared_Data.FACTION, none);
-
-         if (characterFaction) {
-            characterFaction.removeLeader();
-         }        
-         
-         target.notification(lang.uAreNotLeaderAnymore + characterFaction?.name + '.', notifications.type.INFO, notifications.time.LONG);
-
-         await target.character.save();
-         return;
+      } else {
+         factions.findOne( { where: { id: factionID } } ).then(faction => {
+            if (!faction) {
+               player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.LONG);
+               return;
+            }
+            
+            faction.makeLeader(player, target);
+         })
       }
-
-      const faction = await factions.findOne( { where: { id: Number(factionID) } } );
-
-      if (!faction) {
-         player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.LONG);
-         return;
-      }
-      
-      faction.makeLeader(player, target);
    }
 }
 

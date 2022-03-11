@@ -1,6 +1,7 @@
-import { factionConfig } from '@configs';
+import { FactionConfig } from '@configs';
 import { cmds, colors, itemNames, lang } from '@constants';
 import { distances, notifications } from '@enums';
+import { factions } from '@models';
 import { shared_Data } from '@shared';
 import { Commands } from '../commands';
 
@@ -10,7 +11,7 @@ Commands[cmds.names.VEHICLE_CALLSIGN] = {
    vehicle: true,
    faction: { 
       required: true, 
-      type: [factionConfig.type.LEO, factionConfig.type.FIRE_DEPT, factionConfig.type.MEDIC]
+      type: [FactionConfig.type.LEO, FactionConfig.type.MEDIC]
    },
    params: [
       cmds.params.TEXT
@@ -32,7 +33,7 @@ Commands[cmds.names.CUFF] = {
    description: cmds.descriptions.CUFF,
    faction: {
       required: true,
-      type: [ factionConfig.type.LEO ]
+      type: [ FactionConfig.type.LEO ]
    },
    item: itemNames.HANDCUFFS,
    async call (player: PlayerMp, targetSearch: string) {
@@ -47,5 +48,99 @@ Commands[cmds.names.CUFF] = {
 
       target.character.setCuffs(target, !cuffed);
       player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + (!cuffed ? lang.putCuffs : lang.removeCuffs) + target.name, colors.hex.Purple);
+   }
+};
+
+
+Commands[cmds.names.FACTION_EQUIPMENT] = {
+   description: cmds.descriptions.FACTION_EQUIPMENT,
+   faction: { 
+      required: true, 
+      type: [
+         FactionConfig.type.LEO,
+         FactionConfig.type.MEDIC
+      ] 
+   },
+   call (player: PlayerMp) {
+      factions.findOne({ where: { id: player.character.faction } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         if (player.dist(faction.equipment_point) > 2.5) {
+            player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+
+         faction.equipment(player);
+      });
+   }
+};
+
+
+Commands[cmds.names.FACTION_GARAGE] = {
+   description: cmds.descriptions.FACTION_GARAGE,
+   faction: {
+      required: true,
+      type: [
+         FactionConfig.type.LEO,
+         FactionConfig.type.MEDIC
+      ] 
+   },
+   params: [ 
+      cmds.params.FACTION_GARAGE
+   ],
+   call (player: PlayerMp, action: string) {
+      factions.findOne({ where: { id: player.character.faction } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         faction.garage(player, action);
+      });
+   }
+}
+
+
+Commands[cmds.names.FACTION_GOV_REPAIR] = {
+   description: cmds.descriptions.FACTION_GOV_REPAIR,
+   faction: {
+      required: true,
+      type: [
+         FactionConfig.type.LEO,
+         FactionConfig.type.MEDIC
+      ] 
+   },
+   vehicle: true,
+   call (player: PlayerMp) {
+      factions.findOne( { where: { id: player.character.id } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         faction.repairVehicle(player);
+      });
+   }
+}
+
+
+Commands[cmds.names.FACTION_LIVERY] = {
+   description: cmds.descriptions.FACTION_LIVERY,
+   faction: {
+      required: true,
+      type: [
+         FactionConfig.type.LEO,
+         FactionConfig.type.MEDIC
+      ] 
+   },
+   vehicle: true,
+   call (player: PlayerMp, livery: string) {
+      factions.findOne( { where: { id: player.character.id } } ).then(faction => {
+         if (!faction) {
+            return;
+         }
+
+         faction.livery(player, Number(livery));
+      });
    }
 }

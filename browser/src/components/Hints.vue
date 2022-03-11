@@ -79,11 +79,10 @@
 
 <style scoped>
 
-
    .help { 
       position: fixed;
       display: grid;
-      top: 20px;
+      top: 0;
       left: 0;
       width: 100%;
       height: auto;
@@ -91,19 +90,22 @@
    }
 
    .help .message { 
-      margin: auto;
+      margin: 0 auto;
+      padding-top: 20px 0;
       display: flex;
       align-items: center;
+      justify-content: center;
       width: 350px;
+      background: linear-gradient(180deg, rgb(11 14 17 / 80%), rgb(11 14 17 / 1%));
    }
 
    .help .message p {
-      color: rgb(204, 204, 204);
+      color: rgb(223, 223, 223);
       text-align: left;
       text-transform: uppercase;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       margin: 0 15px;
-      font-weight: 600;
+      font-weight: 500;
    }
 
    .notifications-hints {
@@ -135,7 +137,10 @@
    }
    
    .icon-mark {
-      width: 65px; height: 65px; background: whitesmoke; mask-size: cover;
+      width: 50px;
+      height: 50px;
+      background: whitesmoke;
+      mask-size: cover;
       mask: url('../assets/images/icons/question-mark.svg') no-repeat center;
    }
 

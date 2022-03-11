@@ -1,4 +1,4 @@
-import { gDimension } from "@constants";
+import { cmds, gDimension } from "@constants";
 import { notifications } from "@enums";
 import { business } from "@models";
 import { houses } from "@models";
@@ -35,6 +35,11 @@ export function isAnyVehicleAtPosition (position: Vector3Mp, radius: number = 2,
       }
    }
 };
+
+
+export function formatCommand (cmd: string) {
+   return '/' + cmd;
+}
 
 export function distanceBetweenVectors (first: Vector3Mp, second: Vector3Mp) {
    return new mp.Vector3(first.x, first.y, first.z).subtract(new mp.Vector3(second.x, second.y, second.z)).length();

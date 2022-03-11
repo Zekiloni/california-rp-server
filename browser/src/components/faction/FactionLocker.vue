@@ -9,7 +9,7 @@
    import Component from 'vue-class-component';
 
    @Component
-   export default class PoliceLocker extends Vue {
+   export default class FactionLocker extends Vue {
       
    }
 </script>

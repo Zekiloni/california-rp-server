@@ -1,10 +1,11 @@
 
 
 
-export namespace economyConfig {
+export namespace EconomyConfig {
 
 
    export const prices = {
-      frequency: 350
+      FREQUENCY: 350,
+      GOV_REPAIR: 540,
    }
 }

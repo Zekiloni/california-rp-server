@@ -1,4 +1,5 @@
 import { FactionsPermissions } from '@enums';
+import { factions } from '@models';
 
 
 export interface interactionPoint {
@@ -14,7 +15,7 @@ export interface offer {
    description: string
    offerer: PlayerMp
    respond (player: PlayerMp, respond: boolean): void;
-   faction?: number
+   faction?: factions
 }
 
 export type commands = {

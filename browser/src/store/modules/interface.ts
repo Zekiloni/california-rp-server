@@ -102,6 +102,12 @@ const InitialState:uInterface = {
       escClose: 'CLIENT::FACTION:PANEL' 
    },
 
+   factionGarage: {
+      toggle: false,
+      mouse: true,
+      escClose: 'CLIENT::FACTION:GARAGE'
+   },
+
 
    // vehicles menu
    vehiclesMenu: { toggle: false }

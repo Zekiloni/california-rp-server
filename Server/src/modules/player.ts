@@ -165,6 +165,9 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
             heading: playerConfig.main.heading
          }
 
+         console.log(character?.vehicles)
+
+         console.log(character?.business)
          spawnPoints.push(defaultSpawn);
 
          if (character?.faction) {
