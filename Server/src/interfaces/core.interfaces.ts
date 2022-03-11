@@ -1,5 +1,5 @@
 import { FactionsPermissions } from '@enums';
-import { factions } from '@models';
+import { factions, jobs } from '@models';
 
 
 export interface interactionPoint {
@@ -13,9 +13,10 @@ export interface interactionPoint {
 export interface offer {
    title: string
    description: string
-   offerer: PlayerMp
+   offerer?: PlayerMp | null
    respond (player: PlayerMp, respond: boolean): void;
    faction?: factions
+   job?: jobs
 }
 
 export type commands = {
@@ -23,19 +24,24 @@ export type commands = {
 };
 
 
-export interface factionTypeCmd  {
+export interface FactionTypeCommand {
    required?: boolean
    type?: number[] | null
    permission?: FactionsPermissions
 }
 
+export interface JobTypeCommands {
+   required?: boolean
+   id?: number
+}
+
 export interface command {
    description: string
    params?: any[]
-   faction?: factionTypeCmd
+   faction?: FactionTypeCommand
    item?: string
    vehicle?: boolean
-   job?: number
+   job?: JobTypeCommands
    position?: Vector3Mp
    admin?: number
    call (player: PlayerMp, ...params: any): void

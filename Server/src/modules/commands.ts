@@ -1,7 +1,8 @@
-import { colors, lang, none, ranks } from '@constants';
-import { ItemEnums, notifications } from '@enums';
+
 import { shared_Data } from '@shared';
 import { commands } from '@interfaces';
+import { colors, lang, none } from '@constants';
+import { ItemEnums, notifications } from '@enums';
 import { factions, inventories, factionsRanks } from '@models';
 
 
@@ -27,13 +28,18 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
          return;
       } 
 
-      if (command.job && character.job != command.job) {
-         player.notification(lang.notSpecificJob, notifications.type.ERROR, notifications.time.SHORT);
+      if (command.job && command.job.required && player.character.isUnemployed) {
+         player.notification(lang.UNEMPLOYED, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
+      if (command.job && command.job.id && player.character.job != command.job.id) {
+         player.notification(lang.NOT_SPECIFIED_JOB, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
       if (command.position && player.dist(command.position) > 2.25) {
-         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
@@ -99,6 +105,7 @@ import './commands/lock.Command';
 import './commands/channel.commands';
 import './commands/faction.Commands';
 import './commands/leo.Commands';
+import './commands/job.Commands';
 import './commands/test.commands';
 
 

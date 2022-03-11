@@ -3,7 +3,7 @@ import fs from 'fs';
 
 import { Commands } from '../commands';
 import { logs, items, inventories, houses, accounts, business, factions, characters, vehicles } from '@models';
-import { cmds, colors, lang, none, weathers } from '@constants';
+import { cmds, colors, gDimension, lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, serverConfig, VehicleConfig } from '@configs';
 import { shared_Data } from '@shared';
@@ -623,6 +623,11 @@ Commands[cmds.names.TELEPORT] = {
             player.position = new mp.Vector3(vehicle.position.x + 1, vehicle.position.y + 2, vehicle.position.z);
             player.dimension = vehicle.dimension;
 
+            break;
+         }
+
+         case cmds.actions.job: {
+            player.dimension = gDimension;
             break;
          }
 

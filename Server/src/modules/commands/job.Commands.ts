@@ -1,0 +1,65 @@
+import { Commands } from '../commands';
+import { cmds, colors, lang } from '@constants';
+import { notifications } from '@enums';
+import { jobs } from '@models';
+import { shared_Data } from '@shared';
+import { JobConfig } from '@configs/jobs.config';
+
+
+
+Commands[cmds.names.TAKE_JOB] = {
+   description: cmds.descriptions.TAKE_JOB,
+   call (player: PlayerMp) {
+      if (!player.character.isUnemployed) {
+         player.notification(lang.ALREADY_HAVE_JOB, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      const job = jobs.nearest(player, 3);
+
+      if (!job) {
+         player.notification(lang.NOT_NEAR_ANY_JOB, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      job.employ(player);
+   }
+};
+
+
+
+Commands[cmds.names.BUS_ROUTES] = {
+   description: cmds.descriptions.BUS_ROUTES,
+   job: { required: true, id: JobConfig.job.BUS_DRIVER },
+   call (player: PlayerMp) {
+      for (const i in JobConfig.busRoutes) {
+         const route = JobConfig.busRoutes[i];
+        player.sendMessage((i + 1) + '. ' + route.name + 'broj stanica: ' + route.points.length, colors.hex.Info);
+      }
+   }
+}
+
+Commands[cmds.names.CHOOSE_ROUTE] = {
+   description: cmds.descriptions.CHOOSE_ROUTE,
+   job: { required: true, id: JobConfig.job.BUS_DRIVER },
+   params: [
+      cmds.params.BUS_ROUTE
+   ],
+   call (player: PlayerMp, route: string) {
+
+      if (player.getVariable(shared_Data.JOB_DUTY)) {
+         player.notification(lang.U_ALREADY_WORKING, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      const job = jobs.list.find(job => job.id == player.character.job);
+
+      if (!job) { 
+         return;
+      }
+      
+      if (job.start) {
+         job.start(player, Number(route));
+      }
+   }
+}

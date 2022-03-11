@@ -82,7 +82,7 @@
    }
    
    li h4 {
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       font-weight: 500;
       color: white;
    }
@@ -95,6 +95,7 @@
 
    li.success .icon {
       background:#159559;
+      background: linear-gradient(180deg, #0cbe80, #157250);
       mask: url('../../assets/images/icons/success.svg') no-repeat center; 
       mask-size: cover;
    }
@@ -106,7 +107,7 @@
    }
 
    li.info .icon {
-      background: #ffcc45;
+      background: linear-gradient(180deg, #fede29, #ffb901);
       mask: url('../../assets/images/icons/info.svg') no-repeat center; 
       mask-size: cover;
    }

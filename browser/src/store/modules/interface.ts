@@ -108,9 +108,12 @@ const InitialState:uInterface = {
       escClose: 'CLIENT::FACTION:GARAGE'
    },
 
-
    // vehicles menu
-   vehiclesMenu: { toggle: false }
+   vehiclesMenu: { toggle: false },
+
+   // jobs
+   busStations: { toggle: false },
+
 }
 
 export const InterfaceStore = {

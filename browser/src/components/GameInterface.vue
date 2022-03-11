@@ -12,7 +12,7 @@
 
       <div class="server-info" >
          <div class="player-id"> 
-            <h2> # {{ playerId }}</h2>
+            <h2 > # {{ playerId }}</h2>
             <h3> {{ Messages.YOUR_ID }} </h3>
          </div>
          <div class="online-players"> 
@@ -30,7 +30,7 @@
 
          <div class="location"> 
             <h2> {{ location.heading }} </h2>
-            <h3 class="street"> {{ location.street }} </h3>
+            <h3 class="street "> {{ location.street }} </h3>
             <h3 class="zone"> {{ location.zone }} </h3>
          </div>
       </div>
@@ -204,7 +204,7 @@
 
    .date-time { margin-bottom: 25px; }
    .date-time h2 { color: #cdcdcd; font-weight: 450; }
-   .date-time h3 { font-weight: 550; color: #959fae; font-size: 0.9rem; }
+   .date-time h3 { font-weight: 550; color: #959fae; font-size: 0.95rem; }
 
    .location h2 { 
       background: -webkit-linear-gradient(45deg, #f7cc59, #ffb901);
@@ -216,7 +216,7 @@
       font-size: 1.5rem;
    }
    
-   .location h3.street { color: #e2e2e2; font-weight: 450; }
-   .location h3.zone { font-weight: 550; color: #959fae; font-size: 0.9rem; }
+   .location h3.street { color: #e2e2e2; font-weight: 550; }
+   .location h3.zone { font-weight: 550; color: #959fae; font-size: 0.95rem; }
    
 </style>

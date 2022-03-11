@@ -20,12 +20,16 @@ export const lang = {
    vehicleLoaded: 'Vozilo uspešno učitano.',
    uTeleportedVehicleToYou: 'Teleportovali ste vozilo do vas.',
    uSendReport: 'Uspešno ste poslali prijavu, administracija će uskoro odgovoriti.',
+   U_EMPLOYED_AS: 'Uspešno ste se zaposlili kao ',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
    userNotFound: 'Korisnik nije pronadjen.',
    playerNotNear: 'Igrač nije u vašoj blizini.',
    minTwoHours: 'Potrebno vam je minimum dva sata igre.',
+   ALREADY_HAVE_JOB: 'Već ste zaposleni.',
+   NOT_NEAR_ANY_JOB: 'Niste u blizini niti jednog posla.',
+   U_ALREADY_WORKING: 'Već radite.',
    productNotAvailable: ' nije dostupan',
    itemDoesntExist: 'Taj predmet ne postoji.',
    noVehicleFound: 'Vozilo nije pronadjeno.',
@@ -70,8 +74,8 @@ export const lang = {
    youHaveMoreThanHealth: 'Vaš HP je dovoljnno visok za korišćenje medkita.',
    notEmployed: 'Niste zaposleni.',
    jobNotStarted: 'Niste započeli posao.',
-   unemployed: 'Niste zaposleni.',
-   notSpecificJob: 'Nemate odredjeni posao.',
+   UNEMPLOYED: 'Niste zaposleni.',
+   NOT_SPECIFIED_JOB: 'Nemate odredjeni posao.',
    orderNotCompleted: 'Niste dostavili kompletnu porudžbinu',
    itemNoDescription: 'Ovaj predmet nema opis.',
    notEnoughMoney: 'Nemate dovoljno novca.',
@@ -87,7 +91,6 @@ export const lang = {
    youDontHaveHouseKeys: 'Nemate ključeve od ove kuće.',
    youDontHaveBusinesKeys: 'Nemate ključeve od ovog biznisa.',
    youDontOwnAHouse: 'Ne posedujete ni jednu kuću.',
-   alreadyWorking: 'Već radite.',
    invalidBussinesType: 'Nepoznat tip biznisa',
    cmdDoesntExist: 'Komanda ne postoji.',
    noFurnitureOwned: `Nemate ništa od nameštaja`,
@@ -129,6 +132,8 @@ export const lang = {
 
    // info messages
    kickedFromFaction: 'Izbačeni ste iz fakcije',
+   U_WANT_JOB: 'Da li ste želite zaposliti kao ',
+   U_DECLINED_JOB_OFFER: 'Odbili ste ponudu za posao.',
    uKickedFromFaction: 'Izbacili ste ',
    fromFaction: ' iz fakcije.',
    dmvInstructorGoVehicle: 'Instruktor Vožnje: Okej, dobro ste prošli usmeni test, sada sledi vožnja, pratite me do vozila.',
@@ -213,6 +218,7 @@ export const lang = {
 
 
    // others 
+   JOB_OFFER: 'Posao',
    and: ' i ', 
    times: ' puta',
    dispatcher: 'DISPATCHER',

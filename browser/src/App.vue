@@ -80,7 +80,6 @@
       </transition-group>
 
 
-
       <!-- [FACTION] -->
       <transition name="fade">
          <FactionPanel v-if="interfaces.factionPanel.toggle" />
@@ -97,6 +96,11 @@
          <button class="frp-red"> Test </button>
          <button class="frp-green"> Test </button> 
          -->
+
+      <!-- [JOBS] -->
+      <transition name="fade-with-bottom-slide">
+         <BusStations v-if="interfaces.busStations.toggle" />
+      </transition>
 
    </div>
 </template>
@@ -120,7 +124,6 @@
    import Document from './components/misc/id.document.vue';
    import Banking from './components/other/banking.vue';
    import ATM from './components/other/atm.vue';
-   import JobOffer from './components/jobs/job.offer.vue';
 
    import Inventory from '@/components/items/Items.vue';
 
@@ -143,14 +146,14 @@
 
    import FactionPanel from '@/components/faction/FactionPanel.vue';
    import FactionGarage from '@/components/faction/FactionGarage.vue';
-   
+
+   import BusStations from '@/components/jobs/BusStations.vue';
       
    export default { 
-
       components: { 
          Lobby, Creator, Notifications, Hints, GameInterface, Playerlist,
-         Offer, PlayerMenu, Inventory, Chat, Banking, ATM, JobOffer,
-         HouseInfo, Phone, Document, HandheldRadio, DeathScreen,
+         Offer, PlayerMenu, Inventory, Chat, Banking, ATM, HouseInfo,
+         Phone, Document, HandheldRadio, DeathScreen,
 
          VehiclesMenu,
 
@@ -158,7 +161,9 @@
          
          BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
 
-         FactionPanel, FactionGarage
+         FactionPanel, FactionGarage,
+
+         BusStations
       },
 
       data () { 

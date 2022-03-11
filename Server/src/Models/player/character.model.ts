@@ -316,7 +316,6 @@ export class characters extends Model {
    async setJob (player: PlayerMp, value: number) {
       this.job = value;
       player.setVariable(shared_Data.JOB, value);
-      await this.save();
    };
 
    async setFaction (player: PlayerMp, factionID: number, rank?: number) {

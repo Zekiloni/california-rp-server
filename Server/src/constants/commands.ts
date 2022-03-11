@@ -32,6 +32,10 @@ export namespace cmds {
       RESPAWN_VEHICLE: 'respawnvehicle',
       RESPAWN_ALL_VEHICLES: 'respawnvehicles',
       GET_VEHICLE: 'getvehicle',
+      TAKE_JOB: 'takejob',
+      QUIT_JOB: 'quitjob',
+      CHOOSE_ROUTE: 'route',
+      BUS_ROUTES: 'routes',
       HEALTH: 'health',
       SET_ARMOUR: 'armour',
       A_CHAT: 'a',
@@ -99,7 +103,8 @@ export namespace cmds {
       garage: 'garage',
       equipment: 'equipment',
       take: 'take',
-      return: 'return'
+      return: 'return',
+      job: 'job',
    }
    
    export const params = { 
@@ -112,9 +117,10 @@ export namespace cmds {
       FIELD: 'polje',
       VALUE: 'vrednost',
       AMMO: 'municija',
+      BUS_ROUTE: 'broj rute',
       TYPE: 'tip',
       PRICE: 'cena',
-      TP_TYPE: 'tip: vehicle, busines, house',
+      TP_TYPE: 'tip: vehicle, busines, house, job',
       WEATHER: 'ime vremena / id',
       FACTION_GARAGE: 'akcija: take / return',
       HOUSE_ID: 'id kuće',
@@ -137,6 +143,8 @@ export namespace cmds {
       NO_DESC: 'Bez opisa.',
       HELP: 'Lista komandi.',
       KICK: 'Kikovanje igrača.',
+      BUS_ROUTES: 'Rute vozača autobusa.',
+      CHOOSE_ROUTE: 'Započeti posao sa odabranom rutom.',
       VEHICLES_MENU: 'Meni vaših vozila.',
       CREATE_VEHICLE: 'Kreiranje vozila.',
       SPAWN_VEHICLE: 'Učitavanje vozila.',
@@ -212,6 +220,7 @@ export namespace cmds {
       BUY: 'Kupovina.',
       CREATE_ACCOUNT: 'Kreiranje računa.',
       ANNOUNCEMENT: 'Emitovanje igračima.',
+      TAKE_JOB: 'Uzimanje posla, zapošljavanje.'
    };
    
 }
