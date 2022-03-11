@@ -1067,45 +1067,20 @@ Commands[cmds.names.RESPAWN_ALL_VEHICLES] = {
 };
 
 
+Commands[cmds.names.SET_ARMOUR] = {
+   description: cmds.descriptions.SET_ARMOUR,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   call (player: PlayerMp, targetSearch: string, armour: string) {
+      const target = mp.players.find(targetSearch);
 
-// Commands['sethp'] = {
-//    Admin: 3,
-//    description: '',
-//    params: ['igrač', 'hp'],
-//    Call: async (Player, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]), Health = parseInt(Args[1]);
-//       if (TargetPlayer && Health) {
-//          Helth varijabla i setanje helti
-//          Admin.AdminActionNotify(Player, `je namestio helte igraču ${TargetPlayer.name} na ${Health}.`);
-//       }
-//    }
-// };
+      if (!target) {
+         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
 
-// Commands['setarmor'] = {
-//    Admin: 3,
-//    description: '',
-//    params: ['igrač', 'armor'],
-//    Call: async (Player, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]), Health = parseInt(Args[1]);
-//       if (TargetPlayer && Health) {
-//          Helth varijabla i setanje helti
-//          Admin.AdminActionNotify(Player, `je namestio armor igraču ${TargetPlayer.name} na ${Health}.`);
-//       }
-//    }
-// };
-
-// Commands['setvw'] = {
-//    Admin: 5,
-//    description: '',
-//    params: ['igrač', 'dimenzija'],
-//    Call: async (Player, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]), Dimension = parseInt(Args[1]);
-//       if (TargetPlayer && Dimension) {
-//          TargetPlayer.dimension = Dimension;
-//          Admin.AdminActionNotify(Player, `je namestio dimenziju igraču ${TargetPlayer.name} na ${Dimension}.`);
-//       }
-//    }
-// };
+      target.armour = Number(armour);
+   }
+}
 
 // Commands['setskin'] = {
 //    Admin: 6,
@@ -1119,40 +1094,6 @@ Commands[cmds.names.RESPAWN_ALL_VEHICLES] = {
 //       }
 //    }
 // };
-
-// Commands['setmoney'] = {
-//    Admin: 7,
-//    params: ['igrac', 'vrednost'],
-//    description: 'Postavite novac u džepu igraču na određenu vrednost',
-//    Call: async (Player: PlayerMp, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
-
-//       if (TargetPlayer && Value) {
-//          const Character = await Characters.findOne({ where: { id: Player.character.id } });
-//          if (Character) {
-//             Character.Money = Value;
-//             Character.save();
-//             TargetPlayer.SendMessage('[OOC] Admin Vam je postavio novac u džepu na ' + Value, Colors.tomato);
-//             Admin.AdminActionNotify(Player, `je postavio novac u džepu igraču ${TargetPlayer.name} na ${Value}$.`);
-//          }
-//       }
-//    }
-// };
-
-// Commands['givemoney'] = {
-//    Admin: 7,
-//    description: 'Dodajte novac igraču u džep',
-//    params: ['igrac', 'vrednost'],
-//    Call: async (Player: PlayerMp, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]), Value = parseInt(Args[1]);
-
-//       if (TargetPlayer && Value) {
-//          Player.character.GiveMoney(Player, Value);
-//          TargetPlayer.SendMessage('[OOC] Admin Vam je dao novac.' + Value + '$', Colors.tomato);
-//       }
-//    }
-// };
-
 
 
 
