@@ -84,6 +84,11 @@
       <transition name="fade">
          <FactionPanel v-if="interfaces.factionPanel.toggle" />
       </transition>
+
+
+      <!-- [POLICE] -->
+      <PoliceRadar v-if="interfaces.policeRadar.toggle" />
+
       <!-- <transition name="bounce">
          <Lobby v-if="interfaces.Lobby" />
       </transition>      -->
@@ -147,6 +152,8 @@
    import FactionPanel from '@/components/faction/FactionPanel.vue';
    import FactionGarage from '@/components/faction/FactionGarage.vue';
 
+   import PoliceRadar from './components/faction/police/PoliceRadar.vue';
+
    import BusStations from '@/components/jobs/BusStations.vue';
       
    export default { 
@@ -161,7 +168,8 @@
          
          BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
 
-         FactionPanel, FactionGarage,
+         FactionPanel, FactionGarage, 
+         PoliceRadar,
 
          BusStations
       },

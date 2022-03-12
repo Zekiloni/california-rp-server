@@ -108,6 +108,9 @@ const InitialState:uInterface = {
       escClose: 'CLIENT::FACTION:GARAGE'
    },
 
+   // police
+   policeRadar: { toggle: false },
+
    // vehicles menu
    vehiclesMenu: { toggle: false },
 
