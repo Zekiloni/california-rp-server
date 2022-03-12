@@ -4,7 +4,12 @@
    <div class="stations">
       <h2> {{ Messages.BUS_ROUTE }} </h2>
       <div class="info">
-         <h4 class="number-of-stations"> <small> {{ Messages.BUS_STATIONS }} </small> {{ currentStation + 1 }} / {{ stations }} </h4>
+         <h4 class="number-of-stations"> <small> {{ Messages.BUS_STATIONS }} </small> </h4>
+
+         <ul class="list">
+            <li v-for="(station, i) in stations" :key="i"  :class="{ visited: station, next: currentStation == i }"> </li>
+         </ul>
+
          <div class="next">
             <small> {{ Messages.NEXT_BUS_STATION }} </small>
             <h3> {{ nextStation.street }} </h3>
@@ -26,19 +31,19 @@
 
    @Component
    export default class BusStations extends Vue {
-      stations: number = 0;
+      stations: boolean[] = [];
       currentStation: number = 0;
-      
       nextStation: NextStation | null = null
 
       Messages = Messages;
 
-      initStations (stationsNumber: number) {
-         this.stations = stationsNumber;
+      isVisited (visited: boolean) {
+         return visited ? true : false;
       }
 
-      updateStation (id: number, street: string, zone: string) {
-         this.currentStation = id;
+      updateStation (stations: string, index: number, street: string, zone: string) {
+         this.stations = JSON.parse(stations);
+         this.currentStation = index;
 
          this.nextStation = {
             street: street,
@@ -48,8 +53,7 @@
 
       mounted () {
          if (window.mp) {
-            mp.events.add('BROWSER::BUS_STATIONS', this.initStations);
-            mp.events.add('BROWSER::BUS:STATIONS_UPDATE', this.updateStation);
+            mp.events.add('BROWSER::BUS_STATIONS', this.updateStation);
          }
       }
    }
@@ -96,4 +100,35 @@
 
    .next h3 { color: #e2e2e2; font-weight: 350; }
    .next h4 { font-weight: 550; color: #959fae; font-size: 0.75rem; }
+
+   ul.list {
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+      padding: 0;
+   }
+
+   ul.list li {
+      width: 10px; 
+      height: 10px;
+      transition: all .3s ease;
+      border-radius: 100%;
+      background: #21252f;
+   }
+
+   ul.list li.visited {
+      background: #0cbe80 !important;
+      animation: nice 1s ease-in-out;
+   }
+   
+   ul.list li.next {
+      margin: 0;
+      background: #848e9c;
+      padding: 0;
+   }
+
+   @keyframes nice {
+      from { transform: scale(1); }
+      from { transform: scale(2); }
+   }
 </style>

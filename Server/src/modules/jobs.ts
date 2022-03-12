@@ -1,4 +1,4 @@
 
 
-import './jobs/bus.Driver';
+import './jobs/bus';
 import './jobs/postal';

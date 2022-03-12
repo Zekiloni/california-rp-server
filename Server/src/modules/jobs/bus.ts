@@ -28,12 +28,12 @@ busDriver.start = function (player: PlayerMp, routeID: number) {
       return;
    }
    
-   const vehiclePoint = <VehiclePoint>busDriver.vehicle_position;
+   const vehiclePoint = <VehiclePoint>this.vehicle_position;
    const vehicleColor: [RGB, RGB] = [
       [0, 0, 0], [0, 0, 0]
    ];
 
-   const jobVehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.owner == player.character.id && vehicle.instance.job!.id == busDriver.id);
+   const jobVehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.owner == player.character.id && vehicle.instance.job && vehicle.instance.job.id == this.id);
 
    if (jobVehicle) {
 
@@ -41,7 +41,7 @@ busDriver.start = function (player: PlayerMp, routeID: number) {
       vehicles.new('bus', VehicleConfig.type.JOB, true, player.character.id, vehicleColor, vehiclePoint.position, vehiclePoint.rotation, {
          locked: false, spawned: false, numberplate: {
             issued: Date.now(),
-            plate: initials(busDriver.name) + randomInteger(100, 900).toFixed(0),
+            plate: initials(this.name) + randomInteger(100, 900).toFixed(0),
             expiring: 99999999
          }
       }).then(createdVehicle => {
@@ -67,7 +67,8 @@ busDriver.start = function (player: PlayerMp, routeID: number) {
 
 
 busDriver.stop = function (player: PlayerMp, finished: boolean, stations: number) {
-   player.outputChatBox('zavrsio si ' + JSON.stringify(stations) + ' stanica')
+   player.outputChatBox('zavrsio si ' + JSON.stringify(stations) + ' stanica');
+   player.character.working = false;
 };
 
 

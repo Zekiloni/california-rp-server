@@ -33,7 +33,6 @@ const startRoute = (points: Vector3Mp[], id: number) => {
       currentStation = busStations.indexOf(first);
 
       Browser.call('BROWSER::SHOW', 'busStations');
-      Browser.call('BROWSER::BUS_STATIONS', points.length);
    
       station(first.position);
    }
@@ -49,7 +48,7 @@ const station = (stationPosition: Vector3Mp) => {
 
    const info = getStreetZone(stationPosition);
 
-   Browser.call('BROWSER::BUS:STATIONS_UPDATE', currentStation, info.street, info.zone);
+   Browser.call('BROWSER::BUS_STATIONS', busStations.map(station => station.visited), currentStation, info.street, info.zone);
 
    const checkpoint = mp.checkpoints.new(48, new mp.Vector3(x, y, z - 1.7), 3.5, {
       direction: new mp.Vector3(0, 0, 0),
@@ -68,6 +67,8 @@ const station = (stationPosition: Vector3Mp) => {
          if (!mp.players.local.vehicle) {
             return;
          }
+
+         busStations[currentStation].visited = true;
 
          checkpoint.destroy();
          blip.destroy();
@@ -90,7 +91,7 @@ const station = (stationPosition: Vector3Mp) => {
 const stopRoute = (finished: boolean) => {
    const visitedStations = busStations.filter(station => station.visited == true);
 
-   mp.events.callRemote('SERVER::BUS_DRIVER:FINISH', finished, visitedStations);
+   mp.events.callRemote('SERVER::BUS_DRIVER:FINISH', finished, visitedStations.length);
 
    drivingBus = false;
    busStations = [];
