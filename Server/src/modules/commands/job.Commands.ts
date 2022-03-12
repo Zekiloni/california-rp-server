@@ -47,7 +47,7 @@ Commands[cmds.names.CHOOSE_ROUTE] = {
    ],
    call (player: PlayerMp, route: string) {
 
-      if (player.getVariable(shared_Data.JOB_DUTY)) {
+      if (player.character.working) {
          player.notification(lang.U_ALREADY_WORKING, notifications.type.ERROR, notifications.time.MED);
          return;
       }

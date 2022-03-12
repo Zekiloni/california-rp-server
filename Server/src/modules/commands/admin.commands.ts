@@ -413,7 +413,7 @@ Commands[cmds.names.CREATE_VEHICLE] = {
          }
          
          player.putIntoVehicle(vehicle, RageEnums.VehicleSeat.DRIVER);
-      })
+      });
    } 
 };
 

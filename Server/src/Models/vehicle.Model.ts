@@ -109,11 +109,15 @@ export class vehicles extends Model {
    })  
    rotation: Vector3Mp;
 
-   @Column({
-      type: DataType.JSON,
-      get () { return this.getDataValue('numberPlate') ? JSON.parse(this.getDataValue('numberPlate')) : null; }
-   })   
-   numberPlate: NumberPlate;
+
+   @Column(DataType.STRING)
+   get numberPlate (): NumberPlate {
+      return JSON.parse(this.getDataValue('numberPlate'))
+   }
+
+   set numberPlate (value: NumberPlate) {
+      this.setDataValue('numberPlate', JSON.stringify(value))
+   }
 
    color: [RGB, RGB] = [[0,0,0], [0,0,0]]
 
@@ -157,7 +161,19 @@ export class vehicles extends Model {
    }
 
 
-   static new (model: string, type: VehicleConfig.type, temporary: boolean, owner: number,  color: [RGB, RGB], position: Vector3Mp, rotation: Vector3Mp, options?: { price?: number, locked?: boolean, spawned?: boolean, faction?: factions, job?: jobs, rent?: number } ) {
+   static new (
+      model: string,
+      type: VehicleConfig.type,
+      temporary: boolean,
+      owner: number, 
+      color: [RGB, RGB],
+      position: Vector3Mp,
+      rotation: Vector3Mp,
+      options?: { 
+         price?: number, locked?: boolean, spawned?: boolean, faction?: factions, job?: jobs, rent?: number,
+         numberplate?: NumberPlate
+      } 
+   ) {
       return vehicles.create( 
          { 
             model: model, 
@@ -169,7 +185,8 @@ export class vehicles extends Model {
             position: position, 
             rotation: rotation, 
             color: color,
-            price: options!.price ? options?.price : none
+            price: options!.price ? options?.price : none,
+            numberPlate: options?.numberplate ? options.numberplate : null
          } 
       ).then(vehicle => {
          return vehicle;

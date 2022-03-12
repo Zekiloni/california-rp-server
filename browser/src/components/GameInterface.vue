@@ -216,7 +216,7 @@
       font-size: 1.5rem;
    }
    
-   .location h3.street { color: #e2e2e2; font-weight: 550; }
-   .location h3.zone { font-weight: 550; color: #959fae; font-size: 0.95rem; }
+   .location h3.street { color: #e2e2e2; font-weight: 450; }
+   .location h3.zone { font-weight: 550; color: #959fae; font-size: 0.95rem; text-transform: uppercase; }
    
 </style>

@@ -37,6 +37,11 @@ export function isAnyVehicleAtPosition (position: Vector3Mp, radius: number = 2,
 };
 
 
+export const initials = (text: string) => {
+   let splited = text.split(' ');
+   return splited.shift()!.charAt(0) + splited.pop()!.charAt(0);
+}
+
 export function formatCommand (cmd: string) {
    return '/' + cmd;
 }

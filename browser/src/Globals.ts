@@ -199,6 +199,11 @@ export const Messages = {
    ANSWER_CALL: 'Prihvati poziv',
    HANGUP_CALL: 'Prekini poziv',
 
+   // jobs
+   BUS_ROUTE: 'Bus ruta',
+   BUS_STATIONS: 'Stajališta',
+   NEXT_BUS_STATION: 'Sledeća stanica',
+
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',
    SPAWN_SELECTOR_INFO: 'Odabir mesta spawna',

@@ -1,4 +1,5 @@
 import { Browser } from '../../browser';
+import { getStreetZone } from '../../utils';
 
 const config = {
    sprite: 103,
@@ -46,7 +47,11 @@ const station = (stationPosition: Vector3Mp) => {
 
    const { x, y, z } = stationPosition;
 
-   const checkpoint = mp.checkpoints.new(48, new mp.Vector3(x, y, z - 2), 2, {
+   const info = getStreetZone(stationPosition);
+
+   Browser.call('BROWSER::BUS:STATIONS_UPDATE', currentStation, info.street, info.zone);
+
+   const checkpoint = mp.checkpoints.new(48, new mp.Vector3(x, y, z - 1.7), 3.5, {
       direction: new mp.Vector3(0, 0, 0),
       color: [ 230, 50, 50, 185 ],
       visible: true,
@@ -57,18 +62,18 @@ const station = (stationPosition: Vector3Mp) => {
       color: config.blipColor, alpha: 250, shortRange: false
    })
 
-   const onEnterPoint = (eCheckpoint: CheckpointMp) => {
-      if (eCheckpoint == checkpoint && currentStation != null) {
+   const onEnterStation = (eCheckpoint: CheckpointMp) => {
+      if (eCheckpoint.id == checkpoint.id && currentStation != null) {
 
-         if (mp.players.local.vehicle) {
+         if (!mp.players.local.vehicle) {
             return;
          }
 
          checkpoint.destroy();
          blip.destroy();
-         mp.events.remove(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, onEnterPoint);
+         mp.events.remove(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, onEnterStation);
 
-         if (currentStation == points.length - 1) {
+         if (currentStation == busStations.length - 1) {
             stopRoute(true);
             return;
          }
@@ -79,8 +84,7 @@ const station = (stationPosition: Vector3Mp) => {
       } 
    }
 
-   mp.events.add(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, onEnterPoint);
-
+   mp.events.add(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, onEnterStation);
 }
 
 const stopRoute = (finished: boolean) => {

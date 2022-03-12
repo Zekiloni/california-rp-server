@@ -128,10 +128,12 @@
             return;
          }
 
-         if (!this.vehicle.spawned) {
-            list.push( { name: 'Stvori vozilo', action: 'get' } )
-         } else {
-            list.push( { name: 'Parkiraj vozilo', action: 'park' } )
+         if (this.vehicle.type == VehicleType.OWNED) {
+            if (!this.vehicle.spawned) {
+               list.push( { name: 'Stvori vozilo', action: 'get' } )
+            } else {
+               list.push( { name: 'Parkiraj vozilo', action: 'park' } )
+            }
          }
 
          if (this.vehicle.type == VehicleType.OWNED) {

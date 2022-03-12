@@ -6,27 +6,32 @@ export namespace JobConfig {
    export const markerColor: RGBA = [255, 204, 69, 200];
    
    export enum job {
-      UNEMPLOYED, BUS_DRIVER
+      UNEMPLOYED, BUS_DRIVER, POSTAL
    }
 
    export const sprites = {
-      BUS_DRIVER: 513
+      BUS_DRIVER: 513,
+      POSTAL: 745,
    }
 
    export const colors = {
-      BUS_DRIVER: 5
+      BUS_DRIVER: 5,
+      POSTAL: 79
    }
 
    export const positions = {
-      BUS_DRIVER: new mp.Vector3(434.9161, -645.7756, 28.7343)
+      BUS_DRIVER: new mp.Vector3(434.9161, -645.7756, 28.7343),
+      POSTAL: new mp.Vector3(0, 0, 0)
    }
 
    export const names = {
-      BUS_DRIVER: 'Bus Driver'
+      BUS_DRIVER: 'Bus Driver',
+      POSTAL: 'Postal'
    }
 
    export const descriptions = {
       BUS_DRIVER: 'Vozite autobus kroz Los Santos sve vam po spisku jebem pičke jedne.',
+      POSTAL: 'Raznosite poštu pušite mi kurac.'
    }
 
    export const busRoutes = [

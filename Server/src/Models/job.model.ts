@@ -64,7 +64,7 @@ export class jobs {
    }
 
    employ (player: PlayerMp) {
-      if (player.data.JOB_DUTY) {
+      if (player.character.working) {
          return;
       }
 
@@ -91,7 +91,7 @@ export class jobs {
 
    get activeWorkers () {
       return mp.players.toArray().filter(
-         player => player.character.job == this.id && player.data.JOB_DUTY
+         player => player.character.job == this.id && player.character.working
       );
    }
 }

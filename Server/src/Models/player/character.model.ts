@@ -179,6 +179,8 @@ export class characters extends Model {
 
    offer: offer | null = null;
    
+   working: boolean = false;
+
    inside: houses | business | null = null;
 
    freezed: boolean = false;
@@ -220,8 +222,6 @@ export class characters extends Model {
 
       // temporary variables
       player.setVariable(shared_Data.FACTION_DUTY, false);
-      player.setVariable(shared_Data.JOB_DUTY, false);
-      player.setVariable(shared_Data.JOB_VEHICLE, null);
       player.setVariable(shared_Data.ADMIN_DUTY, false);
       player.setVariable(shared_Data.FREEZED, false);
       player.setVariable(shared_Data.BUBBLE, null);
@@ -445,7 +445,8 @@ export class characters extends Model {
 
       await this.save();
       inventories.savePlayerEquipment(this);
-
+      
+      this.working = false;
    }
 
    async respawn (player: PlayerMp, inHospital: boolean) {
