@@ -2,8 +2,8 @@ import { Commands } from '../commands';
 import { cmds, colors, lang } from '@constants';
 import { notifications } from '@enums';
 import { jobs } from '@models';
-import { shared_Data } from '@shared';
-import { JobConfig } from '@configs/jobs.config';
+import { JobConfig } from '@configs';
+import { taxi } from '@modules/jobs/taxi';
 
 
 
@@ -61,5 +61,17 @@ Commands[cmds.names.CHOOSE_ROUTE] = {
       if (job.start) {
          job.start(player, Number(route));
       }
+   }
+}
+
+
+Commands[cmds.names.TAXI_JOB] = {
+   description: cmds.descriptions.TAXI_JOB,
+   job: { 
+      required: true, 
+      id: JobConfig.job.TAXI 
+   },
+   call (player: PlayerMp) {
+
    }
 }

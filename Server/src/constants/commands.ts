@@ -27,6 +27,7 @@ export namespace cmds {
       CUFF: 'cuff',
       TELEPORT: 'teleport',
       KICK: 'kick',
+      TAXI_JOB: 'taxi',
       BAN: 'ban',
       LOCK: 'lock',
       RESPAWN_VEHICLE: 'respawnvehicle',
@@ -105,6 +106,9 @@ export namespace cmds {
       take: 'take',
       return: 'return',
       job: 'job',
+      start: 'start',
+      stop: 'stop',
+      fare: 'fare'
    }
    
    export const params = { 
@@ -137,6 +141,7 @@ export namespace cmds {
       FACTION_NAME: 'ime fakcije',
       FACTION_ID: 'id fakcije',
       BUSINES_ID: 'id biznisa',
+      TAXI: 'start / stop / fare'
    };
    
    export const descriptions = { 
@@ -220,7 +225,8 @@ export namespace cmds {
       BUY: 'Kupovina.',
       CREATE_ACCOUNT: 'Kreiranje računa.',
       ANNOUNCEMENT: 'Emitovanje igračima.',
-      TAKE_JOB: 'Uzimanje posla, zapošljavanje.'
+      TAKE_JOB: 'Uzimanje posla, zapošljavanje.',
+      TAXI_JOB: 'Posao taksiste.'
    };
    
 }

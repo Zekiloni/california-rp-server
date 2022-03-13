@@ -1,7 +1,7 @@
 <template>
 
    <div id="app">
-
+      <Map />
       <Notifications />
 
       <Lobby v-if="interfaces.lobby.toggle" />
@@ -155,6 +155,8 @@
    import PoliceRadar from './components/faction/police/PoliceRadar.vue';
 
    import BusStations from '@/components/jobs/BusStations.vue';
+
+   import Map from '@/components/misc/Map.vue';
       
    export default { 
       components: { 
@@ -169,7 +171,7 @@
          BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
 
          FactionPanel, FactionGarage, 
-         PoliceRadar,
+         PoliceRadar, Map,
 
          BusStations
       },

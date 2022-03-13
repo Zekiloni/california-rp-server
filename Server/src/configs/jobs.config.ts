@@ -6,7 +6,7 @@ export namespace JobConfig {
    export const markerColor: RGBA = [255, 204, 69, 200];
    
    export enum job {
-      UNEMPLOYED, BUS_DRIVER, POSTAL
+      UNEMPLOYED, BUS_DRIVER, POSTAL, TAXI
    }
 
    export const sprites = {

@@ -35,10 +35,9 @@ const trace = () => {
       } else {
          if (ForwardVehicle.entity.type == RageEnums.EntityType.VEHICLE) {
 
-            const vehicle = <VehicleMp>ForwardVehicle.entity;
+            const targetVehicle = <VehicleMp>ForwardVehicle.entity;
 
-
-            Browser.call('BROWSER::POLICE_RADAR', (vehicle.getSpeed() * 3.6), mp.game.vehicle.getDisplayNameFromVehicleModel(vehicle.model), vehicle.getNumberPlateText());
+            Browser.call('BROWSER::POLICE_RADAR', (targetVehicle.getSpeed() * 3.6), mp.game.vehicle.getDisplayNameFromVehicleModel(targetVehicle.model), targetVehicle.getNumberPlateText());
             mp.game.graphics.drawLine(vehicle.position.x, vehicle.position.y, vehicle.position.z, ForwardPosition.x, ForwardPosition.y, ForwardPosition.z, 0, 255, 0, 255);
          }
       }

@@ -5,7 +5,7 @@ import { initials, randomInteger } from '@shared/utils';
 
 
 
-const busDriver = new jobs(
+export const bus = new jobs(
    JobConfig.job.BUS_DRIVER, 
    JobConfig.names.BUS_DRIVER, 
    JobConfig.descriptions.BUS_DRIVER,
@@ -15,13 +15,13 @@ const busDriver = new jobs(
 );
 
 
-busDriver.vehicle_position = {
+bus.vehicle_position = {
    position: new mp.Vector3(461.4018, -582.2833, 28.4970),
    rotation: new mp.Vector3(0, 0, 83)
 }
 
 
-busDriver.start = function (player: PlayerMp, routeID: number) {
+bus.start = function (player: PlayerMp, routeID: number) {
    const route = JobConfig.busRoutes[routeID];
 
    if (!route) {
@@ -66,11 +66,11 @@ busDriver.start = function (player: PlayerMp, routeID: number) {
 };
 
 
-busDriver.stop = function (player: PlayerMp, finished: boolean, stations: number) {
+bus.stop = function (player: PlayerMp, finished: boolean, stations: number) {
    player.outputChatBox('zavrsio si ' + JSON.stringify(stations) + ' stanica');
    player.character.working = false;
 };
 
 
 
-mp.events.add('SERVER::BUS_DRIVER:FINISH', busDriver.stop);
+mp.events.add('SERVER::BUS_DRIVER:FINISH', bus.stop);
