@@ -7,7 +7,6 @@ import './modules/commands';
 import './modules/player'
 import './modules/items';
 import './modules/minute';
-import './modules/bank'
 import './modules/jobs';
 import './modules/business.Manager';
 

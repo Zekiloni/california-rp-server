@@ -161,6 +161,7 @@ export namespace cmds {
       EDIT_HOUSE: 'Podešavanje kuće.',
       EDIT_BUSINESS: 'Podešavanje najbližeg biznisa.',
       BUSINESS: 'Opcije biznisa.',
+      
       BUSINESS_TYPES: 'Spisak dostupnih tipova bizinsa.',
       BUILDER: 'Graditelj.',
       RESPAWN_VEHICLE: 'Respavn obližnjeg vozila ili vozila u kojem se nalazite.',
@@ -226,6 +227,7 @@ export namespace cmds {
       CREATE_ACCOUNT: 'Kreiranje računa.',
       ANNOUNCEMENT: 'Emitovanje igračima.',
       TAKE_JOB: 'Uzimanje posla, zapošljavanje.',
+      QUIT_JOB: 'Davanje otkaza na trenutnom poslu.',
       TAXI_JOB: 'Posao taksiste.'
    };
    

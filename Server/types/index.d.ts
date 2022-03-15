@@ -16,6 +16,7 @@ declare global {
       playScenario (Name: string): void;
    }
 
+
    interface ColshapeMp { 
       onPlayerEnter (player: PlayerMp): void
       onPlayerLeave (player: PlayerMp): void

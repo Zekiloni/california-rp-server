@@ -56,6 +56,7 @@ export class jobs {
          }
       };
 
+      console.log(this.name)
       jobs.list.push(this);
    }
 

@@ -203,6 +203,10 @@ export const Messages = {
    BUS_ROUTE: 'Bus ruta',
    BUS_STATIONS: 'Stajališta',
    NEXT_BUS_STATION: 'Sledeća stanica',
+   TAXI_MENU: 'Taxi Menu',
+   ACTIVE_TAXI_DRIVERS: 'Aktivnih vozača',
+   S_TX: 'Započni',
+   S_TX_PRIVATE: 'Zapčni sa privatnim vozilom',
 
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',

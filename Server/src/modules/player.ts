@@ -155,7 +155,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
    return new Promise((resolve) => {
       let spawnPoints: spawnPoint[] = [];
 
-      characters.findOne({ where: { id: id }, include: [houses, vehicles, business] }).then((character) => { 
+      characters.findOne({ where: { id: id }, include: [houses, vehicles, business, banks] }).then((character) => { 
 
          const defaultSpawn: spawnPoint = {
             name: lang.defaultSpawn,

@@ -12,26 +12,31 @@ export namespace JobConfig {
    export const sprites = {
       BUS_DRIVER: 513,
       POSTAL: 745,
+      TAXI: 198
    }
 
    export const colors = {
       BUS_DRIVER: 5,
-      POSTAL: 79
+      POSTAL: 79,
+      TAXI: 66
    }
 
    export const positions = {
       BUS_DRIVER: new mp.Vector3(434.9161, -645.7756, 28.7343),
-      POSTAL: new mp.Vector3(0, 0, 0)
+      POSTAL: new mp.Vector3(0, 0, 0),
+      TAXI: new mp.Vector3(900.6175, -174.1521, 74.0188)
    }
 
    export const names = {
       BUS_DRIVER: 'Bus Driver',
-      POSTAL: 'Postal'
+      POSTAL: 'Postal',
+      TAXI: 'Downtown Taxi Co.'
    }
 
    export const descriptions = {
       BUS_DRIVER: 'Vozite autobus kroz Los Santos sve vam po spisku jebem pičke jedne.',
-      POSTAL: 'Raznosite poštu pušite mi kurac.'
+      POSTAL: 'Raznosite poštu pušite mi kurac.',
+      TAXI: 'Napusi se kurca'
    }
 
    export const busRoutes = [

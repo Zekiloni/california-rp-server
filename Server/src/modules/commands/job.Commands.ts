@@ -1,5 +1,5 @@
 import { Commands } from '../commands';
-import { cmds, colors, lang } from '@constants';
+import { cmds, colors, lang, none } from '@constants';
 import { notifications } from '@enums';
 import { jobs } from '@models';
 import { JobConfig } from '@configs';
@@ -26,6 +26,17 @@ Commands[cmds.names.TAKE_JOB] = {
    }
 };
 
+Commands[cmds.names.QUIT_JOB] = {
+   description: cmds.descriptions.QUIT_JOB,
+   job: { required: true },
+   call (player: PlayerMp) {
+      if (player.character.working) {
+         return;
+      }
+
+      player.character.setJob(player, none);
+   }
+}
 
 
 Commands[cmds.names.BUS_ROUTES] = {
@@ -72,6 +83,6 @@ Commands[cmds.names.TAXI_JOB] = {
       id: JobConfig.job.TAXI 
    },
    call (player: PlayerMp) {
-
+      taxi.menu(player);
    }
 }

@@ -45,7 +45,7 @@ const trace = () => {
 }
 
 
-mp.keys.bind(controls.KEY_N, true, toggleALPR);
+//mp.keys.bind(controls.KEY_N, true, toggleALPR);
 
 
 export {};

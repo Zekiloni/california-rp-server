@@ -116,6 +116,7 @@ const InitialState:uInterface = {
 
    // jobs
    busStations: { toggle: false },
+   taxiMenu: { toggle: false, mouse: true, escClose: 'CLIENT::TAXI:MENU', hideUI: true }
 
 }
 

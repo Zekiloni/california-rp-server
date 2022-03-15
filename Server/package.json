@@ -18,6 +18,7 @@
    },
    "_moduleAliases": {
       "@configs": "dist/configs/",
+      "@modules": "dist/modules/",
       "@models": "dist/models/",
       "@constants": "dist/constants/",
       "@shared": "dist/shared/",

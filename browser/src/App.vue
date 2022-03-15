@@ -1,7 +1,7 @@
 <template>
 
    <div id="app">
-      <Map />
+      <!-- <Map /> -->
       <Notifications />
 
       <Lobby v-if="interfaces.lobby.toggle" />
@@ -64,10 +64,6 @@
       </transition>
 
 
-      <transition name="fade"> 
-         <JobOffer v-if="interfaces.job_Offer.toggle" />
-      </transition>
-
       <!-- [VEHICLES MENU] -->
       <transition name="fade-with-bottom-slide"> 
          <VehiclesMenu v-if="interfaces.vehiclesMenu.toggle" />
@@ -105,6 +101,9 @@
       <!-- [JOBS] -->
       <transition name="fade-with-bottom-slide">
          <BusStations v-if="interfaces.busStations.toggle" />
+      </transition>
+      <transition name="fade"> 
+         <TaxiMenu v-if="interfaces.taxiMenu.toggle" />
       </transition>
 
    </div>
@@ -155,6 +154,7 @@
    import PoliceRadar from './components/faction/police/PoliceRadar.vue';
 
    import BusStations from '@/components/jobs/BusStations.vue';
+   import TaxiMenu from '@/components/jobs/TaxiMenu.vue';
 
    import Map from '@/components/misc/Map.vue';
       
@@ -173,7 +173,7 @@
          FactionPanel, FactionGarage, 
          PoliceRadar, Map,
 
-         BusStations
+         BusStations, TaxiMenu
       },
 
       data () { 

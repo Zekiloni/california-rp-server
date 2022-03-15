@@ -109,7 +109,6 @@ export class vehicles extends Model {
    })  
    rotation: Vector3Mp;
 
-
    @Column(DataType.STRING)
    get numberPlate (): NumberPlate {
       return JSON.parse(this.getDataValue('numberPlate'))

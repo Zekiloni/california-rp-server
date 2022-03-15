@@ -3,7 +3,7 @@ import {
    Table, Column, Model, PrimaryKey, AutoIncrement,
    Unique, Default, CreatedAt, UpdatedAt, Length,
    DataType, BelongsTo, ForeignKey, HasOne, HasMany,
-   AfterSync, IsUUID 
+   AfterSync, IsUUID, AfterCreate 
 } from 'sequelize-typescript';
 
 import { 
@@ -190,6 +190,16 @@ export class characters extends Model {
    @AfterSync
    static async loading () {
       logs.info(await characters.count() + ' characters loaded !');
+   }
+
+   @AfterCreate
+   static async creating (character: characters) {
+      banks.create({
+         owner: character.id,
+         character: character
+      }).then(bankAccount => {
+         character.bank = bankAccount;
+      });
    }
 
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances, id?: number) { 
