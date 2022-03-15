@@ -16,13 +16,13 @@ export * from './factions/faction.model';
 export * from './factions/rank.model';
 
 // @builder
-export * from './object.Model';
+export * from './object.model';
 
 // @house
 export * from './house.model';
 
 // @vehicles
-export * from './vehicle.Model';
+export * from './vehicle.model';
 
 // @business
 export * from './business/product.model';
