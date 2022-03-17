@@ -30,7 +30,7 @@ input {
 }
 
 
-button { outline: none; border: none; }
+button { outline: none !important; border: none; }
 
 input:focus { outline: none; }
 

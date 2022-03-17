@@ -213,3 +213,50 @@ export interface PhoneMessage {
    message: string
    contact?: string
 }
+
+
+export interface BankCredit {
+   amount: number
+   interest: number
+   returned: number
+   issued: number
+   deadline: number
+}
+
+export interface BankAccount {  
+   number: number
+   owner: number
+   character: Character | { name: string }
+   balance: number;
+   savings: number;
+   paycheck: number;
+   credit: BankCredit | null
+   active: boolean
+   transactions: BankTransaction[]
+   created_at: Date;
+   updated_at: Date;
+}
+
+
+export interface CreditCard {
+   bank: number
+   pin: number
+}
+
+export const enum TransactionType {
+   PAYMENT, 
+   TRANSFER, 
+   WITHDRAW, 
+   DEPOSIT, 
+   PAYCHECK
+}
+
+export interface BankTransaction { 
+   id: number
+   type: TransactionType
+   account_number: number;
+   bank_account?: BankAccount
+   info: string
+   balance: number,
+   date: number
+}

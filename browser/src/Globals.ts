@@ -208,6 +208,17 @@ export const Messages = {
    S_TX: 'Započni',
    S_TX_PRIVATE: 'Zapčni sa privatnim vozilom',
 
+   // bank / atm
+   PLEASE_ENTER_YOUR_PIN: 'molimo unestive vaš pin kod',
+   ENTER_ATM: 'Pristupi',
+   ATM_REMAINING_ATTEMPTS: 'preostalih pokušaja',
+   ATM_PLEASE_SELECT_ACTION: 'molimo odaberite transakciju',
+   WITHDRAW_MONEY: 'Podizanje novca',
+   DEPOSIT_MONEY: 'Depozit novca',
+   SEE_BALANCE: 'Uvid u stanje',
+   GET_STATEMENT: 'Izveštaj o transakcijama',
+   PAYING: 'Plaćanje',
+
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',
    SPAWN_SELECTOR_INFO: 'Odabir mesta spawna',

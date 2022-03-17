@@ -35,11 +35,11 @@
 
       <Playerlist v-if="interfaces.playerlist.toggle" />
 
-      <transition name="fade-with-bottom-slide"> 
-         <Banking v-if="interfaces.banking.toggle" key=banking />\
+      <transition name="fade"> 
+         <Banking v-if="interfaces.banking.toggle" key=banking />
          <ATM v-if="interfaces.atm.toggle" key=atm />
       </transition>
-   
+
 
       <!-- [ITEMS] -->
       <HandheldRadio v-if="interfaces.handheldRadio.toggle" />
@@ -127,8 +127,8 @@
    import Playerlist from '@/components/misc/Playerlist.vue';
    import Document from './components/misc/id.document.vue';
    import Banking from './components/other/banking.vue';
-   import ATM from './components/other/atm.vue';
-
+   import ATM from './components/bank/atm/ATM.vue';
+   
    import Inventory from '@/components/items/Items.vue';
 
    import VehiclesMenu from '@/components/vehicles/VehiclesMenu.vue';

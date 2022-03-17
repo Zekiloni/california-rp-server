@@ -48,6 +48,10 @@ Vue.mixin({
       borderWarning (element: Element) {
          element.classList.add('border-warning');
          setTimeout(() => { element.classList.remove('border-warning'); }, 2500);
+      },
+
+      formatBank (number: number) {
+         return '**** **** ' + number.toString().match(/.{1,4}/g)![2];
       }
    }
  })

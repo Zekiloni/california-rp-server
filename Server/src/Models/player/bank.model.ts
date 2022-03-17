@@ -1,7 +1,8 @@
-import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, BelongsTo, ForeignKey, DataType, Unique, Default } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, BelongsTo, ForeignKey, DataType, Unique, Default, HasMany } from 'sequelize-typescript';
 import { characters } from '@models';
 import { none } from '@constants';
 import { business } from '@models';
+import transactions from '@models/logs/transaction.model';
 
 
 export interface BankCredit {
@@ -58,6 +59,8 @@ export class banks extends Model {
    @UpdatedAt
    updated_at: Date;
 
+   @HasMany(() => transactions)
+   transactions: transactions[]
 
    withdraw (player: PlayerMp, amount: number) {
 

@@ -1,6 +1,7 @@
 
 import { Table, Model, Column,PrimaryKey, AutoIncrement, Default, ForeignKey, BelongsTo, DataType, AllowNull } from 'sequelize-typescript';
 import { banks } from '@models';
+import { none } from '@constants';
 
 
 const enum TransactionType {
@@ -25,7 +26,7 @@ export default class transactions extends Model {
    
    @ForeignKey(() => banks)
    @Column
-   account_number: number;
+   account_number: number
 
    @BelongsTo(() => banks)
    bank_account: banks
@@ -33,6 +34,10 @@ export default class transactions extends Model {
    @AllowNull(false)
    @Column(DataType.STRING)
    info: string
+
+   @Default(none)
+   @Column(DataType.INTEGER)
+   balance: number
 }
 
 
