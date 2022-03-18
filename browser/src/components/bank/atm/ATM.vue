@@ -18,10 +18,14 @@
                <h4 v-if="logged" key="transactionText"> {{ Messages.ATM_PLEASE_SELECT_ACTION }} </h4>
                <h4 v-else key="loginText"> {{ Messages.PLEASE_ENTER_YOUR_PIN }} </h4>
             </transition>
+            
+            <transition name="fade"> 
+               <button class="home" v-if="logged && !page.main" @click="page.main = true"> {{ Messages.BACK_TO_HOME }} </button>
+            </transition>
          </div>
 
          <div class="box">
-            <transition name="fade-with-bottom-slide" mode="out-in"> 
+            <transition name="fade" mode="out-in"> 
                <ATMAuth v-if="!logged" :attempts="attempts" @authorization="login" :bankNumber="account.number" key="authorization" />
                
                <ul class="navigation" v-if="logged && page.main" key="navigation">
@@ -56,7 +60,7 @@
 
                   <li class="" @click="page.main = false, page.bills = true"> 
                      <div class="icon">
-                        <img src="@/assets/images/icons/bank/statement.png" />
+                        <img src="@/assets/images/icons/bank/pay.png" />
                      </div>
                      <h4> {{ Messages.PAYING }} </h4>
                   </li>
@@ -263,6 +267,7 @@
    }
 
    .welcome { 
+      position: relative;
       width: 650px;
       margin: auto;
    }
@@ -354,6 +359,21 @@
       z-index: 9999;
       width: 40px;
       margin: auto;
+   }
+
+   button.home {
+      position: absolute;
+      top: 15px;
+      right: 5px;
+      padding: 7px 20px;
+      background: #474d57;
+      color: #cdcdcd;
+      transition: all .3s ease;
+      border-radius: 4px;
+   }
+
+   button.home:hover { 
+      opacity: 0.65;
    }
 
 </style>

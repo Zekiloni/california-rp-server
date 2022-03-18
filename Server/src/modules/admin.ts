@@ -30,6 +30,14 @@ export class admins {
       });
    }
 
+
+   static notify (message: string, color: string) {
+      const administrators = mp.players.toArray().filter(player => player.account.administrator > none);
+      administrators.forEach(admin => 
+         admin.sendMessage(message, color)
+      );
+   }
+
    static warning () {
       
    }
@@ -49,6 +57,8 @@ export class admins {
 
       admins.reports.set(player.character.id, report);
       player.notification(lang.uSendReport, notifications.type.SUCCESS, notifications.time.MED);
+      
+      admins.notify(lang.NEW_REPORT, colors.hex.Admin);
 
       return report;
    }

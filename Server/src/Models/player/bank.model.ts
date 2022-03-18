@@ -1,8 +1,7 @@
 import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, BelongsTo, ForeignKey, DataType, Unique, Default, HasMany } from 'sequelize-typescript';
 import { characters } from '@models';
 import { none } from '@constants';
-import { business } from '@models';
-import transactions from '@models/logs/transaction.model';
+import { business, transactions } from '@models';
 
 
 export interface BankCredit {
@@ -49,6 +48,9 @@ export class banks extends Model {
       this.setDataValue('credit', JSON.stringify(value))
    }
 
+   // @HasMany(() => transactions)
+   // transactions: transactions[]
+
    @Default(true)
    @Column
    active: boolean
@@ -59,8 +61,6 @@ export class banks extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @HasMany(() => transactions)
-   transactions: transactions[]
 
    withdraw (player: PlayerMp, amount: number) {
 

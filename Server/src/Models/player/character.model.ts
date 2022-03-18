@@ -9,7 +9,8 @@ import {
 import { 
    accounts, appearances, banks, houses,
    business, inventories, logs, objects, 
-   vehicles, factions, factionsRanks
+   vehicles, factions, factionsRanks,
+    moneyLogs
 } from '@models';
 
 import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@constants';
@@ -322,6 +323,36 @@ export class characters extends Model {
       await this.update( { money: money + value });
       player.setVariable(shared_Data.MONEY, money + value);
    };
+
+
+   pay (player: PlayerMp, target: PlayerMp, value: number) {
+      if (player.dist(target.position) > 2 || player.dimension != target.dimension) {
+         player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      // if (target.id == player.id) {
+      //    player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
+      //    return;
+      // } 
+
+      if (value > player.character.money) {
+         player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (value < 1) {
+         player.notification('pa zeki nije budala :)', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      player.character.giveMoney(player, -value);
+      target.character.giveMoney(target, value);
+
+      moneyLogs.new(player, target, value);
+
+      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + ' ' + lang.givesSomeMoney + ' ' + target.name + '.', colors.hex.Purple);
+   }
 
    async setJob (player: PlayerMp, value: number) {
       this.job = value;

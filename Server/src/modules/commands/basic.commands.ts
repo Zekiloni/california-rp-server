@@ -58,7 +58,6 @@ Commands[cmds.names.PAY] = {
       cmds.params.NUMBER
    ],
    async call (player: PlayerMp, targetSearch: string, value: string) {
-
       const target = mp.players.find(targetSearch);
 
       if (!target) {
@@ -66,30 +65,7 @@ Commands[cmds.names.PAY] = {
          return;
       }
 
-      if (player.dist(target.position) > 2 || player.dimension != target.dimension) {
-         player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-
-      if (target.id == player.id) {
-         player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
-         return;
-      } 
-
-      if (Number(value) > player.character.money) {
-         player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-
-      if (Number(value) < 1) {
-         player.notification('pa zeki nije budala :)', notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-
-      player.character.giveMoney(player, Number(-value));
-      target.character.giveMoney(target, Number(value));
-
-      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + ' ' + lang.givesSomeMoney + ' ' + target.name, colors.hex.Purple);
+      player.character.pay(player, target, Number(value));
    }
 }
 

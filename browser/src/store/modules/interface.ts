@@ -22,7 +22,7 @@ const InitialState:uInterface = {
    hints: { toggle: true },
    chat: { toggle: false },
 
-   lobby: { toggle: false, mouse: true },
+   lobby: { toggle: true, mouse: true },
    characterCreator: { toggle: false, mouse: true },
 
    gameInterface: { toggle: false },
@@ -54,7 +54,7 @@ const InitialState:uInterface = {
 
    // banking
    banking: { toggle: false, mouse: true },
-   atm: { toggle: true, mouse: true, escClose: '', hideUI: true },
+   atm: { toggle: false, mouse: true, escClose: '', hideUI: true },
 
    playerlist: { 
       toggle: false, 

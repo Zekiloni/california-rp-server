@@ -192,13 +192,16 @@
                this.hide(data);
             }); 
          }
+         
+         document.addEventListener('focus', mp.invoke('setTypingInChatState', true));
+         document.addEventListener('blur', mp.invoke('setTypingInChatState', false));
       },
 
       methods: {
          ...mapMutations('interfaces', [
             'show', 
             'hide'
-         ])     
+         ])
       },
 
       computed: {

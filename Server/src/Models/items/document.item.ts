@@ -7,11 +7,11 @@ import { itemNames, itemDescriptions } from '@constants';
 
 
 const documentType = [
-   ItemEnums.type.DOCUMENT, ItemEnums.type.USABLE
+   ItemEnums.type.DOCUMENT,
 ];
 
 
-export class documentItem extends items {
+export class DocumentItem extends items {
    specialType: number;
    
    constructor (name: string, model: string, special: number, type?: ItemEnums.type[], weight?: number, description?: string) { 
@@ -36,7 +36,7 @@ export class documentItem extends items {
 }
 
 
-new documentItem (
+new DocumentItem (
    itemNames.DOCUMENT_ID_CARD, 
    'p_ld_id_card_01', 
    ItemEnums.type.ID_CARD, 

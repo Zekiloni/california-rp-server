@@ -218,6 +218,7 @@ export const Messages = {
    SEE_BALANCE: 'Uvid u stanje',
    GET_STATEMENT: 'Izveštaj o transakcijama',
    PAYING: 'Plaćanje',
+   BACK_TO_HOME: 'nazad na početnu',
 
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
    SPAWN_SELECTOR_TITLE: 'Spawn Selector',

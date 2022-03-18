@@ -25,6 +25,9 @@ const Database = new Sequelize({
       models.inventories, 
       models.vehicles,
       models.banks,
+      models.transactions,
+      models.moneyLogs,
+      models.killLogs,
       models.objects,
       models.houses,
       models.products,
@@ -46,6 +49,7 @@ Database.authenticate()
    .catch((error: any) => { 
       models.logs.error(error);
    });
+
 
 
 

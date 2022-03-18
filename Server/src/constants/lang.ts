@@ -138,6 +138,7 @@ export const lang = {
    fromFaction: ' iz fakcije.',
    dmvInstructorGoVehicle: 'Instruktor Vožnje: Okej, dobro ste prošli usmeni test, sada sledi vožnja, pratite me do vozila.',
    succesfullyJob: 'Uspešno ste se zaposlili kao ',
+   NEW_REPORT: 'Nova prijava /reports !',
    noTxInNumberplate: 'Vaše vozilo nema prefiks TX u registarskim tablicama.',
    taximetrePriceRange: 'Cena je u rangu ',
    succefullyGetLicense: 'Uspešno ste prošli testove i praktični deo polaganja za ',

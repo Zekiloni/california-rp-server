@@ -11,6 +11,11 @@ export * from './inventory.model';
 export * from './job.model';
 export * from './misc/channel.model';
 
+// logs
+export * from './logs/transaction.model';
+export * from './logs/money.log.model';
+export * from './logs/kill.log.model';
+
 // @factions
 export * from './factions/faction.model';
 export * from './factions/rank.model';
