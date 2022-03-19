@@ -15,11 +15,11 @@ function openBanking (info?: string) {
 
 
 function withdraw (amount: number) {
-   return mp.events.callRemoteProc('SERVER::BANK:WITHDRAW', amount);
+   return mp.events.callRemoteProc('SERVER::BANK:WITHDRAW', Number(amount));
 }
 
 function deposit (amount: number) {
-   return mp.events.callRemoteProc('SERVER::BANK:DEPOSIT', amount);
+   return mp.events.callRemoteProc('SERVER::BANK:DEPOSIT', Number(amount));
 }
 
 mp.events.add('CLIENT::BANKING:MENU', openBanking);

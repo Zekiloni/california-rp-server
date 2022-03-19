@@ -98,8 +98,6 @@ export class banks extends Model {
    }
 
    static async withdraw (player: PlayerMp, amount: number) {
-      console.log(typeof amount);
-
       if (!player.character.bank) {
          return;
       }
@@ -121,7 +119,6 @@ export class banks extends Model {
    }
 
    static async deposit (player: PlayerMp, amount: number) {
-      console.log(typeof amount);
       if (!player.character.bank) {
          return;
       }
