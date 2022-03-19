@@ -1,15 +1,15 @@
 {
-  "name": "midnight-roleplay",
+  "name": "california-roleplay",
   "version": "1.0.0",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zekiloni/midnight-roleplay.git"
+    "url": "git+https://github.com/Zekiloni/california-rp-server.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Zekiloni/midnight-roleplay/issues"
+    "url": "https://github.com/Zekiloni/california-rp-server/issues"
   },
   "homepage": "https://github.com/Zekiloni/midnight-roleplay#readme"
 }
