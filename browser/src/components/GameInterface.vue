@@ -9,7 +9,6 @@
          <VehicleInterface v-if="driving" />
       </transition>
 
-
       <div class="server-info" >
          <div class="player-id"> 
             <h2 > # {{ playerId }}</h2>

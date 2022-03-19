@@ -115,8 +115,9 @@
    import './assets/styles/animations.css'
    import './assets/styles/font-awesome.css';
 
+
    import Notifications from '@/components/player/Notifications.vue';
-   import Lobby from '@/components/lobby.vue';
+   import Lobby from '@/components/Lobby.vue';
    import Creator from '@/components/creator.vue';
    import Offer from '@/components/player/Offer.vue';
    import Hints from '@/components/Hints.vue';
