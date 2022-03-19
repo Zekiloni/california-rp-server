@@ -72,7 +72,7 @@
       height: 200px;
       margin: 5px;
       border-radius: 4px;
-      border: 1px solid rgb(71 77 87 / 25%);
+      background: #212126;
       padding: 10px;
    }
 

@@ -53,16 +53,10 @@
       position: absolute;
       top: 0;
       left: 0;
-      background: radial-gradient(ellipse at center top, rgb(76 49 142 / 45%) 0%, rgb(32 20 63 / 30%) 50%, rgb(0 0 0 / 90%) 90%) top right / 150% 100%;
+      background: rgb(16 15 20 / 85%);
       width: 100%;
       height: 100%;      
-      animation: animated-radial 5s infinite alternate;
       display: grid;
-   }
-
-
-   @keyframes animated-radial {
-      to { background-position: top left; }
    }
 
 </style>

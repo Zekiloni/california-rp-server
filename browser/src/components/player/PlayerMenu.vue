@@ -9,7 +9,7 @@
                </div>
                <div class="text">
                   <h4> {{ Messages.PLAYER_MENU }} </h4>
-                  <!-- <h2> {{ player.account.username }} </h2> -->
+                  <h2> {{ player.account.username }} </h2>
                </div>
                <div class="date-time">
                   <h5> {{ formatDate(Date.now()).split('-')[0] }} </h5>
@@ -149,8 +149,16 @@
       position: absolute;
       height: 100%;
       width: 100%;
-      background: radial-gradient(rgb(71 77 87 / 65%), rgb(11 14 17 / 85%));
+      background: rgb(16 15 20 / 85%);
       display: grid;
+   }
+
+   .box {
+      height: 100%;
+      background: #1a191e;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
    }
 
    .menu { 
@@ -235,28 +243,23 @@
       text-align: center;
       margin: 0;
       margin-bottom: 10px;
-      background: rgb(255 255 255 / 5%);
-      backdrop-filter: brightness(1.1);
+      background: #2d2c33;
       padding: 15px 0;
       color: #cdcdcd;
       transition: all .3s ease;
       text-transform: capitalize;
-      border: 1px solid transparent;
       border-radius: 5px;
+      font-weight: 550;
+      font-size: 0.75rem;
    }
 
-   ul.navigation li:hover, ul.navigation li.active {
-      border-color: rgb(205 205 205 / 45%);
-      backdrop-filter: brightness(1.8);
-      box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
+   ul.navigation li:hover {
+      color: whitesmoke !important;
    }
 
-   .box {
-      height: 100%;
-      background: linear-gradient(120deg, rgb(11 14 17 / 55%), rgb(11 14 17 / 0%));
-      border-radius: 5px;
-      padding: 20px;
-      display: flex;
+   ul.navigation li.active {
+      background: #feba1b;
+      color: #141317;
    }
 
    .page { 

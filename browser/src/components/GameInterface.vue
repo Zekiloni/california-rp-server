@@ -154,7 +154,7 @@
       align-items: center;
    }
    
-   .server-info img.logo { width: 65px; opacity: 0.75; }
+   .server-info img.logo { width: 55px; }
 
    .online-players { margin: 0 25px; }
    .player-id { margin: 0 25px; }
@@ -188,7 +188,7 @@
       box-shadow: 0 0 0 4px rgb(0 212 116 / 45%);
    }
 
-   .player { position: absolute; top: 70px; right: 10px; padding: 15px 10px; }
+   .player { position: absolute; top: 80px; right: 10px; padding: 15px 10px; }
 
    .player h2.money { 
       font-size: 1.65rem;

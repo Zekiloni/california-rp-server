@@ -200,7 +200,7 @@
    
       mounted () {
 
-         this.Push('midnight roleplay - www.mn-rp.com @ rage.mp');
+         this.Push('california roleplay - www.ca-rp.com @ rage.mp');
 
 	      let events = {
             'chat:push': this.Push, 'chat:clear': this.Clear,
