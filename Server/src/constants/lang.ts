@@ -10,9 +10,9 @@ export const lang = {
    defaultSpawnDescripiton: 'Default spawn pozicija gde se stvvorite pri registracija.',
 
    // success messages
-   welcomeToServer: 'Dobrodošli na Midnight Roleplay ! Uživajte u igri.',
+   welcomeToServer: 'Dobrodošli na California Roleplay ! Uživajte u igri.',
    characterCreated: 'Uspešno ste kreirali karaktera.',
-   welcomeToRegister: 'Dobrodošli na Midnight Roleplay, uživajte u igri.',
+   welcomeToRegister: 'Dobrodošli na California Roleplay, uživajte u igri.',
    accountCreated: 'Račun uspešno kreiran !',
    addedSuccesfully: ' je uspešno dodan.',
    succesfullyCreatedFaction: 'Uspešno ste kreirali fakciju ',

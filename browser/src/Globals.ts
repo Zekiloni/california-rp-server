@@ -3,8 +3,8 @@
 
 
 export const Messages = {
-   WEBSITE: 'www.mn-rp.com',
-   NAME: 'Midnight Roleplay',
+   WEBSITE: 'www.ca-rp.com',
+   NAME: 'California Roleplay',
    USERNAME: 'Korisničko ime',
    USERPASSWORD: 'Korisnička šifra',
    HOME_PAGE: 'Početna',
