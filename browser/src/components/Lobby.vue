@@ -53,7 +53,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      background: rgb(16 15 20 / 85%);
+      background: linear-gradient(0deg, #1a191e, transparent);
       width: 100%;
       height: 100%;      
       display: grid;

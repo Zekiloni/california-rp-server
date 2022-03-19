@@ -132,7 +132,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(rgb(71 77 87 / 45%), rgb(11 14 17 / 85%));
+      background: linear-gradient(0deg, #1a191e, transparent);
    }
 
    .holder { 

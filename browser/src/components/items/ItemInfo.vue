@@ -17,9 +17,8 @@
       </ul>
 
       <ul class="actions" v-if="actions.length > 0"> 
-         <li v-for="action in actions" :key="action.name" v-tooltip="action.name" @click="call(action.event)"> 
+         <li v-for="action in actions" :key="action.name" v-tooltip.bottom="action.name" @click="call(action.event)"> 
             <div class="icon" :class="action.icon"> </div>
-            <!-- {{ action.name }}  -->
          </li>
       </ul>
       	
@@ -78,21 +77,19 @@
       min-height: 120px;
       height: auto;
       border-radius: 10px;
-      background: rgb(24 26 32 / 90%);
-      backdrop-filter: blur(5px);
+      background: linear-gradient(338.93deg, rgba(255, 255, 255, 0.056) -7.23%, rgba(255, 255, 255, 0.056) -7.22%, rgba(255, 255, 255, 0.028) 5.45%, rgba(255, 255, 255, 0.004) 18.4%, rgba(255, 255, 255, 0) 46.85%), rgba(196, 196, 196, 0.04);
+      backdrop-filter: blur(15px);
       padding-bottom: 60px;
-      overflow: hidden;
-      box-shadow: 0px 1px 10px 0px rgb(0 0 0 / 35%);
    }
 
    h2.name { 
-      margin: 0;
-      width: 100%;
-      color: #cdcdcd;
-      font-weight: 450;
-      border-top-left-radius: 10px;
+      margin: 10px;
       padding: 10px;
-      background: #21252f;
+      font-weight: 700;
+      border-radius: 10px;
+      font-size: 1rem;
+      color: #E4E4E2;
+      background: #302F36;
    }
 
    p.description { 
@@ -105,13 +102,11 @@
       margin: 0;
    }
 
-
    ul.actions { 
       position: absolute;
       bottom: 0;
-      padding: 0;
+      padding: 5px 0;
       width: 100%;
-      background: #2a303c;
       margin: 0;
       min-height: 10px;
       display: flex;
@@ -121,7 +116,9 @@
    }
 
    ul.actions li { 
-      padding: 10px 5px;
+      padding: 10px;
+      background: #302F36;
+      border-radius: 5px;
    }
 
    ul.actions li * {
@@ -133,9 +130,9 @@
    }
 
    ul.actions li .icon { 
-      width: 30px;
-      height: 30px;
-      background-color: #848e9c;
+      width: 25px;
+      height: 25px;
+      background-color: #9b9b9b;
    }
 
    ul.additional {

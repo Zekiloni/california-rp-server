@@ -69,7 +69,7 @@ export const Messages = {
    HOUSE_RENTABLE: 'Iznajmljivo',
    JOB_OFFER_CONFIRM: 'Da li želite da se zaposlite kao ',  
    TRANSACTION_HISTORY: 'Istorija Transakcija',
-   CHARACTER_SELECTOR: 'Odabir karaktera',
+   WELCOME_TO_SELECTOR: 'Dobrodošao ',
    PLEASE_SELECT_CHARACTER: 'Molimo odaberite karaktera sa kojim želite započeti igru ili kreirati novog.',
    FACE_SHAPE: 'Konture Lica',
    HAIR: 'Maljavost',

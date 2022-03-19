@@ -150,6 +150,7 @@ export interface Character {
    working_hours: number
    health: number
    hunger: number
+   bank: BankAccount
    thirst: number
    hours: number
    minutes: number

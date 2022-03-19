@@ -16,7 +16,7 @@ import {
 import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig, VehicleConfig } from '@configs';
-import { shared_Data } from '@shared';
+import { generateNumber, shared_Data } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
 import { admins } from '../../modules/admin';
@@ -196,6 +196,7 @@ export class characters extends Model {
    @AfterCreate
    static async creating (character: characters) {
       banks.create({
+         number: generateNumber(100000000000, 999999999999),
          owner: character.id,
          character: character
       }).then(bankAccount => {

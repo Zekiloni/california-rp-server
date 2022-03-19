@@ -26,6 +26,7 @@ export const lang = {
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
    userNotFound: 'Korisnik nije pronadjen.',
    playerNotNear: 'Igrač nije u vašoj blizini.',
+   NOT_IN_BANK: 'Niste u banci.',
    minTwoHours: 'Potrebno vam je minimum dva sata igre.',
    ALREADY_HAVE_JOB: 'Već ste zaposleni.',
    NOT_NEAR_ANY_JOB: 'Niste u blizini niti jednog posla.',

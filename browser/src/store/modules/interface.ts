@@ -53,7 +53,7 @@ const InitialState:uInterface = {
    deathScreen: { toggle: false },
 
    // banking
-   banking: { toggle: false, mouse: true },
+   banking: { toggle: false, mouse: true, escClose: 'CLIENT::BANKING:MENU' },
    atm: { toggle: false, mouse: true, escClose: '', hideUI: true },
 
    playerlist: { 

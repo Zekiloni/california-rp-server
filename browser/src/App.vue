@@ -126,8 +126,9 @@
    import DeathScreen from '@/components/player/DeathScreen.vue';
    import Playerlist from '@/components/misc/Playerlist.vue';
    import Document from './components/misc/id.document.vue';
-   import Banking from './components/other/banking.vue';
-   import ATM from './components/bank/atm/ATM.vue';
+
+   import Banking from '@/components/banking/bank/Bank.vue';
+   import ATM from '@/components/banking/atm/ATM.vue';
    
    import Inventory from '@/components/items/Items.vue';
 

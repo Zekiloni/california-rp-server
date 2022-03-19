@@ -1,24 +1,13 @@
 
 <template>
    <div class="selector">
-      <div class="info-header">
-         <h2> {{ Messages.CHARACTER_SELECTOR }} </h2>
-         <p> {{ Messages.PLEASE_SELECT_CHARACTER }} </p>
-      </div>
+      <div class="header">
+         <img src="@/assets/images/logo.png" class="logo" />
 
-      <div class="account">
-         <div class="header">
-            <h2> {{ account.username }} </h2>
-            <h3> {{ Helpers.Group(account.administrator) }} </h3>
+         <div class="welcome">
+            <h2> {{ Messages.WELCOME_TO_SELECTOR }} {{ account.username }} </h2>
+            <p> {{ Messages.PLEASE_SELECT_CHARACTER }} </p>
          </div>
-
-         <ul class="data">
-            <li> <span class="name date"> {{ Messages.REGISTER_DATE }} </span>  <span class="value"> {{ formatDate(account.created_at) }} </span> </li>
-            <li> <span class="name last_login"> {{ Messages.LAST_LOGIN }} </span>  <span class="value"> {{ formatDate(account.login_date) }} </span> </li>
-            <li> <span class="name hours"> {{ Messages.HOURS_PLAYED }} </span>  <span class="value"> {{ getHoursPlayed }} </span> </li>
-            <li> <span class="name email"> {{ Messages.E_MAIL }} </span>  <span class="value"> {{ account.email ? account.email : Messages.NO_NO }} </span> </li>
-            <li class="warns"> <span class="name warns"> {{ Messages.WARNS }} </span>  <span class="value" v-tooltip="Messages.MAX_WARNS"> {{ getWarns }} </span> </li>
-         </ul>
       </div>
 
       <div class="characters">
@@ -30,7 +19,6 @@
                </div>
                
                <ul class="info">
-
                   <li class="money"> {{ Messages.CASH }} <b>  {{ dollars(account.characters[i].money) }} </b> </li>
                   <li> {{ Messages.ORIGIN }}: <b> {{ account.characters[i].origin }} </b> </li>
                   <li> {{ Messages.BIRTH }}: <b> {{ account.characters[i].birth }} </b> </li>
@@ -39,7 +27,6 @@
                
             </div>
             <div v-else class="character-create" v-on:click="createCharacter(i)" :class="{ locked: i == 2 && account.donator == 0}"> 
-               <small> {{ Messages.EMPTY_CHARACTER_SLOT }} </small>
                <div class="create-button"> </div>
             </div>
          </div>
@@ -67,22 +54,6 @@
       },
 
       computed: {
-         getHoursPlayed: function () { 
-            let Result = [0, 0];
-            for (let i in this.account.characters) { 
-               if (this.account.characters[i]) {
-                  const character = this.account.characters[i];
-                  Result[0] += character.hours;
-                  Result[1] += character.minutes;
-               }
-            }
-            return Result[0] + 'h ' + Result[1] + 'm';
-         },
-
-         getWarns: function () { 
-            return this.account.warns >= 1 ? this.account.warns : Messages.NO_NO;
-         },
-
          character: function (i) { 
             this.account.characters[i]
          }
@@ -108,10 +79,9 @@
 
 <style scoped>
 
-
    .selector { 
-      width: 75%;
-      height: 425px;
+      max-width: 800px;
+      height: auto;
       margin: auto;
       display: flex;
       justify-content: center;
@@ -120,55 +90,49 @@
       flex-wrap: wrap;
    }
 
-   .info-header { 
-      width: 80%;
-      text-align: left;
-      margin: 20px 0;
+   .header { 
+      width: 100%;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
    }
-
-   .info-header h2 { font-family: 'Montserrat ExtraBold'; letter-spacing: 1px; margin: 5px 0; font-size: 1.7rem; color: #7c5bf1; text-transform: uppercase; }
-   .info-header p { color: #cdcdcd; }
-
-   .selector .account { width: 375px; height: auto; padding: 30px 10px; border-radius: 10px; margin: 0 20px; background: #1a191e;  }
-
-   .selector .account .header { padding: 0 15px 15px 15px; border-bottom: 1px solid rgb(60, 64, 73); }
-
-   .account .header h2, .account .header h3 { margin: 0; }
-   .header h2 { font-size: 2rem; font-weight: 450; color: #f8f8ff; }
-   .header h3 { font-size: 0.9rem; font-weight: 350; color: #a0a4c2; font-style: italic; }
    
-   .account ul.data { padding: 0; list-style: none; }
-
-   ul.data li { 
-      margin: 15px auto; width: 325px; position: relative;
-      display: flex; justify-content: space-between;
-      background: #212126;
-      padding: 10px 10px; border-radius: 10px;
+   .header img {
+      width: 85px;
+      display: inline-block;
+   }
+   
+   .header .welcome {
+      margin: 0 20px;
    }
 
-   ul.data li::before { content: ""; font-weight: 700; position: absolute; display: flex; justify-content: center; align-items: center;
-      height: 39.5px; top: -1px; left: 0; border-radius: 10px; background: #2d2c33; width: 39px; }
+   .header .welcome h2 { 
+      font-family: 'Montserrat ExtraBold';
+      margin: 0;
+      font-size: 1.7rem;
+      color: whitesmoke; 
+      text-transform: uppercase; 
+   }
 
-   li span.name { position: relative; padding-left: 45px; color: #848E9C; font-weight: 550; }
-   li span.name::before { position: absolute; width: 22px; height: 22px; content: ''; background: #feba1b; left: -1.25px; top: -2.4px; }
-   li span.name.hours::before { mask: url('../../assets/images/icons/clock.svg') no-repeat center; mask-size: cover; }
-   li span.name.date::before { mask: url('../../assets/images/icons/date.svg') no-repeat center; mask-size: cover; }
-   li span.name.last_login::before { mask: url('../../assets/images/icons/login.svg') no-repeat center; mask-size: cover; }
-   li span.name.email::before { mask: url('../../assets/images/icons/e-mail.svg') no-repeat center; mask-size: cover; }
-   li span.value { font-weight: 500; color: #EAECEF; }
+   .header .welcome p { 
+      color: #cdcdcd; 
+      margin: 0; 
+   }
 
-   ul.data li.warns::before { background: #ff463d; }
-   ul.data li.warns { background: rgb(255 54 53 / 45%); }
-   ul.data li.warns span { color: whitesmoke; }
-   li span.name.warns::before { mask: url('../../assets/images/icons/danger.svg') no-repeat center; mask-size: cover; background: #fff; }
-
-   .characters { width: 55%; min-height: 200px; position: relative; display: flex; justify-content: space-around; align-items: center; height: auto; }
+   .characters { 
+      width: 100%; 
+      position: relative; 
+      display: flex; 
+      justify-content: space-around; 
+      align-items: center; 
+      height: auto; 
+   }
 
    .characters .character-slot { 
-      width: 250px;
+      width: 230px;
       position: relative;
-      height: 100%;
-      background: rgb(11 14 17 / 45%);
+      height: 350px;
+      background: #1e1e23;
       border-radius: 10px;
       transition: all .3s ease;
       overflow: hidden;
@@ -181,16 +145,33 @@
 
    .character-slot * { transition: all .3s ease; }
    .character-slot .character-create { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-   .character-create small { text-transform: uppercase; color: #848e9c; }
-   .create-button { margin: 20px 0; background: #848e9c; width: 100px; height: 100px; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
-   .character-slot:hover .character-create small { color: white; }
-   .character-slot:hover .create-button { background: whitesmoke; }
+   .character-create small { text-transform: uppercase; color: #535353; }
+   .create-button { margin: 20px 0; background: rgb(48, 47, 54); width: 100px; height: 100px; opacity: 0.6; mask: url('../../assets/images/icons/plus.svg') no-repeat center; mask-size: cover; }
+   .character-slot:hover .create-button { opacity: 1; }
 
-   .character:hover h2, .character:hover h3 { color: #ffcc45 !important; }
-   .character { width: 100%; height: 100%; }
+   .character:hover h2, .character:hover h3 { 
+      color: #fdb91b !important; 
+   }
 
-   ul.info { list-style: none; color: #848e9c; padding: 0; margin-top: 25px; }
-   ul.info li { margin: 10px 0; font-size: 0.75rem; text-transform: uppercase; }
-   ul.info li b { color: #cdcdcd; display: block; margin: 5px 2px; font-size: 1.1rem; text-transform: none; }
+   ul.info { 
+      list-style: none; 
+      padding: 0; 
+      margin-top: 35px; 
+   }
+
+   ul.info li { 
+      margin: 10px 0; 
+      font-size: 0.65rem; 
+      text-transform: uppercase; 
+      color: #9D9D9D; 
+   }
+
+   ul.info li b { 
+      color: #adaaaa; 
+      display: block; 
+      margin: 5px 2px; 
+      font-size: 1rem; 
+      text-transform: none; 
+   }
 
 </style>

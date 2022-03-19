@@ -13,6 +13,7 @@ export namespace cmds {
       EXIT: 'exit',
       BUY: 'buy',
       PM: 'pm',
+      BANK: 'bank',
       FACTIONS: 'factions',
       LOW_CHAT: 'l',
       WHISPER: 'w',
@@ -228,7 +229,8 @@ export namespace cmds {
       ANNOUNCEMENT: 'Emitovanje igračima.',
       TAKE_JOB: 'Uzimanje posla, zapošljavanje.',
       QUIT_JOB: 'Davanje otkaza na trenutnom poslu.',
-      TAXI_JOB: 'Posao taksiste.'
+      TAXI_JOB: 'Posao taksiste.',
+      BANK: 'Bankovni meni, dostupno samo u bankama.',
    };
    
 }

@@ -1,7 +1,13 @@
-import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt, BelongsTo, ForeignKey, DataType, Unique, Default, HasMany } from 'sequelize-typescript';
+
+import { 
+   Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt,
+   BelongsTo, ForeignKey, DataType, Unique, Default,
+   HasMany, AfterSync 
+} from 'sequelize-typescript';
 import { characters } from '@models';
-import { none } from '@constants';
+import { gDimension, lang, none } from '@constants';
 import { business, transactions } from '@models';
+import { bankConfig } from '@configs';
 
 
 export interface BankCredit {
@@ -15,6 +21,7 @@ export interface BankCredit {
 
 @Table
 export class banks extends Model {
+
    @Unique(true)
    @PrimaryKey
    @Column
@@ -61,6 +68,33 @@ export class banks extends Model {
    @UpdatedAt
    updated_at: Date;
 
+   @AfterSync
+   static createBanks () {
+      for (const position of bankConfig.positions) {
+         mp.blips.new(bankConfig.sprite, position, { 
+            shortRange: true, 
+            dimension: gDimension,
+            scale: 1, 
+            alpha: 255, 
+            name: lang.bank,
+            color: bankConfig.spriteColor
+         })
+      }
+   }
+
+   static isNear (player: PlayerMp) {
+      for (const position of bankConfig.positions) {
+         if (player.dist(position) < 2.5) {
+            return true;
+         }
+      }
+   }
+
+   menu (player: PlayerMp) {
+      player.call(
+         'CLIENT::BANKING:MENU', [player.character]
+      );
+   }
 
    withdraw (player: PlayerMp, amount: number) {
 

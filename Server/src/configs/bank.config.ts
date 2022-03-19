@@ -6,7 +6,8 @@ export namespace bankConfig {
 
    export const payFee = 0.05;
 
-   export const sprite = 207;
+   export const sprite = 108;
+   export const spriteColor = 25;
 
    export const marker = 29;
 

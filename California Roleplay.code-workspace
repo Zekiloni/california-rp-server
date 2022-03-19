@@ -1,13 +1,13 @@
 {
 	"folders": [
 	  {
-         "path": "browser"
+         "path": "Browser"
       },
       {
-         "path": "client"
+         "path": "Client"
       },
       {
-         "path": "server"
+         "path": "Server"
       }
    ],
    "settings": {

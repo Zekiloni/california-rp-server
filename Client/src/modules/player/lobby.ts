@@ -38,10 +38,6 @@ mp.events.addProc(
 
 
 export function lobby (toggle: boolean, position?: Vector3Mp, lookAt?: Vector3Mp) { 
-   mp.console.logInfo(JSON.stringify(toggle))
-   mp.console.logInfo(JSON.stringify(position))
-   mp.console.logInfo(JSON.stringify(lookAt))
-
    if (toggle && position && lookAt) { 
       mp.players.local.position = new mp.Vector3(position.x, position.y + 1, position.z);
       mp.players.local.freezePosition(true);
@@ -52,7 +48,7 @@ export function lobby (toggle: boolean, position?: Vector3Mp, lookAt?: Vector3Mp
       Camera.pointAtCoord(lookAt.x, lookAt.y, lookAt.z);
       mp.game.cam.renderScriptCams(true, false, 0, true, false);
       mp.game.ui.displayRadar(false);
-      mp.game.graphics.transitionToBlurred(1000);
+      //mp.game.graphics.transitionToBlurred(1000);
       mp.game.audio.startAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
    } else { 
       mp.console.logInfo('toggle false')
@@ -60,7 +56,7 @@ export function lobby (toggle: boolean, position?: Vector3Mp, lookAt?: Vector3Mp
       if (Camera) Camera.destroy();
       mp.players.local.freezePosition(false);
       mp.game.cam.renderScriptCams(false, false, 0, false, false);
-      mp.game.graphics.transitionFromBlurred(1000);
+      //mp.game.graphics.transitionFromBlurred(1000);
       mp.game.audio.stopAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE');
    }
 }

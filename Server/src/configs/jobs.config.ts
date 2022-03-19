@@ -11,13 +11,13 @@ export namespace JobConfig {
 
    export const sprites = {
       BUS_DRIVER: 513,
-      POSTAL: 745,
+      POSTAL: 525,
       TAXI: 198
    }
 
    export const colors = {
-      BUS_DRIVER: 5,
-      POSTAL: 79,
+      BUS_DRIVER: 15,
+      POSTAL: 31,
       TAXI: 66
    }
 

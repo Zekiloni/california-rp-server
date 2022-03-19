@@ -163,8 +163,8 @@
       width: auto;
       height: auto;
       padding: 10px 5px;
-      backdrop-filter: blur(5px);
-      background: rgb(11 14 17 / 55%);
+      background: linear-gradient(338.93deg, rgba(255, 255, 255, 0.056) -7.23%, rgba(255, 255, 255, 0.056) -7.22%, rgba(255, 255, 255, 0.028) 5.45%, rgba(255, 255, 255, 0.004) 18.4%, rgba(255, 255, 255, 0) 46.85%), rgba(196, 196, 196, 0.04);
+      backdrop-filter: blur(15px);
       border-radius: 10px;
       position: absolute;
       display: flex;
@@ -174,7 +174,7 @@
    }
 
    h2.name { 
-      color: #7c5bf1;
+      color: #fdb91b;
       margin: 5px 0;
    }
 

@@ -156,7 +156,6 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
       let spawnPoints: spawnPoint[] = [];
 
       characters.findOne({ where: { id: id }, include: [houses, vehicles, business, banks] }).then((character) => { 
-
          const defaultSpawn: spawnPoint = {
             name: lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,
@@ -165,9 +164,6 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
             heading: playerConfig.main.heading
          }
 
-         console.log(character?.vehicles)
-
-         console.log(character?.business)
          spawnPoints.push(defaultSpawn);
 
          if (character?.faction) {
@@ -218,7 +214,6 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
 
 function authorizationVerify (player: PlayerMp, username: string, password: string) {
    return accounts.findOne( { where: { username: username }, include: [characters] } ).then(account => {
-
       if (!account) {
          player.notification(lang.userDoesntExist, notifications.type.ERROR, 5);
          return;
@@ -239,7 +234,6 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
       }
       
       account.setLogged(player, true);
-
       return account;
    })
 }
