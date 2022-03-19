@@ -8,6 +8,7 @@ import { characters } from '@models';
 import { gDimension, lang, none } from '@constants';
 import { business, transactions } from '@models';
 import { bankConfig } from '@configs';
+import { notifications } from '@enums';
 
 
 export interface BankCredit {
@@ -96,12 +97,49 @@ export class banks extends Model {
       );
    }
 
-   withdraw (player: PlayerMp, amount: number) {
+   static async withdraw (player: PlayerMp, amount: number) {
+      console.log(typeof amount);
 
+      if (!player.character.bank) {
+         return;
+      }
+
+      if (amount < 1) {
+         return;
+      }
+      
+      if (amount > player.character.bank.balance) {
+         player.notification('nemres to malo para', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      player.character.giveMoney(player, amount);
+      player.character.bank.balance -= amount;
+      await player.character.bank.save();
+
+      return true;
    }
 
-   deposit (player: PlayerMp, amount: number) {
+   static async deposit (player: PlayerMp, amount: number) {
+      console.log(typeof amount);
+      if (!player.character.bank) {
+         return;
+      }
 
+      if (amount < 1) {
+         return;
+      }
+
+      if (amount > player.character.money) {
+         player.notification('nemres to malo para', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      player.character.giveMoney(player, -amount);
+      player.character.bank.balance += amount;
+      await player.character.bank.save();
+
+      return true;
    }
 
    transfer (player: PlayerMp, targetNumber: number, amount: number) {
@@ -134,4 +172,8 @@ export class banks extends Model {
       return true;
    }
 }
+
+
+mp.events.addProc('SERVER::BANK:DEPOSIT', banks.deposit);
+mp.events.addProc('SERVER::BANK:WITHDRAW', banks.withdraw);
 

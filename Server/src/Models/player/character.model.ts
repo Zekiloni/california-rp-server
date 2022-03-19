@@ -332,10 +332,10 @@ export class characters extends Model {
          return;
       }
 
-      // if (target.id == player.id) {
-      //    player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
-      //    return;
-      // } 
+      if (target.id == player.id) {
+         player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
+         return;
+      } 
 
       if (value > player.character.money) {
          player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);

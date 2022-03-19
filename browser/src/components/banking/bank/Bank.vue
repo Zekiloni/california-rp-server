@@ -25,9 +25,18 @@
             </div>
             
             <ul class="navigation">
-               <li v-for="(page, i) in pages" :key="page" @click="activePage = i" :class="{ active: activePage == i }"> {{ page }} </li>
+               <li v-for="(page, i) in pages" :key="page" @click="activePage = i" :class="{ active: activePage == i }"> 
+                  {{ page }} 
+               </li>
             </ul>
             
+            <div class="page">
+               <transition name="fade-with-bottom-slide" mode="out-in"> 
+                  <BankInfo v-if="activePage == 0" key="info" :bank="character.bank" />
+                  <BankWithdraw v-if="activePage == 1" key="withdraw" @withdraw="withdraw" />
+                  <BankDeposit v-if="activePage == 2" key="deposit" @deposit="deposit" />
+               </transition>
+            </div>
          </div>
       </div>
    </div>
@@ -38,14 +47,21 @@
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
    import { Character } from '@/models';
-
-   @Component
+   
+   import BankWithdraw from './BankWithdraw.vue';
+   import BankInfo from './BankInfo.vue';
+   import BankDeposit from './BankDeposit.vue';
+   
+   @Component({
+      components: { 
+         BankInfo, BankWithdraw, BankDeposit
+      }
+   })
    export default class Banking extends Vue {
       character: Character | null = null;
 
-
       pages: string[] = [
-         Messages.WITHDRAW_MONEY, Messages.DEPOSIT_MONEY, Messages.MONEY_TRANSFER
+         Messages.BANK_HOME, Messages.WITHDRAW_MONEY, Messages.DEPOSIT_MONEY, Messages.MONEY_TRANSFER
       ]
 
       activePage: number = 0;
@@ -67,11 +83,19 @@
       }
 
       withdraw (amount: number) {
-
+        mp.events.callProc('CLIENT::BANK:WITHDRAW', amount).then(withdrawed => {
+           if (withdrawed) {
+              this.character!.bank.balance -= amount;
+           }
+        })
       }
 
       deposit (amount: number) {
-
+        mp.events.callProc('CLIENT::BANK:DEPOSIT', amount).then(deposited => {
+           if (deposited) {
+              this.character!.bank.balance += Number(amount);
+           }
+        })
       }
 
       mounted () {
@@ -95,8 +119,8 @@
    }
 
    .box { 
-      width: 650px;
-      height: 500px;
+      width: 750px;
+      height: 520px;
       color: white;
       margin: auto;
       background: #100f14;
@@ -108,7 +132,7 @@
    }
 
    .title {
-      width: 150px;
+      width: 170px;
       height: 100%;
       background: #FFBB1C;
       display: grid;
@@ -120,7 +144,7 @@
       bottom: 5px;
       margin: 0;
       writing-mode: vertical-rl; 
-      right: 5px;
+      right: 0;
       font-size: 6rem;
       transform: rotate(180deg);
    }
@@ -143,7 +167,7 @@
    }
 
    .account {
-      width: 100%;
+      width: 550px;
       padding: 20px;
    }
 
@@ -205,10 +229,10 @@
    }
 
    ul.navigation { 
-      margin: 20px 0;
+      margin: 15px 0;
       list-style: none;
       padding: 10px 12px;
-      background: #1C1B20;
+      background: #121116;
       display: flex;
       border-radius: 5px;
       justify-content: space-between;
@@ -217,19 +241,23 @@
    ul.navigation li {
       transition: all .3s ease;
       padding: 10px;
-      border: 1px solid #2C2B31;
       border-radius: 3px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
+      font-weight: 600;
       color: rgb(172, 165, 165);
+      background: #201f25;
    }
 
    ul.navigation li:hover {
-      border-color: grey;
       color: #cdcdcd;
    }
    
    ul.navigation li.active {
-      color: #ffbb1c;
-      border-color: grey;
+      color: whitesmoke;
+   }
+
+   .page {
+      width: 100%;
+      height: auto;
    }
 </style>

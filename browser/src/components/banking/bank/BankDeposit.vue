@@ -1,15 +1,15 @@
 
 
 <template>
-   <div class="bank-withdraw">
-      <h2> {{ Messages.WITHDRAW_MONEY }} </h2>
+   <div class="bank-deposit">
+      <h2> {{ Messages.DEPOSIT_MONEY }} </h2>
 
       <div class="amount-input">
          <label> {{ Messages.MONEY_QUANTITY }} </label>
-         <input type="number" v-model="withdraw" placeholder="3422$">
+         <input type="number" v-model="deposit" placeholder="3422$">
       </div>
 
-      <button @click="createWithdraw"> {{ Messages.SUBMIT }} </button>
+      <button @click="createDeposit"> {{ Messages.SUBMIT }} </button>
    </div>
 </template>
 
@@ -19,24 +19,24 @@
    import { Messages } from '@/globals';
 
    @Component
-   export default class BankWithdraw extends Vue { 
-      withdraw: number | null = null;
+   export default class BankDeposit extends Vue { 
+      deposit: number | null = null;
 
       Messages = Messages;
 
-      createWithdraw () {
-         this.$emit('withdraw', this.withdraw);
+      createDeposit () {
+         this.$emit('deposit', this.deposit);
       }
    }
 </script>
 
 <style scoped>
-   .bank-withdraw {
+   .bank-deposit {
       padding: 15px 15px 5px 15px;
       background: #16151a;
    }
 
-   .bank-withdraw h2 { 
+   .bank-deposit h2 { 
       margin: 0;
    }
 
