@@ -56,7 +56,7 @@ Vue.mixin({
    }
  })
 
-const Midnight = new Vue({
+const California = new Vue({
    router,
    store,
    render: (h) => h(App),

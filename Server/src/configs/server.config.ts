@@ -2,7 +2,7 @@
 
 export namespace serverConfig { 
 
-   export const name = 'Midnight Roleplay';
+   export const name = 'California Roleplay';
 
    export let happyHours: boolean = false;
 
