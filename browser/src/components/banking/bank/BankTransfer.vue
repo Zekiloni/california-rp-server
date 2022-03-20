@@ -1,46 +1,52 @@
 
-
 <template>
-   <div class="bank-withdraw">
-      <h2> {{ Messages.WITHDRAW_MONEY }} </h2>
+   <div class="bank-transfer">
+
+      <div class="amount-input">
+         <label> {{ Messages.BANK_ACCOUNT_TARGET }} </label>
+         <input type="number" v-model="target" placeholder="1234 5678 9101">
+      </div>
 
       <div class="amount-input">
          <label> {{ Messages.MONEY_QUANTITY }} </label>
-         <input type="number" v-model="withdraw" placeholder="3422$">
+         <input type="number" v-model="amount" placeholder="3422$">
       </div>
 
-      <button @click="createWithdraw"> {{ Messages.SUBMIT }} </button>
+      <button @click="transferMoney"> submit </button>
    </div>
 </template>
 
 <script lang="ts">
-   import Vue from 'vue';
+   import Vue from 'vue'
    import Component from 'vue-class-component';
    import { Messages } from '@/globals';
 
    @Component
-   export default class BankWithdraw extends Vue { 
-      withdraw: number | null = null;
+   export default class BankTransfer extends Vue { 
+      amount: number | null = null;
+      target: string | null = null;
 
       Messages = Messages;
 
-      createWithdraw () {
-         if (!this.withdraw) {
+      transferMoney () {
+         if (!this.amount || !this.target) {
             return;
          }
 
-         this.$emit('withdraw', Number(this.withdraw));
+         this.$emit(
+            'transfer', this.target, Number(this.amount)
+         );
       }
    }
 </script>
 
 <style scoped>
-   .bank-withdraw {
+   .bank-transfer {
       padding: 15px 15px 5px 15px;
       background: #16151a;
    }
 
-   .bank-withdraw h2 { 
+   .bank-deposit h2 { 
       margin: 0;
    }
 
@@ -63,15 +69,14 @@
    }
 
    .amount-input { 
-      margin-top: 20px;
+      margin: 10px 20px;
       max-width: 220px;
-      display: block;
+      display: inline-block;
       position: relative;
       border: 1px dashed #36353D;
       box-sizing: border-box;
       border-radius: 5px;
       padding-top: 10px;
-      display: grid;
    }
 
    .amount-input label {

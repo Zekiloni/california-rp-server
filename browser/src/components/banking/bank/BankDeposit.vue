@@ -25,7 +25,11 @@
       Messages = Messages;
 
       createDeposit () {
-         this.$emit('deposit', this.deposit);
+         if (!this.deposit) {
+            return;
+         }
+
+         this.$emit('deposit', Number(this.deposit));
       }
    }
 </script>

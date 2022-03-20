@@ -12,6 +12,7 @@ export namespace serverConfig {
 
   export  const discord = {
       moneyHook: 'https://discord.com/api/webhooks/954424466472054785/-oeagQPw8GvAGLuthlUAG3vwacJLtom9Un9zOcH55-VFMnv-O2CXjqoUnJtO7TKszx2k',
+      transactionHook: 'https://discord.com/api/webhooks/954914280988344430/HEKkX6qck_OH30gAtbaCVwItYbPZ1n59vRXY0DJRUM5x9sqfwcSmPgIZgSayA0P4fYtg',
    }
 
 }

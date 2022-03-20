@@ -17,7 +17,7 @@
                   <h4> {{ numberHidden ? hiddenBankNumber : formatedBankNumber }} </h4>
                   <i class="fa fa-eye-slash hide-number" aria-hidden="true" @click="numberHidden = !numberHidden"> </i>
                </div>
-
+               
                <div class="balance">
                   <h4> {{ Messages.BALANCE }} </h4>
                   <h3>  {{ dollars(character.bank.balance) }} </h3>
@@ -32,9 +32,10 @@
             
             <div class="page">
                <transition name="fade-with-bottom-slide" mode="out-in"> 
-                  <BankInfo v-if="activePage == 0" key="info" :bank="character.bank" />
+                  <BankInfo v-if="activePage == 0" key="info" :bank="character.bank" @get-card="creditCard" />
                   <BankWithdraw v-if="activePage == 1" key="withdraw" @withdraw="withdraw" />
                   <BankDeposit v-if="activePage == 2" key="deposit" @deposit="deposit" />
+                  <BankTransfer v-if="activePage == 3" key="transfer" @transfer="transfer" />
                </transition>
             </div>
          </div>
@@ -51,10 +52,12 @@
    import BankWithdraw from './BankWithdraw.vue';
    import BankInfo from './BankInfo.vue';
    import BankDeposit from './BankDeposit.vue';
+   import BankTransfer from './BankTransfer.vue';
+   
    
    @Component({
       components: { 
-         BankInfo, BankWithdraw, BankDeposit
+         BankInfo, BankWithdraw, BankDeposit, BankTransfer
       }
    })
    export default class Banking extends Vue {
@@ -93,9 +96,21 @@
       deposit (amount: number) {
         mp.events.callProc('CLIENT::BANK:DEPOSIT', amount).then(deposited => {
            if (deposited) {
-              this.character!.bank.balance += Number(amount);
+              this.character!.bank.balance += amount;
            }
         })
+      }
+
+      transfer (target: number, amount: number) {
+         mp.events.callProc('CLIENT::BANK:TRANSFER', target, amount).then(transfered => {
+            if (transfered) {
+               this.character!.bank.balance -= amount;
+            }
+         })
+      }
+
+      creditCard () {
+         // todo
       }
 
       mounted () {
@@ -260,4 +275,5 @@
       width: 100%;
       height: auto;
    }
+
 </style>

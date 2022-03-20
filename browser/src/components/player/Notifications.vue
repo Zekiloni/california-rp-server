@@ -78,6 +78,7 @@
    ul.notifications li {
       display: flex;
       align-items: center;
+      justify-content: center;
       padding: 0;
    }
    

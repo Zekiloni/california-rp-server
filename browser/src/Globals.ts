@@ -215,6 +215,7 @@ export const Messages = {
    ATM_REMAINING_ATTEMPTS: 'preostalih pokušaja',
    ATM_PLEASE_SELECT_ACTION: 'molimo odaberite transakciju',
    WITHDRAW_MONEY: 'Podizanje novca',
+   BANK_ACCOUNT_TARGET: 'Broj računa',
    DEPOSIT_MONEY: 'Depozit novca',
    SEE_BALANCE: 'Uvid u stanje',
    MONEY_TRANSFER: 'Transfer novca',
@@ -229,6 +230,7 @@ export const Messages = {
    SAVINGS_BALANCE: 'Štedni račun',
    PAYCHECK_BALANCE: 'Platni račun',
    SUBMIT: 'Potvrdi',
+   REQUEST_CARD: 'Zatraži kreditnu karticu',
    MONEY_QUANTITY: 'Iznos novca',
 
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
