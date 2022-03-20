@@ -184,7 +184,7 @@ export class business extends Model {
       return business.findAll( { include: [products, workers] } ).then(businesses => {
          const nearest = businesses.filter(business => player.dist(business.position) < 35);
 
-         if (!nearest) {
+         if (!nearest || nearest.length == none) {
             return;
          }
 
