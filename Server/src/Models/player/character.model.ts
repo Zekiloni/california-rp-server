@@ -15,7 +15,7 @@ import {
 
 import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
-import { playerConfig, VehicleConfig } from '@configs';
+import { playerConfig, serverConfig, VehicleConfig } from '@configs';
 import { generateNumber, shared_Data } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
@@ -586,6 +586,24 @@ export class characters extends Model {
 
    static deleteReport (player: PlayerMp) {
       return admins.reportDelete(player);
+   }
+
+   
+   updatePlayer (player: PlayerMp) {
+      this.increment('minutes', { by: serverConfig.happyHours == true ? 2 : 1 }).then(async character => { 
+         if (character.minutes >= 60) { 
+            character.increment('hours', { by: 1 });
+            character.minutes = none;
+            await character.save();
+         }
+      });
+      
+      this.increment('hunger', { by: -0.35 });
+      this.increment('thirst', { by: -0.70 });
+   
+      if (this.muted > 0) {
+         this.decrement('muted', { by: 1 });
+      }
    }
 }
 

@@ -110,7 +110,7 @@
       }
 
       creditCard () {
-         // todo
+         mp.events.call('CLIENT::BANK:CREATE_CARD');
       }
 
       mounted () {

@@ -4,11 +4,11 @@ import {
    BelongsTo, ForeignKey, DataType, Unique, Default,
    HasMany, AfterSync, AutoIncrement 
 } from 'sequelize-typescript';
-import { characters } from '@models';
-import { gDimension, lang, none } from '@constants';
-import { business, transactions, TransactionType } from '@models';
+import { characters, inventories, business, transactions, TransactionType } from '@models';
+import { gDimension, lang, none, cmds } from '@constants';
 import { bankConfig } from '@configs';
 import { notifications } from '@enums';
+import { createInfoColshape, formatCommand } from '@shared';
 
 
 export interface BankCredit {
@@ -32,7 +32,7 @@ export class banks extends Model {
    number: string
 
    @ForeignKey(() => characters)
-   @Column
+   @Column({ type: DataType.NUMBER, field: 'character_id' })
    owner: number
 
    @BelongsTo(() => characters)
@@ -75,14 +75,11 @@ export class banks extends Model {
    @AfterSync
    static createBanks () {
       for (const position of bankConfig.positions) {
-         mp.blips.new(bankConfig.sprite, position, { 
-            shortRange: true, 
-            dimension: gDimension,
-            scale: 1, 
-            alpha: 255, 
-            name: lang.bank,
-            color: bankConfig.spriteColor
-         })
+         const [colshape, marker, blip ] = createInfoColshape(position, lang.bank, formatCommand(cmds.names.BANK), 2, gDimension, bankConfig.marker, 0.9, bankConfig.markerColor, bankConfig.sprite, bankConfig.spriteColor)
+
+         if (blip) {
+            blip.shortRange = true;
+         }
       }
    }
 
@@ -98,6 +95,10 @@ export class banks extends Model {
       player.call(
          'CLIENT::BANKING:MENU', [player.character]
       );
+   }
+
+   static getCreditCard (player: PlayerMp) {
+      inventories.findOne
    }
 
    static async withdraw (player: PlayerMp, amount: number) {
@@ -166,6 +167,11 @@ export class banks extends Model {
 
          player.notification(lang.TRANSACTION_SUCCESS_COMPLETED, notifications.type.SUCCESS, notifications.time.MED);
 
+         const targetPlayer = mp.players.toArray().find(_player => _player.character.bank.number == target.number);
+
+         if (targetPlayer) {
+            targetPlayer.notification('money', 1, 3);
+         }
 
          return true;
       });
@@ -186,6 +192,7 @@ export class banks extends Model {
 }
 
 
+mp.events.add('SERVER::BANK:GET_CREDIT_CARD', banks.getCreditCard);
 mp.events.addProc('SERVER::BANK:DEPOSIT', banks.deposit);
 mp.events.addProc('SERVER::BANK:WITHDRAW', banks.withdraw);
 mp.events.addProc('SERVER::BANK:TRANSFER', banks.transfer);

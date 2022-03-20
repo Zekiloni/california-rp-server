@@ -122,18 +122,43 @@ export async function getNearest (player: PlayerMp, distance: number) {
 }
 
 
-export function createInfoColshape (Position: Vector3Mp, Name: string, Info: string, Radius: number, Color: RGBA, Dimension: number = gDimension, Blip: any = false, Sprite: number = 4) {
+export function createInfoColshape (
+   position: Vector3Mp,
+   name: string,
+   info: string, 
+   radius: number, 
+   dimension: number, 
+   markerType: number, 
+   markerScale: number,
+   markerColor: RGBA,
+   sprite?: number,
+   spriteColor?: number
+): [ColshapeMp, MarkerMp, BlipMp | undefined] {
+   const { x, y, z } = position;
+   let blip: BlipMp | undefined, marker: MarkerMp, colshape: ColshapeMp;
+   
+   colshape = mp.colshapes.newRectangle(position.x, position.y, radius, 2.0, dimension);
+   
+   if (info.length > 0) {
+      colshape.onPlayerEnter = function (player: PlayerMp) {
+         player.help(info, 4);
+      }
+   }
 
-   const Colshape = mp.colshapes.newRectangle(Position.x, Position.y, Radius, 2.0, 0);
+   marker = mp.markers.new(markerType, new mp.Vector3(x, y, z - 0.85), markerScale, {
+      color: markerColor ? markerColor : [0, 0, 0, 255],
+      dimension: gDimension
+   })
 
-   if (Info) Colshape.onPlayerEnter = (Player: PlayerMp) => { Player.notification(Info, notifications.type.ERROR, 5); };
+   if (sprite) {
+      blip = mp.blips.new(sprite, new mp.Vector3(x, y, 0), { 
+         shortRange: true, 
+         scale: 0.85, 
+         name: name,
+         dimension: dimension ,
+         color: spriteColor ? spriteColor : 0
+      });
+   }
 
-   mp.markers.new(27, new mp.Vector3(Position.x, Position.y, Position.z - 0.985), Radius, {
-      color: Color, rotation: new mp.Vector3(0, 0, 90), visible: true, dimension: Dimension
-   });
-
-   mp.labels.new(Name, Position, { los: true, font: 0, drawDistance: Radius, dimension: Dimension });
-
-   if (Blip)
-      mp.blips.new(Blip, new mp.Vector3(Position.x, Position.y, 0), { shortRange: true, scale: 0.85, name: Name, dimension: Dimension });
+   return [colshape, marker, blip];
 }

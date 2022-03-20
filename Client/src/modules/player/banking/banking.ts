@@ -24,10 +24,14 @@ function deposit (amount: number) {
 
 function transfer (target: number, amount: number) {
    return mp.events.callRemoteProc('SERVER::BANK:TRANSFER', target, amount);
+}
 
+function requestCreditCard () {
+   mp.events.callRemote('SERVER::BANK:GET_CREDIT_CARD')
 }
 
 mp.events.add('CLIENT::BANKING:MENU', openBanking);
+mp.events.add('CLIENT::BANK:CREATE_CARD', requestCreditCard)
 mp.events.addProc('CLIENT::BANK:WITHDRAW', withdraw);
 mp.events.addProc('CLIENT::BANK:DEPOSIT', deposit);
 mp.events.addProc('CLIENT::BANK:TRANSFER', transfer);

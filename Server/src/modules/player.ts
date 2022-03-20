@@ -344,23 +344,6 @@ mp.players.find = (searchQuery: any): PlayerMp | null => {
 };
 
 
-export function updatePlayer (player: PlayerMp) {
-   player.character!.increment('minutes', { by: serverConfig.happyHours == true ? 2 : 1 }).then(async character => { 
-      if (character.minutes >= 60) { 
-         character.increment('hours', { by: 1 });
-         character.minutes = 0;
-         await character.save();
-      }
-   });
-   
-   player.character!.increment('hunger', { by: -0.35 });
-   player.character!.increment('thirst', { by: -0.70 });
-
-   if (player.character!.muted > 0) {
-      player.character.increment('muted', { by: -1 });
-   }
-}
-
 function stopPlayeranimation (player: PlayerMp) {
    player.setVariable(shared_Data.ANIMATION, null);
 }

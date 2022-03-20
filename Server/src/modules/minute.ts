@@ -1,23 +1,22 @@
 
 import { serverConfig } from '@configs';
-import { updatePlayer } from './player';
 
 
 function minuteCheck() {
-   
-   const today = new Date();
+   const now = new Date();
+
    if (!serverConfig.freezeTime) {
-      mp.world.time.set(today.getHours(), today.getMinutes(), today.getSeconds());
+      const hours = now.getHours(), minutes = now.getMinutes(), seconds = now.getSeconds();
+      mp.world.time.set(hours, minutes, seconds);
    }
 
    mp.players.forEach((player: PlayerMp) => {
       if (player.character) {
-         updatePlayer(player);
+         player.character.updatePlayer(player);
       }
    });
    
    setTimeout(minuteCheck, 1 * 60 * 1000);
-
 };
 
 
