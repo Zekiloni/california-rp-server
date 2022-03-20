@@ -32,7 +32,7 @@ export class banks extends Model {
    number: string
 
    @ForeignKey(() => characters)
-   @Column({ type: DataType.NUMBER, field: 'character_id' })
+   @Column
    owner: number
 
    @BelongsTo(() => characters)
@@ -75,7 +75,7 @@ export class banks extends Model {
    @AfterSync
    static createBanks () {
       for (const position of bankConfig.positions) {
-         const [colshape, marker, blip ] = createInfoColshape(position, lang.bank, formatCommand(cmds.names.BANK), 2, gDimension, bankConfig.marker, 0.9, bankConfig.markerColor, bankConfig.sprite, bankConfig.spriteColor)
+         const [colshape, marker, blip ] = createInfoColshape(position, lang.bank, formatCommand(cmds.names.BANK), 2, gDimension, bankConfig.marker, 1, bankConfig.markerColor, bankConfig.sprite, bankConfig.spriteColor)
 
          if (blip) {
             blip.shortRange = true;

@@ -145,7 +145,7 @@ export function createInfoColshape (
       }
    }
 
-   marker = mp.markers.new(markerType, new mp.Vector3(x, y, z - 0.85), markerScale, {
+   marker = mp.markers.new(markerType, new mp.Vector3(x, y, z - 0.75), markerScale, {
       color: markerColor ? markerColor : [0, 0, 0, 255],
       dimension: gDimension
    })

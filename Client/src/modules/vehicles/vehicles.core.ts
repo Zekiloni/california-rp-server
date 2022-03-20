@@ -4,7 +4,6 @@ import { entityType } from '../../enums/entity';
 import { vehicleInterface, UI_Status, gameIStatus } from "../game.UI";
 
 
-
 const blockedClasses = [
    RageEnums.VehicleClasses.CYCLES, RageEnums.VehicleClasses.BOATS, 
    RageEnums.VehicleClasses.HELICOPTERS, RageEnums.VehicleClasses.PLANES,
@@ -17,7 +16,6 @@ let temporary = {
    fuel: 0,
    mileage: 0,
 };
-
 
 
 function playerEnterVehicle (vehicle: VehicleMp, seat: number) {
@@ -89,8 +87,6 @@ function driving () {
       }
    }
 }
-
-
 
 
 

@@ -2,11 +2,25 @@ import { Browser } from '../../browser';
 import controls from '../../enums/controls';
 import { playAnimation } from '../player/animation';
 import { animationFlags } from '../../enums/animations.flags';
-import { distanceBetweenVectors } from '../../utils';
 
 
 export let inventoryActive: boolean = false;
+export let trunkActive: boolean = false;
 
+
+async function openInventory () {
+   inventoryActive = !inventoryActive; 
+   Browser.call(inventoryActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'inventory');
+   if (inventoryActive) {
+      const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
+      Browser.call('BROWSER::INVENTORY:ITEMS', items);
+   }
+}
+
+
+async function openTrunk (vehicleID: number) {
+   
+}
 
 mp.events.addProc(
    {
@@ -19,15 +33,6 @@ mp.events.addProc(
 
 mp.events.add(
    {
-
-      'CLIENT::INVENTORY:TOGGLE': async () => { 
-         inventoryActive = !inventoryActive; 
-         Browser.call(inventoryActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'inventory');
-         if (inventoryActive) {
-            const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
-            Browser.call('BROWSER::INVENTORY:ITEMS', items);
-         }
-      },
       
       'CLIENT::ITEM:DROP': async (item: any, itemInfo: any) => { 
          let { position } = mp.players.local;
@@ -103,8 +108,19 @@ mp.keys.bind(controls.KEY_I, true, function() {
       return;
    }
 
+   const vehicle = mp.vehicles.getClosest(mp.players.local.position);
+   if (vehicle && vehicle.getVariable('TRUNK')) {
+      const { position } = mp.players.local;
+      const { x, y, z } = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName('taillight_l'));
 
-   mp.events.call('CLIENT::INVENTORY:TOGGLE');
+      if (mp.game.system.vdist(x, y, z, position.x, position.y, position.z) < 1.45) {
+         openTrunk(vehicle.remoteId);
+      }
+
+   } else {
+      openInventory();
+   }
+   
 });
 
 
@@ -121,13 +137,14 @@ mp.keys.bind(controls.KEY_E, true, async function() {
       return;
    }
 
+   const { position } = mp.players.local;
    const object = mp.objects.getClosest(mp.players.local.position);
 
    if (!object) {
       return;
    }
 
-   if (distanceBetweenVectors(mp.players.local.position, object.position) > 2) {
+   if (mp.game.system.vdist(position.x, position.y, position.z, object.position.x, object.position.y, object.position.z) > 1.2) {
       return;
    }
 

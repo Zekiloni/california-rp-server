@@ -70,7 +70,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(rgb(33 37 47 / 65%), rgb(11 14 17 / 85%));
+      background: linear-gradient(0deg, #1a191e, transparent);
    }
 
    .header {
@@ -81,34 +81,31 @@
    }
 
    .header h4 { 
-      font-size: 1.45rem;
-      font-weight: 550;
-      font-family: 'Montserrat Light', sans-serif;
-      letter-spacing: 0.6rem;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 0.2rem;
       margin: 0;
       text-transform: uppercase;
-      color: #848e9c;
+      color: #fefefe;
    }
 
    .header h4 b { 
       position: relative;
-      font-weight: 650;
       margin: 0;
-      color: whitesmoke;
+      color: #797785;
    }
 
    input.search {
       width: 250px;
-      border: 1px solid #474d57;
       color: #cdcdcd;
       border-radius: 5px;
-      box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px 0px;
-      background: #2b2f36;
+      background: #18171d;
+      border: 1px dashed #232128;
       position: relative;
       padding: 10px 10px;
       outline: none;
       font-size: 13px;
-      font-weight: 300;
+      font-weight: 400;
       transition: all 0.45s ease;
    }
 

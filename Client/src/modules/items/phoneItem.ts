@@ -3,7 +3,7 @@ import { animationFlags } from '../../enums/animations.flags';
 import controls from '../../enums/controls';
 import { loadAnimation, waitForEntity } from '../../utils';
 import { playAnimation } from '../player/animation';
-import { inventoryActive } from './items.Core';
+import { inventoryActive } from './itemsCore';
 
 
 let phoneActive: boolean = false;
@@ -91,7 +91,9 @@ const usingPhone = (entity: EntityMp, value: boolean, oldValue: boolean) => {
       cancelPhoneAnim(target);
       mp.gui.chat.push('Cancelphoneanim')
    }
+
 };
+
 
 const playPhoneAnim = (target: PlayerMp, animation: string) => {
    if (!target.handle) {

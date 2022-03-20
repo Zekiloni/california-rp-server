@@ -1,7 +1,7 @@
 import { Browser } from '../../../browser';
 import { playerPreviewCamera } from '../../../utils';
 import { gameIStatus, toggleGameInterface, UI_Status } from '../../game.UI';
-import { getClothingItemComponent, isClothingItemProp } from '../../items/items.Clothing';
+import { getClothingItemComponent, isClothingItemProp } from '../../items/clothingItem';
 import getPreviousClothing from '../../utils/previous.Clothing';
 import { toggleBusinesInfo } from '../business.Core';
 
