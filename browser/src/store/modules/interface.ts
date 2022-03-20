@@ -111,8 +111,9 @@ const InitialState:uInterface = {
    // police
    policeRadar: { toggle: false },
 
-   // vehicles menu
+   // vehicles
    vehiclesMenu: { toggle: false },
+   trunk: { toggle: false, mouse: true },
 
    // jobs
    busStations: { toggle: false },

@@ -429,6 +429,15 @@ export class vehicles extends Model {
 
       return true;
    }
+
+   static trunk (player: PlayerMp, vehicleID: number) {
+      console.log('vid ' + vehicleID);
+      const vehicle = mp.vehicles.at(vehicleID);
+
+      console.log(vehicle)
+
+      return 'niga';
+   }
 }
 
 
@@ -437,4 +446,5 @@ mp.events.add('playerExitVehicle', vehicles.exit);
 mp.events.add('SERVER::VEHICLE:UPDATE', vehicles.data);
 mp.events.add('SERVER::VEHICLE:INDICATORS', vehicles.indicators);
 mp.events.addProc('SERVER::VEHICLE:MENU_ACTION', vehicles.action);
+mp.events.addProc('SERVER::GET_VEHICLE_TRUNK', vehicles.trunk);
 

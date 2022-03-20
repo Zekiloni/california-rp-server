@@ -19,7 +19,15 @@ async function openInventory () {
 
 
 async function openTrunk (vehicleID: number) {
-   
+   trunkActive = !trunkActive;
+   Browser.call(trunkActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'trunk');
+
+   if (trunkActive) {
+      mp.events.callRemoteProc('SERVER::GET_VEHICLE_TRUNK', vehicleID).then(items => {
+         mp.gui.chat.push(JSON.stringify(items))
+         //Browser.call('BROWSER::VEHICLE_TRUNK', items);
+      })
+   }
 }
 
 mp.events.addProc(
@@ -94,7 +102,6 @@ mp.events.add(
 
 
 mp.keys.bind(controls.KEY_I, true, function() {
-
    if (!mp.players.local.getVariable('LOGGED_IN')) { 
       return;
    }
@@ -109,18 +116,14 @@ mp.keys.bind(controls.KEY_I, true, function() {
    }
 
    const vehicle = mp.vehicles.getClosest(mp.players.local.position);
-   if (vehicle && vehicle.getVariable('TRUNK')) {
-      const { position } = mp.players.local;
-      const { x, y, z } = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName('taillight_l'));
+   const { position } = mp.players.local;
+   const { x, y, z } = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName('taillight_l'));
 
-      if (mp.game.system.vdist(x, y, z, position.x, position.y, position.z) < 1.45) {
-         openTrunk(vehicle.remoteId);
-      }
-
+   if (vehicle && mp.game.system.vdist(x, y, z, position.x, position.y, position.z) < 1.45) { //  && vehicle.getVariable('TRUNK')
+      openTrunk(vehicle.remoteId);
    } else {
       openInventory();
    }
-   
 });
 
 

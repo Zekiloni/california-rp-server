@@ -66,7 +66,8 @@
 
       <!-- [VEHICLES MENU] -->
       <transition name="fade-with-bottom-slide"> 
-         <VehiclesMenu v-if="interfaces.vehiclesMenu.toggle" />
+         <VehiclesMenu v-if="interfaces.vehiclesMenu.toggle" key=vehicleMenu />
+         <VehicleTrunk v-if="interfaces.trunk.toggle" key=vehicleTrunk />
       </transition>
 
       <!-- [BUILDER] -->
@@ -134,6 +135,7 @@
    import Inventory from '@/components/items/Items.vue';
 
    import VehiclesMenu from '@/components/vehicles/VehiclesMenu.vue';
+   import VehicleTrunk from '@/components/vehicles/VehicleTrunk.vue';
 
    import Phone from '@/components/items/phone/PhoneMain.vue';
    import HandheldRadio from '@/components/misc/HandheldRadio.vue';
@@ -157,6 +159,7 @@
 
    import BusStations from '@/components/jobs/BusStations.vue';
    import TaxiMenu from '@/components/jobs/TaxiMenu.vue';
+   
 
    import Map from '@/components/misc/Map.vue';
       
@@ -166,7 +169,7 @@
          Offer, PlayerMenu, Inventory, Chat, Banking, ATM, HouseInfo,
          Phone, Document, HandheldRadio, DeathScreen,
 
-         VehiclesMenu,
+         VehiclesMenu, VehicleTrunk,
 
          ObjectsMenu, ObjectEditor,
          
