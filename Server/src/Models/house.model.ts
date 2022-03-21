@@ -4,7 +4,7 @@ import { interactionPoint } from '@interfaces';
 import { notifications, rank } from '@enums';
 import { cmds, gDimension, lang } from '@constants';
 import { houseConfig } from '@configs';
-import { characters, objects } from '@models';
+import { Characters, objects } from '@models';
 import { logs } from './log.model';
 
 
@@ -18,12 +18,12 @@ export class houses extends Model {
    @Column
    id: number;
 
-   @ForeignKey(() => characters)
+   @ForeignKey(() => Characters)
    @Column
    owner: number;
 
-   @BelongsTo(() => characters)
-   character: characters | null
+   @BelongsTo(() => Characters)
+   character: Characters | null
 
    @Default(houseConfig.type.APARTMENT)
    @Column

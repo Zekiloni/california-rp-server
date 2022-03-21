@@ -1,6 +1,6 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey, Max, Unique } from 'sequelize-typescript';
-import { characters } from '@models';
+import { Characters } from '@models';
 import { playerModels } from '@shared';
 
 
@@ -12,12 +12,12 @@ export class appearances extends Model {
    id: number
 
    @Unique(true)
-   @ForeignKey(() => characters)
+   @ForeignKey(() => Characters)
    @Column(DataType.INTEGER( { length: 11 } ))
    character_id: number
 
-   @BelongsTo(() => characters)
-   character: characters
+   @BelongsTo(() => Characters)
+   character: Characters
 
    @Column(DataType.INTEGER)
    shape_First: number

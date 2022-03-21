@@ -3,6 +3,9 @@ import 'module-alias/register';
 
 import './database';
 import './modules/rage';
+
+import './systems/player/Authorization';
+
 import './modules/commands';
 import './modules/player'
 import './modules/items';

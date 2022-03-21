@@ -4,7 +4,7 @@ import {
    BelongsTo, ForeignKey, DataType, Unique, Default,
    HasMany, AfterSync, AutoIncrement 
 } from 'sequelize-typescript';
-import { characters, inventories, business, transactions, TransactionType } from '@models';
+import { Characters, inventories, business, transactions, TransactionType } from '@models';
 import { gDimension, lang, none, cmds } from '@constants';
 import { bankConfig } from '@configs';
 import { notifications } from '@enums';
@@ -31,12 +31,12 @@ export class banks extends Model {
    @Column({ type: DataType.TEXT, field: 'bank_account_number' })
    number: string
 
-   @ForeignKey(() => characters)
+   @ForeignKey(() => Characters)
    @Column
    owner: number
 
-   @BelongsTo(() => characters)
-   character: characters
+   @BelongsTo(() => Characters)
+   character: Characters
 
    @Default(none)
    @Column(DataType.INTEGER)

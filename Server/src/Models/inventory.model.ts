@@ -4,7 +4,7 @@ import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column,
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
-import { items, logs, characters } from '@models';
+import { items, logs, Characters } from '@models';
 import { itemNames, lang, none } from '@constants';
 import { playerConfig } from '@configs';
 
@@ -233,7 +233,7 @@ export class inventories extends Model {
       inventories.create( { name: item.name, entity: ItemEnums.entity.PLAYER, owner: player.character.id } );
    };
 
-   static async savePlayerEquipment (character: characters) { 
+   static async savePlayerEquipment (character: Characters) { 
       inventories.findAll( { where: { entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
          equipedItems.forEach(async item => {
             if (!items.list[item.name].isClothing() && !items.list[item.name].isProp()) {

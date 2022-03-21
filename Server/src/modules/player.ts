@@ -1,8 +1,8 @@
-import { logs, bans, characters, accounts, inventories, appearances, banks, items, houses, business, vehicles, transactions } from '@models';
+import { logs, Bans, Characters, Accounts, inventories, appearances, banks, items, houses, business, vehicles, transactions } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, lang, none } from '@constants';
-import { spawnPoint } from '@interfaces';
+import { PlayerSpawnPoint } from '@interfaces';
 import { distanceBetweenVectors, shared_Data } from '@shared';
 
 
@@ -53,7 +53,7 @@ function playerChatHandler (player: PlayerMp, content: string) {
 
 
 async function playerJoinHandler (player: PlayerMp) {
-   const isBanned = await bans.isBanned(player);
+   const isBanned = await Bans.isBanned(player);
 
    if (isBanned) {
       console.log(player.name + ' banned')
@@ -77,14 +77,14 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    const cInfo = JSON.parse(characterInfo);
    const cAppearance = JSON.parse(characterAppearance);
 
-   const alreadyExist = await characters.findOne( { where: { name: cInfo.name + ' ' + cInfo.lastName } } );
+   const alreadyExist = await Characters.findOne( { where: { name: cInfo.name + ' ' + cInfo.lastName } } );
 
    if (alreadyExist) {
       player.notification(lang.characterAlreadyExist, notifications.type.ERROR, notifications.time.SHORT);
       return;
    } 
 
-   const character = await characters.create(
+   const character = await Characters.create(
       { 
          name: cInfo.name + ' ' + cInfo.lastName,
          account_id: player.account.id,
@@ -151,12 +151,12 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
 }
 
 
-function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]> { 
+function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnPoint[]> { 
    return new Promise((resolve) => {
-      let spawnPoints: spawnPoint[] = [];
+      let spawnPoints: PlayerSpawnPoint[] = [];
 
-      characters.findOne({ where: { id: id }, include: [houses, vehicles, business, banks] }).then((character) => { 
-         const defaultSpawn: spawnPoint = {
+      Characters.findOne({ where: { id: id }, include: [houses, vehicles, business, banks] }).then((character) => { 
+         const defaultSpawn: PlayerSpawnPoint = {
             name: lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,
             description: lang.defaultSpawnDescripiton,
@@ -213,7 +213,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<spawnPoint[]
 
 
 function authorizationVerify (player: PlayerMp, username: string, password: string) {
-   return accounts.findOne( { where: { username: username }, include: [characters] } ).then(account => {
+   return Accounts.findOne( { where: { username: username }, include: [Characters] } ).then(account => {
       if (!account) {
          player.notification(lang.userDoesntExist, notifications.type.ERROR, 5);
          return;
@@ -223,12 +223,6 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
       if (!logged) { 
          player.notification(lang.incorrectPassword, notifications.type.ERROR, 5);
-
-         logs.discord(
-            lang.unsuccessfulAuth, 
-            lang.account + ': **' + username + '**\n' + lang.IP + ': **' + player.ip + '**\n' + lang.social + ': **' + player.socialClub + '**', 
-            logging.category.ACCOUNT
-         );
 
          return;
       }
@@ -240,7 +234,7 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
 
 function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes, id?: number) {
-   characters.findOne( { where: { id: characterId }, include: [appearances, banks] } ).then(character => {
+   Characters.findOne( { where: { id: characterId }, include: [appearances, banks] } ).then(character => {
       character!.spawnPlayer(player, point, character?.appearance!, id);
    });
 }

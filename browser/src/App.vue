@@ -4,8 +4,10 @@
       <!-- <Map /> -->
       <Notifications />
 
-      <Lobby v-if="interfaces.lobby.toggle" />
-      <Creator v-if="interfaces.characterCreator.toggle" />
+      <transition name="fade" mode="out-in"> 
+         <Authorization v-if="interfaces.authorization.toggle" key=authorization />
+         <Creator v-if="interfaces.characterCreator.toggle" key=creator />
+      </transition>
 
       <GameInterface v-if="interfaces.gameInterface.toggle" />
       <Offer />
@@ -118,7 +120,7 @@
 
 
    import Notifications from '@/components/player/Notifications.vue';
-   import Lobby from '@/components/Lobby.vue';
+   import Authorization from '@/components/player/Authorization.vue';
    import Creator from '@/components/creator.vue';
    import Offer from '@/components/player/Offer.vue';
    import Hints from '@/components/Hints.vue';
@@ -161,11 +163,10 @@
    import TaxiMenu from '@/components/jobs/TaxiMenu.vue';
    
 
-   import Map from '@/components/misc/Map.vue';
       
    export default { 
       components: { 
-         Lobby, Creator, Notifications, Hints, GameInterface, Playerlist,
+         Authorization, Creator, Notifications, Hints, GameInterface, Playerlist,
          Offer, PlayerMenu, Inventory, Chat, Banking, ATM, HouseInfo,
          Phone, Document, HandheldRadio, DeathScreen,
 
@@ -176,7 +177,7 @@
          BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
 
          FactionPanel, FactionGarage, 
-         PoliceRadar, Map,
+         PoliceRadar, 
 
          BusStations, TaxiMenu
       },
@@ -197,9 +198,7 @@
                this.hide(data);
             }); 
          }
-         
-         document.addEventListener('focus', mp.invoke('setTypingInChatState', true));
-         document.addEventListener('blur', mp.invoke('setTypingInChatState', false));
+      
       },
 
       methods: {

@@ -1,5 +1,5 @@
 
-import { accounts, characters, vehicles } from '@models';
+import { Accounts, Characters, vehicles } from '@models';
 
 
 declare global { 
@@ -27,8 +27,8 @@ declare global {
    }
 
    interface PlayerMp { 
-      character: characters;
-      account: accounts;
+      character: Characters;
+      account: Accounts;
 
       sendMessage (message: string, color: string): void;
       proximityMessage (radius: number, message: string, colors: string[]): void;

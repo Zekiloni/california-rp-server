@@ -5,14 +5,14 @@ import bcrypt from 'bcryptjs';
 import { shared_Data } from '@shared';
 import { rank } from '@enums';
 import { lang, none } from '@constants';
-import { characters, logs } from '@models';
+import { Characters, logs } from '@models';
 import { adminAccounts } from '@configs';
 
 const salt = bcrypt.genSaltSync(10);
 
 
 @Table
-export class accounts extends Model {
+export class Accounts extends Model {
 
    @AutoIncrement
    @PrimaryKey
@@ -26,8 +26,8 @@ export class accounts extends Model {
    @Column(DataType.TEXT)
    email: string;
 
-   @HasMany(() => characters)
-   characters: characters[];
+   @HasMany(() => Characters)
+   characters: Characters[];
 
    @Column(DataType.TEXT)
    password: string;
@@ -83,17 +83,17 @@ export class accounts extends Model {
    @AfterSync
    static async loading () {
       for (const admin of adminAccounts) { 
-         const exist = await accounts.findOne({ where: { username: admin.username } });
+         const exist = await Accounts.findOne({ where: { username: admin.username } });
          if (exist == null) { 
-            accounts.create({ username: admin.username, password: admin.password, administrator: admin.admin });
+            Accounts.create({ username: admin.username, password: admin.password, administrator: admin.admin });
          }
       }
 
-      logs.info(await accounts.count() + ' accounts loaded !');
+      logs.info(await Accounts.count() + ' accounts loaded !');
    }
 
    @BeforeCreate
-   static creating (account: accounts) { 
+   static creating (account: Accounts) { 
       account.password = bcrypt.hashSync(account.password, salt);
    }
 
@@ -114,7 +114,7 @@ export class accounts extends Model {
 
       if (this.hardwer == null || this.social_club == null) {
 
-         accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } }).then(account => {
+         Accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } }).then(account => {
             if (account) {
                player.kick(lang.userAlreadyExist);
             }

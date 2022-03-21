@@ -2,7 +2,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { interactionPoint } from '@interfaces';
 import { cmds, gDimension, lang, none } from '@constants';
-import { characters, logs, products, workers } from '@models';
+import { Characters, logs, products, workers } from '@models';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
@@ -38,7 +38,7 @@ export class business extends Model {
    @Column(DataType.INTEGER)
    price: number
 
-   @ForeignKey(() => characters)
+   @ForeignKey(() => Characters)
    @Default(null)
    @Column(DataType.INTEGER)
    owner: number
@@ -416,7 +416,7 @@ export class business extends Model {
    }
 
 
-   addWorker (player: PlayerMp, character: characters, salary: number) {
+   addWorker (player: PlayerMp, character: Characters, salary: number) {
       return workers.findOne( { where: { name: character.name } }).then(worker => {
          if (worker) {
 

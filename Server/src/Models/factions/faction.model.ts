@@ -4,7 +4,7 @@ import { EconomyConfig, FactionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
 import { cmds, colors, lang, none } from '@constants';
 import { notifications } from '@enums';
-import { characters, factionsRanks, logs } from '@models';
+import { Characters, factionsRanks, logs } from '@models';
 import { checkForDot, formatCommand, shared_Data } from '@shared';
 
 
@@ -301,7 +301,7 @@ export class factions extends Model {
 
    static info (player: PlayerMp) {
       return factions.findOne( { where: { id: player.character.faction }, include: [factionsRanks] } ).then(async faction => {
-         const members = await characters.findAll( { where: { faction: player.character.faction } } );
+         const members = await Characters.findAll( { where: { faction: player.character.faction } } );
          return [ faction, members ];
       })
    }
@@ -384,7 +384,7 @@ const kickMember = (player: PlayerMp, targetCharacterID: number) => {
       if (isOnline) {
          faction.kick(player, isOnline);
       } else {
-         const targetCharacter = await characters.findOne( { where: { id: targetCharacterID } } );
+         const targetCharacter = await Characters.findOne( { where: { id: targetCharacterID } } );
 
          if (!targetCharacter) {
             return;

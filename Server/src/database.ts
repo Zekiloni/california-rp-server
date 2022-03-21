@@ -17,10 +17,10 @@ const Database = new Sequelize({
    password: DatabaseConfig.password,
    storage: ':memory:',
    models: [ 
-      models.bans,
+      models.Bans,
       models.logs, 
-      models.accounts, 
-      models.characters, 
+      models.Accounts, 
+      models.Characters, 
       models.appearances,
       models.inventories, 
       models.vehicles,

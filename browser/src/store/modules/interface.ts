@@ -22,7 +22,7 @@ const InitialState:uInterface = {
    hints: { toggle: true },
    chat: { toggle: false },
 
-   lobby: { toggle: true, mouse: true },
+   authorization: { toggle: false, mouse: true },
    characterCreator: { toggle: false, mouse: true },
 
    gameInterface: { toggle: false },

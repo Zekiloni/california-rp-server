@@ -3,7 +3,7 @@
 import rp from 'request-promise';
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
-import { accounts, characters } from '@models';
+import { Accounts, Characters } from '@models';
 import { timeDate } from '@shared';
 import { logging } from '@enums';
 import { serverConfig } from '@configs';
@@ -52,7 +52,7 @@ export class logs extends Model {
    @Column
    updated_At: Date
 
-   static new (account: accounts, character: characters, participant: accounts, message: string) {
+   static new (account: Accounts, character: Characters, participant: Accounts, message: string) {
       logs.create({ account_id: account.id, character_id: character.id, participant: participant.id, content: message });
    }
 
@@ -68,28 +68,5 @@ export class logs extends Model {
       console.log(consoleColors.green + '[' + timeDate() + '] ' + consoleColors.white + message);
    }
 
-   static discord (title: string, message: string, category: logging.category) {
-      
-      const embed = {
-         title: title,
-         description: message,
-         color: parseInt(colors.hex.BROADCAST, 16)
-      };
-
-      const params = {
-         username: serverConfig.name,
-         embeds: [embed]
-      };
-
-      const options = {
-         method: 'POST',
-         uri: serverConfig.discordLog,
-         body: params,
-         json: true
-      };
-
-      rp(options)
-         .catch(e => logs.error('discordHook: ' + e) );
-   }
 }
 

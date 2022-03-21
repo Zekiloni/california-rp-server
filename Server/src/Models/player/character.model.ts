@@ -7,10 +7,10 @@ import {
 } from 'sequelize-typescript';
 
 import { 
-   accounts, appearances, banks, houses,
+   Accounts, appearances, banks, houses,
    business, inventories, logs, objects, 
    vehicles, factions, factionsRanks,
-    moneyLogs
+   moneyLogs
 } from '@models';
 
 import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@constants';
@@ -23,19 +23,21 @@ import { admins } from '../../modules/admin';
 
 
 
-@Table
-export class characters extends Model {
+@Table({
+   tableName: 'characters'
+})
+export class Characters extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column(DataType.INTEGER)
    id: number
 
-   @ForeignKey(() => accounts)
+   @ForeignKey(() => Accounts)
    @Column(DataType.INTEGER)
    account_id: number
 
-   @BelongsTo(() => accounts)
-   account: accounts
+   @BelongsTo(() => Accounts)
+   account: Accounts
 
    @Unique(true)
    @Length({ min: 6, max: 48 })
@@ -190,11 +192,11 @@ export class characters extends Model {
 
    @AfterSync
    static async loading () {
-      logs.info(await characters.count() + ' characters loaded !');
+      logs.info(await Characters.count() + ' characters loaded !');
    }
 
    @AfterCreate
-   static async creating (character: characters) {
+   static async creating (character: Characters) {
       banks.create({
          number: generateNumber(100000000000, 999999999999),
          owner: character.id,
@@ -608,8 +610,8 @@ export class characters extends Model {
 }
 
 
-mp.events.add('SERVER::OFFER:RESPONSE', characters.offerRespond);
-mp.events.add('SERVER::PLAYER_MENU:ACTION', characters.panelAction);
-mp.events.addProc('SERVER::PLAYER_MENU', characters.panel);
-mp.events.addProc('SERVER::PLAYER:REPORT', characters.report);
-mp.events.addProc('SERVER::PLAYER:DELETE_REPORT', characters.deleteReport);
+mp.events.add('SERVER::OFFER:RESPONSE', Characters.offerRespond);
+mp.events.add('SERVER::PLAYER_MENU:ACTION', Characters.panelAction);
+mp.events.addProc('SERVER::PLAYER_MENU', Characters.panel);
+mp.events.addProc('SERVER::PLAYER:REPORT', Characters.report);
+mp.events.addProc('SERVER::PLAYER:DELETE_REPORT', Characters.deleteReport);

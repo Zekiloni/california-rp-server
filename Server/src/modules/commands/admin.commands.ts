@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, accounts, business, factions, characters, vehicles } from '@models';
+import { logs, items, inventories, houses, Accounts, business, factions, Characters, vehicles } from '@models';
 import { cmds, colors, gDimension, lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, serverConfig, VehicleConfig } from '@configs';
@@ -952,8 +952,8 @@ Commands[cmds.names.FACTIONS] = {
          }
 
          factions.forEach(async faction => {
-            const members = await characters.count( { where: { faction: faction.id } } );
-            const leader = await characters.findOne( { where: { id: faction.leader } } );
+            const members = await Characters.count( { where: { faction: faction.id } } );
+            const leader = await Characters.findOne( { where: { id: faction.leader } } );
             
             player.sendMessage('[' + faction.id + '] ' + faction.name + ', Lider ' + (leader ? leader?.name : 'Niko') + ', clanova ' + members + '.', colors.hex.Info); // PORUKA
          })
@@ -993,7 +993,7 @@ Commands[cmds.names.CREATE_ACCOUNT] = {
       cmds.params.E_MAIL
    ],
    call (player: PlayerMp, username: string, password: string, mail: string) {
-      accounts.create( { username: username, password: password, email: mail } ).catch(e => logs.error('creatingAccount: ' + e) );
+      Accounts.create( { username: username, password: password, email: mail } ).catch(e => logs.error('creatingAccount: ' + e) );
       // LOGS
       player.notification(lang.accountCreated + ' (' + username + ', ' + password + ')', notifications.type.SUCCESS, notifications.time.LONG);
    }

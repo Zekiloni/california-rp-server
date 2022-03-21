@@ -11,6 +11,7 @@ export const Messages = {
    YOUR_BALANCE: 'Vaše Stanje',
    PASSWORD: 'Korisnička Šifra',
    NOT_DONATOR: 'Potreban vam je donator level.',
+   FORGOTEN_PASSWORD: 'U slučaju zaboravljene lozinke, možete je vratiti na korisničkom panelu.',
    AUTHORIZATION: 'Autorizacija',
    NEED_TO_LOGIN: 'Da bi započeli igru potrebno je da se prijavite. Registracija je moguća samo preko sajta.',
    PLAY: 'Započni Igru',
@@ -234,9 +235,8 @@ export const Messages = {
    MONEY_QUANTITY: 'Iznos novca',
 
    THERE_IS_NO_PAYCHECK: 'Trenutno nema novca za isplatu.',
-   SPAWN_SELECTOR_TITLE: 'Spawn Selector',
-   SPAWN_SELECTOR_INFO: 'Odabir mesta spawna',
-   WAITING_FOR_PAYMENT: ' čeka za isplatu.',
+   SPAWN_SELECTOR_INFO: 'Klikom na žuti marker birate opciju gde želite da se stvorite. Potom kliknite na dugme Započni Igru.',
+
    CHOOSE_OUTFIT: 'Odaberite outfit',
    OUTFIT_LATER_CLOTHE: 'Pri kreiranju karaktera birate već podešeni outfit. Kasnije u toku igre možete potpuno drugačije kostumizirati vašu odeću.',
    GET_PAYMENT: 'Isplata',

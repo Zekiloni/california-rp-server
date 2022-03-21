@@ -9,7 +9,7 @@ import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { jobs, factions, logs, characters } from '@models';
+import { jobs, factions, logs, Characters } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
@@ -37,12 +37,12 @@ export class vehicles extends Model {
    @Column(DataType.INTEGER)
    price: number
 
-   @ForeignKey(() => characters)
+   @ForeignKey(() => Characters)
    @Column
    owner: number
 
-   @BelongsTo(() => characters)
-   character: characters
+   @BelongsTo(() => Characters)
+   character: Characters
 
    @Default(false)
    @Column(DataType.BOOLEAN)

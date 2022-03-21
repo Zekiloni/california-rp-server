@@ -3,12 +3,12 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { lang } from '@constants';
 import { validateIP } from '@shared';
-import { accounts } from '@models';
+import { Accounts } from '@models';
 import { notifications } from '@enums';
 
 
 @Table
-export class bans extends Model {
+export class Bans extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
@@ -23,7 +23,7 @@ export class bans extends Model {
 
    @Default(0)
    @Column
-   hardware_Id: string;
+   hardware: string;
 
    @Default(null)
    @Column
@@ -55,10 +55,10 @@ export class bans extends Model {
       const ipAdress = validateIP(target);
       if (ipAdress) {
          const playerAccount = player.account;
-         const Banned = await bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.account.id });
+         const Banned = await Bans.create({ IP: target.ip, Reason: reason, Date: date, Expiring: expiring, Issuer: player.account.id });
          if (playerAccount) {
             Banned.account = playerAccount.id;
-            Banned.hardware_Id = playerAccount.hardwer;
+            Banned.hardware = playerAccount.hardwer;
             Banned.social = playerAccount.social_club;
          }
          await Banned.save();
@@ -68,12 +68,12 @@ export class bans extends Model {
          if (Online) {
             const Account = await Online.account;
 
-            bans.create({ Account: Online.account.id, Character: Online.character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
+            Bans.create({ Account: Online.account.id, Character: Online.character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             Online.kick(reason);
          } else {
-            const OfflineAcc = await accounts.findOne({ where: { Name: target } })
+            const OfflineAcc = await Accounts.findOne({ where: { Name: target } })
             if (OfflineAcc) {
-               bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
+               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             } else {
                player.notification(lang.userNotFound, notifications.type.ERROR, 5);
             }
@@ -90,7 +90,7 @@ export class bans extends Model {
    }
 
    static async isBanned (player: PlayerMp) {
-      const result = await bans.findOne( { where: { ip: player.ip, social: player.socialClub } } );
+      const result = await Bans.findOne( { where: { ip: player.ip, social: player.socialClub } } );
       return result ? result : false;
    };
 }

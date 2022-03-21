@@ -20,7 +20,7 @@ export interface beardStyle {
    color: number
 };
 
-export interface spawnPoint { 
+export interface PlayerSpawnPoint { 
    name: string,
    description: string
    type: spawnPointTypes
