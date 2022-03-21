@@ -53,7 +53,7 @@
    }
 
    .login {
-      background: rgb(33, 33, 38);
+      background: #16151A;
       width: 100%;
       margin-top: 40px;
       height: 138px;
@@ -69,7 +69,7 @@
       margin: 15px 0;
       padding: 15px 15px;
       display: block;   
-      background: #1C1C21;
+      background: #201f25;
       border-radius: 8px;
       font-size: 0.95rem;
       font-weight: 400;

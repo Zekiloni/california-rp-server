@@ -71,7 +71,7 @@
             let lng = coord.lng;
          });
 
-         this.$emit('map', this.map);
+         this.$emit('map', this.map, this.layer);
       }
 
       mounted () {

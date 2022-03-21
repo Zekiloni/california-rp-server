@@ -23,7 +23,7 @@
    import Component from 'vue-class-component';
    
    import Map from '@/components/Map.vue';
-   import L, { LeafletMouseEvent } from 'leaflet';
+   import L, { LeafletMouseEvent, TileLayer } from 'leaflet';
 
    import { Messages } from '@/globals';
 
@@ -52,6 +52,7 @@
    })
    export default class Spawn extends Vue {
       map: L.Map | null = null;
+      layer: L.TileLayer | null = null;
 
       Messages = Messages;
 
@@ -63,9 +64,18 @@
 
          this.$emit('select-spawn', this.selected.type, this.selected.id ? this.selected.id : 0);
       }
+
+      convertToMap (e: TileLayer, n: number, i: number) {
+         let o = 3 * <number>e.options.tileSize!, r = 2 * <number>e.options.tileSize,
+            s = this.map!.unproject([0, 0], 0), a = this.map!.unproject([r / 2, o - <number>e.options.tileSize], 0),
+            l = s.lng + ((n - -4230) * (s.lng - a.lng)) / (-4230 - 370);
+
+         return { lat: s.lat + ((i - 8420) * (s.lat - a.lat)) / (8420 - (-640)), lng: l };
+      }
       
-      initializeMap (map: L.Map) {
+      initializeMap (map: L.Map, layer: TileLayer) {
          this.map = map;
+         this.layer = layer;
          map.setView(map.getCenter(), -1);
          
          const smallIcon = L.icon({
@@ -75,9 +85,12 @@
    
          this.$props.points.forEach((point: SpawnPoint) => {
             
-            point.marker = L.marker(new L.LatLng(point.position.x, point.position.y), { icon: smallIcon }).addTo(this.map!)
+            const position = this.convertToMap(this.layer!, point.position.x, point.position.y);
+            
+            point.marker = L.marker(new L.LatLng(position.lat, position.lng), { icon: smallIcon }).addTo(this.map!)
                .on('click', () => {
                   this.selected = point;
+                  this.map?.setView(position, 2)
                });
          })
 
@@ -127,6 +140,7 @@
       padding: 10px;
       border: 1px dashed #36353D;
       color: #E4E4E2;
+      border-radius: 5px;
    }
 
    .point h4 { 
