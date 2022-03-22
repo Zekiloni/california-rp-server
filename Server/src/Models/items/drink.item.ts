@@ -1,5 +1,5 @@
 
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
@@ -11,7 +11,7 @@ const drinkType = [
 ];
 
 
-export class drinkItem extends items {
+export class drinkItem extends Items {
    thirst: number;
    alcohol: number | null;
    energy?: number;

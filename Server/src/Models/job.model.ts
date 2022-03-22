@@ -5,9 +5,9 @@ import { formatCommand } from '@shared';
 import { notifications } from '@enums';
 
 
-export class jobs { 
+export class Jobs { 
 
-   static list: jobs[] = []
+   static list: Jobs[] = []
 
    id: number;
    name: string;
@@ -57,11 +57,11 @@ export class jobs {
       };
 
       console.log(this.name)
-      jobs.list.push(this);
+      Jobs.list.push(this);
    }
 
    static nearest (player: PlayerMp, distance: number = 3) {
-      return jobs.list.find(job => player.dist(job.position) < distance);
+      return Jobs.list.find(job => player.dist(job.position) < distance);
    }
 
    employ (player: PlayerMp) {

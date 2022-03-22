@@ -1,4 +1,4 @@
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { animations, playerConfig } from '@configs';
 import { inventories } from '@models';
 import { ItemEnums, notifications } from '@enums';
@@ -7,7 +7,7 @@ import { lang } from '@constants';
 
 const medType = [ItemEnums.type.USABLE, ItemEnums.type.MEDIC_KIT]
 
-export class medItem extends items {
+export class medItem extends Items {
    regeneration: number;
    useTime: number;
 

@@ -9,7 +9,7 @@ import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { jobs, factions, logs, Characters } from '@models';
+import { Jobs, factions, logs, Characters } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
@@ -126,7 +126,7 @@ export class vehicles extends Model {
    @UpdatedAt
    updated_at: Date
 
-   job: jobs | null
+   job: Jobs | null
 
    faction: factions | null
 
@@ -169,7 +169,7 @@ export class vehicles extends Model {
       position: Vector3Mp,
       rotation: Vector3Mp,
       options?: { 
-         price?: number, locked?: boolean, spawned?: boolean, faction?: factions, job?: jobs, rent?: number,
+         price?: number, locked?: boolean, spawned?: boolean, faction?: factions, job?: Jobs, rent?: number,
          numberplate?: NumberPlate
       } 
    ) {

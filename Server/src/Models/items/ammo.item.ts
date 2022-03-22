@@ -1,6 +1,6 @@
 
 
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { inventories, logs} from '@models';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
@@ -8,7 +8,7 @@ import weaponData from '../../configs/weapon.data.json';
 
 
 
-export class AmmoItem extends items {
+export class AmmoItem extends Items {
    clipSize: number;
    
    constructor (name: string, model: string, bullets: number, weight: number = 0.1, description?: string) { 

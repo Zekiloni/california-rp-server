@@ -1,7 +1,7 @@
 import { Commands } from '../commands';
 import { cmds, colors, lang, none } from '@constants';
 import { notifications } from '@enums';
-import { jobs } from '@models';
+import { Jobs } from '@models';
 import { JobConfig } from '@configs';
 import { taxi } from '@modules/jobs/taxi';
 
@@ -15,7 +15,7 @@ Commands[cmds.names.TAKE_JOB] = {
          return;
       }
 
-      const job = jobs.nearest(player, 3);
+      const job = Jobs.nearest(player, 3);
 
       if (!job) {
          player.notification(lang.NOT_NEAR_ANY_JOB, notifications.type.ERROR, notifications.time.MED);
@@ -63,7 +63,7 @@ Commands[cmds.names.CHOOSE_ROUTE] = {
          return;
       }
 
-      const job = jobs.list.find(job => job.id == player.character.job);
+      const job = Jobs.list.find(job => job.id == player.character.job);
 
       if (!job) { 
          return;

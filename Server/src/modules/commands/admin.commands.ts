@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, Accounts, Busines, factions, Characters, vehicles } from '@models';
+import { logs, Items, inventories, houses, Accounts, Busines, factions, Characters, vehicles } from '@models';
 import { cmds, colors, gDimension, lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, serverConfig, VehicleConfig } from '@configs';
@@ -101,7 +101,7 @@ Commands[cmds.names.GET_HERE] = {
 Commands[cmds.names.ITEMS] = { 
    description: cmds.descriptions.ITEMS,
    call (player: PlayerMp) { 
-      console.log(items.list);
+      console.log(Items.list);
    }
 };
 
@@ -203,8 +203,8 @@ Commands[cmds.names.GIVE_ITEM] ={
    call (player: PlayerMp, targetSearch: any, ...itemName: any) { 
       itemName = itemName.join(' ');
 
-      if (items.list[itemName]) {
-         const foundItem = items.list[itemName];
+      if (Items.list[itemName]) {
+         const foundItem = Items.list[itemName];
          const target = mp.players.find(targetSearch);
 
          if (!target) {
@@ -313,7 +313,7 @@ Commands[cmds.names.DISARM] = {
       if (target.character) {
          inventories.findAll( { where: { owner: target.character.id, equiped: true } } ).then(equipment => {
             equipment.forEach(async equipedItem => {
-               const item = items.list[equipedItem.name];
+               const item = Items.list[equipedItem.name];
                if (item.isWeapon()) {
                   equipedItem.equiped = false;
                   await equipedItem.save();

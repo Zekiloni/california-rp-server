@@ -1,5 +1,5 @@
 import { FactionsPermissions } from '@enums';
-import { factions, jobs } from '@models';
+import { factions, Jobs } from '@models';
 
 
 export interface interactionPoint {
@@ -16,7 +16,7 @@ export interface offer {
    offerer?: PlayerMp | null
    respond (player: PlayerMp, respond: boolean): void;
    faction?: factions
-   job?: jobs
+   job?: Jobs
 }
 
 export type commands = {

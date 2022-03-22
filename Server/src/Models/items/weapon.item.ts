@@ -1,5 +1,5 @@
 
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { ItemEnums } from "@enums";
 import { itemDescriptions, itemNames } from '@constants';
@@ -15,12 +15,12 @@ export const weaponType = [
 ];
 
 
-export class WeaponItem extends items {
+export class WeaponItem extends Items {
    weapon_hash: string;
-   caliber: items | null;
+   caliber: Items | null;
    ammo?: number;
    
-   constructor (name: string, model: string, weapHash: string, cal: items | null, ammo?: number, type?: ItemEnums.type[], weight: number = 0.35, description?: string ) { 
+   constructor (name: string, model: string, weapHash: string, cal: Items | null, ammo?: number, type?: ItemEnums.type[], weight: number = 0.35, description?: string ) { 
       super (name, type ? weaponType.concat(type) : weaponType, model, weight, description);
 
       this.weapon_hash = weapHash;

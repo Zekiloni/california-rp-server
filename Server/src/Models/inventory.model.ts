@@ -4,7 +4,7 @@ import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column,
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
-import { items, logs, Characters } from '@models';
+import { Items, logs, Characters } from '@models';
 import { itemNames, lang, none } from '@constants';
 import { playerConfig } from '@configs';
 
@@ -97,7 +97,7 @@ export class inventories extends Model {
    static async creating (item: inventories) { 
       item.refresh();
       
-      const rItem = items.list[item.name];
+      const rItem = Items.list[item.name];
 
       if (!rItem) {
          return;
@@ -132,7 +132,7 @@ export class inventories extends Model {
 
    refresh () {
       if (this.on_ground) {
-         this.object = mp.objects.new(items.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
+         this.object = mp.objects.new(Items.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
          this.object.setVariable(shared_Data.ITEM, { name: this.name, id: this.id });
       } else { 
          if (this.object) { 
@@ -163,11 +163,11 @@ export class inventories extends Model {
    }
 
    async equipItem (player: PlayerMp) {
-      const rItem = items.list[this.name!];
+      const rItem = Items.list[this.name!];
 
       const equipment = await inventories.findAll( { where: { equiped: true, owner: player.character.id, entity: ItemEnums.entity.PLAYER } });
       const equiped = equipment.filter(
-         item => !items.list[item.name].type.includes(ItemEnums.type.CLOTHING) && !items.list[item.name].type.includes(ItemEnums.type.PROP)
+         item => !Items.list[item.name].type.includes(ItemEnums.type.CLOTHING) && !Items.list[item.name].type.includes(ItemEnums.type.PROP)
       );
       
       if (equiped.length > playerConfig.max.EQUIPMENT) {
@@ -190,7 +190,7 @@ export class inventories extends Model {
    }
 
    async unequip (player: PlayerMp) {
-      const item = items.list[this.name];
+      const item = Items.list[this.name];
 
       if (!item) {
          return;
@@ -208,7 +208,7 @@ export class inventories extends Model {
    async useItem (player: PlayerMp) { 
       const Character = player.character;
       
-      const rItem = items.list[this.name];
+      const rItem = Items.list[this.name];
    }
 
    static async doesHaveItem (entity: ItemEnums.entity, owner: number, itemName: string) {
@@ -229,14 +229,14 @@ export class inventories extends Model {
       });
    }
 
-   static giveItem (player: PlayerMp, item: items) { 
+   static giveItem (player: PlayerMp, item: Items) { 
       inventories.create( { name: item.name, entity: ItemEnums.entity.PLAYER, owner: player.character.id } );
    };
 
    static async savePlayerEquipment (character: Characters) { 
       inventories.findAll( { where: { entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
          equipedItems.forEach(async item => {
-            if (!items.list[item.name].isClothing() && !items.list[item.name].isProp()) {
+            if (!Items.list[item.name].isClothing() && !Items.list[item.name].isProp()) {
                item.equiped = false;
                await item.save();
             }
@@ -250,7 +250,7 @@ export class inventories extends Model {
          let weight: number = 0;
 
          playerItems.forEach(item => {
-            weight += items.list[item.name].weight;
+            weight += Items.list[item.name].weight;
          });
 
          return weight;

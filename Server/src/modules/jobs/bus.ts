@@ -1,11 +1,11 @@
 import { JobConfig, VehicleConfig } from '@configs';
 import { VehiclePoint } from '@interfaces';
-import { jobs, vehicles } from '@models';
+import { Jobs, vehicles } from '@models';
 import { initials, randomInteger } from '@shared/utils';
 
 
 
-export const bus = new jobs(
+export const bus = new Jobs(
    JobConfig.job.BUS_DRIVER, 
    JobConfig.names.BUS_DRIVER, 
    JobConfig.descriptions.BUS_DRIVER,

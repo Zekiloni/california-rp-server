@@ -1,5 +1,5 @@
 
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
@@ -15,7 +15,7 @@ const licenseTypes = [
 export enum weapLicenseType { CCV, PF }
 
 
-export class licenseItem extends items {
+export class licenseItem extends Items {
    
    constructor (name: string, model: string, description: string) { 
       super (name, licenseTypes, model, 0.15, description);

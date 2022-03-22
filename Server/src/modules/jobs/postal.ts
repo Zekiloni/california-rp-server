@@ -1,8 +1,8 @@
 import { JobConfig } from '@configs';
-import { jobs } from '@models';
+import { Jobs } from '@models';
 
 
-const postal = new jobs(
+const postal = new Jobs(
    JobConfig.job.POSTAL,
    JobConfig.names.POSTAL,
    JobConfig.descriptions.POSTAL,

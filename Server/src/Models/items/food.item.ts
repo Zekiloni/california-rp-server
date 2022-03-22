@@ -1,6 +1,6 @@
 
 
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
@@ -12,7 +12,7 @@ const foodType = [
 ];
 
 
-export class foodItem extends items {
+export class foodItem extends Items {
    hunger: number;
    snacks: number;
    

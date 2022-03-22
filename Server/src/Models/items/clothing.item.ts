@@ -1,6 +1,6 @@
 
 
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { inventories  } from '@models';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
@@ -16,7 +16,7 @@ const propType = [
 ];
 
 
-export class ClothingItem extends items {
+export class ClothingItem extends Items {
 
    static clothings: ClothingItem[] = [];
    static props: ClothingItem[] = [];
@@ -73,7 +73,7 @@ export class ClothingItem extends items {
             undershirt.equiped = false;
             await undershirt.save();
             
-            items.list[undershirt.name].unequip!(player);
+            Items.list[undershirt.name].unequip!(player);
          })
 
          const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');

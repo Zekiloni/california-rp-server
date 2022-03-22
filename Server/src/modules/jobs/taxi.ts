@@ -1,5 +1,5 @@
 import { JobConfig } from '@configs/jobs.config';
-import { jobs } from '@models';
+import { Jobs } from '@models';
 
 
 
@@ -15,7 +15,7 @@ interface TaxiCall {
 }
 
 
-class taxiJob extends jobs {
+class taxiJob extends Jobs {
    
    calls: TaxiCall[] = [];
 

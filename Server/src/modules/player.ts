@@ -1,4 +1,4 @@
-import { logs, Bans, Characters, Accounts, inventories, appearances, banks, items, houses, Busines, vehicles, transactions } from '@models';
+import { logs, Bans, Characters, Accounts, inventories, appearances, banks, Items, houses, Busines, vehicles, transactions } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, lang, none } from '@constants';

@@ -1,13 +1,13 @@
 
 
-import { items } from '../item.model';
+import { Items } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { itemDescriptions } from "@constants";
 import { ItemEnums } from "@enums";
 
 
 
-export class cookerItem extends items {
+export class cookerItem extends Items {
    slots: number;
    offsets: Vector3Mp[];
    
