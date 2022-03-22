@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { business, houses } from '@models';
+import { Busines, houses } from '@models';
 import { Commands } from '../commands';
 
 
@@ -8,7 +8,7 @@ Commands[cmds.names.BUY] = {
    async call (player: PlayerMp, action?: string) {
       switch (action) {
          case cmds.actions.busines: {
-            const nearest = await business.getNearest(player);
+            const nearest = await Busines.getNearest(player);
 
             if (!nearest) {
                return;
@@ -38,7 +38,7 @@ Commands[cmds.names.BUY] = {
          }
 
          default: {
-            const nearest = await business.getNearest(player);
+            const nearest = await Busines.getNearest(player);
 
             if (!nearest) {
                return;

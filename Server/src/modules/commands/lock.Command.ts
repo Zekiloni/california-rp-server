@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { business, houses } from '@models';
+import { Busines, houses } from '@models';
 import { getNearest } from '@shared';
 import { Commands } from '../commands';
 
@@ -16,8 +16,8 @@ Commands[cmds.names.LOCK] = {
       
       switch (true) {
 
-         case nearest instanceof business: {
-            (<business>nearest).lock(player, !nearest.locked);
+         case nearest instanceof Busines: {
+            (<Busines>nearest).lock(player, !nearest.locked);
             break;
          }
 

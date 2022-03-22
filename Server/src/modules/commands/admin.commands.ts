@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, items, inventories, houses, Accounts, business, factions, Characters, vehicles } from '@models';
+import { logs, items, inventories, houses, Accounts, Busines, factions, Characters, vehicles } from '@models';
 import { cmds, colors, gDimension, lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, serverConfig, VehicleConfig } from '@configs';
@@ -144,7 +144,7 @@ Commands[cmds.names.CREATE_BUSINESS] = {
       cmds.params.TEXT
    ],
    call (player: PlayerMp, type: string, price: string, walk_in: string, ...name) {
-      business.create( 
+      Busines.create( 
          {
             name: [...name].join(' '), 
             type: Number(type), 
@@ -182,7 +182,7 @@ Commands[cmds.names.EDIT_BUSINESS] = {
    call (player: PlayerMp, id: string, property: string, ...newValue) {
       const value = [...newValue].join(' ');
       
-      business.findOne( { where: { id: Number(id) } } ).then(busines => {
+      Busines.findOne( { where: { id: Number(id) } } ).then(busines => {
          if (!busines) {
             return;
          }
@@ -632,7 +632,7 @@ Commands[cmds.names.TELEPORT] = {
          }
 
          case cmds.actions.busines: {
-            business.findOne( { where: { id: Number(id) } } ).then(busines => {
+            Busines.findOne( { where: { id: Number(id) } } ).then(busines => {
                if (!busines) {
                   return;
                }
@@ -718,7 +718,7 @@ Commands[cmds.names.DESTROY_BUSINESS] = {
    admin: rank.LEAD_ADMINISTRATOR,
    description: cmds.descriptions.DESTROY_BUSINESS,
    async call (player: PlayerMp) {
-      const nearest = await business.getNearest(player);
+      const nearest = await Busines.getNearest(player);
 
       if (!nearest) {
          return;

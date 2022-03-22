@@ -54,8 +54,8 @@
 
       <!-- [BUSINESSES] -->
       <transition-group name="fade-with-bottom-slide">
-         <BusinessInfo v-if="interfaces.businessInfo.toggle" key=businessInfo />
-         <BusinessManagement v-if="interfaces.businessManagement.toggle" key=businessManagement />
+         <BusinesInfo v-if="interfaces.businessInfo.toggle" key=businessInfo />
+         <BusinesManagement v-if="interfaces.businessManagement.toggle" key=businessManagement />
       </transition-group>
       
       <transition name="fade"> 
@@ -144,8 +144,8 @@
 
    import HouseInfo from '@/components/houses/HouseInfo.vue';
    
-   import BusinessInfo from '@/components/business/BusinessInfo.vue';
-   import BusinessManagement from '@/components/business/BusinessManagement.vue';
+   import BusinesInfo from '@/components/business/BusinesInfo.vue';
+   import BusinesManagement from '@/components/business/BusinesManagement.vue';
    import MarketMenu from '@/components/business/menus/MarketMenu.vue';
    import ClothingMenu from '@/components/business/menus/ClothingMenu.vue';
    import VehicleDealership from '@/components/business/menus/VehicleDealership.vue';
@@ -174,7 +174,7 @@
 
          ObjectsMenu, ObjectEditor,
          
-         BusinessInfo, BusinessManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
+         BusinesInfo, BusinesManagement, MarketMenu, ClothingMenu, RentMenu, VehicleDealership,
 
          FactionPanel, FactionGarage, 
          PoliceRadar, 

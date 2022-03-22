@@ -74,10 +74,12 @@
       font-size: 0.95rem;
       font-weight: 400;
       color: #9A9A9A;
+      border: 1px solid transparent;
    }
 
    .inputs input:hover, .inputs input:focus {
-      background: #17171b;
+      background: rgb(41 39 50 / 31%);
+      border: 1px dashed #3e3b46;
       color: #fff;
    }
 

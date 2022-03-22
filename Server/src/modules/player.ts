@@ -1,4 +1,4 @@
-import { logs, Bans, Characters, Accounts, inventories, appearances, banks, items, houses, business, vehicles, transactions } from '@models';
+import { logs, Bans, Characters, Accounts, inventories, appearances, banks, items, houses, Busines, vehicles, transactions } from '@models';
 import { playerConfig, serverConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, lang, none } from '@constants';
@@ -155,7 +155,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
    return new Promise((resolve) => {
       let spawnPoints: PlayerSpawnPoint[] = [];
 
-      Characters.findOne({ where: { id: id }, include: [houses, vehicles, business, banks] }).then((character) => { 
+      Characters.findOne({ where: { id: id }, include: [houses, vehicles, Busines, banks] }).then((character) => { 
          const defaultSpawn: PlayerSpawnPoint = {
             name: lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,

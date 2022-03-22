@@ -1,9 +1,9 @@
 import { Table, Model, PrimaryKey, AutoIncrement, Column, Default, BelongsTo, DataType, CreatedAt, UpdatedAt, ForeignKey } from 'sequelize-typescript';
-import { business } from '@models';
+import { Busines } from '@models';
 
 
 @Table
-export class workers extends Model {
+export class Workers extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
@@ -12,12 +12,12 @@ export class workers extends Model {
    @Column(DataType.TEXT)
    name: string
 
-   @ForeignKey(() => business)
+   @ForeignKey(() => Busines)
    @Column(DataType.INTEGER)
    business_id: number
 
-   @BelongsTo(() => business)
-   business: business
+   @BelongsTo(() => Busines)
+   business: Busines
 
    @Column(DataType.INTEGER)
    salary: number

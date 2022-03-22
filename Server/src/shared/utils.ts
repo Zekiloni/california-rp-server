@@ -1,6 +1,6 @@
 import { cmds, gDimension } from "@constants";
 import { notifications } from "@enums";
-import { business } from "@models";
+import { Busines } from "@models";
 import { houses } from "@models";
 
 
@@ -106,7 +106,7 @@ export async function getNearest (player: PlayerMp, distance: number) {
       }
    }
 
-   for (const busines of await business.findAll()) {
+   for (const busines of await Busines.findAll()) {
       if (player.dist(busines.position) < distance) {
          return busines;
       }

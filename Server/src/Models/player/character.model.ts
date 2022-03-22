@@ -8,7 +8,7 @@ import {
 
 import { 
    Accounts, appearances, banks, houses,
-   business, inventories, logs, objects, 
+   Busines, inventories, logs, objects, 
    vehicles, factions, factionsRanks,
    moneyLogs
 } from '@models';
@@ -174,8 +174,8 @@ export class Characters extends Model {
    @HasMany(() => houses)
    houses: houses[]
 
-   @HasMany(() => business)
-   business: business[]
+   @HasMany(() => Busines)
+   business: Busines[]
 
    @HasMany(() => vehicles)
    vehicles: vehicles[]
@@ -184,7 +184,7 @@ export class Characters extends Model {
    
    working: boolean = false;
 
-   inside: houses | business | null = null;
+   inside: houses | Busines | null = null;
 
    freezed: boolean = false;
 

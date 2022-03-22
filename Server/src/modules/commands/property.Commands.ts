@@ -1,28 +1,25 @@
-import { BusinesConfig } from '@configs';
 import { cmds, lang } from '@constants';
 import { notifications } from '@enums';
-import { business } from "@models";
+import { Busines } from "@models";
 import { Commands } from '../commands';
 
 
 Commands[cmds.names.BUSINES] = {
    description: cmds.descriptions.BUSINESS,
    async call (player: PlayerMp) {
-      const nearest = await business.getNearest(player);
+      Busines.getNearest(player).then(nearestBusines => { 
+         if (!nearestBusines || player.dist(nearestBusines.position) > 2) {
+            player.notification(lang.notNearBusiness, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
 
-      if (!nearest || player.dist(nearest.position) > 2) {
-         player.notification(lang.notNearBusiness, notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-
-      if (nearest.owner != player.character.id) {
-         player.notification(lang.cannotManageThisBusiness, notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-
-      console.log(nearest.products)
-
-      player.call('CLIENT::BUSINES:MANAGEMENT', [nearest, BusinesConfig.defaultProducts[nearest.type]]);
+         if (nearestBusines.owner != player.character.id) {
+            player.notification(lang.cannotManageThisBusiness, notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+   
+         player.call('CLIENT::BUSINES_MANAGEMENT', [nearestBusines]);
+      });
    }
 }
 

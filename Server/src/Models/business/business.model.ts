@@ -1,16 +1,16 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany, BelongsTo, AfterSave, AfterFind } from 'sequelize-typescript';
 
-import { interactionPoint } from '@interfaces';
+import { CartItem, interactionPoint } from '@interfaces';
 import { cmds, gDimension, lang, none } from '@constants';
-import { Characters, logs, products, workers } from '@models';
+import { Characters, logs, Products, Workers, inventories, items, vehicles } from '@models';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
-import { vehicles } from '@models';
+
 
 
 @Table
-export class business extends Model {
+export class Busines extends Model {
 
    static objects = new Map<number, interactionPoint>();
 
@@ -107,23 +107,23 @@ export class business extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @HasMany(() => products)
-   products: products[]
+   @HasMany(() => Products)
+   products: Products[]
 
-   @HasMany(() => workers)
-   workers: workers[]
+   @HasMany(() => Workers)
+   workers: Workers[]
 
    get object (): interactionPoint { 
-      return business.objects.get(this.id)!;
+      return Busines.objects.get(this.id)!;
    }
 
    set object (object: interactionPoint) { 
-      business.objects.set(this.id, object);
+      Busines.objects.set(this.id, object);
    }
 
    @AfterSync
    static loading () {
-      business.findAll( ).then(businesses => {
+      Busines.findAll( ).then(businesses => {
          businesses.forEach(busines => {
             busines.refresh();
          });
@@ -134,14 +134,14 @@ export class business extends Model {
 
 
    @AfterCreate
-   static async creating (business: business) { 
+   static async creating (business: Busines) { 
       business.sprite = BusinesConfig.sprites[business.type];
       business.sprite_color = BusinesConfig.blipColors[business.type];
       (await business.save()).refresh();
    }
 
    @AfterDestroy
-   static destroying (business: business) {
+   static destroying (business: Busines) {
       if (business.object) {
          business.object.blip?.destroy();
          business.object.colshape?.destroy();
@@ -152,7 +152,7 @@ export class business extends Model {
 
    
    @AfterSave
-   static saving (busines: business) {
+   static saving (busines: Busines) {
       busines.refresh();
    }
 
@@ -181,7 +181,7 @@ export class business extends Model {
    }
 
    static getNearest (player: PlayerMp) {
-      return business.findAll( { include: [products, workers] } ).then(businesses => {
+      return Busines.findAll( { include: [Products, Workers] } ).then(businesses => {
          const nearest = businesses.filter(business => player.dist(business.position) < 35);
 
          if (!nearest || nearest.length == none) {
@@ -195,7 +195,7 @@ export class business extends Model {
    }
    
    static async getNearestGasStation (player: PlayerMp)  {
-      return business.findAll( { where: { type: BusinesConfig.type.GAS_STATION } } ).then(gasStations => {
+      return Busines.findAll( { where: { type: BusinesConfig.type.GAS_STATION } } ).then(gasStations => {
          gasStations.forEach(gasStation => {
             if (player.dist(gasStation.position) < 45) {
                return gasStation;
@@ -417,7 +417,7 @@ export class business extends Model {
 
 
    addWorker (player: PlayerMp, character: Characters, salary: number) {
-      return workers.findOne( { where: { name: character.name } }).then(worker => {
+      return Workers.findOne( { where: { name: character.name } }).then(worker => {
          if (worker) {
 
             return false;
@@ -429,7 +429,7 @@ export class business extends Model {
    }
 
    static vehicleBuy (player: PlayerMp, businesID: number, productID: number, color: string) {
-      return business.findOne( { where: { id: businesID }, include: [products] } ).then(busines => {
+      return Busines.findOne( { where: { id: businesID }, include: [Products] } ).then(busines => {
          if (!busines) {
             return;
          }
@@ -487,8 +487,59 @@ export class business extends Model {
          return true;
       })
    }
+
+
+   static market (player: PlayerMp, businesID: number, cartItems: string) {
+      const cart: CartItem[] = JSON.parse(cartItems);
+      
+      return Busines.findOne( { where: { id: businesID }, include: [Products] } ).then(async busines => {
+         let total: number = 0;
+         
+         const inventoryWeight: number = await inventories.itemsWeight(player);
+         const cartWeight: number = cart.reduce((sum, item) => sum + (items.list[item.name].weight), 0)
+         
+         console.log('inv with cart ' + (inventoryWeight + cartWeight));
+   
+         if (inventoryWeight + cartWeight > player.character.max_inventory_weight) {
+            player.notification(lang.noInventorySpaceForItems + '.', notifications.type.ERROR, notifications.time.MED);
+            return;
+         }
+   
+         busines!.products.forEach(product => {
+            cart.forEach(async item => {
+               if (item.name == product.name) {
+                  if (product.quantity == none) {
+                     player.notification(lang.weAreSoryBut + lang.product.toLowerCase() + ' ' + product.name  + lang.productNotAvailable, notifications.type.ERROR, notifications.time.MED);
+                     return; 
+                  }
+   
+                  total += product.price;
+                  await product.decrement('quantity', { by: 1 } );
+   
+                  inventories.giveItem(player, items.list[product.name]!);
+               }
+            })
+         })
+         
+         await busines!.increment('budget', { by: total } );
+   
+         player.character.giveMoney(player, -total);
+         
+         return true;
+      })
+   }
+
+   static availableProducts (player: PlayerMp, type: keyof typeof BusinesConfig.defaultProducts) {
+      return BusinesConfig.defaultProducts[type];
+   }
+
+   static editProduct (player: PlayerMp, businesID: number, productID: number, price: number) {
+      
+   }
 }
 
 
-
-mp.events.addProc('SERVER::DEALERSHIP:BUY', business.vehicleBuy);
+mp.events.add('SERVER::MARKET:BUY', Busines.market)
+mp.events.addProc('SERVER::BUSINES_AVAILABLE_PRODUCTS', Busines.availableProducts);
+mp.events.addProc('SERVER::BUSINES_PRODUCT_EDIT', Busines.editProduct);
+mp.events.addProc('SERVER::DEALERSHIP:BUY', Busines.vehicleBuy);

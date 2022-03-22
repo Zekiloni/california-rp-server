@@ -1,7 +1,7 @@
 import { Commands } from '../commands';
 import { cmds } from '@constants';
 import { getNearest } from '@shared';
-import { houses, business } from '@models';
+import { houses, Busines } from '@models';
 
 
 Commands[cmds.names.ENTER] = {

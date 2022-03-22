@@ -28,7 +28,7 @@
    import { Messages } from '@/globals';
 
    @Component
-   export default class BusinessInfo extends Vue {
+   export default class BusinesInfo extends Vue {
 
       business: object | null = null;
       commands: string[] = [];
@@ -57,8 +57,7 @@
       min-height: 200px;
       overflow: hidden;
       border-radius: 10px;
-      background: radial-gradient(rgb(33 37 47 / 25%), rgb(11 14 17 / 55%));
-      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
+      background: #16151A;
    }
 
     h2.adress {
@@ -67,9 +66,9 @@
       color: #cdcdcd;
       font-weight: 450;
       font-size: 1.15rem;
-      border-top-left-radius: 10px;
       padding: 10px;
-      background: rgb(11 14 17 / 46%);
+      background: rgb(41 39 50 / 31%);
+      border: 1px dashed #3e3b46;
    }
 
    h2.adress small { 

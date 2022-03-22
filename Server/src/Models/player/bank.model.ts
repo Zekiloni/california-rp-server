@@ -4,7 +4,7 @@ import {
    BelongsTo, ForeignKey, DataType, Unique, Default,
    HasMany, AfterSync, AutoIncrement 
 } from 'sequelize-typescript';
-import { Characters, inventories, business, transactions, TransactionType } from '@models';
+import { Characters, inventories, Busines, transactions, TransactionType } from '@models';
 import { gDimension, lang, none, cmds } from '@constants';
 import { bankConfig } from '@configs';
 import { notifications } from '@enums';
@@ -178,7 +178,7 @@ export class banks extends Model {
    }
 
 
-   pay (player: PlayerMp, busines: business, amount: number) {
+   pay (player: PlayerMp, busines: Busines, amount: number) {
       if (!busines) {
          return;
       }

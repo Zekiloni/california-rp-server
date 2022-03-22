@@ -3,65 +3,41 @@ import { Business } from '../../interfaces/business';
 import { toggleBusinesInfo } from './business.Core';
 
 
-let active: boolean = false;
+let bizManagementActive: boolean = false;
 
 
-mp.events.add(
-   {
-      'CLIENT::BUSINES:MANAGEMENT': openBusinessManagement,
-      'CLIENT::BUSINESS:WORKER_REMOVE': removeWorker,
-      'CLIENT::BUSINESS:LOCK': lock,
-      'CLIENT::BUSINESS:PRODUCT_ADD': addProduct
-   }
-)
+function openBusinessManagement (info: boolean | Business) {
+   bizManagementActive = !bizManagementActive;
+   Browser.call(bizManagementActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'businessManagement')
 
-mp.events.addProc(
-   {
-      'CLIENT::BUSINESS:UPDATE': updateBusiness,
-      'CLIENT::BUSINESS:WORKER_ADD': addWorker,
-   }
-)
-
-
-function openBusinessManagement (info: boolean | Business, availableItems: string) {
-   active = !active;
-   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'businessManagement')
-
-   if (active) {
+   if (bizManagementActive) {
       toggleBusinesInfo(false);
-      Browser.call('BROWSER::BUSINESS:MANAGEMENT', info, availableItems);
+      Browser.call('BROWSER::BUSINESS_MANAGEMENT', info);
    }
 }
 
 
-async function addProduct (businesID: number, name: string, price: number) {
-   const isAdded = await mp.events.callRemoteProc('SERVER::BUSINES:PRODUCT_ADD', businesID, name, price);
-   if (isAdded) {
-      mp.gui.chat.push(JSON.stringify(isAdded.products))
-      Browser.call('BROWSER::BUSINESS:MANAGEMENT', isAdded);
-   }
+function getAvailableProducts (type: number) {
+   return mp.events.callRemoteProc('SERVER::BUSINES_AVAILABLE_PRODUCTS', type).then(
+      products => JSON.stringify(products)
+   );
 }
 
 
-async function addWorker (bizId: number, name: string, salary: number) {
-   const response = await mp.events.callRemoteProc('SERVER::BUSINESS:WORKER_ADD', bizId, name, salary);
-   return response;
+function addProduct (businesID: number, productName: string, productPrice: number) {
+   return mp.events.callRemoteProc('SERVER::BUSINES_ADD_PRODUCT', businesID, productName, productPrice).then(
+      added => JSON.stringify(added)
+   );
+}
+
+function editProduct (businesID: number, productID: number, price: number) {
+   return mp.events.callRemoteProc('SERVER::BUSINES_PRODUCT_EDIT', businesID, productID, price).then(
+      edited => JSON.stringify(edited)
+   );
 }
 
 
-function removeWorker (name: string) {
-   mp.events.callRemote('SERVER::BUSINESS:WORKER:REMOVE', name);
-};
-
-
-function lock (bId: number, locked: boolean) {
-   mp.events.callRemote('SERVER::BUSINESS:LOCK', bId, locked);
-};
-
-
-async function updateBusiness (name: string) {
-   const response = await mp.events.callRemoteProc('SERVER::BUSINESS:UPDATE', name);
-   if (response) {
-      Browser.call('BROWSER::BUSINESS:MANAGEMENT', response);
-   }
-}
+mp.events.add('CLIENT::BUSINES_MANAGEMENT', openBusinessManagement);
+mp.events.addProc('CLIENT::BUSINES_AVAILABLE_PRODUCTS', getAvailableProducts);
+mp.events.addProc('CLIENT::BUSINES_ADD_PRODUCT', addProduct);
+mp.events.addProc('CLIENT::BUSINES_PRODUCT_EDIT', editProduct);

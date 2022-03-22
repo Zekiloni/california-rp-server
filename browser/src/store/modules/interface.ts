@@ -69,7 +69,7 @@ const InitialState:uInterface = {
 
    // busines interfaces
    businessInfo: { toggle: false },
-   businessManagement: { toggle: false, mouse: true },
+   businessManagement: { toggle: false, mouse: true, hideUI: true, escClose: 'CLIENT::BUSINES_MANAGEMENT' },
    marketMenu: { toggle: false, mouse: true },
    clothingMenu: { toggle: false, mouse: true },
 
