@@ -13,9 +13,9 @@ import {
    moneyLogs
 } from '@models';
 
-import { FacialMoods, gDimension, WalkingStyles, lang, colors, none } from '@constants';
+import { FacialMoods, gDimension, WalkingStyles, Lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
-import { playerConfig, serverConfig, VehicleConfig } from '@configs';
+import { playerConfig, ServerConfig, VehicleConfig } from '@configs';
 import { generateNumber, shared_Data } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
@@ -207,7 +207,7 @@ export class Characters extends Model {
    }
 
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances, id?: number) { 
-      player.account.last_character = this.id;
+      player.account.lastCharacter = this.id;
       player.character = this;
 
       player.name = this.name;
@@ -249,7 +249,7 @@ export class Characters extends Model {
       player.setVariable('Ragdoll', false);
       
 
-      player.notification(lang.welcomeToServer, notifications.type.INFO, 4);
+      player.notification(Lang.welcomeToServer, notifications.type.INFO, 4);
 
       this.setWalkingStyle(player, this.walking_style);
       this.setMood(player, this.facial_mood);
@@ -330,17 +330,17 @@ export class Characters extends Model {
 
    pay (player: PlayerMp, target: PlayerMp, value: number) {
       if (player.dist(target.position) > 2 || player.dimension != target.dimension) {
-         player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (target.id == player.id) {
-         player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
       if (value > player.character.money) {
-         player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -354,7 +354,7 @@ export class Characters extends Model {
 
       moneyLogs.new(player, target, value);
 
-      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + ' ' + lang.givesSomeMoney + ' ' + target.name + '.', colors.hex.Purple);
+      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + ' ' + Lang.givesSomeMoney + ' ' + target.name + '.', colors.hex.Purple);
    }
 
    async setJob (player: PlayerMp, value: number) {
@@ -535,7 +535,7 @@ export class Characters extends Model {
          const character = player.character;
 
          if (character.dead) {
-            player.notification(lang.cannotWhileDead, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(Lang.cannotWhileDead, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
@@ -545,7 +545,7 @@ export class Characters extends Model {
             sender = player.name;
          }
 
-         player.proximityMessage(distances.IC, sender + lang.personSays + content, colors.hex.White);
+         player.proximityMessage(distances.IC, sender + Lang.personSays + content, colors.hex.White);
       }
    }
    
@@ -592,7 +592,7 @@ export class Characters extends Model {
 
    
    updatePlayer (player: PlayerMp) {
-      this.increment('minutes', { by: serverConfig.happyHours == true ? 2 : 1 }).then(async character => { 
+      this.increment('minutes', { by: ServerConfig.happyHours == true ? 2 : 1 }).then(async character => { 
          if (character.minutes >= 60) { 
             character.increment('hours', { by: 1 });
             character.minutes = none;

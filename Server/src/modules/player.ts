@@ -1,7 +1,7 @@
 import { logs, Bans, Characters, Accounts, inventories, appearances, banks, Items, houses, Busines, vehicles, transactions } from '@models';
-import { playerConfig, serverConfig } from '@configs';
+import { playerConfig, ServerConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
-import { gDimension, itemNames, lang, none } from '@constants';
+import { gDimension, itemNames, Lang, none } from '@constants';
 import { PlayerSpawnPoint } from '@interfaces';
 import { distanceBetweenVectors, shared_Data } from '@shared';
 
@@ -80,7 +80,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    const alreadyExist = await Characters.findOne( { where: { name: cInfo.name + ' ' + cInfo.lastName } } );
 
    if (alreadyExist) {
-      player.notification(lang.characterAlreadyExist, notifications.type.ERROR, notifications.time.SHORT);
+      player.notification(Lang.characterAlreadyExist, notifications.type.ERROR, notifications.time.SHORT);
       return;
    } 
 
@@ -145,7 +145,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    });
 
 
-   player.notification(lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
+   player.notification(Lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
 
    return true;
 }
@@ -157,9 +157,9 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
 
       Characters.findOne({ where: { id: id }, include: [houses, vehicles, Busines, banks] }).then((character) => { 
          const defaultSpawn: PlayerSpawnPoint = {
-            name: lang.defaultSpawn,
+            name: Lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,
-            description: lang.defaultSpawnDescripiton,
+            description: Lang.defaultSpawnDescripiton,
             position: playerConfig.main.spawn,
             heading: playerConfig.main.heading
          }
@@ -176,10 +176,10 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
                if (house.id) {
                   spawnPoints.push(
                      {
-                        name: lang.ownedHouse + (i + 1),
+                        name: Lang.ownedHouse + (i + 1),
                         type: spawnPointTypes.HOUSE,
                         position: house.position,
-                        description: lang.yourHouse,
+                        description: Lang.yourHouse,
                         heading: 0,
                         id: house.id
                      }
@@ -197,9 +197,9 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
             if (lastPositionFarAway) {
                spawnPoints.push(
                   {
-                     name: lang.lastPosition,
+                     name: Lang.lastPosition,
                      type: spawnPointTypes.LAST_POSITION,
-                     description: lang.lastPositionDescription,
+                     description: Lang.lastPositionDescription,
                      position: position,
                      heading: 0
                   }
@@ -215,14 +215,14 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
 function authorizationVerify (player: PlayerMp, username: string, password: string) {
    return Accounts.findOne( { where: { username: username }, include: [Characters] } ).then(account => {
       if (!account) {
-         player.notification(lang.userDoesntExist, notifications.type.ERROR, 5);
+         player.notification(Lang.ACCOUNT_DOESNT_EXIST, notifications.type.ERROR, 5);
          return;
       }
 
       const logged = account.login(password);
 
       if (!logged) { 
-         player.notification(lang.incorrectPassword, notifications.type.ERROR, 5);
+         player.notification(Lang.INCORRECT_PASSWORD, notifications.type.ERROR, 5);
 
          return;
       }

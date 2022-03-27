@@ -6,7 +6,7 @@ import {
 } from 'sequelize-typescript';
 
 import { generateNumber, generateString, shared_Data } from '@shared';
-import { gDimension, lang, none } from '@constants';
+import { gDimension, Lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
 import { Jobs, factions, logs, Characters } from '@models';
@@ -290,7 +290,7 @@ export class vehicles extends Model {
       switch (this.type) {
          case VehicleConfig.type.OWNED: {
             if (this.owner != player.character.id) {
-               player.notification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
+               player.notification(Lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
                return;
             }
             break;
@@ -298,7 +298,7 @@ export class vehicles extends Model {
 
          case VehicleConfig.type.FACTION: {
             if (this.faction?.id != player.character.faction) {
-               player.notification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
+               player.notification(Lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
                return;
             }
             break;
@@ -306,7 +306,7 @@ export class vehicles extends Model {
 
          case VehicleConfig.type.ADMIN: {
             if (player.account.administrator < 1) {
-               player.notification(lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
+               player.notification(Lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
                return;
             }
             break;
@@ -314,7 +314,7 @@ export class vehicles extends Model {
       }
       
 
-      player.notification(vehicle.locked ? lang.uUnlockedVehicle : lang.uLockedVehicle, notifications.type.INFO, notifications.time.MED);
+      player.notification(vehicle.locked ? Lang.uUnlockedVehicle : Lang.uLockedVehicle, notifications.type.INFO, notifications.time.MED);
       vehicle.locked = !vehicle.locked;
       this.locked = vehicle.locked;
       await this.save();
@@ -396,7 +396,7 @@ export class vehicles extends Model {
       }
 
       if (player.dist(vehicle.position) > 3.5 || player.vehicle && player.vehicle.id != vehicle.id) {
-         player.notification(lang.notinVehicleOrNearby, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notinVehicleOrNearby, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

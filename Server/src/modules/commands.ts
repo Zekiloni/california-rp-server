@@ -1,7 +1,7 @@
 
 import { shared_Data } from '@shared';
 import { commands } from '@interfaces';
-import { colors, lang, none } from '@constants';
+import { colors, Lang, none } from '@constants';
 import { ItemEnums, notifications } from '@enums';
 import { factions, inventories, factionsRanks } from '@models';
 
@@ -24,28 +24,28 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       const { account, character } = player;
 
       if (command.admin && account.administrator < command.admin) {
-         player.notification(lang.notAllowed, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(Lang.notAllowed, notifications.type.ERROR, notifications.time.SHORT);
          return;
       } 
 
       if (command.job && command.job.required && player.character.isUnemployed) {
-         player.notification(lang.UNEMPLOYED, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.UNEMPLOYED, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
       if (command.job && command.job.id && player.character.job != command.job.id) {
-         player.notification(lang.NOT_SPECIFIED_JOB, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.NOT_SPECIFIED_JOB, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (command.position && player.dist(command.position) > 2.25) {
-         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
       if (command.faction) {
          if (command.faction.required && character.faction == none) {
-            player.notification(lang.notInAnyFaction, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(Lang.notInAnyFaction, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
@@ -54,21 +54,21 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
          if (command.faction.permission) {
             if (!rank?.permissions.includes(command.faction.permission) && faction?.leader != player.character.id) {
-               player.notification(lang.noFactionPermissions, notifications.type.ERROR, notifications.time.SHORT);
+               player.notification(Lang.noFactionPermissions, notifications.type.ERROR, notifications.time.SHORT);
                return;
             }
          }
 
          if (command.faction.type) {
             if (faction && !command.faction.type.includes(faction.type)) {
-               player.notification(lang.notInSpecFaction, notifications.type.ERROR, notifications.time.SHORT);
+               player.notification(Lang.notInSpecFaction, notifications.type.ERROR, notifications.time.SHORT);
                return;
             }
          };
       }
 
       if (command.vehicle && !player.vehicle) {
-         player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notInVehicle, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
@@ -76,7 +76,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
          const item = await inventories.findOne( { where: { name: command.item, owner: character.id, entity: ItemEnums.entity.PLAYER } } );
          
          if (!item) {
-            player.notification(lang.youDontHave + command.item + '.', notifications.type.ERROR, 4);
+            player.notification(Lang.youDontHave + command.item + '.', notifications.type.ERROR, 4);
             return;
          }
       }
@@ -88,7 +88,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
 
       command.call(player, ...params);
    } else {
-      player.notification(lang.cmdDoesntExist, notifications.type.ERROR, 4);
+      player.notification(Lang.cmdDoesntExist, notifications.type.ERROR, 4);
    }
 });
 

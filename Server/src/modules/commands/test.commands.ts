@@ -1,5 +1,5 @@
 import { animations } from "@configs";
-import { lang, cmds } from "@constants";
+import { Lang, cmds } from "@constants";
 import { notifications } from "@enums";
 import { Commands } from "../commands";
 import { shared_Data } from "@shared";
@@ -80,27 +80,27 @@ Commands['firstaid'] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) { 
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
       console.log(2)
 
 
       if (target.dist(player.position) > 3) {
-         player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
          return;
       }
       console.log(3)
 
       const nearest = mp.objects.getClosest(player.position);
       if (!nearest || nearest!.getVariable(shared_Data.ITEM).name != 'First Aid') {
-         player.notification(lang.noFirstAidNearby, notifications.type.ERROR, notifications.time.MED)
+         player.notification(Lang.noFirstAidNearby, notifications.type.ERROR, notifications.time.MED)
          return;
       }
       console.log(4)
 
       if (player.dist(nearest.position) > 2.5) {
-         player.notification(lang.aidKitMustBeNear, notifications.type.ERROR, notifications.time.MED)
+         player.notification(Lang.aidKitMustBeNear, notifications.type.ERROR, notifications.time.MED)
          return;
       }
 

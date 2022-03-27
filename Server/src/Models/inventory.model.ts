@@ -5,7 +5,7 @@ import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
 import { Items, logs, Characters } from '@models';
-import { itemNames, lang, none } from '@constants';
+import { itemNames, Lang, none } from '@constants';
 import { playerConfig } from '@configs';
 
 
@@ -171,7 +171,7 @@ export class inventories extends Model {
       );
       
       if (equiped.length > playerConfig.max.EQUIPMENT) {
-         player.notification(lang.youReachedMaxEquipemnt + playerConfig.max.EQUIPMENT + '.', notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.youReachedMaxEquipemnt + playerConfig.max.EQUIPMENT + '.', notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -181,7 +181,7 @@ export class inventories extends Model {
       }
 
       if (equiped.find(alreadyEquiped => alreadyEquiped.name == this.name)) {
-         player.notification(lang.youAlreadyEquiped + ' ' + this.name + '.', notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.youAlreadyEquiped + ' ' + this.name + '.', notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

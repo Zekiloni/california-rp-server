@@ -2,7 +2,7 @@ import { Items } from '../item.model';
 import { animations, playerConfig } from '@configs';
 import { inventories } from '@models';
 import { ItemEnums, notifications } from '@enums';
-import { lang } from '@constants';
+import { Lang } from '@constants';
 
 
 const medType = [ItemEnums.type.USABLE, ItemEnums.type.MEDIC_KIT]
@@ -21,12 +21,12 @@ export class medItem extends Items {
    async use (player: PlayerMp, item: inventories) {
 
       if (player.health > playerConfig.main.healthRegeneration) {
-         player.notification(lang.youHaveMoreThanHealth, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.youHaveMoreThanHealth, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (player.vehicle) {
-         player.notification(lang.cannotInVehicle, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.cannotInVehicle, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

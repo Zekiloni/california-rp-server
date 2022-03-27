@@ -1,6 +1,6 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import rp from 'request-promise';
-import { serverConfig } from '@configs';
+import { ServerConfig } from '@configs';
 import { colors, cmds } from '@constants';
 import { logs } from '@models';
 import { formatCommand, dollars } from '@shared';
@@ -58,13 +58,13 @@ export class moneyLogs extends Model {
       };
 
       const params = {
-         username: serverConfig.name,
+         username: ServerConfig.name,
          embeds: [embed]
       };
 
       const options = {
          method: 'POST',
-         uri: serverConfig.discord.moneyHook,
+         uri: ServerConfig.discord.moneyHook,
          body: params,
          json: true
       };

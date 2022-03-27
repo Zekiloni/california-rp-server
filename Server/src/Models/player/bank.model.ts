@@ -5,7 +5,7 @@ import {
    HasMany, AfterSync, AutoIncrement 
 } from 'sequelize-typescript';
 import { Characters, inventories, Busines, transactions, TransactionType } from '@models';
-import { gDimension, lang, none, cmds } from '@constants';
+import { gDimension, Lang, none, cmds } from '@constants';
 import { bankConfig } from '@configs';
 import { notifications } from '@enums';
 import { createInfoColshape, formatCommand } from '@shared';
@@ -75,7 +75,7 @@ export class banks extends Model {
    @AfterSync
    static createBanks () {
       for (const position of bankConfig.positions) {
-         const [colshape, marker, blip ] = createInfoColshape(position, lang.bank, formatCommand(cmds.names.BANK), 2, gDimension, bankConfig.marker, 1, bankConfig.markerColor, bankConfig.sprite, bankConfig.spriteColor)
+         const [colshape, marker, blip ] = createInfoColshape(position, Lang.bank, formatCommand(cmds.names.BANK), 2, gDimension, bankConfig.marker, 1, bankConfig.markerColor, bankConfig.sprite, bankConfig.spriteColor)
 
          if (blip) {
             blip.shortRange = true;
@@ -148,24 +148,24 @@ export class banks extends Model {
    static transfer (player: PlayerMp, targetNumber: number, amount: number) {
       banks.findOne( { where: { number: targetNumber } } ).then(target => {
          if (!target) {
-            player.notification(lang.BANK_ACCOUNT_NOT_FOUND, notifications.type.ERROR, notifications.time.MED)
+            player.notification(Lang.BANK_ACCOUNT_NOT_FOUND, notifications.type.ERROR, notifications.time.MED)
             return;
          }
 
          if (player.character.bank.balance < amount) {
-            player.notification(lang.NOT_ENOUGHT_BALANCE, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.NOT_ENOUGHT_BALANCE, notifications.type.ERROR, notifications.time.MED);
             return;
          }
 
          if (!target.active) {
-            player.notification(lang.BANK_ACCOUNT_NOT_ACTIVE, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.BANK_ACCOUNT_NOT_ACTIVE, notifications.type.ERROR, notifications.time.MED);
             return;
          }
 
          player.character.bank.decrement('balance', { by: amount } );
          target.increment('balance', { by: amount } );
 
-         player.notification(lang.TRANSACTION_SUCCESS_COMPLETED, notifications.type.SUCCESS, notifications.time.MED);
+         player.notification(Lang.TRANSACTION_SUCCESS_COMPLETED, notifications.type.SUCCESS, notifications.time.MED);
 
          const targetPlayer = mp.players.toArray().find(_player => _player.character.bank.number == target.number);
 

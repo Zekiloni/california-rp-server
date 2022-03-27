@@ -2,7 +2,7 @@
 
 
 
-import { colors, lang, none, ranks } from '@constants';
+import { colors, Lang, none, ranks } from '@constants';
 import { notifications } from '@enums';
 import { PlayerReport } from '@interfaces';
 import { checkForDot } from '@shared';
@@ -44,7 +44,7 @@ export class admins {
    
    static createReport (player: PlayerMp, message: string) { 
       if (admins.reports.get(player.character.id)) {
-         player.notification(lang.uAlreadyHaveActiveReport, notifications.type.ERROR, notifications.time.LONG);
+         player.notification(Lang.uAlreadyHaveActiveReport, notifications.type.ERROR, notifications.time.LONG);
          return; 
       }
 
@@ -56,9 +56,9 @@ export class admins {
       }
 
       admins.reports.set(player.character.id, report);
-      player.notification(lang.uSendReport, notifications.type.SUCCESS, notifications.time.MED);
+      player.notification(Lang.uSendReport, notifications.type.SUCCESS, notifications.time.MED);
       
-      admins.notify(lang.NEW_REPORT, colors.hex.Admin);
+      admins.notify(Lang.NEW_REPORT, colors.hex.Admin);
 
       return report;
    }
@@ -89,7 +89,7 @@ export class admins {
          return;
       }
 
-      player.notification(lang.urReportDeleted, notifications.type.INFO, notifications.time.MED);
+      player.notification(Lang.urReportDeleted, notifications.type.INFO, notifications.time.MED);
       admins.reports.delete(player.character.id);
       
       return true;

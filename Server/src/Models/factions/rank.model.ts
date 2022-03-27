@@ -1,7 +1,7 @@
 import { Table, Column, PrimaryKey, AutoIncrement, Model, Unique, ForeignKey, BelongsTo, DataType, CreatedAt, UpdatedAt, Max, Min } from 'sequelize-typescript';
 import { Characters, factions } from '@models';
 import { FactionsPermissions, notifications } from '@enums';
-import { lang, none } from '@constants';
+import { Lang, none } from '@constants';
 
 
 @Table
@@ -79,7 +79,7 @@ const deleteRank = (player: PlayerMp, rankID: number) => {
       }
 
       rank.destroy();
-      player.notification(lang.factionRankDelete, notifications.type.SUCCESS, notifications.time.MED);
+      player.notification(Lang.factionRankDelete, notifications.type.SUCCESS, notifications.time.MED);
       return true;
    })
 }
@@ -92,7 +92,7 @@ const updateRank = (player: PlayerMp, rankID: number, name: string, description:
       }
 
       if (name.length < 3) {
-         player.notification(lang.rankNameCannotBeLessThenTreeSamirGey, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.rankNameCannotBeLessThenTreeSamirGey, notifications.type.ERROR, notifications.time.MED);
          return;
       }  
 
@@ -100,7 +100,7 @@ const updateRank = (player: PlayerMp, rankID: number, name: string, description:
       rank.description = description;
       rank.salary = salary;
 
-      player.notification(lang.rankSuccessfullyUpdated, notifications.type.ERROR, notifications.time.MED);
+      player.notification(Lang.rankSuccessfullyUpdated, notifications.type.ERROR, notifications.time.MED);
 
       await rank.save();
       return true;

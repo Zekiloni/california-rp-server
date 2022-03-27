@@ -1,19 +1,23 @@
 
 
 
-export const lang = {
+export const Lang = {
 
    // server back-end
    successDbConnection: 'Successfully connected to database',
    serverIsClosing: 'Server se gasi...',
-   defaultSpawn: 'Default Spawn',
-   defaultSpawnDescripiton: 'Default spawn pozicija gde se stvvorite pri registracija.',
+   API_STARTED: 'API STARTED: ',
+
+   // api 
+   SUCCESFULLY_LOGED_IN: 'Uspešna prijava.',
+   INPUT_ALL_FIELDS: 'Unesite sva potrebna polja.',
+   ACCOUNT_ALREADY_EXIST: 'To korisničko ime / email adresa već postoji.',
 
    // success messages
    welcomeToServer: 'Dobrodošli na California Roleplay ! Uživajte u igri.',
    characterCreated: 'Uspešno ste kreirali karaktera.',
    welcomeToRegister: 'Dobrodošli na California Roleplay, uživajte u igri.',
-   accountCreated: 'Račun uspešno kreiran !',
+   ACCOUNT_SUCCESFULLY_CREATED: 'Račun uspešno kreiran !',
    addedSuccesfully: ' je uspešno dodan.',
    succesfullyCreatedFaction: 'Uspešno ste kreirali fakciju ',
    rankSuccessfullyUpdated: 'Rank je uspešno ažuriran.',
@@ -64,8 +68,8 @@ export const lang = {
    cannotToYourself: 'Ne možete saMI sebi.',
    cannotManageThisBusiness: 'Ne možete upravljati ovim biznisom.',
    cannotLeader: 'Nije moguće lidera fakcije.',
-   userDoesntExist: 'Korisničko ime nije pronadjeno.',
-   incorrectPassword: 'Korisnička šifra nije tačna.',
+   ACCOUNT_DOESNT_EXIST: 'Korisničko ime nije pronadjeno.',
+   INCORRECT_PASSWORD: 'Korisnička šifra nije tačna.',
    youReachedMaxEquipemnt: 'Limit opremljenih predmeta je ',
    youAlreadyEquiped: 'Već imate opremljen ',
    cannotInVehicle: 'Nije moguće u vozilu.',
@@ -222,9 +226,10 @@ export const lang = {
    // warnings
    adminWarnedYou: 'vas je upozorio',
 
-
    // others 
    JOB_OFFER: 'Posao',
+   defaultSpawn: 'Default Spawn',
+   defaultSpawnDescripiton: 'Default spawn pozicija gde se stvvorite pri registracija.',
    and: ' i ', 
    times: ' puta',
    dispatcher: 'DISPATCHER',

@@ -1,5 +1,5 @@
 import { FactionConfig } from '@configs';
-import { cmds, colors, itemNames, lang } from '@constants';
+import { cmds, colors, itemNames, Lang } from '@constants';
 import { distances, notifications } from '@enums';
 import { factions } from '@models';
 import { shared_Data } from '@shared';
@@ -40,14 +40,14 @@ Commands[cmds.names.CUFF] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       const cuffed = player.getVariable(shared_Data.CUFFED);
 
       target.character.setCuffs(target, !cuffed);
-      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + (!cuffed ? lang.putCuffs : lang.removeCuffs) + target.name, colors.hex.Purple);
+      player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + (!cuffed ? Lang.putCuffs : Lang.removeCuffs) + target.name, colors.hex.Purple);
    }
 };
 
@@ -68,7 +68,7 @@ Commands[cmds.names.FACTION_EQUIPMENT] = {
          }
 
          if (player.dist(faction.equipment_point) > 2.5) {
-            player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
             return;
          }
 

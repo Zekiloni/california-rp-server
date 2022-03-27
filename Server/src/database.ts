@@ -4,7 +4,7 @@ import { Sequelize } from 'sequelize-typescript';
 
 import { DatabaseConfig } from '@configs';
 import * as models from '@models';
-import { lang } from '@constants';
+import { Lang } from '@constants';
 
 
 const Database = new Sequelize({
@@ -41,7 +41,7 @@ const Database = new Sequelize({
 
 Database.authenticate()
    .then(() => { 
-      models.logs.succes(lang.successDbConnection);
+      models.logs.succes(Lang.successDbConnection);
    })
    .then(() => { 
       return Database.sync()

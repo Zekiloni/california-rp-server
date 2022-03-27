@@ -129,7 +129,7 @@ export interface Account {
    email: string
    administrator: number
    login_date: string
-   ip_adress: string
+   ip: string
    warns: number
    donator: number
    coins: number

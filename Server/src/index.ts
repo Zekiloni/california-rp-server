@@ -15,7 +15,7 @@ import './modules/jobs';
 
 import { sleep } from '@shared';
 import { logs } from'@models';
-import { lang } from '@constants';
+import { Lang } from '@constants';
 
 
 
@@ -31,11 +31,11 @@ import { lang } from '@constants';
 
 
 const exitProcess = async () => {
-   logs.info(lang.serverIsClosing);
-   mp.players.broadcast(lang.serverIsClosing + ' ' + lang.pleaseReconnect);
+   logs.info(Lang.serverIsClosing);
+   mp.players.broadcast(Lang.serverIsClosing + ' ' + Lang.pleaseReconnect);
 
    mp.players.forEach((player) =>  {
-      player.kick(lang.serverRestart);
+      player.kick(Lang.serverRestart);
    });
 
    

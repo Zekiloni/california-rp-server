@@ -1,6 +1,6 @@
 
 
-import { itemDescriptions, itemNames, lang } from '@constants';
+import { itemDescriptions, itemNames, Lang } from '@constants';
 import { ItemEnums } from '@enums';
 import { itemAction } from '@interfaces';
 
@@ -65,24 +65,24 @@ export class Items {
       let actions: itemAction[] = [];
 
       actions.push(
-         { name: lang.itemAction.drop, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
-         { name: lang.itemAction.give, event: 'CLIENT::ITEM:GIVE', icon: 'give' }
+         { name: Lang.itemAction.drop, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
+         { name: Lang.itemAction.give, event: 'CLIENT::ITEM:GIVE', icon: 'give' }
       );
 
       if (this.isEquipable()) {
-         actions.push( { name: lang.itemAction.EQUIP, event: 'CLIENT::ITEM:EQUIP', icon: 'use' } )
+         actions.push( { name: Lang.itemAction.EQUIP, event: 'CLIENT::ITEM:EQUIP', icon: 'use' } )
       }
 
       if (this.isConsumable()) {
-         actions.push( { name: lang.itemAction.CONSUME, event: 'CLIENT::ITEM:USE', icon: 'use' } )
+         actions.push( { name: Lang.itemAction.CONSUME, event: 'CLIENT::ITEM:USE', icon: 'use' } )
       }
 
-      if (this.isUsable() && !actions.find(action => action.name == lang.itemAction.EQUIP)) {
-         actions.push( { name: lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' } )
+      if (this.isUsable() && !actions.find(action => action.name == Lang.itemAction.EQUIP)) {
+         actions.push( { name: Lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' } )
       }
 
       if (this.isStackable()){
-         actions.push( { name: lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' } );
+         actions.push( { name: Lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' } );
       } 
 
       if (this.extraActions) {

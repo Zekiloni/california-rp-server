@@ -1,7 +1,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, CreatedAt, UpdatedAt, AllowNull } from 'sequelize-typescript';
 import { inventories } from '@models';
-import { colors, itemNames, lang } from '@constants';
+import { colors, itemNames, Lang } from '@constants';
 
 
 @Table
@@ -98,7 +98,7 @@ export default class channels extends Model {
    }
 
    send (sender: PlayerMp | null, message: string) {
-      const by = sender ? sender.character.name : lang.dispatcher;
+      const by = sender ? sender.character.name : Lang.dispatcher;
       const freq = this.frequency.toString();
       
       mp.players.forEach(async player => {

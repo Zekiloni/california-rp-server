@@ -1,4 +1,4 @@
-import { cmds, lang } from '@constants';
+import { cmds, Lang } from '@constants';
 import { notifications } from '@enums';
 import { Busines } from "@models";
 import { Commands } from '../commands';
@@ -9,12 +9,12 @@ Commands[cmds.names.BUSINES] = {
    async call (player: PlayerMp) {
       Busines.getNearest(player).then(nearestBusines => { 
          if (!nearestBusines || player.dist(nearestBusines.position) > 2) {
-            player.notification(lang.notNearBusiness, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.notNearBusiness, notifications.type.ERROR, notifications.time.MED);
             return;
          }
 
          if (nearestBusines.owner != player.character.id) {
-            player.notification(lang.cannotManageThisBusiness, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.cannotManageThisBusiness, notifications.type.ERROR, notifications.time.MED);
             return;
          }
    

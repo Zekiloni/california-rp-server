@@ -5,7 +5,7 @@ import rp from 'request-promise';
 import { logs, banks } from '@models';
 import { cmds, colors, none } from '@constants';
 import { formatCommand } from '@shared';
-import { serverConfig } from '@configs';
+import { ServerConfig } from '@configs';
 
 
 export const enum TransactionType {
@@ -66,13 +66,13 @@ export class transactions extends Model {
       };
 
       const params = {
-         username: serverConfig.name,
+         username: ServerConfig.name,
          embeds: [embed]
       };
 
       const options = {
          method: 'POST',
-         uri: serverConfig.discord.transactionHook,
+         uri: ServerConfig.discord.transactionHook,
          body: params,
          json: true
       };

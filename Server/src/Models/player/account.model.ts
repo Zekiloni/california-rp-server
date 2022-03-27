@@ -4,7 +4,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, Default, Befor
 import bcrypt from 'bcryptjs';
 import { shared_Data } from '@shared';
 import { rank } from '@enums';
-import { lang, none } from '@constants';
+import { Lang, none } from '@constants';
 import { Characters, logs } from '@models';
 import { adminAccounts } from '@configs';
 
@@ -42,7 +42,7 @@ export class Accounts extends Model {
 
    @Default(null)
    @Column(DataType.STRING(64))
-   ip_adress: string;
+   ip: string;
 
    @Default(null)
    @Column(DataType.STRING(64))
@@ -72,7 +72,7 @@ export class Accounts extends Model {
 
    @Default(none)
    @Column(DataType.INTEGER)
-   last_character: number;
+   lastCharacter: number;
 
    @CreatedAt
    created_at: Date;
@@ -107,7 +107,7 @@ export class Accounts extends Model {
       player.account = this;
       
       this.login_date = new Date();
-      this.ip_adress = player.ip;
+      this.ip = player.ip;
 
       player.setVariable(shared_Data.LOGGED, true);
       player.setVariable(shared_Data.ADMIN, this.administrator);
@@ -116,7 +116,7 @@ export class Accounts extends Model {
 
          Accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } }).then(account => {
             if (account) {
-               player.kick(lang.userAlreadyExist);
+               player.kick(Lang.userAlreadyExist);
             }
          });
 

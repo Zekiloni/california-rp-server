@@ -1,5 +1,5 @@
 import { Commands } from '../commands';
-import { cmds, colors, lang, none } from '@constants';
+import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
 import { Jobs } from '@models';
 import { JobConfig } from '@configs';
@@ -11,14 +11,14 @@ Commands[cmds.names.TAKE_JOB] = {
    description: cmds.descriptions.TAKE_JOB,
    call (player: PlayerMp) {
       if (!player.character.isUnemployed) {
-         player.notification(lang.ALREADY_HAVE_JOB, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.ALREADY_HAVE_JOB, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       const job = Jobs.nearest(player, 3);
 
       if (!job) {
-         player.notification(lang.NOT_NEAR_ANY_JOB, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.NOT_NEAR_ANY_JOB, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -59,7 +59,7 @@ Commands[cmds.names.CHOOSE_ROUTE] = {
    call (player: PlayerMp, route: string) {
 
       if (player.character.working) {
-         player.notification(lang.U_ALREADY_WORKING, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.U_ALREADY_WORKING, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

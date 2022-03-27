@@ -1,7 +1,7 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 
-import { lang } from '@constants';
+import { Lang } from '@constants';
 import { validateIP } from '@shared';
 import { Accounts } from '@models';
 import { notifications } from '@enums';
@@ -68,14 +68,14 @@ export class Bans extends Model {
          if (Online) {
             const Account = await Online.account;
 
-            Bans.create({ Account: Online.account.id, Character: Online.character.id, IP: Account.ip_adress, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
+            Bans.create({ Account: Online.account.id, Character: Online.character.id, IP: Account.ip, Hardwer: Account.hardwer, Social: Account.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             Online.kick(reason);
          } else {
             const OfflineAcc = await Accounts.findOne({ where: { Name: target } })
             if (OfflineAcc) {
-               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip_adress, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
+               Bans.create({ Account: OfflineAcc.id, Character: OfflineAcc.id, IP: OfflineAcc.ip, Hardwer: OfflineAcc.hardwer, Social: OfflineAcc.social_club, Date: date, Expiring: expiring, Issuer: player.account.id });
             } else {
-               player.notification(lang.userNotFound, notifications.type.ERROR, 5);
+               player.notification(Lang.userNotFound, notifications.type.ERROR, 5);
             }
          }
       }

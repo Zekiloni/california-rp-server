@@ -1,4 +1,4 @@
-import { cmds, lang } from '@constants';
+import { cmds, Lang } from '@constants';
 import { FactionsPermissions, notifications } from '@enums';
 import { factions } from '@models';
 import { Commands } from '../commands';
@@ -47,7 +47,7 @@ Commands[cmds.names.FACTION_INVITE] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -79,7 +79,7 @@ Commands[cmds.names.FACTION_KICK] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

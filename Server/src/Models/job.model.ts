@@ -1,4 +1,4 @@
-import { gDimension, cmds, lang } from '@constants';
+import { gDimension, cmds, Lang } from '@constants';
 import { JobConfig } from '@configs';
 import { offer, VehiclePoint } from '@interfaces';
 import { formatCommand } from '@shared';
@@ -72,15 +72,15 @@ export class Jobs {
       const job = this;
 
       const offer: offer = {
-         title: lang.JOB_OFFER + ' ' + job.name,
+         title: Lang.JOB_OFFER + ' ' + job.name,
          description: job.description!,
          job: job,
          respond (player: PlayerMp, respond: boolean) {
             if (respond) { 
                player.character.setJob(player, this.job!.id);
-               player.notification(lang.U_EMPLOYED_AS + job.name, notifications.type.SUCCESS, notifications.time.MED);
+               player.notification(Lang.U_EMPLOYED_AS + job.name, notifications.type.SUCCESS, notifications.time.MED);
             } else { 
-               player.notification(lang.U_DECLINED_JOB_OFFER, notifications.type.INFO, notifications.time.MED);
+               player.notification(Lang.U_DECLINED_JOB_OFFER, notifications.type.INFO, notifications.time.MED);
             }
 
             player.character.setOffer(player, null);

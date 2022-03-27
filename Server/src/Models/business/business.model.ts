@@ -1,7 +1,7 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, DataType, AfterCreate, AllowNull, ForeignKey, AfterSync, AfterDestroy, HasMany, BelongsTo, AfterSave, AfterFind } from 'sequelize-typescript';
 
 import { CartItem, interactionPoint } from '@interfaces';
-import { cmds, gDimension, lang, none } from '@constants';
+import { cmds, gDimension, Lang, none } from '@constants';
 import { Characters, logs, Products, Workers, inventories, Items, vehicles } from '@models';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
@@ -234,12 +234,12 @@ export class Busines extends Model {
 
    async lock (player: PlayerMp, locked: boolean) {
       if (this.owner != player.character.id) {
-         player.notification(lang.youDontHaveBusinesKeys, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.youDontHaveBusinesKeys, notifications.type.ERROR, notifications.time.MED);
          return;
       } 
 
       await this.update( { locked: locked } );
-      player.notification(locked ? lang.businessLocked : lang.businessUnlocked, notifications.type.INFO, notifications.time.MED);
+      player.notification(locked ? Lang.businessLocked : Lang.businessUnlocked, notifications.type.INFO, notifications.time.MED);
    }
 
    async edit (player: PlayerMp, property: string, value: string) {
@@ -281,7 +281,7 @@ export class Busines extends Model {
 
          case 'vehiclepoint': {
             if (!player.vehicle) {
-               player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.MED);
+               player.notification(Lang.notInVehicle, notifications.type.ERROR, notifications.time.MED);
                return;
             }
 
@@ -303,20 +303,20 @@ export class Busines extends Model {
       const character = player.character;
 
       if (this.owner) {
-         player.notification(lang.busiensAlreadyOwner, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.busiensAlreadyOwner, notifications.type.ERROR, notifications.time.MED);
          return;
       }; 
       
 
       if (character.money < this.price) {
-         player.notification(lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notEnoughMoney, notifications.type.ERROR, notifications.time.MED);
          return;
       };
 
       this.owner = character.id;
       character.giveMoney(player, -this.price);
 
-      player.notification(lang.successfullyBuyedBusiness + this.name + lang.for + dollars(this.price) + '.', notifications.type.SUCCESS, notifications.time.LONG);
+      player.notification(Lang.successfullyBuyedBusiness + this.name + Lang.for + dollars(this.price) + '.', notifications.type.SUCCESS, notifications.time.LONG);
       await this.save();
    };
    
@@ -328,7 +328,7 @@ export class Busines extends Model {
          const target = mp.players.find(targetSearch);
 
          if (!target) {
-            player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
@@ -336,12 +336,12 @@ export class Busines extends Model {
          const { character: tCharacter } = target!;
 
          if (player.dist(target.position) > 2) {
-            player.notification(lang.playerNotNear, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(Lang.playerNotNear, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
          if (tCharacter.money < price) {
-            player.notification(lang.playerDoesntHaveMoney, notifications.type.ERROR, notifications.time.SHORT);
+            player.notification(Lang.playerDoesntHaveMoney, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
@@ -364,7 +364,7 @@ export class Busines extends Model {
          
          this.owner = none;
          player.character.giveMoney(player, cPrice);
-         player.notification(lang.succesfullySoldBizToCountry, notifications.type.INFO, notifications.time.LONG);
+         player.notification(Lang.succesfullySoldBizToCountry, notifications.type.INFO, notifications.time.LONG);
 
          await this.save();
       }
@@ -373,7 +373,7 @@ export class Busines extends Model {
    menu (player: PlayerMp) {
       
       if (this.locked) {
-         player.notification(lang.thisBusinessIsLocked, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.thisBusinessIsLocked, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -400,12 +400,12 @@ export class Busines extends Model {
 
          case BusinesConfig.type.VEHICLE_DEALERSHIP: {
             if (this.products.length == none) {
-               player.notification(lang.businesNoVehiclesToSell, notifications.type.INFO, notifications.time.LONG);
+               player.notification(Lang.businesNoVehiclesToSell, notifications.type.INFO, notifications.time.LONG);
                return;
             }
 
             if (!this.preview_Point) {
-               player.notification(lang.dealershipNoPreview, notifications.type.INFO, notifications.time.LONG);
+               player.notification(Lang.dealershipNoPreview, notifications.type.INFO, notifications.time.LONG);
                return;
             }
 
@@ -446,7 +446,7 @@ export class Busines extends Model {
          }
 
          if (product.price > player.character.money) {
-            player.notification(lang.notEnoughtMoneyForVehicle, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.notEnoughtMoneyForVehicle, notifications.type.ERROR, notifications.time.MED);
             return;
          }
          
@@ -501,7 +501,7 @@ export class Busines extends Model {
          console.log('inv with cart ' + (inventoryWeight + cartWeight));
    
          if (inventoryWeight + cartWeight > player.character.max_inventory_weight) {
-            player.notification(lang.noInventorySpaceForItems + '.', notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.noInventorySpaceForItems + '.', notifications.type.ERROR, notifications.time.MED);
             return;
          }
    
@@ -509,7 +509,7 @@ export class Busines extends Model {
             cart.forEach(async item => {
                if (item.name == product.name) {
                   if (product.quantity == none) {
-                     player.notification(lang.weAreSoryBut + lang.product.toLowerCase() + ' ' + product.name  + lang.productNotAvailable, notifications.type.ERROR, notifications.time.MED);
+                     player.notification(Lang.weAreSoryBut + Lang.product.toLowerCase() + ' ' + product.name  + Lang.productNotAvailable, notifications.type.ERROR, notifications.time.MED);
                      return; 
                   }
    

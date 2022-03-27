@@ -2,7 +2,7 @@
 import { AfterCreate, AfterDestroy, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, HasMany, Model, PrimaryKey, Table, Unique, UpdatedAt } from 'sequelize-typescript';
 import { EconomyConfig, FactionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
-import { cmds, colors, lang, none } from '@constants';
+import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
 import { Characters, factionsRanks, logs } from '@models';
 import { checkForDot, formatCommand, shared_Data } from '@shared';
@@ -146,9 +146,9 @@ export class factions extends Model {
 
       if (this.leader == player.character.id) {
          this.setLeader(none);
-         player.notification(lang.uLeaveFactionLeaderPosition + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.uLeaveFactionLeaderPosition + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
       } else { 
-         player.notification(lang.uLeavedFaction + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.uLeavedFaction + checkForDot(this.name), notifications.type.ERROR, notifications.time.MED);
       }
 
       await player.character.save();
@@ -164,9 +164,9 @@ export class factions extends Model {
       target.character.setFaction(target, this.id);
       this.leader = target.character.id;
 
-      target.notification(lang.uAreNowLeaderOf + this.name + lang.fromAdmin + player.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
+      target.notification(Lang.uAreNowLeaderOf + this.name + Lang.fromAdmin + player.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
 
-      player.notification(lang.uSetLeaderOf + this.name + ' ' + target.name, notifications.type.SUCCESS, notifications.time.MED);
+      player.notification(Lang.uSetLeaderOf + this.name + ' ' + target.name, notifications.type.SUCCESS, notifications.time.MED);
       // LOGS: setted leader
 
       await this.save();
@@ -176,12 +176,12 @@ export class factions extends Model {
 
    async kick (player: PlayerMp, target: PlayerMp) {
       if (target.character.faction != player.character.faction) {
-         player.notification(lang.notInYourFaction, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notInYourFaction, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (this.leader == target.character.id) {
-         player.notification(lang.cannotLeader, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.cannotLeader, notifications.type.ERROR, notifications.time.MED);
          return;
       }      
 
@@ -189,8 +189,8 @@ export class factions extends Model {
       target.character.rank = none;
       target.setVariable(shared_Data.FACTION, none);
 
-      target.notification(player.name + lang.hasKickedYouFromFaction + checkForDot(this.name), notifications.type.INFO, notifications.time.LONG);
-      player.notification(lang.uKickedFromFaction + target.name + lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED); // to player u succes kicked target.name...
+      target.notification(player.name + Lang.hasKickedYouFromFaction + checkForDot(this.name), notifications.type.INFO, notifications.time.LONG);
+      player.notification(Lang.uKickedFromFaction + target.name + Lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED); // to player u succes kicked target.name...
 
       await target.character.save();
       this.points(player);
@@ -199,27 +199,27 @@ export class factions extends Model {
 
    invite (player: PlayerMp, target: PlayerMp) {
       if (target.character.faction != none) {
-         player.notification(lang.playerAlreadyInFaction, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.playerAlreadyInFaction, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (target.character.offer) {
-         player.notification(lang.playerAlreadyHasOffer, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.playerAlreadyHasOffer, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (player.id == target.id) {
-         player.notification(lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.cannotToYourself, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       const offer = {
-         title: lang.factionInvite,
-         description: player.name + lang.toJoinFaction + this.name + '.',
+         title: Lang.factionInvite,
+         description: player.name + Lang.toJoinFaction + this.name + '.',
          offerer: player,
          faction: this,
          async respond (_target: PlayerMp, respond: boolean) {
-            const result: string = respond ? lang.accepted : lang.declined;
+            const result: string = respond ? Lang.accepted : Lang.declined;
             
             if (respond) {
                target.character.setFaction(target, this.faction.id);
@@ -232,10 +232,10 @@ export class factions extends Model {
             }
             
             if (this.offerer) {
-               this.offerer.notification(_target.name + result + lang.yourFactionInvite, notifications.type.INFO, notifications.time.MED);
+               this.offerer.notification(_target.name + result + Lang.yourFactionInvite, notifications.type.INFO, notifications.time.MED);
             }
             
-            this.offerer.notification(respond ? lang.uAcceptedFactionInvite : lang.uDeclinedFactionInvite, notifications.type.INFO, notifications.time.MED);
+            this.offerer.notification(respond ? Lang.uAcceptedFactionInvite : Lang.uDeclinedFactionInvite, notifications.type.INFO, notifications.time.MED);
 
             _target.character.setOffer(player, null);
          }
@@ -249,7 +249,7 @@ export class factions extends Model {
       const rank = await factionsRanks.findOne( { where: { faction_id: this.id, name: rankName } } );
 
       if (!rank) {
-         player.notification(lang.rankDoesntExist, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.rankDoesntExist, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -265,7 +265,7 @@ export class factions extends Model {
       
       mp.players.forEach(target => {
          if (target.character.faction == this.id) {
-            target.sendMessage('(( ' + (rank ? rank?.name : lang.unranked) + ' ' + player.name + ': ' + checkForDot(message) + ' ))', colors.hex.FACTION);
+            target.sendMessage('(( ' + (rank ? rank?.name : Lang.unranked) + ' ' + player.name + ': ' + checkForDot(message) + ' ))', colors.hex.FACTION);
          }
       })
    }
@@ -321,7 +321,7 @@ export class factions extends Model {
 
    garage (player: PlayerMp, action: string) {
       if (player.dist(this.garage_point) > 3) {
-         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -340,12 +340,12 @@ export class factions extends Model {
 
    repairVehicle (player: PlayerMp) {
       if (player.vehicle.dist(this.garage_point) > 3) {
-         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (!this.isFactionVehicle(player.vehicle)) {
-         player.notification(lang.thisVehicleNotPartOfFaction, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.thisVehicleNotPartOfFaction, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -353,18 +353,18 @@ export class factions extends Model {
       
       player.vehicle.repair();
       
-      player.notification(lang.uGovRepairVehicle, notifications.type.INFO, notifications.time.MED);
+      player.notification(Lang.uGovRepairVehicle, notifications.type.INFO, notifications.time.MED);
       // logs...
    }
 
    livery (player: PlayerMp, livery: number) {
       if (!this.isFactionVehicle(player.vehicle)) {
-         player.notification(lang.thisVehicleNotPartOfFaction, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.thisVehicleNotPartOfFaction, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (player.vehicle.dist(this.garage_point) > 3) {
-         player.notification(lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notOnPosition, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -394,7 +394,7 @@ const kickMember = (player: PlayerMp, targetCharacterID: number) => {
          targetCharacter.rank = none
          await targetCharacter.save();
 
-         player.notification(lang.uKickedFromFaction + targetCharacter.name + lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED);
+         player.notification(Lang.uKickedFromFaction + targetCharacter.name + Lang.fromFaction, notifications.type.SUCCESS, notifications.time.MED);
       }
 
       return true;

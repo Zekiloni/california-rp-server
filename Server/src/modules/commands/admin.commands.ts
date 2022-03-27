@@ -3,9 +3,9 @@ import fs from 'fs';
 
 import { Commands } from '../commands';
 import { logs, Items, inventories, houses, Accounts, Busines, factions, Characters, vehicles } from '@models';
-import { cmds, colors, gDimension, lang, none, weathers } from '@constants';
+import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
-import { BusinesConfig, serverConfig, VehicleConfig } from '@configs';
+import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';
 import { shared_Data } from '@shared';
 import { admins } from '../../modules/admin';
 
@@ -112,7 +112,7 @@ Commands[cmds.names.CLEAR_CHAT] = {
    call (player: PlayerMp) {
       mp.players.forEach(target => {
          target.call('CLIENT::CHAT_CLEAR');
-         target.notification(lang.chatIsClearedBy + player.character.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
+         target.notification(Lang.chatIsClearedBy + player.character.name + ' (' + player.account.username + ').', notifications.type.INFO, notifications.time.MED);
       })
    }
 }
@@ -208,7 +208,7 @@ Commands[cmds.names.GIVE_ITEM] ={
          const target = mp.players.find(targetSearch);
 
          if (!target) {
-            player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
             return;
          }; 
 
@@ -219,7 +219,7 @@ Commands[cmds.names.GIVE_ITEM] ={
          }
 
       } else { 
-         player.notification(lang.itemDoesntExist, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.itemDoesntExist, notifications.type.ERROR, notifications.time.MED);
       }
    }
 }
@@ -234,7 +234,7 @@ Commands[cmds.names.FREEZE] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
 
@@ -263,7 +263,7 @@ Commands[cmds.names.HEALTH] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
 
@@ -304,7 +304,7 @@ Commands[cmds.names.DISARM] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       }
       
@@ -322,8 +322,8 @@ Commands[cmds.names.DISARM] = {
          })
       }
 
-      target.notification(lang.admin + ' ' + player.name + lang.disarmedYou, notifications.type.INFO, notifications.time.MED);
-      player.notification(lang.youDisarmedPlayer + ' ' + target.name + '.', notifications.type.SUCCESS, notifications.time.MED);
+      target.notification(Lang.admin + ' ' + player.name + Lang.disarmedYou, notifications.type.INFO, notifications.time.MED);
+      player.notification(Lang.youDisarmedPlayer + ' ' + target.name + '.', notifications.type.SUCCESS, notifications.time.MED);
    }
 };
 
@@ -360,7 +360,7 @@ Commands[cmds.names.GIVE_GUN] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT)
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT)
          return;
       }
 
@@ -428,17 +428,17 @@ Commands[cmds.names.SPAWN_VEHICLE] = {
    call (player: PlayerMp, vehicleID: string) {
       vehicles.findOne( { where: { id: Number(vehicleID) } } ).then(vehicle => {
          if (!vehicle) {
-            player.notification(lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
             return;
          }
 
          if (vehicle.spawned) {
-            player.notification(lang.vehicleAlreadySpawned, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.vehicleAlreadySpawned, notifications.type.ERROR, notifications.time.MED);
             return;
          }
 
          vehicle.load();
-         player.notification(lang.vehicleLoaded, notifications.type.SUCCESS, notifications.time.MED);
+         player.notification(Lang.vehicleLoaded, notifications.type.SUCCESS, notifications.time.MED);
       })
    }
 };
@@ -454,12 +454,12 @@ Commands[cmds.names.GET_VEHICLE] = {
       const vehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.id == Number(vehicleID));
 
       if (!vehicle) {
-         player.notification(lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (!vehicle.instance.spawned) {
-         player.notification(lang.vehicleNotSpawned, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.vehicleNotSpawned, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -476,7 +476,7 @@ Commands[cmds.names.GET_VEHICLE] = {
          })
       }
 
-      player.notification(lang.uTeleportedVehicleToYou, notifications.type.SUCCESS, notifications.time.MED);
+      player.notification(Lang.uTeleportedVehicleToYou, notifications.type.SUCCESS, notifications.time.MED);
    }
 }
 
@@ -500,7 +500,7 @@ Commands[cmds.names.DESTROY_VEHICLE] = {
    call (player: PlayerMp, vehicleID: string) {
       vehicles.findOne( { where: { id: vehicleID } } ).then(vehicle => {
          if (!vehicle) {
-            player.notification(lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
             return;
          }
 
@@ -520,9 +520,9 @@ Commands[cmds.names.TIME] = {
    ],
    call (player: PlayerMp, hour: number, minute: number = 0, second: number = 0) {
       if (hour == 666) {
-         serverConfig.freezeTime = false;
+         ServerConfig.freezeTime = false;
       } else { 
-         serverConfig.freezeTime = true;
+         ServerConfig.freezeTime = true;
          mp.world.time.set(hour, minute, second);
       }
    }
@@ -570,7 +570,7 @@ Commands[cmds.names.GIVE_MONEY] =  {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
          return;
       };
 
@@ -590,7 +590,7 @@ Commands[cmds.names.SET_MONEY] =  {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.LONG);
          return;
       }; 
 
@@ -758,7 +758,7 @@ Commands[cmds.names.KICK] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -779,14 +779,14 @@ Commands[cmds.names.SLAP] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
       }
 
       const { position } = target!;
       
       if (target) {
          target.position = new mp.Vector3(position.x, position.y, position.z + 2);
-         target.notification(lang.admin + ' ' + player.character.name + ' ' + lang.adminWarnedYou + '.', notifications.type.ERROR, notifications.time.SHORT);
+         target.notification(Lang.admin + ' ' + player.character.name + ' ' + Lang.adminWarnedYou + '.', notifications.type.ERROR, notifications.time.SHORT);
       }
    }
 };
@@ -873,7 +873,7 @@ Commands[cmds.names.CREATE_FACTION] = {
       ).catch(e => logs.error(e));
       
       if (faction) {
-         player.notification(lang.succesfullyCreatedFaction + faction.name + lang.underId + faction.id + '.', notifications.type.SUCCESS, notifications.time.MED);
+         player.notification(Lang.succesfullyCreatedFaction + faction.name + Lang.underId + faction.id + '.', notifications.type.SUCCESS, notifications.time.MED);
       }
    }
 }
@@ -889,7 +889,7 @@ Commands[cmds.names.EDIT_FACTION] = {
    async call (player: PlayerMp, factionID: string, property: string, ...newValue) {
       factions.findOne( { where: { id: factionID } } ).then(faction => {
          if (!faction) {
-            player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.MED);
+            player.notification(Lang.factionNotFound, notifications.type.ERROR, notifications.time.MED);
             return;
          }
    
@@ -912,7 +912,7 @@ Commands[cmds.names.MAKE_LEADER] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.SHORT);
          return;
       };
 
@@ -924,13 +924,13 @@ Commands[cmds.names.MAKE_LEADER] = {
                faction.setLeader(none);
             }        
             
-            target.notification(lang.uAreNotLeaderAnymore + faction?.name + '.', notifications.type.INFO, notifications.time.LONG);
+            target.notification(Lang.uAreNotLeaderAnymore + faction?.name + '.', notifications.type.INFO, notifications.time.LONG);
          })
 
       } else {
          factions.findOne( { where: { id: factionID } } ).then(faction => {
             if (!faction) {
-               player.notification(lang.factionNotFound, notifications.type.ERROR, notifications.time.LONG);
+               player.notification(Lang.factionNotFound, notifications.type.ERROR, notifications.time.LONG);
                return;
             }
             
@@ -947,7 +947,7 @@ Commands[cmds.names.FACTIONS] = {
    async call (player: PlayerMp) {
       factions.findAll().then(factions => {
          if (factions.length < 1) {
-            player.sendMessage(lang.thereIsNoFactionsRn, colors.hex.Info);
+            player.sendMessage(Lang.thereIsNoFactionsRn, colors.hex.Info);
             return;
          }
 
@@ -972,13 +972,13 @@ Commands[cmds.names.MAKE_ADMIN] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       target.account.setAdministrator(target, Number(adminLevel));
-      player.notification(lang.usetAdminTo + adminLevel + ' ' + target.name + '.', notifications.type.INFO, notifications.time.MED);
-      target.notification(player.name + lang.setUAdminLevel + adminLevel + '.', notifications.type.INFO, notifications.time.MED);
+      player.notification(Lang.usetAdminTo + adminLevel + ' ' + target.name + '.', notifications.type.INFO, notifications.time.MED);
+      target.notification(player.name + Lang.setUAdminLevel + adminLevel + '.', notifications.type.INFO, notifications.time.MED);
    }
 };
 
@@ -995,7 +995,7 @@ Commands[cmds.names.CREATE_ACCOUNT] = {
    call (player: PlayerMp, username: string, password: string, mail: string) {
       Accounts.create( { username: username, password: password, email: mail } ).catch(e => logs.error('creatingAccount: ' + e) );
       // LOGS
-      player.notification(lang.accountCreated + ' (' + username + ', ' + password + ')', notifications.type.SUCCESS, notifications.time.LONG);
+      player.notification(Lang.ACCOUNT_SUCCESFULLY_CREATED + ' (' + username + ', ' + password + ')', notifications.type.SUCCESS, notifications.time.LONG);
    }
 };
 
@@ -1005,7 +1005,7 @@ Commands[cmds.names.FLIP] = {
    admin: rank.ADMINISTRATOR_2,
    call (player: PlayerMp) {
       if (player.vehicle) {
-         player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(Lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
          player.vehicle.rotation = new mp.Vector3(0, 0, player.vehicle.heading);
       } else if (mp.vehicles.getClosest(player.position)) { 
          const closestVehicle = mp.vehicles.getClosest(player.position);
@@ -1026,7 +1026,7 @@ Commands[cmds.names.DIMENSION] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -1052,7 +1052,7 @@ Commands[cmds.names.RESPAWN_VEHICLE] = {
          const vehicle = mp.vehicles.getClosest(player.position);
          vehicle.instance.respawn(vehicle);
       } else { 
-         player.notification(lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
+         player.notification(Lang.notInVehicle, notifications.type.ERROR, notifications.time.SHORT);
       }
    }
 }
@@ -1079,7 +1079,7 @@ Commands[cmds.names.SET_ARMOUR] = {
       const target = mp.players.find(targetSearch);
 
       if (!target) {
-         player.notification(lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 

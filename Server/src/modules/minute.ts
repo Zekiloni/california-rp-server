@@ -1,11 +1,11 @@
 
-import { serverConfig } from '@configs';
+import { ServerConfig } from '@configs';
 
 
 function minuteCheck() {
    const now = new Date();
 
-   if (!serverConfig.freezeTime) {
+   if (!ServerConfig.freezeTime) {
       const hours = now.getHours(), minutes = now.getMinutes(), seconds = now.getSeconds();
       mp.world.time.set(hours, minutes, seconds);
    }

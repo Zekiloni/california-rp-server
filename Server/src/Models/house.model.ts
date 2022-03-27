@@ -2,7 +2,7 @@
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt, AllowNull, AfterCreate, AfterDestroy, DataType, ForeignKey, AfterSync, AfterSave, HasMany, BelongsTo } from 'sequelize-typescript';
 import { interactionPoint } from '@interfaces';
 import { notifications, rank } from '@enums';
-import { cmds, gDimension, lang } from '@constants';
+import { cmds, gDimension, Lang } from '@constants';
 import { houseConfig } from '@configs';
 import { Characters, objects } from '@models';
 import { logs } from './log.model';
@@ -211,19 +211,19 @@ export class houses extends Model {
 
    async buy (player: PlayerMp) {
       if (this.owner) {
-         player.notification(lang.houseAlreadyOwner, notifications.type.ERROR, 5);
+         player.notification(Lang.houseAlreadyOwner, notifications.type.ERROR, 5);
          return;
       } 
 
       const character = player.character;
 
       if (this.price > character.money) {
-         player.notification(lang.notEnoughMoney, notifications.type.ERROR, 5);
+         player.notification(Lang.notEnoughMoney, notifications.type.ERROR, 5);
          return;
       } 
 
       character.giveMoney(player, -this.price);
-      player.notification(lang.successfullyBuyedHouse, notifications.type.SUCCESS, 7);
+      player.notification(Lang.successfullyBuyedHouse, notifications.type.SUCCESS, 7);
 
       this.owner = character.id;
 
@@ -235,7 +235,7 @@ export class houses extends Model {
          this.locked = !this.locked;
          await this.save();
       } else { 
-         player.notification(lang.youDontHaveHouseKeys, notifications.type.ERROR, 5);
+         player.notification(Lang.youDontHaveHouseKeys, notifications.type.ERROR, 5);
       }
    }
 
@@ -251,7 +251,7 @@ export class houses extends Model {
 
    enter (player: PlayerMp) {
       if (this.locked && this.owner != player.character.id) {
-         player.notification(lang.thisHouseIsLocked, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.thisHouseIsLocked, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
@@ -270,12 +270,12 @@ export class houses extends Model {
 
    exit (player: PlayerMp) {
       if (player.dist(this.interior_position) > 2) {
-         player.notification(lang.notNearbyExit, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.notNearbyExit, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
       if (this.locked && this.owner != player.character.id) {
-         player.notification(lang.thisHouseIsLocked, notifications.type.ERROR, notifications.time.MED);
+         player.notification(Lang.thisHouseIsLocked, notifications.type.ERROR, notifications.time.MED);
          return;
       }
       

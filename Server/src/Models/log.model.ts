@@ -6,7 +6,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 import { Accounts, Characters } from '@models';
 import { timeDate } from '@shared';
 import { logging } from '@enums';
-import { serverConfig } from '@configs';
+import { ServerConfig } from '@configs';
 import { colors } from '@constants';
 
 
