@@ -1,6 +1,10 @@
 
 
 
+export enum CharacterGender {
+   MALE, FEMALE
+}
+
 export enum spawnPointTypes {
    DEFAULT = 0,
    LAST_POSITION = 1,

@@ -1,16 +1,12 @@
 {
    "dependencies": {
       "bcryptjs": "^2.4.3",
+      "express": "^4.17.3",
       "fs": "0.0.1-security",
-      "https": "^1.0.0",
       "module-alias": "^2.2.2",
       "mysql2": "^2.2.5",
-      "reflect-metadata": "^0.1.13",
-      "request": "^2.88.2",
       "request-promise": "^4.2.6",
-      "sequelize-typescript": "^2.1.0",
-      "typescript": "^4.3.5",
-      "uuid": "^3.4.0"
+      "sequelize-typescript": "^2.1.0"
    },
    "scripts": {
       "start": "cd.. && cd.. && cd local-server && ragemp-server.exe --trace-warnings",
@@ -28,6 +24,7 @@
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
       "@types/ragemp-s": "github:CocaColaBear/types-ragemp-s#v1.0",
-      "@types/request-promise": "^4.1.48"
+      "@types/request-promise": "^4.1.48",
+      "typescript": "^4.6.3"
    }
 }

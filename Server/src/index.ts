@@ -2,6 +2,7 @@
 import 'module-alias/register';
 
 import './database';
+import './api';
 import './modules/rage';
 
 import './systems/player/Authorization';

@@ -28,3 +28,4 @@ function stopTaxiWork () {
 mp.events.add('CLIENT::TAXI:MENU', showTaxiMenu);
 mp.events.addProc('CLIENT::TAXI:START', startTaxiWork);
 mp.events.addProc('CLIENT::TAXI:STOP', stopTaxiWork);
+

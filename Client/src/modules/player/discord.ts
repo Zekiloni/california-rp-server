@@ -10,4 +10,3 @@ function updateRPC () {
 
    mp.discord.update('California Roleplay', name);
 }
-

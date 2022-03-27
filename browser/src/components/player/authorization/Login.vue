@@ -5,7 +5,7 @@
       <img class="logo" src="@/assets/images/logo.png" />
 
       <div class="login">
-
+         <h2> Autorizacija </h2>
          <div class="inputs">
             <input type="text" v-model="username" :placeholder="Messages.USERNAME" spellcheck="false" autofocus>
             <input type="password" v-model="password" :placeholder="Messages.PASSWORD" spellcheck="false">
@@ -40,8 +40,8 @@
 
 <style scoped>
    .wrapper { 
-      max-width: 580px;
-      min-height: 100px;
+      max-width: 450px;
+      height: 100%;
       margin: auto;
       color: white;
       display: grid;
@@ -49,20 +49,27 @@
 
     img.logo {
       margin: auto;
-      width: 150px;
+      width: 110px;
    }
 
    .login {
       background: #16151A;
       width: 100%;
       margin-top: 40px;
-      height: 138px;
+      height: auto;
+      max-height: 175px;
       border-radius: 10px;
       display: flex;
       justify-content: space-between;
       padding: 20px;
       align-items: center;
       flex-wrap: wrap;
+   }
+   
+   .login h2 { 
+      width: 100%;
+      margin: 0;
+      color: #dddddd;
    }
 
    .inputs input {
