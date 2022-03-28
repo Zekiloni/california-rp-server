@@ -28,7 +28,6 @@ export function authenticateToken (request: IRequestAccount, response: Response,
 			return response.sendStatus(403);
 
 
-		console.log('username ' + aUsername)
 		request.username = aUsername;
 
 		next();
