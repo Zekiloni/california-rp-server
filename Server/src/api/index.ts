@@ -18,6 +18,7 @@ api.use(cors({
 
 
 import './account/auth';
+import './account/account.core';
 
 api.get('/', (req, res) => {
    res.send(ServerConfig.name);

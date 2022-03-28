@@ -1,6 +1,7 @@
 import { Lang } from '@constants';
 import { Accounts } from '@models';
 import { api } from '../index';
+import { generateToken } from '../middleware';
 
 
 
@@ -18,13 +19,14 @@ api.post('/login', (request, response) => {
       }
       
       if (account.login(password)) {
-         response.json({ success: true, message: Lang.SUCCESFULLY_LOGED_IN })
+         response.json({ success: true, message: Lang.SUCCESFULLY_LOGED_IN, token: generateToken(account.username) });
       } else {
-         response.json({ success: false, message: Lang.INCORRECT_PASSWORD });
+         response.json({ success: false, message: Lang.INCORRECT_PASSWORD, });
       }
 
    });
 });
+
 
 api.post('/register', (request, response) => {
   const { email, username, password } = request.body;
