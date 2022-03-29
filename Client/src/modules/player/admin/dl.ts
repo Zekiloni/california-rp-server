@@ -1,3 +1,4 @@
+import controls from '../../../enums/controls';
 import { screenResolution } from '../../core';
 
 
@@ -35,11 +36,13 @@ function renderDL () {
             font: 4,
             color: [255, 255, 255, 255],
             scale: [0.345, 0.345],
-            outline: false,
+            outline: false,  
             centre: true
          });
       }
    });  
-}
 
-mp.events.add('CLIENT::ADMIN_DL', activateDL);
+   mp.vehicles.forEachInRange(position, 40, (vehicle) => {
+
+   })
+}
