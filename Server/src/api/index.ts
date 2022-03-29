@@ -17,6 +17,7 @@ api.use(cors({
 }));
 
 
+import './map';
 import './account/auth';
 import './account/account.core';
 

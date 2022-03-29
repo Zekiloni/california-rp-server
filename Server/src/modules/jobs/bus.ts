@@ -1,7 +1,7 @@
 import { JobConfig, VehicleConfig } from '@configs';
 import { VehiclePoint } from '@interfaces';
 import { Jobs, vehicles } from '@models';
-import { initials, randomInteger } from '@shared/utils';
+import { initials, randomInteger } from '@shared';
 
 
 

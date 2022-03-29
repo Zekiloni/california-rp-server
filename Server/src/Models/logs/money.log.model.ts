@@ -7,9 +7,9 @@ import { formatCommand, dollars } from '@shared';
 
 
 @Table({ 
-   updatedAt: false, createdAt: false 
+   tableName: 'money_logs', updatedAt: false, createdAt: false 
 })
-export class moneyLogs extends Model {
+export class MoneyLogs extends Model {
    @Column({ 
       type: DataType.INTEGER, field: 'character_id'
    })
@@ -27,7 +27,7 @@ export class moneyLogs extends Model {
    date: number
 
    static new (player: PlayerMp, target: PlayerMp, value: number) {
-      moneyLogs.create({
+      MoneyLogs.create({
          character: player.character.id,
          targetCharacter: target.character.id,
          amount: value,

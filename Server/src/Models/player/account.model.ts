@@ -11,7 +11,9 @@ import { adminAccounts } from '@configs';
 const salt = bcrypt.genSaltSync(10);
 
 
-@Table
+@Table({
+   tableName: 'accounts'
+})
 export class Accounts extends Model {
 
    @AutoIncrement

@@ -1,4 +1,4 @@
-import { JobConfig } from '@configs/jobs.config';
+import { JobConfig } from '@configs';
 import { Jobs } from '@models';
 
 

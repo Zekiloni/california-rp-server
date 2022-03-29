@@ -3,7 +3,7 @@ import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
 import { Jobs } from '@models';
 import { JobConfig } from '@configs';
-import { taxi } from '@modules/jobs/taxi';
+import { taxi } from '../../modules/jobs/taxi';
 
 
 

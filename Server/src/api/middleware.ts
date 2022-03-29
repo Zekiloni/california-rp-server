@@ -11,7 +11,7 @@ export interface IRequestAccount extends Request {
 
 
 export function generateToken (aUsername: string) {
-	return jwt.sign(aUsername, <string>ServerConfig.api.token);
+	return jwt.sign(aUsername, <string>ServerConfig.api.token, { expiresIn: '1h' });
 }
 
 

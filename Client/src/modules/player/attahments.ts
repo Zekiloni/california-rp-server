@@ -19,6 +19,10 @@ function streamAttachments (entity: EntityMp) {
    if (entity.type != RageEnums.EntityType.PLAYER) {
       return;
    }
+
+   if (!entity.hasVariable('ATTACHMENTS')) {
+      return;
+   }
    
    const eAttachments = entity.getVariable('ATTACHMENTS');
    
@@ -31,6 +35,10 @@ function streamAttachments (entity: EntityMp) {
 
 function streamOutAttachments (entity: EntityMp) {
    if (entity.type != RageEnums.EntityType.PLAYER) {
+      return;
+   }
+
+   if (!entity.hasVariable('ATTACHMENTS')) {
       return;
    }
 

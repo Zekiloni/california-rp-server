@@ -2,9 +2,9 @@ import { AfterCreate, AllowNull, Column, DataType, Model, Table } from 'sequeliz
 
 
 @Table({ 
-   updatedAt: false, createdAt: false 
+   tableName: 'kills', updatedAt: false, createdAt: false
 })
-export class killLogs extends Model {
+export class KillLogs extends Model {
    @Column({ 
       type: DataType.INTEGER, field: 'killed_character_id'
    })
@@ -24,7 +24,7 @@ export class killLogs extends Model {
    
 
    @AfterCreate
-   static afterCreateKillLog (moneyLog: killLogs) {
+   static afterCreateKillLog (moneyLog: KillLogs) {
       // push to discord
    }
 }

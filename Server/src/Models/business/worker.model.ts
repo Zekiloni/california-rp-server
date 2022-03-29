@@ -2,7 +2,9 @@ import { Table, Model, PrimaryKey, AutoIncrement, Column, Default, BelongsTo, Da
 import { Busines } from '@models';
 
 
-@Table
+@Table({
+   tableName: 'workers'
+})
 export class Workers extends Model {
    @PrimaryKey
    @AutoIncrement

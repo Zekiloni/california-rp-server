@@ -3,10 +3,10 @@ import 'module-alias/register';
 
 import './database';
 import './api';
-import './modules/rage';
 
 import './systems/player/Authorization';
 
+import './modules/rage';
 import './modules/commands';
 import './modules/player'
 import './modules/items';

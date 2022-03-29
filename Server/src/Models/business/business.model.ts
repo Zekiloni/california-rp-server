@@ -9,7 +9,9 @@ import { dollars } from '@shared';
 
 
 
-@Table
+@Table({
+   tableName: 'businesses'
+})
 export class Busines extends Model {
 
    static objects = new Map<number, interactionPoint>();

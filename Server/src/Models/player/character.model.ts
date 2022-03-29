@@ -10,7 +10,7 @@ import {
    Accounts, appearances, banks, houses,
    Busines, inventories, logs, objects, 
    vehicles, factions, factionsRanks,
-   moneyLogs
+   MoneyLogs
 } from '@models';
 
 import { FacialMoods, gDimension, WalkingStyles, Lang, colors, none } from '@constants';
@@ -352,7 +352,7 @@ export class Characters extends Model {
       player.character.giveMoney(player, -value);
       target.character.giveMoney(target, value);
 
-      moneyLogs.new(player, target, value);
+      MoneyLogs.new(player, target, value);
 
       player.proximityMessage(distances.ROLEPLAY, '* ' + player.name + ' ' + Lang.givesSomeMoney + ' ' + target.name + '.', colors.hex.Purple);
    }

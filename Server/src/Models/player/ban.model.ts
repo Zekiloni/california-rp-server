@@ -7,7 +7,9 @@ import { Accounts } from '@models';
 import { notifications } from '@enums';
 
 
-@Table
+@Table({
+   tableName: 'bans'
+})
 export class Bans extends Model {
    @PrimaryKey
    @AutoIncrement

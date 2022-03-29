@@ -3,7 +3,9 @@ import { Busines, Items } from '@models';
 import { none } from '@constants';
 
 
-@Table
+@Table({
+   tableName: 'products'
+})
 export class Products extends Model {
    @PrimaryKey
    @AutoIncrement
