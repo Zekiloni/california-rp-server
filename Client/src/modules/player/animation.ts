@@ -100,8 +100,7 @@ export function stopAnimation (player: PlayerMp, dictionary: string, name: strin
 }
 
 export function isPlayingAnim (player: PlayerMp, dictionary: string, name: string) {
-   // mp.gui.chat.push('playing ' + name + ' ' + JSON.stringify(mp.game.invoke(RageEnums.Natives.Entity.IS_ENTITY_PLAYING_ANIM, player, dictionary, name, 3)));
-   return player.isPlayingAnim(dictionary, name, 3);
+   return loadAnimation(dictionary).then(() => player.isPlayingAnim(dictionary, name, 3));
 }
 
 mp.events.addDataHandler('ANIMATION', check);

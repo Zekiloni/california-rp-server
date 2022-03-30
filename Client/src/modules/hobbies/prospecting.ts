@@ -55,7 +55,7 @@ function prospect () {
 }
 
 
-function dig () {
+async function dig () {
    if (prospecting) {
       const { x, y, z } = mp.players.local.position;
 
@@ -69,25 +69,25 @@ function dig () {
       stopAnimation(mp.players.local, 'mini@golfai', 'wood_idle_a');
       
       playAnimation(mp.players.local, 'amb@world_human_gardener_plant@male@enter', 'enter', animationFlags.NORMAL);
-      mp.game.wait(100);
+      mp.game.waitAsync(100);
 
-      while (isPlayingAnim(mp.players.local, 'amb@world_human_gardener_plant@male@enter', 'enter')) {
+      while (await isPlayingAnim(mp.players.local, 'amb@world_human_gardener_plant@male@enter', 'enter')) {
          // mp.gui.chat.push('playing enter')
-         mp.game.wait(0);
+         mp.game.waitAsync(0);
       }
 
       playAnimation(mp.players.local, 'amb@world_human_gardener_plant@male@base', 'base', animationFlags.NORMAL);
-      mp.game.wait(100);
+      mp.game.waitAsync(100);
       
-      while (isPlayingAnim(mp.players.local, 'amb@world_human_gardener_plant@male@base', 'base')) {
-         mp.game.wait(0)
+      while (await isPlayingAnim(mp.players.local, 'amb@world_human_gardener_plant@male@base', 'base')) {
+         mp.game.waitAsync(0)
       }
 
       playAnimation(mp.players.local, 'amb@world_human_gardener_plant@male@exit', 'exit', animationFlags.NORMAL);
-      mp.game.wait(100);
+      mp.game.waitAsync(100);
 
-      while (isPlayingAnim(mp.players.local, 'amb@world_human_gardener_plant@male@exit', 'exit')) {
-         mp.game.wait(0);
+      while (await isPlayingAnim(mp.players.local, 'amb@world_human_gardener_plant@male@exit', 'exit')) {
+         mp.game.waitAsync(0);
       }
 
       scanning = true;

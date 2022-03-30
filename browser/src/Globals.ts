@@ -5,6 +5,7 @@
 export const Messages = {
    WEBSITE: 'www.ca-rp.com',
    NAME: 'California Roleplay',
+   CALIFORNIA: 'CALIFORNIA',
    USERNAME: 'Korisničko ime',
    USERPASSWORD: 'Korisnička šifra',
    HOME_PAGE: 'Početna',
@@ -32,6 +33,7 @@ export const Messages = {
    PLAYER_NAME: 'Ime igrača',
    ID: 'ID',
    ONLINE_PLAYERS: 'Online igrači',
+   ONLINE: 'Online',
    YOUR_ID: 'Vaš ID',
    FINISH_SHOPPING: 'Kupi',
    YOU_DONT_HAVE: 'Nemate',

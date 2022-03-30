@@ -118,7 +118,14 @@ export class vehicles extends Model {
       this.setDataValue('numberPlate', JSON.stringify(value))
    }
 
-   color: [RGB, RGB] = [[0,0,0], [0,0,0]]
+   @Column(DataType.STRING)
+   get color (): [RGB, RGB] {
+      return JSON.parse(this.getDataValue('color'));
+   }
+
+   set color (value: [RGB, RGB]) {
+      this.setDataValue('color', JSON.stringify(value));
+   }
 
    @CreatedAt
    created_at: Date
@@ -159,7 +166,6 @@ export class vehicles extends Model {
       }
    }
 
-
    static new (
       model: string,
       type: VehicleConfig.type,
@@ -173,6 +179,7 @@ export class vehicles extends Model {
          numberplate?: NumberPlate
       } 
    ) {
+      console.log(color)
       return vehicles.create( 
          { 
             model: model, 
@@ -191,23 +198,26 @@ export class vehicles extends Model {
          return vehicle;
       })
    }
+   
+   isLoaded (): VehicleMp | undefined {
+      return mp.vehicles.toArray().find(vehicle => vehicle.instance && vehicle.instance.id == this.id);
+   }
 
    load (pointPosition?: Vector3Mp, pointRotation?: Vector3Mp) {
-      const alreadySpawned = mp.vehicles.toArray().find(vehicle => vehicle.instance.id == this.id);
+      const isSpawned = this.isLoaded();
 
-      if (alreadySpawned) {
+      if (isSpawned) {
          return;
       }
 
       const { position, rotation, numberPlate, locked, color } = this;
-      const [ primaryColor, secondaryColor ] = color;
 
       const model = mp.joaat(this.model);
       
       const vehicle = mp.vehicles.new(model, pointPosition ? pointPosition : position, {
          heading: pointRotation ? pointRotation.z : rotation.z,
          numberPlate: numberPlate ? numberPlate.plate : '',
-         color: [primaryColor, secondaryColor],
+         color: color,
          alpha: 255,
          locked: locked,
          engine: false,

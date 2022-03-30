@@ -133,6 +133,7 @@
       justify-content: center;
       align-items: center;
       background: linear-gradient(0deg, #1a191e, transparent);
+      z-index: 9999;
    }
 
    .holder { 

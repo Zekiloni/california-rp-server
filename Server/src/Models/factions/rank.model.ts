@@ -4,7 +4,9 @@ import { FactionsPermissions, notifications } from '@enums';
 import { Lang, none } from '@constants';
 
 
-@Table
+@Table({
+   tableName: 'factions_ranks'
+})
 export class factionsRanks extends Model {
 
    @PrimaryKey

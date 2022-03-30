@@ -9,16 +9,10 @@
          <VehicleInterface v-if="driving" />
       </transition>
 
-      <div class="server-info" >
-         <div class="player-id"> 
-            <h2 > # {{ playerId }}</h2>
-            <h3> {{ Messages.YOUR_ID }} </h3>
-         </div>
-         <div class="online-players"> 
-            <h2 class="online"> {{ onlinePlayers }} </h2>
-            <h3> {{ Messages.ONLINE_PLAYERS }} </h3>
-         </div>
-         <img class="logo" src="@/assets/images/logo.png" />
+      <div class="server">
+         <img src="@/assets/images/text-logo.png" />
+         <h4 class="online"> {{ Messages.ONLINE_PLAYERS }} <b> {{ onlinePlayers }} </b> </h4>
+         <h4 class="id"> id <b>#{{ playerId }} </b> </h4>
       </div>
 
       <div class="info"> 
@@ -32,10 +26,10 @@
             <h3 class="street "> {{ location.street }} </h3>
             <h3 class="zone"> {{ location.zone }} </h3>
          </div>
-      </div>
 
-      <div class="player"> 
-         <h2 class="money"> {{ dollars(money) }} </h2>
+         <div class="player"> 
+            <h2 class="money"> {{ dollars(money) }} </h2>
+         </div>
       </div>
    </div>
 
@@ -67,16 +61,12 @@
             onlinePlayers: 3250,
 
             location: { 
-               street: 'Miletova',
-               zone: '',
+               street: 'kurvo jedna',
+               zone: 'bedna picko smrdljiva',
                heading: 'N'
             },
            
             driving: false,
-
-            sounds: { 
-               money: new Audio('src/sounds/money.mp3'),
-            },
 
             Messages, Helpers
          }
@@ -141,81 +131,101 @@
       height: 100%; 
       position: absolute; 
       transition: all .3s ease;
+      /* background: url('https://www.inversegamer.com/wp-content/uploads/2020/11/principe-deveste-eight-gta-v.jpg'); */
    }
 
-   .server-info { 
+   .server { 
       position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 15px 10px;
+      top: 0;
+      right: 0;
+      padding: 25px 20px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-   }
-   
-   .server-info img.logo { width: 55px; }
-
-   .online-players { margin: 0 25px; }
-   .player-id { margin: 0 25px; }
-
-   h3, h2 { margin: 0; }
-
-   .online-players h3, .player-id h3 { 
-      margin-top: 5px; 
-      font-weight: 550; 
-      color: #959eac; 
-      font-size: 0.8rem; 
-      background: linear-gradient(120deg, rgb(11 14 17 / 35%), rgb(11 14 17 / 5%)); 
-      padding: 3px 10px;
-      border-radius: 4px; 
-      text-shadow: 0 0.7px 1px rgb(0 0 0 / 40%);
+      flex-direction: column;
+      justify-content: flex-start;
+      text-align: right;
    }
 
-   .player-id h2 { color: #cdcdcd; font-weight: 350; }
-
-   .online-players .online { position: relative; font-weight: 350; padding-left: 25px; color: #00d474; }
-
-   .online::before { 
-      position: absolute;
-      left: 2px;
-      top: 8px;
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 100%;
-      background: #00d474;
-      box-shadow: 0 0 0 4px rgb(0 212 116 / 45%);
+   .server img {
+      width: 150px;
+      margin-right: -2.5px;
+      margin-bottom: 10px;
    }
 
-   .player { position: absolute; top: 80px; right: 10px; padding: 15px 10px; }
-
-   .player h2.money { 
-      font-size: 1.65rem;
-      font-weight: 800;
-      background: -webkit-linear-gradient(-45deg, #67c684, #3b8d59);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: none;
+   .server h4 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin: 3px 0;
+      color: #cdcdcd;
+      text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
    }
 
-   .info { position: absolute; bottom: 25px; padding: 15px 10px; left: 325px; width: 300px; height: auto; }
+   .server h4.id {
+      color: #b4b4b4;
+      text-transform: uppercase;
+   }
 
-   .date-time { margin-bottom: 25px; }
-   .date-time h2 { color: #cdcdcd; font-weight: 450; }
-   .date-time h3 { font-weight: 550; color: #959fae; font-size: 0.95rem; }
+   h3, h2, h4 { margin: 0; }
+
+   .info { 
+      position: absolute; 
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      bottom: 25px; 
+      left: 340px; 
+      width: 300px; 
+      height: auto;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+   }
+
+   .date-time { 
+      margin: 15px 0; 
+      display: flex;
+      align-items: flex-end;
+   }
+
+   .date-time h2 { 
+      color: whitesmoke; 
+      font-weight: 450; 
+   }
+
+   .date-time h3 { 
+      font-weight: 500; 
+      color: #cdcdcd; 
+      font-size: 0.95rem; 
+      margin-left: 5px;
+      margin-bottom: 1.46px;
+   }
+
+   .location {
+      margin: 15px 0; 
+   }
 
    .location h2 { 
-      background: -webkit-linear-gradient(45deg, #f7cc59, #ffb901);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #fdb91b;
       font-weight: 800; 
-      text-shadow: none;
       font-size: 1.5rem;
    }
    
-   .location h3.street { color: #e2e2e2; font-weight: 450; }
-   .location h3.zone { font-weight: 550; color: #959fae; font-size: 0.95rem; text-transform: uppercase; }
+   .location h3.street { 
+      color: whitesmoke; 
+      font-weight: 450; 
+   }
+
+   .location h3.zone { 
+      font-weight: 500; 
+      color: #cdcdcd; 
+      font-size: 0.95rem; 
+      text-transform: uppercase; 
+   }
+
+   .player {
+      margin-top: 10px; 
+   }
+
+   .player h2 {
+      color: whitesmoke; 
+      font-weight: 700; 
+   }
    
 </style>
