@@ -1,18 +1,14 @@
+import { waitForEntity } from "../../utils";
 
 
 interface Attachment { 
-   [key: string]: {
-      object: ObjectMp
-      local?: boolean
-   }
+   playerID: number
+   name: string
+   object: ObjectMp
+   local?: boolean
 }
 
-interface Attachments {
-   [key: number]: Attachment
-}
-
-
-let attachments: Attachments = {};
+let attachments: Attachment[] = [];
 
 
 function streamAttachments (entity: EntityMp) {
@@ -52,28 +48,34 @@ function streamOutAttachments (entity: EntityMp) {
 }
 
 
-function createAttachment (player: PlayerMp, name: string, model: string, bone: number | string, offset: Vector3Mp, rotation: Vector3Mp) {
-   if (attachments[player.remoteId][name]) {
+export function createAttachment (player: PlayerMp, name: string, model: string, bone: number | string, offset: Vector3Mp, rotation: Vector3Mp) {
+   if (attachments[player.remoteId] && attachments.find(attachment => attachment.name == name && attachment.playerID == player.remoteId)) {
       return;
    }
 
    const object = mp.objects.new(mp.game.joaat(model), player.position, { dimension: player.dimension } );
 
-   object.attachTo(player.handle,
-      (typeof (bone) === 'string') ? player.getBoneIndexByName(bone) : player.getBoneIndex(bone),
-      offset.x, offset.y, offset.z, 
-      rotation.x, rotation.y, rotation.z, 
-      false, false, false, false, 2, true
-   );
+   waitForEntity(object)?.then(() => {
+      object.attachTo(player.handle,
+         (typeof (bone) === 'string') ? player.getBoneIndexByName(bone) : player.getBoneIndex(bone),
+         offset.x, offset.y, offset.z, 
+         rotation.x, rotation.y, rotation.z, 
+         false, false, false, false, 2, true
+      );
+      
+   })
    
-   attachments[player.remoteId][name] = {
-      object: object, local: false
-   }
+   attachments.push({
+      playerID: player.id,
+      name: name,
+      object: object,
+      local: false
+   })
 }
 
 
-function removeAttachment (player: PlayerMp, name: string) {
-   const attachment = attachments[player.remoteId][name];
+export function removeAttachment (player: PlayerMp, name: string) {
+   const attachment = attachments.find(attachment => attachment.playerID == player.remoteId && attachment.name == name);
 
    if (!attachment) {
       return;
@@ -83,7 +85,8 @@ function removeAttachment (player: PlayerMp, name: string) {
       attachment.object.destroy();
    }
 
-   delete attachments[player.remoteId][name];
+   const index = attachments.indexOf(attachment);
+   attachments.splice(index, 1);
 };
 
 

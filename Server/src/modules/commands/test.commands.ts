@@ -71,48 +71,16 @@ Commands['of2'] = {
 }
 
 
-Commands['firstaid'] = {
-   description: 'Davanje prve pomoći.',
-   params: [
-      cmds.params.PLAYER
-   ],
+Commands['prospect'] = {
+   description: 'test prospect.',
    call (player: PlayerMp, targetSearch: string) {
-      const target = mp.players.find(targetSearch);
-
-      if (!target) { 
-         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-      console.log(2)
-
-
-      if (target.dist(player.position) > 3) {
-         player.notification(Lang.playerNotNear, notifications.type.ERROR, notifications.time.MED);
-         return;
-      }
-      console.log(3)
-
-      const nearest = mp.objects.getClosest(player.position);
-      if (!nearest || nearest!.getVariable(shared_Data.ITEM).name != 'First Aid') {
-         player.notification(Lang.noFirstAidNearby, notifications.type.ERROR, notifications.time.MED)
-         return;
-      }
-      console.log(4)
-
-      if (player.dist(nearest.position) > 2.5) {
-         player.notification(Lang.aidKitMustBeNear, notifications.type.ERROR, notifications.time.MED)
-         return;
-      }
-
-      console.log(5)
-
-      player.setVariable(shared_Data.ANIMATION, animations.paramedic);
-      console.log(6)
-
-      setTimeout(() => {
-         console.log(7)
-         target.character.respawn(target, false);
-         player.stopAnimation();
-      }, 15000);
+      player.call('CLIENT::PROSPECTING_INITIALIZE', [
+         [
+            { item: 'Raw Gold', position: new mp.Vector3(1800.6885986328125, 4534.62255859375, 33.09663) },
+            { item: 'Iron Ingot', position: new mp.Vector3(1787.94189453125, 4533.68896484375, 34.539356) },
+            { item: 'Diamond', position: new mp.Vector3(1789.89306640625, 4522.65478515625, 32.968578) },
+            { item: 'Diamond', position: new mp.Vector3(1796.8463134765625, 4552.44921875, 35.552318) }
+         ]
+      ]);
    }
 }

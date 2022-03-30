@@ -1,7 +1,18 @@
 import { animationFlags } from '../../enums/animations.flags';
 import { entityType } from '../../enums/entity';
 import { animationData } from '../../interfaces/animations';
-import { loadAnimation } from '../../utils';
+
+
+export function loadAnimation (i: string): Promise<boolean> { 
+   if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve(true);
+   return new Promise(async resolve => { 
+      mp.game.streaming.requestAnimDict(i);
+      while (!mp.game.streaming.hasAnimDictLoaded(i)) { 
+         await mp.game.waitAsync(0);
+      }
+      resolve(true);
+   })
+};
 
 
 function stream (entity: EntityMp) { 
@@ -62,8 +73,9 @@ export async function playAnimation (
       return;
    }
 
-   const isReadyToPlay = await loadAnimation(dict);
-   if (!isReadyToPlay) {
+   const isAnimLoaded = await loadAnimation(dict);
+   
+   if (!isAnimLoaded) {
       return;
    }
 
@@ -80,6 +92,17 @@ export async function playAnimation (
    entity.taskPlayAnim(dict, name, 8.0, -1, duration, flag, 0, false, false, false);
 };
 
+
+export function stopAnimation (player: PlayerMp, dictionary: string, name: string) {
+   if (player.isPlayingAnim(dictionary, name, 3)) {
+      player.stopAnim(dictionary, name, 1);
+   }
+}
+
+export function isPlayingAnim (player: PlayerMp, dictionary: string, name: string) {
+   // mp.gui.chat.push('playing ' + name + ' ' + JSON.stringify(mp.game.invoke(RageEnums.Natives.Entity.IS_ENTITY_PLAYING_ANIM, player, dictionary, name, 3)));
+   return player.isPlayingAnim(dictionary, name, 3);
+}
 
 mp.events.addDataHandler('ANIMATION', check);
 mp.events.add('entityStreamIn', stream);

@@ -1,7 +1,7 @@
 import { Browser } from '../../browser';
 import { animationFlags } from '../../enums/animations.flags';
 import controls from '../../enums/controls';
-import { loadAnimation, waitForEntity } from '../../utils';
+import { waitForEntity } from '../../utils';
 import { playAnimation } from '../player/animation';
 import { inventoryActive } from './itemsCore';
 
@@ -89,7 +89,6 @@ const usingPhone = (entity: EntityMp, value: boolean, oldValue: boolean) => {
       playPhoneAnim(target, 'cellphone_text_out');
    } else if (!value && oldValue != false) { 
       cancelPhoneAnim(target);
-      mp.gui.chat.push('Cancelphoneanim')
    }
 
 };

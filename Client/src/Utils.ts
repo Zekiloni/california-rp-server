@@ -139,17 +139,6 @@ export function distanceBetweenVectors (first: Vector3Mp, second: Vector3Mp) {
 }
 
 
-export function loadAnimation (i: string): Promise<boolean> { 
-   if (mp.game.streaming.hasAnimDictLoaded(i)) return Promise.resolve(true);
-   return new Promise(async resolve => { 
-      mp.game.streaming.requestAnimDict(i);
-      while (!mp.game.streaming.hasAnimDictLoaded(i)) { 
-         await mp.game.waitAsync(0);
-      }
-      resolve(true);
-   })
-};
-
 
 export function loadMovementClipset (clipset: string): Promise<boolean> { 
    if (mp.game.streaming.hasClipSetLoaded(clipset)) return Promise.resolve(true);
