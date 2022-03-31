@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, Items, inventories, houses, Accounts, Busines, factions, Characters, vehicles } from '@models';
+import { logs, Items, inventories, houses, Accounts, Busines, Factions, Characters, vehicles } from '@models';
 import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';
@@ -862,7 +862,7 @@ Commands[cmds.names.CREATE_FACTION] = {
          return;
       }
 
-      const faction = await factions.create(
+      const faction = await Factions.create(
          {
             type: type,
             name: factionName,
@@ -887,7 +887,7 @@ Commands[cmds.names.EDIT_FACTION] = {
       cmds.params.FIELD
    ],
    async call (player: PlayerMp, factionID: string, property: string, ...newValue) {
-      factions.findOne( { where: { id: factionID } } ).then(faction => {
+      Factions.findOne( { where: { id: factionID } } ).then(faction => {
          if (!faction) {
             player.notification(Lang.factionNotFound, notifications.type.ERROR, notifications.time.MED);
             return;
@@ -917,7 +917,7 @@ Commands[cmds.names.MAKE_LEADER] = {
       };
 
       if (Number(factionID) == 0) {
-         factions.findOne( { where: { id: target.character.id } } ).then(faction => {
+         Factions.findOne( { where: { id: target.character.id } } ).then(faction => {
             target.character.setFaction(target, none);
    
             if (faction) {
@@ -928,7 +928,7 @@ Commands[cmds.names.MAKE_LEADER] = {
          })
 
       } else {
-         factions.findOne( { where: { id: factionID } } ).then(faction => {
+         Factions.findOne( { where: { id: factionID } } ).then(faction => {
             if (!faction) {
                player.notification(Lang.factionNotFound, notifications.type.ERROR, notifications.time.LONG);
                return;
@@ -945,8 +945,8 @@ Commands[cmds.names.FACTIONS] = {
    description: cmds.descriptions.FACTIONS,
    admin: rank.ADMINISTRATOR_2,
    async call (player: PlayerMp) {
-      factions.findAll().then(factions => {
-         if (factions.length < 1) {
+      Factions.findAll().then(factions => {
+         if (Factions.length < 1) {
             player.sendMessage(Lang.thereIsNoFactionsRn, colors.hex.Info);
             return;
          }

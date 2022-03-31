@@ -1,7 +1,7 @@
 import { FactionConfig } from '@configs';
 import { cmds, colors, itemNames, Lang } from '@constants';
 import { distances, notifications } from '@enums';
-import { factions } from '@models';
+import { Factions } from '@models';
 import { shared_Data } from '@shared';
 import { Commands } from '../commands';
 
@@ -62,7 +62,7 @@ Commands[cmds.names.FACTION_EQUIPMENT] = {
       ] 
    },
    call (player: PlayerMp) {
-      factions.findOne({ where: { id: player.character.faction } } ).then(faction => {
+      Factions.findOne({ where: { id: player.character.faction } } ).then(faction => {
          if (!faction) {
             return;
          }
@@ -91,7 +91,7 @@ Commands[cmds.names.FACTION_GARAGE] = {
       cmds.params.FACTION_GARAGE
    ],
    call (player: PlayerMp, action: string) {
-      factions.findOne({ where: { id: player.character.faction } } ).then(faction => {
+      Factions.findOne({ where: { id: player.character.faction } } ).then(faction => {
          if (!faction) {
             return;
          }
@@ -113,7 +113,7 @@ Commands[cmds.names.FACTION_GOV_REPAIR] = {
    },
    vehicle: true,
    call (player: PlayerMp) {
-      factions.findOne( { where: { id: player.character.id } } ).then(faction => {
+      Factions.findOne( { where: { id: player.character.id } } ).then(faction => {
          if (!faction) {
             return;
          }
@@ -135,7 +135,7 @@ Commands[cmds.names.FACTION_LIVERY] = {
    },
    vehicle: true,
    call (player: PlayerMp, livery: string) {
-      factions.findOne( { where: { id: player.character.id } } ).then(faction => {
+      Factions.findOne( { where: { id: player.character.id } } ).then(faction => {
          if (!faction) {
             return;
          }

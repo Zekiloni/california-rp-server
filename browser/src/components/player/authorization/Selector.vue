@@ -13,7 +13,7 @@
                   <h1> #{{ character(i).id }} </h1>
                   <h2> {{ character(i).name.split(' ')[0] }} </h2>
                   <h3> {{ character(i).name.split(' ')[1] }} </h3>
-                  <h4> Igrač </h4>
+                  <h4> {{ getRank(account.administrator) }} </h4>
                </div>
             </div>
             
@@ -106,10 +106,6 @@
       background: #302f36;
    }
 
-   .character:hover .main h2, .character:hover .main h4 {
-      color: #cdcdcd;
-   }
-
    .character .main h1 {
       margin: 0;
       font-weight: 400;
@@ -124,6 +120,11 @@
       text-transform: capitalize;
       transition: all .25s ease;
       font-weight: 500;
+   }
+
+   .character .main h4 {
+      font-weight: 400;
+      color: rgb(141, 141, 141);
    }
 
    .character .main h3 { 

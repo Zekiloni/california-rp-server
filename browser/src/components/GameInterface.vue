@@ -182,8 +182,6 @@
 
    .date-time { 
       margin: 15px 0; 
-      display: flex;
-      align-items: flex-end;
    }
 
    .date-time h2 { 
@@ -195,8 +193,6 @@
       font-weight: 500; 
       color: #a6a5a3; 
       font-size: 0.95rem; 
-      margin-left: 5px;
-      margin-bottom: 1.46px;
    }
 
    .location {
@@ -204,7 +200,7 @@
    }
 
    .location h2 { 
-      color: #fdb91b;
+      color: #fcb91f;
       font-weight: 800; 
       font-size: 1.5rem;
    }

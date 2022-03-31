@@ -1,5 +1,5 @@
 import { Table, Column, PrimaryKey, AutoIncrement, Model, Unique, ForeignKey, BelongsTo, DataType, CreatedAt, UpdatedAt, Max, Min } from 'sequelize-typescript';
-import { Characters, factions } from '@models';
+import { Characters, Factions } from '@models';
 import { FactionsPermissions, notifications } from '@enums';
 import { Lang, none } from '@constants';
 
@@ -7,19 +7,19 @@ import { Lang, none } from '@constants';
 @Table({
    tableName: 'factions_ranks'
 })
-export class factionsRanks extends Model {
+export class FactionsRanks extends Model {
 
    @PrimaryKey
    @AutoIncrement
    @Column(DataType.INTEGER)
    id: number
 
-   @ForeignKey(() => factions)
+   @ForeignKey(() => Factions)
    @Column
    faction_id: number
 
-   @BelongsTo(() => factions)
-   faction: factions
+   @BelongsTo(() => Factions)
+   faction: Factions
 
    @Unique(true)
    @Column(DataType.STRING)
@@ -54,7 +54,7 @@ export class factionsRanks extends Model {
    }
 
    delete (player: PlayerMp) {
-      factionsRanks.findOne( { where: { id: player.character.rank } } ).then(rank => {
+      FactionsRanks.findOne( { where: { id: player.character.rank } } ).then(rank => {
          if (!rank?.permissions.includes(FactionsPermissions.UPDATE_RANK)) {
             // PORUKA: Nemas permisiju
             return;
@@ -75,7 +75,7 @@ export class factionsRanks extends Model {
 
 
 const deleteRank = (player: PlayerMp, rankID: number) => {
-   return factionsRanks.findOne( { where: { id: rankID } } ).then(rank => {
+   return FactionsRanks.findOne( { where: { id: rankID } } ).then(rank => {
       if (!rank) {
          return;
       }
@@ -88,7 +88,7 @@ const deleteRank = (player: PlayerMp, rankID: number) => {
 
 
 const updateRank = (player: PlayerMp, rankID: number, name: string, description: string, salary: number) => {
-   return factionsRanks.findOne( { where: { id: rankID }}).then(async rank => {
+   return FactionsRanks.findOne( { where: { id: rankID }}).then(async rank => {
       if (!rank) {
          return;
       }

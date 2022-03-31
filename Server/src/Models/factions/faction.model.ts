@@ -4,12 +4,14 @@ import { EconomyConfig, FactionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
 import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
-import { Characters, factionsRanks, logs } from '@models';
+import { Characters, FactionsRanks, logs } from '@models';
 import { checkForDot, formatCommand, shared_Data } from '@shared';
 
 
-@Table
-export class factions extends Model {
+@Table({
+   tableName: 'factions'
+})
+export class Factions extends Model {
 
    static objects = new Map<number, factionPoints>()
 
@@ -62,8 +64,8 @@ export class factions extends Model {
    )   
    equipment_point: Vector3Mp
 
-   @HasMany(() => factionsRanks)
-   ranks: factionsRanks[]
+   @HasMany(() => FactionsRanks)
+   ranks: FactionsRanks[]
 
    @CreatedAt
    created_at: Date
@@ -71,30 +73,41 @@ export class factions extends Model {
    @UpdatedAt
    updated_at: Date
 
+   members: Characters[]
+
    get object (): factionPoints | never { 
-      return factions.objects.get(this.id)!;
+      return Factions.objects.get(this.id)!;
    }
 
    set object (object: factionPoints) { 
-      factions.objects.set(this.id, object);
+      Factions.objects.set(this.id, object);
    }
 
+   get allMembers () {
+      return Characters.findAll( { where: { faction: this.id } }).then(
+         memers => memers
+      );
+   }
+
+   get onlineMembers () {
+      return mp.players.toArray().filter(player => player.character.faction);
+   }
 
    @AfterSync
    static async loading () {
-      factions.findAll().then(factions => {
+      Factions.findAll().then(factions => {
          
-         logs.info(factions.length + ' factions loaded !');
+         logs.info(Factions.length + ' factions loaded !');
       });
    }
 
    @AfterCreate
-   static creating (faction: factions) {
+   static creating (faction: Factions) {
       faction.refresh();
    }
 
    @AfterDestroy
-   static destroying (faction: factions) {
+   static destroying (faction: Factions) {
 
    }
 
@@ -140,7 +153,6 @@ export class factions extends Model {
       this.points();
    }
    
-
    async leave (player: PlayerMp) {
       player.character.setFaction(player, none, none);
 
@@ -246,7 +258,7 @@ export class factions extends Model {
    
 
   async rank (player: PlayerMp, target: PlayerMp, rankName: string) {
-      const rank = await factionsRanks.findOne( { where: { faction_id: this.id, name: rankName } } );
+      const rank = await FactionsRanks.findOne( { where: { faction_id: this.id, name: rankName } } );
 
       if (!rank) {
          player.notification(Lang.rankDoesntExist, notifications.type.ERROR, notifications.time.MED);
@@ -261,7 +273,7 @@ export class factions extends Model {
    }
 
    async chat (player: PlayerMp, message: string) { 
-      const rank = await factionsRanks.findOne( { where: { id: player.character.rank } } );
+      const rank = await FactionsRanks.findOne( { where: { id: player.character.rank } } );
       
       mp.players.forEach(target => {
          if (target.character.faction == this.id) {
@@ -285,7 +297,7 @@ export class factions extends Model {
          if (player.character.faction == none) {
             player.call('CLIENT::FACTION:POINTS', [null]);
          } else {
-            factions.findOne( { where: { id: player.character.id } } ).then(faction => {
+            Factions.findOne( { where: { id: player.character.id } } ).then(faction => {
    
                player.call('CLIENT::FACTION:POINTS', [factionPoints]);
             });
@@ -297,13 +309,6 @@ export class factions extends Model {
             member.call('CLIENT::FACTION:POINTS', [factionPoints]);
          })
       }
-   }
-
-   static info (player: PlayerMp) {
-      return factions.findOne( { where: { id: player.character.faction }, include: [factionsRanks] } ).then(async faction => {
-         const members = await Characters.findAll( { where: { faction: player.character.faction } } );
-         return [ faction, members ];
-      })
    }
    
    isFactionVehicle (vehicle: VehicleMp) {
@@ -374,7 +379,7 @@ export class factions extends Model {
 
 
 const kickMember = (player: PlayerMp, targetCharacterID: number) => {
-   return factions.findOne( { where: { id: player.character.faction } } ).then(async faction => {
+   return Factions.findOne( { where: { id: player.character.faction } } ).then(async faction => {
       if (!faction) {
          return;
       }
@@ -403,7 +408,7 @@ const kickMember = (player: PlayerMp, targetCharacterID: number) => {
 
 
 const updateMemberRank = (player: PlayerMp, targetCharacterID: number, rankName: string) => {
-   return factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+   return Factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
       if (!faction) {
          return;
       }
@@ -419,6 +424,5 @@ const updateMemberRank = (player: PlayerMp, targetCharacterID: number, rankName:
 };
 
 
-mp.events.addProc('SERVER::FACTION:INFO', factions.info);
 mp.events.addProc('SERVER::FACTION:KICK_MEMBER', kickMember);
 mp.events.addProc('SERVER::FACTION:RANKUP_MEMBER', updateMemberRank);

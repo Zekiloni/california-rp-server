@@ -3,6 +3,8 @@ import App from './app.vue';
 import router from './router';
 import store from './store';
 import VTooltip from 'v-tooltip'
+import { Ranks } from './globals';
+
 
 
 Vue.config.productionTip = false;
@@ -26,6 +28,10 @@ Vue.mixin({
 
       onSale (property: any) { 
          return property.owner == null || property.owner == 0 ? true : false;
+      },
+
+      getRank (i: number) {
+         return Ranks[i];
       },
 
       truncate (str: string, n: number) { 

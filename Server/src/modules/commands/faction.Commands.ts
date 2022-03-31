@@ -1,6 +1,6 @@
 import { cmds, Lang } from '@constants';
 import { FactionsPermissions, notifications } from '@enums';
-import { factions } from '@models';
+import { Factions } from '@models';
 import { Commands } from '../commands';
 
 
@@ -14,7 +14,7 @@ Commands[cmds.names.FACTION_CHAT] = {
          return;
       };
 
-      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+      Factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
          if (!faction) {
             return;
          }
@@ -29,7 +29,15 @@ Commands[cmds.names.FACTION_PANEL] = {
    description: cmds.descriptions.FACTION_PANEL,
    faction: { required: true },
    call (player: PlayerMp) {
-      player.call('CLIENT::FACTION:PANEL');
+      player.character.getFaction().then(async faction => {
+         const members = await faction?.allMembers;
+         faction!.members = members!;
+         
+
+         faction?.members.forEach(member => console.log(member.name));
+         
+         player.call('CLIENT::FACTION:PANEL', [faction]);
+      });
    }
 };
 
@@ -55,7 +63,7 @@ Commands[cmds.names.FACTION_INVITE] = {
          return;
       }
 
-      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+      Factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
          if (!faction) {
             return;
          }
@@ -83,7 +91,7 @@ Commands[cmds.names.FACTION_KICK] = {
          return;
       }
 
-      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+      Factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
          if (!faction) {
             return;
          }
@@ -98,7 +106,7 @@ Commands[cmds.names.FACTION_LEAVE] = {
    description: cmds.descriptions.FACTION_LEAVE,
    faction: { required: true },
    call (player: PlayerMp) {
-      factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
+      Factions.findOne( { where: { id: player.character.faction } } ).then(faction => {
          if (!faction) {
             return;
          }

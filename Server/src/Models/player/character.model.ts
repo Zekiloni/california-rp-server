@@ -9,7 +9,7 @@ import {
 import { 
    Accounts, appearances, banks, houses,
    Busines, inventories, logs, objects, 
-   vehicles, factions, factionsRanks,
+   vehicles, Factions, FactionsRanks,
    MoneyLogs
 } from '@models';
 
@@ -67,9 +67,8 @@ export class Characters extends Model {
    @Column
    paycheck: number
 
-   @Default(none)
-   @Column
-   faction: number;
+   @Column(DataType.INTEGER)
+   faction: number
 
    @Default(null)
    @Column(DataType.INTEGER)
@@ -225,7 +224,7 @@ export class Characters extends Model {
       // faction
       player.setVariable(shared_Data.FACTION, this.faction);
       if (this.faction != none) {
-         factions.findOne( { where: { id: this.faction } } ).then(faction => {
+         Factions.findOne( { where: { id: this.faction } } ).then(faction => {
             if (!faction) {
                return;
             }
@@ -247,7 +246,6 @@ export class Characters extends Model {
       player.setVariable('Attachment', null);
       player.setVariable('Phone_Ringing', false);
       player.setVariable('Ragdoll', false);
-      
 
       player.notification(Lang.welcomeToServer, notifications.type.INFO, 4);
 
@@ -327,6 +325,9 @@ export class Characters extends Model {
       player.setVariable(shared_Data.MONEY, money + value);
    };
 
+   getFaction () {
+      return Factions.findOne( { where: { id: this.faction } });
+   }
 
    pay (player: PlayerMp, target: PlayerMp, value: number) {
       if (player.dist(target.position) > 2 || player.dimension != target.dimension) {
@@ -370,6 +371,7 @@ export class Characters extends Model {
       }
       
       player.setVariable(shared_Data.FACTION, factionID);
+      await this.save();
    }
 
    async setWalkingStyle (player: PlayerMp, style: keyof typeof WalkingStyles) {
@@ -552,8 +554,8 @@ export class Characters extends Model {
    static async panel (player: PlayerMp) {
       return [
          player,
-         await factions.findOne( { where: { id: player.character.faction } } ),
-         await factionsRanks.findOne( { where: { id: player.character.rank } } ),
+         await Factions.findOne( { where: { id: player.character.faction } } ),
+         await FactionsRanks.findOne( { where: { id: player.character.rank } } ),
          WalkingStyles, 
          FacialMoods,
          admins.reports.get(player.character.id)

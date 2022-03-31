@@ -1,31 +1,33 @@
 
 <template>
-   
    <div class="faction-panel">
-      <div class="panel" v-if="faction">
-         <div class="header">
-            <div class="title">
-               <h4> {{ Messages.FACTION_PANEL }} </h4>
-               <h2> {{ faction.name }} </h2>
-            </div>
-         </div>
+      <div class="panel" >
+         <div class="page">
+            <h3> {{ title }} </h3>
 
-         <div class="box">
-            <ul class="navigation">
-               <li v-for="(page, i) in pages" :key="page" :class="{ active: activePage == i }" @click="activePage = i"> {{ page }} </li>
-               <li @click="exit"> exit </li> 
-            </ul>
-            <div class="page">
-               <transition name="fade" mode="out-in">
-                  <FactionOverview v-if="activePage == 0" :faction="faction" key=FactionOverview />
-                  <FactionMembers v-if="activePage == 1" :members="members" :ranks="faction.ranks"  key=FactionMembers />
-                  <FactionRanks v-if="activePage == 2" :ranks="faction.ranks" key=FactionRanks />
+            <div class="holder">
+               <transition name="swipe"> 
+                  <faction-overview :faction="faction" key=faction-overview v-if="activePage == 0" />
+                  
+                  <faction-members :members="faction.members" key=faction-members v-if="activePage == 1" />
                </transition>
             </div>
          </div>
+
+         <div class="menu">
+            <div class="faction">
+               <h2> {{ faction.name }} </h2>
+               <p> {{ faction.description ? truncate(faction.description, 20) : Messages.NO_DESCRIPTION }} </p>
+            </div>
+            <nav>
+               <button v-for="(page, i) in pages" :key="page" @click="activePage = i" :class="{ active: activePage == i }">
+                  {{ page }}
+               </button>
+            </nav>
+         </div>
+
       </div>
    </div>
-
 </template>
 
 <script lang="ts">
@@ -56,6 +58,7 @@
       created_at: Date
       budget: number
       ranks: Rank[] | null
+      members: Member[]
    }
 
    interface Member { 
@@ -72,14 +75,28 @@
    })
    export default class FactionPanel extends Vue {
       
-      pages = ['overview', 'members', 'ranks', 'equipment']
+      pages = [Messages.OVERWIEV, Messages.MEMBERS, Messages.FACTION_RANKS, Messages.EQUIPMENT]
 
       activePage: number = 0;
 
-      faction: Faction | null = null;
-      members: Member[] | null = null;
+      faction: Faction | null = {
+         id: 1,
+         leader: 0,
+         type: 0,
+         created_at: new Date(),
+         budget: 30000,
+         ranks: [],
+         members: [],
+         name: 'Los Santos Police Department',
+         description: 'Policija muharemova sve kerovi av ava v',
+         
+      };
 
       Messages = Messages;
+
+      get title () {
+         return this.pages[this.activePage];
+      }
 
       exit () {
          mp.events.call('CLIENT::FACTION:PANEL')
@@ -87,11 +104,7 @@
 
       mounted () {
          if (window.mp) {
-            mp.events.add('BROWSER::FACTION:INFO', (info: string) => {
-               const [faction, members] = JSON.parse(info);
-               this.faction = faction;
-               this.members = members;
-            });
+            mp.events.add('BROWSER::FACTION:INFO', (info: string) => this.faction = JSON.parse(info));
          }
       }
    }
@@ -100,84 +113,100 @@
 <style scoped>
 
    .faction-panel { 
+      background: linear-gradient(0deg, #1a191e, transparent);
       position: absolute;
       top: 0;
       z-index: 100;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(rgb(71 77 87 / 65%), rgb(11 14 17 / 85%));
       display: grid;
    }
 
    .panel {
+      position: relative;
       width: auto;
-      min-width: 900px;
+      height: 600px;
       margin: auto;
    }
+   
+   .page {
+      width: 100%;
+      min-height: 480px;
+      background: #100f14;
+      border-radius: 10px;
+      overflow: hidden;
+   }
 
-   .header {
-      width: auto;
-      margin: 15px 0;
+   .menu {
+      margin-top: 10px;
+      background: #16151A;
+      border-radius: 5px;
       display: flex;
+      overflow: hidden;
+      justify-content: space-between;
       align-items: center;
    }
 
-   .box {
-      background: linear-gradient(120deg, rgb(11 14 17 / 55%), transparent);
-      border-radius: 5px;
-      transition: all .3s ease;
-      min-height: 500px;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
+   .menu .faction {
+      padding: 15px;
+      background: #1e1d24;
    }
 
-   .header h2 { 
-      position: relative;
-      font-size: 2.6rem;
-      font-weight: 350;
-      font-family: 'Montserrat Regular', sans-serif;
+   .menu .faction h2 {
+      margin: 0;
+      font-size: 1rem;
+      color: whitesmoke;
+   }
+
+   .menu .faction p {
+      padding: 0;
+      color: grey;
+      margin: 5px 0;
+   }
+
+   .menu nav {
+      width: 100%; 
+      min-height: 20px;
+      display: flex;
+      justify-content: space-around;
+   }
+
+   nav button {
+      padding: 10px 15px;
+      background: transparent;
+      font-size: 0.8rem;
+      border: 1px dashed #232127;
+      border-radius: 5px;
+      color: grey;
+      text-transform: capitalize;
+      transition: all .3s ease;
+   }
+
+   nav button:hover {
+      color: whitesmoke;
+      background: rgb(41 39 50 / 31%);
+      border-color: #3e3b46;
+   }
+
+   nav button.active {
+      color: #FFC940;
+      border-color: #3e3b46;
+   }
+
+   .page h3 {
+      padding: 20px;
+      text-transform: capitalize;
+      font-size: 1.35rem;
       margin: 0;
       color: whitesmoke;
    }
 
-   .header h4 {
-      font-size: 1.45rem;
-      font-weight: 550;
-      font-family: 'Montserrat Light', sans-serif;
-      letter-spacing: 0.6rem;
-      margin: 0;
-      text-transform: uppercase;
-      color: #848e9c;
+   .page .holder {
+      padding: 20px;
+      margin-top: 15px;
+      max-height: 300px;
    }
 
-   ul.navigation { 
-      list-style: none;
-      width: 205px;
-      padding: 0;
-   }
-
-   ul.navigation li { 
-      text-align: center;
-      margin: 0;
-      margin-bottom: 10px;
-      background: rgb(255 255 255 / 5%);
-      backdrop-filter: brightness(1.1);
-      padding: 15px 0;
-      color: #cdcdcd;
-      transition: all .3s ease;
-      text-transform: capitalize;
-      border: 1px solid transparent;
-      border-radius: 5px;
-   }
-
-   ul.navigation li:hover, ul.navigation li.active {
-      border-color: rgb(205 205 205 / 45%);
-      backdrop-filter: brightness(1.8);
-      box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
-   }
-
-   .page { display: grid; padding: 20px; width: 650px; }
    
 </style>

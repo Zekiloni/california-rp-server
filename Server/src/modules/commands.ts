@@ -3,7 +3,7 @@ import { shared_Data } from '@shared';
 import { commands } from '@interfaces';
 import { colors, Lang, none } from '@constants';
 import { ItemEnums, notifications } from '@enums';
-import { factions, inventories, factionsRanks } from '@models';
+import { Factions, inventories, FactionsRanks } from '@models';
 
 
 export let Commands: commands = {};
@@ -44,13 +44,13 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       } 
 
       if (command.faction) {
-         if (command.faction.required && character.faction == none) {
+         if (command.faction.required && !character.faction) {
             player.notification(Lang.notInAnyFaction, notifications.type.ERROR, notifications.time.SHORT);
             return;
          }
 
-         const faction = await factions.findOne( { where: { id: character.faction } } );
-         const rank = await factionsRanks.findOne( { where: { id: player.character.rank } } );
+         const faction = await Factions.findOne( { where: { id: character.faction } } );
+         const rank = await FactionsRanks.findOne( { where: { id: player.character.rank } } );
 
          if (command.faction.permission) {
             if (!rank?.permissions.includes(command.faction.permission) && faction?.leader != player.character.id) {

@@ -4,14 +4,12 @@ import { Browser } from '../../browser';
 let factionPanel: boolean = false;
 
 
-const toggleFaction = async () => {
+const toggleFaction = async (info?: object) => {
    factionPanel = !factionPanel;
    Browser.call(factionPanel  ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'factionPanel');
    
-
-   if (factionPanel) {
-      const faction = await mp.events.callRemoteProc('SERVER::FACTION:INFO');
-      Browser.call('BROWSER::FACTION:INFO', faction);;
+   if (factionPanel && info) {
+      Browser.call('BROWSER::FACTION:INFO', info);;
    }
 };
 

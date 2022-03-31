@@ -146,7 +146,12 @@ export const Messages = {
    
 
    // faction menu
-   FACTION_RANKS: 'Rankovi fakcije',
+   NO_DESCRIPTION: 'Nema opis.',
+   OVERWIEV: 'Pregled',
+   MEMBERS: 'Članovi',
+   EQUIPMENT: 'Oprema',
+   FACTION_RANKS: 'Rankovi',
+   FACTION_DESCRIPTION: 'Opis fakcije',
    FACTION_RANK_NAME: 'Ime ranka',
    FACTION_RANK_DESCRIPTION: 'Opis ranka',
    FACTION_RANK_PERMISSIONS: 'Permisije',
