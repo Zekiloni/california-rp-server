@@ -10,8 +10,10 @@
          <div class="holder" v-for="i in characters" :key="'character' + i">
             <div class="character" v-if="character(i)" @click="select(character(i).id)"> 
                <div class="main">
+                  <h1> #{{ character(i).id }} </h1>
                   <h2> {{ character(i).name.split(' ')[0] }} </h2>
-                  <h4> {{ character(i).name.split(' ')[1] }} </h4>
+                  <h3> {{ character(i).name.split(' ')[1] }} </h3>
+                  <h4> Igrač </h4>
                </div>
             </div>
             
@@ -60,7 +62,9 @@
 
 <style scoped>
    .selector { 
-      margin: auto
+      margin: auto;
+      background: #16151A;
+      border-radius: 10px;
    }
 
    .header {
@@ -74,6 +78,7 @@
    .characters { 
       width: 755px;
       height: 400px;
+      padding: 20px;
       display: flex;
       justify-content: space-between;
       align-content: center;
@@ -83,7 +88,8 @@
 
 
    .characters .holder .character {
-      background: #232228;
+      background: #18171d;
+      position: relative;
       height: 100%;
       width: 225px;
       transition: all .3s ease;
@@ -91,7 +97,8 @@
    }
 
    .character .main {
-     
+      position: absolute;
+      bottom: 0;
       padding: 10px 15px;
    }
 
@@ -103,17 +110,26 @@
       color: #cdcdcd;
    }
 
+   .character .main h1 {
+      margin: 0;
+      font-weight: 400;
+      font-size: 1rem;
+      color: #cdcdcd;
+   }
+
    .character .main h2 {
       margin: 0;
       color: #e9e7e7;
       font-size: 2rem;
       text-transform: capitalize;
       transition: all .25s ease;
+      font-weight: 500;
    }
 
-   .character .main h4 { 
-      font-size: 1rem;
-      color: grey;
+   .character .main h3 { 
+      font-size: 1.8rem;
+      color: #cdcdcd;
+      font-weight: 500;
       text-transform: capitalize;
       transition: all .25s ease;
    }
@@ -122,15 +138,16 @@
       width: 225px;
       height: 100%;
       border-radius: 10px;
-      background: #17171b;
+      background: rgb(18, 17, 22);
       display: grid;
       font-size: 10rem;
       transition: all .25s ease;
-      color: #1d1d22;
+      color: #18171d;
    }
 
    .create:hover { 
       background: #1a191e;
+      color: #302f36;
    }
 
    .create h4 { 

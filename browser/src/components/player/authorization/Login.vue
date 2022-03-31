@@ -1,11 +1,11 @@
 
 
 <template>
-   <div class="wrapper">      
-      <img class="logo" src="@/assets/images/logo.png" />
-
       <div class="login">
-         <h2> Autorizacija </h2>
+         <img class="logo" src="@/assets/images/text-logo.png" />
+         
+         <h4> {{ Messages.NEED_TO_LOGIN }} </h4>
+
          <div class="inputs">
             <input type="text" v-model="username" :placeholder="Messages.USERNAME" spellcheck="false" autofocus>
             <input type="password" v-model="password" :placeholder="Messages.PASSWORD" spellcheck="false">
@@ -13,7 +13,6 @@
 
          <div class="play" :class="{ disabled: !username || !password }" @click="submit"> {{ Messages.PLAY }} </div>
       </div>
-   </div>
 </template>
 
 <script lang="ts">
@@ -39,46 +38,41 @@
 </script>
 
 <style scoped>
-   .wrapper { 
-      max-width: 450px;
-      height: 100%;
-      margin: auto;
-      color: white;
-      display: grid;
-   }
-
-    img.logo {
-      margin: auto;
-      width: 110px;
-   }
 
    .login {
       background: #16151A;
-      width: 100%;
-      margin-top: 40px;
-      height: auto;
-      max-height: 175px;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
+      width: 350px;
+      height: 350px;
+      margin: auto;
+      border-radius: 5px;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      flex-wrap: wrap;
+      justify-content: center;
    }
    
-   .login h2 { 
+   img.logo {
+      width: 180px;
+   }
+
+   .login h4 { 
       width: 100%;
-      margin: 0;
-      color: #dddddd;
+      text-align: center;
+      margin: 20px 0;
+      font-weight: 400;
+      color: #b8bbbb;
    }
 
    .inputs input {
-      margin: 15px 0;
-      padding: 15px 15px;
-      display: block;   
+      margin: 10px auto;
+      padding: 15px 25px;
+      display: block;
       background: #201f25;
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      text-align: center;
+      width: 200px;
       font-weight: 400;
       color: #9A9A9A;
       border: 1px solid transparent;
@@ -96,6 +90,7 @@
       font-weight: 700;
       font-size: 1rem;
       background: #fdb81b;
+      margin-top: 10px;
       color: #151418;
       border-radius: 10px;
       display: block;

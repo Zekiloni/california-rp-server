@@ -131,7 +131,9 @@
       height: 100%; 
       position: absolute; 
       transition: all .3s ease;
-      /* background: url('https://www.inversegamer.com/wp-content/uploads/2020/11/principe-deveste-eight-gta-v.jpg'); */
+      /* background: url('https://i.imgur.com/XUJTwKm.png');
+      background-position: center;
+      background-repeat: no-repeat; */
    }
 
    .server { 
@@ -143,10 +145,11 @@
       flex-direction: column;
       justify-content: flex-start;
       text-align: right;
+      text-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
    }
 
    .server img {
-      width: 150px;
+      width: 125px;
       margin-right: -2.5px;
       margin-bottom: 10px;
    }
@@ -155,12 +158,11 @@
       font-size: 0.95rem;
       font-weight: 500;
       margin: 3px 0;
-      color: #cdcdcd;
-      text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+      color: #fefefe;
    }
 
    .server h4.id {
-      color: #b4b4b4;
+      color: #a6a5a3;
       text-transform: uppercase;
    }
 
@@ -175,7 +177,7 @@
       left: 340px; 
       width: 300px; 
       height: auto;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      text-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
    }
 
    .date-time { 
@@ -185,13 +187,13 @@
    }
 
    .date-time h2 { 
-      color: whitesmoke; 
+      color: #fefefe; 
       font-weight: 450; 
    }
 
    .date-time h3 { 
       font-weight: 500; 
-      color: #cdcdcd; 
+      color: #a6a5a3; 
       font-size: 0.95rem; 
       margin-left: 5px;
       margin-bottom: 1.46px;
@@ -208,15 +210,15 @@
    }
    
    .location h3.street { 
-      color: whitesmoke; 
+      color: #fefefe; 
       font-weight: 450; 
    }
 
    .location h3.zone { 
       font-weight: 500; 
-      color: #cdcdcd; 
+      color: #a6a5a3; 
       font-size: 0.95rem; 
-      text-transform: uppercase; 
+      text-transform: capitalize; 
    }
 
    .player {
@@ -224,7 +226,7 @@
    }
 
    .player h2 {
-      color: whitesmoke; 
+      color: #fefefe; 
       font-weight: 700; 
    }
    
