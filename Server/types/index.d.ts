@@ -1,5 +1,5 @@
 
-import { Accounts, Characters, vehicles } from '@models';
+import { Accounts, Characters, vehicles } from 'src/vehicles';
 
 
 declare global { 

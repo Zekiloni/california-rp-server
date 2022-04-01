@@ -57,8 +57,8 @@
       "@interfaces/*": ["src/interfaces/*"],
       "@interfaces": ["src/interfaces/index"],
 
-      "@models/*": ["src/models/*"],
-      "@models": ["src/models/index"],
+      "@models/*": ["src/vehicles/*"],
+      "@models": ["src/vehicles/index"],
 
       "@modules/*": ["src/modules/*"],
       "@modules": ["src/modules/index"],

@@ -4,7 +4,7 @@ import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column,
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
-import { Items, logs, Characters } from '@models';
+import { Items, logs, Characters } from 'src/vehicles';
 import { itemNames, Lang, none } from '@constants';
 import { playerConfig } from '@configs';
 

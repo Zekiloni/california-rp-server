@@ -5,7 +5,7 @@ import {
 } from 'sequelize-typescript';
 
 import { cmds } from '@constants';
-import { houses, logs } from '@models';
+import { houses, logs } from 'src/vehicles';
 
 
 export class objects extends Model {

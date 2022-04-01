@@ -3,7 +3,7 @@
 import rp from 'request-promise';
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, UpdatedAt } from 'sequelize-typescript';
-import { Accounts, Characters } from '@models';
+import { Accounts, Characters } from 'src/vehicles';
 import { timeDate } from '@shared';
 import { logging } from '@enums';
 import { ServerConfig } from '@configs';

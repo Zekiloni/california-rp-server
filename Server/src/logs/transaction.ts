@@ -2,7 +2,7 @@
 import { Table, Model, Column, PrimaryKey, AutoIncrement, Default, ForeignKey, BelongsTo, DataType, AllowNull } from 'sequelize-typescript';
 import rp from 'request-promise';
 
-import { logs, banks } from '@models';
+import { logs, banks } from 'src/vehicles';
 import { cmds, colors, none } from '@constants';
 import { formatCommand } from '@shared';
 import { ServerConfig } from '@configs';

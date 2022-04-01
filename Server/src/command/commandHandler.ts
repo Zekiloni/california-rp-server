@@ -3,7 +3,7 @@ import { shared_Data } from '@shared';
 import { commands } from '@interfaces';
 import { colors, Lang, none } from '@constants';
 import { ItemEnums, notifications } from '@enums';
-import { Factions, inventories, FactionsRanks } from '@models';
+import { Factions, inventories, FactionsRanks } from 'src/vehicles';
 
 
 export let Commands: commands = {};

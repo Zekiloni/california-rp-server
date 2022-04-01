@@ -1,7 +1,7 @@
 import { FactionConfig } from '@configs';
 import { cmds, colors, itemNames, Lang } from '@constants';
 import { distances, notifications } from '@enums';
-import { Factions } from '@models';
+import { Factions } from 'src/vehicles';
 import { shared_Data } from '@shared';
 import { Commands } from '../commandHandler';
 

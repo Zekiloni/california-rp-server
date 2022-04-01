@@ -1,5 +1,5 @@
 import { AutoIncrement, BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
-import { Accounts } from '@models';
+import { Accounts } from 'src/vehicles';
 import { CharacterGender } from '@enums';
 
 

@@ -1,6 +1,6 @@
 import { Items } from '../item';
 import { animations, playerConfig } from '@configs';
-import { inventories } from '@models';
+import { inventories } from 'src/vehicles';
 import { ItemEnums, notifications } from '@enums';
 import { Lang } from '@constants';
 

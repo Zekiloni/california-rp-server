@@ -1,5 +1,5 @@
 import { api } from './index';
-import { houses, Busines } from '@models';
+import { houses, Busines } from 'src/vehicles';
 
 
 interface IMapPoints {

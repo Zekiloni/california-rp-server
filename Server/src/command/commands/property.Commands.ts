@@ -1,6 +1,6 @@
 import { cmds, Lang } from '@constants';
 import { notifications } from '@enums';
-import { Busines } from "@models";
+import { Busines } from "src/vehicles";
 import { Commands } from '../commandHandler';
 
 

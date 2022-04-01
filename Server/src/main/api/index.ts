@@ -4,7 +4,7 @@
 import express from 'express';
 import cors from 'cors';
 import { ServerConfig } from '@configs';
-import { logs } from '@models';
+import { logs } from 'src/vehicles';
 import { Lang } from '@constants';
 
 

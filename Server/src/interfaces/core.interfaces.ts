@@ -1,5 +1,5 @@
 import { FactionsPermissions } from '@enums';
-import { Factions, Jobs } from '@models';
+import { Factions, Jobs } from 'src/vehicles';
 
 
 export interface interactionPoint {

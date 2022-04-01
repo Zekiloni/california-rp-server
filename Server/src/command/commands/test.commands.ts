@@ -3,7 +3,7 @@ import { Lang, cmds } from "@constants";
 import { notifications } from "@enums";
 import { Commands } from "../commandHandler";
 import { shared_Data } from "@shared";
-import { Items } from "@models";
+import { Items } from "src/vehicles";
 
 
 Commands['uniform'] = {

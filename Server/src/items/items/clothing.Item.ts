@@ -1,7 +1,7 @@
 
 
 import { Items } from '../item';
-import { inventories  } from '@models';
+import { inventories  } from 'src/vehicles';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 

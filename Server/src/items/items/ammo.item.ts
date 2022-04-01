@@ -1,7 +1,7 @@
 
 
 import { Items } from '../item';
-import { inventories, logs} from '@models';
+import { inventories, logs} from 'src/vehicles';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
 import weaponData from '../../configs/weapon.data.json';

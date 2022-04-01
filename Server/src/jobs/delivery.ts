@@ -1,4 +1,4 @@
-import { Jobs } from '@models';
+import { Jobs } from 'src/vehicles';
 
 
 

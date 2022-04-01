@@ -14,7 +14,7 @@ import './main/minute';
 import './main/jobs';
 
 import { sleep } from '@shared';
-import { logs } from'@models';
+import { logs } from'src/vehicles';
 import { Lang } from '@constants';
 
 

@@ -2,7 +2,7 @@
 import weaponData from '../configs/weapon.data.json';
 import { itemNames } from '@constants';
 import { ItemEnums } from '@enums';
-import { Items, inventories, logs } from '@models';
+import { Items, inventories, logs } from 'src/vehicles';
 
 
 mp.events.addProc(

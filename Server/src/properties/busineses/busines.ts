@@ -2,7 +2,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { CartItem, interactionPoint } from '@interfaces';
 import { cmds, gDimension, Lang, none } from '@constants';
-import { Characters, logs, Products, Workers, inventories, Items, vehicles } from '@models';
+import { Characters, logs, Products, Workers, inventories, Items, vehicles } from 'src/vehicles';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';

@@ -1,4 +1,4 @@
-import { logs, Bans, Characters, Accounts, inventories, appearances, banks, Items, houses, Busines, vehicles, transactions } from '@models';
+import { logs, Bans, Characters, Accounts, inventories, appearances, banks, Items, houses, Busines, vehicles, transactions } from 'src/vehicles';
 import { playerConfig, ServerConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, Lang, none } from '@constants';
@@ -341,3 +341,18 @@ mp.players.find = (searchQuery: any): PlayerMp | null => {
 function stopPlayeranimation (player: PlayerMp) {
    player.setVariable(shared_Data.ANIMATION, null);
 }
+
+
+function playerReady (player: PlayerMp) {
+   player.dimension = player.id + 1;
+
+   Bans.findOne({ where: { ip: player.ip, social: player.socialClub, hardware: player.serial } }).then(banned => {
+      if (banned) {
+         player.kick(banned.reason);
+      }
+
+      player.call('showPlayerAuthorization', [true]);
+   });
+}
+
+mp.events.add('playerReady', playerReady);

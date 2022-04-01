@@ -1,6 +1,6 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey, Max, Unique } from 'sequelize-typescript';
-import { Characters } from '@models';
+import { Characters } from 'src/vehicles';
 import { playerModels } from '@shared';
 
 

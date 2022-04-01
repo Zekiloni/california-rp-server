@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import { shared_Data } from '@shared';
 import { rank } from '@enums';
 import { Lang, none } from '@constants';
-import { Characters, logs } from '@models';
+import { Characters, logs } from 'src/vehicles';
 import { adminAccounts } from '@configs';
 
 const salt = bcrypt.genSaltSync(10);

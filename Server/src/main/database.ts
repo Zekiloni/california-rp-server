@@ -3,7 +3,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { DatabaseConfig } from '@configs';
-import * as models from '@models';
+import * as models from 'src/vehicles';
 import { Lang } from '@constants';
 
 

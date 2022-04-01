@@ -1,5 +1,5 @@
 import { JobConfig } from '@configs';
-import { Jobs } from '@models';
+import { Jobs } from 'src/vehicles';
 
 
 const postal = new Jobs(

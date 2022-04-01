@@ -1,7 +1,7 @@
 import { Commands } from '../commandHandler';
 import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
-import { Jobs } from '@models';
+import { Jobs } from 'src/vehicles';
 import { JobConfig } from '@configs';
 import { taxi } from '../../modules/jobs/taxi';
 

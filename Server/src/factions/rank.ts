@@ -1,5 +1,5 @@
 import { Table, Column, PrimaryKey, AutoIncrement, Model, Unique, ForeignKey, BelongsTo, DataType, CreatedAt, UpdatedAt, Max, Min } from 'sequelize-typescript';
-import { Characters, Factions } from '@models';
+import { Characters, Factions } from 'src/vehicles';
 import { FactionsPermissions, notifications } from '@enums';
 import { Lang, none } from '@constants';
 

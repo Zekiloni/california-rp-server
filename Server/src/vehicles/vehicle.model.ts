@@ -9,7 +9,7 @@ import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, Lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { Jobs, Factions, logs, Characters } from '@models';
+import { Jobs, Factions, logs, Characters } from 'src/vehicles';
 import { NumberPlate } from '@interfaces';
 
 

@@ -1,5 +1,5 @@
 import { Lang } from '@constants';
-import { Accounts } from '@models';
+import { Accounts } from 'src/vehicles';
 import { api } from '../index';
 import { generateToken } from '../middleware';
 

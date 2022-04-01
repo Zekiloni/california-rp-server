@@ -1,4 +1,4 @@
-import { Accounts } from '@models';
+import { Accounts } from 'src/vehicles';
 import { api } from '../index';
 import { authenticateToken } from '../middleware';
 

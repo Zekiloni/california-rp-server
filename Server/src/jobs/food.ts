@@ -1,4 +1,4 @@
-import { Jobs, Items } from '@models';
+import { Jobs, Items } from 'src/vehicles';
 
 
 interface FoodOrder { 

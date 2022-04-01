@@ -1,5 +1,5 @@
 import { cmds, colors, itemNames } from '@constants';
-import { inventories } from '@models';
+import { inventories } from 'src/vehicles';
 import { Commands } from '../commandHandler';
 
 Commands[cmds.names.RADIO] = {

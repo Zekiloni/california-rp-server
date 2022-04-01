@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { Busines, houses } from '@models';
+import { Busines, houses } from 'src/vehicles';
 import { getNearest } from '@shared';
 import { Commands } from '../commandHandler';
 

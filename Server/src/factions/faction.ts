@@ -4,7 +4,7 @@ import { EconomyConfig, FactionConfig } from '@configs';
 import { factionPoints } from '@interfaces';
 import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
-import { Characters, FactionsRanks, logs } from '@models';
+import { Characters, FactionsRanks, logs } from 'src/vehicles';
 import { checkForDot, formatCommand, shared_Data } from '@shared';
 
 

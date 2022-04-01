@@ -4,7 +4,7 @@ import {
    BelongsTo, ForeignKey, DataType, Unique, Default,
    HasMany, AfterSync, AutoIncrement 
 } from 'sequelize-typescript';
-import { Characters, inventories, Busines, transactions, TransactionType } from '@models';
+import { Characters, inventories, Busines, transactions, TransactionType } from 'src/vehicles';
 import { gDimension, Lang, none, cmds } from '@constants';
 import { bankConfig } from '@configs';
 import { notifications } from '@enums';

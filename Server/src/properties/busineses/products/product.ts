@@ -1,5 +1,5 @@
 import { Table, Model, PrimaryKey, AutoIncrement, Column, Default, BelongsTo, DataType, CreatedAt, UpdatedAt, ForeignKey } from 'sequelize-typescript';
-import { Busines, Items } from '@models';
+import { Busines, Items } from 'src/vehicles';
 import { none } from '@constants';
 
 

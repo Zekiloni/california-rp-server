@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commandHandler';
-import { logs, Items, inventories, houses, Accounts, Busines, Factions, Characters, vehicles } from '@models';
+import { logs, Items, inventories, houses, Accounts, Busines, Factions, Characters, vehicles } from 'src/vehicles';
 import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';

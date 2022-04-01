@@ -1,6 +1,6 @@
 import { cmds, Lang } from '@constants';
 import { FactionsPermissions, notifications } from '@enums';
-import { Factions } from '@models';
+import { Factions } from 'src/vehicles';
 import { Commands } from '../commandHandler';
 
 

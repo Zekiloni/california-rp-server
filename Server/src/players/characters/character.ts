@@ -11,7 +11,7 @@ import {
    Busines, inventories, logs, objects, 
    vehicles, Factions, FactionsRanks,
    MoneyLogs
-} from '@models';
+} from 'src/vehicles';
 
 import { FacialMoods, gDimension, WalkingStyles, Lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';

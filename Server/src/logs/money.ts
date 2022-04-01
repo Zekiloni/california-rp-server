@@ -2,7 +2,7 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import rp from 'request-promise';
 import { ServerConfig } from '@configs';
 import { colors, cmds } from '@constants';
-import { logs } from '@models';
+import { logs } from 'src/vehicles';
 import { formatCommand, dollars } from '@shared';
 
 
