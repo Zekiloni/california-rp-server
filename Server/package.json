@@ -5,6 +5,7 @@
       "express": "^4.17.3",
       "fs": "0.0.1-security",
       "jsonwebtoken": "^8.5.1",
+      "module-alias": "^2.2.2",
       "mysql2": "^2.2.5",
       "request-promise": "^4.2.6",
       "sequelize-typescript": "^2.1.0"
@@ -12,6 +13,15 @@
    "scripts": {
       "start": "cd.. && cd.. && cd local-server && ragemp-server.exe --trace-warnings",
       "build": "tsc"
+   },
+   "_moduleAliases": {
+      "@configs": "packages/california/configs/index",
+      "@modules": "packages/california/modules/",
+      "@constants": "packages/california/constants/index",
+      "@shared": "packages/california/shared/index",
+      "@enums": "packages/california/enums/index",
+      "@models": "packages/california/models/index",
+      "@interfaces": "packages/california/interfaces/index"
    },
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
