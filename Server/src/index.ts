@@ -1,17 +1,17 @@
 
 import 'module-alias/register';
 
-import './database';
+import './main/database';
 import './api';
 
 import './systems/player/Authorization';
 
-import './modules/rage';
+import './main/rage';
 import './command/command';
-import './modules/player'
+import './players/player'
 import './items/itemHandler';
-import './modules/minute';
-import './modules/jobs';
+import './main/minute';
+import './main/jobs';
 
 import { sleep } from '@shared';
 import { logs } from'@models';
