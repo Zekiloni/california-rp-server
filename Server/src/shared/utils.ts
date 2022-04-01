@@ -1,7 +1,7 @@
 import { cmds, gDimension } from "@constants";
 import { notifications } from "@enums";
-import { Busines } from "src/vehicles";
-import { houses } from "src/vehicles";
+import { Busines } from "@models";
+import { houses } from "@models";
 
 
 export function randomInteger (min: number, max: number) {

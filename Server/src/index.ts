@@ -1,20 +1,20 @@
 
+import 'module-alias/register';
 
-
-import './main/database';
-import './main/api';
+import './database';
+import './api';
 
 import './systems/player/Authorization';
 
-import './main/rage';
-import './command/command.Handler';
-import './players/player'
-import './items/item.Handler';
-import './main/minute';
-import './main/jobs';
+import './modules/rage';
+import './modules/commands';
+import './modules/player'
+import './modules/items';
+import './modules/minute';
+import './modules/jobs';
 
 import { sleep } from '@shared';
-import { logs } from'src/vehicles';
+import { logs } from'@models';
 import { Lang } from '@constants';
 
 
