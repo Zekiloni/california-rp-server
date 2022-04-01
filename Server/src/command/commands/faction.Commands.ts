@@ -1,7 +1,7 @@
 import { cmds, Lang } from '@constants';
 import { FactionsPermissions, notifications } from '@enums';
 import { Factions } from '@models';
-import { Commands } from '../command';
+import { Commands } from '../commandHandler';
 
 
 Commands[cmds.names.FACTION_CHAT] = {

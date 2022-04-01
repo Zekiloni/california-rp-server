@@ -1,7 +1,7 @@
 import { animations } from "@configs";
 import { Lang, cmds } from "@constants";
 import { notifications } from "@enums";
-import { Commands } from "../command";
+import { Commands } from "../commandHandler";
 import { shared_Data } from "@shared";
 import { Items } from "@models";
 

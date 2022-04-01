@@ -2,12 +2,12 @@
 import 'module-alias/register';
 
 import './main/database';
-import './api';
+import './main/api';
 
 import './systems/player/Authorization';
 
 import './main/rage';
-import './command/command';
+import './command/commandHandler';
 import './players/player'
 import './items/itemHandler';
 import './main/minute';

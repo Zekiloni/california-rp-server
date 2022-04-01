@@ -1,6 +1,6 @@
 import { cmds } from '@constants';
 import { vehicles, logs } from '@models';
-import { Commands } from '../command';
+import { Commands } from '../commandHandler';
 
 
 
