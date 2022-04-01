@@ -10,6 +10,8 @@
                   <faction-overview :faction="faction" key=faction-overview v-if="activePage == 0" />
                   
                   <faction-members :members="faction.members" :ranks="faction.ranks" key=faction-members v-if="activePage == 1" />
+
+                  <faction-budget :budget="faction.budget" key=faction-members v-if="activePage == 3" />
                </transition>
             </div>
          </div>
@@ -38,6 +40,8 @@
    import FactionOverview from './panel-components/FactionOverview.vue';
    import FactionMembers from './panel-components/FactionMembers.vue';
    import FactionRanks from './panel-components/FactionRanks.vue';
+   import FactionBudget from './panel-components/FactionBudget.vue';
+   
    
    interface Rank { 
       id: number
@@ -72,11 +76,11 @@
    }
 
    @Component({
-      components: { FactionOverview, FactionMembers, FactionRanks }
+      components: { FactionOverview, FactionMembers, FactionRanks, FactionBudget }
    })
    export default class FactionPanel extends Vue {
       
-      pages = [Messages.OVERWIEV, Messages.MEMBERS, Messages.FACTION_RANKS, Messages.EQUIPMENT]
+      pages = [Messages.OVERWIEV, Messages.MEMBERS, Messages.FACTION_RANKS, Messages.BUDGET]
 
       activePage: number = 0;
 

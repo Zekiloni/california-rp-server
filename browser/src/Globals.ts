@@ -150,7 +150,7 @@ export const Messages = {
    NO_DESCRIPTION: 'Nema opis.',
    OVERWIEV: 'Pregled',
    MEMBERS: 'Članovi',
-   EQUIPMENT: 'Oprema',
+   BUDGET: 'Budžet',
    FACTION_RANKS: 'Rankovi',
    FACTION_DESCRIPTION: 'Opis fakcije',
    FACTION_LEADER: 'Lider fakcije',
