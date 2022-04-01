@@ -24,13 +24,13 @@ export * from '../factions/rank';
 export * from './object.model';
 
 // @house
-export * from '../houses/house';
+export * from '../properties/houses/house';
 
 // @vehicles
 export * from './vehicle.model';
 
 // @business
-export * from '../busineses/products/product';
-export * from '../busineses/workers/worker.model';
-export * from '../busineses/busines';
+export * from '../properties/busineses/products/product';
+export * from '../properties/busineses/workers/worker.model';
+export * from '../properties/busineses/busines';
 

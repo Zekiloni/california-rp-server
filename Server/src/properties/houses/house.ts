@@ -5,7 +5,7 @@ import { notifications, rank } from '@enums';
 import { cmds, gDimension, Lang } from '@constants';
 import { houseConfig } from '@configs';
 import { Characters, objects } from '@models';
-import { logs } from '../models/log.model';
+import { logs } from '../../models/log.model';
 
 
 @Table
