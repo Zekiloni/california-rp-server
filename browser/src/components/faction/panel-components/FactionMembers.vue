@@ -107,8 +107,7 @@
    small.edit-rank-help { color: #848e9c; font-size: 0.7rem; font-weight: 600;}
 
    .list {
-      margin-top: 15px;
-      height: 300px;
+      height: 270px;
       overflow-x: hidden;
       overflow-y: auto;
    }
@@ -180,7 +179,7 @@
    }
 
    .member-settings .edit button.save {
-      background: #ffcc45;
+      background: #fdb91b;
       width: 80px;
       color: #0b0e11;
    }
@@ -189,5 +188,9 @@
       background: #ff463d;
       color: whitesmoke;
    }
+
+   ::-webkit-scrollbar { width: 6px; }
+   ::-webkit-scrollbar-track {background: rgb(0 0 0 / 60%);}
+   ::-webkit-scrollbar-thumb { background: #fdb91b; }
 
 </style>

@@ -37,6 +37,7 @@ export const Messages = {
    YOUR_ID: 'Vaš ID',
    FINISH_SHOPPING: 'Kupi',
    YOU_DONT_HAVE: 'Nemate',
+   NO_ONE: 'Niko',
 
    MARKET: 'Market',
    VEHICLE_DEALERSHIP: 'Vehicle Dealership',
@@ -152,6 +153,10 @@ export const Messages = {
    EQUIPMENT: 'Oprema',
    FACTION_RANKS: 'Rankovi',
    FACTION_DESCRIPTION: 'Opis fakcije',
+   FACTION_LEADER: 'Lider fakcije',
+   FACTION_MEMBERS: 'Članovi fakcije',
+   NUMBER_OF_MEMBERS: 'Broj članova',
+   ONLINE_MEMBERS: 'Online članovi',
    FACTION_RANK_NAME: 'Ime ranka',
    FACTION_RANK_DESCRIPTION: 'Opis ranka',
    FACTION_RANK_PERMISSIONS: 'Permisije',

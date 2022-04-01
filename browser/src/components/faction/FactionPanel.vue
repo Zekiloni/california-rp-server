@@ -6,10 +6,10 @@
             <h3> {{ title }} </h3>
 
             <div class="holder">
-               <transition name="swipe"> 
+               <transition name="swipe" mode="out-in"> 
                   <faction-overview :faction="faction" key=faction-overview v-if="activePage == 0" />
                   
-                  <faction-members :members="faction.members" key=faction-members v-if="activePage == 1" />
+                  <faction-members :members="faction.members" :ranks="faction.ranks" key=faction-members v-if="activePage == 1" />
                </transition>
             </div>
          </div>
@@ -56,6 +56,7 @@
       description: string
       leader: number
       created_at: Date
+      onlineMembers: number
       budget: number
       ranks: Rank[] | null
       members: Member[]
@@ -81,14 +82,23 @@
 
       faction: Faction | null = {
          id: 1,
-         leader: 0,
+         leader: 1,
          type: 0,
          created_at: new Date(),
          budget: 30000,
          ranks: [],
-         members: [],
+         onlineMembers: 3,
+         members: [
+            { id: 1, name: 'Zachary Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
+            { id: 2, name: 'awdawdaw Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
+            { id: 3, name: 'wadaw Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
+            { id: 4, name: 'dawdaw Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
+            { id: 5, name: 'Zachadawdawdawry Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
+            { id: 6, name: 'awdawdawdaw Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
+            { id: 7, name: 'Zachary Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 }
+         ],
          name: 'Los Santos Police Department',
-         description: 'Policija muharemova sve kerovi av ava v',
+         description: 'The Los Angeles Police Department (LAPD), officially known as the City of Los Angeles Police Department, is the municipal police department of Los Angeles, California. With 9,974 police officers[2] and 3,000 civilian staff,[2] it is the third-largest municipal police department in the United States, after the New York City Police Department and the Chicago Police Department.',
          
       };
 
@@ -125,7 +135,7 @@
 
    .panel {
       position: relative;
-      width: auto;
+      width: 600px;
       height: 600px;
       margin: auto;
    }
@@ -133,7 +143,7 @@
    .page {
       width: 100%;
       min-height: 480px;
-      background: #100f14;
+      background: #16151a;
       border-radius: 10px;
       overflow: hidden;
    }
@@ -203,9 +213,17 @@
    }
 
    .page .holder {
-      padding: 20px;
-      margin-top: 15px;
+      padding: 0 20px;
       max-height: 300px;
+   }
+
+   .swipe-enter-active, .swipe-leave-active {
+      transition: all 0.45s;
+   }
+
+   .swipe-enter, .swipe-leave-to {
+      opacity: 0;
+      transform: translateY(20px);
    }
 
    

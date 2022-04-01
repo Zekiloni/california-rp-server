@@ -7,9 +7,9 @@ import './api';
 import './systems/player/Authorization';
 
 import './modules/rage';
-import './modules/commands';
+import './command/command';
 import './modules/player'
-import './modules/items';
+import './items/itemHandler';
 import './modules/minute';
 import './modules/jobs';
 

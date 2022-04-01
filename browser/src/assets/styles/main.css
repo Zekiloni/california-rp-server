@@ -44,7 +44,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 ::-webkit-scrollbar-track {background: rgb(0 0 0 / 60%);}
 ::-webkit-scrollbar-thumb { background: #6845ea; }
 
-
 .tooltip {
    display: block !important;
    z-index: 10000;
