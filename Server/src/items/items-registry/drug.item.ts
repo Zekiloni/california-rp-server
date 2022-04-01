@@ -1,6 +1,5 @@
-import { ItemEnums } from '@enums/items';
-import { BaseItem } from '../baseItem';
-
+import { BaseItem } from '../base.Item';
+import { ItemEnums } from '../item.Enums';
 
 
 export class drugItem extends BaseItem {

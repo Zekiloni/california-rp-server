@@ -1,6 +1,6 @@
 
 
-import { BaseItem } from '../baseItem';
+import { BaseItem } from '../base.Item';
 import { inventories  } from 'src/vehicles';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';

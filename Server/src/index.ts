@@ -1,5 +1,5 @@
 
-import 'module-alias/register';
+
 
 import './main/database';
 import './main/api';
@@ -9,7 +9,7 @@ import './systems/player/Authorization';
 import './main/rage';
 import './command/command.Handler';
 import './players/player'
-import './items/itemHandler';
+import './items/item.Handler';
 import './main/minute';
 import './main/jobs';
 

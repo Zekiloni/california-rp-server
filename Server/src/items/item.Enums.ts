@@ -1,7 +1,4 @@
 
-
-
-
 export namespace ItemEnums { 
    export enum type { 
       EQUIPABLE, CONSUMABLE, OPENABLE, 

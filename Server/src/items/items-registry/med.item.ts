@@ -1,4 +1,4 @@
-import { BaseItem } from '../baseItem';
+import { BaseItem } from '../base.Item';
 import { animations, playerConfig } from '@configs';
 import { inventories } from 'src/vehicles';
 import { ItemEnums, notifications } from '@enums';
