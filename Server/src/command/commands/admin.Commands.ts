@@ -7,7 +7,7 @@ import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';
 import { shared_Data } from '@shared';
-import { admins } from '../../players/admin';
+import { admins } from '../../admin/admin';
 
 
 const savedPositions = 'savedPositions.txt';

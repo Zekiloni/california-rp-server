@@ -19,7 +19,7 @@ import { playerConfig, ServerConfig, VehicleConfig } from '@configs';
 import { generateNumber, shared_Data } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../../items/items/clothing.Item';
-import { admins } from '../admin';
+import { admins } from '../../admin/admin';
 
 
 
