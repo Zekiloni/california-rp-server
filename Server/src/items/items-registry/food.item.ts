@@ -1,7 +1,7 @@
 
 
-import { Items } from '../item';
-import { inventories  } from '../inventoryItem';
+import { BaseItem } from '../baseItem';
+import { inventories  } from '../item';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 
@@ -12,7 +12,7 @@ const foodType = [
 ];
 
 
-export class foodItem extends Items {
+export class foodItem extends BaseItem {
    hunger: number;
    snacks: number;
    

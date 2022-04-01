@@ -1,6 +1,5 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, CreatedAt, UpdatedAt, AllowNull } from 'sequelize-typescript';
-import { inventories } from 'src/vehicles';
 import { colors, itemNames, Lang } from '@constants';
 
 

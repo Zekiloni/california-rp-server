@@ -1,189 +1,259 @@
 
 
-import { itemDescriptions, itemNames, Lang } from '@constants';
-import { ItemEnums } from '@enums';
-import { itemAction } from '@interfaces';
+import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { ItemEnums, notifications } from '@enums';
+import { shared_Data } from '@shared';
+import { ItemExtra } from '@interfaces';
+import { itemNames, Lang, none } from '@constants';
+import { playerConfig } from '@configs';
 
 
-export class Items {
+@Table
+export class Items extends Model { 
+
+   static objects = new Map<number, ObjectMp>();
+
+   @PrimaryKey
+   @AutoIncrement
+   @Column
+   id: number;
+
+   @Column(DataType.STRING)
    name: string;
-   type: ItemEnums.type[];
-   model: string;
-   weight: number;
-   description?: string;
-   carryModel?: string;
-   extraActions?: itemAction[];
-   use? (player: PlayerMp, ...params: any): void | any;
-   unequip? (player: PlayerMp): void ;
 
-   static list: { [key:string] : Items } = {};
+   @Column(DataType.INTEGER)
+   entity: ItemEnums.entity;
 
-   constructor (name: string, type: ItemEnums.type[], model: string, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
-      this.name = name;
-      this.type = type;
-      this.model = model;
-      this.weight = weight;     
-      this.description = description;
+   @Default(none)
+   @Column(DataType.INTEGER)
+   owner: number;
 
-      Items.list[this.name] = this;
+   @Default(false)
+   @Column(DataType.BOOLEAN)
+   on_ground: boolean;
+
+   @Default(false)
+   @Column(DataType.BOOLEAN)
+   equiped: boolean;
+
+   @Default(ItemEnums.status.NONE)
+   @Column(DataType.INTEGER)
+   status: ItemEnums.status;
+   
+   @Default(none)
+   @Column(DataType.INTEGER)
+   fingerprint: number; 
+
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('position')); }
+   })
+   position: Vector3Mp;
+
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('rotation')); }
+   })   
+   rotation: Vector3Mp
+
+   @Column
+   dimension: number;
+
+   @Default({})
+   @Column({
+      type: DataType.JSON,
+      get () { return JSON.parse(this.getDataValue('data')); }
+   })   
+   data: ItemExtra;
+
+   @CreatedAt
+   created_at: Date;
+
+   @UpdatedAt
+   updated_at: Date;
+
+   get object () { 
+      return inventories.objects.get(this.id)!;
+   }
+
+   set object (object: ObjectMp) { 
+      inventories.objects.set(this.id, object);
    }
 
 
-   isWeapon () { 
-      return this.type.includes(ItemEnums.type.WEAPON);
+   @AfterSync
+   static async loading () {
+      inventories.findAll( { where: { on_ground: true } } ).then(items => {
+         items.forEach(item => {
+            item.refresh();
+         })
+      });
+
+      logs.info(await inventories.count() + ' items loaded !');
    }
 
-   isCookable () {
-      return this.type.includes(ItemEnums.type.COOKABLE);
-   }
-
-   isStackable () { 
-      return this.type.includes(ItemEnums.type.STACKABLE);
-   }
-
-   isEquipable () {
-      return this.type.includes(ItemEnums.type.EQUIPABLE);
-   }
-
-   isUsable () {
-      return this.type.includes(ItemEnums.type.USABLE);
-   }
-
-   isClothing () {
-      return this.type.includes(ItemEnums.type.CLOTHING);
-   }
-
-   isProp () {
-      return this.type.includes(ItemEnums.type.PROP);
-   }
-
-   isConsumable () {
-      return this.type.includes(ItemEnums.type.CONSUMABLE);
-   }
-
-   availableActions () {
-      let actions: itemAction[] = [];
-
-      actions.push(
-         { name: Lang.itemAction.drop, event: 'CLIENT::ITEM:DROP', icon: 'drop' },
-         { name: Lang.itemAction.give, event: 'CLIENT::ITEM:GIVE', icon: 'give' }
-      );
-
-      if (this.isEquipable()) {
-         actions.push( { name: Lang.itemAction.EQUIP, event: 'CLIENT::ITEM:EQUIP', icon: 'use' } )
-      }
-
-      if (this.isConsumable()) {
-         actions.push( { name: Lang.itemAction.CONSUME, event: 'CLIENT::ITEM:USE', icon: 'use' } )
-      }
-
-      if (this.isUsable() && !actions.find(action => action.name == Lang.itemAction.EQUIP)) {
-         actions.push( { name: Lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' } )
-      }
-
-      if (this.isStackable()){
-         actions.push( { name: Lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' } );
-      } 
-
-      if (this.extraActions) {
-         this.extraActions.forEach(action => {
-            actions.push( { name: action.name, event: action.event, icon: action.icon } )
-         });
-      }
+   @AfterCreate
+   static async creating (item: inventories) { 
+      item.refresh();
       
-      return actions;
+      const rItem = Items.list[item.name];
+
+      if (!rItem) {
+         return;
+      }
+
+      switch (rItem.name) {
+         case itemNames.HANDHELD_RADIO: {
+            item.data = {
+               power: true,
+               frequency: '000',
+               slot: 1
+            }
+            break;
+         }
+      }
+
+      await item.save();
    }
+
+   @AfterDestroy
+   static destroying (item: inventories) { 
+      if (item.object) {
+         item.object.destroy();
+         inventories.objects.delete(item.id);
+      }
+   }
+
+   @AfterSave
+   static saving (item: inventories) {
+      item.refresh();
+   }
+
+   refresh () {
+      if (this.on_ground) {
+         this.object = mp.objects.new(Items.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
+         this.object.setVariable(shared_Data.ITEM, { name: this.name, id: this.id });
+      } else { 
+         if (this.object) { 
+            this.object.destroy();
+            inventories.objects.delete(this.id);
+         }
+      }
+   }
+
+   async pickupItem (player: PlayerMp) { 
+      if (this.on_ground) {
+         this.on_ground = false;
+         this.owner = player.character.id;
+         this.entity = ItemEnums.entity.PLAYER;
+         player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 } );
+         await this.save();
+      }
+   }
+
+   async dropItem (player: PlayerMp, position: Vector3Mp, rotation: Vector3Mp) {
+      this.owner = 0;
+      this.on_ground = true;
+      this.dimension = player.dimension;
+      this.fingerprint = player.character.id;
+      this.position = position;
+      this.rotation = rotation;
+      await this.save();
+   }
+
+   async equipItem (player: PlayerMp) {
+      const rItem = Items.list[this.name!];
+
+      const equipment = await inventories.findAll( { where: { equiped: true, owner: player.character.id, entity: ItemEnums.entity.PLAYER } });
+      const equiped = equipment.filter(
+         item => !Items.list[item.name].type.includes(ItemEnums.type.CLOTHING) && !Items.list[item.name].type.includes(ItemEnums.type.PROP)
+      );
+      
+      if (equiped.length > playerConfig.max.EQUIPMENT) {
+         player.notification(Lang.youReachedMaxEquipemnt + playerConfig.max.EQUIPMENT + '.', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      if (!rItem.isEquipable) {
+         logs.error('equipItem: isEquipable');
+         return;
+      }
+
+      if (equiped.find(alreadyEquiped => alreadyEquiped.name == this.name)) {
+         player.notification(Lang.youAlreadyEquiped + ' ' + this.name + '.', notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      this.equiped = true;
+      await this.save();
+   }
+
+   async unequip (player: PlayerMp) {
+      const item = Items.list[this.name];
+
+      if (!item) {
+         return;
+      }
+
+      this.equiped = false;
+
+      if (item.unequip) {
+         item.unequip(player);
+      }
+
+      await this.save();
+   }
+
+   async useItem (player: PlayerMp) { 
+      const Character = player.character;
+      
+      const rItem = Items.list[this.name];
+   }
+
+   static async doesHaveItem (entity: ItemEnums.entity, owner: number, itemName: string) {
+      return inventories.findOne( { where: { entity: entity, owner: owner, name: itemName } } ).then(haveItem => {
+         return haveItem ? haveItem : false;
+      });
+   }
+
+   static hasEquiped (player: PlayerMp, itemName: string) {
+      return inventories.findOne( { where: { name: itemName, equiped: true, owner: player.character.id }})
+   }
+
+   static getEntityItems (entity: ItemEnums.entity, owner: number)  { 
+      return inventories.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
+         return items;
+      }).catch(e => {
+         logs.error('ctchingPlyerItems: ' + e);
+      });
+   }
+
+   static giveItem (player: PlayerMp, item: Items) { 
+      inventories.create( { name: item.name, entity: ItemEnums.entity.PLAYER, owner: player.character.id } );
+   };
+
+   static async savePlayerEquipment (character: Characters) { 
+      inventories.findAll( { where: { entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
+         equipedItems.forEach(async item => {
+            if (!Items.list[item.name].isClothing() && !Items.list[item.name].isProp()) {
+               item.equiped = false;
+               await item.save();
+            }
+         });
+      })
+   }
+
+
+   static async itemsWeight (player: PlayerMp) {
+      return inventories.findAll( { where: { owner: player.character.id, entity: ItemEnums.entity.PLAYER } } ).then(playerItems => {
+         let weight: number = 0;
+
+         playerItems.forEach(item => {
+            weight += Items.list[item.name].weight;
+         });
+
+         return weight;
+      })
+   }
+
 }
-
-
-
-new Items(itemNames.HANDCUFFS, [ItemEnums.type.MISC] ,'prop_cs_cuffs_01', 0.35, itemDescriptions.HANDCUFFS);
-
-
-
-
-
-
-import './items/document.item';
-import './items/creditCard.item';
-import './items/clothing.Item';
-import './items/drink.item';
-import './items/food.item';
-import './items/ammo.item';
-import './items/weapon.item';
-import './items/phone.item';
-import './items/handheld.radio.item';
-import './items/cooker.item';
-import './items/med.item';
-
-
-
-// Component?: number;
-// Consist?: string;
-// Hunger?: number;
-// Thirst?: number;
-// this.Carry_Model = Data.Carry_Model;
-// this.Weapon_Hash = Data.Weapon_Hash;
-// this.Caliber = Data.Caliber;
-// this.Component = Data.Component;
-// this.Hunger = Data.Hunger;
-// this.Thirst = Data.Thirst;
-
-
-
-// /* Clothing */
-
-
-
-
-
-
-
-
-// /* Seeds */
-// new Items('Cannabis Seed', [Items.Type.Seed], '', 0.01,);
-// new Items('10 Cannabis Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
-// new Items('Poppy Seed', [Items.Type.Seed], '', 0.01, '');
-// new Items('10 Poppy Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
-// new Items('Tomato Seed', [Items.Type.Seed], '', 0.01, '');
-// new Items('10 Tomato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
-// new Items('Potato Seed', [Items.Type.Seed], '', 0.01, '');
-// new Items('10 Potato Seed Pack', [Items.Type.Seed, Items.Type.Openable], 'prop_paper_bag_small', 0.1);
-
-// /* Plants */
-// new Items('Plant Fertilizer', [Items.Type.Misc], 'prop_cs_script_bottle_01', 0.8);
-
-
-// // MISCELLANEOUS
-// new Item('Smartphone', ItemType.Misc, 'prop_amb_phone', 0.2, false, false);
-// new Item('Phone', ItemType.Misc, 'prop_v_m_phone_01', 0.2, false, function (player) { });
-// new Item('Boombox', ItemType.Misc, 'prop_boombox_01', 0.5, false, function (player) { });
-// new Item('Lighter', ItemType.Misc, 'p_cs_lighter_01', 0.05, false, function (player) { });
-// new Item('Cigarettes', ItemType.Misc, 'prop_cigar_pack_01', 0.01, false, function (player) { });
-// new Item('Rope', ItemType.Misc, 'prop_stag_do_rope', 0.05, false, function (player) { });
-// new Item('Jerrycan', ItemType.Misc, 'w_am_jerrycan', 0.4, false, function (player) { });
-// new Item('Papers', ItemType.Misc, 'p_cs_papers_01', 0.01, false, function (player) { });
-// new Item('Medkit', ItemType.Misc, 'prop_ld_health_pack', 0.6, false, function (player) { });
-// new Item('Toolbox', ItemType.Misc, 'v_ind_cs_toolbox2', 0.8, false, function (player) { });
-// new Item('Fishing Rod', ItemType.Misc, 'prop_fishing_rod_01', 0.5, false, function (player) { });
-// new Item('Fish Bait', ItemType.Misc, 'ng_proc_paintcan02a', 0.3, false, function (player) { });
-// new Item('Baking Soda', ItemType.Misc, 'bkr_prop_coke_bakingsoda', 0.6, false, function (player) { });
-// new Item('Hydrochloric Acid', ItemType.Misc, 'bkr_prop_meth_sacid', 0.6, false, function (player) { });
-
-
-// // OPENABLE
-// new Item('Pack of Beers', ItemType.Openable, 'v_ret_ml_beerpis1', 1.2, { quantity: 6, inside: 'Beer Bottle' }, function (player) { });
-
-
-// // AMMUNITION
-// new Item('9mm Ammo', ItemType.Ammo, 'prop_ld_ammo_pack_01', 0.9, false, function (player) { });
-// new Item('5.56×45mm Ammo', ItemType.Ammo, 'prop_ld_ammo_pack_03', 1.05, false, function (player) { });
-// new Item('12ga Slug Ammo', ItemType.Ammo, 'prop_ld_ammo_pack_02', 0.9, false, function (player) { });
-
-
-
-
-// // mp.ItemRegistry = {};
-
-
-// module.exports = { ItemType, ItemEntities, ItemRegistry };

@@ -1,6 +1,6 @@
 
 
-import { Items } from '../item';
+import { BaseItem } from '../baseItem';
 import { inventories  } from 'src/vehicles';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
@@ -16,7 +16,7 @@ const propType = [
 ];
 
 
-export class ClothingItem extends Items {
+export class ClothingItem extends BaseItem {
 
    static clothings: ClothingItem[] = [];
    static props: ClothingItem[] = [];

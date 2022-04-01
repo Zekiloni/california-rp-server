@@ -1,6 +1,6 @@
 
-import { Items } from '../item';
-import { inventories  } from '../inventoryItem';
+import { BaseItem } from '../baseItem';
+import { inventories  } from '../item';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
 
@@ -11,7 +11,7 @@ const drinkType = [
 ];
 
 
-export class drinkItem extends Items {
+export class drinkItem extends BaseItem {
    thirst: number;
    alcohol: number | null;
    energy?: number;

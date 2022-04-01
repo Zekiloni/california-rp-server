@@ -1,7 +1,7 @@
 
 
-import { Items } from '../item';
-import { inventories  } from '../inventoryItem';
+import { BaseItem } from '../baseItem';
+import { inventories  } from '../item';
 import { ItemEnums } from '@enums';
 import { itemNames, itemDescriptions } from '@constants';
 
@@ -11,7 +11,7 @@ const documentType = [
 ];
 
 
-export class DocumentItem extends Items {
+export class DocumentItem extends BaseItem {
    specialType: number;
    
    constructor (name: string, model: string, special: number, type?: ItemEnums.type[], weight?: number, description?: string) { 

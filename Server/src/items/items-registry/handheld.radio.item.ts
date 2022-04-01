@@ -1,6 +1,6 @@
 
 
-import { Items } from '../item';
+import { BaseItem } from '../baseItem';
 import { inventories  } from 'src/vehicles';
 import { itemDescriptions, itemNames } from "@constants";
 import { ItemEnums } from "@enums";
@@ -8,7 +8,7 @@ import { shared_Data } from '@shared';
 import { animations } from '@configs';
 
 
-export class handheldRadioItem extends Items {
+export class handheldRadioItem extends BaseItem {
    
    constructor (name: string, model: string, weight: number = 0.1) { 
       super (name, [ItemEnums.type.EQUIPABLE, ItemEnums.type.MISC, ItemEnums.type.ELECTRONIC_DEVICE], model, weight, itemDescriptions.HANDHELD_RADIO);

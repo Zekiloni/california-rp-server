@@ -1,6 +1,6 @@
 
-import { Items } from '../item';
-import { inventories  } from '../inventoryItem';
+import { BaseItem } from '../baseItem';
+import { inventories  } from '../item';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 import { shared_Data } from '@shared';
@@ -12,7 +12,7 @@ const phoneType = [
 ];
 
 
-export class PhoneItem extends Items {
+export class PhoneItem extends BaseItem {
    
    constructor (name: string, model: string, weight?: number, description?: string) { 
       super (name, phoneType, model, weight, description);

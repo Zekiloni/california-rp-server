@@ -18,7 +18,7 @@ import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig, ServerConfig, VehicleConfig } from '@configs';
 import { generateNumber, shared_Data } from '@shared';
 import { offer, Injury } from '@interfaces';
-import { ClothingItem } from '../../items/items/clothing.Item';
+import { ClothingItem } from '../../items/items-registry/clothing.Item';
 import { admins } from '../../admin/admin';
 
 
