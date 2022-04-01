@@ -1,6 +1,6 @@
 import { cmds, colors, itemNames } from '@constants';
 import { inventories } from 'src/vehicles';
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 
 Commands[cmds.names.RADIO] = {
    description: '',

@@ -1,7 +1,7 @@
 import { cmds, Lang } from '@constants';
 import { FactionsPermissions, notifications } from '@enums';
 import { Factions } from 'src/vehicles';
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 
 
 Commands[cmds.names.FACTION_CHAT] = {

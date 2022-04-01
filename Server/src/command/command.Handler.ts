@@ -1,12 +1,9 @@
 
-import { shared_Data } from '@shared';
-import { commands } from '@interfaces';
-import { colors, Lang, none } from '@constants';
-import { ItemEnums, notifications } from '@enums';
-import { Factions, inventories, FactionsRanks } from 'src/vehicles';
+
+import { Command } from './command.Interfaces';
 
 
-export let Commands: commands = {};
+export let Commands: { [key: string]: Command } = {};
 
 
 mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {

@@ -1,4 +1,4 @@
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
 import { Jobs } from 'src/vehicles';

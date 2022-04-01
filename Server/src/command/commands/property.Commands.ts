@@ -1,7 +1,7 @@
 import { cmds, Lang } from '@constants';
 import { notifications } from '@enums';
 import { Busines } from "src/vehicles";
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 
 
 Commands[cmds.names.BUSINES] = {

@@ -7,7 +7,7 @@ import './main/api';
 import './systems/player/Authorization';
 
 import './main/rage';
-import './command/commandHandler';
+import './command/command.Handler';
 import './players/player'
 import './items/itemHandler';
 import './main/minute';

@@ -1,7 +1,7 @@
 import { cmds } from '@constants';
 import { Busines, houses } from 'src/vehicles';
 import { getNearest } from '@shared';
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 
 
 Commands[cmds.names.LOCK] = {

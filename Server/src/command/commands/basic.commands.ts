@@ -3,7 +3,7 @@ import { cmds, colors, Lang } from '@constants';
 import { distances, notifications } from '@enums';
 import { banks } from 'src/vehicles';
 import { checkForDot, shared_Data } from '@shared';
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 
 
 Commands[cmds.names.HELP] = {

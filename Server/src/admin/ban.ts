@@ -3,9 +3,8 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { Lang } from '@constants';
 import { validateIP } from '@shared';
-import { Accounts } from 'src/vehicles';
 import { notifications } from '@enums';
-
+import { Accounts } from './players/account';
 
 @Table({
    tableName: 'bans'

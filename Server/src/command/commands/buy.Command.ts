@@ -1,6 +1,6 @@
 import { cmds } from '@constants';
 import { Busines, houses } from 'src/vehicles';
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 
 
 Commands[cmds.names.BUY] = {

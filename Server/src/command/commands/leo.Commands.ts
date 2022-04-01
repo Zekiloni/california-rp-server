@@ -3,7 +3,7 @@ import { cmds, colors, itemNames, Lang } from '@constants';
 import { distances, notifications } from '@enums';
 import { Factions } from 'src/vehicles';
 import { shared_Data } from '@shared';
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 
 
 Commands[cmds.names.VEHICLE_CALLSIGN] = {

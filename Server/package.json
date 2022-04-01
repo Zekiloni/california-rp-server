@@ -5,7 +5,6 @@
       "express": "^4.17.3",
       "fs": "0.0.1-security",
       "jsonwebtoken": "^8.5.1",
-      "module-alias": "^2.2.2",
       "mysql2": "^2.2.5",
       "request-promise": "^4.2.6",
       "sequelize-typescript": "^2.1.0"
@@ -13,15 +12,6 @@
    "scripts": {
       "start": "cd.. && cd.. && cd local-server && ragemp-server.exe --trace-warnings",
       "build": "tsc"
-   },
-   "_moduleAliases": {
-      "@configs": "dist/configs/",
-      "@modules": "dist/modules/",
-      "@models": "dist/models/",
-      "@constants": "dist/constants/",
-      "@shared": "dist/shared/",
-      "@enums": "dist/enums/",
-      "@interfaces": "dist/interfaces/"
    },
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",

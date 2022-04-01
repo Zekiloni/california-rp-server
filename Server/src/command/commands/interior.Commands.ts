@@ -1,4 +1,4 @@
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 import { cmds } from '@constants';
 import { getNearest } from '@shared';
 import { houses, Busines } from 'src/vehicles';

@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 
-import { Commands } from '../commandHandler';
+import { Commands } from '../command.Handler';
 import { logs, Items, inventories, houses, Accounts, Busines, Factions, Characters, vehicles } from 'src/vehicles';
 import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
