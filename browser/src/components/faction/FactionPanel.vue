@@ -99,7 +99,7 @@
             { id: 4, name: 'dawdaw Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
             { id: 5, name: 'Zachadawdawdawry Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
             { id: 6, name: 'awdawdawdaw Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 },
-            { id: 7, name: 'Zachary Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 }
+            { id: 7, name: 'Zachawadary Parker', rank: 2, origin: 'Novi Pazar', birth: '110.5201', gender: 0 }
          ],
          name: 'Los Santos Police Department',
          description: 'The Los Angeles Police Department (LAPD), officially known as the City of Los Angeles Police Department, is the municipal police department of Los Angeles, California. With 9,974 police officers[2] and 3,000 civilian staff,[2] it is the third-largest municipal police department in the United States, after the New York City Police Department and the Chicago Police Department.',

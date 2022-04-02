@@ -16,15 +16,18 @@
       </div>
       
       <transition name="fade"> 
-         <div class="member-settings" v-if="selectedMember">
-            <h3> {{ Messages.FACTION_MEMBER_SETTINGS }} </h3>
-            <h2> {{ selectedMember.id }}. {{ selectedMember.name }} </h2>
-            
-            <div class="edit">
-               <v-select :options="rankup" class="select-rank"></v-select>
+         <div class="member-modal" v-if="selectedMember">
+            <div class="member-settings" >
+               <h3> {{ Messages.FACTION_MEMBER_SETTINGS }} </h3>
+               <h2> {{ selectedMember.id }}. {{ selectedMember.name }} </h2>
+               
+               <div class="edit">
+                  <v-select :options="rankup" class="select-rank"></v-select>
 
-               <button @click="kick(selectedMember)" class="delete"> {{ Messages.DELETE_RANK }} </button>
-               <button @click="save()" class="save"> {{ Messages.SAVE }} </button>
+                  <button @click="kick(selectedMember)" class="delete"> {{ Messages.DELETE_RANK }} </button>
+                  <button @click="save()" class="save"> {{ Messages.SAVE }} </button>
+                  <button @click="selectedMember = null"> {{ Messages.CLOSE }} </button>
+               </div>
             </div>
          </div>
       </transition>
@@ -107,7 +110,7 @@
    small.edit-rank-help { color: #848e9c; font-size: 0.7rem; font-weight: 600;}
 
    .list {
-      height: 270px;
+      height: 370px;
       overflow-x: hidden;
       overflow-y: auto;
    }
@@ -147,6 +150,23 @@
       backdrop-filter: brightness(1.3);
       box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
       color: whitesmoke;
+   }
+
+   .member-modal {
+      position: fixed;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: grid;
+      background: rgba(7, 7, 9, .65);
+      width: 100%;
+   }
+
+   .member-settings {
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      background: #16151a;
    }
 
    .member-settings h3 { 

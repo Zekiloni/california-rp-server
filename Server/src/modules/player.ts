@@ -144,7 +144,6 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
       await item.save();
    });
 
-
    player.notification(Lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
 
    return true;

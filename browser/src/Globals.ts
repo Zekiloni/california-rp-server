@@ -173,6 +173,9 @@ export const Messages = {
    NO_ACTIVE_REPORT_RN: 'Nemate aktivnu prijavu trenutno.',
    ACTIVE_REPORT: 'Aktivna prijava',
 
+   // other
+   CLOSE: 'Zatvori',
+
    // vehicles menu
    VEHICLE_ID: 'ID vozila',
    YOUR_VEHICLES: 'Vaša vozila',

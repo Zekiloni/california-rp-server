@@ -3,7 +3,7 @@ import {
    Table, Column, Model, PrimaryKey, AutoIncrement,
    Unique, Default, CreatedAt, UpdatedAt, Length,
    DataType, BelongsTo, ForeignKey, HasOne, HasMany,
-   AfterSync, IsUUID, AfterCreate 
+   AfterSync, AfterCreate 
 } from 'sequelize-typescript';
 
 import { 
@@ -16,7 +16,7 @@ import {
 import { FacialMoods, gDimension, WalkingStyles, Lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig, ServerConfig, VehicleConfig } from '@configs';
-import { generateNumber, shared_Data } from '@shared';
+import { generateNumber, shared_Data, uuid } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/clothing.Item';
 import { admins } from '../../modules/admin';
@@ -160,8 +160,7 @@ export class Characters extends Model {
    @Column(DataType.BOOLEAN)
    cuffed: boolean
 
-   @IsUUID(4)
-   @Column
+   @Column(DataType.STRING)
    stranger: string
 
    @CreatedAt
@@ -203,6 +202,10 @@ export class Characters extends Model {
       }).then(bankAccount => {
          character.bank = bankAccount;
       });
+
+      character.stranger = uuid();
+
+      await character.save();
    }
 
    async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances, id?: number) { 
@@ -217,6 +220,7 @@ export class Characters extends Model {
       this.setHealth(player, this.health);
 
       player.setVariable(shared_Data.CHARACTER_ID, this.id);
+      player.setVariable(shared_Data.STRANGER, this.stranger);
 
       player.setVariable(shared_Data.MONEY, this.money);
       player.setVariable(shared_Data.JOB, this.job);
