@@ -104,17 +104,17 @@ new BaseItem(itemNames.HANDCUFFS, [ItemEnums.type.MISC] ,'prop_cs_cuffs_01', 0.3
 
 
 
-import './items/document.item';
-import './items/creditCard.item';
-import './items/clothing.Item';
-import './items/drink.item';
-import './items/food.item';
-import './items/ammo.item';
-import './items/weapon.item';
-import './items/phone.item';
-import './items/handheld.radio.item';
-import './items/cooker.item';
-import './items/med.item';
+import './items-registry/document.item';
+import './items-registry/creditCard.item';
+import './items-registry/clothing.Item';
+import './items-registry/drink.item';
+import './items-registry/food.item';
+import './items-registry/ammo.item';
+import './items-registry/weapon.item';
+import './items-registry/phone.item';
+import './items-registry/handheld.radio.item';
+import './items-registry/cooker.item';
+import './items-registry/med.item';
 
 
 

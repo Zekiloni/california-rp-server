@@ -1,10 +1,10 @@
 
 
-import { BaseItem } from '../item.model';
+import { BaseItem } from '../baseItem';
 import { inventories, logs} from '@models';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
-import weaponData from '../../configs/weapon.data.json';
+import weaponData from '../../../configs/weapon.data.json';
 
 
 

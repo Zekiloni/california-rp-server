@@ -1,4 +1,4 @@
-import { BaseItem } from '../item.model';
+import { BaseItem } from '../baseItem';
 import { animations, playerConfig } from '@configs';
 import { inventories } from '@models';
 import { ItemEnums, notifications } from '@enums';

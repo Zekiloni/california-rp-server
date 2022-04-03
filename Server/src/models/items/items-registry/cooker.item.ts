@@ -1,7 +1,7 @@
 
 
-import { BaseItem } from '../item.model';
-import { inventories  } from '../inventory.model';
+import { BaseItem } from '../baseItem';
+import { inventories  } from '../item';
 import { itemDescriptions } from "@constants";
 import { ItemEnums } from "@enums";
 
