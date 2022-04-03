@@ -21,7 +21,7 @@ npm run build
 npm run start
 ```
 
-## Browser
+### Browser
 - leaflet
 - vue
 - vue-cli
