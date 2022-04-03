@@ -1,20 +1,24 @@
-# california roleplay gamemode
+# California Roleplay - GTA V Gamemode @ rage.mp
+
+Foobar is a Python library for dealing with word pluralization.
+
+## Dependecies
+
+Required nodejs dependecies.
+
+###Server###
+- bcryptjs *(Encrypting User's passwords)*
+- express *(Serving API server)*
+- jsonwebtoken *(API Passport)*
+- module-alias *(Folder's path alias)*
+- mysql2 *(Database System)* / **MariaDB 10 +**
+- sequelize-typescript *(Database ORM)*
+- request-promise *(HTTP Request Client)*
+
+```bash
+npm install
+```
 
 
-server name: "California Roleplay - discord.gg/ca-rp 🌙 [balkan] [roleplay] [text based]" 
-mysql server: mariadb 10.3 +
-
-bcryptjs: ^2.4.3,
-module-alias: ^2.2.2,
-mysql2: ^2.3.3,
-request-promise: ^4.2.6,
-sequelize-typescript: ^2.1.3
- 
- 
-"@configs": "packages/mnrp/configs/index",
-"@constants": "packages/mnrp/constants/index",
-"@shared": "packages/mnrp/shared/index",
-"@enums": "packages/mnrp/enums/index",
-"@models": "packages/mnrp/models/index",
-"@interfaces": "packages/mnrp/interfaces/index"
-
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
