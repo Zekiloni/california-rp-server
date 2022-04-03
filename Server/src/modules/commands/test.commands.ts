@@ -3,7 +3,7 @@ import { Lang, cmds } from "@constants";
 import { notifications } from "@enums";
 import { Commands } from "../commands";
 import { shared_Data } from "@shared";
-import { Items } from "@models";
+import { BaseItem } from "@models";
 
 
 Commands['uniform'] = {
@@ -38,8 +38,8 @@ Commands['nigger'] = {
    call (player: PlayerMp) {
       let shootingItems = [];
       
-      for (const i in Items.list) {
-         const item = Items.list[i];
+      for (const i in BaseItem.list) {
+         const item = BaseItem.list[i];
 
          if (item.model) {
             shootingItems.push( { name: i, model: item.model } );

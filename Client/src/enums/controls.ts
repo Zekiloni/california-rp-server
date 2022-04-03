@@ -16,6 +16,7 @@ enum controls {
    RIGHT_ARROW = 0x27,
    ENTER = 0x0D,
    TAB = 0x09,
+   COSNSOLE = 0xC0,
    NUMBER_1 = 0x31,
    NUMBER_2 = 0x32,
    NUMBER_3 = 0x33,

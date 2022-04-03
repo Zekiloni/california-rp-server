@@ -5,7 +5,7 @@ import { ItemEnums } from '@enums';
 import { itemAction } from '@interfaces';
 
 
-export class Items {
+export class BaseItem {
    name: string;
    type: ItemEnums.type[];
    model: string;
@@ -16,7 +16,7 @@ export class Items {
    use? (player: PlayerMp, ...params: any): void | any;
    unequip? (player: PlayerMp): void ;
 
-   static list: { [key:string] : Items } = {};
+   static list: { [key:string] : BaseItem } = {};
 
    constructor (name: string, type: ItemEnums.type[], model: string, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
       this.name = name;
@@ -25,7 +25,7 @@ export class Items {
       this.weight = weight;     
       this.description = description;
 
-      Items.list[this.name] = this;
+      BaseItem.list[this.name] = this;
    }
 
 
@@ -97,7 +97,7 @@ export class Items {
 
 
 
-new Items(itemNames.HANDCUFFS, [ItemEnums.type.MISC] ,'prop_cs_cuffs_01', 0.35, itemDescriptions.HANDCUFFS);
+new BaseItem(itemNames.HANDCUFFS, [ItemEnums.type.MISC] ,'prop_cs_cuffs_01', 0.35, itemDescriptions.HANDCUFFS);
 
 
 

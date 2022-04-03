@@ -1,6 +1,6 @@
 
 
-import { Items } from '../item.model';
+import { BaseItem } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
@@ -12,7 +12,7 @@ const foodType = [
 ];
 
 
-export class foodItem extends Items {
+export class FoodItem extends BaseItem {
    hunger: number;
    snacks: number;
    
@@ -29,15 +29,15 @@ export class foodItem extends Items {
 }
 
 
-new foodItem(itemNames.FOOD_CHEESE_BURGER, 'prop_cs_burger_01', 2, 3);
-new foodItem(itemNames.FOOD_HAMBURGER, 'prop_cs_burger_01', 2, 3);
-new foodItem(itemNames.FOOD_CHICKEN_BURGER, 'prop_cs_burger_01', 3, 4);
-new foodItem(itemNames.FOOD_PIZZA, 'prop_pizza_box_02', 3, 4);
-new foodItem(itemNames.FOOD_SANDWICH , 'prop_sandwich_01', 3, 4);
-new foodItem(itemNames.FOOD_TACO, 'prop_taco_01', 2, 3);
-new foodItem(itemNames.FOOD_FRIES, 'prop_food_chips', 1, 2);
-new foodItem(itemNames.FOOD_CHIPS, 'v_ret_ml_chips4', 1, 2);
-new foodItem(itemNames.FOOD_DONUT, 'prop_donut_02', 1, 2);
+new FoodItem(itemNames.FOOD_CHEESE_BURGER, 'prop_cs_burger_01', 2, 3);
+new FoodItem(itemNames.FOOD_HAMBURGER, 'prop_cs_burger_01', 2, 3);
+new FoodItem(itemNames.FOOD_CHICKEN_BURGER, 'prop_cs_burger_01', 3, 4);
+new FoodItem(itemNames.FOOD_PIZZA, 'prop_pizza_box_02', 3, 4);
+new FoodItem(itemNames.FOOD_SANDWICH , 'prop_sandwich_01', 3, 4);
+new FoodItem(itemNames.FOOD_TACO, 'prop_taco_01', 2, 3);
+new FoodItem(itemNames.FOOD_FRIES, 'prop_food_chips', 1, 2);
+new FoodItem(itemNames.FOOD_CHIPS, 'v_ret_ml_chips4', 1, 2);
+new FoodItem(itemNames.FOOD_DONUT, 'prop_donut_02', 1, 2);
 
 
 

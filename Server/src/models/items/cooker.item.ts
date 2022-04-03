@@ -1,13 +1,13 @@
 
 
-import { Items } from '../item.model';
+import { BaseItem } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { itemDescriptions } from "@constants";
 import { ItemEnums } from "@enums";
 
 
 
-export class cookerItem extends Items {
+export class CookerItem extends BaseItem {
    slots: number;
    offsets: Vector3Mp[];
    
@@ -21,6 +21,6 @@ export class cookerItem extends Items {
 };
 
 
-new cookerItem('Big BBQ 1', 'prop_bbq_1', 10, 8.15, 'Veliki rostilj.');
-new cookerItem('Big BBQ 2', 'prop_bbq_5', 8, 5.65);
-new cookerItem('Small BBQ', 'prop_bbq_2', 4, 3.65);
+new CookerItem('Big BBQ 1', 'prop_bbq_1', 10, 8.15, 'Veliki rostilj.');
+new CookerItem('Big BBQ 2', 'prop_bbq_5', 8, 5.65);
+new CookerItem('Small BBQ', 'prop_bbq_2', 4, 3.65);

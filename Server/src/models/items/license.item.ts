@@ -1,5 +1,5 @@
 
-import { Items } from '../item.model';
+import { BaseItem } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
@@ -15,7 +15,7 @@ const licenseTypes = [
 export enum weapLicenseType { CCV, PF }
 
 
-export class licenseItem extends Items {
+export class LicenseItem extends BaseItem {
    
    constructor (name: string, model: string, description: string) { 
       super (name, licenseTypes, model, 0.15, description);
@@ -27,10 +27,10 @@ export class licenseItem extends Items {
 }
 
 
-new licenseItem(itemNames.DRIVING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemNames.BOATING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemNames.FISHING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemNames.FLYING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemNames.WEAPON_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemNames.HUNTING_LICENSE, 'prop_cs_documents_01', 'a');
-new licenseItem(itemNames.TRUCK_LICENSE, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemNames.DRIVING_LICENSE, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemNames.BOATING_LICENSE, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemNames.FISHING_LICENSE, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemNames.FLYING_LICENSE, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemNames.WEAPON_LICENSE, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemNames.HUNTING_LICENSE, 'prop_cs_documents_01', 'a');
+new LicenseItem(itemNames.TRUCK_LICENSE, 'prop_cs_documents_01', 'a');

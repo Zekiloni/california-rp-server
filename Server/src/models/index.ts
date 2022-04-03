@@ -30,7 +30,7 @@ export * from './house.model';
 export * from './vehicle.model';
 
 // @business
-export * from './business/product.model';
-export * from './business/worker.model';
-export * from './business/business.model';
+export * from './busineses/products/product';
+export * from './busineses/workers/worker';
+export * from './busineses/busines';
 

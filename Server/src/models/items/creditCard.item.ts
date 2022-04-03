@@ -1,12 +1,12 @@
 
-import { Items } from '../item.model';
+import { BaseItem } from '../item.model';
 import { inventories  } from '../inventory.model';
 import { itemDescriptions, itemNames } from '@constants';
 import { ItemEnums } from '@enums';
 
 
 
-export default class creditCardTime extends Items {
+export default class creditCardTime extends BaseItem {
    constructor (name: string, model: string, type: ItemEnums.type[], weight: number = 0.1, description?: string) { 
       
       super (name, type, model, weight, description);

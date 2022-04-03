@@ -1,10 +1,10 @@
-import { Jobs, Items } from '@models';
+import { Jobs, BaseItem } from '@models';
 
 
 interface FoodOrder { 
    name: string
    phone?: number
-   items: Items[]
+   items: BaseItem[]
 }
 
 

@@ -1,14 +1,13 @@
 
 
-import { Items } from '../item.model';
-import { inventories  } from '@models';
+import { BaseItem, inventories  } from '@models';
 import { itemDescriptions, itemNames } from "@constants";
 import { ItemEnums } from "@enums";
 import { shared_Data } from '@shared';
 import { animations } from '@configs';
 
 
-export class handheldRadioItem extends Items {
+export class HandheldRadioItem extends BaseItem {
    
    constructor (name: string, model: string, weight: number = 0.1) { 
       super (name, [ItemEnums.type.EQUIPABLE, ItemEnums.type.MISC, ItemEnums.type.ELECTRONIC_DEVICE], model, weight, itemDescriptions.HANDHELD_RADIO);
@@ -22,6 +21,6 @@ export class handheldRadioItem extends Items {
 };
 
 
-new handheldRadioItem(
+new HandheldRadioItem(
    itemNames.HANDHELD_RADIO, 'prop_cs_hand_radio', 0.25
 );

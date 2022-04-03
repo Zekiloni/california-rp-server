@@ -2,7 +2,7 @@
 import weaponData from '../configs/weapon.data.json';
 import { itemNames } from '@constants';
 import { ItemEnums } from '@enums';
-import { Items, inventories, logs } from '@models';
+import { BaseItem, inventories, logs } from '@models';
 
 
 mp.events.addProc(
@@ -33,7 +33,7 @@ function getPlayerItems (player: PlayerMp) {
 
 
 async function getItemInfo (player: PlayerMp, itemName: string) { 
-   const item = Items.list[itemName];
+   const item = BaseItem.list[itemName];
    return { info: item, actions: item.availableActions() };
 };
 
@@ -72,7 +72,7 @@ function onItemUnequip (player: PlayerMp, itemId: number) {
 
 function onItemUse (player: PlayerMp, itemId: number)  { 
    return inventories.findOne({ where: { id: itemId } }).then(async item => { 
-      const rItem = Items.list[item?.name!];
+      const rItem = BaseItem.list[item?.name!];
 
       await rItem?.use!(player, item);
 
@@ -89,7 +89,7 @@ function useEquiped (player: PlayerMp, index: number) {
      
    inventories.findAll( { where: { owner: player.character.id, equiped: true } } ).then(attachments => { 
       const equipment = attachments.filter(
-         attachment => !Items.list[attachment.name].type.includes(ItemEnums.type.CLOTHING) && !Items.list[attachment.name].type.includes(ItemEnums.type.PROP)
+         attachment => !BaseItem.list[attachment.name].type.includes(ItemEnums.type.CLOTHING) && !BaseItem.list[attachment.name].type.includes(ItemEnums.type.PROP)
       );
       
       const item = equipment[index];
@@ -98,7 +98,7 @@ function useEquiped (player: PlayerMp, index: number) {
          return;
       }
    
-      const rItem = Items.list[item.name];
+      const rItem = BaseItem.list[item.name];
 
       rItem.use!(player, item);
    })
