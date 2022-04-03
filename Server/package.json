@@ -15,7 +15,7 @@
       "build": "tsc"
    },
    "_moduleAliases": {
-      "@configs": "dist/configs/index",
+      "@configs": "dist/configs/index", 
       "@modules": "dist/modules/",
       "@constants": "dist/constants/index",
       "@shared": "dist/shared/index",

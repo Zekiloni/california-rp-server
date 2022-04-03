@@ -19,6 +19,12 @@ import { logs } from'@models';
 import { Lang } from '@constants';
 
 
+/* 
+   IMPORTING MAP 
+   - gta5 > props > props.rpf > YDR, YTYP, YTD, YDD, YFT
+   - gta5 > props > meta.rpf > YBN, YMAP, _manifest
+*/
+
 
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera

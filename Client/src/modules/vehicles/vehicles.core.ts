@@ -11,6 +11,18 @@ const blockedClasses = [
 ];
 
 
+export enum VehicleDoors {
+   FRONT_LEFT_DOOR,
+   FRONT_RIGHT_DOOR,
+   BACK_LEFT_DOOR,
+   BACK_RIGHT_DOOR,
+   HOOD,
+   TRUNK,
+   BACK,
+   BACK2,
+};
+
+
 let temporary = {
    calculateDistance: 0,
    fuel: 0,

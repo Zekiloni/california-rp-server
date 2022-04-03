@@ -67,6 +67,7 @@ export namespace cmds {
       SPAWN_VEHICLE: 'spawnvehicle',
       FACTION_EQUIPMENT: 'equipment',
       FACTION_GARAGE: 'garage',
+      VEHICLE_TRUNK: 'trunk',
       FACTION_GOV_REPAIR: 'govrepair',
       FACTION_LIVERY: 'livery',
       CREATE_BUSINESS: 'createbusines',
@@ -162,6 +163,8 @@ export namespace cmds {
       EDIT_HOUSE: 'Podešavanje kuće.',
       EDIT_BUSINESS: 'Podešavanje najbližeg biznisa.',
       BUSINESS: 'Opcije biznisa.',
+
+      VEHICLE_TRUNK: 'Otvvoriti - zatvoriti gepek vozila.',
       
       BUSINESS_TYPES: 'Spisak dostupnih tipova bizinsa.',
       BUILDER: 'Graditelj.',

@@ -2,6 +2,7 @@ import { Browser } from '../../browser';
 import controls from '../../enums/controls';
 import { playAnimation } from '../player/animation';
 import { animationFlags } from '../../enums/animations.flags';
+import { isNearTrunk } from '../vehicles/vehicle.Trunk';
 
 
 export let inventoryActive: boolean = false;
@@ -116,10 +117,8 @@ mp.keys.bind(controls.KEY_I, true, function() {
    }
 
    const vehicle = mp.vehicles.getClosest(mp.players.local.position);
-   const { position } = mp.players.local;
-   const { x, y, z } = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName('taillight_l'));
 
-   if (vehicle && mp.game.system.vdist(x, y, z, position.x, position.y, position.z) < 1.45) { //  && vehicle.getVariable('TRUNK')
+   if (isNearTrunk(vehicle.remoteId) && vehicle.getVariable('TRUNK')) {
       openTrunk(vehicle.remoteId);
    } else {
       openInventory();

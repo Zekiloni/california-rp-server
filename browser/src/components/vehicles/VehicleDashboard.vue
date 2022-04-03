@@ -3,15 +3,22 @@
 <template>
    <div class="vehicle-info">
       <div class="main">
+
          <div class="speedo">
-            <div class="speed">
-               <h2> {{ speed }} </h2>
+            <h2> {{ speed }} <small>kmh</small> </h2>
+            <div class="bars">
+               <div class="bar" v-for="bar in bars" :key="'bar' + bar" :class="{ active: speed > bar }" > </div>
             </div>
-            <div class="line" :style="{ transform: 'rotate(' + speed + 'deg)'}"> </div>
-            <div class="blinkers">
-               <div class="blinker"> <div class="icon left"> </div> </div>
-               <div class="blinker"> <div class="icon right"> </div> </div>
+         </div>
+        
+         <div class="dashboard">
+            <div class="fuel">
+               <h2> {{ (100 - (speed / 10)).toFixed(0) }} <small>l</small> </h2>  
+               <div class="tank">
+                  <div class="amount" :style="{ width: (100 - (speed / 10)) + '%'}"> </div>
+               </div>
             </div>
+            <h3 class="mileage"> {{ mileage }} <small>km</small> </h3>
          </div>
       </div>
    </div>
@@ -28,6 +35,8 @@
 
    @Component
    export default class VehicleDashboard extends Vue {
+
+      bars: number[] = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270]
 
       vehicleName: string | null = null;
       
@@ -71,55 +80,115 @@
       position: absolute;
       bottom: 30px;
       right: 20px;
-      width: 250px;
+      max-width: 250px;
       min-height: 100px;
       height: auto;
    }
 
    .main {
+      width: 100%;
       margin: auto;
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
+      align-items: flex-end;
    }
-
 
    @keyframes blinking {
       50% { background: #00d474; }
    }
 
    .speedo {
-      width: 180px;
-      height: 180px;
-      position: relative;
-      border: 1px solid rgb(132 142 156 / 15%);
-      background: linear-gradient(120deg, rgb(11 14 17 / 25%), transparent);
-      border-radius: 100%;
       display: flex;
+      padding: 10px 0;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
+      width: 100%;
    }
 
-   .speedo .line {
-      position: absolute;
-      top: 90px;
-      height: 8px;
-      width: 180px;
-      background: linear-gradient(90deg, transparent 0%, #ff2121 50%, transparent 55%);
-   }
-
-   .speedo .speed { text-align: center; }
-   .speedo .speed h2 {
+   .speedo h2 {
+      width: 100%;
+      text-align: right;
+      font-size: 2rem;
+      color: whitesmoke;
       margin: 0;
-      margin-top: 25px;
-      font-size: 3rem;
-      background: -webkit-linear-gradient(whitesmoke, rgb(80, 80, 80));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
    }
+
+   .speedo h2 small {
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      color: grey;
+   }
+
+   .bars { 
+      display: flex;
+      justify-content: flex-end;
+   }
+
+   .bars .bar { 
+      width: .4vw;
+      height: 2.05vw;
+      border-radius: .5vw;
+      margin: 0 0.25vw;
+      background-color: rgba(16, 15, 20, 0.75);
+      transition: all .15s ease;
+   }
+
+   .bars .bar.active {
+      background: #fdb91b;
+   }
+
+   .fuel {
+      width: 100px;
+      height: auto;
+      margin: 5px 0;
+      display: grid;
+   }
+
+   .fuel h2 { 
+      width: 100%;
+      text-align: right;
+      font-size: 1.25rem;
+      color: whitesmoke;
+      margin: 0;
+   }
+
+   .fuel h2 small {
+      font-size: 0.95rem;
+      color: grey;
+   }
+
+   .fuel .tank {
+      width: 100%;
+      height: 10px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 3px;
+      background-color: rgba(16, 15, 20, 0.75);
+   }
+
+   .fuel .tank .amount {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: #fdb91b;
+   }
+
+   .dashboard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 5px 0;
+   }
+   
+   .dashboard h3.mileage {
+      color: white;
+      margin: 0;
+   }
+
+   h3.mileage small { color: grey; }
 
    .blinkers {
       display: flex;

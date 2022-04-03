@@ -1,5 +1,6 @@
 import { cmds } from '@constants';
 import { vehicles, logs } from '@models';
+import { shared_Data } from '@shared';
 import { Commands } from '../commands';
 
 
@@ -20,6 +21,22 @@ Commands[cmds.names.VEHICLES_MENU] = {
          console.log(vehicles);
          player.call('CLIENT::VEHICLES:MENU', [vehicles]);
       }).catch(e => logs.error('catchingVehicles ' + e));
+   }
+}
+
+Commands[cmds.names.VEHICLE_TRUNK] = {
+   description: cmds.descriptions.VEHICLE_TRUNK,
+   call (player: PlayerMp) {
+      if (player.vehicle) {
+         player.vehicle.setVariable(shared_Data.TRUNK, !player.vehicle.getVariable(shared_Data.TRUNK));
+      } else { 
+         const vehicle = mp.vehicles.getClosest(player.position);
+         player.callProc('CLIENT::NEAR_VEHICLE_TRUNK', [vehicle.id]).then(nearTrunk => {
+            if (nearTrunk) {
+               vehicle.setVariable(shared_Data.TRUNK, !vehicle.getVariable(shared_Data.TRUNK));
+            }
+         })
+      }
    }
 }
 
