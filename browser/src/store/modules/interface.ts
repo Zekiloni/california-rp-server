@@ -97,7 +97,7 @@ const InitialState:uInterface = {
 
    // faction
    factionPanel: { 
-      toggle: true, 
+      toggle: false, 
       mouse: true,
       escClose: 'CLIENT::FACTION:PANEL' 
    },

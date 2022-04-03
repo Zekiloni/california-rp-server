@@ -4,8 +4,7 @@ import { interactionPoint } from '@interfaces';
 import { notifications, rank } from '@enums';
 import { cmds, gDimension, Lang } from '@constants';
 import { houseConfig } from '@configs';
-import { Characters, objects } from '@models';
-import { logs } from './log.model';
+import { logs, Characters, objects } from '@models';
 
 
 @Table
@@ -157,7 +156,7 @@ export class houses extends Model {
 
       await this.save();
    }
-   
+
    showInfo (player: PlayerMp) {
       if (player.vehicle) {
          return;

@@ -18,7 +18,7 @@ export function isInRangeOfPoint (first: Vector3Mp, range: number, second: Vecto
    return distanceBetweenVectors(first, second) < range ? true : false;
 }
 
-export const uuid = () => {
+export function uuid () {
    const head = Date.now().toString(36);
    const tail = Math.random().toString(36).substring(5);
 

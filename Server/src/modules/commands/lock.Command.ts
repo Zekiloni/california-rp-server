@@ -23,13 +23,10 @@ Commands[cmds.names.LOCK] = {
 
          case nearest?.type == RageEnums.EntityType.VEHICLE: {
             const vehicle = <VehicleMp>nearest;
-            console.log('lock command 0')
 
             if (!vehicle.instance) {
                return;
             }
-
-            console.log('lock command 1')
 
             vehicle.instance.lock(vehicle, player);
             break;
@@ -41,6 +38,7 @@ Commands[cmds.names.LOCK] = {
          }
 
          case nearest instanceof houses: {
+            (<houses>nearest).lock(player);
             break;
          }
 
