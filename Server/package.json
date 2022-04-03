@@ -15,13 +15,13 @@
       "build": "tsc"
    },
    "_moduleAliases": {
-      "@configs": "packages/california/configs/index",
-      "@modules": "packages/california/modules/",
-      "@constants": "packages/california/constants/index",
-      "@shared": "packages/california/shared/index",
-      "@enums": "packages/california/enums/index",
-      "@models": "packages/california/models/index",
-      "@interfaces": "packages/california/interfaces/index"
+      "@configs": "dist/configs/index",
+      "@modules": "dist/modules/",
+      "@constants": "dist/constants/index",
+      "@shared": "dist/shared/index",
+      "@enums": "dist/enums/index",
+      "@models": "dist/models/index",
+      "@interfaces": "dist/interfaces/index"
    },
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
