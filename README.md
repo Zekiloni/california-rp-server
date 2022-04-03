@@ -6,7 +6,7 @@ Foobar is a Python library for dealing with word pluralization.
 
 Required nodejs dependecies.
 
-###Server###
+### Server
 - bcryptjs *(Encrypting User's passwords)*
 - express *(Serving API server)*
 - jsonwebtoken *(API Passport)*
