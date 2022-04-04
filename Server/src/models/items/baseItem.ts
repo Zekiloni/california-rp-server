@@ -102,8 +102,6 @@ new BaseItem(itemNames.HANDCUFFS, [ItemEnums.type.MISC] ,'prop_cs_cuffs_01', 0.3
 
 
 
-
-
 import './items-registry/document.item';
 import './items-registry/creditCard.item';
 import './items-registry/clothing.Item';

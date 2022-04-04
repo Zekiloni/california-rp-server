@@ -1,10 +1,11 @@
 
 
-import { BaseItem, inventories  } from '@models';
 import { itemDescriptions, itemNames } from "@constants";
 import { ItemEnums } from "@enums";
 import { shared_Data } from '@shared';
 import { animations } from '@configs';
+import { BaseItem } from "../baseItem";
+import { inventories } from "../item";
 
 
 export class HandheldRadioItem extends BaseItem {

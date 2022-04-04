@@ -36,7 +36,7 @@
    @Component
    export default class VehicleDashboard extends Vue {
 
-      bars: number[] = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270]
+      bars: number[] = [0, 20, 50, 75, 90, 115, 140, 160, 180, 205]
 
       vehicleName: string | null = null;
       
