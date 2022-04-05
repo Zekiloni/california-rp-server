@@ -1,6 +1,6 @@
 # California Roleplay - GTA V Gamemode @ rage.mp
 
-Foobar is a Python library for dealing with word pluralization.
+Using RAGE:MP 1.1.
 
 ## Dependecies
 
@@ -17,7 +17,24 @@ Required nodejs dependecies.
 
 ```bash
 npm install
+npm run build
+npm run start
 ```
+
+### Browser
+- leaflet
+- vue
+- vue-cli
+- vue-router
+- vuex
+```bash
+
+npm install
+npm run server
+npm run build
+```
+
+
 
 
 ## License
