@@ -134,6 +134,7 @@
       /* background: url('https://i.imgur.com/XUJTwKm.png');
       background-position: center;
       background-repeat: no-repeat; */
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
    }
 
    .server { 
@@ -145,7 +146,6 @@
       flex-direction: column;
       justify-content: flex-start;
       text-align: right;
-      text-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
    }
 
    .server img {

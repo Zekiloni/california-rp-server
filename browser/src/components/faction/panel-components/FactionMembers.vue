@@ -67,8 +67,8 @@
 
    @Component({
       props: {
-         members: Array,
-         ranks: Array
+         members: Array as () => Member[],
+         ranks: Array as () => Rank[]
       }
    })
    export default class FactionMembers extends Vue {
