@@ -1,13 +1,13 @@
 import { entityType } from '../../enums/entity';
 
-interface markedEntity {
+interface MarkedEntity {
    colshape: ColshapeMp
    marker: MarkerMp
    blip?: BlipMp
 }
 
 
-let marked: markedEntity | null = null;
+let marked: MarkedEntity | null = null;
 
 
 export default function markEntity (entity: EntityMp, marker: number, color: RGBA, blip?: number) {
