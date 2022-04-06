@@ -2,7 +2,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { CartItem, interactionPoint } from '@interfaces';
 import { cmds, gDimension, Lang, none } from '@constants';
-import { Characters, logs, Products, Workers, inventories, BaseItem, vehicles } from '@models';
+import { Characters, logs, Products, Workers, inventories, BaseItem, Vehicles } from '@models';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
@@ -465,7 +465,7 @@ export class Busines extends Model {
          const model = (<string>product.name).toLocaleLowerCase();
          const [primaryColor, secondaryColor]: [RGB, RGB] = JSON.parse(color);
          
-         vehicles.new(
+         Vehicles.new(
             model, 
             VehicleConfig.type.OWNED, 
             false, 

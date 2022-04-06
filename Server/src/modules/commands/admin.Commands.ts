@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, BaseItem, inventories, houses, Accounts, Busines, Factions, Characters, vehicles } from '@models';
+import { logs, BaseItem, inventories, houses, Accounts, Busines, Factions, Characters, Vehicles } from '@models';
 import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';
@@ -399,7 +399,7 @@ Commands[cmds.names.CREATE_VEHICLE] = {
 
       const rotation = new mp.Vector3(0, 0, player.heading);
 
-      vehicles.new(model, VehicleConfig.type.ADMIN, true, player.character.id, color, player.position, rotation, {
+      Vehicles.new(model, VehicleConfig.type.ADMIN, true, player.character.id, color, player.position, rotation, {
          locked: false, spawned: false
       }).then(createdVehicle => {
          if (!createdVehicle) {
@@ -426,7 +426,7 @@ Commands[cmds.names.SPAWN_VEHICLE] = {
       cmds.params.VEHICLE_ID,
    ],
    call (player: PlayerMp, vehicleID: string) {
-      vehicles.findOne( { where: { id: Number(vehicleID) } } ).then(vehicle => {
+      Vehicles.findOne( { where: { id: Number(vehicleID) } } ).then(vehicle => {
          if (!vehicle) {
             player.notification(Lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
             return;
@@ -498,7 +498,7 @@ Commands[cmds.names.DESTROY_VEHICLE] = {
       cmds.params.VEHICLE_ID
    ],
    call (player: PlayerMp, vehicleID: string) {
-      vehicles.findOne( { where: { id: vehicleID } } ).then(vehicle => {
+      Vehicles.findOne( { where: { id: vehicleID } } ).then(vehicle => {
          if (!vehicle) {
             player.notification(Lang.noVehicleFound, notifications.type.ERROR, notifications.time.MED);
             return;

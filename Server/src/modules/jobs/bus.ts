@@ -1,6 +1,6 @@
 import { JobConfig, VehicleConfig } from '@configs';
 import { VehiclePoint } from '@interfaces';
-import { Jobs, vehicles } from '@models';
+import { Jobs, Vehicles } from '@models';
 import { initials, randomInteger } from '@shared';
 
 
@@ -38,7 +38,7 @@ bus.start = function (player: PlayerMp, routeID: number) {
    if (jobVehicle) {
 
    } else {
-      vehicles.new('bus', VehicleConfig.type.JOB, true, player.character.id, vehicleColor, vehiclePoint.position, vehiclePoint.rotation, {
+      Vehicles.new('bus', VehicleConfig.type.JOB, true, player.character.id, vehicleColor, vehiclePoint.position, vehiclePoint.rotation, {
          locked: false, spawned: false, numberplate: {
             issued: Date.now(),
             plate: initials(this.name) + randomInteger(100, 900).toFixed(0),

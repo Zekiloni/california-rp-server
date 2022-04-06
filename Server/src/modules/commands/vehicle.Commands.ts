@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { vehicles, logs } from '@models';
+import { Vehicles, logs } from '@models';
 import { shared_Data } from '@shared';
 import { Commands } from '../commands';
 
@@ -17,7 +17,7 @@ Commands[cmds.names.ENGINE] = {
 Commands[cmds.names.VEHICLES_MENU] = {
    description: cmds.descriptions.VEHICLES_MENU,
    call (player: PlayerMp) {
-      vehicles.findAll( { where: { owner: player.character.id } } ).then(vehicles => {
+      Vehicles.findAll( { where: { owner: player.character.id } } ).then(vehicles => {
          console.log(vehicles);
          player.call('CLIENT::VEHICLES:MENU', [vehicles]);
       }).catch(e => logs.error('catchingVehicles ' + e));

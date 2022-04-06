@@ -1,5 +1,5 @@
 
-import { Accounts, Characters, vehicles } from '@models';
+import { Accounts, Characters, Vehicles } from '@models';
 
 
 declare global { 
@@ -23,7 +23,7 @@ declare global {
    }
 
    interface VehicleMp { 
-      instance: vehicles
+      instance: Vehicles
    }
 
    interface PlayerMp { 

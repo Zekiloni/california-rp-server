@@ -2,19 +2,19 @@
 import { 
    Table, Column, Model, PrimaryKey, AutoIncrement, 
    Default, CreatedAt, UpdatedAt, AllowNull, 
-   AfterCreate, AfterDestroy, DataType, AfterSync, ForeignKey, BelongsTo 
+   AfterCreate, AfterDestroy, DataType, AfterSync, ForeignKey, BelongsTo, HasMany 
 } from 'sequelize-typescript';
 
 import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, Lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { Jobs, Factions, logs, Characters } from '@models';
+import { Jobs, Factions, logs, Characters, VehicleComponents } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
 @Table
-export class vehicles extends Model {
+export class Vehicles extends Model {
    
    @PrimaryKey
    @AutoIncrement
@@ -127,6 +127,9 @@ export class vehicles extends Model {
       this.setDataValue('color', JSON.stringify(value));
    }
 
+   @HasMany(() => VehicleComponents)
+   mods: VehicleComponents[]
+
    @CreatedAt
    created_at: Date
 
@@ -141,7 +144,7 @@ export class vehicles extends Model {
 
    @AfterSync
    static loading () {
-      vehicles.findAll().then(vehicles => {
+      Vehicles.findAll().then(vehicles => {
          const spawnedVehicles = vehicles.filter(vehicle =>  vehicle.spawned == true);
          spawnedVehicles.forEach(vehicle => {
             if (vehicle.spawned) {
@@ -154,11 +157,11 @@ export class vehicles extends Model {
    }
 
    @AfterCreate
-   static async creating (vehicle: vehicles) {
+   static async creating (vehicle: Vehicles) {
    }
 
    @AfterDestroy
-   static async destroying (vehicle: vehicles) {
+   static async destroying (vehicle: Vehicles) {
       const gameObject = mp.vehicles.toArray().find(gameVehicle => gameVehicle.instance.id == vehicle.id);
 
       if (gameObject) {
@@ -180,7 +183,7 @@ export class vehicles extends Model {
       } 
    ) {
       console.log(color)
-      return vehicles.create( 
+      return Vehicles.create( 
          { 
             model: model, 
             type: type, 
@@ -452,9 +455,9 @@ export class vehicles extends Model {
 
 
 
-mp.events.add('playerExitVehicle', vehicles.exit);
-mp.events.add('SERVER::VEHICLE:UPDATE', vehicles.data);
-mp.events.add('SERVER::VEHICLE:INDICATORS', vehicles.indicators);
-mp.events.addProc('SERVER::VEHICLE:MENU_ACTION', vehicles.action);
-mp.events.addProc('SERVER::GET_VEHICLE_TRUNK', vehicles.trunk);
+mp.events.add('playerExitVehicle', Vehicles.exit);
+mp.events.add('SERVER::VEHICLE:UPDATE', Vehicles.data);
+mp.events.add('SERVER::VEHICLE:INDICATORS', Vehicles.indicators);
+mp.events.addProc('SERVER::VEHICLE:MENU_ACTION', Vehicles.action);
+mp.events.addProc('SERVER::GET_VEHICLE_TRUNK', Vehicles.trunk);
 

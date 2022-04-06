@@ -9,7 +9,7 @@ import {
 import { 
    Accounts, appearances, banks, houses,
    Busines, inventories, logs, objects, 
-   vehicles, Factions, FactionsRanks,
+   Vehicles, Factions, FactionsRanks,
    MoneyLogs
 } from '@models';
 
@@ -175,8 +175,8 @@ export class Characters extends Model {
    @HasMany(() => Busines)
    business: Busines[]
 
-   @HasMany(() => vehicles)
-   vehicles: vehicles[]
+   @HasMany(() => Vehicles)
+   vehicles: Vehicles[]
 
    offer: offer | null = null;
    
@@ -477,7 +477,7 @@ export class Characters extends Model {
       this.last_position = position;
       this.last_dimension = dimension;
 
-      vehicles.findAll({ where: { owner: this.id, temporary: true } } ).then(vehicles => {
+      Vehicles.findAll({ where: { owner: this.id, temporary: true } } ).then(vehicles => {
          vehicles.forEach(vehicle => {
             switch (vehicle.type) {
                case VehicleConfig.type.ADMIN: {
