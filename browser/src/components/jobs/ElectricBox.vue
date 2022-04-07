@@ -121,7 +121,7 @@
    }
 
    .switch.on button .icon {
-      background: #00c85f;
+      filter: brightness(1.5);
    }
 
 </style>

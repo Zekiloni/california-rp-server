@@ -37,10 +37,10 @@ class Electrician extends Jobs {
       return this.vehicles.get(player.id);
    }
 
-   generatePoints () {
+   generatePoints (max: number) {
       let randomized: Vector3Mp[] = [];
 
-      for (let i = 0; i < this.points.length; i ++) {
+      for (let i = 0; i < max; i ++) {
          randomized.push(
             this.points[Math.floor(Math.random() * this.points.length)]
          );
@@ -70,7 +70,7 @@ class Electrician extends Jobs {
             console.log(createdVehicle.numberPlate)
    
             const vehicle = createdVehicle.load();
-            const malfunctions = this.generatePoints();
+            const malfunctions = this.generatePoints(4);
             player.call('CLIENT::ELECTRICIAN_START', [malfunctions]);
       
             // Creating job vehicle 
@@ -121,5 +121,4 @@ export const electrician = new Electrician(
 );
 
 mp.events.call('SERVER::ELECTRICIAN_STOP', electrician.stop);
-
 

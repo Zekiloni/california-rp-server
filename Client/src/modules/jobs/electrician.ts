@@ -1,11 +1,11 @@
-import { Browser } from "../../browser"
+import { Browser } from "../../browser";
+import { getCalculatedDistance, startCalculatingDistance, stopCalculatingDistance } from "../utils/calculateDistance";
 
 
 const ElectricianConfig = {
    sprite: 767,
    spriteColor: 79
 }
-
 
 
 interface ElectricBox {
@@ -16,7 +16,6 @@ interface ElectricBox {
 
 interface ElectricianWork {
    fixingActive: boolean
-   distance: number
    vehicle: VehicleMp | null
    boxes: ElectricBox[],
    current: number
@@ -32,11 +31,12 @@ const startElectrician = (points: Vector3Mp[], vehicleId: number) => {
 
    electrician = {
       fixingActive: false,
-      distance: 0.0,
       vehicle: mp.vehicles.atRemoteId(vehicleId),
       boxes: [],
       current: points.indexOf(first)
    };
+
+   startCalculatingDistance();
 
    for (const point of points) {
       electrician.boxes.push({ position: point, fixed: false });
@@ -66,21 +66,27 @@ const electricianPoint = (position: Vector3Mp) => {
    });
 
    const onStartFixing = (eCheckpoint: CheckpointMp) => {
-      if (eCheckpoint == checkpoint && !mp.players.local.vehicle) {
+      if (eCheckpoint == checkpoint) {
          mp.gui.chat.push('entered point')
+
+         if (mp.players.local.vehicle) {
+            return;
+         }
+
+         checkpoint.destroy();
+         blip.destroy();
 
          Browser.call('BROWSER::SHOW', 'electricBox');
 
          const onFixBox = () => {
-            mp.gui.chat.push('Point fixed')
-
-            checkpoint.destroy();
-            blip.destroy();
+            mp.gui.chat.push(JSON.stringify(electrician?.boxes))
 
             Browser.call('BROWSER::HIDE', 'electricBox');
 
             mp.events.remove(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT);
             mp.events.remove('CLIENT::ELECTRICITY_FIX', onFixBox);
+
+            electrician!.boxes[electrician!.current].fixed = true;
             
             if (electrician!.boxes.length == electrician!.boxes.length - 1) {
                return stopElectrician();
@@ -102,7 +108,11 @@ const electricianPoint = (position: Vector3Mp) => {
 const stopElectrician = () => {
    if (electrician) {
       const fixed = electrician?.boxes.map(point => point.fixed == true);
-      mp.events.callRemote('SERVER::POSTAL:FINISH', fixed.length, electrician.distance);
+
+      const distance = getCalculatedDistance();
+      stopCalculatingDistance();
+
+      mp.events.callRemote('SERVER::POSTAL:FINISH', fixed.length, distance);
 
       electrician = null;
    }
