@@ -67,7 +67,7 @@ const electricianPoint = (position: Vector3Mp) => {
 
    const onStartFixing = (eCheckpoint: CheckpointMp) => {
       if (eCheckpoint == checkpoint) {
-         mp.gui.chat.push('entered point')
+         mp.gui.chat.push('entered point, distance ' + getCalculatedDistance())
 
          if (mp.players.local.vehicle) {
             return;
