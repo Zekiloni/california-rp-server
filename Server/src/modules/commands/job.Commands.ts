@@ -4,6 +4,7 @@ import { notifications } from '@enums';
 import { Jobs } from '@models';
 import { JobConfig } from '@configs';
 import { taxi } from '../../modules/jobs/taxi';
+import { electrician } from '../../models/jobs/electrician/electrician';
 
 
 
@@ -84,5 +85,16 @@ Commands[cmds.names.TAXI_JOB] = {
    },
    call (player: PlayerMp) {
       taxi.menu(player);
+   }
+}
+
+Commands[cmds.names.ELECTRICITY] = {
+   description: cmds.descriptions.ELECTRICITY,
+   job: {
+      required: true,
+      id: JobConfig.job.ELECTRICIAN
+   },
+   call (player: PlayerMp) {
+      electrician.start(player);
    }
 }

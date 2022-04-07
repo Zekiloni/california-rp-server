@@ -26,6 +26,12 @@ import { Lang } from '@constants';
 */
 
 
+/*
+   CHANCING xD was so high
+   Math.random() < 0.9) // 90% Chance of true
+   Math.random() < 0.8) // 80% chance of true
+*/
+
 // mp.events.addProc('test_proc', async (text)...) // dodavanje prcoedure
 // let res = await player.callProc('test_proc', ['ok']); - pozivanje klijent procedure sa servera
 // let res = await mp.events.callRemoteProc('server:player.character:delete', character); // pzoivanje server procedure sa klijenta

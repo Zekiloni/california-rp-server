@@ -109,6 +109,10 @@
          <TaxiMenu v-if="interfaces.taxiMenu.toggle" />
       </transition>
 
+      <transition name="fade"> 
+         <ElectricBox v-if="interfaces.electricBox.toggle" />
+      </transition>
+
    </div>
 </template>
 
@@ -161,7 +165,7 @@
 
    import BusStations from '@/components/jobs/BusStations.vue';
    import TaxiMenu from '@/components/jobs/TaxiMenu.vue';
-   
+   import ElectricBox from '@/components/jobs/ElectricBox.vue';
 
       
    export default { 
@@ -179,7 +183,7 @@
          FactionPanel, FactionGarage, 
          PoliceRadar, 
 
-         BusStations, TaxiMenu
+         BusStations, TaxiMenu, ElectricBox
       },
 
       data () { 

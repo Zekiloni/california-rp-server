@@ -27,7 +27,7 @@ export namespace JobConfig {
       BUS_DRIVER: new mp.Vector3(434.9161, -645.7756, 28.7343),
       POSTAL: new mp.Vector3(0, 0, 0),
       TAXI: new mp.Vector3(900.6175, -174.1521, 74.0188),
-      ELECTRICIAN: new mp.Vector3(0, 0, 0)
+      ELECTRICIAN: new mp.Vector3(678.69140625, 73.58089447021484, 83.16932)
    }
 
    export const names = {

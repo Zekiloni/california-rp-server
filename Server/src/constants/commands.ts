@@ -40,6 +40,7 @@ export namespace cmds {
       BUS_ROUTES: 'routes',
       HEALTH: 'health',
       SET_ARMOUR: 'armour',
+      ELECTRICITY: 'electricity',
       A_CHAT: 'a',
       RENT: 'rent',
       GIVE_ITEM: 'giveitem',
@@ -234,6 +235,8 @@ export namespace cmds {
       QUIT_JOB: 'Davanje otkaza na trenutnom poslu.',
       TAXI_JOB: 'Posao taksiste.',
       BANK: 'Bankovni meni, dostupno samo u bankama.',
+
+      ELECTRICITY: 'Posao električara.'
    };
    
 }

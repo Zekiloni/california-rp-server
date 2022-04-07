@@ -1,3 +1,4 @@
+import { Browser } from "../../browser"
 
 
 const ElectricianConfig = {
@@ -27,6 +28,8 @@ let electrician: ElectricianWork | null = null;
 const startElectrician = (points: Vector3Mp[], vehicleId: number) => {
    const [first] = points;
 
+   mp.gui.chat.push('electrician started')
+
    electrician = {
       fixingActive: false,
       distance: 0.0,
@@ -44,6 +47,7 @@ const startElectrician = (points: Vector3Mp[], vehicleId: number) => {
 
 
 const electricianPoint = (position: Vector3Mp) => {
+   mp.gui.chat.push('Point created')
    const { x, y, z } = position;
 
    if (!electrician) {
@@ -61,11 +65,38 @@ const electricianPoint = (position: Vector3Mp) => {
       dimension: mp.players.local.dimension
    });
 
-   const fixBox = () => {
+   const onStartFixing = (eCheckpoint: CheckpointMp) => {
+      if (eCheckpoint == checkpoint && !mp.players.local.vehicle) {
+         mp.gui.chat.push('entered point')
 
+         Browser.call('BROWSER::SHOW', 'electricBox');
+
+         const onFixBox = () => {
+            mp.gui.chat.push('Point fixed')
+
+            checkpoint.destroy();
+            blip.destroy();
+
+            Browser.call('BROWSER::HIDE', 'electricBox');
+
+            mp.events.remove(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT);
+            mp.events.remove('CLIENT::ELECTRICITY_FIX', onFixBox);
+            
+            if (electrician!.boxes.length == electrician!.boxes.length - 1) {
+               return stopElectrician();
+            }
+
+            electrician!.current ++;
+            const nextBox = electrician?.boxes[electrician.current];
+
+            electricianPoint(nextBox!.position);
+         }
+
+         mp.events.add('CLIENT::ELECTRICITY_FIX', onFixBox);
+      }
    }
 
-   mp.events.add('CLIENT::ELECTRICIAN_FIX', fixBox);
+   mp.events.add(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, onStartFixing);
 }
 
 const stopElectrician = () => {

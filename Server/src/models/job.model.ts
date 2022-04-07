@@ -96,3 +96,5 @@ export class Jobs {
       );
    }
 }
+
+import './jobs/electrician/electrician'

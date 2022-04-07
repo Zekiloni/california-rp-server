@@ -1,8 +1,10 @@
-import { JobConfig } from '@configs/jobs.config';
+import { JobConfig, VehicleConfig } from '@configs';
 import { colors } from '@constants';
 import { notifications } from '@enums';
-import { Jobs } from '@models';
+import { Jobs } from '../../job.model';
 import { generateString } from '@shared';
+import { VehiclePoint } from '@interfaces';
+import { Vehicles } from '@models';
 
 const PRICE_PER_BOX = 6;
 
@@ -20,7 +22,16 @@ class Electrician extends Jobs {
       new mp.Vector3(-185.922241, 219.426193, 88.687248)
    ]
 
+   vehicle_position: VehiclePoint = {
+      position: new mp.Vector3(686.7717895507812, 74.45893096923828, 83.06054),
+      rotation: new mp.Vector3(-3.10975980758667, 2.132307529449463, 153.1594)
+   }
+
    vehicles: Map<number, VehicleMp> = new Map();
+
+   constructor (id: number, name: string, description: string, position: Vector3Mp, sprite?: number, spriteColor?: number) {
+      super(id, name, description, position, sprite, spriteColor);
+   }
 
    getElectricianVehicle (player: PlayerMp) {
       return this.vehicles.get(player.id);
@@ -45,20 +56,30 @@ class Electrician extends Jobs {
       }
       
       if (!player.vehicle) {
-         const vehicle = mp.vehicles.new(mp.joaat('utillitruck3'), new mp.Vector3(-441.88, 1156.86, 326), {
-            numberPlate: 'LS' + generateString(4),
-            color: [[0, 255, 0],[0, 255, 0]]
-         });
+         Vehicles.new('utillitruck3', VehicleConfig.type.JOB, true, player.character.id, [[255, 201, 31], [234, 234, 234]], this.vehicle_position.position, this.vehicle_position.rotation, {
+            locked: false, spawned: false, numberplate: {
+               issued: Date.now(),
+               plate: 'LS' + generateString(4),
+               expiring: 99999999
+            }
+         }).then(createdVehicle => {
+            if (!createdVehicle) {
+               return;
+            }
    
-         this.vehicles.set(player.id, vehicle);
+            console.log(createdVehicle.numberPlate)
+   
+            const vehicle = createdVehicle.load();
+            const malfunctions = this.generatePoints();
+            player.call('CLIENT::ELECTRICIAN_START', [malfunctions]);
+      
+            // Creating job vehicle 
+      
+            player.character.working = true;
+   
+            this.vehicles.set(player.id, vehicle!);
+         })
       }
-
-      const malfunctions = this.generatePoints();
-      player.call('CLIENT::ELECTRICIAN_START', [malfunctions]);
-
-      // Creating job vehicle 
-
-      player.character.working = true;
    }
 
    stop (player: PlayerMp, finished: boolean, points: number, distance: number) {
@@ -90,7 +111,7 @@ class Electrician extends Jobs {
    }
 }
 
-const electrician = new Electrician(
+export const electrician = new Electrician(
    JobConfig.job.ELECTRICIAN,
    JobConfig.names.ELECTRICIAN,
    JobConfig.descriptions.ELECTRICIAN,
