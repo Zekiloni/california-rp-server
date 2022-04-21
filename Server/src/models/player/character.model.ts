@@ -188,6 +188,10 @@ export class Characters extends Model {
 
    respawnTimer: ReturnType<typeof setTimeout> | undefined = undefined;
 
+   get isOnline () {
+      return mp.players.toArray().find(player => player.character && player.character.id == this.id) ? true : false;
+   }
+
    @AfterSync
    static async loading () {
       logs.info(await Characters.count() + ' characters loaded !');

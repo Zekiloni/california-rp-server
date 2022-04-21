@@ -13,3 +13,4 @@ function playerReady (player: PlayerMp) {
 }
 
 mp.events.add('playerReady', playerReady);
+
