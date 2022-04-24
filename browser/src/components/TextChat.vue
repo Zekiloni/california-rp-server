@@ -39,8 +39,7 @@
 
             Settings: { 
                Active: true,
-               Fontsize: 14.85,
-               Fonweight: 450,
+               Fontsize: 13.6,
                Width: 300,
                Height: 200,
                Timestamp: false,
@@ -229,6 +228,7 @@
 <style scoped>
 
    .chat {
+      font-family: 'Montserrat', sans-serif;
       max-width: 800px;
       height: 300px;
       position: absolute;
@@ -256,7 +256,7 @@
       padding: 10px 10px;
       outline: none;
       font-size: 13.25px !important;
-      font-weight: 500;
+      font-weight: 450;
       transition: all 0.45s ease;
    }
 

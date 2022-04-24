@@ -40,7 +40,7 @@
 <style scoped>
 
    .login {
-      background: #16151A;
+      background: #1e2028;
       width: 350px;
       height: 350px;
       margin: auto;
@@ -50,6 +50,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
    }
    
    img.logo {
@@ -68,7 +69,7 @@
       margin: 10px auto;
       padding: 15px 25px;
       display: block;
-      background: #201f25;
+      background: #242731;
       border-radius: 8px;
       font-size: 0.85rem;
       text-align: center;
@@ -79,7 +80,7 @@
    }
 
    .inputs input:hover, .inputs input:focus {
-      background: rgb(41 39 50 / 31%);
+      background: rgb(23, 25, 30, 0.4);
       border: 1px dashed #3e3b46;
       color: #fff;
    }
@@ -100,7 +101,7 @@
 
    .play.disabled {
       color: #56555B;
-      background: #302F36;
+      background: #242731;
    }
 
    .play.play.disabled::after {

@@ -23,7 +23,7 @@ Vue.mixin({
       },
       
       dollars (i: number) { 
-         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(i); 
+         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(i); 
       },
 
       onSale (property: any) { 

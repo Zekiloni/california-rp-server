@@ -3,7 +3,7 @@ import { animationFlags } from '../../enums/animations.flags';
 import controls from '../../enums/controls';
 import { waitForEntity } from '../../utils';
 import { playAnimation } from '../player/animation';
-import { inventoryActive } from './itemsCore';
+import { inventoryActive } from './items.Core';
 
 
 let phoneActive: boolean = false;

@@ -64,6 +64,6 @@
       width: 100%;
       height: 100%;
       display: grid;
-      background: linear-gradient(0deg, #1a191e, transparent);
+      background: linear-gradient(-90deg, rgb(23, 25, 30, 0.4), rgb(23, 25, 30, 0.95));
    }
 </style>

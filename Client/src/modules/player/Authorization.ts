@@ -3,8 +3,8 @@ import { toggleGameInterface, UI_Status } from '../game.UI';
 
 
 const authConfig = {
-   position: new mp.Vector3(-1166.37, -1415.4, 6.92),
-   lookAt: new mp.Vector3(-1183.94, -1426.47, 6.8)
+   position: new mp.Vector3(664.1032, 1239.6877, 362.177),
+   lookAt: new mp.Vector3(605.7743, 1103.40258, 347.1763)
 }
 
 

@@ -15,6 +15,10 @@
          <h4 class="id"> id <b>#{{ playerId }} </b> </h4>
       </div>
 
+      <div class="money">
+         <h2> {{ dollars(money) }} </h2>
+      </div>
+
       <div class="info"> 
          <div class="date-time"> 
             <h2> {{ rightNow.time }}</h2>
@@ -25,10 +29,6 @@
             <h2> {{ location.heading }} </h2>
             <h3 class="street "> {{ location.street }} </h3>
             <h3 class="zone"> {{ location.zone }} </h3>
-         </div>
-
-         <div class="player"> 
-            <h2 class="money"> {{ dollars(money) }} </h2>
          </div>
       </div>
    </div>
@@ -134,7 +134,7 @@
       /* background: url('https://i.imgur.com/XUJTwKm.png');
       background-position: center;
       background-repeat: no-repeat; */
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
    }
 
    .server { 
@@ -162,8 +162,23 @@
    }
 
    .server h4.id {
-      color: #a6a5a3;
+      color: #c2c2c2;
       text-transform: uppercase;
+   }
+
+   .money {
+      position: absolute;
+      top: 125px;
+      right: 0;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      text-align: right;
+   }
+
+   .money h2 {
+      color: #fefefe;
    }
 
    h3, h2, h4 { margin: 0; }
@@ -191,7 +206,7 @@
 
    .date-time h3 { 
       font-weight: 500; 
-      color: #a6a5a3; 
+      color: #c2c2c2; 
       font-size: 0.95rem; 
    }
 
@@ -212,18 +227,9 @@
 
    .location h3.zone { 
       font-weight: 500; 
-      color: #a6a5a3; 
+      color: #c2c2c2; 
       font-size: 0.95rem; 
       text-transform: capitalize; 
-   }
-
-   .player {
-      margin-top: 10px; 
-   }
-
-   .player h2 {
-      color: #fefefe; 
-      font-weight: 700; 
    }
    
 </style>

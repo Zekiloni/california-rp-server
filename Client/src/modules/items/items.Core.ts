@@ -116,13 +116,7 @@ mp.keys.bind(controls.KEY_I, true, function() {
       return;
    }
 
-   const vehicle = mp.vehicles.getClosest(mp.players.local.position);
-
-   if (isNearTrunk(vehicle.remoteId) && vehicle.getVariable('TRUNK')) {
-      openTrunk(vehicle.remoteId);
-   } else {
-      openInventory();
-   }
+   openInventory();
 });
 
 

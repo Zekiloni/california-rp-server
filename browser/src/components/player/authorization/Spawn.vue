@@ -109,7 +109,6 @@
       width: 100%;
       height: 100%;
       position: relative;
-      background: linear-gradient(0deg, transparent, rgb(26, 25, 30));
    }
 
    .point {
@@ -128,7 +127,8 @@
       height: auto;
       border-radius: 10px;
       padding: 20px;
-      background: #16151A;
+      background: #1a1c23;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
    }
 
    .selected h2 {
