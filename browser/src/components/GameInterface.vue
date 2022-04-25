@@ -178,6 +178,7 @@
    }
 
    .money h2 {
+      font-size: 3vh;
       color: #fefefe;
    }
 

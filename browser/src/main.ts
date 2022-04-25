@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import VTooltip from 'v-tooltip'
 import { Ranks } from './globals';
+import VueDraggable from 'vue-draggable';
 
 
 
@@ -13,6 +14,9 @@ Vue.config.devtools = true;
 //@ts-ignore
 Vue.use(VTooltip);
 
+
+ 
+Vue.use(VueDraggable);
 
 Vue.mixin({
    methods: {

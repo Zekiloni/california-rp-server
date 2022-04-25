@@ -36,7 +36,7 @@
    @Component
    export default class VehicleTrunk extends Vue {
       trunk: InventoryItem[] = [
-         { id: 0, name: 'Stungun', entity: 0, owner: 0, status: 0, fingerprint: 1, equiped: false }
+         { id: 0, name: 'Stungun', owner: 0, status: 0, fingerprint: 1, equiped: false }
       ];
       items: InventoryItem[] = [];
 

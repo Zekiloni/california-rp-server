@@ -33,7 +33,6 @@ export interface CartItem {
 export interface InventoryItem {
    id: number
    name: string
-   entity: number
    owner: number
    equiped: boolean
    status: number
