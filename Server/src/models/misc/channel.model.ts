@@ -1,6 +1,6 @@
 
 import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, CreatedAt, UpdatedAt, AllowNull } from 'sequelize-typescript';
-import { inventories } from '@models';
+import { Items } from '@models';
 import { colors, itemNames, Lang } from '@constants';
 
 
@@ -49,7 +49,7 @@ export default class channels extends Model {
      await this.update('password', password);
    }
    
-   async join (player: PlayerMp, radioItem: inventories, frequency: string, password: string | null) {
+   async join (player: PlayerMp, radioItem: Items, frequency: string, password: string | null) {
       if (this.password != password) {
          // PORUKA: Pogresna sifra frekvencije
          return;
@@ -66,7 +66,7 @@ export default class channels extends Model {
       await radioItem.save()
    }
 
-   async leave (player: PlayerMp, radioItem: inventories) {
+   async leave (player: PlayerMp, radioItem: Items) {
 
       if (this.owner == player.character.id) {
          // PORUKA: Vi ste vlasnik ove frekvencije
@@ -84,7 +84,7 @@ export default class channels extends Model {
          return;
       }
       
-      inventories.findAll({ where: { item: itemNames.HANDHELD_RADIO }}).then(radios => {
+      Items.findAll({ where: { item: itemNames.HANDHELD_RADIO }}).then(radios => {
          radios.forEach(async radio => {
             if (radio.data.frequency == this.frequency) {
                radio.data.frequency = '0';
@@ -102,7 +102,7 @@ export default class channels extends Model {
       const freq = this.frequency.toString();
       
       mp.players.forEach(async player => {
-         const equiped = await inventories.hasEquiped(player, itemNames.HANDHELD_RADIO);
+         const equiped = await Items.hasEquiped(player, itemNames.HANDHELD_RADIO);
          if (equiped) {
             if (equiped.data.power && equiped.data.frequency == this.frequency) {
                player.sendMessage('[CH: ' + freq + '] ' + by + ': ' + message, colors.hex.RADIO);

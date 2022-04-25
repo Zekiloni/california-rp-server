@@ -1,6 +1,6 @@
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '../item';
+import { Items  } from '../item';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
 
@@ -23,7 +23,7 @@ export class DrinkItem extends BaseItem {
       console.log(this.name.toLowerCase().replace(' ', '_'))
    }
 
-   async use (player: PlayerMp, item: inventories) {
+   async use (player: PlayerMp, item: Items) {
       await item.destroy();
       player.character.increment('thirst', { by: this.thirst } );
    }

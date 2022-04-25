@@ -1,17 +1,17 @@
 
 
-import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, BelongsToMany, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
 import { BaseItem, logs, Characters } from '@models';
 import { itemNames, Lang, none } from '@constants';
 import { playerConfig } from '@configs';
+import { Vehicles } from '@models/vehicles/vehicle';
 
 
 @Table
-export class inventories extends Model { 
-
+export class Items extends Model { 
    static objects = new Map<number, ObjectMp>();
 
    @PrimaryKey
@@ -25,17 +25,20 @@ export class inventories extends Model {
    @Column(DataType.INTEGER)
    entity: ItemEnums.entity;
 
-   @Default(none)
-   @Column(DataType.INTEGER)
-   owner: number;
+   @BelongsToMany(() => Characters, () => Vehicles)
+   owner: Characters | Vehicles | null;
 
    @Default(false)
-   @Column(DataType.BOOLEAN)
-   on_ground: boolean;
+   @Column({ type: DataType.BOOLEAN, field: 'on_ground' })
+   onGround: boolean;
 
    @Default(false)
    @Column(DataType.BOOLEAN)
    equiped: boolean;
+
+   @Default(0)
+   @Column(DataType.INTEGER({ length: 6 }))
+   quantity: number
 
    @Default(ItemEnums.status.NONE)
    @Column(DataType.INTEGER)
@@ -74,27 +77,27 @@ export class inventories extends Model {
    updated_at: Date;
 
    get object () { 
-      return inventories.objects.get(this.id)!;
+      return Items.objects.get(this.id)!;
    }
 
    set object (object: ObjectMp) { 
-      inventories.objects.set(this.id, object);
+      Items.objects.set(this.id, object);
    }
 
 
    @AfterSync
    static async loading () {
-      inventories.findAll( { where: { on_ground: true } } ).then(items => {
+      Items.findAll( { where: { onGround: true } } ).then(items => {
          items.forEach(item => {
             item.refresh();
          })
       });
 
-      logs.info(await inventories.count() + ' items loaded !');
+      logs.info(await Items.count() + ' items loaded !');
    }
 
    @AfterCreate
-   static async creating (item: inventories) { 
+   static async creating (item: Items) { 
       item.refresh();
       
       const rItem = BaseItem.list[item.name];
@@ -118,43 +121,42 @@ export class inventories extends Model {
    }
 
    @AfterDestroy
-   static destroying (item: inventories) { 
+   static destroying (item: Items) { 
       if (item.object) {
          item.object.destroy();
-         inventories.objects.delete(item.id);
+         Items.objects.delete(item.id);
       }
    }
 
    @AfterSave
-   static saving (item: inventories) {
+   static saving (item: Items) {
       item.refresh();
    }
 
    refresh () {
-      if (this.on_ground) {
+      if (this.onGround) {
          this.object = mp.objects.new(BaseItem.list[this.name].model, this.position, { alpha: 255, rotation: this.rotation, dimension: this.dimension });
          this.object.setVariable(shared_Data.ITEM, { name: this.name, id: this.id });
       } else { 
          if (this.object) { 
             this.object.destroy();
-            inventories.objects.delete(this.id);
+            Items.objects.delete(this.id);
          }
       }
    }
 
    async pickupItem (player: PlayerMp) { 
-      if (this.on_ground) {
-         this.on_ground = false;
-         this.owner = player.character.id;
-         this.entity = ItemEnums.entity.PLAYER;
+      if (this.onGround) {
+         this.onGround = false;
+         this.owner = player.character;
          player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 } );
          await this.save();
       }
    }
 
    async dropItem (player: PlayerMp, position: Vector3Mp, rotation: Vector3Mp) {
-      this.owner = 0;
-      this.on_ground = true;
+      this.owner = null;
+      this.onGround = true;
       this.dimension = player.dimension;
       this.fingerprint = player.character.id;
       this.position = position;
@@ -165,7 +167,7 @@ export class inventories extends Model {
    async equipItem (player: PlayerMp) {
       const rItem = BaseItem.list[this.name!];
 
-      const equipment = await inventories.findAll( { where: { equiped: true, owner: player.character.id, entity: ItemEnums.entity.PLAYER } });
+      const equipment = await Items.findAll( { where: { equiped: true, owner: player.character.id, entity: ItemEnums.entity.PLAYER } });
       const equiped = equipment.filter(
          item => !BaseItem.list[item.name].type.includes(ItemEnums.type.CLOTHING) && !BaseItem.list[item.name].type.includes(ItemEnums.type.PROP)
       );
@@ -212,17 +214,17 @@ export class inventories extends Model {
    }
 
    static async doesHaveItem (entity: ItemEnums.entity, owner: number, itemName: string) {
-      return inventories.findOne( { where: { entity: entity, owner: owner, name: itemName } } ).then(haveItem => {
+      return Items.findOne( { where: { entity: entity, owner: owner, name: itemName } } ).then(haveItem => {
          return haveItem ? haveItem : false;
       });
    }
 
    static hasEquiped (player: PlayerMp, itemName: string) {
-      return inventories.findOne( { where: { name: itemName, equiped: true, owner: player.character.id }})
+      return Items.findOne( { where: { name: itemName, equiped: true, owner: player.character.id }})
    }
 
    static getEntityItems (entity: ItemEnums.entity, owner: number)  { 
-      return inventories.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
+      return Items.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
          return items;
       }).catch(e => {
          logs.error('ctchingPlyerItems: ' + e);
@@ -230,11 +232,11 @@ export class inventories extends Model {
    }
 
    static giveItem (player: PlayerMp, item: BaseItem) { 
-      inventories.create( { name: item.name, entity: ItemEnums.entity.PLAYER, owner: player.character.id } );
+      Items.create( { name: item.name, entity: ItemEnums.entity.PLAYER, owner: player.character.id } );
    };
 
    static async savePlayerEquipment (character: Characters) { 
-      inventories.findAll( { where: { entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
+      Items.findAll( { where: { entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
          equipedItems.forEach(async item => {
             if (!BaseItem.list[item.name].isClothing() && !BaseItem.list[item.name].isProp()) {
                item.equiped = false;
@@ -246,7 +248,7 @@ export class inventories extends Model {
 
 
    static async itemsWeight (player: PlayerMp) {
-      return inventories.findAll( { where: { owner: player.character.id, entity: ItemEnums.entity.PLAYER } } ).then(playerItems => {
+      return Items.findAll( { where: { owner: player.character.id, entity: ItemEnums.entity.PLAYER } } ).then(playerItems => {
          let weight: number = 0;
 
          playerItems.forEach(item => {

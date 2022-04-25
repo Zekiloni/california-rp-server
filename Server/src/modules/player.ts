@@ -1,4 +1,4 @@
-import { logs, Bans, Characters, Accounts, inventories, appearances, banks, BaseItem, houses, Busines, Vehicles, transactions } from '@models';
+import { logs, Bans, Characters, Accounts, Items, appearances, banks, BaseItem, houses, Busines, Vehicles, transactions } from '@models';
 import { playerConfig, ServerConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, Lang, none } from '@constants';
@@ -123,7 +123,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
 
    cAppearance.clothing.forEach(async (element: number) => {
       const index = cAppearance.clothing.indexOf(element);
-      inventories.create( { name: components[index], entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true }).then(async item => {
+      Items.create( { name: components[index], entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true }).then(async item => {
          item.data = {
             drawable: element,
             texture: 0
@@ -134,7 +134,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
    
    character.spawnPlayer(player, spawnPointTypes.DEFAULT, appearance);
 
-   inventories.create({ name: itemNames.DOCUMENT_ID_CARD, entity: ItemEnums.entity.PLAYER, owner: character.id }).then(async item => {
+   Items.create({ name: itemNames.DOCUMENT_ID_CARD, entity: ItemEnums.entity.PLAYER, owner: character.id }).then(async item => {
       item!.data = {
          name: character.name,
          birth: character.birth,

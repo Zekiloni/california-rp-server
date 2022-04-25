@@ -1,6 +1,6 @@
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '../item';
+import { Items  } from '../item';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 import { shared_Data } from '@shared';

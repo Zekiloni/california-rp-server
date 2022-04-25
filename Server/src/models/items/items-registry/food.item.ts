@@ -1,7 +1,7 @@
 
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '../item';
+import { Items  } from '../item';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 
@@ -21,7 +21,7 @@ export class FoodItem extends BaseItem {
       this.hunger = hunger;
       this.snacks = snacks;
 
-      this.use = function (player: PlayerMp, item: inventories) {
+      this.use = function (player: PlayerMp, item: Items) {
          player.character.hunger += this.hunger;
       }
 

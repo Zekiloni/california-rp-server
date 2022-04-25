@@ -3,7 +3,7 @@ import { shared_Data } from '@shared';
 import { commands } from '@interfaces';
 import { colors, Lang, none } from '@constants';
 import { ItemEnums, notifications } from '@enums';
-import { Factions, inventories, FactionsRanks } from '@models';
+import { Factions, Items, FactionsRanks } from '@models';
 
 
 export let Commands: commands = {};
@@ -73,7 +73,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       } 
 
       if (command.item) {
-         const item = await inventories.findOne( { where: { name: command.item, owner: character.id, entity: ItemEnums.entity.PLAYER } } );
+         const item = await Items.findOne( { where: { name: command.item, owner: character.id, entity: ItemEnums.entity.PLAYER } } );
          
          if (!item) {
             player.notification(Lang.youDontHave + command.item + '.', notifications.type.ERROR, 4);

@@ -4,7 +4,7 @@ import {
    BelongsTo, ForeignKey, DataType, Unique, Default,
    HasMany, AfterSync, AutoIncrement 
 } from 'sequelize-typescript';
-import { Characters, inventories, Busines, transactions, TransactionType } from '@models';
+import { Characters, Items, Busines, transactions, TransactionType } from '@models';
 import { gDimension, Lang, none, cmds } from '@constants';
 import { bankConfig } from '@configs';
 import { notifications } from '@enums';
@@ -98,7 +98,7 @@ export class banks extends Model {
    }
 
    static getCreditCard (player: PlayerMp) {
-      inventories.findOne
+      Items.findOne
    }
 
    static async withdraw (player: PlayerMp, amount: number) {

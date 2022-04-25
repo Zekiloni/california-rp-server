@@ -1,6 +1,6 @@
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '../item';
+import { Items  } from '../item';
 import { ItemEnums } from "@enums";
 import { itemDescriptions, itemNames } from '@constants';
 
@@ -28,7 +28,7 @@ export class WeaponItem extends BaseItem {
       this.ammo = ammo;
    }
    
-   async use (player: PlayerMp, item: inventories) {
+   async use (player: PlayerMp, item: Items) {
       if (this.caliber) {
          player.giveWeapon(
             mp.joaat(this.weapon_hash),

@@ -8,7 +8,7 @@ import {
 
 import { 
    Accounts, appearances, banks, houses,
-   Busines, inventories, logs, objects, 
+   Busines, Items, logs, objects, 
    Vehicles, Factions, FactionsRanks,
    MoneyLogs
 } from '@models';
@@ -266,7 +266,7 @@ export class Characters extends Model {
       }
       
       ClothingItem.clothings.forEach(item => {
-         inventories.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
+         Items.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
             if (clothed && clothed.equiped) {
                item.use(player, clothed);
             } else { 
@@ -412,8 +412,8 @@ export class Characters extends Model {
       player.setVariable(shared_Data.OFFER, value);
    }
 
-   async hasLicense (item?: inventories) {
-      const has = await inventories.findOne( { where: { name: item?.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } );
+   async hasLicense (item?: Items) {
+      const has = await Items.findOne( { where: { name: item?.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } );
       return has ? has : false;
    }
 
@@ -498,7 +498,7 @@ export class Characters extends Model {
       });
 
       await this.save();
-      inventories.savePlayerEquipment(this);
+      Items.savePlayerEquipment(this);
       
       this.working = false;
    }

@@ -5,7 +5,7 @@ import { ItemEnums } from "@enums";
 import { shared_Data } from '@shared';
 import { animations } from '@configs';
 import { BaseItem } from "../baseItem";
-import { inventories } from "../item";
+import { Items } from "../item";
 
 
 export class HandheldRadioItem extends BaseItem {
@@ -13,7 +13,7 @@ export class HandheldRadioItem extends BaseItem {
    constructor (name: string, model: string, weight: number = 0.1) { 
       super (name, [ItemEnums.type.EQUIPABLE, ItemEnums.type.MISC, ItemEnums.type.ELECTRONIC_DEVICE], model, weight, itemDescriptions.HANDHELD_RADIO);
 
-      this.use = async function (player: PlayerMp, item: inventories) {
+      this.use = async function (player: PlayerMp, item: Items) {
          player.call('CLIENT::ITEMS:RADIO:TOGGLE', [item.data]);
 
          player.setVariable(shared_Data.ANIMATION, animations.walkie);

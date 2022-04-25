@@ -1,7 +1,7 @@
 
 
 import { BaseItem } from '../baseItem';
-import { inventories, logs} from '@models';
+import { Items, logs} from '@models';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
 import weaponData from '../../../configs/weapon.data.json';
@@ -15,7 +15,7 @@ export class AmmoItem extends BaseItem {
       super (name, [ItemEnums.type.USABLE, ItemEnums.type.STACKABLE, ItemEnums.type.AMMO, ItemEnums.type.MISC], model, weight, description);
       this.clipSize = bullets;
       
-      this.use = async function (player: PlayerMp, item: inventories) {
+      this.use = async function (player: PlayerMp, item: Items) {
          if (!player.weapon) { 
             logs.error('ammoUse: noWeapon');
             return;
@@ -24,7 +24,7 @@ export class AmmoItem extends BaseItem {
          //@ts-ignore
          const weapon = weaponData[player.weapon.toString()];
       
-         const weaponItem = await inventories.findOne(
+         const weaponItem = await Items.findOne(
             { 
                where: { 
                   owner: player.character.id, 

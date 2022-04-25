@@ -2,7 +2,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { CartItem, interactionPoint } from '@interfaces';
 import { cmds, gDimension, Lang, none } from '@constants';
-import { Characters, logs, Products, Workers, inventories, BaseItem, Vehicles } from '@models';
+import { Characters, logs, Products, Workers, Items, BaseItem, Vehicles } from '@models';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
@@ -497,7 +497,7 @@ export class Busines extends Model {
       return Busines.findOne( { where: { id: businesID }, include: [Products] } ).then(async busines => {
          let total: number = 0;
          
-         const inventoryWeight: number = await inventories.itemsWeight(player);
+         const inventoryWeight: number = await Items.itemsWeight(player);
          const cartWeight: number = cart.reduce((sum, item) => sum + (BaseItem.list[item.name].weight), 0)
          
          console.log('inv with cart ' + (inventoryWeight + cartWeight));
@@ -518,7 +518,7 @@ export class Busines extends Model {
                   total += product.price;
                   await product.decrement('quantity', { by: 1 } );
    
-                  inventories.giveItem(player, BaseItem.list[product.name]!);
+                  Items.giveItem(player, BaseItem.list[product.name]!);
                }
             })
          })

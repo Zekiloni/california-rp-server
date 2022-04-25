@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, BaseItem, inventories, houses, Accounts, Busines, Factions, Characters, Vehicles } from '@models';
+import { logs, BaseItem, Items, houses, Accounts, Busines, Factions, Characters, Vehicles } from '@models';
 import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';
@@ -213,7 +213,7 @@ Commands[cmds.names.GIVE_ITEM] ={
          }; 
 
          try { 
-            inventories.giveItem(target, foundItem);
+            Items.giveItem(target, foundItem);
          } catch(e) { 
             console.log(e)
          }
@@ -311,7 +311,7 @@ Commands[cmds.names.DISARM] = {
       target.removeAllWeapons();
 
       if (target.character) {
-         inventories.findAll( { where: { owner: target.character.id, equiped: true } } ).then(equipment => {
+         Items.findAll( { where: { owner: target.character.id, equiped: true } } ).then(equipment => {
             equipment.forEach(async equipedItem => {
                const item = BaseItem.list[equipedItem.name];
                if (item.isWeapon()) {

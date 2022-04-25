@@ -1,6 +1,6 @@
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '../item';
+import { Items  } from '../item';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 
@@ -20,7 +20,7 @@ export class LicenseItem extends BaseItem {
    constructor (name: string, model: string, description: string) { 
       super (name, licenseTypes, model, 0.15, description);
 
-      this.use = function (player: PlayerMp, item: inventories,target: PlayerMp = player) {
+      this.use = function (player: PlayerMp, item: Items,target: PlayerMp = player) {
          target.call('CLIENT::LICENSE:SHOW', [item]);
       }
    }

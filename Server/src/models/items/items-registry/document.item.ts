@@ -1,7 +1,7 @@
 
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '../item';
+import { Items  } from '../item';
 import { ItemEnums } from '@enums';
 import { itemNames, itemDescriptions } from '@constants';
 
@@ -18,7 +18,7 @@ export class DocumentItem extends BaseItem {
       super (name, type ? documentType.concat(type) : documentType, model, weight, description);
       this.specialType = special;
       
-      this.use = function (player: PlayerMp, item: inventories) {
+      this.use = function (player: PlayerMp, item: Items) {
          console.log(item.data)
          switch (this.specialType) {
             case ItemEnums.type.ID_CARD: {

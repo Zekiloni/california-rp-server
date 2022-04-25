@@ -1,5 +1,5 @@
 import { cmds, colors, itemNames } from '@constants';
-import { inventories } from '@models';
+import { Items } from '@models';
 import { Commands } from '../commands';
 
 Commands[cmds.names.RADIO] = {
@@ -15,13 +15,13 @@ Commands[cmds.names.RADIO] = {
       };
 
 
-      inventories.hasEquiped(player, itemNames.HANDHELD_RADIO).then(radio => { 
+      Items.hasEquiped(player, itemNames.HANDHELD_RADIO).then(radio => { 
          if (!radio) {
             return;
          }
 
          mp.players.forEach(async target => {
-            const equiped = await inventories.hasEquiped(target, itemNames.HANDHELD_RADIO);
+            const equiped = await Items.hasEquiped(target, itemNames.HANDHELD_RADIO);
             if (equiped && equiped.data.frequency == radio.data.frequency) {
                target.sendMessage('[CH ' + radio?.data.frequency + '] ' + player.name + ' : ' + text, colors.hex.RADIO);
             }

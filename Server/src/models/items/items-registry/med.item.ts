@@ -1,6 +1,6 @@
 import { BaseItem } from '../baseItem';
 import { animations, playerConfig } from '@configs';
-import { inventories } from '@models';
+import { Items } from '@models';
 import { ItemEnums, notifications } from '@enums';
 import { Lang } from '@constants';
 
@@ -18,7 +18,7 @@ export class medItem extends BaseItem {
       this.useTime = time;
    }
 
-   async use (player: PlayerMp, item: inventories) {
+   async use (player: PlayerMp, item: Items) {
 
       if (player.health > playerConfig.main.healthRegeneration) {
          player.notification(Lang.youHaveMoreThanHealth, notifications.type.ERROR, notifications.time.MED);

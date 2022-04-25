@@ -1,7 +1,7 @@
 
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '@models';
+import { Items  } from '@models';
 import { ItemEnums } from "@enums";
 import { itemNames } from '@constants';
 
@@ -38,8 +38,8 @@ export class ClothingItem extends BaseItem {
       }
    }
 
-   async use (player: PlayerMp, item: inventories) {
-      inventories.findOne( { where: { owner: player.character.id, equiped: true, name: this.name } } ).then(async already => {
+   async use (player: PlayerMp, item: Items) {
+      Items.findOne( { where: { owner: player.character.id, equiped: true, name: this.name } } ).then(async already => {
          if (!already) {
             return;
          }
@@ -65,7 +65,7 @@ export class ClothingItem extends BaseItem {
 
       if (this.component == ItemEnums.components.clothings.TOP) {
          
-         inventories.findOne( { where: { entity: ItemEnums.entity.PLAYER, owner: player.character.id, equiped: true, name: itemNames.CLOTHING_UNDERSHIRT } } ).then(async undershirt => {
+         Items.findOne( { where: { entity: ItemEnums.entity.PLAYER, owner: player.character.id, equiped: true, name: itemNames.CLOTHING_UNDERSHIRT } } ).then(async undershirt => {
             if (!undershirt) {
                return;
             }

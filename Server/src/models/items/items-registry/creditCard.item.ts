@@ -1,6 +1,6 @@
 
 import { BaseItem } from '../baseItem';
-import { inventories  } from '../item';
+import { Items  } from '../item';
 import { itemDescriptions, itemNames } from '@constants';
 import { ItemEnums } from '@enums';
 
@@ -11,7 +11,7 @@ export default class creditCardTime extends BaseItem {
       
       super (name, type, model, weight, description);
 
-      this.use = async function (player: PlayerMp, cCardItem: inventories) {
+      this.use = async function (player: PlayerMp, cCardItem: Items) {
          const nearATM = await player.callProc('CLIENT::BANKING:ATM', [cCardItem]);
          
          if (!nearATM) {

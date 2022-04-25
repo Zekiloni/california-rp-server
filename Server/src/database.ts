@@ -22,7 +22,7 @@ const Database = new Sequelize({
       models.Accounts, 
       models.Characters, 
       models.appearances,
-      models.inventories, 
+      models.Items, 
       models.Vehicles,
       models.VehicleComponents,
       models.banks,
