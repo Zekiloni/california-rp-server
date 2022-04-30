@@ -4,5 +4,6 @@ public/
 Server/dist/ 
 Client/dist/ 
 Browser/dist/ 
+Tests/
 .ps1
 .cmd
