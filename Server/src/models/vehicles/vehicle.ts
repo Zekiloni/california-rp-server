@@ -9,7 +9,7 @@ import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, Lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { Jobs, Factions, logs, Characters, VehicleComponents } from '@models';
+import { Jobs, Factions, Logs, Characters, VehicleComponents } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
@@ -152,7 +152,7 @@ export class Vehicles extends Model {
             }
          })
 
-         logs.info(vehicles.length + ' vehicles loaded, ' + spawnedVehicles.length + ' spawned !');
+         Logs.info(vehicles.length + ' vehicles loaded, ' + spawnedVehicles.length + ' spawned !');
       });
    }
 

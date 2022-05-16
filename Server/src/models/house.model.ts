@@ -4,7 +4,7 @@ import { interactionPoint } from '@interfaces';
 import { notifications, rank } from '@enums';
 import { cmds, gDimension, Lang } from '@constants';
 import { houseConfig } from '@configs';
-import { logs, Characters, objects } from '@models';
+import { Logs, Characters, objects } from '@models';
 
 
 @Table
@@ -105,7 +105,7 @@ export class houses extends Model {
          })
       });
 
-      logs.info(await houses.count() + ' houses loaded !');
+      Logs.info(await houses.count() + ' houses loaded !');
    }
 
    @AfterSave

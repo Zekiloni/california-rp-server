@@ -2,7 +2,7 @@ import { Table, Column, Model, PrimaryKey, AutoIncrement, Default, CreatedAt, Up
 
 import { CartItem, interactionPoint } from '@interfaces';
 import { cmds, gDimension, Lang, none } from '@constants';
-import { Characters, logs, Products, Workers, Items, BaseItem, Vehicles } from '@models';
+import { Characters, Logs, Products, Workers, Items, BaseItem, Vehicles } from '@models';
 import { BusinesConfig, VehicleConfig } from '@configs';
 import { notifications } from '@enums';
 import { dollars } from '@shared';
@@ -130,7 +130,7 @@ export class Busines extends Model {
             busines.refresh();
          });
          
-         logs.info(businesses.length + ' business loaded !');
+         Logs.info(businesses.length + ' business loaded !');
       });
    }
 

@@ -2,7 +2,7 @@
 import { Table, Model, Column, PrimaryKey, AutoIncrement, Default, ForeignKey, BelongsTo, DataType, AllowNull } from 'sequelize-typescript';
 import rp from 'request-promise';
 
-import { logs, banks } from '@models';
+import { Logs, banks } from '@models';
 import { cmds, colors, none } from '@constants';
 import { formatCommand } from '@shared';
 import { ServerConfig } from '@configs';
@@ -78,7 +78,7 @@ export class transactions extends Model {
       };
 
       rp(options)
-         .catch(e => logs.error('discordTransactionHook: ' + e) );
+         .catch(e => Logs.error('discordTransactionHook: ' + e) );
    }
 }
 

@@ -2,7 +2,7 @@
 import weaponData from '../configs/weapon.data.json';
 import { itemNames } from '@constants';
 import { ItemEnums } from '@enums';
-import { BaseItem, Items, logs } from '@models';
+import { BaseItem, Items, Logs } from '@models';
 
 
 mp.events.addProc(
@@ -42,7 +42,7 @@ function onItemEquip (player:  PlayerMp, itemId: number) {
    return Items.findOne( { where: { id: itemId } } ).then(async item => {
 
       if (!item) {
-         logs.error('equipItem: itemNotFound');
+         Logs.error('equipItem: itemNotFound');
          return;
       }
 
@@ -58,7 +58,7 @@ function onItemUnequip (player: PlayerMp, itemId: number) {
    return Items.findOne( { where: { id: itemId } } ).then(async item => {
 
       if (!item) {
-         logs.error('equipItem: onItemUnequip');
+         Logs.error('equipItem: onItemUnequip');
          return;
       }
 

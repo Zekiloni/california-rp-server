@@ -2,7 +2,7 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import rp from 'request-promise';
 import { ServerConfig } from '@configs';
 import { colors, cmds } from '@constants';
-import { logs } from '@models';
+import { Logs } from '@models';
 import { formatCommand, dollars } from '@shared';
 
 
@@ -70,6 +70,6 @@ export class MoneyLogs extends Model {
       };
 
       rp(options)
-         .catch(e => logs.error('discordMoneyHook: ' + e) );
+         .catch(e => Logs.error('discordMoneyHook: ' + e) );
    }
 }

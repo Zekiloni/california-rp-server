@@ -1,4 +1,4 @@
-import { logs, Bans, Characters, Accounts, Items, appearances, banks, BaseItem, houses, Busines, Vehicles, transactions } from '@models';
+import { Logs, Bans, Characters, Accounts, Items, appearances, banks, BaseItem, houses, Busines, Vehicles, transactions } from '@models';
 import { playerConfig, ServerConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, Lang, none } from '@constants';
@@ -268,7 +268,7 @@ async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: st
          );
       }
    } catch (e) { 
-      logs.error('playerQuitHadnler: ' + e);
+      Logs.error('playerQuitHadnler: ' + e);
    }
 }
 

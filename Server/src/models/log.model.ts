@@ -20,7 +20,7 @@ const consoleColors = {
 
 
 @Table
-export class logs extends Model {
+export class Logs extends Model {
 
    @PrimaryKey
    @AutoIncrement
@@ -53,7 +53,7 @@ export class logs extends Model {
    updated_At: Date
 
    static new (account: Accounts, character: Characters, participant: Accounts, message: string) {
-      logs.create({ account_id: account.id, character_id: character.id, participant: participant.id, content: message });
+      Logs.create({ account_id: account.id, character_id: character.id, participant: participant.id, content: message });
    }
 
    static error (message: any) {

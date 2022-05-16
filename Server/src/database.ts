@@ -17,8 +17,8 @@ const Database = new Sequelize({
    password: DatabaseConfig.password,
    storage: ':memory:',
    models: [ 
+      models.Logs,
       models.Bans,
-      models.logs, 
       models.Accounts, 
       models.Characters, 
       models.appearances,
@@ -42,13 +42,13 @@ const Database = new Sequelize({
 
 Database.authenticate()
    .then(() => { 
-      models.logs.succes(Lang.successDbConnection);
+      models.Logs.succes(Lang.successDbConnection);
    })
    .then(() => { 
       return Database.sync()
    })
    .catch((error: any) => { 
-      models.logs.error(error);
+      models.Logs.error(error);
    });
 
 

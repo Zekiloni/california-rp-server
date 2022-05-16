@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { logs, BaseItem, Items, houses, Accounts, Busines, Factions, Characters, Vehicles } from '@models';
+import { Logs, BaseItem, Items, houses, Accounts, Busines, Factions, Characters, Vehicles } from '@models';
 import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';
@@ -22,7 +22,7 @@ Commands[cmds.names.SAVE_POS] = {
       
       fs.appendFile(savedPositions, `Position: { x: ${position.x}, y: ${position.y}, z: ${position.z} } | ${(player.vehicle) ? `Rotation: ${JSON.stringify(rotation)}` : `Heading: ${rotation}`} | ${(player.vehicle) ? 'inCar' : 'onFoot'} - ${positionName}\r\n`, (err) => {
          if (err) {
-            logs.error(err);
+            Logs.error(err);
          }
       });
    }
@@ -870,7 +870,7 @@ Commands[cmds.names.CREATE_FACTION] = {
             leader: none,
 
          }
-      ).catch(e => logs.error(e));
+      ).catch(e => Logs.error(e));
       
       if (faction) {
          player.notification(Lang.succesfullyCreatedFaction + faction.name + Lang.underId + faction.id + '.', notifications.type.SUCCESS, notifications.time.MED);
@@ -993,7 +993,7 @@ Commands[cmds.names.CREATE_ACCOUNT] = {
       cmds.params.E_MAIL
    ],
    call (player: PlayerMp, username: string, password: string, mail: string) {
-      Accounts.create( { username: username, password: password, email: mail } ).catch(e => logs.error('creatingAccount: ' + e) );
+      Accounts.create( { username: username, password: password, email: mail } ).catch(e => Logs.error('creatingAccount: ' + e) );
       // LOGS
       player.notification(Lang.ACCOUNT_SUCCESFULLY_CREATED + ' (' + username + ', ' + password + ')', notifications.type.SUCCESS, notifications.time.LONG);
    }

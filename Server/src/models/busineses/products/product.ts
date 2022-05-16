@@ -29,6 +29,10 @@ export class Products extends Model {
    @Column(DataType.INTEGER)
    quantity: number
 
+   @Default(0)
+   @Column(DataType.INTEGER)
+   discount: number
+
    @CreatedAt
    created_At: Date
 

@@ -4,7 +4,7 @@ import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Belongs
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
-import { BaseItem, logs, Characters } from '@models';
+import { BaseItem, Logs, Characters } from '@models';
 import { itemNames, Lang, none } from '@constants';
 import { playerConfig } from '@configs';
 import { Vehicles } from '@models/vehicles/vehicle';
@@ -36,7 +36,7 @@ export class Items extends Model {
    @Column(DataType.BOOLEAN)
    equiped: boolean;
 
-   @Default(0)
+   @Default(1)
    @Column(DataType.INTEGER({ length: 6 }))
    quantity: number
 
@@ -93,7 +93,7 @@ export class Items extends Model {
          })
       });
 
-      logs.info(await Items.count() + ' items loaded !');
+      Logs.info(await Items.count() + ' items loaded !');
    }
 
    @AfterCreate
@@ -178,7 +178,7 @@ export class Items extends Model {
       }
 
       if (!rItem.isEquipable) {
-         logs.error('equipItem: isEquipable');
+         Logs.error('equipItem: isEquipable');
          return;
       }
 
@@ -227,7 +227,7 @@ export class Items extends Model {
       return Items.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
          return items;
       }).catch(e => {
-         logs.error('ctchingPlyerItems: ' + e);
+         Logs.error('ctchingPlyerItems: ' + e);
       });
    }
 
@@ -245,7 +245,6 @@ export class Items extends Model {
          });
       })
    }
-
 
    static async itemsWeight (player: PlayerMp) {
       return Items.findAll( { where: { owner: player.character.id, entity: ItemEnums.entity.PLAYER } } ).then(playerItems => {

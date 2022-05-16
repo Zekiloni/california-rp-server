@@ -8,7 +8,7 @@ import {
 
 import { 
    Accounts, appearances, banks, houses,
-   Busines, Items, logs, objects, 
+   Busines, Items, Logs, objects, 
    Vehicles, Factions, FactionsRanks,
    MoneyLogs
 } from '@models';
@@ -194,7 +194,7 @@ export class Characters extends Model {
 
    @AfterSync
    static async loading () {
-      logs.info(await Characters.count() + ' characters loaded !');
+      Logs.info(await Characters.count() + ' characters loaded !');
    }
 
    @AfterCreate

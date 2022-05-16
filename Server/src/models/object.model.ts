@@ -5,7 +5,7 @@ import {
 } from 'sequelize-typescript';
 
 import { cmds } from '@constants';
-import { houses, logs } from '@models';
+import { houses, Logs } from '@models';
 
 
 export class objects extends Model {
@@ -56,7 +56,7 @@ export class objects extends Model {
    
    @AfterSync
    static loading () {
-      objects.findAll().then(objects => logs.info(objects.length + ' builder objects loaded !'));
+      objects.findAll().then(objects => Logs.info(objects.length + ' builder objects loaded !'));
    }
 
    static async createNew (player: PlayerMp, model: string, position: Vector3Mp, rotation: Vector3Mp, name?: string) {

@@ -1,7 +1,7 @@
 
 
 import { BaseItem } from '../baseItem';
-import { Items, logs} from '@models';
+import { Items, Logs } from '@models';
 import { ItemEnums } from '@enums';
 import { itemDescriptions, itemNames } from '@constants';
 import weaponData from '../../../configs/weapon.data.json';
@@ -17,7 +17,7 @@ export class AmmoItem extends BaseItem {
       
       this.use = async function (player: PlayerMp, item: Items) {
          if (!player.weapon) { 
-            logs.error('ammoUse: noWeapon');
+            Logs.error('ammoUse: noWeapon');
             return;
          }
 
@@ -36,7 +36,7 @@ export class AmmoItem extends BaseItem {
          );
 
          if (!weaponItem) { 
-            logs.error('updateWeapon: noWeapon');
+            Logs.error('updateWeapon: noWeapon');
             return;
          }
          

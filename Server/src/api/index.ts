@@ -4,7 +4,7 @@
 import express from 'express';
 import cors from 'cors';
 import { ServerConfig } from '@configs';
-import { logs } from '@models';
+import { Logs } from '@models';
 import { Lang } from '@constants';
 
 
@@ -26,5 +26,5 @@ api.get('/', (req, res) => {
 })
 
 api.listen(ServerConfig.api.port, () => {
-   logs.succes(Lang.API_STARTED + ServerConfig.api.port);
+   Logs.succes(Lang.API_STARTED + ServerConfig.api.port);
 })

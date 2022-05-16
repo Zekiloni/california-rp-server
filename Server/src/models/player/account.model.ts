@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import { shared_Data } from '@shared';
 import { rank } from '@enums';
 import { Lang, none } from '@constants';
-import { Characters, logs } from '@models';
+import { Characters, Logs } from '@models';
 import { adminAccounts } from '@configs';
 
 const salt = bcrypt.genSaltSync(10);
@@ -91,7 +91,7 @@ export class Accounts extends Model {
          }
       }
 
-      logs.info(await Accounts.count() + ' accounts loaded !');
+      Logs.info(await Accounts.count() + ' accounts loaded !');
    }
 
    @BeforeCreate
