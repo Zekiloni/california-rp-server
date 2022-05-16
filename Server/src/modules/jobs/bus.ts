@@ -33,7 +33,7 @@ bus.start = function (player: PlayerMp, routeID: number) {
       [0, 0, 0], [0, 0, 0]
    ];
 
-   const jobVehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.owner == player.character.id && vehicle.instance.job && vehicle.instance.job.id == this.id);
+   const jobVehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.characterID == player.character.id && vehicle.instance.job && vehicle.instance.job.id == this.id);
 
    if (jobVehicle) {
 

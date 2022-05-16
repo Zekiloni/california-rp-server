@@ -127,7 +127,7 @@ export interface Account {
    username: string
    email: string
    administrator: number
-   login_date: string
+   lastLogin: string
    ip: string
    warns: number
    donator: number

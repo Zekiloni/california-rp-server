@@ -12,6 +12,7 @@
    },
    "scripts": {
       "start": "cd.. && cd.. && cd local-server && ragemp-server.exe --trace-warnings",
+      "dev": "tsc && npm run start",
       "build": "tsc"
    },
    "_moduleAliases": {

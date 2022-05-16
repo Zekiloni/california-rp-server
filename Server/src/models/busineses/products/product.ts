@@ -7,9 +7,11 @@ import { none } from '@constants';
    tableName: 'products'
 })
 export class Products extends Model {
-   @PrimaryKey
-   @AutoIncrement
-   @Column
+   @Column({
+      type: DataType.INTEGER({ length: 11 }),
+      primaryKey: true, 
+      autoIncrement: true
+   })
    id: number
 
    @Column(DataType.TEXT)

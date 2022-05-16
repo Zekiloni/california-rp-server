@@ -39,8 +39,10 @@ export class Accounts extends Model {
    administrator: number;
 
    @Default(null)
-   @Column
-   login_date: Date;
+   @Column({
+      type: DataType.INTEGER, field: 'last_login'
+   })
+   lastLogin: Date;
 
    @Default(null)
    @Column(DataType.STRING(64))
@@ -73,7 +75,9 @@ export class Accounts extends Model {
    online: boolean;
 
    @Default(none)
-   @Column(DataType.INTEGER)
+   @Column({
+      type: DataType.INTEGER, field: 'last_character'
+   })
    lastCharacter: number;
 
    @CreatedAt
@@ -108,7 +112,7 @@ export class Accounts extends Model {
 
       player.account = this;
       
-      this.login_date = new Date();
+      this.lastLogin = new Date();
       this.ip = player.ip;
 
       player.setVariable(shared_Data.LOGGED, true);

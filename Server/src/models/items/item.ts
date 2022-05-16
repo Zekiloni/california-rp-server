@@ -1,13 +1,13 @@
 
 
-import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, BelongsToMany, Column, CreatedAt, DataType, Default, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, BelongsTo, BelongsToMany, Column, CreatedAt, DataType, Default, ForeignKey, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
 import { BaseItem, Logs, Characters } from '@models';
 import { itemNames, Lang, none } from '@constants';
 import { playerConfig } from '@configs';
-import { Vehicles } from '@models/vehicles/vehicle';
+import { Vehicles } from '@models';
 
 
 @Table
@@ -25,8 +25,19 @@ export class Items extends Model {
    @Column(DataType.INTEGER)
    entity: ItemEnums.entity;
 
-   @BelongsToMany(() => Characters, () => Vehicles)
-   owner: Characters | Vehicles | null;
+   @ForeignKey(() => Characters)
+   @Column({ type: DataType.INTEGER, field: 'on_ground' })
+   characterID: number
+
+   @ForeignKey(() => Vehicles)
+   @Column({ type: DataType.INTEGER, field: 'on_ground' })
+   vehicleID: number
+
+   @BelongsTo(() => Characters)
+   character: Characters | null
+
+   @BelongsTo(() => Vehicles)
+   vehicle: Vehicles | null
 
    @Default(false)
    @Column({ type: DataType.BOOLEAN, field: 'on_ground' })
@@ -148,14 +159,14 @@ export class Items extends Model {
    async pickupItem (player: PlayerMp) { 
       if (this.onGround) {
          this.onGround = false;
-         this.owner = player.character;
+         this.character = player.character;
          player.setVariable('ANIMATION', { name: 'pickup_low', dictionary: 'random@domestic', flag: 0 } );
          await this.save();
       }
    }
 
    async dropItem (player: PlayerMp, position: Vector3Mp, rotation: Vector3Mp) {
-      this.owner = null;
+      this.character = null;
       this.onGround = true;
       this.dimension = player.dimension;
       this.fingerprint = player.character.id;

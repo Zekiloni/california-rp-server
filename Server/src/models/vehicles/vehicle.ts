@@ -33,16 +33,16 @@ export class Vehicles extends Model {
    @Column(DataType.BOOLEAN)
    temporary: boolean
 
+   @ForeignKey(() => Characters)
+   @Column
+   characterID: number
+   
+   @BelongsTo(() => Characters)
+   character: Characters
+
    @Default(none)
    @Column(DataType.INTEGER)
    price: number
-
-   @ForeignKey(() => Characters)
-   @Column
-   owner: number
-
-   @BelongsTo(() => Characters)
-   character: Characters
 
    @Default(false)
    @Column(DataType.BOOLEAN)
@@ -254,7 +254,7 @@ export class Vehicles extends Model {
          return;
       }
 
-      if (this.owner != player.character.id) {
+      if (this.characterID != player.character.id) {
          // PORUKA: Not your vehicle
          return;
       }
@@ -302,7 +302,7 @@ export class Vehicles extends Model {
    async lock (vehicle: VehicleMp, player: PlayerMp) {
       switch (this.type) {
          case VehicleConfig.type.OWNED: {
-            if (this.owner != player.character.id) {
+            if (this.characterID != player.character.id) {
                player.notification(Lang.youDontHaveVehicleKeys, notifications.type.ERROR, notifications.time.MED);
                return;
             }
