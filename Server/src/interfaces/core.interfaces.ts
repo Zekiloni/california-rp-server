@@ -10,7 +10,7 @@ export interface interactionPoint {
 };
 
 
-export interface offer {
+export interface CharacterOffer {
    title: string
    description: string
    offerer?: PlayerMp | null

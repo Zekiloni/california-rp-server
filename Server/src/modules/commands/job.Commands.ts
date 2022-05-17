@@ -3,8 +3,8 @@ import { cmds, colors, Lang, none } from '@constants';
 import { notifications } from '@enums';
 import { Jobs } from '@models';
 import { JobConfig } from '@configs';
-import { taxi } from '../../modules/jobs/taxi';
-import { electrician } from '../../models/jobs/electrician/electrician';
+import { taxi } from '../../models/jobs/taxi';
+import { electrician } from '../../models/jobs/electrician';
 
 
 
@@ -46,7 +46,7 @@ Commands[cmds.names.BUS_ROUTES] = {
    call (player: PlayerMp) {
       for (const i in JobConfig.busRoutes) {
          const route = JobConfig.busRoutes[i];
-        player.sendMessage((i + 1) + '. ' + route.name + 'broj stanica: ' + route.points.length, colors.hex.Info);
+        player.message((i + 1) + '. ' + route.name + 'broj stanica: ' + route.points.length, colors.hex.Info);
       }
    }
 }

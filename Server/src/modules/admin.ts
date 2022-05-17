@@ -17,7 +17,7 @@ export class admins {
 
       const admins = mp.players.toArray().filter(player => player.account.administrator > none);
       admins.forEach(admin => {
-         admin.sendMessage(rank + ' ' + player.name + ': ' + checkForDot(message), colors.hex.BROADCAST);
+         admin.message(rank + ' ' + player.name + ': ' + checkForDot(message), colors.hex.BROADCAST);
       });
    }
 
@@ -26,7 +26,7 @@ export class admins {
       const name = player.name + ' (' + player.account.username + ')';
 
       mp.players.forEach(target => {
-         target.sendMessage(rank + ' ' + name + ': ' + checkForDot(message), colors.hex.BROADCAST);
+         target.message(rank + ' ' + name + ': ' + checkForDot(message), colors.hex.BROADCAST);
       });
    }
 
@@ -34,7 +34,7 @@ export class admins {
    static notify (message: string, color: string) {
       const administrators = mp.players.toArray().filter(player => player.account.administrator > none);
       administrators.forEach(admin => 
-         admin.sendMessage(message, color)
+         admin.message(message, color)
       );
    }
 

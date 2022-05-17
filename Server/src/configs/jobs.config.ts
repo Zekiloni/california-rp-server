@@ -4,7 +4,10 @@ export namespace JobConfig {
    export const markerType = 27;
 
    export const markerColor: RGBA = [255, 204, 69, 200];
-   
+
+   export const 
+      PRICE_PER_BUS_STATION = 25; 
+        
    export enum job {
       UNEMPLOYED, BUS_DRIVER, POSTAL, TAXI, ELECTRICIAN
    }

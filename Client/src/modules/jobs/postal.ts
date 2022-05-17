@@ -5,6 +5,7 @@ const config = {
    blipColor: 79,
 }
 
+// BOX OBJECT: bkr_prop_fakeid_boxpassport_01a
 
 let working: boolean = false;
 let points: PostalPoint[] = [];

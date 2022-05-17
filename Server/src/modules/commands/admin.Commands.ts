@@ -168,7 +168,7 @@ Commands[cmds.names.BUSINESS_TYPES] = {
          const index = BusinesConfig.typeNames.indexOf(type);
          message += '[' + index + '] ' + type + ', ';
       });
-      player.sendMessage(message, colors.hex.Help);
+      player.message(message, colors.hex.Help);
    }
 }
 
@@ -947,7 +947,7 @@ Commands[cmds.names.FACTIONS] = {
    async call (player: PlayerMp) {
       Factions.findAll().then(factions => {
          if (Factions.length < 1) {
-            player.sendMessage(Lang.thereIsNoFactionsRn, colors.hex.Info);
+            player.message(Lang.thereIsNoFactionsRn, colors.hex.Info);
             return;
          }
 
@@ -955,7 +955,7 @@ Commands[cmds.names.FACTIONS] = {
             const members = await Characters.count( { where: { faction: faction.id } } );
             const leader = await Characters.findOne( { where: { id: faction.leader } } );
             
-            player.sendMessage('[' + faction.id + '] ' + faction.name + ', Lider ' + (leader ? leader?.name : 'Niko') + ', clanova ' + members + '.', colors.hex.Info); // PORUKA
+            player.message('[' + faction.id + '] ' + faction.name + ', Lider ' + (leader ? leader?.name : 'Niko') + ', clanova ' + members + '.', colors.hex.Info); // PORUKA
          })
       })
    }

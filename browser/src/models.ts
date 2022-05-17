@@ -146,7 +146,6 @@ export interface Character {
    faction: number
    rank: number
    job: number
-   working_hours: number
    health: number
    hunger: number
    bank: BankAccount

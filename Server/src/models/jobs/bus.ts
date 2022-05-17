@@ -1,7 +1,10 @@
 import { JobConfig, VehicleConfig } from '@configs';
+import { Lang } from '@constants';
+import { notifications } from '@enums';
 import { VehiclePoint } from '@interfaces';
-import { Jobs, Vehicles } from '@models';
-import { initials, randomInteger } from '@shared';
+import { Vehicles } from '@models';
+import { Jobs } from '../job.model';
+import { dollars, initials, randomInteger } from '@shared';
 
 
 
@@ -21,7 +24,13 @@ bus.vehicle_position = {
 }
 
 
+bus.maxShift = 3;
+
 bus.start = function (player: PlayerMp, routeID: number) {
+   if (player.character.completedShifts >= player.character.getJob!.maxShift!) {
+      return player.notification(Lang.WORKED_MAX_TIMES, notifications.type.ERROR, notifications.time.MED);
+   }
+
    const route = JobConfig.busRoutes[routeID];
 
    if (!route) {
@@ -33,9 +42,7 @@ bus.start = function (player: PlayerMp, routeID: number) {
       [0, 0, 0], [0, 0, 0]
    ];
 
-   const jobVehicle = mp.vehicles.toArray().find(vehicle => vehicle.instance.characterID == player.character.id && vehicle.instance.job && vehicle.instance.job.id == this.id);
-
-   if (jobVehicle) {
+   if (player.character.getJobVehicle) {
 
    } else {
       Vehicles.new('bus', VehicleConfig.type.JOB, true, player.character.id, vehicleColor, vehiclePoint.position, vehiclePoint.rotation, {
@@ -49,14 +56,11 @@ bus.start = function (player: PlayerMp, routeID: number) {
             return;
          }
 
-         console.log(createdVehicle.numberPlate)
-
          const vehicle = createdVehicle.load();
 
          if (!vehicle) {
             return;
          }
-         
       });
    }
 
@@ -69,6 +73,22 @@ bus.start = function (player: PlayerMp, routeID: number) {
 bus.stop = function (player: PlayerMp, finished: boolean, stations: number) {
    player.outputChatBox('zavrsio si ' + JSON.stringify(stations) + ' stanica');
    player.character.working = false;
+
+   let earned = stations * JobConfig.PRICE_PER_BUS_STATION;
+   
+   if (finished) {
+      player.character.giveMoney(player, earned);
+   }
+
+   player.notification(
+      finished ? `${Lang.ROUTE_SUCCESFULLY_FINISHED} ${Lang.YOU_EARNED} ${dollars(earned)}.` : ``,
+      finished ? notifications.type.SUCCESS : notifications.type.ERROR,
+      notifications.time.MED
+   )
+   
+   if (player.character.getJobVehicle) {
+      player.character.getJobVehicle.instance.destroy();
+   }
 };
 
 

@@ -25,6 +25,8 @@ export const Lang = {
    uTeleportedVehicleToYou: 'Teleportovali ste vozilo do vas.',
    uSendReport: 'Uspešno ste poslali prijavu, administracija će uskoro odgovoriti.',
    U_EMPLOYED_AS: 'Uspešno ste se zaposlili kao ',
+   ROUTE_SUCCESFULLY_FINISHED: 'Ruta je uspešno završena.',
+   YOU_EARNED: 'Zaradili ste ',
 
    // error messages 
    characterAlreadyExist: 'Karakter sa tim imenom i prezimenom već postoji.',
@@ -66,6 +68,7 @@ export const Lang = {
    busiensAlreadyOwner: 'Ovaj biznis je već u nečijem vlasništvu.',
    notNearJob: 'Ne nalazite se u blizini posla',
    cannotToYourself: 'Ne možete saMI sebi.',
+   WORKED_MAX_TIMES: 'Već ste ispunili radnu normu za ovaj sat.',
    cannotManageThisBusiness: 'Ne možete upravljati ovim biznisom.',
    cannotLeader: 'Nije moguće lidera fakcije.',
    ACCOUNT_DOESNT_EXIST: 'Korisničko ime nije pronadjeno.',

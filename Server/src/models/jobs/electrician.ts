@@ -1,7 +1,7 @@
 import { JobConfig, VehicleConfig } from '@configs';
 import { colors } from '@constants';
 import { notifications } from '@enums';
-import { Jobs } from '../../job.model';
+import { Jobs } from '../job.model';
 import { generateString } from '@shared';
 import { VehiclePoint } from '@interfaces';
 import { Vehicles } from '@models';
@@ -103,7 +103,7 @@ class Electrician extends Jobs {
          const salary = (PRICE_PER_BOX * points * kilometers);
          player.character.giveMoney(player, salary);
 
-         player.sendMessage(`Popravljeno ${points} kutija, ukupna predjena distanca je ${kilometers}km i zaradili ste ${salary}$.`, colors.hex.Info);
+         player.message(`Popravljeno ${points} kutija, ukupna predjena distanca je ${kilometers}km i zaradili ste ${salary}$.`, colors.hex.Info);
          player.notification('Uspešno ste završili posao.', notifications.type.SUCCESS, 4);
       } else {
          player.notification('Niste uspesno završili posao.', notifications.type.SUCCESS, 4);

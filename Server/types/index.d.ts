@@ -30,7 +30,7 @@ declare global {
       character: Characters;
       account: Accounts;
 
-      sendMessage (message: string, color: string): void;
+      message (message: string, color: string): void;
       proximityMessage (radius: number, message: string, colors: string[]): void;
       notification (message: string, Type: number, Time: number): void;
       hint (key: string, message: string, time: number): void;

@@ -23,7 +23,7 @@ Commands[cmds.names.RADIO] = {
          mp.players.forEach(async target => {
             const equiped = await Items.hasEquiped(target, itemNames.HANDHELD_RADIO);
             if (equiped && equiped.data.frequency == radio.data.frequency) {
-               target.sendMessage('[CH ' + radio?.data.frequency + '] ' + player.name + ' : ' + text, colors.hex.RADIO);
+               target.message('[CH ' + radio?.data.frequency + '] ' + player.name + ' : ' + text, colors.hex.RADIO);
             }
          })
       })

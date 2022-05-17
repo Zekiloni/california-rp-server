@@ -15,7 +15,6 @@ import { NumberPlate } from '@interfaces';
 
 @Table
 export class Vehicles extends Model {
-   
    @PrimaryKey
    @AutoIncrement
    @Column
@@ -136,11 +135,11 @@ export class Vehicles extends Model {
    @UpdatedAt
    updated_at: Date
 
-   job: Jobs | null
+   job: Jobs | null;
 
-   faction: Factions | null
+   faction: Factions | null;
 
-   rent: ReturnType<typeof setTimeout> | null
+   rent: ReturnType<typeof setTimeout> | null;
 
    @AfterSync
    static loading () {

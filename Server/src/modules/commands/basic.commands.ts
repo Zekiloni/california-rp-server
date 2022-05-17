@@ -168,8 +168,8 @@ Commands[cmds.names.WHISPER] = {
          return;
       }
 
-      target.sendMessage(player.name + ' ' + Lang.isWhisperingU + ': ' + text, colors.hex.White[3]);
-      player.sendMessage(Lang.whispering + ' ' + target.name + ': ' + text, colors.hex.White[3]);
+      target.message(player.name + ' ' + Lang.isWhisperingU + ': ' + text, colors.hex.White[3]);
+      player.message(Lang.whispering + ' ' + target.name + ': ' + text, colors.hex.White[3]);
    }
 };
 
@@ -193,7 +193,7 @@ Commands[cmds.names.ROLEPLAY_AME] = {
       }
 
       player.setVariable(shared_Data.BUBBLE, text);
-      player.sendMessage('> ' + player.name + ' ' + checkForDot(text), colors.hex.Purple[1]);
+      player.message('> ' + player.name + ' ' + checkForDot(text), colors.hex.Purple[1]);
 
       setTimeout(() => { 
          if (!player) {
@@ -253,12 +253,12 @@ Commands[cmds.names.PM] = {
          return;
       }
 
-      target.sendMessage(
+      target.message(
          '(( ' + Lang.pmFrom + ' ' + player.name + ' [' + player.id + ']: ' + text + ' ))', 
          colors.hex.PM.From
       );
 
-      player.sendMessage(
+      player.message(
          '(( ' + Lang.pmTo + ' ' + target.name + ' [' + target.id + ']: ' + text + ' ))', 
          colors.hex.PM.To
       );

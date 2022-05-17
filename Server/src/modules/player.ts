@@ -294,7 +294,7 @@ mp.Player.prototype.help = function (message: string, time: number) {
 }
 
 
-mp.Player.prototype.sendMessage = function (message: string, color: string) {
+mp.Player.prototype.message = function (message: string, color: string) {
    this.outputChatBox('!{' + color + '}' + message);
 };
 

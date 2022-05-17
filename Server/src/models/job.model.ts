@@ -1,12 +1,11 @@
 import { gDimension, cmds, Lang } from '@constants';
 import { JobConfig } from '@configs';
-import { offer, VehiclePoint } from '@interfaces';
+import { CharacterOffer, VehiclePoint } from '@interfaces';
 import { formatCommand } from '@shared';
 import { notifications } from '@enums';
-
+import { Logs } from '@models';
 
 export class Jobs { 
-
    static list: Jobs[] = []
 
    id: number;
@@ -19,6 +18,7 @@ export class Jobs {
    blip: BlipMp;
    colshape: ColshapeMp;
    marker: MarkerMp;
+   maxShift?: number;
 
    start? (player: PlayerMp, ...params: any): void;
    stop? (player: PlayerMp, ...params: any): void;
@@ -56,8 +56,8 @@ export class Jobs {
          }
       };
 
-      console.log(this.name)
       Jobs.list.push(this);
+      Logs.succes(`JOB: ${this.name} initialized !`);
    }
 
    static nearest (player: PlayerMp, distance: number = 3) {
@@ -71,7 +71,7 @@ export class Jobs {
 
       const job = this;
 
-      const offer: offer = {
+      const offer: CharacterOffer = {
          title: Lang.JOB_OFFER + ' ' + job.name,
          description: job.description!,
          job: job,
@@ -97,4 +97,7 @@ export class Jobs {
    }
 }
 
-import './jobs/electrician/electrician'
+import './jobs/electrician';
+import './jobs/postal';
+import './jobs/bus';
+

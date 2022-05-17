@@ -277,7 +277,7 @@ export class Factions extends Model {
       
       mp.players.forEach(target => {
          if (target.character.faction == this.id) {
-            target.sendMessage('(( ' + (rank ? rank?.name : Lang.unranked) + ' ' + player.name + ': ' + checkForDot(message) + ' ))', colors.hex.FACTION);
+            target.message('(( ' + (rank ? rank?.name : Lang.unranked) + ' ' + player.name + ': ' + checkForDot(message) + ' ))', colors.hex.FACTION);
          }
       })
    }

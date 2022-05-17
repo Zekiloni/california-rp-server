@@ -105,7 +105,7 @@ export default class channels extends Model {
          const equiped = await Items.hasEquiped(player, itemNames.HANDHELD_RADIO);
          if (equiped) {
             if (equiped.data.power && equiped.data.frequency == this.frequency) {
-               player.sendMessage('[CH: ' + freq + '] ' + by + ': ' + message, colors.hex.RADIO);
+               player.message('[CH: ' + freq + '] ' + by + ': ' + message, colors.hex.RADIO);
             }
          }
       });

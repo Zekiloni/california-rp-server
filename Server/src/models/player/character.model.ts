@@ -10,17 +10,16 @@ import {
    Accounts, appearances, banks, Houses,
    Busines, Items, Logs, objects, 
    Vehicles, Factions, FactionsRanks,
-   MoneyLogs
+   MoneyLogs, Jobs
 } from '@models';
 
 import { FacialMoods, gDimension, WalkingStyles, Lang, colors, none } from '@constants';
 import { spawnPointTypes, notifications, distances, ItemEnums } from '@enums';
 import { playerConfig, ServerConfig, VehicleConfig } from '@configs';
 import { generateNumber, shared_Data, uuid } from '@shared';
-import { offer, Injury } from '@interfaces';
+import { CharacterOffer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/items-registry/clothing.Item';
 import { admins } from '../../modules/admin';
-import { Jobs } from '@models/job.model';
 
 
 
@@ -79,10 +78,6 @@ export class Characters extends Model {
    @Length( { min: none, max : 30 })
    @Column(DataType.INTEGER( { length: 2 } ))
    job: number;
-
-   @Default(none)
-   @Column(DataType.INTEGER)
-   working_hours: number;
 
    @Default(100)
    @Column(DataType.INTEGER)
@@ -179,9 +174,10 @@ export class Characters extends Model {
    @HasMany(() => Vehicles)
    vehicles: Vehicles[]
 
-   offer: offer | null = null;
+   offer: CharacterOffer | null = null;
    
    working: boolean = false;
+   completedShifts: number = 0;
 
    inside: Houses | Busines | null = null;
 
@@ -195,6 +191,10 @@ export class Characters extends Model {
 
    get getJob () {
       return Jobs.list[this.job] ? Jobs.list[this.job] : null;
+   }
+
+   get getJobVehicle () {
+      return mp.vehicles.toArray().find(vehicle => vehicle.instance.characterID == this.id && vehicle.instance.job && vehicle.instance.job.id == this.job);
    }
 
    @AfterSync
@@ -412,7 +412,7 @@ export class Characters extends Model {
       return this.job == none ? true : false;
    }
 
-   setOffer (player: PlayerMp, value: offer | null) {
+   setOffer (player: PlayerMp, value: CharacterOffer | null) {
       this.offer = value;
       player.setVariable(shared_Data.OFFER, value);
    }
@@ -611,6 +611,11 @@ export class Characters extends Model {
          if (character.minutes >= 60) { 
             character.increment('hours', { by: 1 });
             character.minutes = none;
+
+            if (character.completedShifts > 0) {
+               character.completedShifts = 0;
+            }
+
             await character.save();
          }
       });

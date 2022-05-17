@@ -2,7 +2,6 @@ import { JobConfig } from '@configs';
 import { Jobs } from '@models';
 
 
-
 enum TaxiCallStatus {
    NONE, ACCEPTED
 }
@@ -15,16 +14,13 @@ interface TaxiCall {
 }
 
 
-class taxiJob extends Jobs {
+class TaxiJob extends Jobs {
    
    calls: TaxiCall[] = [];
 
    constructor (id: number, name: string, description: string, position: Vector3Mp, sprite?: number, spriteColor?: number) {
-      super (id, name, description, position, sprite, spriteColor)
-
-      console.log (this)
+      super (id, name, description, position, sprite, spriteColor);
    }
-
 
    menu (player: PlayerMp) {
       player.call('CLIENT::TAXI:MENU', [player.character.working, this.activeWorkers.length, this.calls]);
@@ -65,7 +61,7 @@ class taxiJob extends Jobs {
    }
 }
 
-export const taxi = new taxiJob(
+export const taxi = new TaxiJob(
    JobConfig.job.TAXI,
    JobConfig.names.TAXI,
    JobConfig.descriptions.TAXI,

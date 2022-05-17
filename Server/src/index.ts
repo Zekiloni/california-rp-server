@@ -12,7 +12,6 @@ import './modules/commands';
 import './modules/player'
 import './modules/items';
 import './modules/minute';
-import './modules/jobs';
 
 import { sleep } from '@shared';
 import { Logs } from'@models';

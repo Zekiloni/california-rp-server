@@ -82,7 +82,7 @@ mp.events.add('playerCommand', async (player: PlayerMp, content: string) => {
       }
 
       if (command.params && command.params.length > params.length) {
-         player.sendMessage('Komanda: /' + commandName + ' [' + command.params.join('] [') + '] ', colors.hex.Help);
+         player.message('Komanda: /' + commandName + ' [' + command.params.join('] [') + '] ', colors.hex.Help);
          return;
       } 
 
