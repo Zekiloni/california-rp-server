@@ -8,7 +8,7 @@ import { Logs, Characters, objects } from '@models';
 
 
 @Table
-export class houses extends Model {
+export class Houses extends Model {
 
    static objects = new Map<number, interactionPoint>();
 
@@ -90,46 +90,46 @@ export class houses extends Model {
    updated_at: Date;
 
    get object (): interactionPoint { 
-      return houses.objects.get(this.id)!;
+      return Houses.objects.get(this.id)!;
    }
 
    set object (object: interactionPoint) { 
-      houses.objects.set(this.id, object);
+      Houses.objects.set(this.id, object);
    }
 
    @AfterSync
    static async loading () {
-      houses.findAll().then(houses => {
+      Houses.findAll().then(houses => {
          houses.forEach(house => {
             house.refresh();
          })
       });
 
-      Logs.info(await houses.count() + ' houses loaded !');
+      Logs.info(await Houses.count() + ' houses loaded !');
    }
 
    @AfterSave
-   static saving (house: houses) {
+   static saving (house: Houses) {
       house.refresh();
    }
 
    @AfterCreate
-   static async creating (house: houses) {
+   static async creating (house: Houses) {
       house.refresh();
    }
 
    @AfterDestroy
-   static async destroying (house: houses, options: any) {
+   static async destroying (house: Houses, options: any) {
       if (house.object) {
          house.object.colshape!.destroy();
          house.object.blip!.destroy();
          house.object.marker!.destroy();
-         houses.objects.delete(house.id);
+         Houses.objects.delete(house.id);
       }
    }
 
    static async new (player: PlayerMp, type: number, price: number) {
-      houses.create({
+      Houses.create({
          type: type,
          price: price,
          position: player.position,
@@ -238,8 +238,8 @@ export class houses extends Model {
       }
    }
 
-   static async getNearest (player: PlayerMp): Promise<houses | void> {
-      return houses.findAll( { } ).then(houses => {
+   static async getNearest (player: PlayerMp): Promise<Houses | void> {
+      return Houses.findAll( { } ).then(houses => {
          const nearest = houses.filter(house => player.dist(house.position) < 20);
 
          return nearest.reduce((firstHouse, secondHouse) => {

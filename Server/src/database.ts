@@ -30,7 +30,7 @@ const Database = new Sequelize({
       models.MoneyLogs,
       models.KillLogs,
       models.objects,
-      models.houses,
+      models.Houses,
       models.Products,
       models.Workers,
       models.Busines,

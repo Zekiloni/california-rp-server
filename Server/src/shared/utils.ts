@@ -1,7 +1,6 @@
 import { cmds, gDimension } from "@constants";
 import { notifications } from "@enums";
-import { Busines } from "@models";
-import { houses } from "@models";
+import { Busines, Houses } from "@models";
 
 
 export function randomInteger (min: number, max: number) {
@@ -106,7 +105,7 @@ export function timeDate () {
 
 
 export async function getNearest (player: PlayerMp, distance: number) {
-   for (const house of await houses.findAll()) {
+   for (const house of await Houses.findAll()) {
       if (player.dist(house.position) < distance) {
          return house;
       }

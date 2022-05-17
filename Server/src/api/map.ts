@@ -1,5 +1,5 @@
 import { api } from './index';
-import { houses, Busines } from '@models';
+import { Houses, Busines } from '@models';
 
 
 interface IMapPoints {
@@ -13,7 +13,7 @@ api.get('/map', async (request, response) => {
       busineses: []
    }
 
-   await houses.findAll().then(houses => {
+   await Houses.findAll().then(houses => {
       houses.forEach(
          house => points.houses.push(house.position)
       );

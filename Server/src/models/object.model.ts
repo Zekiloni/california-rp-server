@@ -5,7 +5,7 @@ import {
 } from 'sequelize-typescript';
 
 import { cmds } from '@constants';
-import { houses, Logs } from '@models';
+import { Houses, Logs } from '@models';
 
 
 export class objects extends Model {
@@ -66,7 +66,7 @@ export class objects extends Model {
    
       // TODO: check player money and price of object
    
-      const instance = player.character.inside instanceof houses ? cmds.actions.house : cmds.actions.busines;
+      const instance = player.character.inside instanceof Houses ? cmds.actions.house : cmds.actions.busines;
    
       return await objects.create( 
          {

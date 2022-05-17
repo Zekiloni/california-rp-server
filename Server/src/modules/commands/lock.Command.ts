@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { Busines, houses } from '@models';
+import { Busines, Houses } from '@models';
 import { getNearest } from '@shared';
 import { Commands } from '../commands';
 
@@ -37,8 +37,8 @@ Commands[cmds.names.LOCK] = {
             break;
          }
 
-         case nearest instanceof houses: {
-            (<houses>nearest).lock(player);
+         case nearest instanceof Houses: {
+            (<Houses>nearest).lock(player);
             break;
          }
 

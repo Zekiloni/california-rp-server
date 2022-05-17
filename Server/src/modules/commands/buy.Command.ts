@@ -1,5 +1,5 @@
 import { cmds } from '@constants';
-import { Busines, houses } from '@models';
+import { Busines, Houses } from '@models';
 import { Commands } from '../commands';
 
 
@@ -23,7 +23,7 @@ Commands[cmds.names.BUY] = {
          }
 
          case cmds.actions.house: {
-            const nearest = await houses.getNearest(player);
+            const nearest = await Houses.getNearest(player);
 
             if (!nearest) {
                return;

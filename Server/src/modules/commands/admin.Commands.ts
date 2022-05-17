@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { Commands } from '../commands';
-import { Logs, BaseItem, Items, houses, Accounts, Busines, Factions, Characters, Vehicles } from '@models';
+import { Logs, BaseItem, Items, Houses, Accounts, Busines, Factions, Characters, Vehicles } from '@models';
 import { cmds, colors, gDimension, Lang, none, weathers } from '@constants';
 import { rank, notifications } from '@enums';
 import { BusinesConfig, ServerConfig, VehicleConfig } from '@configs';
@@ -645,7 +645,7 @@ Commands[cmds.names.TELEPORT] = {
          }
 
          case cmds.actions.house: {
-            houses.findOne( { where: { id: Number(id) } } ).then(house => {
+            Houses.findOne( { where: { id: Number(id) } } ).then(house => {
                if (!house) {
                   return;
                }
@@ -674,7 +674,7 @@ Commands[cmds.names.CREATE_HOUSE] =  {
       cmds.params.PRICE
    ],
    call (player: PlayerMp, type: string, price: string) { 
-      houses.new(player, Number(type), Number(price));
+      Houses.new(player, Number(type), Number(price));
    }
 }
 
@@ -683,7 +683,7 @@ Commands[cmds.names.DESTROY_HOUSE] =  {
    admin: rank.LEAD_ADMINISTRATOR,
    description: cmds.descriptions.DESTROY_HOUSE,
    async call (player: PlayerMp, id?: number) { 
-      const nearest = await houses.getNearest(player);
+      const nearest = await Houses.getNearest(player);
 
       if (!nearest) {
          return;
@@ -703,7 +703,7 @@ Commands[cmds.names.EDIT_HOUSE] =  {
       cmds.params.VALUE
    ],
    call (player: PlayerMp, id: string, property: string, value: string) { 
-      houses.findOne( { where: { id: id } } ).then(house => { 
+      Houses.findOne( { where: { id: id } } ).then(house => { 
          if (!house) {
             return;
          }

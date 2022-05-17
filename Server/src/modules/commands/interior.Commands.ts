@@ -1,7 +1,7 @@
 import { Commands } from '../commands';
 import { cmds } from '@constants';
 import { getNearest } from '@shared';
-import { houses, Busines } from '@models';
+import { Houses, Busines } from '@models';
 
 
 Commands[cmds.names.ENTER] = {
@@ -13,12 +13,12 @@ Commands[cmds.names.ENTER] = {
          }
 
          switch (true) { 
-            case nearest instanceof houses: {
+            case nearest instanceof Houses: {
                if (player.dist(nearest.position) > 2) {
                   return;
                }
 
-               (<houses>nearest).enter(player);
+               (<Houses>nearest).enter(player);
                break;
             }
          }
@@ -37,8 +37,8 @@ Commands[cmds.names.EXIT] = {
      const inside = player.character.inside;
 
      switch (true) {
-        case inside instanceof houses: { 
-           (<houses>inside).exit(player);
+        case inside instanceof Houses: { 
+           (<Houses>inside).exit(player);
            break;
         }
      }

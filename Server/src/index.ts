@@ -43,7 +43,7 @@ import { Lang } from '@constants';
 
 
 
-const exitProcess = async () => {
+const onServerClose = async () => {
    Logs.info(Lang.serverIsClosing);
    mp.players.broadcast(Lang.serverIsClosing + ' ' + Lang.pleaseReconnect);
 
@@ -57,10 +57,10 @@ const exitProcess = async () => {
 };
 
 
-process.on('SIGHUP', exitProcess);
-process.on('SIGQUIT', exitProcess);
-process.on('SIGTERM', exitProcess);
-process.on('SIGINT', exitProcess);
+process.on('SIGHUP', onServerClose);
+process.on('SIGQUIT', onServerClose);
+process.on('SIGTERM', onServerClose);
+process.on('SIGINT', onServerClose);
 
 
 

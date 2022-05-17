@@ -7,7 +7,7 @@ import {
 } from 'sequelize-typescript';
 
 import { 
-   Accounts, appearances, banks, houses,
+   Accounts, appearances, banks, Houses,
    Busines, Items, Logs, objects, 
    Vehicles, Factions, FactionsRanks,
    MoneyLogs
@@ -20,6 +20,7 @@ import { generateNumber, shared_Data, uuid } from '@shared';
 import { offer, Injury } from '@interfaces';
 import { ClothingItem } from '../items/items-registry/clothing.Item';
 import { admins } from '../../modules/admin';
+import { Jobs } from '@models/job.model';
 
 
 
@@ -169,8 +170,8 @@ export class Characters extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @HasMany(() => houses)
-   houses: houses[]
+   @HasMany(() => Houses)
+   houses: Houses[]
 
    @HasMany(() => Busines)
    business: Busines[]
@@ -182,7 +183,7 @@ export class Characters extends Model {
    
    working: boolean = false;
 
-   inside: houses | Busines | null = null;
+   inside: Houses | Busines | null = null;
 
    freezed: boolean = false;
 
@@ -190,6 +191,10 @@ export class Characters extends Model {
 
    get isOnline () {
       return mp.players.toArray().find(player => player.character && player.character.id == this.id) ? true : false;
+   }
+
+   get getJob () {
+      return Jobs.list[this.job] ? Jobs.list[this.job] : null;
    }
 
    @AfterSync
@@ -294,7 +299,7 @@ export class Characters extends Model {
          }
 
          case spawnPointTypes.HOUSE: {
-            houses.findOne( { where: { id: id } } ).then(house => {
+            Houses.findOne( { where: { id: id } } ).then(house => {
                if (!house) {
                   return;
                }               
