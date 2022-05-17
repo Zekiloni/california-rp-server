@@ -1,4 +1,4 @@
-import { Logs, Bans, Characters, Accounts, Items, appearances, banks, BaseItem, Houses, Busines, Vehicles, transactions } from '@models';
+import { Logs, Bans, Characters, Accounts, Items, Appearances, Banks, BaseItem, Houses, Busines, Vehicles, transactions } from '@models';
 import { playerConfig, ServerConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, Lang, none } from '@constants';
@@ -95,7 +95,7 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
       }
    );
 
-   const appearance = await appearances.create(
+   const appearance = await Appearances.create(
       {
          character_id: character.id, 
          character: character, 
@@ -154,7 +154,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
    return new Promise((resolve) => {
       let spawnPoints: PlayerSpawnPoint[] = [];
 
-      Characters.findOne({ where: { id: id }, include: [Houses, Vehicles, Busines, banks] }).then((character) => { 
+      Characters.findOne({ where: { id: id } }).then((character) => { 
          const defaultSpawn: PlayerSpawnPoint = {
             name: Lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,
@@ -233,7 +233,7 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
 
 function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes, id?: number) {
-   Characters.findOne( { where: { id: characterId }, include: [appearances, banks] } ).then(character => {
+   Characters.findOne( { where: { id: characterId }, include: [Appearances, Items, Banks, Houses, Vehicles, Busines] } ).then(character => {
       character!.spawnPlayer(player, point, character?.appearance!, id);
    });
 }

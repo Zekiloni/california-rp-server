@@ -2,7 +2,6 @@
 
 
 export const Lang = {
-
    // server back-end
    successDbConnection: 'Successfully connected to database',
    serverIsClosing: 'Server se gasi...',
@@ -126,7 +125,6 @@ export const Lang = {
    thisBusinessIsLocked: 'Biznis je zaključan, zavoren.',
    thisHouseIsLocked: 'Ova kuća je zaključana.',
 
-
    // help messages
    COMMAND_USAGE: 'Komanda: ',
    garbageJobStarted: 'Započeli ste posao Smećara, vaš zadatak je da idete od kontenjera do kontenjera i interaktirate sa njima na slovo Y.',
@@ -140,6 +138,7 @@ export const Lang = {
    toBuyTheBusinenss: 'Da kupite biznis',
    businessManagement: 'Opcije vašeg biznisa',
    usetAdminTo: 'Stavili ste administrator level ',
+   POSTAL_STARTED: 'Uspešno ste započeli posao poštara ! Vozilo vam je označeno na mapi. \nTakodje na mapi vam je označena dostava.',
 
 
    // info messages

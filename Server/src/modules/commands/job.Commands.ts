@@ -5,7 +5,7 @@ import { Jobs } from '@models';
 import { JobConfig } from '@configs';
 import { taxi } from '../../models/jobs/taxi';
 import { electrician } from '../../models/jobs/electrician';
-
+import { postal } from '../../models/jobs/postal';
 
 
 Commands[cmds.names.TAKE_JOB] = {
@@ -39,6 +39,21 @@ Commands[cmds.names.QUIT_JOB] = {
    }
 }
 
+
+Commands[cmds.names.POSTAL] = {
+   description: 'Započni / prekini posao poštara.',
+   job: {
+      required: true,
+      id: JobConfig.job.POSTAL
+   },
+   call (player: PlayerMp) {
+      if (!player.character.working) {
+         postal.start(player);
+      } else {
+         postal.stop(player);
+      }
+   }
+}
 
 Commands[cmds.names.BUS_ROUTES] = {
    description: cmds.descriptions.BUS_ROUTES,

@@ -7,7 +7,7 @@ import {
 } from 'sequelize-typescript';
 
 import { 
-   Accounts, appearances, banks, Houses,
+   Accounts, Appearances, Banks, Houses,
    Busines, Items, Logs, objects, 
    Vehicles, Factions, FactionsRanks,
    MoneyLogs, Jobs
@@ -57,11 +57,11 @@ export class Characters extends Model {
    @Column(DataType.INTEGER)
    money: number
 
-   @HasOne(() => appearances)
-   appearance: appearances
+   @HasOne(() => Appearances)
+   appearance: Appearances
 
-   @HasOne(() => banks)
-   bank: banks;
+   @HasOne(() => Banks)
+   bank: Banks;
 
    @Default(none)
    @Column
@@ -204,7 +204,7 @@ export class Characters extends Model {
 
    @AfterCreate
    static async creating (character: Characters) {
-      banks.create({
+      Banks.create({
          number: generateNumber(100000000000, 999999999999),
          owner: character.id,
          character: character
@@ -217,7 +217,7 @@ export class Characters extends Model {
       await character.save();
    }
 
-   async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: appearances, id?: number) { 
+   async spawnPlayer (player: PlayerMp, point: spawnPointTypes, appearance: Appearances, id?: number) { 
       player.account.lastCharacter = this.id;
       player.character = this;
 

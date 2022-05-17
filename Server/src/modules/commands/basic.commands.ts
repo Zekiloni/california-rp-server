@@ -1,7 +1,7 @@
 
 import { cmds, colors, Lang } from '@constants';
 import { distances, notifications } from '@enums';
-import { banks } from '@models';
+import { Banks } from '@models';
 import { checkForDot, shared_Data } from '@shared';
 import { Commands } from '../commands';
 
@@ -293,7 +293,7 @@ Commands[cmds.names.COIN] = {
 Commands[cmds.names.BANK] = {
    description: cmds.descriptions.BANK,
    call (player: PlayerMp) {
-      if (!banks.isNear(player)) {
+      if (!Banks.isNear(player)) {
          player.notification(Lang.NOT_IN_BANK, notifications.type.ERROR, notifications.time.MED);
          return;
       }

@@ -21,7 +21,7 @@ export interface BankCredit {
 
 
 @Table
-export class banks extends Model {
+export class Banks extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column
@@ -146,7 +146,7 @@ export class banks extends Model {
    }
 
    static transfer (player: PlayerMp, targetNumber: number, amount: number) {
-      banks.findOne( { where: { number: targetNumber } } ).then(target => {
+      Banks.findOne( { where: { number: targetNumber } } ).then(target => {
          if (!target) {
             player.notification(Lang.BANK_ACCOUNT_NOT_FOUND, notifications.type.ERROR, notifications.time.MED)
             return;
@@ -192,8 +192,8 @@ export class banks extends Model {
 }
 
 
-mp.events.add('SERVER::BANK:GET_CREDIT_CARD', banks.getCreditCard);
-mp.events.addProc('SERVER::BANK:DEPOSIT', banks.deposit);
-mp.events.addProc('SERVER::BANK:WITHDRAW', banks.withdraw);
-mp.events.addProc('SERVER::BANK:TRANSFER', banks.transfer);
+mp.events.add('SERVER::BANK:GET_CREDIT_CARD', Banks.getCreditCard);
+mp.events.addProc('SERVER::BANK:DEPOSIT', Banks.deposit);
+mp.events.addProc('SERVER::BANK:WITHDRAW', Banks.withdraw);
+mp.events.addProc('SERVER::BANK:TRANSFER', Banks.transfer);
 

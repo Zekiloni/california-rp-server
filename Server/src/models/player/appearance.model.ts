@@ -5,7 +5,7 @@ import { playerModels } from '@shared';
 
 
 @Table
-export class appearances extends Model {
+export class Appearances extends Model {
    @PrimaryKey
    @AutoIncrement
    @Column(DataType.INTEGER)

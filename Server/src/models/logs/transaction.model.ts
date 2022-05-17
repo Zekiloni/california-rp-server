@@ -2,7 +2,7 @@
 import { Table, Model, Column, PrimaryKey, AutoIncrement, Default, ForeignKey, BelongsTo, DataType, AllowNull } from 'sequelize-typescript';
 import rp from 'request-promise';
 
-import { Logs, banks } from '@models';
+import { Logs, Banks } from '@models';
 import { cmds, colors, none } from '@constants';
 import { formatCommand } from '@shared';
 import { ServerConfig } from '@configs';
@@ -30,12 +30,12 @@ export class transactions extends Model {
    @Column(DataType.INTEGER)
    type: TransactionType
 
-   @ForeignKey(() => banks)
+   @ForeignKey(() => Banks)
    @Column(DataType.INTEGER)
    bank_account_id: number
 
-   @BelongsTo(() => banks)
-   bank_account: banks
+   @BelongsTo(() => Banks)
+   bank_account: Banks
 
    @AllowNull(false)
    @Column(DataType.STRING)

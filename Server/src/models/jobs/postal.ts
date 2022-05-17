@@ -1,18 +1,21 @@
 'use strict';
 
 import { JobConfig } from '@configs';
-import { Lang } from '@constants';
-import { notifications } from '@enums';
+import { colors, Lang } from '@constants';
 import { Houses } from '@models';
 import { Sequelize } from 'sequelize-typescript';
 import { Op } from 'sequelize';
 import { Jobs } from '../job.model';
+import { VehiclePoint } from '@interfaces/vehicle.interfaces';
 
 
 
 class PostalJob extends Jobs {
    deliveredPoints: number[] = [];
-   maxShift = 3;
+   vehicle_position: VehiclePoint = {
+      position: new mp.Vector3(129.9908, 87.6114, 81.9316),
+      rotation: new mp.Vector3(0, 0, -109)
+   };
 
    constructor (id: number, name: string, desc: string, position: Vector3Mp, sprite: number, spriteColor: number) {
       super(id, name, desc, position, sprite, spriteColor);
@@ -32,16 +35,13 @@ class PostalJob extends Jobs {
    start (player: PlayerMp) {
       if (player.character.working) 
          return;
-
-      if (player.character.completedShifts >= this.maxShift)
-         return player.notification(Lang.WORKED_MAX_TIMES, notifications.type.ERROR, notifications.time.MED);
-
       
       this.getDeliveryPoint().then(packagePoint => {
          if (!packagePoint)
             return;
 
-         player.call('CLIENT::POSTAL:POINT', [])
+         player.call('CLIENT::POSTAL:POINT', [packagePoint.id, packagePoint.position]);
+         player.message(Lang.POSTAL_STARTED, colors.hex.Help);
       }) 
    }
 
@@ -53,6 +53,7 @@ class PostalJob extends Jobs {
          player.character.getJobVehicle.destroy();
       }
       
+      player.character.completedShifts ++;
 
    }
 
@@ -61,11 +62,12 @@ class PostalJob extends Jobs {
          return;
       
       this.deliveredPoints.push(houseID);
+
    }
 }
 
 
-const postal = new PostalJob(
+export const postal = new PostalJob(
    JobConfig.job.POSTAL,
    JobConfig.names.POSTAL,
    JobConfig.descriptions.POSTAL,

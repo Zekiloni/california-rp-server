@@ -37,6 +37,7 @@ export namespace cmds {
       TAKE_JOB: 'takejob',
       QUIT_JOB: 'quitjob',
       CHOOSE_ROUTE: 'route',
+      POSTAL: 'postal',
       BUS_ROUTES: 'routes',
       HEALTH: 'health',
       SET_ARMOUR: 'armour',

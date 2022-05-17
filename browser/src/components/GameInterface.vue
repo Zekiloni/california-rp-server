@@ -190,10 +190,9 @@
       flex-direction: column;
       justify-content: flex-end;
       bottom: 25px; 
-      left: 340px; 
+      left: 30vh; 
       width: 300px; 
       height: auto;
-      text-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
    }
 
    .date-time { 
@@ -203,12 +202,13 @@
    .date-time h2 { 
       color: #fefefe; 
       font-weight: 450; 
+      font-size: 1.2rem;
    }
 
    .date-time h3 { 
       font-weight: 500; 
       color: #c2c2c2; 
-      font-size: 0.95rem; 
+      font-size: 1rem; 
    }
 
    .location {
@@ -218,18 +218,19 @@
    .location h2 { 
       color: #fcb91f;
       font-weight: 800; 
-      font-size: 1.5rem;
+      font-size: 1.75rem;
    }
    
    .location h3.street { 
       color: #fefefe; 
-      font-weight: 450; 
+      font-weight: 450;
+      font-size: 1.2rem; 
    }
 
    .location h3.zone { 
       font-weight: 500; 
       color: #c2c2c2; 
-      font-size: 0.95rem; 
+      font-size: 1rem; 
       text-transform: capitalize; 
    }
    
