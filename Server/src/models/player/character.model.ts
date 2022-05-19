@@ -174,6 +174,9 @@ export class Characters extends Model {
    @HasMany(() => Vehicles)
    vehicles: Vehicles[]
 
+   @HasMany(() => Items)
+   items: Items[]
+
    offer: CharacterOffer | null = null;
    
    working: boolean = false;

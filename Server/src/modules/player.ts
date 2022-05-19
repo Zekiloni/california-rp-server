@@ -154,7 +154,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
    return new Promise((resolve) => {
       let spawnPoints: PlayerSpawnPoint[] = [];
 
-      Characters.findOne({ where: { id: id } }).then((character) => { 
+      Characters.findOne({ where: { id: id }, include: [Items, Banks, Houses, Vehicles, Busines] }).then((character) => { 
          const defaultSpawn: PlayerSpawnPoint = {
             name: Lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,
@@ -233,7 +233,7 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
 
 function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes, id?: number) {
-   Characters.findOne( { where: { id: characterId }, include: [Appearances, Items, Banks, Houses, Vehicles, Busines] } ).then(character => {
+   Characters.findOne( { where: { id: characterId }, include: [Appearances] } ).then(character => {
       character!.spawnPlayer(player, point, character?.appearance!, id);
    });
 }

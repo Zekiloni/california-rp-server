@@ -35,11 +35,14 @@ class PostalJob extends Jobs {
    start (player: PlayerMp) {
       if (player.character.working) 
          return;
-      
+
+      console.log('postal start 1')
+
       this.getDeliveryPoint().then(packagePoint => {
          if (!packagePoint)
             return;
 
+         console.log('postal start 2')
          player.call('CLIENT::POSTAL:POINT', [packagePoint.id, packagePoint.position]);
          player.message(Lang.POSTAL_STARTED, colors.hex.Help);
       }) 
@@ -48,11 +51,13 @@ class PostalJob extends Jobs {
    stop (player: PlayerMp) {
       if (!player.character.working) 
          return;
-
+         
+      console.log('postal stop 1')
       if (player.character.getJobVehicle) {
          player.character.getJobVehicle.destroy();
       }
-      
+      console.log('postal stop 2')
+
       player.character.completedShifts ++;
 
    }
