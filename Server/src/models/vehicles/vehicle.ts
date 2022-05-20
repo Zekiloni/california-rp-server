@@ -13,7 +13,9 @@ import { Jobs, Factions, Logs, Characters, VehicleComponents } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
-@Table
+@Table({
+   tableName: 'vehicles'
+})
 export class Vehicles extends Model {
    @PrimaryKey
    @AutoIncrement
@@ -33,7 +35,9 @@ export class Vehicles extends Model {
    temporary: boolean
 
    @ForeignKey(() => Characters)
-   @Column
+   @Column({
+      type: DataType.INTEGER({ length: 11 }), field: 'character_id'
+   })
    characterID: number
    
    @BelongsTo(() => Characters)

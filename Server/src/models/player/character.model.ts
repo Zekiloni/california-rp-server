@@ -193,8 +193,7 @@ export class Characters extends Model {
    }
 
    get getJob () {
-      console.log(this.name + ` ` + Jobs.list[this.job].name)
-      return Jobs.list[this.job];
+      return Jobs.list.find(job => job.id == this.job);
    }
 
    get getJobVehicle () {

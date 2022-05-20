@@ -68,6 +68,10 @@ Commands[cmds.names.CHOOSE_ROUTE] = {
          return;
       }
 
+      console.log('Job id ' + player.character.job);
+      console.log('--------Jobs.list[player.character.job]----------');
+      console.log(Jobs.list[player.character.job]);
+      console.log('-----------player.character.getJob-----------');
       console.log(player.character.getJob);
 
       player.character.getJob?.start!(player, Number(route));
