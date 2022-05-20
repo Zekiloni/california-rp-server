@@ -10,8 +10,9 @@ export const screenResolution = mp.game.graphics.getScreenActiveResolution(100, 
 
 mp.events.addDataHandler(
    {
-      'MONEY': (entity: EntityMp, value: any, oldValue: any) => { 
+      'MONEY': (entity: EntityMp, value: number, oldValue: number) => { 
          if (entity.type == RageEnums.EntityType.PLAYER && entity.remoteId == mp.players.local.remoteId) {
+            mp.gui.chat.push(`pare kola kucke ${value}`)
             updatePlayerMoney(value);
          }
       }

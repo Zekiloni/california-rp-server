@@ -239,14 +239,11 @@ export class Characters extends Model {
 
       // faction
       player.setVariable(shared_Data.FACTION, this.faction);
-      if (this.faction != none) {
+      if (this.faction) {
          Factions.findOne( { where: { id: this.faction } } ).then(faction => {
-            if (!faction) {
-               return;
-            }
-            console.log('faction points')
+            if (!faction) return;
             faction.points(player);
-         });
+         }).catch(e => Logs.error('factionPoints: ' + e));
       }
 
       // temporary variables
@@ -274,13 +271,13 @@ export class Characters extends Model {
       }
       
       ClothingItem.clothings.forEach(item => {
-         Items.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
-            if (clothed && clothed.equiped) {
-               item.use(player, clothed);
-            } else { 
-               player.setClothes(item.component, item.naked![this.gender], 0, 2);
-            }
-         })
+         // Items.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
+         //    if (clothed && clothed.equiped) {
+         //       item.use(player, clothed);
+         //    } else { 
+         //       player.setClothes(item.component, item.naked![this.gender], 0, 2);
+         //    }
+         // })
       });
 
       const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');

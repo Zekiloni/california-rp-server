@@ -72,8 +72,8 @@ function setPlayerPosition (player: PlayerMp, position: Vector3Mp) {
    player.dimension = gDimension;
 } 
 
-async function characterFinish (player: PlayerMp, characterInfo: string, characterAppearance: string) { 
 
+async function characterFinish (player: PlayerMp, characterInfo: string, characterAppearance: string) { 
    const cInfo = JSON.parse(characterInfo);
    const cAppearance = JSON.parse(characterAppearance);
 
@@ -123,29 +123,30 @@ async function characterFinish (player: PlayerMp, characterInfo: string, charact
 
    cAppearance.clothing.forEach(async (element: number) => {
       const index = cAppearance.clothing.indexOf(element);
-      Items.create( { name: components[index], entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true }).then(async item => {
-         item.data = {
-            drawable: element,
-            texture: 0
-         }
-         await item.save();
-      })
+      // REWRITE
+      // Items.create( { name: components[index], entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true }).then(async item => {
+      //    item.data = {
+      //       drawable: element,
+      //       texture: 0
+      //    }
+      //    await item.save();
+      // })
    });
    
    character.spawnPlayer(player, spawnPointTypes.DEFAULT, appearance);
 
-   Items.create({ name: itemNames.DOCUMENT_ID_CARD, entity: ItemEnums.entity.PLAYER, owner: character.id }).then(async item => {
-      item!.data = {
-         name: character.name,
-         birth: character.birth,
-         origin: character.origin,
-         gender: character.gender
-      };
-      await item.save();
-   });
+   // REWRITE
+   // Items.create({ name: itemNames.DOCUMENT_ID_CARD, entity: ItemEnums.entity.PLAYER, owner: character.id }).then(async item => {
+   //    item!.data = {
+   //       name: character.name,
+   //       birth: character.birth,
+   //       origin: character.origin,
+   //       gender: character.gender
+   //    };
+   //    await item.save();
+   // });
 
    player.notification(Lang.characterCreated, notifications.type.SUCCESS, notifications.time.MED);
-
    return true;
 }
 

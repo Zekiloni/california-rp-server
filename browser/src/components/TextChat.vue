@@ -1,6 +1,5 @@
 
 <template>
-   
    <div class="chat" v-if="Settings.Active">
       <ul class="messages" ref="Entries" id="messages" :style="{ overflow: Typing ? 'auto' : 'hidden' }">
          <li v-for="(message, i) in Messages" class="message" v-bind:style="{ fontSize: Settings.Fontsize + 'px', opacity: Inactive ? '0.8' : '1' }" v-bind:key="i">
@@ -229,7 +228,7 @@
 
    .chat {
       font-family: 'Montserrat', sans-serif;
-      max-width: 800px;
+      width: 45vh;
       height: 300px;
       position: absolute;
       top: 20px;
@@ -266,7 +265,7 @@
       transition: all 0.35s ease;
       height: 100%;
       padding-left: 15px;
-      overflow-y: auto;
+      overflow-y: scroll;
       direction: rtl;
       overflow-wrap: break-word;
       overflow-x: hidden;

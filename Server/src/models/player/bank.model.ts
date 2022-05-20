@@ -98,7 +98,6 @@ export class Banks extends Model {
    }
 
    static getCreditCard (player: PlayerMp) {
-      Items.findOne
    }
 
    static async withdraw (player: PlayerMp, amount: number) {
