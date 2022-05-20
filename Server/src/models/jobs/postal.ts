@@ -5,8 +5,8 @@ import { colors, Lang } from '@constants';
 import { Houses } from '@models';
 import { Sequelize } from 'sequelize-typescript';
 import { Op } from 'sequelize';
+import { VehiclePoint } from '@interfaces';
 import { Jobs } from '../job.model';
-import { VehiclePoint } from '@interfaces/vehicle.interfaces';
 
 
 
@@ -21,14 +21,24 @@ class PostalJob extends Jobs {
       super(id, name, desc, position, sprite, spriteColor);
    }
 
-   getDeliveryPoint () {
-      return Houses.findOne({
+   createDelivery (player: PlayerMp) {
+      Houses.findOne({
          where: {
             id: { [Op.notIn]: this.deliveredPoints }
          },
          order: [
             Sequelize.fn('RAND')
          ]
+      }).then(houseFound => {
+         if (!houseFound) {
+            return;
+         }
+
+         console.log(houseFound.id)
+         console.log(houseFound.position)
+
+         player.call('CLIENT::POSTAL_POINT', [houseFound.id, houseFound.position]);
+         player.message(Lang.POSTAL_STARTED, colors.hex.Help);
       })
    }
 
@@ -36,16 +46,7 @@ class PostalJob extends Jobs {
       if (player.character.working) 
          return;
 
-      console.log('postal start 1')
-
-      this.getDeliveryPoint().then(packagePoint => {
-         if (!packagePoint)
-            return;
-
-         console.log('postal start 2')
-         player.call('CLIENT::POSTAL:POINT', [packagePoint.id, packagePoint.position]);
-         player.message(Lang.POSTAL_STARTED, colors.hex.Help);
-      }) 
+      this.createDelivery(player);
    }
 
    stop (player: PlayerMp) {
@@ -59,15 +60,14 @@ class PostalJob extends Jobs {
       console.log('postal stop 2')
 
       player.character.completedShifts ++;
-
    }
 
-   deliver (player: PlayerMp, houseID: number) {
-      if (!player.character.working)
-         return;
-      
-      this.deliveredPoints.push(houseID);
-
+   deliver (player: PlayerMp, street: string, houseNumber: number) {
+      console.log(`Street ${street}, number ${houseNumber}`);
+      console.log(this)
+      console.log(this.deliveredPoints)
+      // this.deliveredPoints.push(houseNumber);
+      player.message(`Uspešno ste dostavili pošiljku ${street} No. ${houseNumber} !`, colors.hex.Info);
    }
 }
 
@@ -81,3 +81,6 @@ export const postal = new PostalJob(
    JobConfig.colors.POSTAL
 );
 
+
+
+mp.events.add('SERVER::POSTAL_NEXT', postal.deliver);

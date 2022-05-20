@@ -3,9 +3,10 @@ import { Lang } from '@constants';
 import { notifications } from '@enums';
 import { VehiclePoint } from '@interfaces';
 import { Vehicles } from '@models';
-import { Jobs } from '../job.model';
+import { Jobs } from '../../job.model';
 import { dollars, initials, randomInteger } from '@shared';
 
+import BusRoutes from './bus.routes';
 
 
 export const bus = new Jobs(
@@ -31,7 +32,7 @@ bus.start = function (player: PlayerMp, routeID: number) {
       return player.notification(Lang.WORKED_MAX_TIMES, notifications.type.ERROR, notifications.time.MED);
    }
 
-   const route = JobConfig.busRoutes[routeID];
+   const route = BusRoutes[routeID];
 
    if (!route) {
       return;

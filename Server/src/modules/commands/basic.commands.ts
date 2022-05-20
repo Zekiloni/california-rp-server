@@ -1,6 +1,7 @@
 
 import { cmds, colors, Lang } from '@constants';
 import { distances, notifications } from '@enums';
+import { Command } from '@interfaces';
 import { Banks } from '@models';
 import { checkForDot, shared_Data } from '@shared';
 import { Commands } from '../commands';
@@ -17,6 +18,30 @@ Commands[cmds.names.HELP] = {
       }
    }
 }
+
+Commands[cmds.names.JOB_HELP] = {
+   description: cmds.descriptions.JOB_HELP,
+   call (player: PlayerMp) {
+      if (player.character.isUnemployed) 
+         return player.notification(Lang.notEmployed, notifications.type.ERROR, 4);
+      
+      let jobCommands: Command[] = [];
+
+      for (const command of Object.values(Commands)) {
+         if (command.job?.id == player.character.job) {
+            jobCommands.push(command);
+         }
+      }
+
+      for (const i in jobCommands) {
+         const cmd = jobCommands[i];
+         const params = cmd.params ? (' [' + cmd.params?.join('] [') + '] ').toString() : ' []';
+         const help = ('/' + String(i)) + String(params) + ' - '  +  (cmd.description ? cmd.description : '/');
+         player.outputChatBox(help);
+      }
+   }
+}
+
 
 
 Commands[cmds.names.ROLEPLAY_ME] = {

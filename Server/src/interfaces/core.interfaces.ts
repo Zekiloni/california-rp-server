@@ -20,7 +20,7 @@ export interface CharacterOffer {
 }
 
 export type commands = {
-   [key: string]: command
+   [key: string]: Command
 };
 
 
@@ -35,7 +35,7 @@ export interface JobTypeCommands {
    id?: number
 }
 
-export interface command {
+export interface Command {
    description: string
    params?: any[]
    faction?: FactionTypeCommand

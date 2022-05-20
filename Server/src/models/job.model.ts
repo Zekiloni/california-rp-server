@@ -5,6 +5,7 @@ import { formatCommand } from '@shared';
 import { notifications } from '@enums';
 import { Logs } from '@models';
 
+
 export class Jobs { 
    static list: Jobs[] = []
 
@@ -99,5 +100,5 @@ export class Jobs {
 
 import './jobs/electrician';
 import './jobs/postal';
-import './jobs/bus';
+import './jobs/bus/bus';
 

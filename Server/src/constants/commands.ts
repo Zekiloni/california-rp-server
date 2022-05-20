@@ -76,6 +76,7 @@ export namespace cmds {
       EDIT_BUSINESS: 'editbusines',
       BUSINESS_TYPES: 'businestypes',
       BUSINES: 'busines',
+      JOB_HELP: 'jobhelp',
       DESTROY_BUSINESS: 'destroybusines',
       FLY: 'fly',
       CREATE_FACTION: 'createfaction',
@@ -151,6 +152,7 @@ export namespace cmds {
    export const descriptions = { 
       NO_DESC: 'Bez opisa.',
       HELP: 'Lista komandi.',
+      JOB_HELP: 'Pomoć u vezi posla koji radite.',
       KICK: 'Kikovanje igrača.',
       BUS_ROUTES: 'Rute vozača autobusa.',
       CHOOSE_ROUTE: 'Započeti posao sa odabranom rutom.',

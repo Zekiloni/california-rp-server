@@ -55,16 +55,6 @@ Commands[cmds.names.POSTAL] = {
    }
 }
 
-Commands[cmds.names.BUS_ROUTES] = {
-   description: cmds.descriptions.BUS_ROUTES,
-   job: { required: true, id: JobConfig.job.BUS_DRIVER },
-   call (player: PlayerMp) {
-      for (const i in JobConfig.busRoutes) {
-         const route = JobConfig.busRoutes[i];
-        player.message((i + 1) + '. ' + route.name + 'broj stanica: ' + route.points.length, colors.hex.Info);
-      }
-   }
-}
 
 Commands[cmds.names.CHOOSE_ROUTE] = {
    description: cmds.descriptions.CHOOSE_ROUTE,
@@ -73,21 +63,12 @@ Commands[cmds.names.CHOOSE_ROUTE] = {
       cmds.params.BUS_ROUTE
    ],
    call (player: PlayerMp, route: string) {
-
       if (player.character.working) {
          player.notification(Lang.U_ALREADY_WORKING, notifications.type.ERROR, notifications.time.MED);
          return;
       }
 
-      const job = Jobs.list.find(job => job.id == player.character.job);
-
-      if (!job) { 
-         return;
-      }
-      
-      if (job.start) {
-         job.start(player, Number(route));
-      }
+      player.character.getJob?.start!(player, Number(route));
    }
 }
 

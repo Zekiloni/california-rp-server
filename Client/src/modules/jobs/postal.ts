@@ -1,98 +1,68 @@
+import { getStreetZone } from "../../utils";
 
 
-const config = {
+const CPostalConfig = {
    sprite: 525,
    blipColor: 79,
+   maximumShiftPoints: 15
 }
 
 // BOX OBJECT: bkr_prop_fakeid_boxpassport_01a
 
-let working: boolean = false;
-let points: PostalPoint[] = [];
-let currentPoint: number| null = null;
+let deliveredPoints: PostalPoint[] = [];
 
 
 interface PostalPoint {
+   id: number
    position: Vector3Mp
-   delivered: boolean
 };
 
 
-const startPostal = (positions: Vector3Mp[]) => {
-   if (positions) {
-      working = true;
+function createPostalPoint (houseID: number, position: Vector3Mp) {
+   if (houseID && position) {
+      const { x, y, z } = position;
 
-      for (const position of positions) {
-         points.push(
-            { position: position, delivered: false }
-         );
-      }  
-
-      const [first] = points;
-      currentPoint = points.indexOf(first);
-
-      const position = new mp.Vector3(first.position.x, first.position.y, first.position.z);
-      createPoint(position);
-   }
-} 
-
-
-const stopPostal = () => {
-   const succesPoints = points.map(point => point.delivered == true);
-   mp.events.callRemote('SERVER::POSTAL:FINISH', succesPoints.length);
-
-   points = [];
-   currentPoint = null;
-   working = false;
-}
-
-
-const createPoint = (position: Vector3Mp) => {
-   if (currentPoint == null || !working) {
-      return;
-   }
-
-   const { x, y, z } = position;
-
-   const checkpoint = mp.checkpoints.new(48, new mp.Vector3(x, y, z - 2), 2, {
-      direction: new mp.Vector3(0, 0, 0),
-      color: [ 230, 50, 50, 185 ],
-      visible: true,
-      dimension: mp.players.local.dimension
-   });
-
-   const blip = mp.blips.new(config.sprite, position, {
-      color: config.blipColor, alpha: 250, shortRange: false
-   })
+      const checkpoint = mp.checkpoints.new(48, new mp.Vector3(x, y, z - 2), 2, {
+         direction: new mp.Vector3(0, 0, 0),
+         color: [ 230, 50, 50, 185 ],
+         visible: true,
+         dimension: mp.players.local.dimension
+      });
    
-   const onEnterPoint = (eCheckpoint: CheckpointMp) => {
-      if (eCheckpoint == checkpoint && currentPoint != null) {
+      const blip = mp.blips.new(CPostalConfig.sprite, position, {
+         color: CPostalConfig.blipColor, alpha: 250, shortRange: false
+      });
+      
+      function enterPostalPoint (eCp: CheckpointMp) {
+         if (eCp.id == checkpoint.id && !mp.players.local.vehicle) {
+            mp.gui.chat.push(`DEBBUG: Enter Postal point, house id ${houseID}.`);
+            
+            checkpoint.destroy();
+            blip.destroy();
 
-         if (mp.players.local.vehicle) {
-            return;
+            mp.events.remove(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, enterPostalPoint);
+            
+            if (deliveredPoints.length ==  CPostalConfig.maximumShiftPoints) {
+               stopPostalDelivery(true);
+            } else {
+               const { street } = getStreetZone(mp.players.local.position);
+               mp.events.callRemote('SERVER::POSTAL_NEXT', street, houseID);
+            }
          }
+      }
 
-         checkpoint.destroy();
-         blip.destroy();
-         mp.events.remove(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, onEnterPoint);
+      mp.events.add(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, enterPostalPoint);
 
-         if (currentPoint == points.length - 1) {
-            stopPostal();
-            return;
-         }
-
-         currentPoint ++;
-         const nextPoint = points[currentPoint];
-         createPoint(nextPoint.position);
-      } 
    }
+}
 
-   mp.events.add(RageEnums.EventKey.PLAYER_ENTER_CHECKPOINT, onEnterPoint);
+function stopPostalDelivery (withMaxPoints?: boolean) {
+   deliveredPoints = [];
+   // create blip for returning vehicle
+
 }
 
 
-mp.events.add('CLIENT::POSTAL:START', startPostal);
-mp.events.add('CLIENT::POSTA:STOP', stopPostal);
+mp.events.add('CLIENT::POSTAL_POINT', createPostalPoint);
+mp.events.add('CLIENT::POSTAL_STOP', stopPostalDelivery)
 
-
-export {};
