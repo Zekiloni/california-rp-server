@@ -4,7 +4,7 @@
 export const Lang = {
    // server back-end
    successDbConnection: 'Successfully connected to database',
-   serverIsClosing: 'Server se gasi...',
+   serverIsClosing: 'Server is closing...',
    API_STARTED: 'API STARTED: ',
 
    // api 
@@ -231,7 +231,7 @@ export const Lang = {
    // others 
    JOB_OFFER: 'Posao',
    defaultSpawn: 'Default Spawn',
-   defaultSpawnDescripiton: 'Default spawn pozicija gde se stvvorite pri registracija.',
+   defaultSpawnDescripiton: 'Default spawn pozicija gde se stvorite pri registracija.',
    and: ' i ', 
    times: ' puta',
    dispatcher: 'DISPATCHER',

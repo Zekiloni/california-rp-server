@@ -68,6 +68,8 @@ Commands[cmds.names.CHOOSE_ROUTE] = {
          return;
       }
 
+      console.log(player.character.getJob);
+
       player.character.getJob?.start!(player, Number(route));
    }
 }

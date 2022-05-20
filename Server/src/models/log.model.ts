@@ -19,7 +19,9 @@ const consoleColors = {
 };
 
 
-@Table
+@Table({
+   tableName: 'logs'
+})
 export class Logs extends Model {
 
    @PrimaryKey

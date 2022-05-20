@@ -68,6 +68,8 @@ class PostalJob extends Jobs {
       console.log(this.deliveredPoints)
       // this.deliveredPoints.push(houseNumber);
       player.message(`Uspešno ste dostavili pošiljku ${street} No. ${houseNumber} !`, colors.hex.Info);
+
+      this.createDelivery(player);
    }
 }
 

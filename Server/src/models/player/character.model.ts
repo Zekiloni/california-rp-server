@@ -193,7 +193,8 @@ export class Characters extends Model {
    }
 
    get getJob () {
-      return Jobs.list[this.job] ? Jobs.list[this.job] : null;
+      console.log(this.name + ` ` + Jobs.list[this.job].name)
+      return Jobs.list[this.job];
    }
 
    get getJobVehicle () {
@@ -377,6 +378,7 @@ export class Characters extends Model {
    async setJob (player: PlayerMp, value: number) {
       this.job = value;
       player.setVariable(shared_Data.JOB, value);
+      await this.save();
    };
 
    async setFaction (player: PlayerMp, factionID: number, rank?: number) {
