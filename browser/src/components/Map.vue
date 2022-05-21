@@ -26,7 +26,6 @@
       }
    })
    export default class Map extends Vue {
-      
       layer: L.TileLayer | null = null;
       map: L.Map | null = null;
       
@@ -53,12 +52,12 @@
             tileSize: 1024,
             maxNativeZoom: 0,
             minNativeZoom: 0,
-            attribution: 'midnight roleplay',
+            attribution: 'california roleplay',
          });
                
          this.map = L.map('map-container', { 
             crs: L.CRS.Simple, 
-            layers: [this.layer]
+            layers: [this.layer],
          });
 
          let r = this.getMapBounds(this.layer);

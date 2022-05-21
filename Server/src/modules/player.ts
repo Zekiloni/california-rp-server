@@ -1,4 +1,4 @@
-import { Logs, Bans, Characters, Accounts, Items, Appearances, Banks, BaseItem, Houses, Busines, Vehicles, transactions } from '@models';
+import { Logs, Bans, Characters, Accounts, Items, Appearances, Banks, BaseItem, Houses, Busines, Vehicles, Phones, PhoneContacts, PhoneMessages } from '@models';
 import { playerConfig, ServerConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, Lang, none } from '@constants';
@@ -155,7 +155,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
    return new Promise((resolve) => {
       let spawnPoints: PlayerSpawnPoint[] = [];
 
-      Characters.findOne({ where: { id: id }, include: [Items, Banks, Houses, Vehicles, Busines] }).then((character) => { 
+      Characters.findOne({ where: { id: id }, include: [Banks, Houses, Vehicles, Busines] }).then((character) => { 
          const defaultSpawn: PlayerSpawnPoint = {
             name: Lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,
@@ -234,10 +234,21 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
 
 function playerSelectCharacter (player: PlayerMp, characterId: number, point: spawnPointTypes, id?: number) {
-   Characters.findOne( { where: { id: characterId }, include: [Appearances] } ).then(character => {
+   Characters.findOne({ 
+      where: { id: characterId },
+      include: [
+         Appearances, 
+         { 
+            model: Items, include: [ 
+               { model: Phones, include: [PhoneContacts, PhoneMessages] }
+            ]
+         }
+      ] 
+   }).then(character => {
       character!.spawnPlayer(player, point, character?.appearance!, id);
    });
 }
+
 
 
 function playerOnInjury (player: PlayerMp, bone: number, weapon: number, damage: number) {

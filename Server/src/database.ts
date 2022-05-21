@@ -25,6 +25,7 @@ const Database = new Sequelize({
       models.Items, 
       models.Phones,
       models.PhoneContacts,
+      models.PhoneMessages,
       models.Vehicles,
       models.VehicleComponents,
       models.Banks,

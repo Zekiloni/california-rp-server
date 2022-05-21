@@ -214,6 +214,7 @@ export const Messages = {
    CALLING: 'Pozivanje',
    ANSWER_CALL: 'Prihvati poziv',
    HANGUP_CALL: 'Prekini poziv',
+   TAXI_APP_WHERE_TO: 'Odaberite odredište ?',
 
    // jobs
    BUS_ROUTE: 'Bus ruta',

@@ -10,6 +10,7 @@ export * from './items/base.item';
 export * from './items/item';
 export * from './items/phone/phone';
 export * from './items/phone/contact';
+export * from './items/phone/message';
 export * from './job.model';
 export * from './misc/channel.model';
 

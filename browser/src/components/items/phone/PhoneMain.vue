@@ -6,13 +6,11 @@
          <div class="header">
             <h4> {{ time }} </h4>
             <div class="info">
-               <div class="wifi" /> 
+               <img src="@/assets/images/icons/phone/signal.png" class="signal" /> 
                <div class="battery" /> 
             </div>
-
          </div>
          
-         <transition-group name="fade" mode="out-in"> 
             <div class="applications" v-if="!opened && !inCall" key=applications>
                <ul class="list">
                   <li v-for="application in applications" :key="application.name" @click="open(application)"> 
@@ -28,7 +26,6 @@
                   @brightness="settings.brightness"
                   @update-brightness="brightness"
                   @update-power="power"
-                  
                />
 
                <MessagesApp 
@@ -36,12 +33,14 @@
                   @send-message="send"
                />
 
+               <TaxiApp
+                  v-if="opened.icon == 'taxi'"
+               />
+            </div>
 
                <div class="home-button">
                   <button @click="close(opened)"> H </button>
                </div>
-            </div>
-
 
             <InCall
                v-if="inCall"
@@ -50,7 +49,6 @@
                @on-hangup="hangup"
                key=inCall
             />
-         </transition-group>
       </div>
    </div>
 </template>
@@ -64,6 +62,7 @@
    import SettingsApp from './SettingsApp.vue';
    import MessagesApp from './MessagesApp.vue';
    import InCall from './inCall.vue';
+   import TaxiApp from './TaxiApp.vue';
 
    interface Application {
       name: string
@@ -90,7 +89,7 @@
 
    @Component({
       components: {
-         SettingsApp, MessagesApp, InCall
+         SettingsApp, MessagesApp, InCall, TaxiApp
       }
    })
    export default class Phone extends Vue { 
@@ -128,6 +127,11 @@
          {
             name: 'Messages',
             icon: 'messages',
+            opened: false
+         },
+         {
+            name: 'Downtown Cab',
+            icon: 'taxi',
             opened: false
          },
          {
@@ -170,7 +174,9 @@
       }
 
       close (application: Application) {
-         application.opened = false;
+         if (application) {
+            application.opened = false;
+         }
       }
 
       call (incoming: boolean, number: number, inCall: boolean) {
@@ -199,11 +205,13 @@
       }
 
       mounted () {
-         mp.events.add('BROWSER::PHONE:CALL', (info: string) => {
-            const [incoming, number, inCall] = JSON.parse(info);
+         if (window.mp) {
+            mp.events.add('BROWSER::PHONE:CALL', (info: string) => {
+               const [incoming, number, inCall] = JSON.parse(info);
 
-            this.call(incoming, number, inCall);
-         });
+               this.call(incoming, number, inCall);
+            });
+         }
 
          this.clock();
       }
@@ -213,15 +221,17 @@
 
 <style scoped>
    .phone { 
+      font-family: 'Montserrat', sans-serif;
       position: absolute;
-      bottom: 30px;
-      right: 350px;
+      bottom: 5vh;
+      right: 35vh;
       width: 290px;
       height: 525px;
-      background: linear-gradient(120deg, rgb(11 14 17 / 75%), rgb(11 14 17 / 15%));
-      border-radius: 25px;
+      background: linear-gradient(120deg, rgb(11 14 17 / 75%), rgb(11 14 17 / 25%)); /* url('../../../assets/images/phone/bg-1.png') */
+      background-size: cover;
+      border-radius: 30px;
       box-shadow: 0 1px 5px rgb(0 0 0 / 55%);
-      border: 1px solid rgb(205 205 205 / 15%);
+      border: 2px solid rgb(0 0 0 / 35%);
       overflow: hidden;
    }
 
@@ -247,7 +257,7 @@
    }
 
    .info {
-      widows: auto;
+      width: auto;
       height: auto;
       display: flex;
    }
@@ -259,14 +269,15 @@
       mask-size: cover; 
    }
 
-   .header .wifi { 
-      width: 17px;
-      background: #cdcdcd;
-      mask: url('../../../assets/images/icons/wifi.svg') no-repeat center;
-      mask-size: cover;
+   .header .signal { 
+      width: 20px;
       margin-right: 5px;
    }
+   
+   .applications {
 
+   }
+   
    .applications ul.list {
       list-style: none;
       padding: 0;
@@ -298,20 +309,22 @@
 
    ul.list li img {
       opacity: 0.75;
-      width: 50px;
+      margin-bottom: 2px;
+      width: 55px;
    }
 
    ul.list li h4 {
       margin: 0;
-      font-size: 0.7rem;
-      color: #848e9c;
+      font-size: 0.5rem;
+      color: #cdcdcd;
+      max-width: 75px;
+      text-align: center;
       font-weight: 400;
    }
 
    .application { 
       width: 100%;
       position: relative;
-      height: 490px;
    }
 
    .home-button {
