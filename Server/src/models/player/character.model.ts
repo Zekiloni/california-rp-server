@@ -192,6 +192,11 @@ export class Characters extends Model {
       return mp.players.toArray().find(player => player.character && player.character.id == this.id) ? true : false;
    }
 
+   get getPhone () {
+      const phoneItem = this.items.find(item => item.phone && item.phone.number);
+      return phoneItem?.phone;
+   }
+
    get getJob () {
       return Jobs.list.find(job => job.id == this.job);
    }

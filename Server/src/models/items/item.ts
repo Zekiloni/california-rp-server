@@ -1,13 +1,14 @@
 
 
-import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, BelongsTo, BelongsToMany, Column, CreatedAt, DataType, Default, ForeignKey, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, BelongsTo, BelongsToMany, Column, CreatedAt, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
-import { BaseItem, Logs, Characters } from '@models';
+import { BaseItem, Logs, Characters, Vehicles } from '@models';
 import { itemNames, Lang, none } from '@constants';
 import { playerConfig } from '@configs';
-import { Vehicles } from '@models';
+
+import { Phones } from './phone/phone';
 
 
 @Table
@@ -38,6 +39,9 @@ export class Items extends Model {
 
    @BelongsTo(() => Vehicles)
    vehicle: Vehicles | null
+
+   @HasOne(() => Phones)
+   phone: Phones | null
 
    @Default(false)
    @Column({ type: DataType.BOOLEAN, field: 'on_ground' })

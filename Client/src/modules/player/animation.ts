@@ -93,14 +93,19 @@ export async function playAnimation (
 };
 
 
-export function stopAnimation (player: PlayerMp, dictionary: string, name: string) {
-   if (player.isPlayingAnim(dictionary, name, 3)) {
-      player.stopAnim(dictionary, name, 1);
+export function stopAnimation (entity: EntityMp, dictionary: string, name: string) {
+   if (entity.isPlayingAnim(dictionary, name, 3)) {
+      entity.stopAnim(dictionary, name, 1);
    }
 }
 
-export function isPlayingAnim (player: PlayerMp, dictionary: string, name: string) {
-   return loadAnimation(dictionary).then(() => player.isPlayingAnim(dictionary, name, 3));
+
+export function isAnimationFinished (entity: EntityMp, dictionary: string, name: string) {
+   return entity.hasAnimFinished(dictionary, name, 3);
+};
+
+export function isPlayingAnim (entity: EntityMp, dictionary: string, name: string) {
+   return loadAnimation(dictionary).then(() => entity.isPlayingAnim(dictionary, name, 3));
 }
 
 mp.events.addDataHandler('ANIMATION', check);

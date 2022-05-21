@@ -4,7 +4,8 @@ import { itemDescriptions, itemNames } from "@constants";
 import { ItemEnums } from "@enums";
 import { shared_Data } from '@shared';
 import { animations } from '@configs';
-import { BaseItem } from "../baseItem";
+
+import { BaseItem } from '../base.item';
 import { Items } from "../item";
 
 
