@@ -11,7 +11,7 @@
             </div>
          </div>
          
-         <transition name="pop-up" mode="out-in"> 
+         <transition name="app-bounce" mode="out-in"> 
             <div class="applications" v-if="!opened && !inCall" key=applications>
                <ul class="list">
                   <li v-for="application in applications" :key="application.name" @click="open(application)"> 
@@ -366,6 +366,19 @@
 
    .home-button button:hover {
       filter: brightness(1.15);
+   }
+
+   .app-bounce-enter-active {
+      animation: app-bounce 0.15s;
+   }
+
+   .app-bounce-leave-active {
+      animation: app-bounce 0.15s reverse;
+   }
+
+   @keyframes app-bounce {
+      from { transform: scale(0.5); opacity: 0.5; }
+      to { transform: scale(1); }
    }
    
 </style>
