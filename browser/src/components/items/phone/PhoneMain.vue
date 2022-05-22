@@ -11,36 +11,46 @@
             </div>
          </div>
          
-         <div class="applications" v-if="!opened && !inCall" key=applications>
-            <ul class="list">
-               <li v-for="application in applications" :key="application.name" @click="open(application)"> 
-                  <img :src="require('@/assets/images/icons/phone/' + application.icon + '.png')" />
-                  <h4> {{ application.name }} </h4>
-               </li>
-            </ul>
-         </div>
+         <transition name="pop-up" mode="out-in"> 
+            <div class="applications" v-if="!opened && !inCall" key=applications>
+               <ul class="list">
+                  <li v-for="application in applications" :key="application.name" @click="open(application)"> 
+                     <img :src="require('@/assets/images/icons/phone/' + application.icon + '.png')" />
+                     <h4> {{ application.name }} </h4>
+                  </li>
+               </ul>
+            </div>
       
-         <div class="application" v-else-if="opened" key=openedApplication >
-            <SettingsApp 
-               v-if="opened.icon == 'settings'" 
-               :phone="phone"
-            />
+            
+            <div class="application" v-else-if="opened" key=openedApplication >
+               <SettingsApp 
+                  v-if="opened.icon == 'settings'" 
+                  :phone="phone"
+               />
 
-            <CallsApp 
-               v-if="opened.icon == 'calls'"
-               :contacts="phone.contacts"
-               @call="call"
-            />
+               <CallsApp 
+                  v-if="opened.icon == 'calls'"
+                  :contacts="phone.contacts"
+                  @on-call="call"
+               />
 
-            <MessagesApp 
-               v-if="opened.icon == 'messages'" 
-               @send-message="send"
-            />
+               <MessagesApp 
+                  v-if="opened.icon == 'messages'" 
+                  @send-message="send"
+               />
 
-            <TaxiApp
-               v-if="opened.icon == 'taxi'"
-            />
-         </div>
+               <ContactsApp
+                  v-if="opened.icon == 'contacts'"
+                  :contacts="phone.contacts"
+                  @add-contact="addContact"
+                  
+               />
+
+               <TaxiApp
+                  v-if="opened.icon == 'taxi'"
+               />
+            </div>
+         </transition>
 
          <div class="home-button" v-if="!inCall">
             <button @click="close(opened)"> <div class="icon"> </div> </button>
@@ -66,14 +76,15 @@
    import SettingsApp from './SettingsApp.vue';
    import CallsApp from './CallsApp.vue';
    import MessagesApp from './MessagesApp.vue';
+   import ContactsApp from './ContactsApp.vue';
    import InCall from './inCall.vue';
    import TaxiApp from './TaxiApp.vue';
-   
 
    interface PhoneApp {
       name: string
       icon: string
       opened: boolean
+      disabled?: true
    }
 
    interface Call {
@@ -85,7 +96,7 @@
 
    @Component({
       components: {
-         SettingsApp, CallsApp, MessagesApp, InCall, TaxiApp
+         SettingsApp, CallsApp, MessagesApp, ContactsApp, InCall, TaxiApp
       }
    })
    export default class Phone extends Vue { 
@@ -117,15 +128,20 @@
             opened: false
          },
          {
-            name: 'Downtown Cab',
-            icon: 'taxi',
+            name: 'Kontakti',
+            icon: 'contacts',
             opened: false
          },
          {
             name: 'Wallet',
             icon: 'wallet',
             opened: false
-         }
+         },
+         {
+            name: 'Downtown Cab',
+            icon: 'taxi',
+            opened: false
+         },
       ];
 
       Messages = Messages;
@@ -144,6 +160,7 @@
       }
 
       open (application: PhoneApp) {
+         if (application.disabled) return;
          application.opened = true;
       }
 
@@ -182,6 +199,15 @@
          }
       }
 
+      addContact (name: string, contactNumber: number) {
+         this.phone?.contacts.push({
+            id: 0,
+            name: name,
+            number: contactNumber,
+            createdAt: new Date()
+         })
+      }
+
       mounted () {
          if (window.mp) {
             mp.events.add('BROWSER::PHONE:CALL', (info: string) => {
@@ -207,17 +233,18 @@
       height: 545px;
       background: url('../../../assets/images/phone/bg-1.png');
       background-size: cover;
-      background-size: cover;
       border-radius: 30px;
-      box-shadow: 0 1px 5px rgb(0 0 0 / 55%);
-      border: 1px solid #100f14;
-      overflow: hidden;
+      box-shadow: 0 1.5px 7px rgb(0 0 0 / 55%);
+      /* border: 1px solid #100f14; */
+      /* overflow: hidden; */
    }
 
    .screen { 
       position: relative;
       width: 100%;
       height: 100%;
+      border-radius: 25px;
+      overflow: hidden;
       transition: all .3s ease;
    }
 
@@ -230,7 +257,6 @@
    }
    
    .header.opened {
-      backdrop-filter: blur(5px);
       background: #100f14;
    }
 
@@ -311,7 +337,6 @@
       height: 45px;
       padding: 10px 0;
       bottom: 0;
-      backdrop-filter: blur(5px);
       background: #100f14;
       left: 0;
       width: 100%;

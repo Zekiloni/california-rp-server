@@ -61,7 +61,7 @@
             return;
          }
 
-         this.$emit('call', false, this.keypadInput, false);
+         this.$emit('on-call', false, this.keypadInput, false);
       }
 
    }

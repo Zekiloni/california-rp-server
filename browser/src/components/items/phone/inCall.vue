@@ -28,10 +28,11 @@
 </template>
 
 <script lang="ts">
-   import { Messages } from '@/globals';
    import Vue from 'vue';
    import Component from 'vue-class-component';
    
+   import { Messages } from '@/globals';
+
    @Component({
       props: {
          inCall: Object
@@ -39,7 +40,7 @@
    })
    export default class InCall extends Vue {
       Messages = Messages;
-
+      
       minutes: number = 0;
       seconds: number = 0;
 
@@ -68,7 +69,6 @@
       }
 
       mounted () {
-         console.log('inCall');
          this.counter();
       }
    }
