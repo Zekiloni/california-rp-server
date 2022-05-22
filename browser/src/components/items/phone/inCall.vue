@@ -77,6 +77,8 @@
    .call {
       width: 100%;
       height: 100%;
+      background: rgb(0, 0, 0, 0.5);
+      margin-top: -36px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -123,6 +125,7 @@
       height: 65px;
       display: grid;
       background: rgb(205 205 205 / 20%);
+      backdrop-filter: blur(5px);
    }
 
    ul.actions li:hover {

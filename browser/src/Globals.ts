@@ -209,7 +209,10 @@ export const Messages = {
    BUY_VEHICLE: 'Kupi vozilo',
 
    // phone
-   PHONE_PAGE_SETTINGS: 'Podešavanja',
+   PHONE_APP_SETTINGS: 'Podešavanja',
+   PHONE_APP_CALLS: 'Pozivi',
+   PHONE_NUMBER: 'Broj telefona',
+   DEVICE_VERSION: 'Verzija softvera',
    INCOMING_CALL: 'Nadolazeći poziv',
    CALLING: 'Pozivanje',
    ANSWER_CALL: 'Prihvati poziv',

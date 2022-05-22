@@ -220,6 +220,11 @@
 </script>
 
 <style>
+   body {
+      /* For Development Streaming */
+      background: black;
+   }
+
    input::-webkit-outer-spin-button,
    input::-webkit-inner-spin-button {
       -webkit-appearance: none;

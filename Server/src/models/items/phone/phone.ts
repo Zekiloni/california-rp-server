@@ -19,6 +19,12 @@ export class Phones extends Model {
    })
    itemId: number
    
+   @Default(null)
+   @Column({
+      type: DataType.STRING, field: 'person_name'
+   })
+   personName: string | null
+
    @BelongsTo(() => Items)
    item: Items
    

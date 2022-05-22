@@ -10,7 +10,7 @@
    import Component from 'vue-class-component';
    import { PhoneMessage } from '@/models';
 
-   interface Compose { 
+   interface ComposeMessage { 
       to: number | null,
       message: string
    }
@@ -23,7 +23,7 @@
    })
    export default class MessagesApp extends Vue { 
       
-      compose: Compose = {
+      compose: ComposeMessage = {
          to: null,
          message: ''
       }
@@ -31,7 +31,7 @@
       searchConversation: string = '';
 
       get conversations () {
-         let filtered = [... new Set(this.$props.messages.map((message: PhoneMessage) => message.sender))]
+         let filtered = [... new Set(this.$props.messages.map((message: PhoneMessage) => message.from))]
 
          if (this.searchConversation.length > 0 && filtered.length > 0) {
             return filtered.sort().filter(name => name)
@@ -39,6 +39,10 @@
       }
    
       send () {
+         if (this.compose.message.length == 0) {
+            return;
+         }
+         
          this.$emit('send-message', this.compose);
       }
    }

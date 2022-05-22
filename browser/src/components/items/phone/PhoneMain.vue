@@ -2,7 +2,7 @@
 
 <template>
    <div class="phone">
-      <div class="screen" :style="{ opacity: settings.brightness }">
+      <div class="screen">
          <div class="header" :class="{ opened: opened }">
             <h4> {{ time }} </h4>
             <div class="info">
@@ -23,9 +23,13 @@
          <div class="application" v-else-if="opened" key=openedApplication >
             <SettingsApp 
                v-if="opened.icon == 'settings'" 
-               @brightness="settings.brightness"
-               @update-brightness="brightness"
-               @update-power="power"
+               :phone="phone"
+            />
+
+            <CallsApp 
+               v-if="opened.icon == 'calls'"
+               :contacts="phone.contacts"
+               @call="call"
             />
 
             <MessagesApp 
@@ -38,9 +42,9 @@
             />
          </div>
 
-            <div class="home-button">
-               <button @click="close(opened)"> H </button>
-            </div>
+         <div class="home-button" v-if="!inCall">
+            <button @click="close(opened)"> <div class="icon"> </div> </button>
+         </div>
 
          <InCall
             v-if="inCall"
@@ -56,27 +60,20 @@
 <script lang="ts">
    import Vue from 'vue';
    import Component from 'vue-class-component';
-   import { PhoneContact, PhoneMessage } from '@/models';
+   import { PhoneData, PhoneMessage } from '@/models';
    import { Messages } from '@/globals';
 
    import SettingsApp from './SettingsApp.vue';
+   import CallsApp from './CallsApp.vue';
    import MessagesApp from './MessagesApp.vue';
    import InCall from './inCall.vue';
    import TaxiApp from './TaxiApp.vue';
+   
 
-   interface Application {
+   interface PhoneApp {
       name: string
       icon: string
       opened: boolean
-   }
-
-   interface Settings {
-      power: boolean
-      brightness: number
-      background?: string | null
-      number?: string | null
-      volume: number
-      notifications: boolean
    }
 
    interface Call {
@@ -86,41 +83,31 @@
       inCall: boolean
    }
 
-
    @Component({
       components: {
-         SettingsApp, MessagesApp, InCall, TaxiApp
+         SettingsApp, CallsApp, MessagesApp, InCall, TaxiApp
       }
    })
    export default class Phone extends Vue { 
-
-      Messages = Messages;
-      time: string = '';
-
-      focused: boolean = true;
-
-      inCall: Call | null = null;
-
-      settings: Settings | null = {
+      phone: PhoneData | null = {
+         personName: null,
+         number: 321199,
          power: true,
          brightness: 1.0,
-         volume: 1,
-         background: null,
-         number: null,
-         notifications: true
+         contacts: []
       }
 
       messages: PhoneMessage[] = [];
-      contacts: PhoneContact[] = [];
+      inCall: Call | null = null;
 
-      applications: Application[] = [
+      applications: PhoneApp[] = [
          {
-            name: 'Settings',
+            name: Messages.PHONE_APP_SETTINGS,
             icon: 'settings',
             opened: false
          },
          {
-            name: 'Calls',
+            name: Messages.PHONE_APP_CALLS,
             icon: 'calls',
             opened: false
          },
@@ -141,6 +128,9 @@
          }
       ];
 
+      Messages = Messages;
+      time: string = '';
+
       get opened () {
          return this.applications.find(application => application.opened == true);
       }
@@ -153,33 +143,21 @@
          setTimeout(this.clock, 1000);
       }
 
-      brightness (i: number) {
-         this.settings!.brightness = i;
-      }
-
-      background (url: string) {
-         this.settings!.background= url;
-      }
-      
-      power () {
-         this.settings!.power = !this.settings?.power;
-      }
-
-      notifications (toggle: boolean) {
-         this.settings!.notifications = toggle;
-      }
-
-      open (application: Application) {
+      open (application: PhoneApp) {
          application.opened = true;
       }
 
-      close (application: Application) {
+      close (application: PhoneApp) {
          if (application) {
             application.opened = false;
          }
       }
 
       call (incoming: boolean, number: number, inCall: boolean) {
+         if (this.opened) {
+            this.opened.opened = false;
+         }
+
          this.inCall = {
             incoming: incoming,
             number: number,
@@ -344,11 +322,21 @@
       margin: auto;
       width: 45px;
       height: 45px;
+      display: grid;
       box-shadow: 0 0 3px #302f36;
       background: linear-gradient(-45deg, #1c1b22, #302f36);
       border-radius: 100%;
       color: whitesmoke;
       transition: all .3s ease;
+   }
+
+   .home-button button .icon {
+      width: 15px;
+      height: 15px;
+      background: transparent;
+      margin: auto;
+      border-radius: 5px;
+      border: 2px solid grey;
    }
 
    .home-button button:hover {
