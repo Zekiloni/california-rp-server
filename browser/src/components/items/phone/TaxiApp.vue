@@ -1,7 +1,7 @@
 
 <template>
    <div class="app">
-      <Map @map="initAppMap" :width="'100%'" :height="'422px'" :background="'#161616'" class="map" />
+      <Map @map="initAppMap" :width="'100%'" :height="'445px'" :background="'#1b1920'" class="map" />
 
       <div class="taxi">
          <h4> {{ Messages.TAXI_APP_WHERE_TO }} </h4>
@@ -31,6 +31,7 @@
    export default class TaxiApp extends Vue {
       map: L.Map | null = null;
       layer: L.TileLayer | null = null;
+      
 
       Messages = Messages;
 
@@ -62,7 +63,7 @@
    .map {
       z-index: 0;
       position: relative;
-      height: 400px;
+      height: 450px;
    }
 
    .taxi {

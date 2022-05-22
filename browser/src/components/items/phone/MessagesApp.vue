@@ -1,6 +1,6 @@
 
 <template>
-   <div class="app">
+   <div class="msg-app">
       
    </div>
 </template>
@@ -14,7 +14,6 @@
       to: number | null,
       message: string
    }
-   
    
    @Component({
       props: {
@@ -44,3 +43,11 @@
       }
    }
 </script>
+
+<style scoped>
+   .msg-app {
+      background: #18171d;
+      width: 100%;
+      height: 100%;
+   }
+</style>

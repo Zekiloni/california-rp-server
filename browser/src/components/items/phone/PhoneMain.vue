@@ -3,7 +3,7 @@
 <template>
    <div class="phone">
       <div class="screen" :style="{ opacity: settings.brightness }">
-         <div class="header">
+         <div class="header" :class="{ opened: opened }">
             <h4> {{ time }} </h4>
             <div class="info">
                <img src="@/assets/images/icons/phone/signal.png" class="signal" /> 
@@ -11,44 +11,44 @@
             </div>
          </div>
          
-            <div class="applications" v-if="!opened && !inCall" key=applications>
-               <ul class="list">
-                  <li v-for="application in applications" :key="application.name" @click="open(application)"> 
-                     <img :src="require('@/assets/images/icons/phone/' + application.icon + '.png')" />
-                     <h4> {{ application.name }} </h4>
-                  </li>
-               </ul>
-            </div>
-         
-            <div class="application" v-else-if="opened" key=openedApplication >
-               <SettingsApp 
-                  v-if="opened.icon == 'settings'" 
-                  @brightness="settings.brightness"
-                  @update-brightness="brightness"
-                  @update-power="power"
-               />
-
-               <MessagesApp 
-                  v-if="opened.icon == 'messages'" 
-                  @send-message="send"
-               />
-
-               <TaxiApp
-                  v-if="opened.icon == 'taxi'"
-               />
-            </div>
-
-               <div class="home-button">
-                  <button @click="close(opened)"> H </button>
-               </div>
-
-            <InCall
-               v-if="inCall"
-               :inCall="inCall"
-               @on-answer="answer"
-               @on-hangup="hangup"
-               key=inCall
+         <div class="applications" v-if="!opened && !inCall" key=applications>
+            <ul class="list">
+               <li v-for="application in applications" :key="application.name" @click="open(application)"> 
+                  <img :src="require('@/assets/images/icons/phone/' + application.icon + '.png')" />
+                  <h4> {{ application.name }} </h4>
+               </li>
+            </ul>
+         </div>
+      
+         <div class="application" v-else-if="opened" key=openedApplication >
+            <SettingsApp 
+               v-if="opened.icon == 'settings'" 
+               @brightness="settings.brightness"
+               @update-brightness="brightness"
+               @update-power="power"
             />
+
+            <MessagesApp 
+               v-if="opened.icon == 'messages'" 
+               @send-message="send"
+            />
+
+            <TaxiApp
+               v-if="opened.icon == 'taxi'"
+            />
+         </div>
+
+            <div class="home-button">
+               <button @click="close(opened)"> H </button>
+            </div>
+
+         <InCall
+            v-if="inCall"
+            :inCall="inCall"
+            @on-answer="answer"
+            @on-hangup="hangup"
+            key=inCall
+         />
       </div>
    </div>
 </template>
@@ -226,12 +226,13 @@
       bottom: 5vh;
       right: 35vh;
       width: 290px;
-      height: 525px;
-      background: linear-gradient(120deg, rgb(11 14 17 / 75%), rgb(11 14 17 / 25%)); /* url('../../../assets/images/phone/bg-1.png') */
+      height: 545px;
+      background: url('../../../assets/images/phone/bg-1.png');
+      background-size: cover;
       background-size: cover;
       border-radius: 30px;
       box-shadow: 0 1px 5px rgb(0 0 0 / 55%);
-      border: 2px solid rgb(0 0 0 / 35%);
+      border: 1px solid #100f14;
       overflow: hidden;
    }
 
@@ -243,17 +244,24 @@
    }
 
    .header { 
+      position: relative;
+      z-index: 1;
       display: flex;
       justify-content: space-between;
       padding: 10px 20px;
-      background: rgb(20 20 20 / 55%);
+   }
+   
+   .header.opened {
+      backdrop-filter: blur(5px);
+      background: #100f14;
    }
 
    .header h4 {
       color: whitesmoke;
       margin: 0;
-      font-weight: 500;
-      letter-spacing: 1.2px;
+      font-size: 0.825rem;
+      font-weight: 450;
+      letter-spacing: 1px;
    }
 
    .info {
@@ -263,19 +271,16 @@
    }
    
    .header .battery {
-      width: 28px;
+      width: 25px;
       background: white;
       mask: url('../../../assets/images/icons/phone-baterry.svg') no-repeat center;
       mask-size: cover; 
    }
 
    .header .signal { 
-      width: 20px;
+      height: 14px;
+      margin-top: 1.5px;
       margin-right: 5px;
-   }
-   
-   .applications {
-
    }
    
    .applications ul.list {
@@ -295,35 +300,31 @@
       justify-content: center;
    }
 
-   ul.list li * {
+   ul.list li {
       transition: all .3s ease;
    }
 
-   ul.list li:hover img { 
-      opacity: 0.9;
-   }
-
-   ul.list li:hover h4 {
-      color: #cdcdcd;
+   ul.list li:hover { 
+      filter: brightness(1.15);
    }
 
    ul.list li img {
-      opacity: 0.75;
       margin-bottom: 2px;
       width: 55px;
    }
 
    ul.list li h4 {
       margin: 0;
-      font-size: 0.5rem;
-      color: #cdcdcd;
+      font-size: 0.55rem;
+      color: whitesmoke;
       max-width: 75px;
       text-align: center;
-      font-weight: 400;
+      font-weight: 450;
    }
 
    .application { 
       width: 100%;
+      height: 445px;
       position: relative;
    }
 
@@ -332,8 +333,9 @@
       height: 45px;
       padding: 10px 0;
       bottom: 0;
+      backdrop-filter: blur(5px);
+      background: #100f14;
       left: 0;
-      background: rgb(50 50 50 / 45%);
       width: 100%;
       display: grid;
    }
@@ -342,8 +344,8 @@
       margin: auto;
       width: 45px;
       height: 45px;
-      box-shadow: 0 0 3px #623fdc;
-      background: linear-gradient(-45deg, #623fdc, #4c318e);
+      box-shadow: 0 0 3px #302f36;
+      background: linear-gradient(-45deg, #1c1b22, #302f36);
       border-radius: 100%;
       color: whitesmoke;
       transition: all .3s ease;
