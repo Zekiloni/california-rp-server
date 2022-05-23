@@ -50,19 +50,20 @@
                   v-if="opened.icon == 'taxi'"
                />
             </div>
+
+            <InCall
+               v-if="inCall"
+               :inCall="inCall"
+               @on-answer="answer"
+               @on-hangup="hangup"
+               key=inCall
+            />
          </transition>
 
          <div class="home-button" v-if="!inCall">
             <button @click="close(opened)"> <div class="icon"> </div> </button>
          </div>
 
-         <InCall
-            v-if="inCall"
-            :inCall="inCall"
-            @on-answer="answer"
-            @on-hangup="hangup"
-            key=inCall
-         />
       </div>
    </div>
 </template>
@@ -225,7 +226,7 @@
 
 <style scoped>
    .phone { 
-      font-family: 'Montserrat', sans-serif;
+      /* font-family: 'Montserrat', sans-serif; */
       position: absolute;
       bottom: 5vh;
       right: 35vh;
@@ -257,6 +258,7 @@
    }
    
    .header.opened {
+      transition: all .2s ease;
       background: #100f14;
    }
 
