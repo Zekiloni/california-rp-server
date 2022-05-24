@@ -205,7 +205,8 @@ export interface PhoneData {
    personName: string | null
    power: boolean
    brightness: number
-   contacts: PhoneContact[]
+   contacts: PhoneContact[],
+   messages: PhoneMessage[],
 }
 
 

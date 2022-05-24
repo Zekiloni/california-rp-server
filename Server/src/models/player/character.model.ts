@@ -641,3 +641,4 @@ mp.events.add('SERVER::PLAYER_MENU:ACTION', Characters.panelAction);
 mp.events.addProc('SERVER::PLAYER_MENU', Characters.panel);
 mp.events.addProc('SERVER::PLAYER:REPORT', Characters.report);
 mp.events.addProc('SERVER::PLAYER:DELETE_REPORT', Characters.deleteReport);
+

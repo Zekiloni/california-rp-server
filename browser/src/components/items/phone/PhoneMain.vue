@@ -36,6 +36,8 @@
 
                <MessagesApp 
                   v-if="opened.icon == 'messages'" 
+                  :phoneNumber="phone.number"
+                  :messages="phone.messages"
                   @send-message="send"
                />
 
@@ -106,7 +108,33 @@
          number: 321199,
          power: true,
          brightness: 1.0,
-         contacts: []
+         contacts: [],
+         messages: [
+            {
+               id: 1,
+               from: 321199,
+               to: 6591511,
+               message: 'eej si tu',
+               seen: false,
+               sent: new Date(),
+            },
+            {
+               id: 2,
+               from: 6591511,
+               to: 321199,
+               message: 'Da',
+               seen: false,
+               sent: new Date(),
+            },
+            {
+               id: 3,
+               from: 321199,
+               to: 54676,
+               message: 'Pozdrav',
+               seen: false,
+               sent: new Date(),
+            }
+         ]
       }
 
       messages: PhoneMessage[] = [];
@@ -232,7 +260,7 @@
       right: 35vh;
       width: 290px;
       height: 545px;
-      background: url('../../../assets/images/phone/bg-1.png');
+      background: url('../../../assets/images/phone/bg-2.png');
       background-size: cover;
       border-radius: 30px;
       box-shadow: 0 1.5px 7px rgb(0 0 0 / 55%);
@@ -316,6 +344,7 @@
 
    ul.list li img {
       margin-bottom: 2px;
+      -webkit-user-drag: none;
       width: 55px;
    }
 
