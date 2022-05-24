@@ -4,8 +4,10 @@
       <div class="conversations">
          <input type="text" v-model="searchConversation" />
          <transition-group name="list" tag="ul">
-            <li v-for="conversation in getConversations" :key="conversation.id" style="color: white;">
-               {{ conversation }}
+            <li v-for="(conversation, i) in conversations" :key="i" style="color: white;">
+               <!-- {{ conversation == phoneNumber ? isContact(getLastMessage(conversation).from) : isContact(conversation) }} -->
+               <!-- {{ i == phoneNumber ? conversation.from : i }} {{ conversation.message }} -->
+               {{ i }}
                <!-- <h4> {{ conversation.number == phoneNumber ? isContact(conversation.message.from) : isContact(conversation.number) }} </h4> -->
             </li>
          </transition-group>
@@ -27,11 +29,10 @@
    }
 
    interface Conversation {
-      id: number
-      number: number
+      from: number
       message: string
    }
-   
+
    @Component({
       props: {
          phoneNumber: Number,
@@ -45,38 +46,40 @@
          message: ''
       }
       
-      conversations: Conversation[] = [];
       searchConversation: string = '';
       selectedConversation: number | null = null;
 
-      get getConversations () {
-         if (this.searchConversation.length > 0) {
-            return []
-         } else {
-            return this.conversations;
-         }
+      get conversations () {
+         // let filtered = [... new Set(this.$props.messages.map(
+         //    (msg: PhoneMessage) => msg.to)
+         // )];
+
+         // if (this.searchConversation.length > 0) {
+         //    // return filtered // TO DO
+         // } else {
+         //    return filtered;
+         // }
+         let filtered: Record<number, Conversation> = {};
+
+         this.$props.messages.sort().reverse().forEach(
+            (message: PhoneMessage) => {
+               filtered[message.to] = { 
+                  from: message.from,
+                  message: message.message
+               }
+            }
+         );
+
+         return filtered;
+      }
+
+      getLastMessage (phoneNumber: number) {
+         return this.$props.messages.find((message: PhoneMessage) => message.to == phoneNumber);
       }
       
       isContact (number: number) {
          let inContacts = this.$props.contacts.find((contact: PhoneContact) => contact.number == number);
          return inContacts ? inContacts : number;
-      }
-
-      initConversations () {
-         let filtered = [... new Set(this.$props.messages.map((msg: PhoneMessage) => msg.from && msg.to))];
-         let id = 0;
-
-         for (const conversationNumber of filtered) {
-            let lastMsg = this.$props.messages.find((message: PhoneMessage) => message.from == conversationNumber || message.to == conversationNumber);
-            this.conversations.push(
-               {
-                  id: id ++,
-                  number: Number(conversationNumber),
-                  message: lastMsg
-               }
-            )
-         }
-
       }
    
       send () {
@@ -88,7 +91,6 @@
       }
 
       mounted () {
-         this.initConversations();
       }
    }
 </script>

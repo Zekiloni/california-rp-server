@@ -182,7 +182,6 @@
 
       clock () {
          const now = new Date();
-         
          this.time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes());
    
          setTimeout(this.clock, 1000);
