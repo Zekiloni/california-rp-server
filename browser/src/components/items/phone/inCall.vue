@@ -4,7 +4,7 @@
    <div class="call" >
 
       <div class="info" >
-         <h2> {{ inCall.number }} </h2>
+         <h2> {{ getContact(inCall.number) ? getContact(inCall.number).name : inCall.number }} </h2>
          <h4> {{ inCall.inCall ? elapsed : (inCall.incoming ? 'nadolazeći poziv' : 'pozivanje') }} </h4>
       </div>
       
@@ -32,10 +32,12 @@
    import Component from 'vue-class-component';
    
    import { Messages } from '@/globals';
+   import { PhoneContact } from '@/models';
 
    @Component({
       props: {
-         inCall: Object
+         inCall: Object,
+         contacts: { type: Array, default () { return [] } }
       }
    })
    export default class InCall extends Vue {
@@ -46,6 +48,10 @@
 
       get elapsed () {
          return (this.minutes < 10 ? '0' + this.minutes : this.minutes).toString() + ':' + (this.seconds < 10 ? '0' + this.seconds.toFixed() : this.seconds.toFixed()).toString()
+      }
+
+      getContact (number: number) {
+         return this.$props.contacts.find((contact: PhoneContact) => contact.number == number);
       }
 
       answer () {

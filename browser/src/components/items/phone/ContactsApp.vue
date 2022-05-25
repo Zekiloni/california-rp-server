@@ -6,7 +6,7 @@
       
       <transition name="fade"> 
          <ul class="contacts" v-if="!addingContact.opened && !selectedContact">
-            <li v-for="contact in contacts" :key="contact.name"> 
+            <li v-for="contact in contacts" :key="contact.name" @click="call(contact.number)"> 
                {{ contact.name }}
             </li>
          </ul>
@@ -56,6 +56,10 @@
          name: '',
          number: '',
 
+      }
+
+      call (number: number) {
+         this.$emit('on-call', false, number, false);
       }
 
       add () {

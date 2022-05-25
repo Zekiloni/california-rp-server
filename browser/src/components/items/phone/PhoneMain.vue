@@ -37,6 +37,7 @@
                <MessagesApp 
                   v-if="opened.icon == 'messages'" 
                   :phoneNumber="phone.number"
+                  :contacts="phone.contacts"
                   :messages="phone.messages"
                   @send-message="send"
                />
@@ -45,7 +46,7 @@
                   v-if="opened.icon == 'contacts'"
                   :contacts="phone.contacts"
                   @add-contact="addContact"
-                  
+                  @on-call="call"
                />
 
                <TaxiApp
@@ -56,6 +57,7 @@
             <InCall
                v-if="inCall"
                :inCall="inCall"
+               :contacts="phone.contacts"
                @on-answer="answer"
                @on-hangup="hangup"
                key=inCall
@@ -108,7 +110,14 @@
          number: 321199,
          power: true,
          brightness: 1.0,
-         contacts: [],
+         contacts: [
+            {
+               id: 1,
+               name: 'Webero Tata',
+               number: 4444,
+               createdAt: new Date()
+            }
+         ],
          messages: [
             {
                id: 1,
@@ -133,6 +142,14 @@
                message: 'Pozdrav',
                seen: false,
                sent: new Date(),
+            },
+            {
+               id: 4,
+               from: 321199,
+               to: 4444,
+               message: 'hej',
+               seen: false,
+               sent: new Date()
             }
          ]
       }
@@ -170,7 +187,7 @@
             name: 'Downtown Cab',
             icon: 'taxi',
             opened: false
-         },
+         }
       ];
 
       Messages = Messages;

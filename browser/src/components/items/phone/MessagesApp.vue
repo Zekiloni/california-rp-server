@@ -2,18 +2,15 @@
 <template>
    <div class="msg-app">
       <div class="conversations">
+         <h2 class="title"> {{ Messages.PHONE_APP_SETTINGS }} </h2>
          <input type="text" v-model="searchConversation" />
-         <transition-group name="list" tag="ul">
-            <li v-for="(conversation, i) in conversations" :key="i" style="color: white;">
-               <!-- {{ conversation == phoneNumber ? isContact(getLastMessage(conversation).from) : isContact(conversation) }} -->
-               <!-- {{ i == phoneNumber ? conversation.from : i }} {{ conversation.message }} -->
-               {{ i }}
-               <!-- <h4> {{ conversation.number == phoneNumber ? isContact(conversation.message.from) : isContact(conversation.number) }} </h4> -->
+         <transition-group name="contact" tag="ul">
+            <li v-for="conversation in conversations" :key="conversation" @click="selectedConversation = conversation">
+               <h4> {{ getContact(conversation) ? getContact(conversation).name : conversation }} </h4>
             </li>
          </transition-group>
       </div>
 
-      
    </div>
 </template>
 
@@ -22,14 +19,10 @@
    import Component from 'vue-class-component';
 
    import { PhoneContact, PhoneMessage } from '@/models';
+   import { Messages } from '@/globals';
 
    interface ComposeMessage { 
       to: number | null,
-      message: string
-   }
-
-   interface Conversation {
-      from: number
       message: string
    }
 
@@ -48,38 +41,37 @@
       
       searchConversation: string = '';
       selectedConversation: number | null = null;
+      
+      Messages = Messages;
 
       get conversations () {
-         // let filtered = [... new Set(this.$props.messages.map(
-         //    (msg: PhoneMessage) => msg.to)
-         // )];
+         let filtered = [...new Set(this.$props.messages.map(
+            (msg: PhoneMessage) => msg.to || msg.from)
+         )].filter(number => number !== this.$props.phoneNumber);
 
-         // if (this.searchConversation.length > 0) {
-         //    // return filtered // TO DO
-         // } else {
-         //    return filtered;
-         // }
-         let filtered: Record<number, Conversation> = {};
-
-         this.$props.messages.sort().reverse().forEach(
-            (message: PhoneMessage) => {
-               filtered[message.to] = { 
-                  from: message.from,
-                  message: message.message
-               }
+         if (this.searchConversation.length < 1) {
+            return filtered;
+         } else {
+            if (isNaN(Number(this.searchConversation))) {
+               return this.$props.contacts.sort().map((contact: PhoneContact) => contact.name).filter(
+                  (contact: string) => {
+                     contact.toLowerCase().includes(this.searchConversation.toLowerCase())
+                  }
+               );
+            } else {
+               return filtered.sort().filter((conversation) => {
+                  return String(conversation).includes(this.searchConversation)
+               })
             }
-         );
-
-         return filtered;
+         }
       }
 
       getLastMessage (phoneNumber: number) {
          return this.$props.messages.find((message: PhoneMessage) => message.to == phoneNumber);
       }
       
-      isContact (number: number) {
-         let inContacts = this.$props.contacts.find((contact: PhoneContact) => contact.number == number);
-         return inContacts ? inContacts : number;
+      getContact (number: number) {
+         return this.$props.contacts.find((contact: PhoneContact) => contact.number == number);
       }
    
       send () {
@@ -100,5 +92,22 @@
       background: #18171d;
       width: 100%;
       height: 100%;
+   }
+
+   h2.title {
+      padding: 10px;
+      font-size: 1.25rem;
+      margin: 0;
+      color: #cdcdcd;
+   }
+
+   .contact-enter-active,
+   .contact-leave-active {
+      transition: all 0.15s ease;
+   }
+   .contact-enter-from,
+   .contact-leave-to {
+      opacity: 0;
+      transform: translateY(30px);
    }
 </style>
