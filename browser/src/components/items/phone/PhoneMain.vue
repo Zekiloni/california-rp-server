@@ -39,7 +39,7 @@
                   :phoneNumber="phone.number"
                   :contacts="phone.contacts"
                   :messages="phone.messages"
-                  @send-message="send"
+                  @send-message="sendMessage"
                />
 
                <ContactsApp
@@ -113,8 +113,14 @@
          contacts: [
             {
                id: 1,
-               name: 'Webero Tata',
+               name: 'Čovek',
                number: 4444,
+               createdAt: new Date()
+            },
+            {
+               id: 2,
+               name: 'Stefania',
+               number: 908,
                createdAt: new Date()
             }
          ],
@@ -148,6 +154,54 @@
                from: 321199,
                to: 4444,
                message: 'hej',
+               seen: false,
+               sent: new Date()
+            },
+            {
+               id: 4,
+               from: 321199,
+               to: 65757,
+               message: 'lorem ipsuj kisum tisum supak',
+               seen: false,
+               sent: new Date()
+            },
+            {
+               id: 4,
+               from: 321199,
+               to: 87686,
+               message: 'lorem ipsuj kisum tisum supak',
+               seen: false,
+               sent: new Date()
+            },
+            {
+               id: 4,
+               from: 321199,
+               to: 87686,
+               message: 'lorem ipsuj kisum tisum supak',
+               seen: false,
+               sent: new Date()
+            },
+            {
+               id: 4,
+               from: 321199,
+               to: 908,
+               message: 'lorem ipsuj kisum tisum supak',
+               seen: false,
+               sent: new Date()
+            },
+            {
+               id: 4,
+               from: 321199,
+               to: 908,
+               message: 'hoćemo danas u guzu ?',
+               seen: false,
+               sent: new Date()
+            },
+            {
+               id: 4,
+               from: 321199,
+               to: 86786786,
+               message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis convallis nunc. Maecenas cursus lorem et est lacinia mattis. Donec tristique velit augue, non tempus sapien tristique ut. Cras tempus eu risus sit amet euismod. Nullam venenatis arcu nisi, nec imperdiet lectus rutrum non. ',
                seen: false,
                sent: new Date()
             }
@@ -238,10 +292,23 @@
          this.inCall = null;
       }
 
-      send (compose: { to: number, message: string } ) {
-         if (!compose.to || !compose.message) {
+      sendMessage (to: number, message: string) {
+         if (!to || !message) {
             return;
          }
+
+         console.log('send 2')
+
+         this.phone?.messages.push(
+            {
+               id: Math.random(),
+               from: this.phone?.number!,
+               to: to,
+               message: message,
+               seen: false,
+               sent: new Date()
+            }
+         )
       }
 
       addContact (name: string, contactNumber: number) {

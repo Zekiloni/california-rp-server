@@ -1,14 +1,42 @@
 
 <template>
    <div class="msg-app">
-      <div class="conversations">
-         <h2 class="title"> {{ Messages.PHONE_APP_SETTINGS }} </h2>
-         <input type="text" v-model="searchConversation" />
+      <div class="conversations" v-if="!selectedConversation">
+         <h2 class="title"> {{ Messages.PHONE_APP_MESSAGES }} </h2>
+         <input type="text" v-model="searchConversation" :placeholder="Messages.PHONE_MESSAGES_SEARCH" />
          <transition-group name="contact" tag="ul">
             <li v-for="conversation in conversations" :key="conversation" @click="selectedConversation = conversation">
                <h4> {{ getContact(conversation) ? getContact(conversation).name : conversation }} </h4>
+               <div class="last-message">
+                  <small> {{ truncate(getLastMessage(conversation).message, 35) }} </small>
+               </div>
             </li>
          </transition-group>
+      </div>
+
+      <div class="conversation" v-if="selectedConversation">
+         <div class="header">
+            <button @click="selectedConversation = null"> povratak na poruke </button>
+            <div class="contact">
+               <h4> {{ getContact(selectedConversation) ? getContact(selectedConversation).name : selectedConversation }} </h4>
+               <small> {{ selectedConversation }} </small>
+            </div>
+         </div>
+         
+         <div class="chat">
+            <ul class="messages" id="conversation-messages">
+               <li v-for="message in conversationMessages" :key="message.id" :class="{ received: message.from != phoneNumber }">
+                  {{ message.message }}
+               </li>
+            </ul>
+         </div>
+
+         <div class="new-message">
+            <input type="text" v-model="compose.message" @keydown.enter="send">
+            <button @click="send">
+               send
+            </button>
+         </div>
       </div>
 
    </div>
@@ -52,12 +80,13 @@
          if (this.searchConversation.length < 1) {
             return filtered;
          } else {
-            if (isNaN(Number(this.searchConversation))) {
-               return this.$props.contacts.sort().map((contact: PhoneContact) => contact.name).filter(
-                  (contact: string) => {
-                     contact.toLowerCase().includes(this.searchConversation.toLowerCase())
+            // @ts-ignore
+            if (isNaN(this.searchConversation)) {
+               return this.$props.contacts.filter(
+                  (contact: PhoneContact) => {
+                     contact.name.toLowerCase().includes(this.searchConversation.toLowerCase())
                   }
-               );
+               ).map((contact: PhoneContact) => contact.number);
             } else {
                return filtered.sort().filter((conversation) => {
                   return String(conversation).includes(this.searchConversation)
@@ -66,20 +95,49 @@
          }
       }
 
+      get conversationMessages () {
+         if (this.selectedConversation) {
+            return this.$props.messages.filter(
+               (message: PhoneMessage) => message.from == this.selectedConversation || message.to == this.selectedConversation
+            )
+         } else {
+            return [];
+         }
+      }
+
       getLastMessage (phoneNumber: number) {
-         return this.$props.messages.find((message: PhoneMessage) => message.to == phoneNumber);
+         return this.$props.messages.filter((message: PhoneMessage) => message.to == phoneNumber || message.from == phoneNumber).reduce(
+            (firstMsg: PhoneMessage, secondMsg: PhoneMessage) => 
+               firstMsg.id > secondMsg.id ? firstMsg : secondMsg
+            ) 
+      }
+
+      getMessageDate () {
+         
       }
       
       getContact (number: number) {
          return this.$props.contacts.find((contact: PhoneContact) => contact.number == number);
+      }
+      
+      getContactNumber (name: string) {
+         return this.$props.contacts.find((contact: PhoneContact) => contact.name == name).number;
       }
    
       send () {
          if (this.compose.message.length == 0) {
             return;
          }
-         
-         this.$emit('send-message', this.compose);
+
+         this.$emit('send-message', this.selectedConversation ? this.selectedConversation : this.compose.to, this.compose.message);
+         this.compose.message = '';
+
+         const conversationElement = document.getElementById('conversation-messages');
+         if (conversationElement) {
+            Vue.nextTick(() => {
+               conversationElement.scrollTo({ top: conversationElement.scrollHeight, behavior: 'smooth' })
+            })
+         }
       }
 
       mounted () {
@@ -101,6 +159,69 @@
       color: #cdcdcd;
    }
 
+   .conversations ul {
+      margin: 10px;
+      height: 300px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      padding: 0 10px;
+      list-style: none;
+   }
+
+   .conversations ul li {
+      margin: 10px 0;
+      border-radius: 5px;
+      background: #100f14;
+      padding: 10px;
+   }
+
+   .conversations ul li h4 {
+      font-size: 1.05rem;
+      color: #cdcdcd;
+      margin: 0;
+   }
+   
+   .conversations ul li small {
+      margin-top: 10px;
+      color: grey;
+      font-size: 0.8rem;
+   }
+
+   .conversation .chat {
+      height: 300px;
+      margin: 10px;
+      background: #100f14;
+      border-radius: 10px;
+      padding: 5px;
+      overflow: hidden;
+   }
+
+   .conversation .chat ul.messages {
+      height: 100%;
+      width: 100%;
+      overflow-y: scroll;
+      margin: 0;
+      list-style: none;
+      padding: 0;
+   }
+
+   .conversation .chat ul.messages li {
+      width: auto;
+      max-width: 125px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: whitesmoke;
+      background: #0084ff;
+      margin: 15px 0 15px auto;
+   }
+   
+   .conversation .chat ul.messages li.received {
+      margin-right: auto;
+      background: #302f36;
+      margin-left: 0;
+      color: #b9b5b5;
+   }
+
    .contact-enter-active,
    .contact-leave-active {
       transition: all 0.15s ease;
@@ -109,5 +230,9 @@
    .contact-leave-to {
       opacity: 0;
       transform: translateY(30px);
+   }
+
+   ::-webkit-scrollbar-thumb {
+      border-radius: 40px;
    }
 </style>

@@ -211,6 +211,8 @@ export const Messages = {
    // phone
    PHONE_APP_SETTINGS: 'Podešavanja',
    PHONE_APP_CALLS: 'Pozivi',
+   PHONE_APP_MESSAGES: 'Poruke',
+   PHONE_MESSAGES_SEARCH: 'Pretraga konverzacija...',
    PHONE_NUMBER: 'Broj telefona',
    DEVICE_VERSION: 'Verzija softvera',
    INCOMING_CALL: 'Nadolazeći poziv',
