@@ -21,6 +21,7 @@ enum controls {
    NUMBER_2 = 0x32,
    NUMBER_3 = 0x33,
    NUMBER_4 = 0x34,
+   MINUS = 0xBD
 }
 
 export default controls;

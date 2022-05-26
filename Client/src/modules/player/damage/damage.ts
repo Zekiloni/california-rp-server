@@ -18,7 +18,6 @@ function incomingDamageHandler (
       } else { 
          if (damage > mp.players.local.getHealth()) {
             mp.events.callRemote('SERVER::WOUNDED');
-            return true;
          }
       }
    }

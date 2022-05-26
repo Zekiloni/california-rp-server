@@ -1,16 +1,17 @@
+import controls from '../../enums/controls';
 import { distanceBetweenVectors } from '../../utils';
 import { screenResolution } from '../core';
 
 
 mp.nametags.enabled = false;
+let nameTags: boolean = true;
+
+const toggleNames = () => {
+   nameTags = !nameTags;
+}
 
 
-mp.events.add(RageEnums.EventKey.RENDER, nametags);
-
-
-
-
-function nametags () {
+const renderNametags = () => {
    if (!mp.players.local.getVariable('LOGGED_IN')) {
       return;
    }
@@ -18,6 +19,10 @@ function nametags () {
    if (!mp.players.local.getVariable('SPAWNED')) {
       return;
    }
+
+   if (!nameTags) {
+      return;
+   } 
 
    const { position, id } = mp.players.local;
 
@@ -93,3 +98,7 @@ function nametags () {
       }
    });
 }
+
+
+mp.events.add(RageEnums.EventKey.RENDER, renderNametags);
+mp.keys.bind(controls.MINUS, true, toggleNames)

@@ -240,7 +240,7 @@ function playerSelectCharacter (player: PlayerMp, characterId: number, point: sp
          Appearances, 
          { 
             model: Items, include: [ 
-               { model: Phones, include: [PhoneContacts, PhoneMessages] }
+               { model: Phones, include: [PhoneContacts] }
             ]
          }
       ] 
@@ -265,7 +265,6 @@ function playerDeathHandler (player: PlayerMp, killer: EntityMp | null | undefin
 
 function playerWoundHandler (player: PlayerMp, by: EntityMp | null | undefined) {
    player.character!.onWound(player, by);
-   return true;
 }
 
 async function playerQuitHadnler (player: PlayerMp, exitType: string, reason: string | null) {

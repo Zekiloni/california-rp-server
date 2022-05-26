@@ -407,11 +407,12 @@ Commands[cmds.names.CREATE_VEHICLE] = {
          }
 
          const vehicle = createdVehicle.load();
-
+         
          if (!vehicle) {
             return;
          }
-         
+
+         vehicle.setColorRGB(color[0][0], color[0][1], color[0][2], color[1][0], color[1][1], color[1][2]);
          player.putIntoVehicle(vehicle, RageEnums.VehicleSeat.DRIVER);
       });
    } 
@@ -1104,19 +1105,6 @@ Commands[cmds.names.SET_SKIN] = {
       target.model = mp.joaat(skin);
    }
 }
-
-// Commands['setskin'] = {
-//    Admin: 6,
-//    description: '',
-//    params: ['igrač', 'model'],
-//    Call: async (Player, Args: string[]) => {
-//       const TargetPlayer = mp.players.find(Args[0]), PedModel = mp.joaat(Args[1]);
-//       if (TargetPlayer && PedModel) {
-//          TargetPlayer.model = PedModel;
-//          Admin.AdminActionNotify(Player, `je promenio skin igraču ${TargetPlayer.name} na ${Args[1]}.`);
-//       }
-//    }
-// };
 
 
 
