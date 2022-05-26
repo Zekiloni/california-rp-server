@@ -32,9 +32,9 @@
          </div>
 
          <div class="new-message">
-            <input type="text" v-model="compose.message" @keydown.enter="send">
+            <input type="text" v-model="compose.message" @keydown.enter="send" :placeholder="Messages.TYPE_YOUR_MESSAGE" autofocus>
             <button @click="send">
-               send
+               >
             </button>
          </div>
       </div>
@@ -67,6 +67,7 @@
          message: ''
       }
       
+      antiSpam: boolean = false;
       searchConversation: string = '';
       selectedConversation: number | null = null;
       
@@ -125,12 +126,13 @@
       }
    
       send () {
-         if (this.compose.message.length == 0) {
+         if (this.compose.message.length == 0 || this.antiSpam) {
             return;
          }
 
          this.$emit('send-message', this.selectedConversation ? this.selectedConversation : this.compose.to, this.compose.message);
          this.compose.message = '';
+         this.antiSpam = true;
 
          const conversationElement = document.getElementById('conversation-messages');
          if (conversationElement) {
@@ -138,6 +140,12 @@
                conversationElement.scrollTo({ top: conversationElement.scrollHeight, behavior: 'smooth' })
             })
          }
+         
+         const disableSpam = () => {
+            this.antiSpam = false;
+         }
+
+         setTimeout(disableSpam, 1000);
       }
 
       mounted () {
@@ -188,29 +196,25 @@
    }
 
    .conversation .chat {
-      height: 300px;
-      margin: 10px;
+      height: 305px;
       background: #100f14;
-      border-radius: 10px;
-      padding: 5px;
       overflow: hidden;
    }
 
    .conversation .chat ul.messages {
       height: 100%;
-      width: 100%;
       overflow-y: scroll;
       margin: 0;
       list-style: none;
-      padding: 0;
+      padding: 10px;
    }
 
    .conversation .chat ul.messages li {
       width: auto;
       max-width: 125px;
       padding: 5px 10px;
-      border-radius: 5px;
       color: whitesmoke;
+      border-radius: 10px 10px 0 10px;
       background: #0084ff;
       margin: 15px 0 15px auto;
    }
@@ -218,8 +222,30 @@
    .conversation .chat ul.messages li.received {
       margin-right: auto;
       background: #302f36;
+      border-radius: 10px 10px 10px 0;
       margin-left: 0;
       color: #b9b5b5;
+   }
+
+   .new-message {
+      padding: 10px 0;
+      width: auto;
+      background: #302f36;
+      display: flex;
+      justify-content: space-around;
+   }
+
+   .new-message input {
+      background: transparent;
+      padding: 5px;
+      color: whitesmoke;
+      border-bottom: 1px solid grey;
+   }
+
+   .new-message button {
+      border-radius: 100%;
+      width: 30px;
+      height: 30px;
    }
 
    .contact-enter-active,

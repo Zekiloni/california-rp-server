@@ -451,7 +451,7 @@
       height: 45px;
       padding: 10px 0;
       bottom: 0;
-      background: #100f14;
+      background: linear-gradient(45deg, #100f14, #18171d);
       left: 0;
       width: 100%;
       display: grid;
@@ -463,7 +463,7 @@
       height: 45px;
       display: grid;
       box-shadow: 0 0 3px #302f36;
-      background: linear-gradient(-45deg, #1c1b22, #302f36);
+      background: linear-gradient(-45deg, #18171d, #302f36);
       border-radius: 100%;
       color: whitesmoke;
       transition: all .3s ease;

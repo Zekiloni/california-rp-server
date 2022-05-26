@@ -1,4 +1,4 @@
-import controls from "./enums/controls";
+import controls from './enums/controls';
 
 
 mp.gui.chat.show(false);
