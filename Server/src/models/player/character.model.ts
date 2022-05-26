@@ -192,6 +192,11 @@ export class Characters extends Model {
       return mp.players.toArray().find(player => player.character && player.character.id == this.id) ? true : false;
    }
 
+   get getPhone () {
+      const phoneItem = this.items.find(item => item.phone && item.phone.number);
+      return phoneItem?.phone;
+   }
+
    get getJob () {
       return Jobs.list.find(job => job.id == this.job);
    }
@@ -239,14 +244,11 @@ export class Characters extends Model {
 
       // faction
       player.setVariable(shared_Data.FACTION, this.faction);
-      if (this.faction != none) {
+      if (this.faction) {
          Factions.findOne( { where: { id: this.faction } } ).then(faction => {
-            if (!faction) {
-               return;
-            }
-            console.log('faction points')
+            if (!faction) return;
             faction.points(player);
-         });
+         }).catch(e => Logs.error('factionPoints: ' + e));
       }
 
       // temporary variables
@@ -274,13 +276,13 @@ export class Characters extends Model {
       }
       
       ClothingItem.clothings.forEach(item => {
-         Items.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
-            if (clothed && clothed.equiped) {
-               item.use(player, clothed);
-            } else { 
-               player.setClothes(item.component, item.naked![this.gender], 0, 2);
-            }
-         })
+         // Items.findOne( { where: { name: item.name, owner: this.id, entity: ItemEnums.entity.PLAYER } } ).then(clothed => {
+         //    if (clothed && clothed.equiped) {
+         //       item.use(player, clothed);
+         //    } else { 
+         //       player.setClothes(item.component, item.naked![this.gender], 0, 2);
+         //    }
+         // })
       });
 
       const bestTorso = await player.callProc('CLIENT::GET:BEST_TORSO');
@@ -639,3 +641,4 @@ mp.events.add('SERVER::PLAYER_MENU:ACTION', Characters.panelAction);
 mp.events.addProc('SERVER::PLAYER_MENU', Characters.panel);
 mp.events.addProc('SERVER::PLAYER:REPORT', Characters.report);
 mp.events.addProc('SERVER::PLAYER:DELETE_REPORT', Characters.deleteReport);
+

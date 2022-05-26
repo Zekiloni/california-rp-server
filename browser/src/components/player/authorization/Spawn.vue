@@ -84,7 +84,6 @@
          });
    
          this.$props.points.forEach((point: SpawnPoint) => {
-            
             const position = this.convertToMap(this.layer!, point.position.x, point.position.y);
             
             point.marker = L.marker(new L.LatLng(position.lat, position.lng), { icon: smallIcon }).addTo(this.map!)

@@ -1,19 +1,16 @@
 
 <template>
-   <div class="app">
-      <h2 class="title"> {{ Messages.PHONE_PAGE_SETTINGS }} </h2>
-      <div class="settings">
-          <vue-slider 
-            :value="brightness"
-            :max='1.0'
-            :min='0.4'
-            :interval='0.1'
-            :railStyraille=slider.rail 
-            :processStyle=slider.process
-            :dotStyle=slider.dot
-            :dotOptions=slider.dotOptions
-            v-on:change="value => brighntess(value)"
-         />
+   <div class="settings">
+      <h2 class="title"> {{ Messages.PHONE_APP_SETTINGS }} </h2>
+
+      <div class="info">
+         <h4> {{ Messages.PHONE_NUMBER }} </h4>
+         <span> {{ phone.number }} </span>
+      </div>
+
+      <div class="info">
+         <h4> {{ Messages.DEVICE_VERSION }} </h4>
+         <span> 0.2.7 </span>
       </div>
    </div>
 </template>
@@ -29,8 +26,7 @@
          VueSlider
       },
       props: {
-         brightness: Number,
-         power: Boolean,
+         phone: Object
       }
    })
    export default class SettingsApp extends Vue { 
@@ -61,14 +57,28 @@
 </script>
 
 <style scoped>
-   .app {
-      padding: 10px;
+   .settings {
+      background: #18171d;
+      width: 100%;
+      height: 100%;
    }
 
    h2.title {
+      padding: 10px;
+      font-size: 1.25rem;
       margin: 0;
-      font-size: 1.2rem;
       color: #cdcdcd;
-      font-weight: 500;
    }
+
+   .info { 
+      background: #100f14;
+      width: auto;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: grey;
+      margin: 5px 0;
+   }
+
+   .info h4 { margin: 0; }
 </style>

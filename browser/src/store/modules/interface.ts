@@ -41,7 +41,7 @@ const InitialState:uInterface = {
    },
 
    phone: { 
-      toggle: false, 
+      toggle: true, 
       mouse: true,
       escClose: 'CLIENT::PHONE:TOGGLE'
    },

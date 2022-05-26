@@ -4,7 +4,7 @@
    <div class="call" >
 
       <div class="info" >
-         <h2> {{ inCall.number }} </h2>
+         <h2> {{ getContact(inCall.number) ? getContact(inCall.number).name : inCall.number }} </h2>
          <h4> {{ inCall.inCall ? elapsed : (inCall.incoming ? 'nadolazeći poziv' : 'pozivanje') }} </h4>
       </div>
       
@@ -28,23 +28,30 @@
 </template>
 
 <script lang="ts">
-   import { Messages } from '@/globals';
    import Vue from 'vue';
    import Component from 'vue-class-component';
    
+   import { Messages } from '@/globals';
+   import { PhoneContact } from '@/models';
+
    @Component({
       props: {
-         inCall: Object
+         inCall: Object,
+         contacts: { type: Array, default () { return [] } }
       }
    })
    export default class InCall extends Vue {
       Messages = Messages;
-
+      
       minutes: number = 0;
       seconds: number = 0;
 
       get elapsed () {
          return (this.minutes < 10 ? '0' + this.minutes : this.minutes).toString() + ':' + (this.seconds < 10 ? '0' + this.seconds.toFixed() : this.seconds.toFixed()).toString()
+      }
+
+      getContact (number: number) {
+         return this.$props.contacts.find((contact: PhoneContact) => contact.number == number);
       }
 
       answer () {
@@ -68,7 +75,6 @@
       }
 
       mounted () {
-         console.log('inCall');
          this.counter();
       }
    }
@@ -77,6 +83,8 @@
    .call {
       width: 100%;
       height: 100%;
+      background: rgb(0, 0, 0, 0.5);
+      margin-top: -36px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -123,6 +131,7 @@
       height: 65px;
       display: grid;
       background: rgb(205 205 205 / 20%);
+      backdrop-filter: blur(5px);
    }
 
    ul.actions li:hover {

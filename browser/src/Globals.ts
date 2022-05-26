@@ -209,11 +209,18 @@ export const Messages = {
    BUY_VEHICLE: 'Kupi vozilo',
 
    // phone
-   PHONE_PAGE_SETTINGS: 'Podešavanja',
+   PHONE_APP_SETTINGS: 'Podešavanja',
+   PHONE_APP_CALLS: 'Pozivi',
+   TYPE_YOUR_MESSAGE: 'Poruka...',
+   PHONE_APP_MESSAGES: 'Poruke',
+   PHONE_MESSAGES_SEARCH: 'Pretraga konverzacija...',
+   PHONE_NUMBER: 'Broj telefona',
+   DEVICE_VERSION: 'Verzija softvera',
    INCOMING_CALL: 'Nadolazeći poziv',
    CALLING: 'Pozivanje',
    ANSWER_CALL: 'Prihvati poziv',
    HANGUP_CALL: 'Prekini poziv',
+   TAXI_APP_WHERE_TO: 'Odaberite odredište ?',
 
    // jobs
    BUS_ROUTE: 'Bus ruta',

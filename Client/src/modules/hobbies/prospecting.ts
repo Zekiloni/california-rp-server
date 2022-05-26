@@ -1,6 +1,6 @@
 import { animationFlags } from "../../enums/animations.flags";
 import controls from "../../enums/controls";
-import { isPlayingAnim, playAnimation, stopAnimation } from "../player/animation";
+import { isAnimationFinished, isPlayingAnim, playAnimation, stopAnimation } from "../player/animation";
 import { createAttachment, removeAttachment } from "../player/attahments";
 
 
@@ -71,8 +71,7 @@ async function dig () {
       playAnimation(mp.players.local, 'amb@world_human_gardener_plant@male@enter', 'enter', animationFlags.NORMAL);
       mp.game.waitAsync(100);
 
-      while (await isPlayingAnim(mp.players.local, 'amb@world_human_gardener_plant@male@enter', 'enter')) {
-         // mp.gui.chat.push('playing enter')
+      while (isAnimationFinished(mp.players.local, 'amb@world_human_gardener_plant@male@enter', 'enter')) {
          mp.game.waitAsync(0);
       }
 

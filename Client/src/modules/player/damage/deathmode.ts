@@ -1,13 +1,13 @@
 import { Browser } from '../../../browser';
 
 
-let active: boolean = false;
+let isDeatScreenActive: boolean = false;
 
+function deathScreen (toggle: number | false){ 
 
-mp.events.add('CLIENT::DEATHSCREEN', toggleDeathscreen);
-
-function toggleDeathscreen (toggle: number | false){ 
-
-   active = toggle ? true : false;
-   Browser.call(active ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'deathScreen');
+   isDeatScreenActive = toggle ? true : false;
+   Browser.call(isDeatScreenActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'deathScreen');
 }
+
+
+mp.events.add('CLIENT::DEATHSCREEN', deathScreen);

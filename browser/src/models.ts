@@ -200,17 +200,30 @@ export interface pReport {
    answer_time?: number
 };
 
+export interface PhoneData {
+   number: number
+   personName: string | null
+   power: boolean
+   brightness: number
+   contacts: PhoneContact[],
+   messages: PhoneMessage[],
+}
+
 
 export interface PhoneContact { 
+   id: number
    number: number
    name: string
+   createdAt: Date
 }
 
 export interface PhoneMessage { 
-   sender: number
-   recipient: number
+   id: number
+   from: number
+   to: number
    message: string
-   contact?: string
+   seen: boolean
+   sent: Date
 }
 
 

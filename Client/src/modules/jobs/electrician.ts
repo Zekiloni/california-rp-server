@@ -1,5 +1,5 @@
 import { Browser } from "../../browser";
-import { getCalculatedDistance, startCalculatingDistance, stopCalculatingDistance } from "../utils/calculateDistance";
+import { getCalculatedDistance, startCalculatingDistance, stopCalculatingDistance } from "../utils/calculate.Distance";
 
 
 const ElectricianConfig = {

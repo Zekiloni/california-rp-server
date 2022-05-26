@@ -3,8 +3,8 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { DatabaseConfig } from '@configs';
-import * as models from '@models';
 import { Lang } from '@constants';
+import * as models from '@models';
 
 
 const Database = new Sequelize({
@@ -23,6 +23,9 @@ const Database = new Sequelize({
       models.Characters, 
       models.Appearances,
       models.Items, 
+      models.Phones,
+      models.PhoneContacts,
+      models.PhoneMessages,
       models.Vehicles,
       models.VehicleComponents,
       models.Banks,
