@@ -1087,6 +1087,24 @@ Commands[cmds.names.SET_ARMOUR] = {
    }
 }
 
+Commands[cmds.names.SET_SKIN] = {
+   description: cmds.descriptions.SET_SKIN,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [
+      cmds.params.PLAYER, cmds.params.SKIN_MODEL
+   ],
+   call (player: PlayerMp, targetSearch: string, skin: string) {
+      const target = mp.players.find(targetSearch);
+
+      if (!target) {
+         player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+         return;
+      }
+
+      target.model = mp.joaat(skin);
+   }
+}
+
 // Commands['setskin'] = {
 //    Admin: 6,
 //    description: '',

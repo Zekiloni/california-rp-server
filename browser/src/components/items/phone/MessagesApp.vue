@@ -2,8 +2,15 @@
 <template>
    <div class="msg-app">
       <div class="conversations" v-if="!selectedConversation">
-         <h2 class="title"> {{ Messages.PHONE_APP_MESSAGES }} </h2>
-         <input type="text" v-model="searchConversation" :placeholder="Messages.PHONE_MESSAGES_SEARCH" />
+         <h2 class="title">
+            {{ Messages.PHONE_APP_MESSAGES }} 
+            <img class="compose-message" src="@/assets/images/phone/icons/compose-message.svg" @click="compose.opened = true" />
+         </h2>
+
+         <div class="search">
+            <input type="text" v-model="searchConversation" :placeholder="Messages.PHONE_MESSAGES_SEARCH" />
+         </div>
+
          <transition-group name="contact" tag="ul">
             <li v-for="conversation in conversations" :key="conversation" @click="selectedConversation = conversation">
                <h4> {{ getContact(conversation) ? getContact(conversation).name : conversation }} </h4>
@@ -34,7 +41,7 @@
          <div class="new-message">
             <input type="text" v-model="compose.message" @keydown.enter="send" :placeholder="Messages.TYPE_YOUR_MESSAGE" autofocus>
             <button @click="send">
-               >
+               <img src="@/assets/images/phone/icons/send-message.svg" />
             </button>
          </div>
       </div>
@@ -50,7 +57,8 @@
    import { Messages } from '@/globals';
 
    interface ComposeMessage { 
-      to: number | null,
+      opened: boolean
+      to: number | null
       message: string
    }
 
@@ -63,6 +71,7 @@
    })
    export default class MessagesApp extends Vue { 
       compose: ComposeMessage = {
+         opened: false,
          to: null,
          message: ''
       }
@@ -161,15 +170,16 @@
    }
 
    h2.title {
-      padding: 10px;
+      padding: 10px 15px;
       font-size: 1.25rem;
       margin: 0;
       color: #cdcdcd;
+      position: relative;
    }
 
    .conversations ul {
-      margin: 10px;
-      height: 300px;
+      margin-right: 10px;
+      height: 315px;
       overflow-y: scroll;
       overflow-x: hidden;
       padding: 0 10px;
@@ -215,7 +225,7 @@
       padding: 5px 10px;
       color: whitesmoke;
       border-radius: 10px 10px 0 10px;
-      background: #0084ff;
+      background: linear-gradient(45deg, #4c318e, #7c5bf1);
       margin: 15px 0 15px auto;
    }
    
@@ -230,22 +240,60 @@
    .new-message {
       padding: 10px 0;
       width: auto;
-      background: #302f36;
       display: flex;
       justify-content: space-around;
    }
 
    .new-message input {
       background: transparent;
+      border-radius: 20px;
       padding: 5px;
+      background: linear-gradient(90deg, #16151c, #16151c);
       color: whitesmoke;
-      border-bottom: 1px solid grey;
    }
 
    .new-message button {
       border-radius: 100%;
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
+      background: linear-gradient(45deg, #4c318e, #7c5bf1);
+   }
+   
+   .new-message button:hover {
+      filter: brightness(1.15);
+   }
+
+   .new-message button img {
+      margin-top: 2px;
+      margin-left: 2px;
+      width: 15px;
+   }
+
+   .search {
+      width: auto;
+      background: #101015;
+      padding: 10px 0;
+      display: grid;
+   }
+
+   .compose-message { 
+      width: 19px;
+      transition: all .2s ease;
+      margin-right: auto;
+      position: absolute;
+      right: 15px;
+      top: 11.5px;
+   }
+
+   .compose-message:hover {
+      opacity: 0.7;
+   }
+
+   .search input {
+      margin: auto;
+      padding: 10px;
+      background: transparent;
+      color: #cdcdcd;
    }
 
    .contact-enter-active,

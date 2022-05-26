@@ -451,7 +451,7 @@
       height: 45px;
       padding: 10px 0;
       bottom: 0;
-      background: linear-gradient(45deg, #100f14, #18171d);
+      background: linear-gradient(45deg, #0a090c, #141318);
       left: 0;
       width: 100%;
       display: grid;
