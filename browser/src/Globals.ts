@@ -5,6 +5,7 @@
 export const Messages = {
    WEBSITE: 'www.ca-rp.com',
    NAME: 'California Roleplay',
+   CITY: 'Los Santos, SA',
    CALIFORNIA: 'CALIFORNIA',
    USERNAME: 'Korisničko ime',
    USERPASSWORD: 'Korisnička šifra',
@@ -38,6 +39,14 @@ export const Messages = {
    FINISH_SHOPPING: 'Kupi',
    YOU_DONT_HAVE: 'Nemate',
    NO_ONE: 'Niko',
+
+   DAYS: [
+      'Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak', 'Subota', 'Nedelja'
+   ],
+   
+   SHORT_DAYS: [
+      'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'
+   ],
 
    MARKET: 'Market',
    VEHICLE_DEALERSHIP: 'Vehicle Dealership',
@@ -210,6 +219,7 @@ export const Messages = {
 
    // phone
    PHONE_APP_SETTINGS: 'Podešavanja',
+   PHONE_APP_WEATHER: 'Vremenska prognoza',
    PHONE_APP_CALLS: 'Pozivi',
    TYPE_YOUR_MESSAGE: 'Poruka...',
    PHONE_APP_MESSAGES: 'Poruke',

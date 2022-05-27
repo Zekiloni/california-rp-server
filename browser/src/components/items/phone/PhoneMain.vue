@@ -52,6 +52,14 @@
                <TaxiApp
                   v-if="opened.icon == 'taxi'"
                />
+               
+               <WeatherApp
+                  v-if="opened.icon == 'weather'"
+               />
+
+               <CalculatorApp 
+                  v-if="opened.icon =='calculator'"
+               />
             </div>
 
             <InCall
@@ -84,6 +92,9 @@
    import ContactsApp from './ContactsApp.vue';
    import InCall from './inCall.vue';
    import TaxiApp from './TaxiApp.vue';
+   import WeatherApp from './WeatherApp.vue';
+   import CalculatorApp from './CalculatorApp.vue';
+   
 
    interface PhoneApp {
       name: string
@@ -101,7 +112,8 @@
 
    @Component({
       components: {
-         SettingsApp, CallsApp, MessagesApp, ContactsApp, InCall, TaxiApp
+         SettingsApp, CallsApp, MessagesApp, ContactsApp, InCall, 
+         TaxiApp, WeatherApp, CalculatorApp
       }
    })
    export default class Phone extends Vue { 
@@ -241,6 +253,16 @@
             name: 'Downtown Cab',
             icon: 'taxi',
             opened: false
+         },
+         {
+            name: Messages.PHONE_APP_WEATHER,
+            icon: 'weather',
+            opened: false
+         }, 
+         {
+            name: 'Kalkulator',
+            icon: 'calculator',
+            opened: false
          }
       ];
 
@@ -337,7 +359,7 @@
 
 <style scoped>
    .phone { 
-      /* font-family: 'Montserrat', sans-serif; */
+      font-family: 'Montserrat', sans-serif;
       position: absolute;
       bottom: 5vh;
       right: 35vh;
@@ -414,7 +436,6 @@
       width: 90px;
       height: 90px;
       align-items: center;
-      justify-content: center;
    }
 
    ul.list li {
