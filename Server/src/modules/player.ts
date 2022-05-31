@@ -28,23 +28,11 @@ mp.events.add(
 
 mp.events.addProc(
    {
-      'SERVER::PLAYER:LOBY': lobbySettings,
-      'SERVER::CREATOR:INFO': creatorSettings,
       'SERVER::AUTHORIZATION:VERIFY': authorizationVerify,
       'SERVER::CHARACTER:SPAWNS': getCharacterSpawns,
       'SERVER::CREATOR:FINISH': characterFinish
    }
 );
-
-
-function lobbySettings () {
-   return playerConfig.main.lobby;
-}
-
-
-function creatorSettings ()  { 
-   return playerConfig.main.creator;
-}
 
 
 function playerChatHandler (player: PlayerMp, content: string) {

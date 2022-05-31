@@ -4,11 +4,9 @@ import { AfterCreate, AfterDestroy, AfterSave, AfterSync, AutoIncrement, Belongs
 import { ItemEnums, notifications } from '@enums';
 import { shared_Data } from '@shared';
 import { ItemExtra } from '@interfaces';
-import { BaseItem, Logs, Characters, Vehicles } from '@models';
+import { BaseItem, Logs, Characters, Vehicles, Houses, Busines, Phones } from '@models';
 import { itemNames, Lang, none } from '@constants';
 import { playerConfig } from '@configs';
-
-import { Phones } from './phone/phone';
 
 
 @Table
@@ -23,15 +21,12 @@ export class Items extends Model {
    @Column(DataType.STRING)
    name: string;
 
-   @Column(DataType.INTEGER)
-   entity: ItemEnums.entity;
-
    @ForeignKey(() => Characters)
-   @Column({ type: DataType.INTEGER, field: 'on_ground' })
+   @Column({ type: DataType.INTEGER, field: 'character_id' })
    characterID: number
 
    @ForeignKey(() => Vehicles)
-   @Column({ type: DataType.INTEGER, field: 'on_ground' })
+   @Column({ type: DataType.INTEGER, field: 'vehicle_id' })
    vehicleID: number
 
    @BelongsTo(() => Characters)
@@ -99,6 +94,9 @@ export class Items extends Model {
       Items.objects.set(this.id, object);
    }
 
+   get isEquiped () {
+      return this.equiped;
+   }
 
    @AfterSync
    static async loading () {
@@ -206,72 +204,33 @@ export class Items extends Model {
       await this.save();
    }
 
-   async unequip (player: PlayerMp) {
-      const item = BaseItem.list[this.name];
-
-      if (!item) {
-         return;
-      }
-
-      this.equiped = false;
-
-      if (item.unequip) {
-         item.unequip(player);
-      }
-
-      await this.save();
+   static hasItem (player: PlayerMp, itemName: string) {
+      console.log('------------ hasItem -------------')
+      console.log(player.character.items)
+      // if (player.character.items) {
+      //    return player.character.items.find(item => item.name == itemName);
+      // } else {
+      //    return null;
+      // }
    }
+   
+   static async giveItem (player: PlayerMp, item: BaseItem, quantiy?: number) { 
+      let hasItem = Items.hasItem(player, item.name);
 
-   async useItem (player: PlayerMp) { 
-      const Character = player.character;
-      
-      const rItem = BaseItem.list[this.name];
-   }
+      console.log(' ------------ giveitem ------------');
+      console.log(player.character.items)
 
-   static async doesHaveItem (entity: ItemEnums.entity, owner: number, itemName: string) {
-      return Items.findOne( { where: { entity: entity, owner: owner, name: itemName } } ).then(haveItem => {
-         return haveItem ? haveItem : false;
-      });
-   }
-
-   static hasEquiped (player: PlayerMp, itemName: string) {
-      return Items.findOne( { where: { name: itemName, equiped: true, owner: player.character.id }})
-   }
-
-   static getEntityItems (entity: ItemEnums.entity, owner: number)  { 
-      return Items.findAll( { where: { owner: owner, entity: entity } } ).then(items => { 
-         return items;
-      }).catch(e => {
-         Logs.error('ctchingPlyerItems: ' + e);
-      });
-   }
-
-   static giveItem (player: PlayerMp, item: BaseItem) { 
-      Items.create( { name: item.name, entity: ItemEnums.entity.PLAYER, owner: player.character.id } );
+      // if (hasItem && item.isStackable) {
+      //    hasItem.update('quantiy', { by: quantiy ? quantiy : 1 });
+      // } else {
+      //    Items.create({
+      //      name: item.name, 
+      //      character: player.character,
+      //      characterID: player.character.id,
+      //      quantiy: quantiy ? quantiy : 1
+      //    }).then(item => player.character.items?.push(item));
+      // }
    };
-
-   static async savePlayerEquipment (character: Characters) { 
-      Items.findAll( { where: { entity: ItemEnums.entity.PLAYER, owner: character.id, equiped: true } }).then(equipedItems => { 
-         equipedItems.forEach(async item => {
-            if (!BaseItem.list[item.name].isClothing() && !BaseItem.list[item.name].isProp()) {
-               item.equiped = false;
-               await item.save();
-            }
-         });
-      })
-   }
-
-   static async itemsWeight (player: PlayerMp) {
-      return Items.findAll( { where: { owner: player.character.id, entity: ItemEnums.entity.PLAYER } } ).then(playerItems => {
-         let weight: number = 0;
-
-         playerItems.forEach(item => {
-            weight += BaseItem.list[item.name].weight;
-         });
-
-         return weight;
-      })
-   }
 
 }
 

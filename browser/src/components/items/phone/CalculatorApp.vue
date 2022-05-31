@@ -9,39 +9,34 @@
          </div>
 
          <div class="calculate-area">
-            <div class="input"> 1+2 </div>
+            <div class="input"> {{ total }} </div>
             <div class="result"> 3 </div>
          </div>
          <div class="bar"> </div>
       </div>
       <div class="bottom">
          <div class="numpad">
-            <button class="numpad-button">7</button>
-            <button class="numpad-button">8</button>
-            <button class="numpad-button">9</button>
-            <button class="numpad-button">4</button>
-            <button class="numpad-button">5</button>
-            <button class="numpad-button">6</button>
-            <button class="numpad-button">1</button>
-            <button class="numpad-button">2</button>
-            <button class="numpad-button">3</button>
-            <button class="numpad-button">0</button>
-            <button class="numpad-button">.</button>
-            <button class="numpad-button">=</button>
+            <button class="numpad-button" @click="key(7)" >7</button>
+            <button class="numpad-button" @click="key(8)">8</button>
+            <button class="numpad-button" @click="key(9)">9</button>
+            <button class="numpad-button" @click="key(5)">4</button>
+            <button class="numpad-button" @click="key(4)">5</button>
+            <button class="numpad-button" @click="key(6)">6</button>
+            <button class="numpad-button" @click="key(1)">1</button>
+            <button class="numpad-button" @click="key(2)">2</button>
+            <button class="numpad-button" @click="key(3)">3</button>
+            <button class="numpad-button" @click="key(0)">0</button>
+            <button class="numpad-button" @click="key('.')">.</button>
+            <button class="numpad-button" @click="equal">=</button>
          </div>
          <div class="operators">
-            <button class="backspace"> <i class="fas fa-backspace"> </i> </button>
-            <button class="divide"> <i class="fas fa-divide"></i> </button>
-            <button class="multiply"> <i class="fas fa-times"></i> </button>
-            <button class="subtract"> <i class="fas fa-minus"></i> </button>
-            <button class="add"> <i class="fas fa-plus"></i> </button>
+            <button class="backspace" @click="clear"> <i class="fas fa-backspace"> </i> </button>
+            <button class="divide" @click="key('/')"> <i class="fas fa-divide"></i> </button>
+            <button class="multiply" @click="key('*')"> <i class="fas fa-times"></i> </button>
+            <button class="subtract" @click="key('-')"> <i class="fas fa-minus"></i> </button>
+            <button class="add" @click="key('+')"> <i class="fas fa-plus"></i> </button>
          </div>
-         <div class="blue-strip">
-            <i class="fas fa-chevron-left"> </i>
-         </div>
-         <div class="blue-strip">
-            <a class="symbol"> </a>
-         </div>
+
       </div>
    </div>
 </template>
@@ -52,7 +47,24 @@
 
    @Component
    export default class CalculatorApp extends Vue {
+      total: any = 0;
 
+      key (num: any) {
+         return this.total += num;
+      }
+
+      clear () {
+         return this.total = '0';
+      }
+
+      equal () {
+         let equal = this.total;
+         return this.total = eval(equal);
+      }
+      
+      mounted () {
+         this.equal();
+      }
    }
 </script>
 
@@ -151,8 +163,8 @@
    button {
       font-size: 18px;
       color: #e8eaed;
-      background: #202124;
-      border: 1px solid #202124;
+      background: #1f1e25;
+      border: 1px solid #1f1e25;
       cursor: pointer;
       transition: all 0.2s ease;
    }

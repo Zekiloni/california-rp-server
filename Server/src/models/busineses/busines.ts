@@ -497,15 +497,15 @@ export class Busines extends Model {
       return Busines.findOne( { where: { id: businesID }, include: [Products] } ).then(async busines => {
          let total: number = 0;
          
-         const inventoryWeight: number = await Items.itemsWeight(player);
+         // const inventoryWeight: number = await Items.itemsWeight(player);
          const cartWeight: number = cart.reduce((sum, item) => sum + (BaseItem.list[item.name].weight), 0)
          
-         console.log('inv with cart ' + (inventoryWeight + cartWeight));
+         // console.log('inv with cart ' + (inventoryWeight + cartWeight));
    
-         if (inventoryWeight + cartWeight > player.character.max_inventory_weight) {
-            player.notification(Lang.noInventorySpaceForItems + '.', notifications.type.ERROR, notifications.time.MED);
-            return;
-         }
+         // if (inventoryWeight + cartWeight > player.character.max_inventory_weight) {
+         //    player.notification(Lang.noInventorySpaceForItems + '.', notifications.type.ERROR, notifications.time.MED);
+         //    return;
+         // }
    
          busines!.products.forEach(product => {
             cart.forEach(async item => {

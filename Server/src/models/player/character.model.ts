@@ -186,14 +186,14 @@ export class Characters extends Model {
 
    freezed: boolean = false;
 
-   respawnTimer: ReturnType<typeof setTimeout> | undefined = undefined;
+   respawnTimer: ReturnType<typeof setTimeout> | null = null;
 
    get isOnline () {
       return mp.players.toArray().find(player => player.character && player.character.id == this.id) ? true : false;
    }
 
    get getPhone () {
-      const phoneItem = this.items.find(item => item.phone && item.phone.number);
+      const phoneItem = this.items?.find(item => item.phone && item.phone.number);
       return phoneItem?.phone;
    }
 
@@ -235,6 +235,9 @@ export class Characters extends Model {
 
       // loading money and health
       this.setHealth(player, this.health);
+
+      console.log(' ------------ spawnPlayer ------------');
+      console.log(player.character.items)
 
       player.setVariable(shared_Data.CHARACTER_ID, this.id);
       player.setVariable(shared_Data.STRANGER, this.stranger);
@@ -509,7 +512,6 @@ export class Characters extends Model {
       });
 
       await this.save();
-      Items.savePlayerEquipment(this);
       
       this.working = false;
    }

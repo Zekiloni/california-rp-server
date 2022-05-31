@@ -193,36 +193,36 @@ Commands[cmds.names.EDIT_BUSINESS] = {
 }
 
 
-Commands[cmds.names.GIVE_ITEM] ={
-   description: cmds.descriptions.GIVE_ITEM,
-   admin: rank.SENIOR_ADMINISTRATOR,
-   params: [
-      cmds.params.PLAYER,
-      cmds.params.TEXT
-   ],
-   call (player: PlayerMp, targetSearch: any, ...itemName: any) { 
-      itemName = itemName.join(' ');
+// Commands[cmds.names.GIVE_ITEM] ={
+//    description: cmds.descriptions.GIVE_ITEM,
+//    admin: rank.SENIOR_ADMINISTRATOR,
+//    params: [
+//       cmds.params.PLAYER,
+//       cmds.params.TEXT
+//    ],
+//    call (player: PlayerMp, targetSearch: any, ...itemName: any) { 
+//       itemName = itemName.join(' ');
 
-      if (BaseItem.list[itemName]) {
-         const foundItem = BaseItem.list[itemName];
-         const target = mp.players.find(targetSearch);
+//       if (BaseItem.list[itemName]) {
+//          const foundItem = BaseItem.list[itemName];
+//          const target = mp.players.find(targetSearch);
 
-         if (!target) {
-            player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
-            return;
-         }; 
+//          if (!target) {
+//             player.notification(Lang.userNotFound, notifications.type.ERROR, notifications.time.MED);
+//             return;
+//          }; 
 
-         try { 
-            Items.giveItem(target, foundItem);
-         } catch(e) { 
-            console.log(e)
-         }
+//          try { 
+//             // Items.giveItem(target, foundItem);
+//          } catch(e) { 
+//             console.log(e)
+//          }
 
-      } else { 
-         player.notification(Lang.itemDoesntExist, notifications.type.ERROR, notifications.time.MED);
-      }
-   }
-}
+//       } else { 
+//          player.notification(Lang.itemDoesntExist, notifications.type.ERROR, notifications.time.MED);
+//       }
+//    }
+// }
 
 
 Commands[cmds.names.FREEZE] = {
@@ -737,6 +737,22 @@ Commands[cmds.names.FLY] =  {
    description: 'opis napisati',
    async call (player: PlayerMp) { 
       player.call('CLIENT::ADMIN:FLY');
+   }
+}
+
+
+Commands[cmds.names.ADMIN_KILL] = {
+   description: cmds.descriptions.ADMIN_KILL,
+   admin: rank.SENIOR_ADMINISTRATOR,
+   params: [cmds.params.PLAYER],
+   call (player: PlayerMp, targetSearch: string) {
+      const target = mp.players.find(targetSearch);
+      
+      if (!target) {
+         return player.message('PORUKA:: ', '45');
+      }
+      
+      target.health = 0;
    }
 }
 

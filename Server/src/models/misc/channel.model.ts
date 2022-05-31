@@ -101,14 +101,14 @@ export default class channels extends Model {
       const by = sender ? sender.character.name : Lang.dispatcher;
       const freq = this.frequency.toString();
       
-      mp.players.forEach(async player => {
-         const equiped = await Items.hasEquiped(player, itemNames.HANDHELD_RADIO);
-         if (equiped) {
-            if (equiped.data.power && equiped.data.frequency == this.frequency) {
-               player.message('[CH: ' + freq + '] ' + by + ': ' + message, colors.hex.RADIO);
-            }
-         }
-      });
+      // mp.players.forEach(async player => {
+      //    const equiped = await Items.hasEquiped(player, itemNames.HANDHELD_RADIO);
+      //    if (equiped) {
+      //       if (equiped.data.power && equiped.data.frequency == this.frequency) {
+      //          player.message('[CH: ' + freq + '] ' + by + ': ' + message, colors.hex.RADIO);
+      //       }
+      //    }
+      // });
    }
 }
 

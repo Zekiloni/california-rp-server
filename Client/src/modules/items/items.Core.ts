@@ -10,12 +10,12 @@ export let trunkActive: boolean = false;
 
 
 async function openInventory () {
-   inventoryActive = !inventoryActive; 
-   Browser.call(inventoryActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'inventory');
-   if (inventoryActive) {
-      const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
-      Browser.call('BROWSER::INVENTORY:ITEMS', items);
-   }
+   // inventoryActive = !inventoryActive; 
+   // Browser.call(inventoryActive ? 'BROWSER::SHOW' : 'BROWSER::HIDE', 'inventory');
+   // if (inventoryActive) {
+   //    const items = await mp.events.callRemoteProc('SERVER::PLAYER:ITEMS:GET');
+   //    Browser.call('BROWSER::INVENTORY:ITEMS', items);
+   // }
 }
 
 

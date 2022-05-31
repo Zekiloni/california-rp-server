@@ -5,11 +5,11 @@ import { notifications, rank } from '@enums';
 import { cmds, gDimension, Lang } from '@constants';
 import { houseConfig } from '@configs';
 import { Logs, Characters, objects } from '@models';
+import { Commands } from '@modules/commands';
 
 
 @Table
 export class Houses extends Model {
-
    static objects = new Map<number, interactionPoint>();
 
    @PrimaryKey
@@ -289,3 +289,10 @@ export class Houses extends Model {
    }
 }
 
+
+Commands['inside'] = {
+   description: 'inside test',
+   call (player: PlayerMp) {
+      console.log(player.character.inside)
+   }
+}

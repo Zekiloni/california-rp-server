@@ -3,7 +3,7 @@ import { Lang, cmds } from "@constants";
 import { notifications } from "@enums";
 import { Commands } from "../commands";
 import { shared_Data } from "@shared";
-import { BaseItem } from "@models";
+import { BaseItem, Items } from "@models";
 
 
 Commands['uniform'] = {
@@ -82,5 +82,34 @@ Commands['prospect'] = {
             { item: 'Diamond', position: new mp.Vector3(1796.8463134765625, 4552.44921875, 35.552318) }
          ]
       ]);
+   }
+}
+
+Commands['giveitem'] = {
+   description: 'Daj item',
+   params: [
+      'player', 'item', 'quantity'
+   ],
+   call (player: PlayerMp, targetSearch: string, itemName: string, quantity: number) {
+      const item = BaseItem.list[itemName];
+      if (!item) {
+         return;
+      }
+      
+      const target = mp.players.find(targetSearch);
+      if (!target) {
+         return;
+      }
+
+      Items.giveItem(target, item, quantity);
+   }
+}
+
+
+Commands['inventory'] = {
+   description: 'Pregled itema',
+   call (player: PlayerMp) {
+      console.log(' ------------ inventory ------------');
+      console.log(player.character.items);
    }
 }

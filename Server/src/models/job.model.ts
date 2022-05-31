@@ -20,6 +20,7 @@ export class Jobs {
    colshape: ColshapeMp;
    marker: MarkerMp;
    maxShift?: number;
+   jobRequirements?: Function[];
 
    start? (player: PlayerMp, ...params: any): void;
    stop? (player: PlayerMp, ...params: any): void;
@@ -71,6 +72,15 @@ export class Jobs {
       }
 
       const job = this;
+
+
+      if (this.jobRequirements && job.jobRequirements?.length! > 0) {
+         for (const i in this.jobRequirements) {
+            if (!this.jobRequirements[i](player)) {
+               return;
+            }
+         }
+      }
 
       const offer: CharacterOffer = {
          title: Lang.JOB_OFFER + ' ' + job.name,

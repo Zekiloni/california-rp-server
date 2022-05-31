@@ -6,6 +6,8 @@ import { itemAction } from '@interfaces';
 
 
 export class BaseItem {
+   static list: { [key:string] : BaseItem } = {};
+
    name: string;
    type: ItemEnums.type[];
    model: string;
@@ -16,8 +18,6 @@ export class BaseItem {
    use? (player: PlayerMp, ...params: any): void | any;
    unequip? (player: PlayerMp): void ;
 
-   static list: { [key:string] : BaseItem } = {};
-
    constructor (name: string, type: ItemEnums.type[], model: string, weight: number = 0.1, description: string = itemDescriptions.NO_DESCRIPTION) { 
       this.name = name;
       this.type = type;
@@ -27,7 +27,14 @@ export class BaseItem {
 
       BaseItem.list[this.name] = this;
    }
-
+   
+   static toArray (): BaseItem[] {
+      let items = [];
+      for (const item of Object.values(this.list)) {
+         items.push(item)
+      }
+      return items;
+   }
 
    isWeapon () { 
       return this.type.includes(ItemEnums.type.WEAPON);
@@ -37,7 +44,7 @@ export class BaseItem {
       return this.type.includes(ItemEnums.type.COOKABLE);
    }
 
-   isStackable () { 
+   get isStackable () { 
       return this.type.includes(ItemEnums.type.STACKABLE);
    }
 
@@ -81,7 +88,7 @@ export class BaseItem {
          actions.push( { name: Lang.itemAction.use, event: 'CLIENT::ITEM:USE', icon: 'use' } )
       }
 
-      if (this.isStackable()){
+      if (this.isStackable){
          actions.push( { name: Lang.itemAction.split, event: 'CLIENT::ITEM:SPLIT', icon: 'split' } );
       } 
 
