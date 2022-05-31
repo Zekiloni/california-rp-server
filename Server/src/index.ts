@@ -18,6 +18,12 @@ import { Logs } from'@models';
 import { Lang } from '@constants';
 
 
+/*
+   PORUKA:: - srediti
+   LOGS - srediti
+*/
+
+
 /* 
    IMPORTING MAP 
    - gta5 > props > props.rpf > YDR, YTYP, YTD, YDD, YFT

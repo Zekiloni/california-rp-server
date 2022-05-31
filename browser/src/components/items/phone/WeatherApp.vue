@@ -91,7 +91,8 @@
       position: relative;
       height: 220px;
       border-radius: 25px 25px 0px 0px;
-      background-image: url("https://images.unsplash.com/photo-1559963110-71b394e7494d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80");
+      background-image: url("../../../assets/images/phone/weahter-bg.png");
+      background-size: cover;
       width: 290px;
       -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.2);
       box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.2);

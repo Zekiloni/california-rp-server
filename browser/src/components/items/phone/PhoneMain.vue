@@ -130,6 +130,12 @@
                createdAt: new Date()
             },
             {
+               id: 3,
+               name: 'Almir',
+               number: 4543,
+               createdAt: new Date()
+            },
+            {
                id: 2,
                name: 'Stefania',
                number: 908,
@@ -318,8 +324,6 @@
          if (!to || !message) {
             return;
          }
-
-         console.log('send 2')
 
          this.phone?.messages.push(
             {

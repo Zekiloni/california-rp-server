@@ -4,7 +4,9 @@ import { Characters } from '@models';
 import { playerModels } from '@shared';
 
 
-@Table
+@Table({
+   tableName: 'character_appearances', createdAt: false, updatedAt: false
+})
 export class Appearances extends Model {
    @PrimaryKey
    @AutoIncrement
@@ -83,12 +85,6 @@ export class Appearances extends Model {
       }
    )   
    overlays: number[];
-
-   @CreatedAt
-   created_at: Date;
-
-   @UpdatedAt
-   updated_at: Date;
    
    apply (player: PlayerMp, gender: number) {
       const genders = [ 
