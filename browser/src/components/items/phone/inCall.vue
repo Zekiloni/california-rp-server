@@ -89,6 +89,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+            backdrop-filter: blur(5px);
+
    }
 
    .info {
@@ -131,7 +133,6 @@
       height: 65px;
       display: grid;
       background: rgb(205 205 205 / 20%);
-      backdrop-filter: blur(5px);
    }
 
    ul.actions li:hover {

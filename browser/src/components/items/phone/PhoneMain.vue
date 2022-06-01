@@ -21,7 +21,6 @@
                </ul>
             </div>
       
-            
             <div class="application" v-else-if="opened" key=openedApplication >
                <SettingsApp 
                   v-if="opened.icon == 'settings'" 
@@ -46,6 +45,7 @@
                   v-if="opened.icon == 'contacts'"
                   :contacts="phone.contacts"
                   @add-contact="addContact"
+                  @remove-contact="removeContact"
                   @on-call="call"
                />
 
@@ -72,7 +72,7 @@
             />
          </transition>
 
-         <div class="home-button" v-if="!inCall">
+         <div class="home-button">
             <button @click="close(opened)"> <div class="icon"> </div> </button>
          </div>
 
@@ -83,7 +83,7 @@
 <script lang="ts">
    import Vue from 'vue';
    import Component from 'vue-class-component';
-   import { PhoneData, PhoneMessage } from '@/models';
+   import { PhoneContact, PhoneData, PhoneMessage } from '@/models';
    import { Messages } from '@/globals';
 
    import SettingsApp from './SettingsApp.vue';
@@ -95,7 +95,6 @@
    import WeatherApp from './WeatherApp.vue';
    import CalculatorApp from './CalculatorApp.vue';
    
-
    interface PhoneApp {
       name: string
       icon: string
@@ -346,6 +345,11 @@
          })
       }
 
+      removeContact (contact: PhoneContact) {
+         const index = this.phone?.contacts.indexOf(contact);
+         this.phone?.contacts.splice(index!, 1);
+      }
+
       mounted () {
          if (window.mp) {
             mp.events.add('BROWSER::PHONE:CALL', (info: string) => {
@@ -431,7 +435,7 @@
       padding: 0;
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-start;
+      justify-content: center;
    }
 
    ul.list li {
@@ -451,14 +455,14 @@
    }
 
    ul.list li img {
-      margin-bottom: 2px;
+      margin-bottom: 3px;
       -webkit-user-drag: none;
       width: 55px;
    }
 
    ul.list li h4 {
       margin: 0;
-      font-size: 0.55rem;
+      font-size: 0.6rem;
       color: whitesmoke;
       max-width: 75px;
       text-align: center;

@@ -23,7 +23,7 @@
 
       <div class="conversation" v-if="selectedConversation">
          <div class="header">
-            <button @click="selectedConversation = null"> povratak na poruke </button>
+            <button class="go-back" @click="selectedConversation = null"> {{ Messages.PONE_BACK_TO_MESSAGES }} </button>
             <div class="contact">
                <h4> {{ getContact(selectedConversation) ? getContact(selectedConversation).name : selectedConversation }} </h4>
                <small> {{ selectedConversation }} </small>
@@ -206,7 +206,7 @@
    }
 
    .conversation .chat {
-      height: 305px;
+      height: 295px;
       background: #100f14;
       overflow: hidden;
    }
@@ -304,6 +304,20 @@
    .contact-leave-to {
       opacity: 0;
       transform: translateY(30px);
+   }
+
+   button.go-back {
+      padding: 7px 0;
+      width: 100%;
+      background: #2a2930;
+      text-transform: uppercase;
+      font-size: 0.675rem;
+      color: #81868d;
+   }
+
+   button.go-back:hover {
+      color: #cdcdcd;
+      background: #35333b;
    }
 
    ::-webkit-scrollbar-thumb {

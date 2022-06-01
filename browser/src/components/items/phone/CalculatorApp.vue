@@ -10,7 +10,7 @@
 
          <div class="calculate-area">
             <div class="input"> {{ total }} </div>
-            <div class="result"> 3 </div>
+            <div class="result"> {{ result }} </div>
          </div>
          <div class="bar"> </div>
       </div>
@@ -48,6 +48,7 @@
    @Component
    export default class CalculatorApp extends Vue {
       total: any = 0;
+      result: string | number = '';
 
       key (num: any) {
          return this.total += num;
@@ -59,6 +60,7 @@
 
       equal () {
          let equal = this.total;
+         this.result = eval(equal);
          return this.total = eval(equal);
       }
       
@@ -69,7 +71,6 @@
 </script>
 
 <style scoped>
-
    .calculator {
       margin: auto;
       background: #ffffff;

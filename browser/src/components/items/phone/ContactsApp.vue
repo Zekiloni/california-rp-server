@@ -5,6 +5,7 @@
       <div class="home" v-if="!addingContact.opened && !selectedContact">
          <h2 class="title">
             {{ Messages.PHONE_APP_CONTACTS }} 
+            <small class="number"> {{ contacts.length }} </small>
             <img class="add-contact" src="@/assets/images/phone/icons/add-contact.svg" @click="addingContact.opened = true" />
          </h2>
 
@@ -26,12 +27,29 @@
          <button @click="add"> add ocntact </button>
       </div>
 
-      <div class="selected-contact" v-else-if="!addingContact.opened && selectedContact">
+      <div class="selected-contact" v-else-if="selectedContact">
+         <button class="go-back" @click="selectedContact = null"> {{ Messages.PHONE_BACK_TO_CONTACTS }} </button>
+
          <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" :alt="selectedContact.name">
 
          <h3> {{ selectedContact.name }} </h3>
          <h4> {{ selectedContact.number }} </h4>
-         {{ selectedContact }}
+
+         <ul class="actions">
+            <li @click="call(selectedContact.number)"> 
+               <div class="call"> </div>
+            </li>
+            <li> 
+               <div class="message"> </div> 
+            </li>
+         </ul>
+         
+         <h5 class="info"> {{ Messages.PHONE_CONTACT_CREATED }} <b>{{ formatDate(selectedContact.createdAt).split('-')[0] }}</b> </h5>
+         
+         <div class="options">
+            <button class="delete-contact" @click="remove"> {{ Messages.PHONE_DELETE_CONTACT }} </button>
+            <button> {{ Messages.PHONE_SHARE_CONTACT }} </button>
+         </div>
       </div>
    </div>
 
@@ -86,6 +104,13 @@
          this.$emit('on-call', false, number, false);
       }
 
+      remove () {
+         if (!this.selectedContact) return;
+
+         this.$emit('remove-contact', this.selectedContact);
+         this.selectedContact = null;
+      }
+
       add () {
          if (this.addingContact.name.length < 1 || this.addingContact.number.length < 1) return;
 
@@ -109,6 +134,10 @@
       margin: 0;
       color: #cdcdcd;
       position: relative;
+   }
+
+   h2.title small.number {
+      color: grey;
    }
 
    ul.contacts {
@@ -179,9 +208,9 @@
    }
 
    .selected-contact img {
-      margin: 10px 0;
-      width: 80px;
-      height: 80px;
+      margin: 20px 0;
+      width: 100px;
+      height: 100px;
       background: #302f36;
       border: 1px solid #101015;
       border-radius: 100%;
@@ -190,6 +219,9 @@
    .selected-contact h3 {
       color: #cdcdcd;
       margin: 0;
+      max-width: 150px;
+      font-size: 1.4rem;
+      text-align: center;
    }
 
    .selected-contact h4 {
@@ -197,4 +229,81 @@
       color: grey;
       font-size: 0.9rem;
    }
+
+   button.go-back {
+      padding: 7px 0;
+      width: 100%;
+      background: #2a2930;
+      text-transform: uppercase;
+      font-size: 0.675rem;
+      color: #81868d;
+   }
+
+   button.go-back:hover {
+      color: #cdcdcd;
+      background: #35333b;
+   }
+
+   ul.actions {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+   }
+
+   ul.actions li {
+      padding: 10px;
+      background: #1f1e26;
+      color: #667080;
+      border-radius: 5px;
+      margin: 0 5px;
+      box-shadow: 0 0 5px -5px rgb(0 0 0 / 20%);
+   }
+
+   ul.actions li div {
+      width: 25px; 
+      height: 25px; 
+      background-color: #848e9c;
+      transition: all .2s ease;
+   }
+
+
+   ul.actions li:hover {
+      background: whitesmoke;
+   }
+   
+   ul.actions li:hover div {
+      background: #18171d;
+   }
+
+   ul.actions li .call { mask: url('../../../assets/images/icons/phone.svg') no-repeat center; mask-size: cover; }
+   ul.actions li .message { mask: url('../../../assets/images/icons/message.svg') no-repeat center; mask-size: cover; }
+
+   h5.info {
+      font-weight: 500;
+      color: #858080;
+   }
+   
+   .options {
+      width: 100%;
+   }
+
+   .options button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      color: #cdcdcd;
+      background: #2a2930;
+   }
+
+   .options button:hover {
+      color: #cdcdcd;
+      background: #35333b;
+   }
+   
+   .options button.delete-contact {
+      color: #cf201d;
+   }
+
 </style>
