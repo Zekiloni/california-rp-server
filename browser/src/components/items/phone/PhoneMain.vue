@@ -346,6 +346,8 @@
       }
 
       removeContact (contact: PhoneContact) {
+         mp.events.call('CLIENT::PHONE:REMOVE_CONTACT', contact.id);
+         
          const index = this.phone?.contacts.indexOf(contact);
          this.phone?.contacts.splice(index!, 1);
       }
