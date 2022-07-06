@@ -22,7 +22,7 @@ const isPlaying = (player: PlayerMp) => {
 }
 
 
-const isChatting = (player: PlayerMp) => {
+const getPlayerChat = (player: PlayerMp) => {
    return player.isTypingInTextChat;
 }
 
@@ -31,10 +31,17 @@ const drawNametag = (player: PlayerMp) => {
    if (mp.players.local.dimension == player.dimension) {
       const distance = distanceBetweenVectors(mp.players.local.position, player.position);
       const isVisible = player.getAlpha() != 0;
+      const isChatting = getPlayerChat(player);
       
       if ((distance < nameTagsConfig.MAX_PLAYERNAME) && isPlaying(player) && isVisible) {
 
+
+         if (isChatting) {
+            // 3 BIG_TEXT
+            mp.game.invoke(RageEnums.Natives.Ui._CREATE_MP_GAMER_TAG)
+         }
       }
+
    }
 }
 
