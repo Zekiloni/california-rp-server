@@ -1,7 +1,7 @@
 
 
 <template>
-   <div class="phone">
+   <div class="phone" v-if="phone">
       <div class="screen">
          <div class="header" :class="{ opened: opened }">
             <h4> {{ time }} </h4>
