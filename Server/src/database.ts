@@ -55,6 +55,4 @@ Database.authenticate()
    });
 
 
-
-
 export default Database;

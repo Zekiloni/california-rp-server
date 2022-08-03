@@ -23,6 +23,7 @@
          if (window.mp) { 
             mp.events.add('BROWSER::INTERACTION', interaction => this.interactions.push(interaction) );
          }
+      
       }
    }
 </script>

@@ -15,8 +15,7 @@
 		"baseUrl": "./",
 		"types": [
 			"webpack-env",
-			"./types",
-			"./node_modules/@ragempcommunity/types-cef/"
+			"./types"
 		],
 		"paths": {
 			"@/*": ["src/*"],

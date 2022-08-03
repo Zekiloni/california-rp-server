@@ -125,7 +125,7 @@
 
    import Notifications from '@/components/player/Notifications.vue';
    import Authorization from '@/components/player/Authorization.vue';
-   import Creator from '@/components/Creator.vue';
+   import Creator from '@/components/Creator';
    import Offer from '@/components/player/Offer.vue';
    import Hints from '@/components/Hints.vue';
    import Chat from '@/components/TextChat';
