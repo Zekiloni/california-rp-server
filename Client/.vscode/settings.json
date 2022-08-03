@@ -11,6 +11,5 @@
         "bin/": true,
         "linux_x64.tar.gz": true,
         "ragemp-server.exe": true
-
     }
 }
