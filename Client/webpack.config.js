@@ -5,21 +5,21 @@ const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 const DefinePlugin = require('webpack').DefinePlugin;
 
 module.exports = {
-  mode: 'production',
-  entry: glob.sync('./src/**/*.{ts,js}'),
-  // devtool: 'inline-source-map',
-  optimization: {
-    // We no not want to minimize our code.
-    minimize: false,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          keep_classnames: false,
-          keep_fnames: false,
-        },
-      }),
-    ],
-  },
+   mode: 'production',
+   entry: glob.sync('./src/**/*.{ts,js}'),
+   // devtool: 'inline-source-map',
+   optimization: {
+      // We no not want to minimize our code.
+      minimize: false,
+      minimizer: [
+         new TerserPlugin({
+            terserOptions: {
+               keep_classnames: false,
+               keep_fnames: false,
+            },
+         }),
+      ],
+   },
    module: {
       rules: [
          {
