@@ -1,7 +1,7 @@
 
 
 
-export const Clothing_Combinations:StringIndex = {
+export const Clothing_Combinations:Record<string, any> = {
    "0": { 
       "0": [],
       "1": [],

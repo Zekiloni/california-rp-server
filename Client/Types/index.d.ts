@@ -10,11 +10,6 @@ declare global {
       setPosition (x: number, y: number, z: number): void;
    }
 
-   type StringIndex = {
-      [key: string]: any;
-   }
-
-
    interface EntityMp {
       hasVariable (Key: string): boolean;  
    }

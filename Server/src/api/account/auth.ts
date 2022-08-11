@@ -5,7 +5,6 @@ import { generateToken } from '../middleware';
 
 
 
-
 api.post('/login', (request, response) => {
    const { username, password } = request.body;
    

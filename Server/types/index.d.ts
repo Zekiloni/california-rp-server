@@ -1,7 +1,6 @@
 
 import { Accounts, Characters, Vehicles } from '@models';
 
-
 declare global { 
 
    type markerColors = {
@@ -15,7 +14,6 @@ declare global {
    interface PedMp {
       playScenario (Name: string): void;
    }
-
 
    interface ColshapeMp { 
       onPlayerEnter (player: PlayerMp): void

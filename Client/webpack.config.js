@@ -35,7 +35,8 @@ module.exports = {
    },
    output: {
       filename: 'index.js',
-      path: path.resolve(__dirname, 'dist'),
+      // client-side build path
+      path: path.resolve(__dirname, '../../client_packages/'),
    },
    plugins: [
       // new BundleAnalyzerPlugin(),
