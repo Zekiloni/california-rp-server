@@ -7,8 +7,8 @@ import {
 } from 'sequelize-typescript';
 
 import { 
-   Accounts, Appearances, Banks, Houses,
-   Busines, Items, Logs, objects, 
+   Accounts, Appearances, Banks, Properties,
+   Busines, Items, Logs, PropertyObjects, 
    Vehicles, Factions, FactionsRanks,
    MoneyLogs, Jobs
 } from '@models';
@@ -165,8 +165,8 @@ export class Characters extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   @HasMany(() => Houses)
-   houses: Houses[]
+   @HasMany(() => Properties)
+   houses: Properties[]
 
    @HasMany(() => Busines)
    business: Busines[]
@@ -182,7 +182,7 @@ export class Characters extends Model {
    working: boolean = false;
    completedShifts: number = 0;
 
-   inside: Houses | Busines | null = null;
+   inside: Properties | Busines | null = null;
 
    freezed: boolean = false;
 
@@ -311,21 +311,21 @@ export class Characters extends Model {
          }
 
          case spawnPointTypes.HOUSE: {
-            Houses.findOne( { where: { id: id } } ).then(house => {
-               if (!house) {
+            Properties.findOne( { where: { id: id } } ).then(property => {
+               if (!property) {
                   return;
                }               
 
-               player.position = house.interiorPosition;
-               player.dimension = house.id;
+               player.position = property.interiorPosition;
+               player.dimension = property.id;
 
-               objects.findAll( { where: { property: 'house', property_id: house.id } } ).then(objects => {
-                  player.call('CLIENT::INTERIOR:OBJECTS_LOAD', [objects, house.id])
+               PropertyObjects.findAll( { where: { property: 'house', property_id: property.id } } ).then(objects => {
+                  player.call('CLIENT::INTERIOR:OBJECTS_LOAD', [objects, property.id])
                })
 
-               player.character.inside = house;
+               player.character.inside = property;
          
-               player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [house.interiorPosition, 30, house.object.marker?.getColor()])
+               player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [property.interiorPosition, 30, property.object.marker?.getColor()])
             })
             break;
          }

@@ -5,10 +5,12 @@ import {
 } from 'sequelize-typescript';
 
 import { cmds } from '@constants';
-import { Houses, Logs } from '@models';
+import { Properties, Logs } from '@models';
 
 
-export class objects extends Model {
+export class PropertyObjects extends Model {
+   static gameObjects = new Map<number, ObjectMp>();
+
    @PrimaryKey
    @AutoIncrement
    @Column
@@ -53,10 +55,18 @@ export class objects extends Model {
 
    @UpdatedAt
    updated_at: Date
+
+   get gameObject ()  {
+      return PropertyObjects.gameObjects.get(this.id)!;
+   }
+
+   set gameObject (object: ObjectMp) {
+      PropertyObjects.gameObjects.set(this.id, object);
+   }
    
    @AfterSync
    static loading () {
-      objects.findAll().then(objects => Logs.info(objects.length + ' builder objects loaded !'));
+      PropertyObjects.findAll().then(objects => Logs.info(objects.length + ' builder objects loaded !'));
    }
 
    static async createNew (player: PlayerMp, model: string, position: Vector3Mp, rotation: Vector3Mp, name?: string) {
@@ -66,9 +76,9 @@ export class objects extends Model {
    
       // TODO: check player money and price of object
    
-      const instance = player.character.inside instanceof Houses ? cmds.actions.house : cmds.actions.busines;
+      const instance = player.character.inside instanceof Properties ? cmds.actions.house : cmds.actions.busines;
    
-      return await objects.create( 
+      return await PropertyObjects.create( 
          {
             model: model, 
             position: position, 
@@ -82,7 +92,7 @@ export class objects extends Model {
    }
 
    static updateObject (player: PlayerMp, databaseID: number, position: Vector3Mp, rotation: Vector3Mp, name?: string) {
-      objects.findOne( { where: { id: databaseID } } ).then(async object => { 
+      PropertyObjects.findOne( { where: { id: databaseID } } ).then(async object => { 
          if (!object) {
             return;
          }
@@ -95,12 +105,12 @@ export class objects extends Model {
    }
 
    static delete (player: PlayerMp, databaseID: number) {
-      objects.findOne( { where: { id: databaseID } } ).then(async object => await object?.destroy());
+      PropertyObjects.findOne( { where: { id: databaseID } } ).then(async object => await object?.destroy());
    }
 }
 
 
 
-mp.events.add('SERVER::BUILDER:OBJECT_DELETE', objects.delete);
-mp.events.add('SERVER::BUILDER:OBJECT_SAVE', objects.updateObject);
-mp.events.addProc('SERVER::BUILDER:OBJECT_CREATE', objects.createNew);
+mp.events.add('SERVER::BUILDER:OBJECT_DELETE', PropertyObjects.delete);
+mp.events.add('SERVER::BUILDER:OBJECT_SAVE', PropertyObjects.updateObject);
+mp.events.addProc('SERVER::BUILDER:OBJECT_CREATE', PropertyObjects.createNew);

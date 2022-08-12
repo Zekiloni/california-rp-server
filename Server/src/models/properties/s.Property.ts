@@ -4,11 +4,12 @@ import { interactionPoint } from '@interfaces';
 import { notifications, rank } from '@enums';
 import { cmds, gDimension, Lang } from '@constants';
 import { houseConfig } from '@configs';
-import { Logs, Characters, objects } from '@models';
+import { Logs, Characters, PropertyObjects } from '@models';
 import { Commands } from '@modules/commands';
+import { PropertyConfig } from './s.Property.Config';
 
 
-interface IHousePoint {
+interface IPropertyPoint {
    blip: BlipMp
    colshape: ColshapeMp
    marker?: MarkerMp
@@ -16,8 +17,8 @@ interface IHousePoint {
 
 
 @Table
-export class Houses extends Model {
-   static objects = new Map<number, IHousePoint>();
+export class Properties extends Model {
+   static gameObjects = new Map<number, IPropertyPoint>();
 
    @PrimaryKey
    @AutoIncrement
@@ -31,9 +32,9 @@ export class Houses extends Model {
    @BelongsTo(() => Characters)
    character: Characters | null
 
-   @Default(houseConfig.type.APARTMENT)
-   @Column
-   type: houseConfig.type;
+   @AllowNull(false)
+   @Column(DataType.ENUM)
+   type: keyof typeof PropertyConfig.PropertyType
 
    @AllowNull(false)
    @Column
@@ -93,47 +94,47 @@ export class Houses extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   get object (): IHousePoint { 
-      return Houses.objects.get(this.id)!;
+   get object (): IPropertyPoint { 
+      return Properties.gameObjects.get(this.id)!;
    }
 
-   set object (object: IHousePoint) { 
-      Houses.objects.set(this.id, object);
+   set object (object: IPropertyPoint) { 
+      Properties.gameObjects.set(this.id, object);
    }
 
    @AfterSync
    static async loading () {
-      Houses.findAll().then(houses => {
-         houses.forEach(house => {
+      Properties.findAll().then(property => {
+         property.forEach(house => {
             house.refresh();
          })
       });
 
-      Logs.info(await Houses.count() + ' houses loaded !');
+      Logs.info(await Properties.count() + ' houses loaded !');
    }
 
    @AfterSave
-   static saving (house: Houses) {
+   static saving (house: Properties) {
       house.refresh();
    }
 
    @AfterCreate
-   static async creating (house: Houses) {
+   static async creating (house: Properties) {
       house.refresh();
    }
 
    @AfterDestroy
-   static async destroying (house: Houses, options: any) {
+   static async destroying (house: Properties, options: any) {
       if (house.object) {
          house.object.colshape!.destroy();
          house.object.blip!.destroy();
          house.object.marker!.destroy();
-         Houses.objects.delete(house.id);
+         Properties.gameObjects.delete(house.id);
       }
    }
 
    static async new (player: PlayerMp, type: number, price: number) {
-      Houses.create({
+      Properties.create({
          type: type,
          price: price,
          position: player.position,
@@ -233,6 +234,11 @@ export class Houses extends Model {
       await this.save();
    }
 
+   async setType (houseType: keyof typeof PropertyConfig.PropertyType) {
+      this.type = houseType;
+      await this.save();
+   }
+
    async lock (player: PlayerMp) {
       if (this.owner == player.character.id || this.tenants.includes(player.character.id)) { 
          this.locked = !this.locked;
@@ -242,8 +248,8 @@ export class Houses extends Model {
       }
    }
 
-   static async getNearest (player: PlayerMp): Promise<Houses | void> {
-      return Houses.findAll( { } ).then(houses => {
+   static async getNearest (player: PlayerMp): Promise<Properties | void> {
+      return Properties.findAll( { } ).then(houses => {
          const nearest = houses.filter(house => player.dist(house.position) < 20);
 
          return nearest.reduce((firstHouse, secondHouse) => {
@@ -261,7 +267,7 @@ export class Houses extends Model {
       player.position = this.interiorPosition;
       player.dimension = this.id;
 
-      objects.findAll( { where: { property: 'house', property_id: this.id } } ).then(objects => {
+      PropertyObjects.findAll( { where: { property: 'house', property_id: this.id } } ).then(objects => {
          player.call('CLIENT::INTERIOR:OBJECTS_LOAD', [objects, this.id])
       })
 
@@ -272,6 +278,7 @@ export class Houses extends Model {
 
 
    exit (player: PlayerMp) {
+      this.type = "One Room Apartment"
       if (player.dist(this.interiorPosition) > 2) {
          player.notification(Lang.notNearbyExit, notifications.type.ERROR, notifications.time.MED);
          return;
