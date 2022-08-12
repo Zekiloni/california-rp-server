@@ -12,7 +12,6 @@ import { checkForDot, formatCommand, shared_Data } from '@shared';
    tableName: 'factions'
 })
 export class Factions extends Model {
-
    static objects = new Map<number, factionPoints>()
 
    @PrimaryKey
@@ -27,6 +26,10 @@ export class Factions extends Model {
    @Unique(true)
    @Column
    name: string
+   
+   @Unique(true)
+   @Column(DataType.STRING)
+   tag: string
 
    @Column
    description: string

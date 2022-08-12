@@ -188,6 +188,10 @@ export class Characters extends Model {
 
    respawnTimer: ReturnType<typeof setTimeout> | null = null;
 
+   get getPlayer () {
+      return mp.players.toArray().find(player => player.character.id == this.id);
+   }
+
    get isOnline () {
       return mp.players.toArray().find(player => player.character && player.character.id == this.id) ? true : false;
    }
@@ -312,7 +316,7 @@ export class Characters extends Model {
                   return;
                }               
 
-               player.position = house.interior_position;
+               player.position = house.interiorPosition;
                player.dimension = house.id;
 
                objects.findAll( { where: { property: 'house', property_id: house.id } } ).then(objects => {
@@ -321,7 +325,7 @@ export class Characters extends Model {
 
                player.character.inside = house;
          
-               player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [house.interior_position, 30, house.object.marker?.getColor()])
+               player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [house.interiorPosition, 30, house.object.marker?.getColor()])
             })
             break;
          }

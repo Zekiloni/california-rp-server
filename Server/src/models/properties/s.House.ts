@@ -8,9 +8,16 @@ import { Logs, Characters, objects } from '@models';
 import { Commands } from '@modules/commands';
 
 
+interface IHousePoint {
+   blip: BlipMp
+   colshape: ColshapeMp
+   marker?: MarkerMp
+}
+
+
 @Table
 export class Houses extends Model {
-   static objects = new Map<number, interactionPoint>();
+   static objects = new Map<number, IHousePoint>();
 
    @PrimaryKey
    @AutoIncrement
@@ -36,25 +43,22 @@ export class Houses extends Model {
    @Column
    locked: boolean;
 
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return this.getDataValue('position') ? JSON.parse(this.getDataValue('position')) : null;
-         }
+   @Column({
+      type: DataType.JSON,
+      get () { 
+         return this.getDataValue('position') ? JSON.parse(this.getDataValue('position')) : null;
       }
-   )       
+   })       
    position: Vector3Mp
 
-   @Column(
-      {
-         type: DataType.JSON,
-         get () { 
-            return this.getDataValue('interior_position') ? JSON.parse(this.getDataValue('interior_position')) : null;
-         }
+   @Column({
+      type: DataType.JSON,
+      field: 'interior_position',
+      get () { 
+         return this.getDataValue('interiorPosition') ? JSON.parse(this.getDataValue('interiorPosition')) : null;
       }
-   )
-   interior_position: Vector3Mp
+   })
+   interiorPosition: Vector3Mp
 
    @Default(gDimension)
    @Column
@@ -89,11 +93,11 @@ export class Houses extends Model {
    @UpdatedAt
    updated_at: Date;
 
-   get object (): interactionPoint { 
+   get object (): IHousePoint { 
       return Houses.objects.get(this.id)!;
    }
 
-   set object (object: interactionPoint) { 
+   set object (object: IHousePoint) { 
       Houses.objects.set(this.id, object);
    }
 
@@ -149,7 +153,7 @@ export class Houses extends Model {
          case 'owner':
             this.owner = Number(value); break;
          case 'interior':
-            this.interior_position = player.position; break;
+            this.interiorPosition = player.position; break;
          default: 
             return;
       }
@@ -254,7 +258,7 @@ export class Houses extends Model {
          return;
       }
 
-      player.position = this.interior_position;
+      player.position = this.interiorPosition;
       player.dimension = this.id;
 
       objects.findAll( { where: { property: 'house', property_id: this.id } } ).then(objects => {
@@ -263,12 +267,12 @@ export class Houses extends Model {
 
 
       player.character.inside = this;
-      player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [this.interior_position, 30, this.object.marker?.getColor()])
+      player.call('CLIENT::INTERIOR:CREATE_EXIT_POINT', [this.interiorPosition, 30, this.object.marker?.getColor()])
    }
 
 
    exit (player: PlayerMp) {
-      if (player.dist(this.interior_position) > 2) {
+      if (player.dist(this.interiorPosition) > 2) {
          player.notification(Lang.notNearbyExit, notifications.type.ERROR, notifications.time.MED);
          return;
       }
@@ -285,7 +289,7 @@ export class Houses extends Model {
 
       player.character.inside = null;
 
-      player.call('CLIENT::INTERIOR:DESTROY_EXIT_POINT', [this.interior_position]);
+      player.call('CLIENT::INTERIOR:DESTROY_EXIT_POINT', [this.interiorPosition]);
    }
 }
 
