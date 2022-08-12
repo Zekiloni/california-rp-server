@@ -101,6 +101,9 @@ export class Properties extends Model {
    set object (object: IPropertyPoint) { 
       Properties.gameObjects.set(this.id, object);
    }
+   
+   @HasMany(() => PropertyObjects)
+   objects: PropertyObjects[]
 
    @AfterSync
    static async loading () {

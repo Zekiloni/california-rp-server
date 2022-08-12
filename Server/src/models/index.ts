@@ -24,7 +24,7 @@ export * from './factions/faction.model';
 export * from './factions/rank.model';
 
 // @builder
-export * from './object.model';
+export * from './properties/objects/s.PropertyObject';
 
 // Housing System
 export * from './properties/s.Property';
