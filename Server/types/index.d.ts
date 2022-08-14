@@ -16,8 +16,12 @@ declare global {
    }
 
    interface ColshapeMp { 
+      /* Methods */
       onPlayerEnter (player: PlayerMp): void
       onPlayerLeave (player: PlayerMp): void
+      
+      /* Propertties */
+      propertyId?: number
    }
 
    interface VehicleMp { 

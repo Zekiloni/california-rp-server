@@ -20,7 +20,7 @@ export * from './logs/money.log.model';
 export * from './logs/kill.log.model';
 
 // @factions
-export * from './factions/faction.model';
+export * from './factions/s.Faction';
 export * from './factions/rank.model';
 
 // @builder

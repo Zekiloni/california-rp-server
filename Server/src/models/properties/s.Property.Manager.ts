@@ -42,12 +42,43 @@ export class PropertyManager extends Properties {
             return;
          }
 
+         // Todo: Log Destroyed Property ID: propertyId by player.account.username;
          property.objects.forEach(object => {
             if (object) {
                object.destroy();
             }
          })
       })
+   }
+
+   static enterPropertyInterior (player: PlayerMp) {
+      
+   }
+
+   static exitPropertyInterior (player: PlayerMp) {
+
+   }
+
+   static enterPropertyColshape (player: PlayerMp, colshape: ColshapeMp) {
+      if (!colshape || !colshape.data.propertyId) {
+         return;
+      }
+
+      if (player.vehicle) {
+         return;
+      }
+
+      Properties.findOne({ where: { id: colshape.data.propertyId } }).then(property => {
+         if (!property) {
+            return;
+         }
+
+         player.call('showPropertyInfo', [property]);
+      });
+   }
+
+   static leavePropertyColshape (player: PlayerMp, colshape: ColshapeMp) {
+      if (player.vehicle) return;
    }
 
    static updateHouseInfo (house: Properties) {
@@ -74,10 +105,13 @@ export class PropertyManager extends Properties {
 			}
 		})
 	}
+   
 }
 
 mp.events.add(
 	{
+      'playerEnterColshape': PropertyManager.enterPropertyColshape,
+      'playerLeaveColshape': PropertyManager.leavePropertyColshape,
 		'playerBuyProperty': PropertyManager.playerBuyProperty,
 		'playerSellProperty': PropertyManager.playerBuyProperty
 	}
