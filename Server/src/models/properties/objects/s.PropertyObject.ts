@@ -1,11 +1,12 @@
 import { 
    Model, PrimaryKey, Column, AutoIncrement,
    AllowNull, DataType, CreatedAt, UpdatedAt,
-   Default, AfterSync 
+   Default, AfterSync, AfterDestroy 
 } from 'sequelize-typescript';
 
 import { cmds } from '@constants';
 import { Properties, Logs } from '@models';
+import { InstanceDestroyOptions } from 'sequelize/types';
 
 
 export class PropertyObjects extends Model {
@@ -67,6 +68,13 @@ export class PropertyObjects extends Model {
    @AfterSync
    static loading () {
       PropertyObjects.findAll().then(objects => Logs.info(objects.length + ' builder objects loaded !'));
+   }
+
+   @AfterDestroy
+   static onObjectDestroyed (pObject: PropertyObjects, options: InstanceDestroyOptions) {
+      if (pObject.gameObject || mp.objects.exists(pObject.gameObject)) {
+         pObject.gameObject.destroy();
+      }
    }
 
    static async createNew (player: PlayerMp, model: string, position: Vector3Mp, rotation: Vector3Mp, name?: string) {
