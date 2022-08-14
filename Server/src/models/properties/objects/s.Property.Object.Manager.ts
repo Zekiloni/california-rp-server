@@ -1,4 +1,4 @@
-import { PropertyObjects } from "./s.PropertyObject";
+import { PropertyObjects } from "./s.Property.Object";
 
 
 export class PropertyObjectManager extends PropertyObjects {
