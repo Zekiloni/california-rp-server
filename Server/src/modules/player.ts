@@ -1,4 +1,4 @@
-import { Logs, Bans, Characters, Accounts, Items, Appearances, Banks, BaseItem, Houses, Busines, Vehicles, Phones, PhoneContacts, PhoneMessages } from '@models';
+import { Logs, Bans, Characters, Accounts, Items, Appearances, Banks, BaseItem, Properties, Busines, Vehicles, Phones, PhoneContacts, PhoneMessages } from '@models';
 import { playerConfig, ServerConfig } from '@configs';
 import { ItemEnums, logging, notifications, spawnPointTypes } from '@enums';
 import { gDimension, itemNames, Lang, none } from '@constants';
@@ -143,7 +143,7 @@ function getCharacterSpawns (player: PlayerMp, id: number): Promise<PlayerSpawnP
    return new Promise((resolve) => {
       let spawnPoints: PlayerSpawnPoint[] = [];
 
-      Characters.findOne({ where: { id: id }, include: [Banks, Houses, Vehicles, Busines] }).then((character) => { 
+      Characters.findOne({ where: { id: id }, include: [Banks, Properties, Vehicles, Busines] }).then((character) => { 
          const defaultSpawn: PlayerSpawnPoint = {
             name: Lang.defaultSpawn,
             type: spawnPointTypes.DEFAULT,
@@ -211,7 +211,6 @@ function authorizationVerify (player: PlayerMp, username: string, password: stri
 
       if (!logged) { 
          player.notification(Lang.INCORRECT_PASSWORD, notifications.type.ERROR, 5);
-
          return;
       }
       

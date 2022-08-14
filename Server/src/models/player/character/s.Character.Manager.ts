@@ -1,4 +1,4 @@
-import { Characters } from "./character.model";
+import { Characters } from "./s.Character";
 
 
 export interface ICharacterInfo {

@@ -86,6 +86,10 @@ export class Accounts extends Model {
    @UpdatedAt
    updated_at: Date;
 
+   get isPlaying () {
+      return mp.players.toArray().find(player => player.account && player.account.id == this.id) ? true : false;
+   }
+
    @AfterSync
    static async loading () {
       for (const admin of adminAccounts) { 
@@ -119,7 +123,6 @@ export class Accounts extends Model {
       player.setVariable(shared_Data.ADMIN, this.administrator);
 
       if (this.hardwer == null || this.social_club == null) {
-
          Accounts.findOne({ where: { social_club: player.socialClub, hardwer: player.serial } }).then(account => {
             if (account) {
                player.kick(Lang.userAlreadyExist);
