@@ -9,7 +9,7 @@ import { generateNumber, generateString, shared_Data } from '@shared';
 import { gDimension, Lang, none } from '@constants';
 import { VehicleConfig } from '@configs';
 import { notifications } from '@enums'; 
-import { Jobs, Factions, Logs, Characters, VehicleComponents } from '@models';
+import { Jobs, Factions, Logs, Characters, VehicleComponents, Items } from '@models';
 import { NumberPlate } from '@interfaces';
 
 
@@ -98,6 +98,9 @@ export class Vehicles extends Model {
    @Default(none)
    @Column(DataType.INTEGER)
    lockLevel: number
+
+   @HasMany(() => Items)
+   items: Items[]
 
    @AllowNull(false)
    @Column({
@@ -357,22 +360,6 @@ export class Vehicles extends Model {
       vehicle.setVariable(shared_Data.WINDOWS, windows);
    }
 
-
-   static exit (player: PlayerMp, vehicle: VehicleMp) {
-      if (!vehicle) {
-         return;
-      }
-   
-      // # if engine runing keep it
-      if (vehicle.engine) {
-         vehicle.engine = true;
-      }
-
-      if (vehicle.siren) {
-         vehicle.siren = true;
-      }
-   }
-
    static async data (player: PlayerMp, vehicleID: number, mileage: number, fuel: number) {
       const vehicle = mp.vehicles.at(vehicleID);
    
@@ -458,7 +445,6 @@ export class Vehicles extends Model {
 
 
 
-mp.events.add('playerExitVehicle', Vehicles.exit);
 mp.events.add('SERVER::VEHICLE:UPDATE', Vehicles.data);
 mp.events.add('SERVER::VEHICLE:INDICATORS', Vehicles.indicators);
 mp.events.addProc('SERVER::VEHICLE:MENU_ACTION', Vehicles.action);

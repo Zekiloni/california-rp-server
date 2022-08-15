@@ -1,9 +1,9 @@
 import { 
    AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, 
    PrimaryKey, Table 
-} from 'sequelize-typescript';
+} from "sequelize-typescript";
 
-import { Vehicles } from './vehicle';
+import { Vehicles } from "./s.Vehicle";
 
 
 @Table({
