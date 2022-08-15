@@ -1,4 +1,4 @@
-import { shared_Data } from "@shared/shared.enums";
+import { shared_Data } from "@shared";
 import { Vehicles } from "./s.Vehicle";
 
 
