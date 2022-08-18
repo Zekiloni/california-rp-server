@@ -90,5 +90,5 @@ export function removeAttachment (player: PlayerMp, name: string) {
 };
 
 
-mp.events.add(RageEnums.EventKey.ENTITY_STREAM_IN, streamAttachments);
-mp.events.add(RageEnums.EventKey.ENTITY_STREAM_OUT, streamAttachments);
+mp.events.add('entityStreamIn', streamAttachments);
+mp.events.add('entityStreamOut', streamAttachments);

@@ -1,7 +1,7 @@
 import { animationFlags } from "../../enums/animations.flags";
 import controls from "../../enums/controls";
 import { isAnimationFinished, isPlayingAnim, playAnimation, stopAnimation } from "../player/animation";
-import { createAttachment, removeAttachment } from "../player/attahments";
+import { createAttachment, removeAttachment } from "../player/c.Player.Attachments";
 
 
 

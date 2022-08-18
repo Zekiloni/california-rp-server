@@ -1,5 +1,5 @@
-import { Browser } from '../../browser';
-import { toggleGameInterface, UI_Status } from '../game.UI';
+import { Browser } from '../../../browser';
+import { toggleGameInterface, UI_Status } from '../../game.UI';
 
 
 const authConfig = {

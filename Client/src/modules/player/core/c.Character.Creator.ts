@@ -1,11 +1,11 @@
 
 
-import { Browser } from '../../browser';
-import { playerModels } from '../../data/Player';
-import { lobby } from './authorization';
-import { disableMoving, getBestTorso, playerPreviewCamera, removeClothing } from '../../utils';
-import { toggleGameInterface, UI_Status } from '../game.UI';
-import { clothingComponents } from '../../enums/clothing';
+import { Browser } from '../../../browser';
+import { playerModels } from '../../../data/Player';
+import { lobby } from './c.Player.Authorization';
+import { disableMoving, getBestTorso, playerPreviewCamera, removeClothing } from '../../../utils';
+import { toggleGameInterface, UI_Status } from '../../game.UI';
+import { clothingComponents } from '../../../enums/clothing';
 
 
 class CharacterCreator {

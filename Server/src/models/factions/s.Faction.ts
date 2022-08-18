@@ -8,6 +8,8 @@ import { Characters, FactionsRanks, Logs } from '@models';
 import { checkForDot, formatCommand, shared_Data } from '@shared';
 
 
+
+
 @Table({
    tableName: 'factions'
 })
