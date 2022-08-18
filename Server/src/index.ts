@@ -5,7 +5,7 @@ import 'module-alias/register';
 import './database';
 import './api';
 
-import './systems/player/Authorization';
+import './models/players/s.Player.Manager';
 
 import './modules/rage';
 import './modules/commands';

@@ -8,6 +8,10 @@
       },
       {
          "path": "Server"
+      },
+      {
+         "name": "scripts",
+         "path": "scripts"
       }
    ],
    "settings": {

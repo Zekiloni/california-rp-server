@@ -15,15 +15,6 @@
       "dev": "tsc && npm run start",
       "build": "tsc"
    },
-   "_moduleAliases": {
-      "@configs": "dist/configs/index", 
-      "@modules": "dist/modules/",
-      "@constants": "dist/constants/index",
-      "@shared": "dist/shared/index",
-      "@enums": "dist/enums/index",
-      "@models": "dist/models/index",
-      "@interfaces": "dist/interfaces/index"
-   },
    "devDependencies": {
       "@types/bcryptjs": "^2.4.2",
       "@types/cors": "^2.8.12",
