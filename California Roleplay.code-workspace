@@ -16,16 +16,5 @@
          "*.json": "jsonc",
          "s.C": "cpp"
       }
-   },
-   "launch": {
-      "version": "0.2.0",
-      "configurations": [
-         {
-            "command": "npm run dev",
-            "name": "Run npm start",
-            "request": "launch",
-            "type": "node-terminal"
-         }
-      ]
    }
 }
